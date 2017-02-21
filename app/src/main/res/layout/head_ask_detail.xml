@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/iv_ask_icon"
+            android:layout_width="match_parent"
+            android:layout_height="266dp"
+            android:background="@drawable/selector_help"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="29dp"
+            android:background="@drawable/back_with_circle"
+            />
+
+
+    <TextView
+        android:id="@+id/tv_change_status"
+        android:layout_below="@id/iv_ask_icon"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        tools:text="回答"
+        style="@style/tv_normal"
+        android:textSize="10dp"
+        android:background="@drawable/shape_circle_white"
+        />
+    
+    <TextView
+        android:id="@+id/tv_ask_title"
+        tools:text="怎么创建一个账号"
+        android:layout_below="@id/tv_change_status"
+        android:layout_marginTop="19dp"
+        android:layout_marginLeft="11dp"
+       style="@style/tv_normal" />
+
+    <TextView
+        android:id="@+id/tv_ask_time"
+        tools:text="2017.3.6"
+        android:textSize="14sp"
+        android:layout_below="@id/tv_ask_title"
+        android:layout_alignLeft="@id/tv_ask_title"
+        android:layout_marginTop="17dp"
+        style="@style/tv_normal" />
+
+    <TextView
+        android:id="@+id/tv_ask_creator"
+        tools:text="提问人:尼玛"
+        android:textSize="14sp"
+        android:layout_below="@id/tv_ask_time"
+        android:layout_alignLeft="@id/tv_ask_title"
+        android:layout_marginTop="7dp"
+        style="@style/tv_normal" />
+
+    <TextView
+        tools:text="回答"
+        android:layout_below="@id/tv_ask_creator"
+        android:layout_marginTop="37dp"
+        android:layout_alignLeft="@id/tv_ask_title"
+        style="@style/tv_normal"
+        android:layout_marginBottom="16dp"
+        />
+
+</RelativeLayout>

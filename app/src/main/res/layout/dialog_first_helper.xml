@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        style="@style/tv_line_space"
+        android:paddingStart="39dp"
+        android:paddingEnd="39dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/first_help_desc"
+         />
+
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/tv_family"
+        style="@style/tv_normal"
+        android:layout_marginTop="70dp"
+        android:text="@string/family"
+        />
+
+    <TextView
+        android:id="@+id/tv_neighbor"
+        style="@style/tv_normal"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:text="@string/neigh"
+        />
+
+    <TextView
+        android:id="@+id/tv_security"
+        style="@style/tv_normal"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:text="@string/security"
+        />
+
+
+
+    <Button
+        android:id="@+id/btn_cancel_help"
+        android:text="@string/cancel"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="129dp"
+        android:layout_marginBottom="26dp"
+        style="@style/btn_red_deep"
+        />
+
+</LinearLayout>

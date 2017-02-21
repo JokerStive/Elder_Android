@@ -1,0 +1,32 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="home_module_margin">10dp</dimen>
+
+    <dimen name="tv_size">16sp</dimen>
+    <dimen name="tv_size_large">28sp</dimen>
+    <dimen name="tv_size_small">12sp</dimen>
+    <dimen name="tv_size_input_view">14sp</dimen>
+
+
+    <dimen name="push_bar_height">170dp</dimen>
+    <dimen name="title_bar_height">45dp</dimen>
+    <dimen name="info_bar_height">150dp</dimen>
+
+    <dimen name="module_margin">0.5dp</dimen>
+
+
+    <dimen name="urgency_height">462dp</dimen>
+
+    <dimen name="login_background_height">204dp</dimen>
+
+
+    <dimen name="module_icon_height">40dp</dimen>
+
+
+    <dimen name="sliding_item_margin_top">20dp</dimen>
+
+
+</resources>

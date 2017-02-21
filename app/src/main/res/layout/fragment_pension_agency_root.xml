@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <lilun.com.pension.widget.PositionTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/pension_agency" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/fl_announcement_container"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/announcement_def" />
+
+    </RelativeLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginBottom="5dp"
+                android:drawablePadding="3dp"
+                android:drawableStart="@drawable/pension_agency_icon"
+                android:text="机构" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_agency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="3dp"
+                android:drawableStart="@drawable/pension_agency_icon"
+                android:text="服务" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Pension</string>
+
+
+    <!--一键求助-->
+    <string name="first_help_desc">请指定第一救助人，我们将会对指定的第一救助人发出额外短信通知</string>
+    <string name="family">家人</string>
+    <string name="neigh">隔壁邻居</string>
+    <string name="security">物业保安</string>
+
+    <string name="first_help_phone_desc">请输入%1$s的电话号码</string>
+    <string name="phone_number">电话号码</string>
+
+    <string name="count_down_help_desc">%1$d秒之后如果无操作，将会自动发送紧急信号到附近居民，适用于突发紧急情况</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="agree">同意</string>
+    <string name="refuse">拒绝</string>
+
+    <string name="help_protocol">在使用一键求助前，您必须知晓和同意：一键求助功能是邻里互助的一部分，是社区邻里自愿参加的互助行为，系统并不能保证大家第一时间获得救助，以及救助的效果，对于救助不及时或者手机系统问题等一律免责，您必须统一此协议，方可使用一键求助</string>
+
+    <!--个人中心-->
+    <string name="account_data">个人资料</string>
+    <string name="account_setting">设置</string>
+    <string name="account_share">分享应用</string>
+    <string name="account_info">消息中心</string>
+    <string name="account_collection">个人收藏</string>
+    <string name="account_safe">账户安全</string>
+
+    <string name="logout">退出</string>
+    <string name="logout_confirm">确定退出登录?</string>
+
+    ==========================================================================
+    <!--邻居互助-->
+    <string name="neighbor_help">邻里互助</string>
+    <string name="need_help">我要求助</string>
+    <string name="ask_neighbor">问邻居</string>
+    <string name="help_neighbor">帮邻居</string>
+
+    <!--新建求助-->
+    <string name="priority">优&#160;先&#160;级</string>
+    <string name="topic">主&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;题</string>
+    <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址</string>
+    <string name="price">补&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;贴</string>
+    <string name="memo">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注</string>
+    <string name="choose_priority">点击选择优先级</string>
+    <string name="normal_priority">一般</string>
+    <string name="build">新建</string>
+
+    <!--求助条目-->
+    <string name="help_price">%1$d元补贴</string>
+
+
+    <!--求助详情-->
+    <string name="help">帮忙</string>
+    <string name="answer">回答</string>
+    ===============================================================
+    <!--老年教育-->
+    <string name="pension_education">老年教育</string>
+    <string name="pension_university">老年大学</string>
+    <string name="community_university">社区讲堂</string>
+    <string name="net_university">网络大学</string>
+
+    <!--健康服务-->
+    <string name="health_service">健康服务</string>
+    <string name="smart_health">健康服务</string>
+    <string name="pharmacy">便民药房</string>
+    <string name="accompany_service">陪同服务</string>
+    <string name="health_chair">健康讲堂</string>
+    <string name="health_book">健康刊物</string>
+    <string name="health_blog">专家博客</string>
+
+    <!--养老机构-->
+    <string name="pension_agency">养老机构</string>
+    <string name="pension_apartment">养老公寓</string>
+    <string name="pension_center">托老中心</string>
+    <string name="pension_take_care_center">日间照料中心</string>
+
+    <!--社区活动-->
+    <string name="community_activity">社区活动</string>
+    <string name="add_activity">发起活动</string>
+
+    <!--居家服务-->
+    <string name="residential_service">居家服务</string>
+
+    <!--登陆注册-->
+    <string name="welcome">欢迎来到养老</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="mobile_number">电话号码</string>
+    <string name="password">密码</string>
+    <string name="show">显示</string>
+    <string name="choose">选择</string>
+
+
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/head_portrait" />
+
+        <TextView
+            android:textSize="20dp"
+            style="@style/tv_normal"
+            android:layout_gravity="center"
+            android:layout_marginTop="11dp"
+            android:text="游珂" />
+
+        <TextView
+            android:id="@+id/tv_account_data"
+            style="@style/tv_normal"
+            android:layout_marginTop="34dp"
+            android:drawablePadding="11dp"
+            android:drawableStart="@drawable/account_data"
+            android:text="@string/account_data" />
+
+        <TextView
+            android:id="@+id/tv_account_setting"
+            style="@style/tv_normal"
+            android:layout_marginTop="@dimen/sliding_item_margin_top"
+            android:drawablePadding="11dp"
+            android:drawableStart="@drawable/account_setting"
+            android:text="@string/account_setting" />
+
+        <TextView
+            android:id="@+id/tv_account_share"
+            style="@style/tv_normal"
+            android:layout_marginTop="@dimen/sliding_item_margin_top"
+            android:drawablePadding="11dp"
+            android:drawableStart="@drawable/account_safe"
+            android:text="@string/account_share" />
+
+        <TextView
+            android:id="@+id/tv_account_info"
+            style="@style/tv_normal"
+            android:layout_marginTop="@dimen/sliding_item_margin_top"
+            android:drawablePadding="11dp"
+            android:drawableStart="@drawable/account_info"
+            android:text="@string/account_info" />
+
+       
+
+        <TextView
+            android:id="@+id/tv_account_safe"
+            style="@style/tv_normal"
+            android:layout_marginTop="@dimen/sliding_item_margin_top"
+            android:drawablePadding="11dp"
+            android:drawableStart="@drawable/account_safe"
+            android:text="@string/account_safe" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_logout"
+        style="@style/tv_normal"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="20dp"
+        android:drawablePadding="11dp"
+        android:drawableStart="@drawable/logout"
+        android:text="@string/logout" />
+
+</RelativeLayout>

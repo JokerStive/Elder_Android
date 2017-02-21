@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/tv_input_title"
+        android:layout_centerVertical="true"
+        style="@style/tv_normal"
+        android:textColor="#999999"
+        android:textSize="@dimen/tv_size_input_view"
+        tools:text="优先级" />
+
+    <EditText
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/tv_size_input_view"
+        android:id="@+id/et_input"
+        style="@style/et_normal"
+        android:layout_toEndOf="@id/tv_input_title"
+        android:background="@null"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textCursorDrawable="@null"
+        android:layout_marginStart="22dp"
+        tools:hint="请选择优先级"
+        tools:text="一般"
+        />
+    <View
+        style="@style/line_gray"
+        android:layout_below="@id/et_input"
+        android:layout_marginTop="8dp"/>
+
+
+
+</RelativeLayout>
