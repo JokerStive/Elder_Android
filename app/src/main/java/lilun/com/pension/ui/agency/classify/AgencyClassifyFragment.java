@@ -15,14 +15,14 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ElderModuleAdapter;
+import lilun.com.pension.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
 import lilun.com.pension.module.bean.Announcement;
-import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
-import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.agency.list.AgencyListFragment;
+import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
@@ -118,12 +118,12 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     }
 
     @Override
-    public void showClassifiesByAgency(List<ElderModule> elderModules) {
+    public void showClassifiesByAgency(List<Organization> organizations) {
         completeRefresh();
-        rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
-        ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((elderModule -> {
-//            start(AgencyListFragment.newInstance(elderModule.getName(),elderModule.getId(),0));
+        rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(organizations)));
+        AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
+        adapter.setOnItemClickListener((organization -> {
+            start(AgencyListFragment.newInstance(organization.getName(),organization.getId(),0));
 
         }));
         rvAgency.setAdapter(adapter);

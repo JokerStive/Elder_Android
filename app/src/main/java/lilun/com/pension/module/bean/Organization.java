@@ -1,5 +1,7 @@
 package lilun.com.pension.module.bean;
 
+import java.util.List;
+
 import lilun.com.pension.base.BaseBean;
 
 /**
@@ -12,42 +14,34 @@ import lilun.com.pension.base.BaseBean;
 public class Organization extends BaseBean {
 
 
+    /**
+     * id : string
+     * name : string
+     * parentId : string
+     * description : {"description":"","adress":"","property":"","requirements":"","bedsCount":"","chargingStandard":{"min":"","max":""}}
+     * isInherited : true
+     * icon : {}
+     */
+
     private String id;
     private String name;
     private String parentId;
-    private String description;
-    private String icon;
-    private boolean isLocal;
-    private String idService;
+
+
+
+
+    /**
+     * description :
+     * adress :
+     * property :
+     * requirements :
+     * bedsCount :
+     * chargingStandard : {"min":"","max":""}
+     */
+
+    private DescriptionBean description;
     private boolean isInherited;
-
-
-    public boolean isInherited() {
-        return isInherited;
-    }
-
-    public Organization setInherited(boolean inherited) {
-        isInherited = inherited;
-        return this;
-    }
-
-    public String getIdService() {
-        return idService;
-    }
-
-    public Organization setIdService(String idService) {
-        this.idService = idService;
-        return this;
-    }
-
-    public boolean isLocal() {
-        return isLocal;
-    }
-
-    public Organization setLocal(boolean local) {
-        isLocal = local;
-        return this;
-    }
+    private List<IconModule> icon;
 
     public String getId() {
         return id;
@@ -73,20 +67,133 @@ public class Organization extends BaseBean {
         this.parentId = parentId;
     }
 
-    public String getDescription() {
+    public DescriptionBean getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(DescriptionBean description) {
         this.description = description;
     }
 
-    public String getIcon() {
+    public boolean isIsInherited() {
+        return isInherited;
+    }
+
+    public void setIsInherited(boolean isInherited) {
+        this.isInherited = isInherited;
+    }
+
+    public List<IconModule> getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(List<IconModule> icon) {
         this.icon = icon;
     }
+
+    public static class DescriptionBean {
+        private String description;
+        private String adress;
+        private String property;
+        private String requirements;
+        private String bedsCount;
+        private int ranking;
+        private int rankCount;
+
+        public int getRanking() {
+            return ranking;
+        }
+
+        public DescriptionBean setRanking(int ranking) {
+            this.ranking = ranking;
+            return this;
+        }
+
+        public int getRankCount() {
+            return rankCount;
+        }
+
+        public DescriptionBean setRankCount(int rankCount) {
+            this.rankCount = rankCount;
+            return this;
+        }
+
+        /**
+         * min :
+         * max :
+         */
+
+        private ChargingStandardBean chargingStandard;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getAdress() {
+            return adress;
+        }
+
+        public void setAdress(String adress) {
+            this.adress = adress;
+        }
+
+        public String getProperty() {
+            return property;
+        }
+
+        public void setProperty(String property) {
+            this.property = property;
+        }
+
+        public String getRequirements() {
+            return requirements;
+        }
+
+        public void setRequirements(String requirements) {
+            this.requirements = requirements;
+        }
+
+        public String getBedsCount() {
+            return bedsCount;
+        }
+
+        public void setBedsCount(String bedsCount) {
+            this.bedsCount = bedsCount;
+        }
+
+        public ChargingStandardBean getChargingStandard() {
+            return chargingStandard;
+        }
+
+        public void setChargingStandard(ChargingStandardBean chargingStandard) {
+            this.chargingStandard = chargingStandard;
+        }
+
+        public static class ChargingStandardBean {
+            private String min;
+            private String max;
+
+            public String getMin() {
+                return min;
+            }
+
+            public void setMin(String min) {
+                this.min = min;
+            }
+
+            public String getMax() {
+                return max;
+            }
+
+            public void setMax(String max) {
+                this.max = max;
+            }
+        }
+    }
+
 
 }

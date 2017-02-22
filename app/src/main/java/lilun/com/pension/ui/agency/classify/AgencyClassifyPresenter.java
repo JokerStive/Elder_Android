@@ -2,13 +2,12 @@ package lilun.com.pension.ui.agency.classify;
 
 import java.util.List;
 
-import lilun.com.pension.R;
-import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.base.RxPresenter;
-import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 
@@ -23,16 +22,16 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
 
     @Override
     public void getClassifiesByAgency() {
-        String pension_agency = App.context.getString(R.string.pension_agency);
-        String filter = "{\"where\":{\"parent\":\"" + pension_agency + "\"},\"order\":\"orderId\"}";
+        String id = "/社会组织/营利/养老";
+//        String filter = "{\"where\":{\"parent\":\"" + pension_agency + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
-                .getElderModules(filter)
+                .getOrganizations(id, StringUtils.addFilterWithDef("",0))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ElderModule>>() {
+                .subscribe(new RxSubscriber<List<Organization>>() {
                     @Override
-                    public void _next(List<ElderModule> elderModules) {
-                        view.showClassifiesByAgency(elderModules);
+                    public void _next(List<Organization> Organizations) {
+                        view.showClassifiesByAgency(Organizations);
                     }
 
                     @Override

@@ -54,6 +54,7 @@
     <!--求助详情-->
     <string name="help">帮忙</string>
     <string name="answer">回答</string>
+
     ===============================================================
     <!--老年教育-->
     <string name="pension_education">老年教育</string>
@@ -69,12 +70,11 @@
     <string name="health_chair">健康讲堂</string>
     <string name="health_book">健康刊物</string>
     <string name="health_blog">专家博客</string>
-
+=========================================================
     <!--养老机构-->
     <string name="pension_agency">养老机构</string>
-    <string name="pension_apartment">养老公寓</string>
-    <string name="pension_center">托老中心</string>
-    <string name="pension_take_care_center">日间照料中心</string>
+    <string name="rank_count">%1$d条评价</string>
+====================================================================
 
     <!--社区活动-->
     <string name="community_activity">社区活动</string>

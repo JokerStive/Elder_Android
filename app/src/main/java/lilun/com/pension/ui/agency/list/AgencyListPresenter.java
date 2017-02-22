@@ -2,7 +2,6 @@ package lilun.com.pension.ui.agency.list;
 
 import java.util.List;
 
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
@@ -43,7 +42,7 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
     @Override
     public void getProductAgency(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getProducts(OrganizationChildrenConfig.product(), StringUtils.addFilterWithDef(filter,skip))
+                .getProducts(StringUtils.addFilterWithDef(filter,skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<OrganizationProduct>>() {

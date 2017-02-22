@@ -37,7 +37,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                 });
 
 
-//        Glide.with(fragment).load(IconUrl.ogranizationAid(activity.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
+//        Glide.with(fragment).load(IconUrl.organizationAid(activity.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
 
 
     }

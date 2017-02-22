@@ -20,7 +20,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
-import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
+import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
@@ -54,7 +54,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     private RecyclerView mClassifyRecycler;
 
     private List<OrganizationProduct> products = new ArrayList<>();
-    private ResidentialServiceAdapter mAdapter;
+    private HealthServiceAdapter mAdapter;
     private ArrayList<Announcement> announcements;
 
     public static HealthClassifyFragment newInstance(List<Announcement> announcements) {
@@ -138,7 +138,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
 
     private void setAdapter() {
-        mAdapter = new ResidentialServiceAdapter(this, products);
+        mAdapter = new HealthServiceAdapter(this, products);
         mAdapter.addHeaderView(mClassifyRecycler);
         mRecyclerView.setAdapter(mAdapter);
     }

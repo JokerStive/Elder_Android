@@ -10,6 +10,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
+import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.TokenInfo;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -66,8 +67,8 @@ public interface ApiService {
      *获取product
      */
 
-    @GET("Organizations/{id}/children")
-    Observable<Response<List<OrganizationProduct>>> getProducts(@Path("id") String organizationId, @Query("filter") String filter);
+    @GET("OrganizationProducts")
+    Observable<Response<List<OrganizationProduct>>> getProducts(@Query("filter") String filter);
 
 
     /**
@@ -91,28 +92,28 @@ public interface ApiService {
     @GET("OrganizationAids/{id}/getDetails")
     Observable<Response<OrganizationAid>> getAidDetail(@Path("id") String aidId);
 
-//
-//    /**
-//     *获取活动分类数据
-//     */
-//
-//    @GET("Organizations/{id}/children")
-//    Observable<Response<List<ActivityCategory>>> getActivityCategories(@Path("id") String id,@Query("filter") String filter);
-//
 
     /**
-     *获取活动分类数据
+     *获取ActivityCategory
      */
 
     @GET("OrganizationActivityCategories")
     Observable<Response<List<ActivityCategory>>> getActivityCategories(@Query("filter") String filter);
 
     /**
-     *获取活动列表数据
+     *获取OrganizationActivity
      */
 
     @GET("Organizations/{id}/children")
     Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Path("id") String organizationId, @Query("filter") String filter);
+
+
+    /**
+     *获取productOrder
+     */
+
+    @GET("ProductOrders")
+    Observable<Response<List<ProductOrder>>> getProductOrders( @Query("filter") String filter);
 
 
 

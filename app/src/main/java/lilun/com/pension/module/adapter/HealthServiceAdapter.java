@@ -16,10 +16,10 @@ import lilun.com.pension.module.bean.OrganizationProduct;
  *         create at 2017/2/13 11:14
  *         email : yk_developer@163.com
  */
-public class PensionAgencyAdapter extends QuickAdapter<OrganizationProduct> {
+public class HealthServiceAdapter extends QuickAdapter<OrganizationProduct> {
     private  BaseFragment fragment;
 
-    public PensionAgencyAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
+    public HealthServiceAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
         super(R.layout.item_agency,data);
         this.fragment = fragment;
     }

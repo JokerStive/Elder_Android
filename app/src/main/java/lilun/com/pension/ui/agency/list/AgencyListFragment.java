@@ -12,11 +12,13 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.PensionAgencyAdapter;
+import lilun.com.pension.module.adapter.AgencyAdapter;
+import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.widget.ElderItemDecoration;
+import lilun.com.pension.widget.ElderModuleItemDecoration;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
 /**
@@ -39,7 +41,8 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
     NormalTitleBar titleBar;
     private String mCategoryId;
     private String mTitle;
-    private PensionAgencyAdapter mPensionAgencyAdapter;
+    private AgencyAdapter mAgencyAdapter;
+    private AgencyServiceAdapter mAgencyServiceAdapter;
     private int mType;
 
     public static AgencyListFragment newInstance(String title, String categoryId, int type) {
@@ -79,7 +82,11 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
         titleBar.setOnBackClickListener(this::pop);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderItemDecoration());
+        if (mType==0){
+            mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        }else{
+            mRecyclerView.addItemDecoration(new NormalItemDecoration(17));
+        }
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -123,13 +130,13 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
         completeRefresh();
         if (products != null) {
-            if (mPensionAgencyAdapter == null) {
-                mPensionAgencyAdapter = new PensionAgencyAdapter(this, products);
-                mRecyclerView.setAdapter(mPensionAgencyAdapter);
+            if (mAgencyServiceAdapter == null) {
+                mAgencyServiceAdapter = new AgencyServiceAdapter(this, products);
+                mRecyclerView.setAdapter(mAgencyServiceAdapter);
             } else if (isLoadMore) {
-                mPensionAgencyAdapter.addAll(products);
+                mAgencyServiceAdapter.addAll(products);
             } else {
-                mPensionAgencyAdapter.replaceAll(products);
+                mAgencyServiceAdapter.replaceAll(products);
             }
         }
     }
@@ -137,6 +144,16 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
         completeRefresh();
+        if (organizations != null) {
+            if (mAgencyAdapter == null) {
+                mAgencyAdapter = new AgencyAdapter(this, organizations);
+                mRecyclerView.setAdapter(mAgencyAdapter);
+            } else if (isLoadMore) {
+                mAgencyAdapter.addAll(organizations);
+            } else {
+                mAgencyAdapter.replaceAll(organizations);
+            }
+        }
     }
 
     @Override

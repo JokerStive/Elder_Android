@@ -21,7 +21,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.activity.list.ActivityClassifyContract;
 import lilun.com.pension.ui.activity.list.ActivityClassifyPresenter;
-import lilun.com.pension.widget.ElderItemDecoration;
+import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
 /**
@@ -76,7 +76,7 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
         titleBar.setTitle(mCategory.getName());
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderItemDecoration());
+        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
