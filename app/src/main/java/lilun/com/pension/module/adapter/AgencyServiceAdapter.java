@@ -22,6 +22,7 @@ import lilun.com.pension.module.utils.UIUtils;
  */
 public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
     private BaseFragment fragment;
+    private OnItemClickListener listener;
 
     public AgencyServiceAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
         super(R.layout.item_agency_service, data);
@@ -36,5 +37,19 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         UIUtils.setBold(help.getView(R.id.tv_item_title));
         help.setText(R.id.tv_item_title, product.getTitle())
                 .setText(R.id.tv_price, String.format(App.context.getString(R.string.price_format), product.getPrice()));
+        help.setOnClickListener(R.id.ll_bg,v -> {
+            if (listener!=null){
+                listener.onItemClick(product);
+            }
+        });
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(OrganizationProduct product);
     }
 }

@@ -2,13 +2,15 @@ package lilun.com.pension.module.bean;
 
 import java.util.List;
 
+import lilun.com.pension.base.BaseBean;
+
 /**
 *从产品模型
 *@author yk
 *create at 2017/2/21 10:06
 *email : yk_developer@163.com
 */
-public class OrganizationProduct {
+public class OrganizationProduct  extends BaseBean{
 
     /**
      * name : string
@@ -45,7 +47,6 @@ public class OrganizationProduct {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private int visible;
     private ImagesBean images;
     private String categoryId;
     private List<String> areas;
@@ -162,13 +163,6 @@ public class OrganizationProduct {
         this.organizationId = organizationId;
     }
 
-    public int getVisible() {
-        return visible;
-    }
-
-    public void setVisible(int visible) {
-        this.visible = visible;
-    }
 
     public ImagesBean getImages() {
         return images;

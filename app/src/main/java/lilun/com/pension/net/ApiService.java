@@ -78,6 +78,8 @@ public interface ApiService {
     @GET("Organizations/{id}/children")
     Observable<Response<List<Organization>>> getOrganizations(@Path("id") String organizationId, @Query("filter") String filter);
 
+
+
     /**
      *获取求助数据
      */
@@ -116,6 +118,12 @@ public interface ApiService {
     Observable<Response<List<ProductOrder>>> getProductOrders( @Query("filter") String filter);
 
 
+    /**
+     *根据id获取一个organization
+     */
+
+    @GET("Organizations/{id}")
+    Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId);
 
 //========================POST===============================================
 

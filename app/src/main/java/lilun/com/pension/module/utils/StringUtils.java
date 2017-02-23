@@ -2,8 +2,6 @@ package lilun.com.pension.module.utils;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import org.joda.time.DateTime;
@@ -95,15 +93,7 @@ public class StringUtils {
         return iconModules.get(0).getFileName();
     }
 
-    public static List<IconModule> string2IconModule(String icon) {
-        if (!TextUtils.isEmpty(icon)) {
-            Gson gson = new Gson();
-            return gson.fromJson(icon, new TypeToken<List<IconModule>>() {
-            }.getType());
-        }
 
-        return null;
-    }
 
     /**
      * 根据list数据设置span数
@@ -118,5 +108,16 @@ public class StringUtils {
         return count;
     }
 
+
+    /**
+     * 过滤特殊字符后缀  /#staff ,/#department....
+     */
+    public static String removeSpecialSuffix(String id) {
+        String substring = id.substring(0, id.lastIndexOf("/"));
+        if (TextUtils.isEmpty(substring)) {
+            substring = User.defOrganizationId;
+        }
+        return substring;
+    }
 
 }

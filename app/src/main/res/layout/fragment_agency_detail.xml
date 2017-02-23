@@ -36,7 +36,6 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/iv_icon"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="27dp"
                 android:background="@drawable/shape_circle_white"
@@ -55,14 +54,21 @@
                 style="@style/tv_small"
                 android:layout_below="@id/tv_title"
                 android:layout_marginTop="15dp"
-                tools:text="提供商：金色养老院" />
+                tools:text="盈利组织" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/tv_small"
+                android:layout_below="@id/tv_desc"
+                android:layout_marginTop="3dp"
+                tools:text="床位数：32" />
 
             <TextView
                 android:id="@+id/tv_price"
                 style="@style/tv_small"
-                android:layout_below="@id/tv_desc"
+                android:layout_below="@id/tv_phone"
                 android:layout_marginTop="3dp"
-                tools:text="价格:2000" />
+                tools:text="价格区间:2000-5000" />
 
             <LinearLayout
                 android:id="@+id/ll_container"
@@ -78,13 +84,13 @@
                     android:id="@+id/tv_introduction"
                     style="@style/tv_normal"
                     android:layout_marginTop="15dp"
-                    android:text="@string/introduction" />
+                    android:text="@string/requirements" />
 
                 <TextView
-                    android:lineSpacingMultiplier="1.2"
                     android:id="@+id/tv_requirement"
                     style="@style/tv_small"
                     android:layout_marginTop="15dp"
+                    android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
 
 
@@ -92,59 +98,58 @@
                     style="@style/line_gray"
                     android:layout_marginTop="15dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+
+                <TextView
+                    android:id="@+id/tv_address_title"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="15dp"
+                    android:text="地址" />
+
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/tv_small"
+                    android:layout_marginTop="15dp"
+                    android:lineSpacingMultiplier="1.2"
+                    tools:text="茶园新城时代都会7-1" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="15dp" />
+
+                <RatingBar
+                    android:id="@+id/rb_bar"
+                    style="@style/fiveRatingBar"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="15dp"
+                    android:isIndicator="true"
+                    android:numStars="5" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="15dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_provide_service"
+                    style="@style/tv_normal"
+                    android:paddingTop="15dp"
                     android:paddingBottom="15dp"
-                    android:paddingTop="15dp">
+                    android:layout_width="match_parent"
+                    android:textColor="@color/red"
+                    android:text="@string/provide_service" />
 
-                    <TextView
-                        android:id="@+id/tv_enter_rank"
-                        style="@style/tv_normal"
-                        android:textColor="@color/red"
-                        android:text="评价" />
-
-
-                    <RatingBar
-                        android:id="@+id/rb_bar"
-                        style="@style/fiveRatingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
-                        android:isIndicator="true"
-                        android:numStars="5" />
-                </LinearLayout>
-
-                <View style="@style/line_gray" />
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginBottom="15dp"
+                     />
 
             </LinearLayout>
 
-
-            <RelativeLayout
-                android:layout_below="@id/ll_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                
-                <TextView
-                    android:id="@+id/tv_provider_name"
-                    tools:text="金色养老院"
-                    android:layout_centerVertical="true"
-                    style="@style/tv_small" />
-
-                <TextView
-                    android:id="@+id/tv_enter_provider"
-                    android:textColor="@color/white"
-                    android:padding="18dp"
-                    android:background="@drawable/shape_rect_red"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/enter_provider"
-                    style="@style/tv_small" />
-
-            </RelativeLayout>
 
         </RelativeLayout>
 

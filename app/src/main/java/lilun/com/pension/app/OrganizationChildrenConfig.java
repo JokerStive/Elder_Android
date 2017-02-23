@@ -26,6 +26,10 @@ public class OrganizationChildrenConfig {
         return checkOrganizationId()+"/#product";
     }
 
+    public static  String product(String id){
+        return id+"/#product";
+    }
+
     public static String checkOrganizationId() {
         return User.getCurrentOrganizationId().equals(User.defOrganizationId)?"":User.getCurrentOrganizationId();
     }

@@ -40,7 +40,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_requirement"
         android:layout_marginTop="14dp"
         android:layout_below="@id/rl_avatar"
         style="@style/tv_small"

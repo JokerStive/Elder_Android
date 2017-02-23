@@ -11,12 +11,15 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyAdapter;
 import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.ui.agency.detail.AgencyDetailFragment;
+import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -107,14 +110,21 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
     private void getData(int skip) {
         if (mType == 0) {
             getOrganizations(skip);
-        } else {
-            getProducts(skip);
+        } else if (mType==1){
+            getProductsByCategoryId(skip);
+        }else if (mType==2){
+            getProductsByOrganizationId(skip);
         }
     }
 
 
-    private void getProducts(int skip) {
+    private void getProductsByCategoryId(int skip) {
         String filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
+        mPresenter.getProductAgency(filter, skip);
+    }
+
+    private void getProductsByOrganizationId(int skip) {
+        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.product(mCategoryId) + "\"}}";
         mPresenter.getProductAgency(filter, skip);
     }
 
@@ -130,6 +140,9 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
         if (products != null) {
             if (mAgencyServiceAdapter == null) {
                 mAgencyServiceAdapter = new AgencyServiceAdapter(this, products);
+                mAgencyServiceAdapter.setOnItemClickListener(product -> {
+                    start(ServiceDetailFragment.newInstance(product),SINGLETASK);
+                });
                 mRecyclerView.setAdapter(mAgencyServiceAdapter);
             } else if (isLoadMore) {
                 mAgencyServiceAdapter.addAll(products);
@@ -145,6 +158,9 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
         if (organizations != null) {
             if (mAgencyAdapter == null) {
                 mAgencyAdapter = new AgencyAdapter(this, organizations);
+                mAgencyAdapter.setOnItemClickListener(agency -> {
+                    start(AgencyDetailFragment.newInstance("",agency),SINGLETASK);
+                });
                 mRecyclerView.setAdapter(mAgencyAdapter);
             } else if (isLoadMore) {
                 mAgencyAdapter.addAll(organizations);

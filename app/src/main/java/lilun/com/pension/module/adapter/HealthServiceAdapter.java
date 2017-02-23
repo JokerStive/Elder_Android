@@ -25,7 +25,7 @@ public class HealthServiceAdapter extends QuickAdapter<OrganizationProduct> {
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, OrganizationProduct product) {
+    protected void convert(BaseViewHolder baseViewHolder, OrganizationProduct order) {
 
     }
 }
