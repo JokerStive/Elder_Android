@@ -5,19 +5,22 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
+import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 
 /**
- * 健康服务P
+ * 老年教育P
  *
  * @author yk
  *         create at 2017/2/13 10:55
  *         email : yk_developer@163.com
  */
-public class EducationClassifyPresenter extends RxPresenter<EducationClassifyContract.View> implements EducationClassifyContract.Presenter {
+public class EducationClassifyPresenter extends RxPresenter<EducationClassifyContract.View>
+        implements EducationClassifyContract.Presenter {
     @Override
     public void getClassifies() {
         String education = App.context.getString(R.string.pension_education);
@@ -41,10 +44,27 @@ public class EducationClassifyPresenter extends RxPresenter<EducationClassifyCon
     }
 
 
+
     @Override
     public void getAboutMe(String filter, int skip) {
+        addSubscribe(NetHelper.getApi()
+                .getOrganizationsEdus(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<ElderEdusColleage>>() {
+                    @Override
+                    public void _next(List<ElderEdusColleage> elderModules) {
+//                        if (skip == 0)
+//                            view.showColleage(elderModules, false);
+//                        else
+//                            view.showColleage(elderModules, true);
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        view.completeRefresh();
+                    }
+                }));
     }
-
-
 }

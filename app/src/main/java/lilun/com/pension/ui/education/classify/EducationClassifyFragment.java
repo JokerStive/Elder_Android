@@ -21,23 +21,27 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
+import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.ui.activity.classify.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.education.list.EducationListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
 /**
- * 健康服务V
+ * 老年教育V
  *
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class EducationClassifyFragment extends BaseFragment<EducationClassifyContract.Presenter> implements EducationClassifyContract.View {
+public class EducationClassifyFragment extends BaseFragment<EducationClassifyContract.Presenter>
+        implements EducationClassifyContract.View {
 
 
     @Bind(R.id.title_bar)
@@ -84,11 +88,11 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(getString(R.string.health_service));
+        titleBar.setTitle(getString(R.string.pension_education));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
-                onBackPressedSupport();
+                pop();
             }
 
             @Override
@@ -151,7 +155,6 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
         getClassifies();
-        getServices(0);
     }
 
     private void getClassifies() {
@@ -169,11 +172,12 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         completeRefresh();
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((productCategory -> {
-
+        adapter.setOnItemClickListener((edusClassify -> {
+                start(EducationListFragment.newInstance(edusClassify));
         }));
         mClassifyRecycler.setAdapter(adapter);
     }
+
 
     @Override
     public void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore) {
@@ -186,6 +190,8 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
             }
         }
     }
+
+
 
     @Override
     public void completeRefresh() {
@@ -203,7 +209,6 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         }
         return count;
     }
-
 
 
 }

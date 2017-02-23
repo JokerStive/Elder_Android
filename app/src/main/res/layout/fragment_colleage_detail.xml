@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <lilun.com.pension.widget.NormalTitleBar
+                android:id="@+id/title_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/pension_university" />
+
+            <ImageView
+                android:id="@+id/ig_colleage_icon"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/announcement_def" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <lilun.com.pension.widget.CircleImageView
+                    android:id="@+id/join_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:src="@drawable/announcement_def" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_colleage_name"
+                style="@style/tv_normal"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="大学" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_connect_phone"
+                    style="@style/tv_small"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:text="@string/connect_phone_" />
+
+                <TextView
+                    android:id="@+id/tv_connect_person"
+                    style="@style/tv_small"
+                    android:layout_below="@id/tv_connect_phone"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:text="@string/connect_person_" />
+
+                <lilun.com.pension.widget.CircleImageView
+                    android:id="@+id/cig_connect_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:src="@drawable/announcement_def" />
+            </RelativeLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_066"
+                android:layout_margin="@dimen/dp_10" />
+
+            <TextView
+                style="@style/tv_normal"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="学校简介" />
+
+            <TextView
+                android:id="@+id/tv_colleage_descript"
+                style="@style/tv_small"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="学校简介" />
+
+            <View
+                style="@style/line_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_066"
+                android:layout_margin="@dimen/dp_10" />
+
+            <TextView
+                style="@style/tv_normal"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="地址" />
+
+            <TextView
+                android:id="@+id/tv_colleage_addr"
+                style="@style/tv_small"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="学校简介" />
+
+            <View
+                style="@style/line_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_066"
+                android:layout_margin="@dimen/dp_10" />
+
+            <TextView
+                style="@style/tv_normal"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="课程列表" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_colleage_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

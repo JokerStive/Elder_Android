@@ -109,5 +109,9 @@
     <string name="show">显示</string>
     <string name="choose">选择</string>
 
+    <!--养老教育-->
+    <string name="connect_phone_">联系电话：%1$s</string>
+    <string name="connect_person_">联系人：%1$s</string>
+
 
 </resources>

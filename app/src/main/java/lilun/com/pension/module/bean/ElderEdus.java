@@ -5,72 +5,63 @@ import java.util.List;
 import lilun.com.pension.base.BaseBean;
 
 /**
- * 活动模型
- *
- * @author yk
- *         create at 2017/2/14 11:35
- *         email : yk_developer@163.com
+ * 老年教育产品模型
+ * Created by zp on 2017/2/22.
  */
-public class OrganizationActivity extends BaseBean {
 
-    /**
-     * title : string
-     * address : string
-     * location : {"lat":0,"lng":0}
-     * priority : 0
-     * startTime : 2017-02-14
-     * druation : 0
-     * repeatedType : string
-     * repeatedCount : 0
-     * partners : ["string"]
-     * maxPartner : 0
-     * id : string
-     * masterId : string
-     * categoryId : string
-     * createdAt : $now
-     * updatedAt : $now
-     * creatorId : string
-     * creatorName : string
-     * updatorId : string
-     * updatorName : string
-     * organizationId : string
-     * icon : string
-     */
+public class ElderEdus extends BaseBean {
+
+
+
+
+    //数据来源类别
+    public String source;
+
+ //   private String name;
+    private String address;
+    private String mobile;
+    private OrganizationActivity.LocationBean location;
+    private String description;
+    private String id;
+    private String createdAt;
+    private String updatedAt;
+    private List<IconModule> picture;
+
 
     private String title;
-    private String address;
-    /**
-     * lat : 0
-     * lng : 0
-     */
-
-    private LocationBean location;
     private int priority;
     private String startTime;
     private int druation;
     private String repeatedType;
     private int repeatedCount;
     private int maxPartner;
-    private String id;
+
     private String masterId;
     private String categoryId;
-    private String createdAt;
-    private String updatedAt;
+
     private String creatorId;
     private String creatorName;
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> icon;
     private List<String> partners;
 
-    public String getTitle() {
-        return title;
+    public String getSource() {
+        return source;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSource(String source) {
+        this.source = source;
     }
+
+
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public String getAddress() {
         return address;
@@ -80,12 +71,64 @@ public class OrganizationActivity extends BaseBean {
         this.address = address;
     }
 
-    public LocationBean getLocation() {
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public OrganizationActivity.LocationBean getLocation() {
         return location;
     }
 
-    public void setLocation(LocationBean location) {
+    public void setLocation(OrganizationActivity.LocationBean location) {
         this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<IconModule> getPicture() {
+        return picture;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getPriority() {
@@ -136,14 +179,6 @@ public class OrganizationActivity extends BaseBean {
         this.maxPartner = maxPartner;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getMasterId() {
         return masterId;
     }
@@ -158,22 +193,6 @@ public class OrganizationActivity extends BaseBean {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getCreatorId() {
@@ -216,14 +235,6 @@ public class OrganizationActivity extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconModule> getIcon() {
-        return icon;
-    }
-
-    public void setIcon(List<IconModule> icon) {
-        this.icon = icon;
-    }
-
     public List<String> getPartners() {
         return partners;
     }
@@ -232,54 +243,7 @@ public class OrganizationActivity extends BaseBean {
         this.partners = partners;
     }
 
-    public static class LocationBean {
-        private float lat;
-        private float lng;
-
-        public float getLat() {
-            return lat;
-        }
-
-        public void setLat(float lat) {
-            this.lat = lat;
-        }
-
-        public float getLng() {
-            return lng;
-        }
-
-        public void setLng(float lng) {
-            this.lng = lng;
-        }
-    }
-
-    public static String TYPE = "OrganizationActivity";
-
-    public ElderEdus toElderEdus() {
-        ElderEdus edus = new ElderEdus();
-        edus.setSource(TYPE);
-        edus.setTitle(title);
-        edus.setAddress(address);
-
-        edus.setLocation(location);
-        edus.setPriority(priority);
-        edus.setStartTime(startTime);
-        edus.setDruation(druation);
-        edus.setRepeatedType(repeatedType);
-        edus.setRepeatedCount(repeatedCount);
-        edus.setMaxPartner(maxPartner);
-        edus.setId(id);
-        edus.setMasterId(masterId);
-        edus.setCategoryId(categoryId);
-        edus.setCreatedAt(createdAt);
-        edus.setUpdatedAt(updatedAt);
-        edus.setCreatorId(creatorId);
-        edus.setCreatorName(creatorName);
-        edus.setUpdatorId(updatorId);
-        edus.setUpdatorName(updatorName);
-        edus.setOrganizationId(organizationId);
-        edus.setPicture(icon);
-        edus.setPartners(partners);
-        return edus;
+    public void setPicture(List<IconModule> picture) {
+        this.picture = picture;
     }
 }
