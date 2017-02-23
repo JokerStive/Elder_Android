@@ -112,8 +112,8 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
         adapter.setIsRadioModule(true);
         adapter.setOnItemClickListener(elderModule -> {
-            Logger.d("选择的类型==" + elderModule.getServiceConfig().getKind());
             this.mKind = elderModule.getServiceConfig().getKind();
+            inputAddress.setVisibility(mKind==0?View.GONE:View.VISIBLE);
         });
         rvHelpClassify.setAdapter(adapter);
     }
@@ -172,18 +172,29 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
             }
         }
 
+        //必须选择求助类型
         if (mKind == null) {
             ToastHelper.get().showWareShort("请选择求助类型");
             return;
         }
 
-        if (StringUtils.checkNotEmptyWithMessage(title, "请输入求助主题") && StringUtils.checkNotEmptyWithMessage(address, "请输入地址")) {
+
+
+        if (StringUtils.checkNotEmptyWithMessage(title, "请输入求助主题")) {
+
+            //如果是帮，必须填求助的地址
+            if (mKind==1){
+                StringUtils.checkNotEmptyWithMessage(address, "请输入地址");
+            }
+
             OrganizationAid organizationAid = new OrganizationAid();
             organizationAid.setTitle(title);
             organizationAid.setAddress(address);
             organizationAid.setPriority(mPriority);
             organizationAid.setMemo(memo);
             organizationAid.setKind(mKind);
+
+            //如果提供了补贴
             if(!TextUtils.isEmpty(price)){
                 organizationAid.setPrice(Integer.parseInt(price));
             }

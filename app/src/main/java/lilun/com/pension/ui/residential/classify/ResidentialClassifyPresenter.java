@@ -1,25 +1,27 @@
 package lilun.com.pension.ui.residential.classify;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.app.Config;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
+import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 
 /**
- * 居家服务P
+ * 居家服务分类P
  *
  * @author yk
  *         create at 2017/2/15 19:12
  *         email : yk_developer@163.com
  */
 public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassifyContract.View> implements ResidentialClassifyContract.Presenter {
-
 
 
     @Override
@@ -45,15 +47,20 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
     }
 
     @Override
-    public void getAboutMe(String filter, int skip) {
+    public void getAboutMe(int skip) {
+        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"},\"include\":\"product\"}";
         addSubscribe(NetHelper.getApi()
-                .getProducts(StringUtils.addFilterWithDef(filter,skip))
+                .getProductOrders(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationProduct>>() {
+                .subscribe(new RxSubscriber<List<ProductOrder>>() {
                     @Override
-                    public void _next(List<OrganizationProduct> products) {
-                        view.showAboutMe(products, skip!=0);
+                    public void _next(List<ProductOrder> orders) {
+                        List<OrganizationProduct> products = new ArrayList<>();
+                        for(ProductOrder order:orders){
+                            products.add(order.getProduct());
+                        }
+                        view.showAboutMe(products, skip != 0);
                     }
 
                     @Override

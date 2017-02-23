@@ -54,6 +54,10 @@
     <!--求助详情-->
     <string name="help">帮忙</string>
     <string name="answer">回答</string>
+    <string name="joiners">参与者</string>
+    <string name="format_creator">发起人：%1$s</string>
+    <string name="format_price">(%1$d元补贴)</string>
+    <string name="format_phone">联系电话：%1$s</string>
 
     ===============================================================
     <!--老年教育-->
@@ -70,11 +74,19 @@
     <string name="health_chair">健康讲堂</string>
     <string name="health_book">健康刊物</string>
     <string name="health_blog">专家博客</string>
-=========================================================
+    =========================================================
     <!--养老机构-->
     <string name="pension_agency">养老机构</string>
     <string name="rank_count">%1$d条评价</string>
-====================================================================
+
+    <!--养老机构服务详情-->
+    <string name="reservation">预约</string>
+    <string name="enter_provider">进入该服务提供商</string>
+    <string name="format_provider">提供商：</string>
+    <string name="introduction">简介</string>
+
+
+    ====================================================================
 
     <!--社区活动-->
     <string name="community_activity">社区活动</string>
@@ -82,6 +94,7 @@
 
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
+    <string name="price_format">%1$d元</string>
 
     <!--登陆注册-->
     <string name="welcome">欢迎来到养老</string>

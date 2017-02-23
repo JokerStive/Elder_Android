@@ -1,20 +1,18 @@
 package lilun.com.pension.module.adapter;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.utils.UIUtils;
 
 /**
  * 展示互助列表的adapter
@@ -28,17 +26,19 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
     private OnItemClickListener listener;
 
     public OrganizationAidAdapter(BaseFragment fragment, List<OrganizationAid> data) {
-        super(R.layout.item_module_second,data);
+        super(R.layout.item_module_second, data);
         this.fragment = fragment;
     }
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationAid aid) {
 
-        //显示标题
-        help.setText(R.id.tv_item_title, aid.getTitle());
+        //标题加粗
+        TextView tvTitle = help.getView(R.id.tv_item_title);
+        UIUtils.setBold(tvTitle);
+        tvTitle.setText(aid.getTitle());
 
-        Glide.with(fragment).load(IconUrl.organizationAid(aid.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
+//        Glide.with(fragment).load(IconUrl.organizationAid(aid.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
 
         //是否显示补贴
         TextView tvItemPrice = help.getView(R.id.tv_item_time);
@@ -55,14 +55,13 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
             tvItemAddress.setText(aid.getAddress());
         }
 
-        help.setOnClickListener(R.id.ll_module_background,v -> {
-            if (listener!=null){
+        help.setOnClickListener(R.id.ll_module_background, v -> {
+            if (listener != null) {
                 listener.onItemClick(aid);
             }
         });
 
     }
-
 
 
     public void setOnItemClickListener(OnItemClickListener listener) {

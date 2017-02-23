@@ -17,7 +17,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
 import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
@@ -26,12 +25,13 @@ import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.residential.list.ResidentialListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
 /**
- * 养老机构V
+ * 居家服务分类V
  *
  * @author yk
  *         create at 2017/2/7 16:04
@@ -159,8 +159,8 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     }
 
     private void getServices(int skip) {
-        String filter = "{\"where\":{\"categoryId\":\"" + User.getUserId() + "\"}}";
-        mPresenter.getAboutMe(filter, skip);
+//        String filter = "{\"where\":{\"categoryId\":\"" + User.getUserId() + "\"}}";
+        mPresenter.getAboutMe(skip);
     }
 
 
@@ -169,8 +169,8 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         completeRefresh();
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
-        adapter.setOnItemClickListener((productCategory -> {
-
+        adapter.setOnItemClickListener(((productCategory) -> {
+           start(ResidentialListFragment.newInstance(productCategory));
         }));
         mClassifyRecycler.setAdapter(adapter);
     }

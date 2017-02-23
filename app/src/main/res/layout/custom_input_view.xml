@@ -10,12 +10,12 @@
         android:layout_centerVertical="true"
         style="@style/tv_normal"
         android:textColor="#999999"
-        android:textSize="@dimen/tv_size_input_view"
+        android:textSize="@dimen/tv_size_small"
         tools:text="优先级" />
 
     <EditText
         android:layout_centerVertical="true"
-        android:textSize="@dimen/tv_size_input_view"
+        android:textSize="@dimen/tv_size_small"
         android:id="@+id/et_input"
         style="@style/et_normal"
         android:layout_toEndOf="@id/tv_input_title"

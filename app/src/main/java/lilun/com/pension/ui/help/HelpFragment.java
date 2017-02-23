@@ -17,7 +17,7 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
 /**
@@ -77,7 +77,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {

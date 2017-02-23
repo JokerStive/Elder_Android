@@ -17,7 +17,6 @@ import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -83,7 +82,7 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         if (mType==0){
-            mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+            mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
         }else{
             mRecyclerView.addItemDecoration(new NormalItemDecoration(17));
         }
@@ -121,7 +120,6 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
 
 
     private void getOrganizations(int skip) {
-//        String filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
         mPresenter.getOrganizationAgency(mCategoryId, "",skip);
     }
 

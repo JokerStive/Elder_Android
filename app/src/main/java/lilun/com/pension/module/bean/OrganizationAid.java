@@ -36,16 +36,16 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
 
     private String title;
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public OrganizationAid setStatus(String status) {
+    public OrganizationAid setStatus(int status) {
         this.status = status;
         return this;
     }
 
-    private String status;
+    private int status;
     private int kind;
     private String address;
     private int priority;
@@ -61,15 +61,15 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String organizationId;
 
     public List<OrganizationReply> getReplies() {
-        return replies;
+        return replyList;
     }
 
     public OrganizationAid setReplies(List<OrganizationReply> replies) {
-        this.replies = replies;
+        this.replyList = replies;
         return this;
     }
 
-    private List<OrganizationReply> replies;
+    private List<OrganizationReply> replyList;
 
     public OrganizationAid() {
         setOrganizationId(OrganizationChildrenConfig.aid());

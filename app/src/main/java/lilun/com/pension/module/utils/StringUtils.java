@@ -6,6 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import lilun.com.pension.app.Config;
@@ -17,6 +23,17 @@ import lilun.com.pension.module.bean.IconModule;
  * 字符工具类
  */
 public class StringUtils {
+
+    public static String timeFormat(String isoTime1) {
+        String[] ss = isoTime1.split("\\.");
+        String isoTime = ss[0] + "+08:00";
+        DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+        DateTime dateTime = parser2.parseDateTime(isoTime);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return  format.format(new Date(dateTime.getMillis()+28800*1000));
+    }
+
+
     public static String checkNotEmpty(String s) {
         if (TextUtils.isEmpty(s)) {
             throw new NullPointerException();

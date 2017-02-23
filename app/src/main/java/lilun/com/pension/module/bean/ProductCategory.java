@@ -2,13 +2,15 @@ package lilun.com.pension.module.bean;
 
 import java.util.List;
 
+import lilun.com.pension.base.BaseBean;
+
 /**
 *产品服务(那些老年教育，那些养老机构)分类模型
 *@author yk
 *create at 2017/2/13 9:26
 *email : yk_developer@163.com
 */
-public class ProductCategory {
+public class ProductCategory extends BaseBean{
 
     /**
      * id : string

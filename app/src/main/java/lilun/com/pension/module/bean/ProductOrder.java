@@ -39,6 +39,16 @@ public class ProductOrder extends BaseBean {
     private String creatorName;
     private String updatorId;
     private String updatorName;
+    private OrganizationProduct product;
+
+    public OrganizationProduct getProduct() {
+        return product;
+    }
+
+    public ProductOrder setProduct(OrganizationProduct product) {
+        this.product = product;
+        return this;
+    }
 
     public String getName() {
         return name;

@@ -11,7 +11,7 @@
         android:id="@+id/iv_aid_icon"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:background="@drawable/announcement_def" />
+        android:background="@drawable/shape_rect_red" />
 
     <ImageView
         android:id="@+id/iv_back"
@@ -23,95 +23,116 @@
 
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/tv_change_status"
-        style="@style/tv_normal"
+        android:id="@+id/tv_reservation"
+        style="@style/tv_small"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/iv_aid_icon"
         android:layout_marginRight="20dp"
         android:layout_marginTop="27dp"
         android:background="@drawable/shape_circle_white"
         android:gravity="center"
-        android:textSize="10dp"
         tools:text="帮忙" />
 
     <TextView
         android:id="@+id/tv_item_title"
         style="@style/tv_normal"
-        android:layout_below="@id/tv_change_status"
+        android:layout_below="@id/tv_reservation"
         android:layout_marginLeft="11dp"
         android:layout_marginTop="19dp"
         tools:text="下水道堵塞了" />
 
-    <TextView
-        android:id="@+id/tv_aid_time"
-        style="@style/tv_normal"
+    <LinearLayout
+        android:id="@+id/ll_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tv_item_title"
-        android:layout_below="@id/tv_item_title"
-        android:layout_marginTop="17dp"
-        android:textSize="14sp"
-        tools:text="2017.3.6" />
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/tv_item_title">
 
+        <TextView
+            android:id="@+id/tv_aid_time"
+            style="@style/tv_small"
+            tools:text="2017.3.6" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/tv_small"
+            android:layout_marginLeft="10dp"
+            tools:text="(50元补贴)" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_marginRight="28dp"
+       android:layout_alignTop="@id/ll_time"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/avatar"
+        android:layout_width="44dp"
+        android:layout_height="44dp" />
 
     <TextView
         android:id="@+id/tv_aid_creator"
-        style="@style/tv_normal"
+        style="@style/tv_small"
         android:layout_alignLeft="@id/tv_item_title"
-        android:layout_below="@id/tv_aid_time"
-        android:layout_marginTop="7dp"
-        android:textSize="14sp"
+        android:layout_below="@id/ll_time"
+        android:layout_marginTop="3dp"
         tools:text="发起人:尼玛" />
 
     <LinearLayout
         android:id="@+id/ll_type_help"
-        android:layout_alignLeft="@id/tv_item_title"
-        android:layout_below="@id/tv_aid_creator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-    <TextView
-        android:id="@+id/tv_aid_phone"
-        style="@style/tv_normal"
         android:layout_alignLeft="@id/tv_item_title"
         android:layout_below="@id/tv_aid_creator"
-        android:layout_marginTop="7dp"
-        android:textSize="14sp"
-        tools:text="联系电话：1925544444" />
-
-        <View
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="11dp"
-           style="@style/line_gray"/>
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_aid_phone"
+            style="@style/tv_small"
+            android:layout_alignLeft="@id/tv_item_title"
+            android:layout_below="@id/tv_aid_creator"
+            android:layout_marginTop="3dp"
+            tools:text="联系电话：1925544444" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/tv_address_title"
+            style="@style/tv_normal"
             android:layout_marginTop="16dp"
-            android:text="地址"
-            style="@style/tv_normal" />
+            android:text="地址" />
 
         <TextView
             android:id="@+id/tv_aid_address"
+            style="@style/tv_small"
+            android:gravity="center_vertical"
             android:layout_marginTop="16dp"
-            android:text="茶韵新城规范"
-            android:textSize="14sp"
-            style="@style/tv_normal" />
+            tools:text="茶韵新城规范" />
 
-        <View
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="11dp"
-            style="@style/line_gray"/>
+
 
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/line"
+        android:layout_below="@id/ll_type_help"
+        style="@style/line_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/tv_joiner_title"
         style="@style/tv_normal"
-        android:layout_below="@id/ll_type_help"
+        android:layout_alignLeft="@id/tv_item_title"
+        android:layout_below="@id/line"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="17dp"
-        android:layout_alignLeft="@id/tv_item_title"
         tools:text="回答" />
 
 </RelativeLayout>

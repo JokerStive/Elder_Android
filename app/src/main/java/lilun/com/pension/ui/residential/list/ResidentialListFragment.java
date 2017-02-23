@@ -1,92 +1,121 @@
 package lilun.com.pension.ui.residential.list;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.PushInfoAdapter;
-import lilun.com.pension.module.bean.Announcement;
-import lilun.com.pension.module.callback.TitleBarClickCallBack;
-import lilun.com.pension.widget.PositionTitleBar;
+import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
+import lilun.com.pension.module.bean.OrganizationProduct;
+import lilun.com.pension.module.bean.ProductCategory;
+import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.widget.NormalItemDecoration;
+import lilun.com.pension.widget.NormalTitleBar;
 
 /**
- * 居家服务V
+ * 居家服务列表V
  *
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class ResidentialListFragment extends BaseFragment {
+public class ResidentialListFragment extends BaseFragment<ResidentialListContract.Presenter> implements ResidentialListContract.View {
 
-    @Bind(R.id.title_bar)
-    PositionTitleBar titleBar;
 
-    private RecyclerView rvPushInfo;
-    private PushInfoAdapter pushInfoAdapter;
-    private ArrayList<String> data;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
-    public static ResidentialListFragment newInstance(List<Announcement> announcements) {
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout mSwipeLayout;
+
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
+    private ProductCategory productCategory;
+    private ResidentialServiceAdapter mAdapter;
+
+
+    public static ResidentialListFragment newInstance(ProductCategory productCategory) {
         ResidentialListFragment fragment = new ResidentialListFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putSerializable("productCategory", productCategory);
         fragment.setArguments(args);
         return fragment;
     }
 
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        productCategory = (ProductCategory) arguments.getSerializable("productCategory");
+        Preconditions.checkNull(productCategory);
+    }
+
     @Override
     protected void initPresenter() {
+        mPresenter = new ResidentialListPresenter();
+        mPresenter.bindView(this);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_pension_education;
+        return R.layout.layout_recycler;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
-            @Override
-            public void onBackClick() {
-                pop();
+        titleBar.setTitle(productCategory.getName());
+        titleBar.setOnBackClickListener(() -> pop());
+
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
+        //刷新
+        mSwipeLayout.setOnRefreshListener(() -> {
+                    if (mPresenter != null) {
+                        getData(0);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        mSwipeLayout.setRefreshing(true);
+        getData(0);
+    }
+
+    private void getData(int skip) {
+        String filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\"}}";
+        mPresenter.getResidentialServices(filter,skip);
+    }
+
+
+    @Override
+    public void showResidentialServices(List<OrganizationProduct> products, boolean isLoadMore) {
+        completeRefresh();
+        if (products != null) {
+            if (mAdapter == null) {
+                mAdapter = new ResidentialServiceAdapter(this, products);
+                mRecyclerView.setAdapter(mAdapter);
+            } else if (isLoadMore) {
+                mAdapter.addAll(products);
+            } else {
+                mAdapter.replaceAll(products);
             }
-        });
+        }
     }
 
-
-    private void initPushBar() {
-//        rvPushInfo = (RecyclerView) mRootView.findViewById(R.id.rv_push_info);
-//        pushInfoAdapter = new PushInfoAdapter(_mActivity, data, R.layout.item_push_info);
-//        pushInfoAdapter.setOnPushClickListener(new PushInfoAdapter.onPushClickListener() {
-//            @Override
-//            public void onDeleteClick(PushInfoAdapter.MyViewHolder item) {
-//                pushInfoAdapter.remove(item);
-//            }
-//
-//            @Override
-//            public void onItemClick() {
-//            }
-//
-//            @Override
-//            public void onExpandClick() {
-//                rvPushInfo.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-//            }
-//        });
-//
-//        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-//        rvPushInfo.setAdapter(pushInfoAdapter);
-//        CardConfig.initConfig(_mActivity);
-//        CardConfig.MAX_SHOW_COUNT = 3;
-//        ItemTouchHelper.Callback callback = new MyCallBack(rvPushInfo, pushInfoAdapter, data);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(rvPushInfo);
+    @Override
+    public void completeRefresh() {
+        if (mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
+        }
     }
-
-
 }

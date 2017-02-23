@@ -24,14 +24,9 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
                 .subscribe(new RxSubscriber<OrganizationAid>(activity) {
                     @Override
                     public void _next(OrganizationAid aid) {
-//                        view.showClassifies(elderModules);
+                        view.showHelpDetail(aid);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-//                        view.completeRefresh();
-                    }
                 }));
     }
 

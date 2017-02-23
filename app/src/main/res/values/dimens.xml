@@ -5,10 +5,11 @@
 
     <dimen name="home_module_margin">10dp</dimen>
 
-    <dimen name="tv_size">16sp</dimen>
-    <dimen name="tv_size_large">28sp</dimen>
-    <dimen name="tv_size_small">12sp</dimen>
-    <dimen name="tv_size_input_view">14sp</dimen>
+    <dimen name="tv_size_big_x">28sp</dimen>
+    <dimen name="tv_size_big">20sp</dimen>
+    <dimen name="tv_size">20sp</dimen>
+    <dimen name="tv_size_small">17sp</dimen>
+    <dimen name="tv_size_small_x">12sp</dimen>
 
 
     <dimen name="push_bar_height">170dp</dimen>
@@ -27,6 +28,8 @@
 
 
     <dimen name="sliding_item_margin_top">20dp</dimen>
+
+    <dimen name="title_max_width">200dp</dimen>
 
 
 </resources>

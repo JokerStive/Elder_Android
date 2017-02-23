@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
+import lilun.com.pension.module.bean.OrganizationAid;
 
 /**
 *互助详情契约类
@@ -13,7 +14,7 @@ import lilun.com.pension.base.IView;
 */
 public interface HelpDetailContract {
     interface View extends IView<Presenter> {
-        void showHelpDetail();
+        void showHelpDetail(OrganizationAid aid);
     }
 
     interface Presenter extends IPresenter<View> {

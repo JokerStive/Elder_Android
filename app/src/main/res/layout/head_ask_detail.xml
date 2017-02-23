@@ -25,7 +25,7 @@
 
 
     <TextView
-        android:id="@+id/tv_change_status"
+        android:id="@+id/tv_reservation"
         android:layout_below="@id/iv_ask_icon"
         android:layout_marginTop="27dp"
         android:gravity="center"
@@ -38,36 +38,36 @@
         />
     
     <TextView
-        android:id="@+id/tv_ask_title"
+        android:id="@+id/tv_title"
         tools:text="怎么创建一个账号"
-        android:layout_below="@id/tv_change_status"
+        android:layout_below="@id/tv_reservation"
         android:layout_marginTop="19dp"
         android:layout_marginLeft="11dp"
        style="@style/tv_normal" />
 
     <TextView
-        android:id="@+id/tv_ask_time"
+        android:id="@+id/tv_provider"
         tools:text="2017.3.6"
         android:textSize="14sp"
-        android:layout_below="@id/tv_ask_title"
-        android:layout_alignLeft="@id/tv_ask_title"
+        android:layout_below="@id/tv_title"
+        android:layout_alignLeft="@id/tv_title"
         android:layout_marginTop="17dp"
         style="@style/tv_normal" />
 
     <TextView
-        android:id="@+id/tv_ask_creator"
+        android:id="@+id/tv_price"
         tools:text="提问人:尼玛"
         android:textSize="14sp"
-        android:layout_below="@id/tv_ask_time"
-        android:layout_alignLeft="@id/tv_ask_title"
+        android:layout_below="@id/tv_provider"
+        android:layout_alignLeft="@id/tv_title"
         android:layout_marginTop="7dp"
         style="@style/tv_normal" />
 
     <TextView
         tools:text="回答"
-        android:layout_below="@id/tv_ask_creator"
+        android:layout_below="@id/tv_price"
         android:layout_marginTop="37dp"
-        android:layout_alignLeft="@id/tv_ask_title"
+        android:layout_alignLeft="@id/tv_title"
         style="@style/tv_normal"
         android:layout_marginBottom="16dp"
         />

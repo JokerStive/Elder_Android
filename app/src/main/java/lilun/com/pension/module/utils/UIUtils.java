@@ -2,8 +2,10 @@ package lilun.com.pension.module.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 /**
  * Created by youke on 2016/7/11.
@@ -42,6 +44,9 @@ public class UIUtils {
     }
 
 
+    public static  void setBold(TextView textView){
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
+    }
 
 
     /**
