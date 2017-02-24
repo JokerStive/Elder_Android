@@ -73,8 +73,9 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
 
     }
+
     public void setNoPosition(boolean positionVisible) {
-        ivPosition.setVisibility(positionVisible?VISIBLE:GONE);
+        ivPosition.setVisibility(positionVisible ? VISIBLE : GONE);
     }
 
     @Override
@@ -108,16 +109,16 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
 
     /**
-    *隐藏定位标志和事件右侧按钮
-    */
-    public void showOnlyTitle(){
+     * 隐藏定位标志和事件右侧按钮
+     */
+    public void showOnlyTitle() {
         tvPosition.setVisibility(GONE);
         ivPosition.setVisibility(GONE);
         tvRight.setVisibility(GONE);
     }
 
 
-    public void showAll(){
+    public void showAll() {
         ivPosition.setVisibility(VISIBLE);
         tvPosition.setVisibility(VISIBLE);
         tvRight.setVisibility(VISIBLE);

@@ -2,8 +2,10 @@ package lilun.com.pension.ui.help.help_detail;
 
 import android.app.Activity;
 
+import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -31,8 +33,23 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     }
 
     @Override
-    public void createHelpReply(String replyContent) {
+    public void createHelpReply(String aidId,String replyContent) {
+        OrganizationReply reply = new OrganizationReply();
+        reply.setWhatModel("OrganizationAid");
+        reply.setWhatId(aidId);
+        reply.setContent(replyContent);
+        reply.setIsDraft(true);
+        addSubscribe(NetHelper.getApi()
+                .newOrganizationReply(reply)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationReply>(((BaseFragment)view).getActivity()) {
+                    @Override
+                    public void _next(OrganizationReply reply) {
+                        view.replySuccess();
+                    }
 
+                }));
     }
 
     @Override

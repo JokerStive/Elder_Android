@@ -11,7 +11,7 @@
         android:id="@+id/iv_aid_icon"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:background="@drawable/shape_rect_red" />
+        android:background="@drawable/shape_rect_red_corner" />
 
     <ImageView
         android:id="@+id/iv_back"
@@ -29,8 +29,8 @@
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/iv_aid_icon"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="27dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/shape_circle_white"
         android:gravity="center"
         tools:text="帮忙" />
@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_marginRight="28dp"
+        android:layout_marginRight="10dp"
        android:layout_alignTop="@id/ll_time"
         android:layout_alignParentRight="true"
         android:background="@drawable/avatar"

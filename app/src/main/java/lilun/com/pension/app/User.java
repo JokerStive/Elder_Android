@@ -37,16 +37,16 @@ public class User {
        return PreUtils.getString(currentOrganizationId, defOrganizationId);
     }
 
-    public static void puttCurrentOrganizationId(String currentOrganizationId) {
-        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(currentOrganizationId)?User.defOrganizationId:currentOrganizationId);
+    public static void puttCurrentOrganizationId(String id) {
+        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id)?User.defOrganizationId:id);
     }
 
     public static String getBelongsOrganizationId() {
        return PreUtils.getString(belongsOrganizationId, defOrganizationId);
     }
 
-    public static void putBelongsOrganizationId(String belongsOrganizationId) {
-        PreUtils.putString(belongsOrganizationId,  TextUtils.isEmpty(belongsOrganizationId)?User.defOrganizationId:belongsOrganizationId);
+    public static void putBelongsOrganizationId(String id) {
+        PreUtils.putString(belongsOrganizationId,  TextUtils.isEmpty(id)?User.defOrganizationId:id);
     }
 
 

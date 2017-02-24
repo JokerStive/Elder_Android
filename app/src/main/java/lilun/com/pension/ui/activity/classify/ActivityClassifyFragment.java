@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.activity.list;
+package lilun.com.pension.ui.activity.classify;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,7 +23,7 @@ import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.ui.activity.classify.ActivityListFragment;
+import lilun.com.pension.ui.activity.list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;

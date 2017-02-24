@@ -23,7 +23,7 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.utils.PreUtils;
-import lilun.com.pension.ui.activity.list.ActivityClassifyFragment;
+import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;

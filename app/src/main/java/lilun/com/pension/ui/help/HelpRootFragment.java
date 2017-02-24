@@ -10,11 +10,14 @@ import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.OrganizationAidAdapter;
@@ -60,6 +63,11 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
     public static HelpRootFragment newInstance() {
         return new HelpRootFragment();
+    }
+
+    @Subscribe
+    public void refreshData(Event.RefreshHelpData event){
+        refreshData();
     }
 
     @Override

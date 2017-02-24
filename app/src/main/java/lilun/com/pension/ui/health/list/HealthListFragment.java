@@ -70,7 +70,7 @@ public class HealthListFragment extends BaseFragment {
 //            }
 //
 //            @Override
-//            public void onItemClick() {
+//            public void agree() {
 //            }
 //
 //            @Override

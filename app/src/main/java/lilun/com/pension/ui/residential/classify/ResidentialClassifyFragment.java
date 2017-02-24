@@ -88,7 +88,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
-                onBackPressedSupport();
+                pop();
             }
 
             @Override

@@ -1,10 +1,23 @@
 package lilun.com.pension.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.ButterKnife;
+import lilun.com.pension.app.Event;
+import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.welcome.LoginActivity;
 import me.yokeyword.fragmentation.SupportActivity;
+import rx.Subscription;
 
 /**
  * Created by yk on 2017/1/5.
@@ -13,13 +26,14 @@ import me.yokeyword.fragmentation.SupportActivity;
 public abstract class BaseActivity<T extends IPresenter> extends SupportActivity {
 
     protected T mPresenter;
+    private Subscription subscribe;
 //    final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-
+        EventBus.getDefault().register(this);
 
         getTransferData();
 
@@ -34,7 +48,25 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         initEvent();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void tokenFailure(Event.TokenFailure event) {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 
+    @Subscribe
+    public void permissionDenied(Event.PermissionDenied event) {
+        Logger.d("prepare http me");
+        subscribe = NetHelper.getApi().getMe().
+                compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>() {
+                    @Override
+                    public void _next(Object o) {
+
+                    }
+                });
+
+    }
 
 
     @Override
@@ -63,11 +95,14 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     protected abstract void initView();
 
     //初始化事件,listener...
-    protected  void initEvent(){};
+    protected void initEvent() {
+    }
+
+    ;
 
     @Override
     public void onBackPressedSupport() {
-        if (getSupportFragmentManager().getBackStackEntryCount() >=1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() >= 1) {
             pop();
         } else {
             finish();
@@ -85,7 +120,13 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         ButterKnife.unbind(this);
         if (mPresenter != null) {
             mPresenter.unBindView();
-            mPresenter=null;
+            mPresenter = null;
         }
+
+        if (subscribe != null && subscribe.isUnsubscribed()) {
+            subscribe.unsubscribe();
+        }
+
+        EventBus.getDefault().unregister(this);
     }
 }

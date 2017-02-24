@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.activity.classify;
+package lilun.com.pension.ui.activity.list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,8 +19,8 @@ import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.ui.activity.list.ActivityClassifyContract;
-import lilun.com.pension.ui.activity.list.ActivityClassifyPresenter;
+import lilun.com.pension.ui.activity.classify.ActivityClassifyContract;
+import lilun.com.pension.ui.activity.classify.ActivityClassifyPresenter;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -74,6 +74,7 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(mCategory.getName());
+        titleBar.setOnBackClickListener(this::pop);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());

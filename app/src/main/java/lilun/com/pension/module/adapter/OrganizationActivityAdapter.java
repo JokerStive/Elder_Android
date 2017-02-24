@@ -8,6 +8,8 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
+import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.UIUtils;
 
 /**
  * 展示互助列表的adapter
@@ -27,8 +29,10 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
+        UIUtils.setBold(help.getView(R.id.tv_item_title));
+
         help.setText(R.id.tv_item_title, activity.getTitle())
-                .setText(R.id.tv_item_time, activity.getCreatedAt())
+                .setText(R.id.tv_item_time, StringUtils.timeFormat(activity.getCreatedAt()))
                 .setText(R.id.tv_item_address, activity.getAddress())
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {

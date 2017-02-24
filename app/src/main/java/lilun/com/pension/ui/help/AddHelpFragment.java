@@ -11,11 +11,14 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.bean.ElderModule;
@@ -207,6 +210,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
                         public void _next(OrganizationAid organizationAid) {
                             Logger.d("求助发布成功");
                             pop();
+                            EventBus.getDefault().post(new Event.RefreshHelpData());
                         }
                     });
         }

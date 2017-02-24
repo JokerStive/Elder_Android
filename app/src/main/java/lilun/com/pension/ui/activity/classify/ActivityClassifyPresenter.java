@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.activity.list;
+package lilun.com.pension.ui.activity.classify;
 
 import java.util.List;
 

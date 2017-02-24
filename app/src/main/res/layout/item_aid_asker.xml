@@ -29,22 +29,22 @@
             <TextView
                 android:id="@+id/tv_name"
                 style="@style/tv_small"
-                android:text="尼玛" />
+                tools:text="尼玛" />
 
             <TextView
                 android:id="@+id/tv_time"
                 style="@style/tv_small"
-                android:text="2016-7-29" />
+                tools:text="2016-7-29" />
 
         </LinearLayout>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_requirement"
+        android:id="@+id/tv_content"
         android:layout_marginTop="14dp"
         android:layout_below="@id/rl_avatar"
         style="@style/tv_small"
-        android:text="你说你是不是傻啊，这都不会"
+        tools:text="你说你是不是傻啊，这都不会"
         />
 
 

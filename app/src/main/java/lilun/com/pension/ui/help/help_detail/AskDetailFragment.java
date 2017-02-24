@@ -1,21 +1,17 @@
 package lilun.com.pension.ui.help.help_detail;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +19,14 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AidHelperListAdapter;
+import lilun.com.pension.module.adapter.AidAskListAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
-import lilun.com.pension.widget.NormalItemDecoration;
 
 /**
  * 互助详情V
@@ -41,7 +35,7 @@ import lilun.com.pension.widget.NormalItemDecoration;
  *         create at 2017/2/20 9:34
  *         email : yk_developer@163.com
  */
-public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presenter> implements HelpDetailContract.View, View.OnClickListener {
+public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter> implements HelpDetailContract.View, View.OnClickListener {
 
 
     @Bind(R.id.recycler_view)
@@ -54,8 +48,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private TextView tvTitle;
     private TextView tvTime;
     private TextView tvCreator;
-    private TextView tvPhone;
-    private TextView tvAddress;
+    private TextView tvJonerTitle;
 
     private int status_new = 0;
     private int status_answered = 1;
@@ -65,11 +58,10 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
-    private AidHelperListAdapter mReplyAdapter;
-    private TextView tvJoinerTitle;
+    private AidAskListAdapter mReplyAdapter;
 
-    public static HelpDetailFragment newInstance(OrganizationAid aid) {
-        HelpDetailFragment fragment = new HelpDetailFragment();
+    public static AskDetailFragment newInstance(OrganizationAid aid) {
+        AskDetailFragment fragment = new AskDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("OrganizationAid", aid);
         fragment.setArguments(args);
@@ -112,22 +104,20 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //标题加粗
         tvTitle = (TextView) mHeadView.findViewById(R.id.tv_item_title);
-        setBold(tvTitle);
+        UIUtils.setBold(tvTitle);
 
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
         tvPrice = (TextView) mHeadView.findViewById(R.id.tv_price);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
-        //参与者或者回答者列表的title
-        tvJoinerTitle = (TextView) mHeadView.findViewById(R.id.tv_joiner_title);
-        tvJoinerTitle.setText(getString(R.string.joiners));
-        UIUtils.setBold(tvJoinerTitle);
+        //回答者列表
+        tvJonerTitle = (TextView) mHeadView.findViewById(R.id.tv_joiner_title);
+        tvJonerTitle.setText(getString(R.string.answer));
+        UIUtils.setBold(tvJonerTitle);
 
         //  只有 "帮" 才具有的=============================
-        tvPhone = (TextView) mHeadView.findViewById(R.id.tv_aid_phone);
-        tvAddress = (TextView) mHeadView.findViewById(R.id.tv_aid_address);
-        TextView tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_address_title);
-        setBold(tvAddressTitle);
+        LinearLayout llTypeControl = (LinearLayout) mHeadView.findViewById(R.id.ll_type_help);
+        llTypeControl.setVisibility(View.GONE);
 
 
         //是自己创建的
@@ -139,21 +129,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         //不是自己创建的
         else {
             if (mStatus == status_new || mStatus == status_answered) {
-                if (mAid.isCancelable()){
-                    setChangeStatus(getString(R.string.cancel));
-                }else {
-                    setChangeStatus(getString(R.string.help));
-                }
+                setChangeStatus(getString(R.string.answer));
             }
         }
 
 
         setJoinerAdapter();
 
-    }
-
-    private void setBold(TextView textView) {
-        textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
     }
 
 
@@ -168,20 +150,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
      */
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new NormalItemDecoration(17));
-        mReplyAdapter = new AidHelperListAdapter(this, mDetailData);
-        mReplyAdapter.setOnFunctionClickListener(new AidHelperListAdapter.OnFunctionClickListener() {
-            @Override
-            public void agree(String id) {
-                accept(mReplyAdapter.getData(),id);
-                mReplyAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void evaluation() {
-
-            }
-        });
+        mReplyAdapter = new AidAskListAdapter(this, mDetailData);
         mReplyAdapter.addHeaderView(mHeadView);
         recyclerView.setAdapter(mReplyAdapter);
     }
@@ -216,43 +185,19 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         tvCreator.setText(String.format(getString(R.string.format_creator), aid.getCreatorName()));
 
 
-        //设置地址和电话
-        tvAddress.setText(aid.getAddress());
-        tvPhone.setText(String.format("联系电话：%1$s", "13206011223"));
-
-
         //设置回答者列表
         List<OrganizationReply> replies = aid.getReplies();
         if (replies == null || replies.size() == 0 || !mCreatorIsOwn) {
-            tvJoinerTitle.setVisibility(View.GONE);
+            tvJonerTitle.setVisibility(View.GONE);
         } else {
-            //如果已经接受某人的帮忙，就只显示那一条数据
-            String answerId = aid.getAnswerId();
-            accept(replies, answerId);
             mReplyAdapter.addAll(replies);
         }
 
     }
 
-    /**
-    *采纳某一条数据
-    */
-    private void accept(List<OrganizationReply> replies, String answerId) {
-        if (!TextUtils.isEmpty(answerId)){
-            for(int i=0;i<replies.size();i++){
-                if (!replies.get(i).getId().equals(answerId)){
-                    replies.remove(i);
-                    i--;
-                }
-            }
-        }
-        mReplyAdapter.setAgree(false,answerId);
-    }
-
     @Override
     public void replySuccess() {
-        EventBus.getDefault().post(new Event.RefreshHelpData());
-        pop();
+
     }
 
 
@@ -272,30 +217,12 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private void doNext() {
         String status = tvChangeStatus.getText().toString();
         if (status.equals(getString(R.string.cancel))) {
-            if (mCreatorIsOwn) {
-                //TODO 改变这条help的状态为"已取消"
-                Logger.d("delete this aid");
-            } else {
-                //TODO 不再帮助
-                Logger.d("cancel help");
-            }
+            //TODO 取消这条求助信息
+            Logger.d("delete this aid");
 
-        } else if (status.equals(getString(R.string.help))) {
-            helpOther();
+        } else if (status.equals(getString(R.string.answer))) {
+            //TODO 弹出键盘回答
+            Logger.d("answer this aid");
         }
-    }
-
-    private void helpOther() {
-        new MaterialDialog.Builder(_mActivity)
-                .content(R.string.confirm_help_other)
-                .positiveText(R.string.confirm)
-                .negativeText(R.string.cancel)
-                .onPositive((dialog1, which) -> {
-                    mPresenter.createHelpReply(mAid.getId(), null);
-                })
-                .onNegative((dialog1, which) -> {
-                    dialog1.dismiss();
-                })
-                .show();
     }
 }

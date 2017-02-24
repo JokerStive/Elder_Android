@@ -15,11 +15,12 @@ import lilun.com.pension.module.bean.OrganizationAid;
 public interface HelpDetailContract {
     interface View extends IView<Presenter> {
         void showHelpDetail(OrganizationAid aid);
+        void replySuccess();
     }
 
     interface Presenter extends IPresenter<View> {
         void getHelpDetail(Activity activity,String aidId);
-        void createHelpReply(String replyContent);
+        void createHelpReply(String aidId,String replyContent);
         void changeHelpStatus(String helpStatus);
     }
 }

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Pension</string>
 
+    <!--token-->
+    <string name="ware">警告</string>
+    <string name="token_failure">登录已失效，请重新登录</string>
+
 
     <!--一键求助-->
     <string name="first_help_desc">请指定第一救助人，我们将会对指定的第一救助人发出额外短信通知</string>
@@ -58,6 +62,9 @@
     <string name="format_creator">发起人：%1$s</string>
     <string name="format_price">(%1$d元补贴)</string>
     <string name="format_phone">联系电话：%1$s</string>
+    <string name="confirm_help_other">确定帮助他人？</string>
+    <string name="accepted">已接受</string>
+    <string name="evaluation">评价</string>
 
     ===============================================================
     <!--老年教育-->

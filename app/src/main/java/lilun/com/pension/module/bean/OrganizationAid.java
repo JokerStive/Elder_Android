@@ -59,6 +59,36 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String updatorId;
     private String updatorName;
     private String organizationId;
+    private boolean isCancelable;
+    private String answerId;
+    private String rankId ;
+
+    public String getRankId() {
+        return rankId;
+    }
+
+    public OrganizationAid setRankId(String rankId) {
+        this.rankId = rankId;
+        return this;
+    }
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public OrganizationAid setAnswerId(String answerId) {
+        this.answerId = answerId;
+        return this;
+    }
+
+    public boolean isCancelable() {
+        return isCancelable;
+    }
+
+    public OrganizationAid setCancelable(boolean cancelable) {
+        isCancelable = cancelable;
+        return this;
+    }
 
     public List<OrganizationReply> getReplies() {
         return replyList;

@@ -25,7 +25,8 @@
         <TextView
             android:id="@+id/tv_title"
             style="@style/tv_normal"
-            android:maxLength="10"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/title_max_width"
             android:maxLines="1"
             tools:text="下水道堵了下水道堵了下水道堵了" />
 

@@ -8,22 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.ButterKnife;
+import lilun.com.pension.app.Event;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import rx.Subscription;
 
 /**
  * Created by yk on 2017/1/5.
  * fragment基类
  */
-public abstract class BaseFragment<T extends IPresenter> extends SupportFragment{
+public abstract class BaseFragment<T extends IPresenter> extends SupportFragment {
     private final String TAG = getClass().getSimpleName();
     protected Context mContent;
     protected View mRootView;
     protected T mPresenter;
-//    private boolean hasViewCreated;
-//    private boolean hasLoadedData;
+    private Subscription subscribe;
 
 
     @Override
@@ -35,7 +39,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
 
         Log.d(TAG, getClass().getName() + "------onCreate");
         Bundle arguments = getArguments();
@@ -44,6 +48,13 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         }
         initPresenter();
         initData();
+
+    }
+
+
+
+    @Subscribe
+    public void doNothing(Event.TokenFailure event) {
 
     }
 
@@ -58,7 +69,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null) {
             mRootView = inflater.inflate(getLayoutId(), container, false);
-            ButterKnife.bind(this,mRootView);
+            ButterKnife.bind(this, mRootView);
             initView(inflater);
             initEvent();
         }
@@ -67,6 +78,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     /**
      * ======================子类需要实现的方法=============================
+     *
      * @param arguments
      */
 
@@ -117,17 +129,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, getClass().getName() + "------onViewCreated");
 
-//        hasViewCreated = true;
-
-//        prepareLazyLoadData();
     }
-
-//    private void prepareLazyLoadData() {
-//        if (getUserVisibleHint() && hasViewCreated && !hasLoadedData) {
-//            hasLoadedData = true;
-//            lazyLoadData();
-//        }
-//    }
 
 
     @Override
@@ -146,8 +148,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, getClass().getName() + "------onDestroyView");
-//        hasViewCreated=false;
-//        hasLoadedData=false;
         ButterKnife.unbind(mRootView);
     }
 
@@ -159,7 +159,11 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
             mPresenter = null;
         }
 
-//        EventBus.getDefault().unregister(this);
+        if (subscribe != null && subscribe.isUnsubscribed()) {
+            subscribe.unsubscribe();
+        }
+
+        EventBus.getDefault().unregister(this);
         Log.d(TAG, getClass().getName() + "------onDestroy");
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
+import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.utils.Preconditions;
@@ -38,7 +38,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
     private ProductCategory productCategory;
-    private ResidentialServiceAdapter mAdapter;
+    private AgencyServiceAdapter mAdapter;
 
 
     public static ResidentialListFragment newInstance(ProductCategory productCategory) {
@@ -102,7 +102,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         completeRefresh();
         if (products != null) {
             if (mAdapter == null) {
-                mAdapter = new ResidentialServiceAdapter(this, products);
+                mAdapter = new AgencyServiceAdapter(this, products);
                 mRecyclerView.setAdapter(mAdapter);
             } else if (isLoadMore) {
                 mAdapter.addAll(products);
