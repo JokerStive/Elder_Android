@@ -1,12 +1,14 @@
 package lilun.com.pension.module.bean;
 
+import java.io.Serializable;
+
 /**
 *解析模块icon字段模型 
 *@author yk
 *create at 2017/2/15 15:43
 *email : yk_developer@163.com
 */
-public class IconModule {
+public class IconModule implements Serializable{
 
     /**
      * fileName : 1477285278916.png

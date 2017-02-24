@@ -19,12 +19,14 @@ import lilun.com.pension.module.bean.OrganizationProduct;
 public interface EducationClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifies(List<ElderModule> elderModules);
-        void showAboutMe(List<OrganizationProduct> orders, boolean isLoadMore);
+        void showAboutMe(List<ElderEdus> orders, boolean isLoadMore);
+        void showOrgActivityCategory(List<ActivityCategory> activityCategories);
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
         void getClassifies();
+        void getOrgActivityCategory(String filter);
         void getAboutMe(String filter, int skip);
     }
 }

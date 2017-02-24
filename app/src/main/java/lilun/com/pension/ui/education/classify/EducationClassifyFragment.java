@@ -20,11 +20,13 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
-import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
+import lilun.com.pension.module.adapter.OrganizationEdusAdapter;
+import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.ui.activity.list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.education.list.EducationListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
@@ -54,8 +56,8 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private RecyclerView mClassifyRecycler;
 
-    private List<OrganizationProduct> products = new ArrayList<>();
-    private ResidentialServiceAdapter mAdapter;
+    private List<ElderEdus> products = new ArrayList<>();
+    private OrganizationEdusAdapter mAdapter;
     private ArrayList<Announcement> announcements;
 
     public static EducationClassifyFragment newInstance(List<Announcement> announcements) {
@@ -134,12 +136,12 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
         //设置数据
         setAdapter();
-
+      //  getServices(0);
     }
 
 
     private void setAdapter() {
-        mAdapter = new ResidentialServiceAdapter(this, products);
+        mAdapter = new OrganizationEdusAdapter(this, products);
         mAdapter.addHeaderView(mClassifyRecycler);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -171,14 +173,19 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
         adapter.setOnItemClickListener((edusClassify -> {
+            if (edusClassify.getService().equals("Activity")) {
+                String filter = "{\"where\":{\"name\":\"" + edusClassify.getServiceConfig().getCategory() + "\"}}";
+                mPresenter.getOrgActivityCategory(filter);
+            } else
                 start(EducationListFragment.newInstance(edusClassify));
         }));
         mClassifyRecycler.setAdapter(adapter);
+        getServices(0);
     }
 
 
     @Override
-    public void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore) {
+    public void showAboutMe(List<ElderEdus> products, boolean isLoadMore) {
         completeRefresh();
         if (products != null) {
             if (isLoadMore) {
@@ -189,6 +196,11 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         }
     }
 
+    @Override
+    public void showOrgActivityCategory(List<ActivityCategory> activityCategories) {
+        if (activityCategories != null && activityCategories.size() > 0)
+            start(ActivityListFragment.newInstance(activityCategories.get(0)));
+    }
 
 
     @Override

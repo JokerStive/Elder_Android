@@ -89,6 +89,16 @@ public class ElderModule extends BaseBean {
     public static class ServiceConfigBean {
         private int kind;
 
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        private String category;
+
         public int getKind() {
             return kind;
         }

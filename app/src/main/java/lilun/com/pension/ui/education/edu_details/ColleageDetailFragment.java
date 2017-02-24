@@ -89,6 +89,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
         });
         Glide.with(_mActivity)
                 .load(IconUrl.organizationEdus(mColleage.getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getPicture())))
+                .placeholder(R.drawable.announcement_def)
                 .into(igColleageIcon);
         tvColleageName.setText(mColleage.getTitle());
         tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getMobile()));

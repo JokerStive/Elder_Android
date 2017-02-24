@@ -5,6 +5,7 @@ import java.util.List;
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.bean.OrganizationProduct;
 
 /**
@@ -16,7 +17,7 @@ import lilun.com.pension.module.bean.OrganizationProduct;
 public interface HealthClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifies(List<ElderModule> elderModules);
-        void showAboutMe(List<OrganizationProduct> orders, boolean isLoadMore);
+        void showAboutMe(List<HealtheaProduct> orders, boolean isLoadMore);
         void completeRefresh();
     }
 

@@ -15,6 +15,7 @@
             android:id="@+id/iv_aid_icon"
             android:layout_width="match_parent"
             android:layout_height="210dp"
+            android:scaleType="fitXY"
             android:background="@drawable/help_detail_icon"
              />
 

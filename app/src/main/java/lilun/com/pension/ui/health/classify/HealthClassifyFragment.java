@@ -23,9 +23,10 @@ import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.OrganizationProduct;
+import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.health.list.HealthListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
@@ -40,7 +41,6 @@ import lilun.com.pension.widget.PositionTitleBar;
 public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.Presenter> implements HealthClassifyContract.View {
 
 
-
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
 
@@ -53,7 +53,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     private RecyclerView mClassifyRecycler;
 
-    private List<OrganizationProduct> products = new ArrayList<>();
+    private List<HealtheaProduct> products = new ArrayList<>();
     private HealthServiceAdapter mAdapter;
     private ArrayList<Announcement> announcements;
 
@@ -152,7 +152,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
         getClassifies();
-        getServices(0);
+      //  getServices(0);
     }
 
     private void getClassifies() {
@@ -172,12 +172,15 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
         adapter.setOnItemClickListener((productCategory -> {
 
+            start(HealthListFragment.newInstance(productCategory));
+
         }));
         mClassifyRecycler.setAdapter(adapter);
+        getServices(0);
     }
 
     @Override
-    public void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore) {
+    public void showAboutMe(List<HealtheaProduct> products, boolean isLoadMore) {
         completeRefresh();
         if (products != null) {
             if (isLoadMore) {
