@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,6 +25,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AidHelperListAdapter;
@@ -67,6 +69,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private TextView tvPrice;
     private AidHelperListAdapter mReplyAdapter;
     private TextView tvJoinerTitle;
+    private ImageView ivAvatar;
 
     public static HelpDetailFragment newInstance(OrganizationAid aid) {
         HelpDetailFragment fragment = new HelpDetailFragment();
@@ -104,6 +107,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //不管是问还是帮都具有的
         ivIcon = (ImageView) mHeadView.findViewById(R.id.iv_aid_icon);
+        ivAvatar = (ImageView) mHeadView.findViewById(R.id.iv_avatar);
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
 
@@ -139,14 +143,17 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         //不是自己创建的
         else {
             if (mStatus == status_new || mStatus == status_answered) {
-                if (mAid.isCancelable()){
+                if (mAid.isCancelable()) {
                     setChangeStatus(getString(R.string.cancel));
-                }else {
+                } else {
                     setChangeStatus(getString(R.string.help));
                 }
             }
         }
 
+        Glide.with(this).load(IconUrl.account(User.getUserId(), null))
+                .error(R.drawable.avatar)
+                .into(ivAvatar);
 
         setJoinerAdapter();
 
@@ -173,13 +180,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         mReplyAdapter.setOnFunctionClickListener(new AidHelperListAdapter.OnFunctionClickListener() {
             @Override
             public void agree(String id) {
-                accept(mReplyAdapter.getData(),id);
+                acceptOneAnswer(mReplyAdapter.getData(), id);
                 mReplyAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void evaluation() {
-
+                Logger.d("evaluation help");
             }
         });
         mReplyAdapter.addHeaderView(mHeadView);
@@ -228,25 +235,25 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         } else {
             //如果已经接受某人的帮忙，就只显示那一条数据
             String answerId = aid.getAnswerId();
-            accept(replies, answerId);
-            mReplyAdapter.addAll(replies);
+            mReplyAdapter.addAll(acceptOneAnswer(replies, answerId));
         }
 
     }
 
     /**
-    *采纳某一条数据
-    */
-    private void accept(List<OrganizationReply> replies, String answerId) {
-        if (!TextUtils.isEmpty(answerId)){
-            for(int i=0;i<replies.size();i++){
-                if (!replies.get(i).getId().equals(answerId)){
+     * 采纳某一条数据
+     */
+    private List<OrganizationReply> acceptOneAnswer(List<OrganizationReply> replies, String answerId) {
+        if (!TextUtils.isEmpty(answerId)) {
+            for (int i = 0; i < replies.size(); i++) {
+                if (!replies.get(i).getId().equals(answerId)) {
                     replies.remove(i);
                     i--;
                 }
             }
         }
-        mReplyAdapter.setAgree(false,answerId);
+        mReplyAdapter.setAnswerId(answerId);
+        return replies;
     }
 
     @Override

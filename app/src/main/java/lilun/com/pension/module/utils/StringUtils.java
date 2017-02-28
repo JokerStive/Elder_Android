@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.orhanobut.logger.Logger;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -89,7 +88,7 @@ public class StringUtils {
             head = ",\"limit\":\"" + Config.DEF_LOAD_DATA_COUNT + "\",\"skip\":\"" + skip + "\"}";
             filter = filter.substring(0, filter.lastIndexOf("}")) + head;
         }
-        Logger.d("拼接够的filter--" + filter);
+//        Logger.d("拼接够的filter--" + filter);
         return filter;
     }
 
@@ -139,5 +138,7 @@ public class StringUtils {
         }
         return substring;
     }
+
+
 
 }

@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.help;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -14,7 +15,10 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
@@ -22,7 +26,9 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -33,6 +39,9 @@ import lilun.com.pension.widget.CommonButton;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.InputView;
 import lilun.com.pension.widget.NormalTitleBar;
+import lilun.com.pension.widget.TakePhotoLayout;
+import okhttp3.RequestBody;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -67,6 +76,8 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
 
     @Bind(R.id.btn_create)
     CommonButton btnCreate;
+    @Bind(R.id.take_photo)
+    TakePhotoLayout takePhoto;
 
     private List<ElderModule> elderModules;
 
@@ -74,6 +85,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     private int mPriority = 0;
     private Subscription subscription;
     private String[] helpPriority;
+    private Observable<OrganizationAid> observable;
 
     public static AddHelpFragment newInstance(List<ElderModule> elderModules) {
         AddHelpFragment fragment = new AddHelpFragment();
@@ -103,6 +115,8 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     @Override
     protected void initView(LayoutInflater inflater) {
 
+        takePhoto.setFragmentManager(_mActivity.getFragmentManager());
+
         inputPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         titleBar.setOnBackClickListener(this::pop);
@@ -116,7 +130,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         adapter.setIsRadioModule(true);
         adapter.setOnItemClickListener(elderModule -> {
             this.mKind = elderModule.getServiceConfig().getKind();
-            inputAddress.setVisibility(mKind==0?View.GONE:View.VISIBLE);
+            inputAddress.setVisibility(mKind == 0 ? View.GONE : View.VISIBLE);
         });
         rvHelpClassify.setAdapter(adapter);
     }
@@ -182,39 +196,83 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         }
 
 
-
         if (StringUtils.checkNotEmptyWithMessage(title, "请输入求助主题")) {
 
             //如果是帮，必须填求助的地址
-            if (mKind==1){
+            if (mKind == 1) {
                 StringUtils.checkNotEmptyWithMessage(address, "请输入地址");
             }
 
-            OrganizationAid organizationAid = new OrganizationAid();
-            organizationAid.setTitle(title);
-            organizationAid.setAddress(address);
-            organizationAid.setPriority(mPriority);
-            organizationAid.setMemo(memo);
-            organizationAid.setKind(mKind);
+            //如果有图片，需要先上传图片
+            Observable<OrganizationAid> observable = aidObservable(null);
+            List<String> data = takePhoto.getData();
+            if (data != null) {
+                Map<String, RequestBody> requestBodyMap = new HashMap<>();
+                Observable.from(data)
+                        .map(BitmapUtils::createRequestBodies)
+                        .compose(RxUtils.applySchedule())
+                        .subscribe(requestBody -> {
+                            requestBodyMap.put("file\"; filename=\"info" + 0 + ".png", requestBody);
+                            boolean start = requestBodyMap.size() == data.size();
+                            if (start) {
+                                iconObservable(requestBodyMap).flatMap(this::aidObservable);
+                                //TODO 为毛不执行
+                                start(observable);
+                            }
+                        });
 
-            //如果提供了补贴
-            if(!TextUtils.isEmpty(price)){
-                organizationAid.setPrice(Integer.parseInt(price));
+            } else {
+                start(observable);
             }
 
-            subscription = NetHelper.getApi()
-                    .newOrganizationAid(organizationAid)
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule()).subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
-                        @Override
-                        public void _next(OrganizationAid organizationAid) {
-                            Logger.d("求助发布成功");
-                            pop();
-                            EventBus.getDefault().post(new Event.RefreshHelpData());
-                        }
-                    });
+
         }
     }
+
+    private void start(Observable<OrganizationAid> observable) {
+        subscription = observable.compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
+                    @Override
+                    public void _next(OrganizationAid aid) {
+                        Logger.d("求助发布成功");
+                        pop();
+                        EventBus.getDefault().post(new Event.RefreshHelpData());
+                    }
+                });
+
+    }
+
+    @NonNull
+    private OrganizationAid getOrganizationAid() {
+        OrganizationAid organizationAid = new OrganizationAid();
+        organizationAid.setTitle(inputTopic.getInput());
+        organizationAid.setAddress(inputAddress.getInput());
+        organizationAid.setPriority(mPriority);
+        organizationAid.setMemo(inputMemo.getInput());
+        organizationAid.setKind(mKind);
+        //如果提供了补贴
+        if (!TextUtils.isEmpty(inputPrice.getInput())) {
+            organizationAid.setPrice(Integer.parseInt(inputPrice.getInput()));
+        }
+        organizationAid.setId("111111111" + new Random(100).nextInt() + organizationAid.getPrice());
+        return organizationAid;
+    }
+
+
+    private Observable<List<IconModule>> iconObservable(Map<String, RequestBody> requestBodies) {
+        return NetHelper.getApi()
+                .newAidIcons(requestBodies)
+                .compose(RxUtils.handleResult());
+    }
+
+    private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
+        OrganizationAid aid = getOrganizationAid();
+        aid.setPicture(iconModules);
+        return NetHelper.getApi()
+                .newOrganizationAid(aid)
+                .compose(RxUtils.handleResult());
+    }
+
 
     @Override
     public void onDestroy() {
@@ -224,4 +282,5 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
 
         }
     }
+
 }

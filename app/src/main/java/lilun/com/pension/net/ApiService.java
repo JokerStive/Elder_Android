@@ -1,12 +1,14 @@
 package lilun.com.pension.net;
 
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -15,10 +17,13 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.TokenInfo;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -158,6 +163,15 @@ public interface ApiService {
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
 
 
+
+    /**
+     * 上传AID多张图片
+     */
+    @Multipart
+    @POST("OrganizationAids/uploadpicture")
+    Observable<Response<List<IconModule>>> newAidIcons(@PartMap Map<String, RequestBody> params);
+
+
     //==============================养老教育
 
     /**
@@ -177,5 +191,7 @@ public interface ApiService {
      */
     @GET("OrganizationEdus/{id}/courses")
     Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
+
+
 
 }

@@ -17,6 +17,8 @@ import java.util.UUID;
 
 import lilun.com.pension.app.App;
 import lilun.com.pension.module.bean.IconModule;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * Created by youke on 2016/7/26.
@@ -24,19 +26,21 @@ import lilun.com.pension.module.bean.IconModule;
  */
 public class BitmapUtils {
 
+    private static int max_size = 1024;
+
     // 根据路径获得图片并压缩，返回bitmap用于显示
     public static Bitmap getSmallBitmap(String filePath) {
-        if (filePath.startsWith("content")){
-            filePath = filePath.replace("content","file");
+
+
+        if (filePath.startsWith("content")) {
+            filePath = filePath.replace("content", "file");
         }
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filePath, options);
 
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 480, 800);
+        options.inSampleSize = calculateInSampleSize(options, 1080, 800);
 
-        // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
 
@@ -58,43 +62,70 @@ public class BitmapUtils {
         return inSampleSize;
     }
 
-    //把bitmap转换成String
-    public static byte[] bitmapToString(String filePath) {
-        byte[] b =null;
-        Bitmap bm = getSmallBitmap(filePath);
-        if (bm!=null){
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG, 40, baos);
-            b= baos.toByteArray();
+    /**
+     * 根据图片本地路径转成二进制byte[]
+     */
+    public static byte[] bitmapToBytes(String iconPath) {
+        Bitmap bm = getSmallBitmap(iconPath);
+        byte[] b = null;
+        int options_ = 100;
+        if (bm != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, options_, bos);
+            b = bos.toByteArray();
+            while (b.length / 1024 > max_size) {
+                bos.reset();
+                options_ = Math.max(0, options_ - 10);
+                bm.compress(Bitmap.CompressFormat.JPEG, options_, bos);
+                b = bos.toByteArray();
+                if (options_ == 0)//如果图片的质量已降到最低则，不再进行压缩
+                    break;
+            }
             Logger.d("上传图片大小 = " + b.length / 1024 + "k");
         }
         return b;
     }
 
 
-    //把bitmap转换成String
-    public static byte[] bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 40, baos);
-        byte[] b = baos.toByteArray();
-        return b;
+    /**
+     * 创建文件的requestBody
+     */
+    public static RequestBody createRequestBodies(String iconPath) {
+//        Map<String, RequestBody> requestBodyMap = new HashMap<>();
+//        Observable.from(iconPaths)
+//                .map(BitmapUtils::bitmapToBytes)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new RxSubscriber<byte[]>() {
+//                    @Override
+//                    public void _next(byte[] bytes) {
+//                        if (bytes != null) {
+        byte[] bytes = bitmapToBytes(iconPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
+//                            requestBodyMap.put("file\"; filename=\"info" + 0 + ".png", requestBody);
+//                        }
+//                    }
+//                });
+        return requestBody;
     }
+
 
     /**
      * 从模型中的picture字段获取单张pictureName
      */
     public static String picName(String pictureName) {
-        if (pictureName!=null){
+        if (pictureName != null) {
             List<IconModule> imgList = StringUtils.string2IconModule(pictureName);
             return imgList.get(0).getFileName();
         }
         return "";
     }
+
     /**
      * 从模型中的picture字段获取单张pictureName
      */
     public static String picName(ArrayList<IconModule> pictureName) {
-        if (pictureName!=null && pictureName.size()>0){
+        if (pictureName != null && pictureName.size() > 0) {
             return pictureName.get(0).getFileName();
         }
         return "";
@@ -105,7 +136,7 @@ public class BitmapUtils {
      */
     public static List<String> picNames(String pictureName) {
         List<String> picNames = new ArrayList<>();
-        if (pictureName!=null){
+        if (pictureName != null) {
             List<IconModule> imgList = StringUtils.string2IconModule(pictureName);
             for (IconModule img : imgList) {
                 picNames.add(img.getFileName());
@@ -117,9 +148,9 @@ public class BitmapUtils {
 
 
     /**
-    *清空drawee对一条uri的缓存
-    */
-    public static void clearDraweeCache(Uri uri){
+     * 清空drawee对一条uri的缓存
+     */
+    public static void clearDraweeCache(Uri uri) {
         Glide.with(App.context)
                 .load(uri)
                 .signature(new StringSignature(UUID.randomUUID().toString()));
@@ -131,13 +162,13 @@ public class BitmapUtils {
     }
 
     /**
-    *根据文件的uri的到文件真实的路径
-    */
+     * 根据文件的uri的到文件真实的路径
+     */
     public static String getRealPathFromURI(Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = App.context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = App.context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             String path = cursor.getString(column_index);

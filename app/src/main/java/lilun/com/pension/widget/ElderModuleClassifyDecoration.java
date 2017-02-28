@@ -12,7 +12,7 @@ public class ElderModuleClassifyDecoration extends RecyclerView.ItemDecoration {
     private int space = UIUtils.dp2px(App.context, 0.5f);
 
     public ElderModuleClassifyDecoration(int space) {
-        this.space = space;
+        this.space = UIUtils.dp2px(App.context, space);
     }
 
     public ElderModuleClassifyDecoration() {

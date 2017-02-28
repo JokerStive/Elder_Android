@@ -1,10 +1,7 @@
 package lilun.com.pension.base;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -12,10 +9,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
-import lilun.com.pension.module.utils.RxUtils;
-import lilun.com.pension.net.NetHelper;
-import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.ui.welcome.LoginActivity;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
 
@@ -50,21 +43,21 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void tokenFailure(Event.TokenFailure event) {
-        startActivity(new Intent(this, LoginActivity.class));
+//        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Subscribe
     public void permissionDenied(Event.PermissionDenied event) {
-        Logger.d("prepare http me");
-        subscribe = NetHelper.getApi().getMe().
-                compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>() {
-                    @Override
-                    public void _next(Object o) {
-
-                    }
-                });
+//        Logger.d("prepare http me");
+//        subscribe = NetHelper.getApi().getMe().
+//                compose(RxUtils.handleResult())
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<Object>() {
+//                    @Override
+//                    public void _next(Object o) {
+//
+//                    }
+//                });
 
     }
 

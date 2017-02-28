@@ -31,6 +31,13 @@ public class IconUrl {
     public static String organization(String organizationId, String iconName) {
         return Config.BASE_URL + "Organizations/" + encodeURL(organizationId) + "/icon/" + iconName + "?access_token=" + User.getToken();
     }
+
+    public static String account(String accountId, String iconName) {
+//        Logger.d("account icon url = "+ Config.BASE_URL + "Accounts/" + encodeURL(accountId) + "/picture/" + iconName + "?access_token=" + User.getToken());
+        return Config.BASE_URL + "Accounts/" + encodeURL(accountId) + "/picture/" + iconName + "?access_token=" + User.getToken();
+    }
+
+
     public static String organizationEdus(String organizationId, String iconName) {
         return Config.BASE_URL + "OrganizationEdus/" + encodeURL(organizationId) + "/picture/" + iconName + "?access_token=" + User.getToken();
     }

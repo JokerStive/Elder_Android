@@ -36,6 +36,11 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
         notifyDataSetChanged();
     }
 
+    public void addAllReverse(List<T> elements) {
+        getData().addAll(0,elements);
+        notifyDataSetChanged();
+    }
+
 
     public void notifyDataChanged() {
         super.notifyDataSetChanged();

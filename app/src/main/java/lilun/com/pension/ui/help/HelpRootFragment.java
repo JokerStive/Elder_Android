@@ -26,6 +26,7 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.help.help_detail.AskDetailFragment;
 import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
@@ -139,7 +140,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         mAidAdapter = new OrganizationAidAdapter(this, organizationAids);
         mAidAdapter.addHeaderView(mClassifyRecycler);
         mAidAdapter.setOnItemClickListener(aid -> {
-            start(HelpDetailFragment.newInstance(aid));
+            start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid) : HelpDetailFragment.newInstance(aid));
         });
         mRecyclerView.setAdapter(mAidAdapter);
     }

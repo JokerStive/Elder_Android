@@ -1,14 +1,18 @@
 package lilun.com.pension.module.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -22,67 +26,57 @@ import lilun.com.pension.module.bean.OrganizationReply;
  */
 public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
-    private String icon;
     private OnFunctionClickListener listener;
-    private OrganizationReply mAgreeReply;
-    private boolean showAllAgreeBtn = true;
     private String answerId;
 
 
     public AidHelperListAdapter(BaseFragment fragment, List<OrganizationReply> data) {
         super(R.layout.item_aid_helper, data);
         this.fragment = fragment;
-//        initData();
     }
 
-//    @Override
-//    public void addAll(List<OrganizationReply> elements) {
-//        super.addAll(elements);
-//        initData();
-//    }
-//
-//    @Override
-//    public void replaceAll(List<OrganizationReply> elements) {
-//        super.replaceAll(elements);
-//        initData();
-//    }
-//
-//    private void initData() {
-//        for (OrganizationReply reply : getData()) {
-//            if (reply.isEnabled()) {
-//                showAllAgreeBtn = false;
-//            }
-//        }
-//    }
 
     @Override
     protected void convert(BaseViewHolder helper, OrganizationReply reply) {
         TextView tvAgree = helper.getView(R.id.tv_agree);
-        tvAgree.setVisibility(showAllAgreeBtn ? View.VISIBLE : View.GONE);
-
-        if (answerId!=null && reply.getId().equals(answerId)) {
+        if (TextUtils.isEmpty(answerId)) {
             tvAgree.setVisibility(View.VISIBLE);
-            tvAgree.setText(App.context.getString(R.string.evaluation));
+        } else {
+            if (answerId.equals(reply.getId())) {
+                tvAgree.setVisibility(View.VISIBLE);
+                tvAgree.setText(App.context.getString(R.string.evaluation));
+            } else {
+                tvAgree.setVisibility(View.GONE);
+            }
         }
+
+//        tvAgree.setVisibility(showAllAgreeBtn ? View.VISIBLE : View.GONE);
+//
+//        if (answerId!=null && reply.getId().equals(answerId)) {
+//            tvAgree.setVisibility(View.VISIBLE);
+//            tvAgree.setText(App.context.getString(R.string.evaluation));
+//        }
 
 
         helper.setText(R.id.tv_name, reply.getCreatorName())
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {
-                        if (answerId!=null){
+                        if (answerId != null) {
                             listener.evaluation();
-                        }else {
+                        } else {
                             listener.agree(reply.getId());
                         }
                     }
                 });
+        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
+                .error(R.drawable.avatar)
+                .into((ImageView) helper.getView(R.id.iv_avatar));
     }
 
 
-    public void setAgree(boolean showAllAgreeBtn,String answerId) {
-        this.showAllAgreeBtn = showAllAgreeBtn;
-        this.answerId =answerId;
-        notifyDataSetChanged();
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
+//        notifyDataSetChanged();
     }
 
     public void setOnFunctionClickListener(OnFunctionClickListener listener) {
@@ -91,6 +85,7 @@ public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
 
     public interface OnFunctionClickListener {
         void agree(String id);
+
         void evaluation();
     }
 

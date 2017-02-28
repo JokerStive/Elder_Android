@@ -14,6 +14,8 @@ public class Config {
 
     public static final int DEF_LOAD_DATA_COUNT = 20;
 
+    public static final int UPLOAD_PHOTO_COUNT = 4;
+
     public static final String agency_classify_service_parentId = "服务/养老机构";
     public static final String residential_service_classify_parentId = "服务/居家服务";
 }

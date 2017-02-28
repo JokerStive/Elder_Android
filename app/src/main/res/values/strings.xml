@@ -64,6 +64,7 @@
     <string name="format_phone">联系电话：%1$s</string>
     <string name="confirm_help_other">确定帮助他人？</string>
     <string name="accepted">已接受</string>
+    <string name="take_in">已采纳</string>
     <string name="evaluation">评价</string>
 
     ===============================================================

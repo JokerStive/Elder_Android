@@ -32,6 +32,7 @@ import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pension.widget.TakePhotoDialogFragment;
 
 /**
  * 首页V
@@ -167,7 +168,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-                startHelp();
+                TakePhotoDialogFragment.newInstance().show(_mActivity.getFragmentManager(),"");
+//                startHelp();
                 break;
 
             case R.id.iv_education:

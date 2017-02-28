@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AidAskListAdapter;
@@ -59,6 +61,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private View mHeadView;
     private TextView tvPrice;
     private AidAskListAdapter mReplyAdapter;
+    private ImageView ivAvatar;
 
     public static AskDetailFragment newInstance(OrganizationAid aid) {
         AskDetailFragment fragment = new AskDetailFragment();
@@ -96,6 +99,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
         //不管是问还是帮都具有的
         ivIcon = (ImageView) mHeadView.findViewById(R.id.iv_aid_icon);
+        ivAvatar= (ImageView) mHeadView.findViewById(R.id.iv_avatar);
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
 
@@ -133,6 +137,9 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
             }
         }
 
+        Glide.with(this).load(IconUrl.account(User.getUserId(),null))
+                .error(R.drawable.avatar)
+                .into(ivAvatar);
 
         setJoinerAdapter();
 
@@ -150,8 +157,12 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
      */
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-        mReplyAdapter = new AidAskListAdapter(this, mDetailData);
+        mReplyAdapter = new AidAskListAdapter(this, mDetailData,mCreatorIsOwn);
         mReplyAdapter.addHeaderView(mHeadView);
+        mReplyAdapter.setOnAgreeClickListenerr(id -> {
+            mReplyAdapter.setAnswerId(id);
+            mReplyAdapter.notifyDataSetChanged();
+        });
         recyclerView.setAdapter(mReplyAdapter);
     }
 
@@ -187,9 +198,10 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
         //设置回答者列表
         List<OrganizationReply> replies = aid.getReplies();
-        if (replies == null || replies.size() == 0 || !mCreatorIsOwn) {
+        if (replies == null || replies.size() == 0) {
             tvJonerTitle.setVisibility(View.GONE);
         } else {
+            mReplyAdapter.setAnswerId(aid.getAnswerId());
             mReplyAdapter.addAll(replies);
         }
 

@@ -63,6 +63,17 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String answerId;
     private String rankId ;
 
+    public List<IconModule> getPicture() {
+        return picture;
+    }
+
+    public OrganizationAid setPicture(List<IconModule> picture) {
+        this.picture = picture;
+        return this;
+    }
+
+    private List<IconModule> picture ;
+
     public String getRankId() {
         return rankId;
     }

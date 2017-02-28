@@ -56,4 +56,9 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     public void changeHelpStatus(String helpStatus) {
 
     }
+
+    @Override
+    public void deleteAid(String aidId) {
+
+    }
 }

@@ -22,5 +22,6 @@ public interface HelpDetailContract {
         void getHelpDetail(Activity activity,String aidId);
         void createHelpReply(String aidId,String replyContent);
         void changeHelpStatus(String helpStatus);
+        void deleteAid(String aidId);
     }
 }

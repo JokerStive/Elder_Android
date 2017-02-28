@@ -10,7 +10,6 @@ import java.io.IOException;
 
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
-import lilun.com.pension.module.utils.PreUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -27,7 +26,7 @@ public class HttpInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        String token = PreUtils.getString(User.token, "");
+        String token = User.getToken();
 
         if (!TextUtils.isEmpty(token)) {
             request = request.newBuilder().addHeader("Authorization", token).build();

@@ -1,5 +1,6 @@
 package lilun.com.pension.module.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lilun.com.pension.base.BaseBean;
@@ -86,7 +87,7 @@ public class ElderModule extends BaseBean {
         this.icon = icon;
     }
 
-    public static class ServiceConfigBean {
+    public static class ServiceConfigBean implements Serializable{
         private int kind;
 
         public String getCategory() {

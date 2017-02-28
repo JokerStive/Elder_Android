@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <lilun.com.pension.widget.NormalTitleBar
         android:id="@id/title_bar"
@@ -13,64 +12,69 @@
         app:title="@string/need_help" />
 
     <LinearLayout
-        android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
         android:orientation="vertical"
         android:padding="10dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_help_classify"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content" />
 
 
         <lilun.com.pension.widget.InputView
             android:id="@+id/input_topic"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/topic"
-            app:et_max_length="10"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            app:et_max_length="10"
+            app:input_title="@string/topic" />
 
         <lilun.com.pension.widget.InputView
             android:id="@+id/input_address"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            app:input_title="@string/address" />
 
         <lilun.com.pension.widget.InputView
             android:id="@+id/input_priority"
-            android:layout_marginTop="26dp"
-            app:input_title="@string/priority"
-            app:input_hint="@string/normal_priority"
-            app:allow_input="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            app:allow_input="false"
+            app:input_hint="@string/normal_priority"
+            app:input_title="@string/priority" />
 
         <lilun.com.pension.widget.InputView
             android:id="@+id/input_price"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/price"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            app:input_title="@string/price" />
 
         <lilun.com.pension.widget.InputView
             android:id="@+id/input_memo"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/memo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            app:input_title="@string/memo" />
+
+        <lilun.com.pension.widget.TakePhotoLayout
+            android:id="@+id/take_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp" />
     </LinearLayout>
 
     <lilun.com.pension.widget.CommonButton
         android:id="@+id/btn_create"
-        android:text="@string/build"
+        style="@style/btn_normal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/selector_help"
-        style="@style/btn_normal" />
+        android:text="@string/build" />
 
 
 </RelativeLayout>
