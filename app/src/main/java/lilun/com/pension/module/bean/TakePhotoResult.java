@@ -9,8 +9,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 *email : yk_developer@163.com
 */
 public class TakePhotoResult extends MultiItemEntity{
-    public static  final int TYPE_PHOTO=0;
-    public static  final int TYPE_ADD=1;
+    public static  final int TYPE_PHOTO=000;
+    public static  final int TYPE_ADD=111;
     private String compressPath;
 
     private String originalPath;

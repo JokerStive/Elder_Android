@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_aid_icon"
+            android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="210dp"
              />

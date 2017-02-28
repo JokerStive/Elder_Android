@@ -32,29 +32,24 @@ public class TakePhotoAdapter extends QuickAdapter<TakePhotoResult> {
 
     @Override
     protected void convert(BaseViewHolder helper, TakePhotoResult result) {
+        ImageView ivPhoto = helper.getView(R.id.iv_photo);
 
         if (result.getItemType() == TakePhotoResult.TYPE_ADD) {
-            ImageView ivPhoto = helper.getView(R.id.iv_photo);
             ivPhoto.setBackgroundResource(R.drawable.add_photo);
-            ivPhoto.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onItemClick(result);
-                }
-            });
-
         } else if (result.getItemType() == TakePhotoResult.TYPE_PHOTO) {
-            String compressPath = result.getCompressPath();
-            ImageView ivPhoto = helper.getView(R.id.iv_photo);
-            Glide.with(App.context).load(compressPath)
+            String path = result.getOriginalPath();
+            Glide.with(App.context).load(path)
                     .error(R.drawable.avatar)
                     .centerCrop()
                     .into(ivPhoto);
-            ivPhoto.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onItemClick(result);
-                }
-            });
+
         }
+
+        ivPhoto.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(result);
+            }
+        });
 
     }
 

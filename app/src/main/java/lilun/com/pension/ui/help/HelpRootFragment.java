@@ -68,7 +68,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
     @Subscribe
     public void refreshData(Event.RefreshHelpData event){
-        refreshData();
+        getHelps(0);
     }
 
     @Override

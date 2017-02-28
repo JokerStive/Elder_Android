@@ -22,7 +22,7 @@ public class FragmentFactory {
 
         } else {
 
-            if (id.equals(Config.HELP)){
+            if (id.equals(Config.help)){
 
             }
             hashMap.put(id,baseFragment);

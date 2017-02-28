@@ -46,19 +46,43 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
                 .subscribe(new RxSubscriber<OrganizationReply>(((BaseFragment)view).getActivity()) {
                     @Override
                     public void _next(OrganizationReply reply) {
-                        view.replySuccess();
+                        view.refreshData();
                     }
 
                 }));
     }
 
     @Override
-    public void changeHelpStatus(String helpStatus) {
+    public void acceptOneReply(String aidId,String replyId,int kind) {
+        OrganizationAid aid = new OrganizationAid();
+        aid.setAnswerId(replyId);
+        aid.setKind(kind);
+        addSubscribe(NetHelper.getApi()
+                .putAid(aidId,aid)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                    @Override
+                    public void _next(Object o) {
+                        view.acceptSuccess(replyId);
+                    }
+
+                }));
 
     }
 
     @Override
     public void deleteAid(String aidId) {
+        addSubscribe(NetHelper.getApi()
+                .deleteAid(aidId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                    @Override
+                    public void _next(Object o) {
+                        view.refreshData();
+                    }
 
+                }));
     }
 }

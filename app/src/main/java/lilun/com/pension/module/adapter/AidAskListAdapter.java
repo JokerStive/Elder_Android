@@ -2,10 +2,8 @@ package lilun.com.pension.module.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -16,6 +14,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 展示互助列表的adapter
@@ -66,9 +65,10 @@ public class AidAskListAdapter extends QuickAdapter<OrganizationReply> {
                 });
 
 
-        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
-                .error(R.drawable.avatar)
-                .into((ImageView) helper.getView(R.id.iv_avatar));
+//        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
+//                .error(R.drawable.avatar)
+//                .into((ImageView) helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
     }
 
 

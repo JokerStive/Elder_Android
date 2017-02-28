@@ -10,6 +10,6 @@ import lilun.com.pension.module.bean.Error;
  */
 public class GsonUtils {
     public static Error string2Error(String s){
-       return  new Gson().fromJson(s,Error.class);
+        return  new Gson().fromJson(s,Error.class);
     }
 }

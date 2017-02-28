@@ -1,5 +1,7 @@
 package lilun.com.pension.app;
 
+import lilun.com.pension.module.bean.OrganizationReply;
+
 /**
 *eventBus发送事件统一管理
 *@author yk
@@ -16,4 +18,13 @@ public class Event {
 
     //刷新邻居互助分类、列表页面数据
     public static  class RefreshHelpData{}
+
+
+    //刷新邻居互助回答列表
+    public static  class RefreshHelpReply{
+        public   OrganizationReply reply;
+        public RefreshHelpReply(OrganizationReply reply) {
+            this.reply = reply;
+        }
+    }
 }

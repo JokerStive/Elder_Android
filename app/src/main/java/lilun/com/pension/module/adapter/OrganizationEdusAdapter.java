@@ -47,7 +47,7 @@ public class OrganizationEdusAdapter extends QuickAdapter<ElderEdus> {
 
         Glide.with(fragment)
                 .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName((ArrayList<IconModule>) edu.getPicture())))
-                .into((ImageView) help.getView(R.id.iv_aid_icon));
+                .into((ImageView) help.getView(R.id.banner));
 
 
     }

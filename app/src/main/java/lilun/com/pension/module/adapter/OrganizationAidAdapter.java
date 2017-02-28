@@ -1,10 +1,8 @@
 package lilun.com.pension.module.adapter;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -16,6 +14,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 展示互助列表的adapter
@@ -41,7 +40,8 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
         UIUtils.setBold(tvTitle);
         tvTitle.setText(aid.getTitle());
 
-        Glide.with(fragment).load(IconUrl.organizationAid(aid.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId()),0,help.getView(R.id.banner));
+//        Glide.with(fragment).load(IconUrl.organizationAid(aid.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
 
         //是否显示补贴
         TextView tvItemPrice = help.getView(R.id.tv_item_time);

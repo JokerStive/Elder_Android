@@ -2,9 +2,7 @@ package lilun.com.pension.widget;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -13,15 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.orhanobut.logger.Logger;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.finalteam.galleryfinal.model.PhotoInfo;
 import lilun.com.pension.R;
-import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.callback.TakePhotoClickListener;
 
 /**
@@ -35,7 +25,6 @@ public class TakePhotoDialogFragment extends DialogFragment implements View.OnCl
 
 
     private TakePhotoClickListener listener;
-    private Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));
 
     public static TakePhotoDialogFragment newInstance() {
         TakePhotoDialogFragment fragment = new TakePhotoDialogFragment();
@@ -93,32 +82,12 @@ public class TakePhotoDialogFragment extends DialogFragment implements View.OnCl
     }
 
     private void takePhoto() {
-
+        if (listener!=null){
+            listener.onCameraClick();
+        }
         dismiss();
     }
 
-
-    public void takeSuccess(List<PhotoInfo> photoInfos) {
-        //返回图片的地址集合
-        Logger.d("获取图片success");
-        if (listener != null) {
-            List<TakePhotoResult> results = new ArrayList<>();
-            for (PhotoInfo photoInfo : photoInfos) {
-                TakePhotoResult result1 = TakePhotoResult.of(photoInfo.getPhotoPath(), photoInfo.getPhotoPath(), TakePhotoResult.TYPE_PHOTO);
-                results.add(result1);
-            }
-            listener.showPhotos(results);
-        }
-
-    }
-
-    public void takeFail(String msg) {
-        Logger.d("获取图片失败=="+msg);
-    }
-
-    public void takeCancel() {
-        Logger.d("获取图片cancel");
-    }
 
     public void setOnResultListener(TakePhotoClickListener listener) {
         this.listener = listener;

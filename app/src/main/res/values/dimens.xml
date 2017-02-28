@@ -21,6 +21,8 @@
 
     <dimen name="urgency_height">462dp</dimen>
 
+    <dimen name="max_photo_height">266dp</dimen>
+
     <dimen name="login_background_height">204dp</dimen>
 
 

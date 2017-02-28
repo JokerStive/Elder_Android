@@ -1,6 +1,9 @@
 package lilun.com.pension.ui.help;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,24 +13,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.app.TakePhotoImpl;
+import com.jph.takephoto.compress.CompressConfig;
+import com.jph.takephoto.model.InvokeParam;
+import com.jph.takephoto.model.LubanOptions;
+import com.jph.takephoto.model.TContextWrap;
+import com.jph.takephoto.model.TImage;
+import com.jph.takephoto.model.TResult;
+import com.jph.takephoto.permission.InvokeListener;
+import com.jph.takephoto.permission.PermissionManager;
+import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.bean.TakePhotoResult;
+import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
@@ -51,7 +68,7 @@ import rx.Subscription;
  *         create at 2017/2/16 17:33
  *         email : yk_developer@163.com
  */
-public class AddHelpFragment extends BaseFragment implements View.OnClickListener {
+public class AddHelpFragment extends BaseFragment implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener, TakePhotoClickListener {
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
@@ -77,7 +94,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     @Bind(R.id.btn_create)
     CommonButton btnCreate;
     @Bind(R.id.take_photo)
-    TakePhotoLayout takePhoto;
+    TakePhotoLayout takePhotoLayout;
 
     private List<ElderModule> elderModules;
 
@@ -86,6 +103,9 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     private Subscription subscription;
     private String[] helpPriority;
     private Observable<OrganizationAid> observable;
+    private TakePhoto takePhoto;
+    private InvokeParam invokeParam;
+    private Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));
 
     public static AddHelpFragment newInstance(List<ElderModule> elderModules) {
         AddHelpFragment fragment = new AddHelpFragment();
@@ -93,6 +113,32 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         args.putSerializable("elderModules", (Serializable) elderModules);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        getTakePhoto().onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        getTakePhoto().onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.handlePermissionsResult(getActivity(), type, invokeParam, this);
     }
 
     @Override
@@ -115,7 +161,8 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     @Override
     protected void initView(LayoutInflater inflater) {
 
-        takePhoto.setFragmentManager(_mActivity.getFragmentManager());
+        takePhotoLayout.setFragmentManager(_mActivity.getFragmentManager());
+        takePhotoLayout.setOnResultListener(this);
 
         inputPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -205,27 +252,15 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
 
             //如果有图片，需要先上传图片
             Observable<OrganizationAid> observable = aidObservable(null);
-            List<String> data = takePhoto.getData();
+            List<String> data = takePhotoLayout.getData();
             if (data != null) {
-                Map<String, RequestBody> requestBodyMap = new HashMap<>();
-                Observable.from(data)
-                        .map(BitmapUtils::createRequestBodies)
-                        .compose(RxUtils.applySchedule())
-                        .subscribe(requestBody -> {
-                            requestBodyMap.put("file\"; filename=\"info" + 0 + ".png", requestBody);
-                            boolean start = requestBodyMap.size() == data.size();
-                            if (start) {
-                                iconObservable(requestBodyMap).flatMap(this::aidObservable);
-                                //TODO 为毛不执行
-                                start(observable);
-                            }
-                        });
-
-            } else {
-                start(observable);
+                Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(data);
+                if (requestBodies!=null){
+                    observable = iconObservable(requestBodies).flatMap(this::aidObservable);
+                }
             }
 
-
+            start(observable);
         }
     }
 
@@ -254,7 +289,6 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
             organizationAid.setPrice(Integer.parseInt(inputPrice.getInput()));
         }
-        organizationAid.setId("111111111" + new Random(100).nextInt() + organizationAid.getPrice());
         return organizationAid;
     }
 
@@ -283,4 +317,68 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
+
+    /**
+     * 获取TakePhoto实例
+     *
+     * @return
+     */
+    public TakePhoto getTakePhoto() {
+        if (takePhoto == null) {
+            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+            LubanOptions option = new LubanOptions.Builder()
+                    .setMaxHeight(Config.uploadPtotoMaxHeight)
+                    .setMaxWidth(Config.uploadPtotoMaxWidth)
+                    .setMaxSize(Config.uploadPtotoMaxSize)
+                    .create();
+            CompressConfig config = CompressConfig.ofLuban(option);
+            takePhoto.onEnableCompress(config, true);
+        }
+        return takePhoto;
+    }
+
+
+    @Override
+    public void onCameraClick() {
+        getTakePhoto().onPickFromCapture(uri);
+    }
+
+    @Override
+    public void onAlbumClick() {
+        getTakePhoto().onPickMultiple(takePhotoLayout.getEnableDataCount());
+    }
+
+    @Override
+    public void takeSuccess(TResult result) {
+        Logger.d("take photo success");
+        List<TakePhotoResult> results = new ArrayList<>();
+        for (TImage tImage : result.getImages()) {
+            TakePhotoResult result1 = TakePhotoResult.of(tImage.getOriginalPath(), tImage.getCompressPath(), TakePhotoResult.TYPE_PHOTO);
+            results.add(result1);
+        }
+        Observable.just("")
+                .compose(RxUtils.applySchedule())
+                .subscribe(s -> {
+                    takePhotoLayout.showPhotos(results);
+                });
+    }
+
+    @Override
+    public void takeFail(TResult result, String msg) {
+        Logger.d("take photo false " + msg);
+    }
+
+    @Override
+    public void takeCancel() {
+        Logger.d("take photo cancel ");
+    }
+
+    @Override
+    public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
+        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod());
+        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
+            this.invokeParam = invokeParam;
+        }
+        return type;
+    }
 }

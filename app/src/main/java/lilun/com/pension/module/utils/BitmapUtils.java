@@ -12,7 +12,9 @@ import com.orhanobut.logger.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import lilun.com.pension.app.App;
@@ -30,8 +32,6 @@ public class BitmapUtils {
 
     // 根据路径获得图片并压缩，返回bitmap用于显示
     public static Bitmap getSmallBitmap(String filePath) {
-
-
         if (filePath.startsWith("content")) {
             filePath = filePath.replace("content", "file");
         }
@@ -90,36 +90,17 @@ public class BitmapUtils {
     /**
      * 创建文件的requestBody
      */
-    public static RequestBody createRequestBodies(String iconPath) {
-//        Map<String, RequestBody> requestBodyMap = new HashMap<>();
-//        Observable.from(iconPaths)
-//                .map(BitmapUtils::bitmapToBytes)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new RxSubscriber<byte[]>() {
-//                    @Override
-//                    public void _next(byte[] bytes) {
-//                        if (bytes != null) {
-        byte[] bytes = bitmapToBytes(iconPath);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
-//                            requestBodyMap.put("file\"; filename=\"info" + 0 + ".png", requestBody);
-//                        }
-//                    }
-//                });
-        return requestBody;
-    }
-
-
-    /**
-     * 从模型中的picture字段获取单张pictureName
-     */
-    public static String picName(String pictureName) {
-        if (pictureName != null) {
-            List<IconModule> imgList = StringUtils.string2IconModule(pictureName);
-            return imgList.get(0).getFileName();
+    public static Map<String,RequestBody> createRequestBodies(List<String> iconPaths) {
+        Map<String,RequestBody> map = new HashMap<>();
+        for (int i = 0; i < iconPaths.size(); i++) {
+            byte[] pathString = BitmapUtils.bitmapToBytes(iconPaths.get(i));
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
+            map.put("file\"; filename=\"info" + i + ".png", requestBody);
         }
-        return "";
+        return map;
     }
+
+
 
     /**
      * 从模型中的picture字段获取单张pictureName

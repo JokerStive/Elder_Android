@@ -5,14 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +23,21 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AidAskListAdapter;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.ui.help.reply.HelpReplyFragment;
+import lilun.com.pension.widget.NormalItemDecoration;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
+import lilun.com.pension.widget.slider.BannerPager;
 
 /**
  * 互助详情V
@@ -54,7 +63,6 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
     private int status_new = 0;
     private int status_answered = 1;
-    private int status_solved = 2;
     private boolean mCreatorIsOwn;
     private int mStatus;
     private List<OrganizationReply> mDetailData = new ArrayList<>();
@@ -62,6 +70,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private TextView tvPrice;
     private AidAskListAdapter mReplyAdapter;
     private ImageView ivAvatar;
+    private BannerPager banner;
 
     public static AskDetailFragment newInstance(OrganizationAid aid) {
         AskDetailFragment fragment = new AskDetailFragment();
@@ -69,6 +78,17 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         args.putSerializable("OrganizationAid", aid);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Subscribe
+    public void refreshReplies(Event.RefreshHelpReply event){
+        if (mReplyAdapter!=null && event!=null){
+            mReplyAdapter.add(event.reply);
+            if (tvJonerTitle.getVisibility()==View.GONE){
+                tvJonerTitle.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
 
     @Override
@@ -98,7 +118,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         mHeadView = inflater.inflate(R.layout.head_help_detail, null);
 
         //不管是问还是帮都具有的
-        ivIcon = (ImageView) mHeadView.findViewById(R.id.iv_aid_icon);
+        banner = (BannerPager) mHeadView.findViewById(R.id.banner);
         ivAvatar= (ImageView) mHeadView.findViewById(R.id.iv_avatar);
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
@@ -127,19 +147,17 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         //是自己创建的
         if (mCreatorIsOwn) {
             if (mStatus == status_new || mStatus == status_answered) {
-                setChangeStatus(getString(R.string.cancel));
+                setChangeStatus(true,getString(R.string.cancel));
             }
         }
         //不是自己创建的
         else {
             if (mStatus == status_new || mStatus == status_answered) {
-                setChangeStatus(getString(R.string.answer));
+                setChangeStatus(true,getString(R.string.answer));
             }
         }
 
-        Glide.with(this).load(IconUrl.account(User.getUserId(),null))
-                .error(R.drawable.avatar)
-                .into(ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,ivAvatar);
 
         setJoinerAdapter();
 
@@ -150,6 +168,17 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         mPresenter.getHelpDetail(_mActivity, mAid.getId());
+        List<String> urls = new ArrayList<>();
+        if (mAid.getPicture()!=null){
+            for(IconModule iconModule:mAid.getPicture()){
+                String url = IconUrl.organizationAid(mAid.getId(), iconModule.getFileName());
+                urls.add(url);
+            }
+        }else {
+            String url = IconUrl.organizationAid(mAid.getId());
+            urls.add(url);
+        }
+        banner.setData(urls);
     }
 
     /**
@@ -157,11 +186,11 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
      */
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new NormalItemDecoration(17));
         mReplyAdapter = new AidAskListAdapter(this, mDetailData,mCreatorIsOwn);
         mReplyAdapter.addHeaderView(mHeadView);
         mReplyAdapter.setOnAgreeClickListenerr(id -> {
-            mReplyAdapter.setAnswerId(id);
-            mReplyAdapter.notifyDataSetChanged();
+            mPresenter.acceptOneReply(mAid.getId(),id,mAid.getKind());
         });
         recyclerView.setAdapter(mReplyAdapter);
     }
@@ -169,11 +198,11 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     /**
      * 根据状态，设置按钮的显示与否
      */
-    private void setChangeStatus(String string) {
-        if (tvChangeStatus.getVisibility() == View.GONE) {
-            tvChangeStatus.setVisibility(View.VISIBLE);
+    private void setChangeStatus(boolean isShow,String string) {
+        tvChangeStatus.setVisibility(isShow?View.VISIBLE:View.GONE);
+        if (!TextUtils.isEmpty(string)){
+            tvChangeStatus.setText(string);
         }
-        tvChangeStatus.setText(string);
     }
 
     @Override
@@ -208,8 +237,16 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     }
 
     @Override
-    public void replySuccess() {
+    public void acceptSuccess(String replyId) {
+        mReplyAdapter.setAnswerId(replyId);
+        mReplyAdapter.notifyDataSetChanged();
+        setChangeStatus(false,null);
+    }
 
+    @Override
+    public void refreshData() {
+        EventBus.getDefault().post(new Event.RefreshHelpData());
+        pop();
     }
 
 
@@ -231,10 +268,10 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         if (status.equals(getString(R.string.cancel))) {
             //TODO 取消这条求助信息
             Logger.d("delete this aid");
+            mPresenter.deleteAid(mAid.getId());
 
         } else if (status.equals(getString(R.string.answer))) {
-            //TODO 弹出键盘回答
-            Logger.d("answer this aid");
+            start(HelpReplyFragment.newInstance(mAid));
         }
     }
 }

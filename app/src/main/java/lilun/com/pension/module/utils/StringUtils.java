@@ -82,10 +82,10 @@ public class StringUtils {
     public static String addFilterWithDef(String filter, int skip) {
         String head;
         if (TextUtils.isEmpty(filter)) {
-            head = "{\"limit\":\"" + Config.DEF_LOAD_DATA_COUNT + "\",\"skip\":\"" + skip + "\"}";
+            head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = head;
         } else {
-            head = ",\"limit\":\"" + Config.DEF_LOAD_DATA_COUNT + "\",\"skip\":\"" + skip + "\"}";
+            head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = filter.substring(0, filter.lastIndexOf("}")) + head;
         }
 //        Logger.d("拼接够的filter--" + filter);

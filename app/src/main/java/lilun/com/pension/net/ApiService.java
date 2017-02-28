@@ -20,41 +20,43 @@ import lilun.com.pension.module.bean.TokenInfo;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
 /**
-*网络接口
-*@author yk
-*create at 2017/2/13 13:09
-*email : yk_developer@163.com
-*/
+ * 网络接口
+ *
+ * @author yk
+ *         create at 2017/2/13 13:09
+ *         email : yk_developer@163.com
+ */
 public interface ApiService {
 
 
     /**
-     *token检查
+     * token检查
      */
 
     @GET("Accounts/me")
     Observable<Response<Object>> getMe();
 
     /**
-     *获取当前账户信息
+     * 获取当前账户信息
      */
 
     @GET("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
     Observable<Response<Account>> getAccountInfo(@Path("id") String accountId);
 
 
-
     /**
-     *获取elderModule分类数据
+     * 获取elderModule分类数据
      */
 
     @GET("ElderModules")
@@ -62,24 +64,23 @@ public interface ApiService {
 
 
     /**
-     *获取ProductCategory数据
+     * 获取ProductCategory数据
      */
 
     @GET("ProductCategories")
     Observable<Response<List<ProductCategory>>> getProductCategories(@Query("filter") String filter);
 
 
-
     /**
-     *获取求助数据
+     * 获取求助数据
      */
 
     @GET("Organizations/{id}/children")
-    Observable<Response<List<OrganizationAid>>> getOrganizationAids(@Path("id") String organizationId,@Query("filter") String filter);
+    Observable<Response<List<OrganizationAid>>> getOrganizationAids(@Path("id") String organizationId, @Query("filter") String filter);
 
 
     /**
-     *获取product
+     * 获取product
      */
 
     @GET("OrganizationProducts")
@@ -87,23 +88,22 @@ public interface ApiService {
 
 
     /**
-     *获取organization
+     * 获取organization
      */
 
     @GET("Organizations/{id}/children")
     Observable<Response<List<Organization>>> getOrganizations(@Path("id") String organizationId, @Query("filter") String filter);
 
 
-
     /**
-     *获取求助数据
+     * 获取求助数据
      */
 
     @GET("OrganizationAids/getMyAid")
     Observable<Response<List<OrganizationAid>>> getMyAids(@Query("filter") String filter);
 
     /**
-     *获取求助详情数据
+     * 获取求助详情数据
      */
 
     @GET("OrganizationAids/{id}/getDetails")
@@ -111,14 +111,14 @@ public interface ApiService {
 
 
     /**
-     *获取ActivityCategory
+     * 获取ActivityCategory
      */
 
     @GET("OrganizationActivityCategories")
     Observable<Response<List<ActivityCategory>>> getActivityCategories(@Query("filter") String filter);
 
     /**
-     *获取OrganizationActivity
+     * 获取OrganizationActivity
      */
 
     @GET("Organizations/{id}/children")
@@ -126,19 +126,27 @@ public interface ApiService {
 
 
     /**
-     *获取productOrder
+     * 获取productOrder
      */
 
     @GET("ProductOrders")
-    Observable<Response<List<ProductOrder>>> getProductOrders( @Query("filter") String filter);
+    Observable<Response<List<ProductOrder>>> getProductOrders(@Query("filter") String filter);
 
 
     /**
-     *根据id获取一个organization
+     * 根据id获取一个organization
      */
 
     @GET("Organizations/{id}")
     Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId);
+
+
+    /**
+     * 获取reply集合数据
+     */
+
+    @GET("OrganizationReplies")
+    Observable<Response<List<OrganizationReply>>> getOrganizationReplies(@Query("filter") String filter);
 
 //========================POST===============================================
 
@@ -161,7 +169,6 @@ public interface ApiService {
      */
     @POST("OrganizationReplies")
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
-
 
 
     /**
@@ -192,6 +199,26 @@ public interface ApiService {
     @GET("OrganizationEdus/{id}/courses")
     Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
 
+//==========================================DELETE
 
+    /**
+     * 删除一个reply
+     */
+    @DELETE("OrganizationReplies/{id}")
+    Observable<Response<Object>> deleteReply(@Path("id") String replyId);
+
+    /**
+     * 删除一个aid
+     */
+    @DELETE("OrganizationAids/{id}")
+    Observable<Response<Object>> deleteAid(@Path("id") String aidId);
+
+//    =========================================PUT
+
+    /**
+     * 更新个aid
+     */
+    @PUT("OrganizationAids/{id}")
+    Observable<Response<Object>> putAid(@Path("id") String aidId, @Body OrganizationAid aid);
 
 }

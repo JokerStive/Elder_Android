@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,6 @@ import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
@@ -40,6 +38,7 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     private int spanCount = 4;
     private FragmentManager fragmentManager;
     private TakePhotoDialogFragment fragment;
+    private TakePhotoClickListener listener;
 
     public TakePhotoLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -57,6 +56,10 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
         this.fragmentManager = fragmentManager;
     }
 
+    public void setOnResultListener(TakePhotoClickListener listener) {
+        this.listener = listener;
+    }
+
 
     private void initAdapter() {
         List<TakePhotoResult> results = new ArrayList<>();
@@ -64,18 +67,18 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
         results.add(result);
         adapter = new TakePhotoAdapter(results);
         adapter.setOnItemClickListener(result1 -> {
-            if (adapter.getItemCount() - 1 < Config.UPLOAD_PHOTO_COUNT) {
+            if (result1.getItemType() == TakePhotoResult.TYPE_ADD) {
                 if (fragmentManager != null) {
-                    if (result1.getItemType() == TakePhotoResult.TYPE_ADD) {
+                    if (adapter.getItemCount() - 1 < Config.uploadPhotoCount) {
                         fragment = TakePhotoDialogFragment.newInstance();
                         fragment.setOnResultListener(TakePhotoLayout.this);
                         fragment.show(fragmentManager, null);
                     } else {
-                        Logger.d("图片查看器");
+                        ToastHelper.get().showWareShort(String.format("最多只能上传%1$s张图片", Config.uploadPhotoCount));
                     }
                 }
             } else {
-                ToastHelper.get().showWareShort(String.format("最多只能上传%1$s张图片", Config.UPLOAD_PHOTO_COUNT));
+                Logger.d("图片查看");
             }
         });
 
@@ -93,32 +96,26 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
 
     }
 
-    @Override
+
     public void showPhotos(List<TakePhotoResult> results) {
         if (adapter != null) {
-            adapter.addAllReverse(results);
-            if (adapter.getItemCount() - 1 == Config.UPLOAD_PHOTO_COUNT) {
-                adapter.remove(adapter.getItemCount() - 1);
-            }
+            adapter.addAll(results);
+//            for(TakePhotoResult result:adapter.getData()){
+//                if (result.getItemType()==TakePhotoResult.TYPE_ADD){
+//                    adapter.remove(result);
+//                }
+//            }
         }
     }
 
     @Override
-    public void onAlbumClick() {
-        FunctionConfig config = new FunctionConfig.Builder()
-                .setMutiSelectMaxSize(Config.UPLOAD_PHOTO_COUNT - adapter.getItemCount() + 1)
-                .build();
-        GalleryFinal.openGalleryMuti(111, config, new GalleryFinal.OnHanlderResultCallback() {
-            @Override
-            public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                fragment.takeSuccess(resultList);
-            }
+    public void onCameraClick() {
+        listener.onCameraClick();
+    }
 
-            @Override
-            public void onHanlderFailure(int requestCode, String errorMsg) {
-                fragment.takeFail(errorMsg);
-            }
-        });
+    @Override
+    public void onAlbumClick() {
+        listener.onAlbumClick();
     }
 
 
@@ -129,16 +126,19 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
         if (adapter != null) {
             List<TakePhotoResult> data = adapter.getData();
             if (data != null && data.size() > 1) {
-                data.remove(data.size() - 1);
-                if (data.size() > 0) {
                     List<String> iconPath = new ArrayList<>();
                     for (TakePhotoResult result : data) {
-                        iconPath.add(result.getOriginalPath());
-                    }
-                    return iconPath;
+                        if (result.getItemType()==TakePhotoResult.TYPE_PHOTO && !TextUtils.isEmpty(result.getCompressPath())){
+                            iconPath.add(result.getCompressPath());
+                        }
                 }
+                return iconPath;
             }
         }
         return null;
+    }
+
+    public int getEnableDataCount() {
+        return Config.uploadPhotoCount - adapter.getItemCount() + 1;
     }
 }

@@ -10,12 +10,19 @@ public class Config {
 //    public static final String BASE_URL = "http://120.25.218.244:3010/api/";
 
 
-    public static final String HELP = "HELP";
+    public static final String help = "help";
 
-    public static final int DEF_LOAD_DATA_COUNT = 20;
+    public static final int defLoadDatCount = 20;
 
-    public static final int UPLOAD_PHOTO_COUNT = 4;
+    public static final int uploadPhotoCount = 4;
+
+    public static final int uploadPtotoMaxHeight = 800;
+
+    public static final int uploadPtotoMaxWidth =1080;
+
+    public static final int uploadPtotoMaxSize = 1024000;
 
     public static final String agency_classify_service_parentId = "服务/养老机构";
+
     public static final String residential_service_classify_parentId = "服务/居家服务";
 }

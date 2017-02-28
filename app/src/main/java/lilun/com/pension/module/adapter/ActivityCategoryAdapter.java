@@ -47,6 +47,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
         if (activityCategory.getIcon()!=null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
             String iconUrl = IconUrl.activityCategory(activityCategory.getId(),firstIconName);
+//            ImageLoaderUtil.instance().loadImage();
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }
