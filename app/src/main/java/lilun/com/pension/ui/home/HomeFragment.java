@@ -1,7 +1,5 @@
 package lilun.com.pension.ui.home;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -12,16 +10,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nineoldandroids.view.ViewHelper;
-
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
@@ -32,7 +27,6 @@ import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
-import lilun.com.pension.widget.TakePhotoDialogFragment;
 
 /**
  * 首页V
@@ -67,7 +61,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     DrawerLayout drawer;
     @Bind(R.id.tv_position)
     TextView tvPosition;
-    private List<Announcement> announcements;
+    private List<Information> informations;
 
 
     @Override
@@ -87,7 +81,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-        drawer.setScrimColor(Color.TRANSPARENT);
+//        drawer.setScrimColor(Color.TRANSPARENT);
 
         ivActivities.setOnClickListener(this);
         ivAgency.setOnClickListener(this);
@@ -103,25 +97,25 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                View mContent = drawer.getChildAt(0);
-                View mMenu = drawerView;
-                float scale = 1 - slideOffset;
-                float rightScale = 0.8f + scale * 0.2f;
-                if (drawerView.getTag().equals("LEFT")) {
+//                View mContent = drawer.getChildAt(0);
+//                View mMenu = drawerView;
+//                float scale = 1 - slideOffset;
+//                float rightScale = 0.8f + scale * 0.2f;
+//                if (drawerView.getTag().equals("LEFT")) {
 
 //                    float leftScale = 1 - 0.3f * scale;
 
 //                    ViewHelper.setScaleX(mMenu, leftScale);
 //                    ViewHelper.setScaleY(mMenu, leftScale);
 //                    ViewHelper.setAlpha(mMenu, 0.6f + 0.4f * (1 - scale));
-                    ViewHelper.setTranslationX(mContent,
-                            mMenu.getMeasuredWidth() * (1 - scale));
-                    ViewHelper.setPivotX(mContent, 0);
-                    ViewHelper.setPivotY(mContent, mContent.getMeasuredHeight() / 2);
-                    mContent.invalidate();
-                    ViewHelper.setScaleX(mContent, rightScale);
-                    ViewHelper.setScaleY(mContent, rightScale);
-                }
+//                    ViewHelper.setTranslationX(mContent,
+//                            mMenu.getMeasuredWidth() * (1 - scale));
+//                    ViewHelper.setPivotX(mContent, 0);
+//                    ViewHelper.setPivotY(mContent, mContent.getMeasuredHeight() / 2);
+//                    mContent.invalidate();
+//                    ViewHelper.setScaleX(mContent, rightScale);
+//                    ViewHelper.setScaleY(mContent, rightScale);
+//                }
             }
 
             @Override
@@ -145,7 +139,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        mPresenter.getAnnouncements();
+        mPresenter.getInformation();
     }
 
     @Override
@@ -168,8 +162,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-                TakePhotoDialogFragment.newInstance().show(_mActivity.getFragmentManager(),"");
-//                startHelp();
+//                TakePhotoDialogFragment.newInstance().show(_mActivity.getFragmentManager(),"");
+                startHelp();
                 break;
 
             case R.id.iv_education:
@@ -197,15 +191,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         start(HelpRootFragment.newInstance());
     }
 
-    private void startModule(Class clazz) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("announcements", (Serializable) getClassifyAnnouncements());
-        Intent intent = new Intent(_mActivity, clazz);
-        intent.putExtra("extra", bundle);
-        _mActivity.startActivity(intent);
-    }
 
-    private List<Announcement> getClassifyAnnouncements() {
+    private List<Information> getClassifyAnnouncements() {
+        if (informations!=null && informations.size()!=0){
+
+        }
 //        List<Announcement> classifyAnnouncements = new ArrayList<>();
 //        for (int i = 0; i < this.announcements.size() - 3; i++) {
 //            classifyAnnouncements.add(announcements.get(i));
@@ -265,9 +255,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
 
     @Override
-    public void showAnnouncementFragment(List<Announcement> announcements) {
-        this.announcements = announcements;
-        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
+    public void showInformation(List<Information> informations) {
+        if (informations.size()!=0){
+            this.informations = informations;
+            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(informations), false);
+        }
     }
 
 

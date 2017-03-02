@@ -44,7 +44,18 @@ public class Account implements Serializable {
     private String status;
     private String picture;
     private String visibility;
+
+    public boolean isCustomer() {
+        return isCustomer;
+    }
+
+    public Account setCustomer(boolean customer) {
+        isCustomer = customer;
+        return this;
+    }
+
     private String password;
+    private boolean isCustomer=true;
     private List<String> roles;
     private List<String> _perms;
 

@@ -8,12 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/iv_icon"
+        <lilun.com.pension.widget.slider.BannerPager
+            android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="266dp"
-            android:background="@drawable/selector_help" />
+            android:layout_height="@dimen/max_photo_height" />
 
         <ImageView
             android:id="@+id/iv_back"
@@ -26,7 +24,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_icon"
+            android:layout_below="@id/banner"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
@@ -120,7 +118,7 @@
 
                 <RatingBar
                     android:id="@+id/rb_bar"
-                    style="@style/fiveRatingBar"
+                    style="@style/ratingBarr_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

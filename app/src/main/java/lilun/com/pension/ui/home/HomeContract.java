@@ -4,7 +4,7 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
 
 /**
 *首页契约类
@@ -14,11 +14,11 @@ import lilun.com.pension.module.bean.Announcement;
 */
 public interface HomeContract {
     interface View extends IView<Presenter> {
-        void showAnnouncementFragment(List<Announcement> announcements);
+        void showInformation(List<Information> informations);
     }
 
     interface Presenter extends IPresenter<View> {
-        void getAnnouncements();
+        void getInformation();
 
     }
 }

@@ -40,7 +40,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
         UIUtils.setBold(tvTitle);
         tvTitle.setText(aid.getTitle());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId()),0,help.getView(R.id.banner));
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(),null),0,help.getView(R.id.banner));
 //        Glide.with(fragment).load(IconUrl.organizationAid(aid.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
 
         //是否显示补贴

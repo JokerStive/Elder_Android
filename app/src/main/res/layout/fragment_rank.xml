@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height">
+
+        <lilun.com.pension.widget.NormalTitleBar
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:title="@string/evaluation" />
+
+        <TextView
+            android:id="@+id/tv_new_rank"
+            style="@style/tv_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/red"
+            android:text="发布" />
+
+    </RelativeLayout>
+
+    <RatingBar
+        android:id="@+id/rb_ranking"
+        style="@style/ratingBarr_big"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:minWidth="30dp"
+        android:minHeight="27dp"
+        android:isIndicator="false"
+        android:numStars="5" />
+
+    <View
+        style="@style/line_gray"/>
+
+    <EditText
+        android:id="@+id/et_rank_content"
+        android:padding="10dp"
+        android:hint="@string/say_some"
+        style="@style/et_normal"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

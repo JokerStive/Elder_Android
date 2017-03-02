@@ -51,6 +51,7 @@ public class LoginModule implements LoginContract.Module {
         Logger.d("账户默认所属组织 = "+organizationId);
         User.putBelongsOrganizationId(organizationId);
         User.puttCurrentOrganizationId(organizationId);
+        User.putIsCustomer(account.isCustomer());
     }
 
     private Account getAccount(String username, String password) {

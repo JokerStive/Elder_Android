@@ -26,7 +26,7 @@
                 android:id="@+id/ig_colleage_icon"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/announcement_def" />
+                android:src="@drawable/icon_def" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_height="60dp"
                     android:background="@drawable/shape_cicle"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/announcement_def"
+                    android:src="@drawable/icon_def"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
@@ -80,7 +80,7 @@
                     android:layout_marginBottom="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_22"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:src="@drawable/announcement_def" />
+                    android:src="@drawable/icon_def" />
             </RelativeLayout>
 
             <View

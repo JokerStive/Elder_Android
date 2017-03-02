@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pension</string>
+    <string name="app_name">智慧养老</string>
 
     <!--token-->
     <string name="ware">警告</string>
@@ -63,6 +63,8 @@
     <string name="format_price">(%1$d元补贴)</string>
     <string name="format_phone">联系电话：%1$s</string>
     <string name="confirm_help_other">确定帮助他人？</string>
+    <string name="confirm_delete_help">确定删除这条求助？</string>
+    <string name="confirm_cancel_help">确定不能提供帮助了？</string>
     <string name="accepted">已接受</string>
     <string name="take_in">已采纳</string>
     <string name="evaluation">评价</string>
@@ -107,6 +109,8 @@
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
     <string name="price_format">%1$d元</string>
+    <string name="new_service">发布服务</string>
+    <string name="all_orders">所有订单</string>
 
     <!--登陆注册-->
     <string name="welcome">欢迎来到养老</string>
@@ -123,4 +127,6 @@
     <string name="join_in">报名</string>
 
 
+    <!--评价-->
+    <string name="say_some">说点什么吧</string>
 </resources>

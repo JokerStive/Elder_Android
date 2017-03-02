@@ -3,16 +3,16 @@
     <item
         android:id="@android:id/background"
 
-        android:drawable="@drawable/star_hide" />
+        android:drawable="@drawable/star_big_off" />
 
     <item
         android:id="@android:id/secondaryProgress"
 
-        android:drawable="@drawable/star_hide" />
+        android:drawable="@drawable/star_big_off" />
 
     <item
         android:id="@android:id/progress"
 
-        android:drawable="@drawable/star_show" />
+        android:drawable="@drawable/star_big_on" />
 
 </layer-list>

@@ -61,7 +61,7 @@
             android:id="@+id/fl_announcement_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/push_bar_height"
-            android:background="@color/red_deep" />
+            android:background="@drawable/announcement_def" />
 
 
         <include

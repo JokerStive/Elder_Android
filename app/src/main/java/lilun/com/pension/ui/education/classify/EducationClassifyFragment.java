@@ -22,9 +22,9 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.OrganizationEdusAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
-import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.activity.list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
@@ -58,9 +58,9 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private List<ElderEdus> products = new ArrayList<>();
     private OrganizationEdusAdapter mAdapter;
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
 
-    public static EducationClassifyFragment newInstance(List<Announcement> announcements) {
+    public static EducationClassifyFragment newInstance(List<Information> announcements) {
         EducationClassifyFragment fragment = new EducationClassifyFragment();
         Bundle args = new Bundle();
         args.putSerializable("announcements", (Serializable) announcements);
@@ -70,7 +70,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Announcement>) arguments.getSerializable("announcements");
+        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override

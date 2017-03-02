@@ -17,7 +17,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
@@ -50,9 +50,9 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
 
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
 
-    public static AgencyClassifyFragment newInstance(List<Announcement> announcements) {
+    public static AgencyClassifyFragment newInstance(List<Information> announcements) {
         AgencyClassifyFragment fragment = new AgencyClassifyFragment();
         Bundle args = new Bundle();
         args.putSerializable("announcements", (Serializable) announcements);
@@ -62,7 +62,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Announcement>) arguments.getSerializable("announcements");
+        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override

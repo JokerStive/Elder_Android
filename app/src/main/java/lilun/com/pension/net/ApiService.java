@@ -5,10 +5,12 @@ import java.util.Map;
 
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
+import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -16,6 +18,7 @@ import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
+import lilun.com.pension.module.bean.Rank;
 import lilun.com.pension.module.bean.TokenInfo;
 import okhttp3.RequestBody;
 import retrofit2.Response;
@@ -107,7 +110,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationAids/{id}/getDetails")
-    Observable<Response<OrganizationAid>> getAidDetail(@Path("id") String aidId);
+    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId);
 
 
     /**
@@ -148,6 +151,14 @@ public interface ApiService {
     @GET("OrganizationReplies")
     Observable<Response<List<OrganizationReply>>> getOrganizationReplies(@Query("filter") String filter);
 
+
+    /**
+//     * 获取information集合数据
+//     */
+
+    @GET("OrganizationInformations")
+    Observable<Response<List<Information>>> getInformations(@Query("filter") String filter);
+
 //========================POST===============================================
 
     /**
@@ -169,6 +180,13 @@ public interface ApiService {
      */
     @POST("OrganizationReplies")
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
+
+
+    /**
+     * 新增一个rank
+     */
+    @POST("OrganizationRanks")
+    Observable<Response<Object>> newRank(@Body Rank rank);
 
 
     /**
@@ -213,12 +231,20 @@ public interface ApiService {
     @DELETE("OrganizationAids/{id}")
     Observable<Response<Object>> deleteAid(@Path("id") String aidId);
 
+
+
 //    =========================================PUT
 
     /**
-     * 更新个aid
+     * 更新一个aid
      */
     @PUT("OrganizationAids/{id}")
     Observable<Response<Object>> putAid(@Path("id") String aidId, @Body OrganizationAid aid);
+
+    /**
+     * 更新一个reply
+     */
+    @PUT("OrganizationReplies/{id}")
+    Observable<Response<Object>> putReply(@Path("id") String replyId, @Body OrganizationReply reply);
 
 }

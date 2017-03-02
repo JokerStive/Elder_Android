@@ -6,8 +6,6 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import java.io.Serializable;
 import java.util.List;
 
-import lilun.com.pension.app.OrganizationChildrenConfig;
-
 /**
 *互助模型
 *@author yk
@@ -17,14 +15,20 @@ import lilun.com.pension.app.OrganizationChildrenConfig;
 public class OrganizationAid extends MultiItemEntity implements Serializable{
     private static final long serialVersionUID = 1L;
 
+
     /**
+     * id : string
      * title : string
      * kind : 0
      * address : string
      * priority : 0
+     * status : 0
+     * tags : ["string"]
      * price : 0
      * memo : string
-     * id : string
+     * mobile : string
+     * answerId : string
+     * rankId : string
      * createdAt : $now
      * updatedAt : $now
      * creatorId : string
@@ -32,26 +36,21 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
      * updatorId : string
      * updatorName : string
      * organizationId : string
+     * visible : 0
+     * picture : {}
      */
 
+    private String id;
     private String title;
-
-    public int getStatus() {
-        return status;
-    }
-
-    public OrganizationAid setStatus(int status) {
-        this.status = status;
-        return this;
-    }
-
-    private int status;
     private int kind;
     private String address;
     private int priority;
+    private int status;
     private int price;
     private String memo;
-    private String id;
+    private String mobile;
+    private String answerId;
+    private String rankId;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
@@ -59,9 +58,9 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private boolean isCancelable;
-    private String answerId;
-    private String rankId ;
+    private int visible;
+    private List<String> tags;
+    private List<IconModule> picture;
 
     public List<IconModule> getPicture() {
         return picture;
@@ -72,49 +71,12 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
         return this;
     }
 
-    private List<IconModule> picture ;
-
-    public String getRankId() {
-        return rankId;
+    public String getId() {
+        return id;
     }
 
-    public OrganizationAid setRankId(String rankId) {
-        this.rankId = rankId;
-        return this;
-    }
-
-    public String getAnswerId() {
-        return answerId;
-    }
-
-    public OrganizationAid setAnswerId(String answerId) {
-        this.answerId = answerId;
-        return this;
-    }
-
-    public boolean isCancelable() {
-        return isCancelable;
-    }
-
-    public OrganizationAid setCancelable(boolean cancelable) {
-        isCancelable = cancelable;
-        return this;
-    }
-
-    public List<OrganizationReply> getReplies() {
-        return replyList;
-    }
-
-    public OrganizationAid setReplies(List<OrganizationReply> replies) {
-        this.replyList = replies;
-        return this;
-    }
-
-    private List<OrganizationReply> replyList;
-
-    public OrganizationAid() {
-        setOrganizationId(OrganizationChildrenConfig.aid());
-//        setItemType(getKind());
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -149,6 +111,14 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
         this.priority = priority;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public int getPrice() {
         return price;
     }
@@ -165,12 +135,28 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
         this.memo = memo;
     }
 
-    public String getId() {
-        return id;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
+    }
+
+    public String getRankId() {
+        return rankId;
+    }
+
+    public void setRankId(String rankId) {
+        this.rankId = rankId;
     }
 
     public String getCreatedAt() {
@@ -227,5 +213,21 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+    public int getVisible() {
+        return visible;
+    }
+
+    public void setVisible(int visible) {
+        this.visible = visible;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

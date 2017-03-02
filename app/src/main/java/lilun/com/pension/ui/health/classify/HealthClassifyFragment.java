@@ -21,9 +21,9 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
-import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.HealtheaProduct;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.health.list.HealthListFragment;
@@ -55,9 +55,9 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     private List<HealtheaProduct> products = new ArrayList<>();
     private HealthServiceAdapter mAdapter;
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
 
-    public static HealthClassifyFragment newInstance(List<Announcement> announcements) {
+    public static HealthClassifyFragment newInstance(List<Information> announcements) {
         HealthClassifyFragment fragment = new HealthClassifyFragment();
         Bundle args = new Bundle();
         args.putSerializable("announcements", (Serializable) announcements);
@@ -67,7 +67,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Announcement>) arguments.getSerializable("announcements");
+        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override

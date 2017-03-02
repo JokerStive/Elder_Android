@@ -5,22 +5,24 @@ import java.util.List;
 import lilun.com.pension.base.BaseBean;
 
 /**
-*从产品模型
+*信息模型
 *@author yk
-*create at 2017/2/21 10:06
+*create at 2017/3/2 11:24
 *email : yk_developer@163.com
 */
-public class OrganizationProduct  extends BaseBean{
+public class Information extends BaseBean {
 
     /**
-     * name : string
-     * title : string
-     * context : string
-     * contextType : string
-     * price : 0
-     * score : 0
-     * areas : ["string"]
      * id : string
+     * name : string
+     * slug : string
+     * title : string
+     * replyable : true
+     * isCat : true
+     * isDraft : false
+     * contextType : txt
+     * context : string
+     * parentId : string
      * createdAt : $now
      * updatedAt : $now
      * creatorId : string
@@ -28,18 +30,19 @@ public class OrganizationProduct  extends BaseBean{
      * updatorId : string
      * updatorName : string
      * organizationId : string
-     * visible : 0
-     * images : {}
-     * categoryId : string
+     * picture : {}
      */
 
-    private String name;
-    private String title;
-    private String context;
-    private String contextType;
-    private int price;
-    private int score;
     private String id;
+    private String name;
+    private String slug;
+    private String title;
+    private boolean replyable;
+    private boolean isCat;
+    private boolean isDraft;
+    private String contextType;
+    private String context;
+    private String parentId;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
@@ -47,9 +50,15 @@ public class OrganizationProduct  extends BaseBean{
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> images;
-    private String categoryId;
-    private List<String> areas;
+    private List<IconModule> picture;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -57,6 +66,14 @@ public class OrganizationProduct  extends BaseBean{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getTitle() {
@@ -67,12 +84,28 @@ public class OrganizationProduct  extends BaseBean{
         this.title = title;
     }
 
-    public String getContext() {
-        return context;
+    public boolean isReplyable() {
+        return replyable;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setReplyable(boolean replyable) {
+        this.replyable = replyable;
+    }
+
+    public boolean isIsCat() {
+        return isCat;
+    }
+
+    public void setIsCat(boolean isCat) {
+        this.isCat = isCat;
+    }
+
+    public boolean isIsDraft() {
+        return isDraft;
+    }
+
+    public void setIsDraft(boolean isDraft) {
+        this.isDraft = isDraft;
     }
 
     public String getContextType() {
@@ -83,28 +116,20 @@ public class OrganizationProduct  extends BaseBean{
         this.contextType = contextType;
     }
 
-    public int getPrice() {
-        return price;
+    public String getContext() {
+        return context;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setContext(String context) {
+        this.context = context;
     }
 
-    public int getScore() {
-        return score;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getCreatedAt() {
@@ -163,31 +188,14 @@ public class OrganizationProduct  extends BaseBean{
         this.organizationId = organizationId;
     }
 
-
-    public List<IconModule> getImages() {
-        return images;
+    public List<IconModule> getPicture() {
+        return picture;
     }
 
-    public void setImages(List<IconModule> images) {
-        this.images = images;
+    public void setPicture(List<IconModule> picture) {
+        this.picture = picture;
     }
 
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public List<String> getAreas() {
-        return areas;
-    }
-
-    public void setAreas(List<String> areas) {
-        this.areas = areas;
-    }
-
-    public static class ImagesBean {
+    public static class PictureBean {
     }
 }

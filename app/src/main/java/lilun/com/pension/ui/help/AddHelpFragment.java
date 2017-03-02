@@ -38,6 +38,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.bean.ElderModule;
@@ -255,7 +256,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
             List<String> data = takePhotoLayout.getData();
             if (data != null) {
                 Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(data);
-                if (requestBodies!=null){
+                if (requestBodies != null) {
                     observable = iconObservable(requestBodies).flatMap(this::aidObservable);
                 }
             }
@@ -289,6 +290,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
             organizationAid.setPrice(Integer.parseInt(inputPrice.getInput()));
         }
+        organizationAid.setOrganizationId(OrganizationChildrenConfig.aid());
         return organizationAid;
     }
 
@@ -327,9 +329,9 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         if (takePhoto == null) {
             takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
             LubanOptions option = new LubanOptions.Builder()
-                    .setMaxHeight(Config.uploadPtotoMaxHeight)
-                    .setMaxWidth(Config.uploadPtotoMaxWidth)
-                    .setMaxSize(Config.uploadPtotoMaxSize)
+                    .setMaxHeight(Config.uploadPhotoMaxHeight)
+                    .setMaxWidth(Config.uploadPhotoMaxWidth)
+                    .setMaxSize(Config.uploadPhotoMaxSize)
                     .create();
             CompressConfig config = CompressConfig.ofLuban(option);
             takePhoto.onEnableCompress(config, true);

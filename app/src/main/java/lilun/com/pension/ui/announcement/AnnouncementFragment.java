@@ -14,7 +14,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AdItemFragmentAdapter;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.MyCallBack;
 import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
@@ -34,15 +34,15 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 //    private HomeActivity mActivity;
 
     private int currentPosition = 0;
-    private List<Announcement> announcements;
+    private List<Information> informationList;
     private RecyclerView rvPushInfo;
     private PushInfoAdapter pushInfoAdapter;
     private List<String> data;
 
-    public static AnnouncementFragment newInstance(List<Announcement> announcements) {
+    public static AnnouncementFragment newInstance(List<Information> information) {
         AnnouncementFragment fragment = new AnnouncementFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putSerializable("information", (Serializable) information);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,16 +55,11 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     protected void initData() {
-        announcements = (List<Announcement>) getArguments().getSerializable("announcements");
-        if (announcements == null) {
+        informationList = (List<Information>) getArguments().getSerializable("information");
+        if (informationList == null) {
             throw new NullPointerException();
         }
 
-        //========================test
-//        data = new ArrayList<>();
-//        for (int i = 0; i <5; i++) {
-//            data.add(i + "");
-//        }
     }
 
     @Override
@@ -130,7 +125,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
-        for (Announcement announcement : announcements) {
+        for (Information announcement : informationList) {
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
@@ -148,13 +143,13 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     protected void initEvent() {
-//        mPresenter.init.Timer();
+        mPresenter.initTimer();
     }
 
 
     @Override
     public void setVpCurrentPosition() {
-        if (currentPosition++ == announcements.size()) {
+        if (currentPosition++ == informationList.size()) {
             viewPager.setCurrentItem(0, false);
         } else {
             viewPager.setCurrentItem(currentPosition, true);

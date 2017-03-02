@@ -32,8 +32,6 @@ import rx.Subscription;
 public class AgencyDetailFragment extends BaseFragment implements View.OnClickListener {
 
 
-    @Bind(R.id.iv_icon)
-    ImageView ivIcon;
 
     @Bind(R.id.iv_back)
     ImageView ivBack;

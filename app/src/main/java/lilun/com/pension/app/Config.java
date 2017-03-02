@@ -7,7 +7,7 @@ package lilun.com.pension.app;
 public class Config {
     public static final String TAG_LOGGER = "yk";
     public static final String BASE_URL = "http://192.168.3.14:3001/api/";
-//    public static final String BASE_URL = "http://120.25.218.244:3010/api/";
+//    public static final String BASE_URL = "http://192.168.3.105:3000/api/";
 
 
     public static final String help = "help";
@@ -16,11 +16,11 @@ public class Config {
 
     public static final int uploadPhotoCount = 4;
 
-    public static final int uploadPtotoMaxHeight = 800;
+    public static final int uploadPhotoMaxHeight = 800;
 
-    public static final int uploadPtotoMaxWidth =1080;
+    public static final int uploadPhotoMaxWidth =1080;
 
-    public static final int uploadPtotoMaxSize = 1024000;
+    public static final int uploadPhotoMaxSize = 1024000;
 
     public static final String agency_classify_service_parentId = "服务/养老机构";
 

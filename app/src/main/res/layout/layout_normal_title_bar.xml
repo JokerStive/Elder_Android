@@ -27,5 +27,15 @@
         style="@style/tv_normal" />
 
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_doWhat"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        tools:text="我是标题"
+        style="@style/tv_normal" />
+
+
 
 </RelativeLayout>

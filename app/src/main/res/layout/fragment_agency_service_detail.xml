@@ -9,11 +9,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/iv_icon"
+        <lilun.com.pension.widget.slider.BannerPager
+            android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="266dp"
-            android:background="@drawable/selector_help" />
+            android:layout_height="@dimen/max_photo_height" />
 
         <ImageView
             android:id="@+id/iv_back"
@@ -26,7 +25,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_icon"
+            android:layout_below="@id/banner"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
@@ -36,7 +35,6 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/iv_icon"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="27dp"
                 android:background="@drawable/shape_circle_white"
@@ -81,10 +79,10 @@
                     android:text="@string/introduction" />
 
                 <TextView
-                    android:lineSpacingMultiplier="1.2"
                     android:id="@+id/tv_requirement"
                     style="@style/tv_small"
                     android:layout_marginTop="15dp"
+                    android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
 
 
@@ -102,13 +100,13 @@
                     <TextView
                         android:id="@+id/tv_enter_rank"
                         style="@style/tv_normal"
-                        android:textColor="@color/red"
-                        android:text="评价" />
+                        android:text="评价"
+                        android:textColor="@color/red" />
 
 
                     <RatingBar
                         android:id="@+id/rb_bar"
-                        style="@style/fiveRatingBar"
+                        style="@style/ratingBarr_small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -123,26 +121,26 @@
 
 
             <RelativeLayout
-                android:layout_below="@id/ll_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_container">
+
                 <TextView
                     android:id="@+id/tv_provider_name"
-                    tools:text="金色养老院"
+                    style="@style/tv_small"
                     android:layout_centerVertical="true"
-                    style="@style/tv_small" />
+                    tools:text="金色养老院" />
 
                 <TextView
                     android:id="@+id/tv_enter_provider"
-                    android:textColor="@color/white"
-                    android:padding="18dp"
-                    android:background="@drawable/shape_rect_red_corner"
+                    style="@style/tv_small"
                     android:layout_alignParentRight="true"
+                    android:layout_marginBottom="25dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/shape_rect_red_corner"
+                    android:padding="18dp"
                     android:text="@string/enter_provider"
-                    style="@style/tv_small" />
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
 

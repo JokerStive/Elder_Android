@@ -19,7 +19,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.StringUtils;
@@ -52,7 +52,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
     private List<ActivityCategory> activityCategories;
     private RecyclerView mClassifyRecycler;
     private OrganizationActivityAdapter mContentAdapter;

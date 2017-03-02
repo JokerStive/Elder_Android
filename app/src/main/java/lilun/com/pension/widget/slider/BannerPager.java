@@ -56,9 +56,8 @@ public class BannerPager extends RelativeLayout {
         for (int i = 0; i < urls.size(); i++) {
             ImageView item = new ImageView(getContext());
             item.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageLoaderUtil.instance().loadImage(urls.get(i),0,item);
+            ImageLoaderUtil.instance().loadImage(urls.get(i),R.drawable.icon_def,item);
             Logger.d(urls.get(i));
-//            item.setTag(111,urls.get(i));
             items.add(item);
         }
 

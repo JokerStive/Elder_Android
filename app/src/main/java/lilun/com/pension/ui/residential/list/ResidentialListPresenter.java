@@ -19,6 +19,7 @@ public class ResidentialListPresenter extends RxPresenter<ResidentialListContrac
 
     @Override
     public void getResidentialServices(String filter, int skip) {
+
         addSubscribe(NetHelper.getApi()
                 .getProducts(StringUtils.addFilterWithDef(filter,skip))
                 .compose(RxUtils.handleResult())

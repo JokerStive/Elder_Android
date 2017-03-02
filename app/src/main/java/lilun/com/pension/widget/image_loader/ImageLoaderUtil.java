@@ -32,6 +32,10 @@ public class ImageLoaderUtil {
         mStrategy.loadImage(imageView.getContext(), url, placeholder, imageView);
     }
 
+    public void loadImage(String url,  ImageView imageView) {
+        mStrategy.loadImage(url, imageView);
+    }
+
     public void setStrategy(BaseImageLoaderStrategy strategy){
         this.mStrategy = strategy;
     }

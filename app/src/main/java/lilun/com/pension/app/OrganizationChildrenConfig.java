@@ -30,6 +30,10 @@ public class OrganizationChildrenConfig {
         return id+"/#product";
     }
 
+    public static  String information(){
+        return checkOrganizationId()+"/#information";
+    }
+
     public static String checkOrganizationId() {
         return User.getCurrentOrganizationId().equals(User.defOrganizationId)?"":User.getCurrentOrganizationId();
     }

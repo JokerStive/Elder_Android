@@ -1,21 +1,29 @@
 package lilun.com.pension.ui.agency.detail;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.slider.BannerPager;
 
 /**
  * 养老机构提供的服务详情V
@@ -25,8 +33,6 @@ import lilun.com.pension.module.utils.UIUtils;
  *         email : yk_developer@163.com
  */
 public class ServiceDetailFragment extends BaseFragment implements View.OnClickListener {
-    @Bind(R.id.iv_icon)
-    ImageView ivIcon;
 
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -59,6 +65,10 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     TextView tvProviderName;
     @Bind(R.id.tv_enter_provider)
     TextView tvEnterProvider;
+    @Bind(R.id.banner)
+    BannerPager banner;
+    @Bind(R.id.ll_container)
+    LinearLayout llContainer;
     private OrganizationProduct mProduct;
     private String mId;
 
@@ -119,13 +129,26 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     }
 
-
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        List<String> urls = new ArrayList<>();
+        if (mProduct.getImages() != null) {
+            for (IconModule iconModule : mProduct.getImages()) {
+                String url = IconUrl.organizationProduct(mProduct.getId(), iconModule.getFileName());
+                urls.add(url);
+            }
+        } else {
+            String url = IconUrl.organizationAid(mProduct.getId(), null);
+            urls.add(url);
+        }
+        banner.setData(urls);
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                //TODO 预约
                 pop();
                 break;
 
@@ -136,8 +159,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
             case R.id.tv_enter_provider:
                 //TODO 进入提供商详情页面
                 String organizationId = mProduct.getOrganizationId();
-                Logger.d("提供商的id==" +StringUtils.removeSpecialSuffix(organizationId));
-                start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId),null),SINGLETASK);
+                Logger.d("提供商的id==" + StringUtils.removeSpecialSuffix(organizationId));
+                start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
                 break;
 
             case R.id.tv_enter_rank:
@@ -145,4 +168,6 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 break;
         }
     }
+
+
 }

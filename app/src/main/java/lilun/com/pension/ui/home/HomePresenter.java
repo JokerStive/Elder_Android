@@ -1,10 +1,14 @@
 package lilun.com.pension.ui.home;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
-import lilun.com.pension.module.bean.Announcement;
+import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
 
 /**
  * 首页P
@@ -27,13 +31,17 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
 
 
     @Override
-    public void getAnnouncements() {
-        List<Announcement> announcements = new ArrayList<>();
-        for (int i = 0; i < adUrls.length; i++) {
-            Announcement announcement = new Announcement();
-            announcement.setImageUrl(adUrls[i]);
-            announcements.add(announcement);
-        }
-        view.showAnnouncementFragment(announcements);
+    public void getInformation() {
+        String filter = "{\"where\":{\"organizationId\":\""+ OrganizationChildrenConfig.information()+"\",\"isCat\":\"false\",\"parentId\":{\"like\":\"/#information/公告\"}}}";
+        addSubscribe(NetHelper.getApi()
+                .getInformations(StringUtils.addFilterWithDef(filter,0))
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Information>>() {
+                    @Override
+                    public void _next(List<Information> information) {
+                        view.showInformation(information);
+                    }
+                }));
     }
 }

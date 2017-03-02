@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
+import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.RxUtils;
@@ -23,10 +24,10 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
                 .getAidDetail(aidId)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationAid>(activity) {
+                .subscribe(new RxSubscriber<AidDetail>(activity) {
                     @Override
-                    public void _next(OrganizationAid aid) {
-                        view.showHelpDetail(aid);
+                    public void _next(AidDetail detail) {
+                        view.showHelpDetail(detail);
                     }
 
                 }));
@@ -38,7 +39,7 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
         reply.setWhatModel("OrganizationAid");
         reply.setWhatId(aidId);
         reply.setContent(replyContent);
-        reply.setIsDraft(true);
+//        reply.setIsDraft(false);
         addSubscribe(NetHelper.getApi()
                 .newOrganizationReply(reply)
                 .compose(RxUtils.handleResult())
@@ -75,6 +76,23 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     public void deleteAid(String aidId) {
         addSubscribe(NetHelper.getApi()
                 .deleteAid(aidId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                    @Override
+                    public void _next(Object o) {
+                        view.refreshData();
+                    }
+
+                }));
+    }
+
+    @Override
+    public void cancelReply(String replyId) {
+        OrganizationReply reply = new OrganizationReply();
+        reply.setIsDraft(true);
+        addSubscribe(NetHelper.getApi()
+                .putReply(replyId,reply)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {

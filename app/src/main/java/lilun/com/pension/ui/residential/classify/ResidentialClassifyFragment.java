@@ -3,11 +3,8 @@ package lilun.com.pension.ui.residential.classify;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
 
@@ -19,15 +16,12 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
-import lilun.com.pension.module.adapter.ResidentialServiceAdapter;
-import lilun.com.pension.module.bean.Announcement;
-import lilun.com.pension.module.bean.OrganizationProduct;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.residential.list.ResidentialListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
 /**
@@ -44,19 +38,17 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     PositionTitleBar titleBar;
 
     @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView mClassifyRecycler;
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
 
-    private RecyclerView mClassifyRecycler;
 
-    private List<OrganizationProduct> products = new ArrayList<>();
-    private ResidentialServiceAdapter mAdapter;
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
+    private ProductCategoryAdapter mClassifyAdapter;
 
-    public static ResidentialClassifyFragment newInstance(List<Announcement> announcements) {
+    public static ResidentialClassifyFragment newInstance(List<Information> announcements) {
         ResidentialClassifyFragment fragment = new ResidentialClassifyFragment();
         Bundle args = new Bundle();
         args.putSerializable("announcements", (Serializable) announcements);
@@ -66,7 +58,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Announcement>) arguments.getSerializable("announcements");
+        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -85,6 +77,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.residential_service));
+        titleBar.setTvRightText(getString(R.string.all_orders));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -98,7 +91,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
             @Override
             public void onRightClick() {
-
+                //TODO 查看所有订单
             }
         });
 
@@ -111,36 +104,36 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         }
 
         //类别
-        mClassifyRecycler = new RecyclerView(_mActivity);
-        mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        mClassifyRecycler = new RecyclerView(_mActivity);
+//        mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
 
 
         //求助列表
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+//        mClassifyRecycler.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+//        mClassifyRecycler.addItemDecoration(new ElderModuleItemDecoration());
 
 
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getServices(0);
+                        refreshData();
                     }
                 }
         );
 
 
         //设置数据
-        setAdapter();
+//        setAdapter();
 
     }
 
 
-    private void setAdapter() {
-        mAdapter = new ResidentialServiceAdapter(this, products);
-        mAdapter.addHeaderView(mClassifyRecycler);
-        mRecyclerView.setAdapter(mAdapter);
-    }
+//    private void setAdapter() {
+//        mAdapter = new ResidentialServiceAdapter(this, products);
+//        mAdapter.addHeaderView(mClassifyRecycler);
+//        mClassifyRecycler.setAdapter(mAdapter);
+//    }
 
 
     @Override
@@ -150,42 +143,26 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
-        getClassifies();
-        getServices(0);
-    }
-
-    private void getClassifies() {
         mPresenter.getClassifies();
     }
 
-    private void getServices(int skip) {
-//        String filter = "{\"where\":{\"categoryId\":\"" + User.getUserId() + "\"}}";
-        mPresenter.getAboutMe(skip);
-    }
 
 
     @Override
     public void showClassifies(List<ProductCategory> productCategories) {
         completeRefresh();
-        mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
-        ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
-        adapter.setOnItemClickListener(((productCategory) -> {
-           start(ResidentialListFragment.newInstance(productCategory));
-        }));
-        mClassifyRecycler.setAdapter(adapter);
-    }
-
-    @Override
-    public void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore) {
-        completeRefresh();
-        if (products != null) {
-            if (isLoadMore) {
-                mAdapter.addAll(products);
-            } else {
-                mAdapter.replaceAll(products);
-            }
+        if (mClassifyAdapter == null) {
+            mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
+            mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
+            mClassifyAdapter.setOnItemClickListener(((productCategory) -> {
+                start(ResidentialListFragment.newInstance(productCategory));
+            }));
+            mClassifyRecycler.setAdapter(mClassifyAdapter);
+        } else {
+            mClassifyAdapter.replaceAll(productCategories);
         }
     }
+
 
     @Override
     public void completeRefresh() {

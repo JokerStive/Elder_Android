@@ -4,7 +4,6 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
-import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
 
 /**
@@ -16,13 +15,13 @@ import lilun.com.pension.module.bean.ProductCategory;
 public interface ResidentialClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifies(List<ProductCategory> productCategories);
-        void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore);
+//        void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore);
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
         void getClassifies();
-        void getAboutMe(int skip);
+//        void getAboutMe(int skip);
     }
 
 }

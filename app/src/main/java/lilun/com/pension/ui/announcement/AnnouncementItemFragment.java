@@ -6,12 +6,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import java.util.List;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.bean.Announcement;
-import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.module.bean.IconModule;
+import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * Created by yk on 2017/1/5.
@@ -20,25 +23,28 @@ import lilun.com.pension.module.utils.ToastHelper;
 public class AnnouncementItemFragment extends BaseFragment {
 
 
-    private ImageView ivAdvantage;
-    private Announcement announcement;
+    private ImageView ivIcon;
+    private Information information;
+    private String mFileName;
 
-    public static AnnouncementItemFragment newInstance(Announcement announcement) {
+    public static AnnouncementItemFragment newInstance(Information information) {
         AnnouncementItemFragment fragment = new AnnouncementItemFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcement", announcement);
+        args.putSerializable("information", information);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        if (arguments.getSerializable("announcement") == null) {
-            throw new NullPointerException();
-        } else {
-            announcement = (Announcement) arguments.getSerializable("announcement");
-//            Logger.d(announcement.getImageUrl());
+        information = (Information) arguments.getSerializable("information");
+        Preconditions.checkNull(information);
+        List<IconModule> picture = information.getPicture();
+        if (picture!=null && picture.size()>0){
+            mFileName = picture.get(0).getFileName();
         }
+
+
     }
 
     @Override
@@ -53,13 +59,13 @@ public class AnnouncementItemFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ivAdvantage = (ImageView) mRootView.findViewById(R.id.iv_advantage);
+        ivIcon = (ImageView) mRootView.findViewById(R.id.iv_advantage);
 
     }
 
     @Override
     protected void initEvent() {
-        ivAdvantage.setOnClickListener(view -> ToastHelper.get().showShort(announcement.getImageUrl()));
+//        ivIcon.setOnClickListener(view -> ToastHelper.get().showShort(information.getImageUrl()));
     }
 
     @Override
@@ -69,10 +75,11 @@ public class AnnouncementItemFragment extends BaseFragment {
     }
 
     private void loadImage() {
-        if (TextUtils.isEmpty(announcement.getImageUrl())) {
+        if (TextUtils.isEmpty(mFileName) ){
             //TODO 占位图
         } else {
-            Glide.with(this).load(announcement.getImageUrl()).into(ivAdvantage);
+            String url = IconUrl.information(this.information.getId(), mFileName);
+            ImageLoaderUtil.instance().loadImage(url,ivIcon);
         }
     }
 }

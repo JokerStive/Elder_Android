@@ -11,11 +11,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -39,6 +41,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     NormalTitleBar titleBar;
     private ProductCategory productCategory;
     private AgencyServiceAdapter mAdapter;
+    private boolean mIsMerchant;
 
 
     public static ResidentialListFragment newInstance(ProductCategory productCategory) {
@@ -52,6 +55,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
 
     @Override
     protected void getTransferData(Bundle arguments) {
+        mIsMerchant = !User.isCustomer();
         productCategory = (ProductCategory) arguments.getSerializable("productCategory");
         Preconditions.checkNull(productCategory);
     }
@@ -70,7 +74,11 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(productCategory.getName());
-        titleBar.setOnBackClickListener(() -> pop());
+        titleBar.setRightText(getString(R.string.new_service));
+        titleBar.setOnBackClickListener(this::pop);
+        titleBar.setOnRightClickListener(() -> {
+            //TODO 发布一个服务
+        });
 
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
@@ -92,8 +100,13 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     }
 
     private void getData(int skip) {
-        String filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\"}}";
-        mPresenter.getResidentialServices(filter,skip);
+        String filter;
+        if (mIsMerchant) {
+            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+        } else {
+            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\"}}";
+        }
+        mPresenter.getResidentialServices(filter, skip);
     }
 
 
@@ -103,6 +116,9 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         if (products != null) {
             if (mAdapter == null) {
                 mAdapter = new AgencyServiceAdapter(this, products);
+                mAdapter.setOnItemClickListener(product -> {
+                    start(ServiceDetailFragment.newInstance(product));
+                });
                 mRecyclerView.setAdapter(mAdapter);
             } else if (isLoadMore) {
                 mAdapter.addAll(products);

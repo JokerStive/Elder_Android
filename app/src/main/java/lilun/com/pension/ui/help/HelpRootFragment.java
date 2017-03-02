@@ -18,11 +18,12 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.OrganizationAidAdapter;
-import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
@@ -55,7 +56,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    private ArrayList<Announcement> announcements;
+    private ArrayList<Information> announcements;
     private List<ElderModule> elderModules;
     private RecyclerView mClassifyRecycler;
     private OrganizationAidAdapter mAidAdapter;
@@ -140,7 +141,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         mAidAdapter = new OrganizationAidAdapter(this, organizationAids);
         mAidAdapter.addHeaderView(mClassifyRecycler);
         mAidAdapter.setOnItemClickListener(aid -> {
-            start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid) : HelpDetailFragment.newInstance(aid));
+            start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
         });
         mRecyclerView.setAdapter(mAidAdapter);
     }

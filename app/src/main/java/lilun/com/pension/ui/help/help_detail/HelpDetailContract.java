@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
-import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.bean.AidDetail;
 
 /**
 *互助详情契约类
@@ -14,7 +14,7 @@ import lilun.com.pension.module.bean.OrganizationAid;
 */
 public interface HelpDetailContract {
     interface View extends IView<Presenter> {
-        void showHelpDetail(OrganizationAid aid);
+        void showHelpDetail(AidDetail detail);
         void acceptSuccess(String replyId);
         void refreshData();
     }
@@ -24,5 +24,6 @@ public interface HelpDetailContract {
         void createHelpReply(String aidId,String replyContent);
         void acceptOneReply(String aidId,String replyId,int kind);
         void deleteAid(String aidId);
+        void cancelReply(String replyId);
     }
 }

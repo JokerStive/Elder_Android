@@ -120,13 +120,23 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
-    <style name="fiveRatingBar" parent="@android:style/Widget.RatingBar">
+    <style name="ratingBarr_small" parent="@android:style/Widget.RatingBar">
 
-        <item name="android:progressDrawable">@drawable/five_rating_bar</item>
+        <item name="android:progressDrawable">@drawable/rating_bar_small</item>
+
+        <item name="android:minWidth">16dp</item>
 
         <item name="android:minHeight">13dp</item>
 
-        <item name="android:maxHeight">13dp</item>
+    </style>
+
+    <style name="ratingBarr_big" parent="@android:style/Widget.RatingBar">
+
+        <item name="android:progressDrawable">@drawable/rating_bar_big</item>
+
+        <item name="android:minWidth">23dp</item>
+
+        <item name="android:minHeight">37dp</item>
 
     </style>
 

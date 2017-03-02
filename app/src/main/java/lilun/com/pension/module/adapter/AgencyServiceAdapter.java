@@ -8,10 +8,12 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 提供提供的服务adapter
@@ -42,6 +44,8 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
                 listener.onItemClick(product);
             }
         });
+
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(),null),R.drawable.icon_def,help.getView(R.id.banner));
     }
 
 

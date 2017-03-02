@@ -25,6 +25,8 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private TextView tvTitle;
     private ImageView ivBack;
     private OnBackClickListener listener;
+    private TextView tvDoWhat;
+    private OnRightClickListener listener1;
 
     public NormalTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,16 +40,23 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         View view = LayoutInflater.from(context).inflate(R.layout.layout_normal_title_bar, this);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
+        tvDoWhat= (TextView) view.findViewById(R.id.tv_doWhat);
 
         setTitle(title);
 
 
         ivBack.setOnClickListener(this);
+        tvDoWhat.setOnClickListener(this);
 
     }
 
     public void setTitle(String title) {
         tvTitle.setText(title);
+    }
+
+    public void setRightText(String doWhat) {
+        tvDoWhat.setVisibility(VISIBLE);
+        tvDoWhat.setText(doWhat);
     }
 
 
@@ -58,6 +67,12 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             case R.id.iv_back:
                 if (listener != null) {
                     listener.onBackClick();
+                }
+                break;
+
+            case R.id.tv_doWhat:
+                if (listener1 != null) {
+                    listener1.onRightClick();
                 }
                 break;
 
@@ -72,6 +87,14 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
 
     public interface  OnBackClickListener{
         void onBackClick();
+    }
+
+    public void setOnRightClickListener(OnRightClickListener listener) {
+        this.listener1 = listener;
+    }
+
+    public interface  OnRightClickListener{
+        void onRightClick();
     }
 
 

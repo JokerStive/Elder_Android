@@ -22,7 +22,7 @@
             android:id="@+id/fl_announcement_container"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/announcement_def" />
+            android:src="@drawable/icon_def"/>
 
     </RelativeLayout>
 

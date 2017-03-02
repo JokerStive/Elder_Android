@@ -15,6 +15,7 @@ import lilun.com.pension.module.utils.StringUtils;
 public class User {
     public static final String token = "token";
     public static final String userId = "userId";
+    public static final String isCustomer = "isCustomer";
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
@@ -31,6 +32,14 @@ public class User {
 
     public static void putUserId(String userId) {
          PreUtils.putString(User.userId, userId);
+    }
+
+    public static void putIsCustomer(boolean isCustomer) {
+        PreUtils.putBoolean(User.isCustomer, isCustomer);
+    }
+
+    public static boolean isCustomer() {
+       return PreUtils.getBoolean(User.isCustomer, true);
     }
 
     public static String getCurrentOrganizationId() {

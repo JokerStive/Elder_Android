@@ -49,34 +49,23 @@ public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
             }
         }
 
-//        tvAgree.setVisibility(showAllAgreeBtn ? View.VISIBLE : View.GONE);
-//
-//        if (answerId!=null && reply.getId().equals(answerId)) {
-//            tvAgree.setVisibility(View.VISIBLE);
-//            tvAgree.setText(App.context.getString(R.string.evaluation));
-//        }
-
 
         helper.setText(R.id.tv_name, reply.getCreatorName())
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {
                         if (answerId != null) {
-                            listener.evaluation();
+                            listener.evaluation(reply.getId());
                         } else {
                             listener.agree(reply.getId());
                         }
                     }
                 });
-//        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
-//                .error(R.drawable.avatar)
-//                .into((ImageView) helper.getView(R.id.iv_avatar));
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(), null), helper.getView(R.id.iv_avatar));
     }
 
 
     public void setAnswerId(String answerId) {
         this.answerId = answerId;
-//        notifyDataSetChanged();
     }
 
     public void setOnFunctionClickListener(OnFunctionClickListener listener) {
@@ -86,7 +75,7 @@ public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
     public interface OnFunctionClickListener {
         void agree(String id);
 
-        void evaluation();
+        void evaluation(String replyId);
     }
 
 

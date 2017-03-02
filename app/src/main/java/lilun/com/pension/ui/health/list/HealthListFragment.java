@@ -13,8 +13,6 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
-import lilun.com.pension.module.adapter.PushInfoAdapter;
-import lilun.com.pension.module.bean.Announcement;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;

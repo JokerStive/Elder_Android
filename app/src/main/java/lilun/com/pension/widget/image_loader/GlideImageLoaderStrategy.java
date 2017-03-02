@@ -23,6 +23,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .placeholder(imageView.getDrawable())
                 .error(imageView.getDrawable())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .centerCrop()
                 .into(imageView);
     }
 

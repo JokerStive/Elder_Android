@@ -12,9 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -28,12 +25,15 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AidHelperListAdapter;
+import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.ui.help.RankFragment;
+import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import lilun.com.pension.widget.slider.BannerPager;
@@ -60,11 +60,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private TextView tvPhone;
     private TextView tvAddress;
 
-    private int status_new = 0;
-    private int status_answered = 1;
-    private int status_solved = 2;
     private boolean mCreatorIsOwn;
-    //    private int mStatus;
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
@@ -72,22 +68,22 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private TextView tvJoinerTitle;
     private ImageView ivAvatar;
     private BannerPager banner;
-    private int mStatus;
+    private String mReplyId;
+    private String mAidId;
 
-    public static HelpDetailFragment newInstance(OrganizationAid aid) {
+    public static HelpDetailFragment newInstance(String aidId) {
         HelpDetailFragment fragment = new HelpDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("OrganizationAid", aid);
+        args.putString("adiId", aidId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mAid = (OrganizationAid) arguments.getSerializable("OrganizationAid");
-        Preconditions.checkNull(mAid);
-        mCreatorIsOwn = User.creatorIsOwn(mAid.getCreatorId());
-        mStatus = mAid.getStatus();
+        mAidId = arguments.getString("adiId");
+        Preconditions.checkNull(mAidId);
+
     }
 
     @Override
@@ -124,8 +120,6 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         setBold(tvTitle);
 
 
-
-
         //各种信息
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
         tvPrice = (TextView) mHeadView.findViewById(R.id.tv_price);
@@ -143,28 +137,6 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         setBold(tvAddressTitle);
 
 
-        //是自己创建的
-        if (mCreatorIsOwn) {
-            if (mStatus == status_new || mStatus == status_answered) {
-                setChangeStatus(true,getString(R.string.cancel));
-            }
-        }
-        //不是自己创建的
-        else {
-            if (mStatus == status_new || mStatus == status_answered) {
-                boolean isCancelReply = false;
-                if (mAid.getReplies() != null) {
-                    for (OrganizationReply reply : mAid.getReplies()) {
-                        if (reply.getCreatorId().equals(User.getUserId())) {
-                            isCancelReply = true;
-                            setChangeStatus(true, getString(R.string.cancel));
-                        }
-                    }
-                }
-                setChangeStatus(true, isCancelReply ? getString(R.string.cancel) : getString(R.string.help));
-            }
-        }
-
         ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivAvatar);
 
         setJoinerAdapter();
@@ -179,19 +151,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        mPresenter.getHelpDetail(_mActivity, mAid.getId());
-
-        List<String> urls = new ArrayList<>();
-        if (mAid.getPicture()!=null){
-            for(IconModule iconModule:mAid.getPicture()){
-                String url = IconUrl.organizationAid(mAid.getId(), iconModule.getFileName());
-                urls.add(url);
-            }
-        }else {
-            String url = IconUrl.organizationAid(mAid.getId());
-            urls.add(url);
-        }
-        banner.setData(urls);
+        mPresenter.getHelpDetail(_mActivity, mAidId);
     }
 
     /**
@@ -204,12 +164,12 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         mReplyAdapter.setOnFunctionClickListener(new AidHelperListAdapter.OnFunctionClickListener() {
             @Override
             public void agree(String id) {
-                mPresenter.acceptOneReply(mAid.getId(), id, mAid.getKind());
+                mPresenter.acceptOneReply(mAidId, id, mAid.getKind());
             }
 
             @Override
-            public void evaluation() {
-                Logger.d("evaluation help");
+            public void evaluation(String replyId) {
+                start(RankFragment.newInstance("OrganizationReply", replyId));
             }
         });
         mReplyAdapter.addHeaderView(mHeadView);
@@ -227,37 +187,76 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     }
 
     @Override
-    public void showHelpDetail(OrganizationAid aid) {
+    public void showHelpDetail(AidDetail detail) {
+        mAid = detail.getAid();
+        mCreatorIsOwn = User.creatorIsOwn(mAid.getCreatorId());
+
+        //显示图片
+        List<String> urls = new ArrayList<>();
+        if (mAid.getPicture() != null) {
+            for (IconModule iconModule : mAid.getPicture()) {
+                String url = IconUrl.organizationAid(mAid.getId(), iconModule.getFileName());
+                urls.add(url);
+            }
+        } else {
+            String url = IconUrl.organizationAid(mAid.getId(),null);
+            urls.add(url);
+        }
+        banner.setData(urls);
+
 
         //标题、时间
-        tvTitle.setText(aid.getTitle());
-        tvTime.setText(StringUtils.timeFormat(aid.getCreatedAt()));
+        tvTitle.setText(mAid.getTitle());
+        tvTime.setText(StringUtils.timeFormat(mAid.getCreatedAt()));
 
 
         //显示补贴
-        int price = aid.getPrice();
+        int price = mAid.getPrice();
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format(getString(R.string.format_price), aid.getPrice()));
+            tvPrice.setText(String.format(getString(R.string.format_price), mAid.getPrice()));
         }
 
         //显示发起人
-        tvCreator.setText(String.format(getString(R.string.format_creator), aid.getCreatorName()));
+        tvCreator.setText(String.format(getString(R.string.format_creator), mAid.getCreatorName()));
 
 
         //设置地址和电话
-        tvAddress.setText(aid.getAddress());
+        tvAddress.setText(mAid.getAddress());
         tvPhone.setText(String.format("联系电话：%1$s", "13206011223"));
+
+        //是自己创建的
+        if (mCreatorIsOwn) {
+            if (detail.isCancelable()) {
+                setChangeStatus(true, getString(R.string.cancel));
+            }
+        }
+        //不是自己创建的
+        else {
+            if (TextUtils.isEmpty(mAid.getAnswerId())) {
+                boolean isCancelReply = false;
+                if (detail.getReplyList() != null) {
+                    for (OrganizationReply reply : detail.getReplyList()) {
+                        if (reply.getCreatorId().equals(User.getUserId())) {
+                            mReplyId = reply.getId();
+                            isCancelReply = true;
+                            setChangeStatus(true, getString(R.string.cancel));
+                        }
+                    }
+                }
+                setChangeStatus(true, isCancelReply ? getString(R.string.cancel) : getString(R.string.help));
+            }
+        }
 
 
         //设置回答者列表
-        List<OrganizationReply> replies = aid.getReplies();
+        List<OrganizationReply> replies = detail.getReplyList();
         if (replies == null || replies.size() == 0 || !mCreatorIsOwn) {
             tvJoinerTitle.setVisibility(View.GONE);
         } else {
             //如果已经接受某人的帮忙，就只显示那一条数据
-            String answerId = aid.getAnswerId();
+            String answerId = mAid.getAnswerId();
             mReplyAdapter.addAll(acceptOneAnswer(replies, answerId));
         }
 
@@ -310,12 +309,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         String status = tvChangeStatus.getText().toString();
         if (status.equals(getString(R.string.cancel))) {
             if (mCreatorIsOwn) {
-                //TODO 改变这条help的状态为"已取消"
-                Logger.d("delete this aid");
-                mPresenter.deleteAid(mAid.getId());
+                new NormalDialog().createNormal(_mActivity, R.string.confirm_delete_help, () -> {
+                    mPresenter.deleteAid(mAid.getId());
+                });
             } else {
-                //TODO 不再帮助
-                Logger.d("cancel help");
+                new NormalDialog().createNormal(_mActivity, R.string.confirm_cancel_help, () -> {
+                    mPresenter.cancelReply(mReplyId);
+                });
             }
 
         } else if (status.equals(getString(R.string.help))) {
@@ -324,16 +324,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     }
 
     private void helpOther() {
-        new MaterialDialog.Builder(_mActivity)
-                .content(R.string.confirm_help_other)
-                .positiveText(R.string.confirm)
-                .negativeText(R.string.cancel)
-                .onPositive((dialog1, which) -> {
-                    mPresenter.createHelpReply(mAid.getId(), null);
-                })
-                .onNegative((dialog1, which) -> {
-                    dialog1.dismiss();
-                })
-                .show();
+        new NormalDialog().createNormal(_mActivity, R.string.confirm_help_other, () -> {
+            mPresenter.createHelpReply(mAid.getId(), null);
+        });
     }
 }
