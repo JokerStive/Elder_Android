@@ -10,17 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
+    <!--<RelativeLayout-->
+        <!---->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+    <FrameLayout
+        android:id="@+id/fl_announcement_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/info_bar_height"
+        android:background="@drawable/announcement_def" />
 
-        <FrameLayout
-            android:id="@+id/fl_announcement_container"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/icon_def" />
-
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <FrameLayout
         android:id="@+id/fl_module_container"

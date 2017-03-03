@@ -60,7 +60,7 @@ public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
                         }
                     }
                 });
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(), null), helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(), null),R.drawable.avatar, helper.getView(R.id.iv_avatar));
     }
 
 

@@ -21,11 +21,12 @@ import lilun.com.pension.widget.OverLayCardLayoutManager;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
-*公告栏
-*@author yk
-*create at 2017/2/13 16:40
-*email : yk_developer@163.com
-*/
+ * 公告栏
+ *
+ * @author yk
+ *         create at 2017/2/13 16:40
+ *         email : yk_developer@163.com
+ */
 public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Presenter> implements AnnouncementContract.View {
 
     public ViewPager viewPager;
@@ -47,9 +48,16 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         return fragment;
     }
 
+
     @Override
     protected void initPresenter() {
         mPresenter = new AnnouncementPresenter();
+        mPresenter.bindView(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.bindView(this);
     }
 
@@ -79,12 +87,12 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     }
 
     private void initPushBar() {
-        if (data==null || data.size()==0){
+        if (data == null || data.size() == 0) {
             return;
         }
 
         rvPushInfo = (RecyclerView) mRootView.findViewById(R.id.rv_push_info);
-        pushInfoAdapter = new PushInfoAdapter(rvPushInfo,data,R.layout.item_push_info);
+        pushInfoAdapter = new PushInfoAdapter(rvPushInfo, data, R.layout.item_push_info);
 
 
         rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
@@ -143,7 +151,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     protected void initEvent() {
-        mPresenter.initTimer();
+//        mPresenter.initTimer();
     }
 
 
@@ -156,7 +164,9 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         }
     }
 
-
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.unBindView();
+    }
 }

@@ -101,6 +101,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             Logger.d("公告数据为空");
         } else {
             replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
+//            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(information), false);
         }
 
         //类别

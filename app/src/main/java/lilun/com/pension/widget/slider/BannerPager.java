@@ -11,14 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.orhanobut.logger.Logger;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 滑动带indicator 的viewpager
@@ -54,10 +53,12 @@ public class BannerPager extends RelativeLayout {
     public void setData(List<String> urls) {
         List<ImageView> items = new ArrayList<>();
         for (int i = 0; i < urls.size(); i++) {
-            ImageView item = new ImageView(getContext());
-            item.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageLoaderUtil.instance().loadImage(urls.get(i),R.drawable.icon_def,item);
-            Logger.d(urls.get(i));
+            ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
+            Glide.with(getContext()).load(urls.get(i))
+                    .error(R.drawable.icon_def)
+                    .placeholder(R.drawable.icon_def)
+                    .fitCenter()
+                    .into(item);
             items.add(item);
         }
 

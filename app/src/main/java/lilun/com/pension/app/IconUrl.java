@@ -43,7 +43,7 @@ public class IconUrl {
     }
 
     public static String information(String informationId, String iconName) {
-        return Config.BASE_URL + "informations/" + encodeURL(informationId) + "/picture/" + iconName + "?access_token=" + User.getToken();
+        return Config.BASE_URL + "OrganizationInformations/" + encodeURL(informationId) + "/picture/" + iconName + "?access_token=" + User.getToken();
     }
 
 

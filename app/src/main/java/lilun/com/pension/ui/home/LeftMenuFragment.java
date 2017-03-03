@@ -1,17 +1,24 @@
 package lilun.com.pension.ui.home;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.welcome.WelcomeActivity;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 左侧侧滑菜单
@@ -40,6 +47,12 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.tv_logout)
     TextView tvLogout;
 
+    @Bind(R.id.iv_avatar)
+    ImageView ivAvatar;
+
+    @Bind(R.id.tv_name)
+    TextView tvName;
+
     @Override
     protected void initPresenter() {
 
@@ -52,6 +65,9 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,ivAvatar);
+        tvName.setText(User.getToken());
+
         tvAccountData.setOnClickListener(this);
         tvAccountSetting.setOnClickListener(this);
         tvAccountShare.setOnClickListener(this);
@@ -86,5 +102,19 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 .onNegative((dialog1, which1) -> dialog1.dismiss())
                 .show();
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

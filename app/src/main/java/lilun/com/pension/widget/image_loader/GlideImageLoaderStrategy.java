@@ -20,8 +20,8 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
     @Override
     public void loadImage(String url, ImageView imageView) {
         Glide.with(imageView.getContext()).load(url).dontAnimate()
-                .placeholder(imageView.getDrawable())
-                .error(imageView.getDrawable())
+                .placeholder(imageView.getBackground())
+                .error(imageView.getBackground())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .into(imageView);

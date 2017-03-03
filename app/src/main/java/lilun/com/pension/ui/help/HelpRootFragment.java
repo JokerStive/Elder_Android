@@ -1,5 +1,7 @@
 package lilun.com.pension.ui.help;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,19 +59,28 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    private ArrayList<Information> announcements;
+    private ArrayList<Information> informationList;
     private List<ElderModule> elderModules;
     private RecyclerView mClassifyRecycler;
     private OrganizationAidAdapter mAidAdapter;
     private List<OrganizationAid> organizationAids = new ArrayList<>();
 
 
-    public static HelpRootFragment newInstance() {
-        return new HelpRootFragment();
+    public static HelpRootFragment newInstance(List<Information> announcements) {
+        HelpRootFragment fragment = new HelpRootFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("informationList", (Serializable) announcements);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        informationList = (ArrayList<Information>) arguments.getSerializable("informationList");
     }
 
     @Subscribe
-    public void refreshData(Event.RefreshHelpData event){
+    public void refreshData(Event.RefreshHelpData event) {
         getHelps(0);
     }
 
@@ -105,13 +117,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
                 }
             }
         });
-
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-        }
 
 
         //类别
@@ -153,6 +158,21 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         refreshData();
     }
 
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        //初始化公告栏
+        if (informationList == null || informationList.size() == 0) {
+            Logger.d("公告数据为空");
+        } else {
+//            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(informationList),false);
+            AnnouncementFragment fragment = new AnnouncementFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("information", informationList);
+            fragment.setArguments(bundle);
+            replaceLoadRootFragment(R.id.fl_announcement_container,fragment,false);
+        }
+    }
 
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
@@ -213,9 +233,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         }
         return count;
     }
-
-
-
 
 
 }

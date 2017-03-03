@@ -15,6 +15,7 @@ import lilun.com.pension.module.utils.StringUtils;
 public class User {
     public static final String token = "token";
     public static final String userId = "userId";
+    public static final String name = "name";
     public static final String isCustomer = "isCustomer";
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
@@ -26,6 +27,14 @@ public class User {
     }
     public static String getToken() {
         return PreUtils.getString(token, "");
+    }
+
+    public static String getName() {
+        return PreUtils.getString(name, "");
+    }
+
+    public static void putName(String nam) {
+         PreUtils.putString(name, nam);
     }
 
 

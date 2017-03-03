@@ -2,6 +2,7 @@ package lilun.com.pension.ui.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -10,23 +11,28 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.adapter.AdItemFragmentAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
-import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 首页V
@@ -57,11 +63,39 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Bind(R.id.iv_residential_service)
     ImageView ivResidentialService;
+
     @Bind(R.id.drawer)
     DrawerLayout drawer;
+
     @Bind(R.id.tv_position)
     TextView tvPosition;
+
+    @Bind(R.id.iv_avatar)
+    ImageView ivAvatar;
+
+    @Bind(R.id.iv_position)
+    ImageView ivPosition;
+
+    @Bind(R.id.iv_message)
+    ImageView ivMessage;
+
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
+
+//    @Bind(R.id.vp_container)
+//    ViewPager viewPager;
+//
+//    @Bind(R.id.indicator)
+//    CircleIndicator indicator;
+//
+//    @Bind(R.id.rv_push_info)
+//    RecyclerView rvPushInfo;
+
+
+
+
     private List<Information> informations;
+    private ArrayList<Information> mInformationData;
 
 
     @Override
@@ -78,11 +112,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     protected void initView(LayoutInflater inflater) {
+
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivAvatar);
+
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
 //        drawer.setScrimColor(Color.TRANSPARENT);
 
+        ivAvatar.setOnClickListener(this);
         ivActivities.setOnClickListener(this);
         ivAgency.setOnClickListener(this);
         ivEducation.setOnClickListener(this);
@@ -145,6 +183,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_avatar:
+                //TODO 侧滑菜单
+//               drawer.stol
+                switchDrawer();
+                break;
             case R.id.iv_activities:
                 //TODO 社区活动
                 startCommunityActivity();
@@ -162,7 +205,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-//                TakePhotoDialogFragment.newInstance().show(_mActivity.getFragmentManager(),"");
                 startHelp();
                 break;
 
@@ -184,31 +226,46 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     }
 
+    private void switchDrawer() {
+        if (!drawer.isDrawerOpen(Gravity.LEFT)) {
+            drawer.openDrawer(Gravity.LEFT);
+        } else {
+            drawer.closeDrawer(Gravity.LEFT);
+        }
+
+    }
+
     /**
      * 邻居互助
      */
     private void startNeighborHelp() {
-        start(HelpRootFragment.newInstance());
+        start(HelpRootFragment.newInstance(getClassifyAnnouncements(getString(R.string.neighbor_help))));
+
     }
 
 
-    private List<Information> getClassifyAnnouncements() {
-        if (informations!=null && informations.size()!=0){
-
+    private List<Information> getClassifyAnnouncements(String moduleName) {
+        if (informations != null && informations.size() != 0) {
+            if (mInformationData == null) {
+                mInformationData = new ArrayList<>();
+            }
+            mInformationData.clear();
+            for (Information info : informations) {
+                if (info.getParentId().contains(moduleName)) {
+                    mInformationData.add(info);
+                }
+            }
+            return mInformationData;
         }
-//        List<Announcement> classifyAnnouncements = new ArrayList<>();
-//        for (int i = 0; i < this.announcements.size() - 3; i++) {
-//            classifyAnnouncements.add(announcements.get(i));
-//        }
-//        return classifyAnnouncements;
         return null;
     }
+
 
     /**
      * 老年教育
      */
     private void startPensionEducation() {
-        start(EducationClassifyFragment.newInstance(getClassifyAnnouncements()));
+        start(EducationClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_education))));
     }
 
 
@@ -216,21 +273,21 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 健康服务
      */
     private void startHealthService() {
-        start(HealthClassifyFragment.newInstance(getClassifyAnnouncements()));
+        start(HealthClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.health_service))));
     }
 
     /**
      * 社区活动
      */
     private void startCommunityActivity() {
-        start(ActivityClassifyFragment.newInstance());
+        start(ActivityClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.community_activity))));
     }
 
     /**
      * 养老机构
      */
     private void startPensionAgency() {
-        start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements()));
+        start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_agency))));
     }
 
 
@@ -238,7 +295,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 居家服务
      */
     private void startResidentialService() {
-        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements()));
+        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
     }
 
     /**
@@ -256,11 +313,36 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void showInformation(List<Information> informations) {
-        if (informations.size()!=0){
+        if (informations.size() != 0) {
             this.informations = informations;
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(informations), false);
+            List<Information> data = new ArrayList<>();
+            for(Information info:informations){
+                if (info.getParentId().equals(OrganizationChildrenConfig.information()+"/公告")){
+                    data.add(info);
+                }
+            }
+            setInformation(data);
         }
     }
+
+
+    private void setInformation(List<Information> informations) {
+        List<BaseFragment> listFragments = new ArrayList<>();
+        for (Information announcement : informations) {
+            AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
+            listFragments.add(fragment);
+        }
+        viewPager.setAdapter(new AdItemFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
+//        indicator.setViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+//                currentPosition = position;
+            }
+        });
+
+    }
+
 
 
 }

@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import lilun.com.pension.R;
@@ -65,13 +67,16 @@ public class AnnouncementItemFragment extends BaseFragment {
 
     @Override
     protected void initEvent() {
-//        ivIcon.setOnClickListener(view -> ToastHelper.get().showShort(information.getImageUrl()));
+        ivIcon.setOnClickListener(v -> {
+            Logger.d("公告的title----"+information.getTitle());
+        });
+        loadImage();
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        loadImage();
+
     }
 
     private void loadImage() {
@@ -79,7 +84,9 @@ public class AnnouncementItemFragment extends BaseFragment {
             //TODO 占位图
         } else {
             String url = IconUrl.information(this.information.getId(), mFileName);
-            ImageLoaderUtil.instance().loadImage(url,ivIcon);
+            Logger.d("公告的地址----"+url   );
+            Logger.d("公告的title----"+information.getTitle());
+            ImageLoaderUtil.instance().loadImage(url,R.drawable.icon_def,ivIcon);
         }
     }
 }

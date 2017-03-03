@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.activity.classify;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +61,17 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
 
 
-    public static ActivityClassifyFragment newInstance() {
-        return new ActivityClassifyFragment();
+    public static ActivityClassifyFragment newInstance(List<Information> announcements) {
+        ActivityClassifyFragment fragment = new ActivityClassifyFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("announcements", (Serializable) announcements);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
