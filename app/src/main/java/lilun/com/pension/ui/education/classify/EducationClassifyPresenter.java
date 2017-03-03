@@ -10,6 +10,7 @@ import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.ElderEdusColleage;
+import lilun.com.pension.module.bean.LocationBean;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.RxUtils;
@@ -108,7 +109,7 @@ public class EducationClassifyPresenter extends RxPresenter<EducationClassifyCon
         ElderEdus edus2 = new ElderEdus();
         edus2.setSource(ElderEdusColleage.TYPE);
         edus2.setTitle("四川大学");
-        OrganizationActivity.LocationBean loc = new OrganizationActivity.LocationBean();
+        LocationBean loc = new LocationBean();
         loc.setLat(23.1132f);
         loc.setLng(11.2344f);
         edus2.setLocation(loc);

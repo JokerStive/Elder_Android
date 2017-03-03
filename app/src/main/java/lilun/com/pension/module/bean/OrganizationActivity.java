@@ -1,5 +1,6 @@
 package lilun.com.pension.module.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.base.BaseBean;
@@ -63,6 +64,7 @@ public class OrganizationActivity extends BaseBean {
     private String organizationId;
     private List<IconModule> icon;
     private List<String> partners;
+    private Account contact;
 
     public String getTitle() {
         return title;
@@ -232,25 +234,12 @@ public class OrganizationActivity extends BaseBean {
         this.partners = partners;
     }
 
-    public static class LocationBean {
-        private float lat;
-        private float lng;
+    public Account getContact() {
+        return contact;
+    }
 
-        public float getLat() {
-            return lat;
-        }
-
-        public void setLat(float lat) {
-            this.lat = lat;
-        }
-
-        public float getLng() {
-            return lng;
-        }
-
-        public void setLng(float lng) {
-            this.lng = lng;
-        }
+    public void setContact(Account contact) {
+        this.contact = contact;
     }
 
     public static String TYPE = "OrganizationActivity";
@@ -280,6 +269,7 @@ public class OrganizationActivity extends BaseBean {
         edus.setOrganizationId(organizationId);
         edus.setPicture(icon);
         edus.setPartners(partners);
+        edus.setContact(contact);
         return edus;
     }
 }

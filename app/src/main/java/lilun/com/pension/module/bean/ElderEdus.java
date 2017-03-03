@@ -1,5 +1,6 @@
 package lilun.com.pension.module.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.base.BaseBean;
@@ -20,7 +21,7 @@ public class ElderEdus extends BaseBean {
  //   private String name;
     private String address;
     private String mobile;
-    private OrganizationActivity.LocationBean location;
+    private LocationBean location;
     private String description;
     private String id;
     private String createdAt;
@@ -45,6 +46,7 @@ public class ElderEdus extends BaseBean {
     private String updatorName;
     private String organizationId;
     private List<String> partners;
+    private Account contact;
 
     public String getSource() {
         return source;
@@ -79,11 +81,11 @@ public class ElderEdus extends BaseBean {
         this.mobile = mobile;
     }
 
-    public OrganizationActivity.LocationBean getLocation() {
+    public LocationBean getLocation() {
         return location;
     }
 
-    public void setLocation(OrganizationActivity.LocationBean location) {
+    public void setLocation(LocationBean location) {
         this.location = location;
     }
 
@@ -245,5 +247,13 @@ public class ElderEdus extends BaseBean {
 
     public void setPicture(List<IconModule> picture) {
         this.picture = picture;
+    }
+
+    public Account getContact() {
+        return contact;
+    }
+
+    public void setContact(Account contact) {
+        this.contact = contact;
     }
 }

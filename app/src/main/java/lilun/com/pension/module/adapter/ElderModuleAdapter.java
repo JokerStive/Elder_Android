@@ -68,7 +68,10 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
         if (elderModule.getIcon() != null) {
             String iconUrl = IconUrl.elderModule(elderModule.getId() + "", elderModule.getIcon().get(0).getFileName());
-            Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
+            Glide.with(fragment).load(iconUrl)
+            .error(R.drawable.icon_def)
+            .placeholder(R.drawable.icon_def)
+            .into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }
 

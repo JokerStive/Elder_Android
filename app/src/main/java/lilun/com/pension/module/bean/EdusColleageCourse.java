@@ -1,5 +1,9 @@
 package lilun.com.pension.module.bean;
 
+import android.graphics.drawable.Icon;
+
+import java.util.ArrayList;
+
 import lilun.com.pension.base.BaseBean;
 
 /**
@@ -36,6 +40,15 @@ public class EdusColleageCourse extends BaseBean {
     private String contactId;
     private String organizationEduId;
     private String schoolId;
+    private ArrayList<String> accountIds;
+    private ArrayList<IconModule> picture;
+    private Account  contact;
+
+
+
+
+
+
 
     public String getName() {
         return name;
@@ -139,5 +152,29 @@ public class EdusColleageCourse extends BaseBean {
 
     public void setSchoolId(String schoolId) {
         this.schoolId = schoolId;
+    }
+
+    public ArrayList<IconModule> getPicture() {
+        return picture;
+    }
+
+    public void setPicture(ArrayList<IconModule> picture) {
+        this.picture = picture;
+    }
+
+    public ArrayList<String> getAccountIds() {
+        return accountIds;
+    }
+
+    public void setAccountIds(ArrayList<String> accountIds) {
+        this.accountIds = accountIds;
+    }
+
+    public Account getContact() {
+        return contact;
+    }
+
+    public void setContact(Account contact) {
+        this.contact = contact;
     }
 }

@@ -34,12 +34,13 @@ public class ElderEdusColleage extends BaseBean {
     private String name;
     private String address;
     private String mobile;
-    private OrganizationActivity.LocationBean location;
+    private LocationBean location;
     private String description;
-    private int id;
+    private String id;
     private String createdAt;
     private String updatedAt;
     private List<IconModule> picture;
+    private Account contact;
 
     public String getName() {
         return name;
@@ -65,11 +66,11 @@ public class ElderEdusColleage extends BaseBean {
         this.mobile = mobile;
     }
 
-    public OrganizationActivity.LocationBean getLocation() {
+    public LocationBean getLocation() {
         return location;
     }
 
-    public void setLocation(OrganizationActivity.LocationBean location) {
+    public void setLocation(LocationBean location) {
         this.location = location;
     }
 
@@ -81,11 +82,11 @@ public class ElderEdusColleage extends BaseBean {
         this.description = description;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -113,6 +114,14 @@ public class ElderEdusColleage extends BaseBean {
         this.picture = picture;
     }
 
+    public Account getContact() {
+        return contact;
+    }
+
+    public void setContact(Account contact) {
+        this.contact = contact;
+    }
+
     public ElderEdus toElderEdus() {
         ElderEdus edus = new ElderEdus();
         edus.setSource(TYPE);
@@ -120,13 +129,14 @@ public class ElderEdusColleage extends BaseBean {
         edus.setAddress(address);
         edus.setCreatedAt(createdAt);
         edus.setDescription(description);
-        edus.setId(id+"");
+        edus.setId(id);
         edus.setLocation(location);
         edus.setMobile(mobile);
         edus.setUpdatedAt(updatedAt);
         edus.setPicture(picture);
         edus.setVisible(visible);
         edus.setSelected(isSelected);
+        edus.setContact(contact);
         return edus;
     }
 }

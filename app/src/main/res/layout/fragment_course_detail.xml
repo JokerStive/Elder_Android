@@ -7,7 +7,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
@@ -18,10 +19,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/max_photo_height">
+
                 <lilun.com.pension.widget.slider.BannerPager
-                    android:id="@+id/bp_colleage_icon"
+                    android:id="@+id/bp_course_icon"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
                 <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
@@ -47,8 +50,21 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shape_cicle"
-                    android:src="@drawable/announcement_def"
                     android:text="@string/join_in" />
+
+                <Button
+                    android:id="@+id/cancle"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/shape_cicle"
+                    android:text="@string/cancle"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
@@ -77,6 +93,22 @@
                     android:paddingTop="@dimen/dp_10"
                     android:text="@string/connect_person_" />
 
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    style="@style/tv_small"
+                    android:layout_below="@id/tv_connect_person"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:text="@string/course_start_date_" />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    style="@style/tv_small"
+                    android:layout_below="@id/tv_start_date"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10"
+                    android:text="@string/course_end_date_" />
+
                 <lilun.com.pension.widget.CircleImageView
                     android:id="@+id/cig_connect_icon"
                     android:layout_width="50dp"
@@ -98,13 +130,13 @@
                 style="@style/tv_normal"
                 android:layout_marginBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
-                android:text="学校简介" />
+                android:text="@string/course_plan" />
 
             <TextView
-                android:id="@+id/tv_colleage_descript"
+                android:id="@+id/tv_course_plan"
                 style="@style/tv_small"
                 android:paddingLeft="@dimen/dp_10"
-                android:text="学校简介" />
+                android:text="教学计划详情" />
 
             <View
                 style="@style/line_gray"
@@ -116,36 +148,52 @@
                 style="@style/tv_normal"
                 android:layout_marginBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
-                android:text="地址" />
+                android:text="@string/course_desp" />
 
             <TextView
-                android:id="@+id/tv_colleage_addr"
+                android:id="@+id/tv_course_desp"
                 style="@style/tv_small"
                 android:paddingLeft="@dimen/dp_10"
-                android:text="学校简介" />
+                android:text="课程简介详情" />
 
-            <View
-                style="@style/line_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_066"
-                android:layout_margin="@dimen/dp_10" />
-
-            <TextView
-                android:id="@+id/tv_course_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_4"
-                android:paddingLeft="@dimen/dp_10"
-                android:text="课程列表"
-                android:textColor="#EF7A71"
-                android:textSize="@dimen/tv_size" />
-
-            <View
-                style="@style/line_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_066"
-                android:layout_margin="@dimen/dp_10" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_colleage_name"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/dp_10"
+            android:text="课程列表"
+            android:textSize="@dimen/tv_size" />
+
+        <TextView
+            android:id="@+id/tv_service_provider"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_22"
+            android:layout_marginTop="@dimen/dp_4"
+            android:background="@drawable/shape_rect_red_corner"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_22"
+            android:paddingStart="@dimen/dp_22"
+            android:text="@string/service_provider"
+            android:textColor="@color/white"
+            android:textSize="@dimen/tv_size" />
+
+
+    </LinearLayout>
 
 </LinearLayout>

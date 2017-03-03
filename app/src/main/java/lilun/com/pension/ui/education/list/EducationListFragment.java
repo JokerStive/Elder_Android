@@ -101,13 +101,13 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
     private void getDataList(int skip) {
         String filter = "";
         if (mElderModule.getService().equals("Activity")) {
-            filter = "{\"where\":{\"categoryId\": \"/地球村/中国/重庆市/南岸区/A小区/#activity-category.社区讲堂\"}, \"skip\":" + skip + "}";
-            mPresenter.getCommunityCouse(filter, 0);
+            filter = "{\"include\":\"contact\",\"where\":{\"categoryId\": \"/地球村/中国/重庆市/南岸区/A小区/#activity-category.社区讲堂\"}, \"skip\":" + skip + "}";
+            mPresenter.getCommunityCourse(filter, 0);
         } else {
             if (mElderModule.getName().equals(getString(R.string.pension_university)))
-                filter = "{\"where\":{\"location\":{\"exists\": true}}, \"skip\":" + skip + "}";
+                filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": true}}, \"skip\":" + skip + "}";
             else if (mElderModule.getName().equals(getString(R.string.net_university)))
-                filter = "{\"where\":{\"location\":{\"exists\": false}}, \"skip\":" + skip + "}";
+                filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": false}}, \"skip\":" + skip + "}";
             mPresenter.getColleage(filter, skip);
         }
     }

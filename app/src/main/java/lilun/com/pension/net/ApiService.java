@@ -217,6 +217,24 @@ public interface ApiService {
     @GET("OrganizationEdus/{id}/courses")
     Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
 
+    /**
+     * 获取课程详情
+     */
+    @GET("EduCourses/{id}")
+    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId,@Query("filter") String filter);
+
+    /**
+     * 参加课程 -- 大学课程
+     */
+    @POST("EduCourses/{id}/joinCourse")
+    Observable<Response<Object>> joinCourse(@Path("id") String courseId, @Query("filter") String filter);
+
+   /**
+     * 参加课程 -- 大学课程
+     */
+    @DELETE("EduCourses/{id}/quitCourse")
+    Observable<Response<Object>> quitCourse(@Path("id") String courseId, @Query("filter") String filter);
+
 //==========================================DELETE
 
     /**

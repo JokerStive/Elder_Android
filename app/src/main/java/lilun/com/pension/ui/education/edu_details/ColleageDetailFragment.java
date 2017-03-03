@@ -1,10 +1,8 @@
 package lilun.com.pension.ui.education.edu_details;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
@@ -22,8 +21,9 @@ import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.widget.ElderModuleClassifyDecoration;
-import lilun.com.pension.widget.NormalTitleBar;
+import lilun.com.pension.ui.education.course_list.CourseListFragment;
+import lilun.com.pension.widget.CircleImageView;
+import lilun.com.pension.widget.slider.BannerPager;
 
 /**
  * 大学详情
@@ -36,22 +36,36 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
     ElderEdus mColleage;
     ColleageCourseAdapter mCourseAdapter;
 
-    @Bind(R.id.title_bar)
-    NormalTitleBar titleBar;
-    @Bind(R.id.ig_colleage_icon)
-    ImageView igColleageIcon;
-    @Bind(R.id.tv_colleage_name)
+
+    @Bind(R.id.bp_colleage_icon)
+    BannerPager bgColleageIcon;
+    @Bind(R.id.tv_course_name)
     TextView tvColleageName;
     @Bind(R.id.tv_connect_phone)
     TextView tvConnectPhone;
     @Bind(R.id.tv_connect_person)
     TextView tvConnectPerson;
+    @Bind(R.id.cig_connect_icon)
+    CircleImageView tvConnectIcon;
     @Bind(R.id.tv_colleage_descript)
     TextView tvColleageDescript;
     @Bind(R.id.tv_colleage_addr)
     TextView tvColleageAddr;
-    @Bind(R.id.rv_colleage_course)
-    RecyclerView mRecyclerView;
+
+
+    @OnClick({R.id.join_in, R.id.tv_course_list, R.id.iv_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.join_in:
+            case R.id.tv_course_list:
+                start(CourseListFragment.newInstance(mColleage));
+                break;
+            case R.id.iv_back:
+                pop();
+                break;
+        }
+    }
+
 
     public static ColleageDetailFragment newInstance(ElderEdus colleage) {
         ColleageDetailFragment fragment = new ColleageDetailFragment();
@@ -80,35 +94,35 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(mColleage.getTitle());
-        titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
-            @Override
-            public void onBackClick() {
-                pop();
+        //显示图片
+        List<String> urls = new ArrayList<>();
+        if (mColleage.getPicture() != null) {
+            for (IconModule iconModule : mColleage.getPicture()) {
+                String url = IconUrl.organizationEdus(mColleage.getId(), iconModule.getFileName());
+                urls.add(url);
             }
-        });
-        Glide.with(_mActivity)
-                .load(IconUrl.organizationEdus(mColleage.getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getPicture())))
-                .placeholder(R.drawable.announcement_def)
-                .into(igColleageIcon);
+        } else {
+            String url = IconUrl.organizationEdus(mColleage.getId(), null);
+            urls.add(url);
+        }
+        bgColleageIcon.setData(urls);
         tvColleageName.setText(mColleage.getTitle());
-        tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getMobile()));
-        tvConnectPerson.setText(getString(R.string.connect_person_, "刘先生"));
+        if (mColleage.getContact() != null) {
+            tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getContact().getMobile()));
+            tvConnectPerson.setText(getString(R.string.connect_person_, mColleage.getContact().getUsername()));
+            Glide.with(_mActivity)
+                    .load(IconUrl.account(mColleage.getOrganizationId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getPicture())))
+                    .placeholder(R.drawable.icon_def)
+                    .error(R.drawable.icon_def)
+                    .into(tvConnectIcon);
+        }
         tvColleageDescript.setText(mColleage.getDescription());
         tvColleageAddr.setText(mColleage.getAddress());
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(_mActivity,3));
-        mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.addItemDecoration(new ElderModuleClassifyDecoration());
-        mPresenter.getColleageCouse(mColleage.getId(), "", 0);
     }
 
     @Override
     public void showColleageCouseList(List<EdusColleageCourse> courseList) {
-        if (mCourseAdapter == null) {
-            mCourseAdapter = new ColleageCourseAdapter(this, courseList);
-            mRecyclerView.setAdapter(mCourseAdapter);
-        }
+
     }
 
 }

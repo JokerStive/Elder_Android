@@ -24,7 +24,7 @@ public class EducationListPresenter extends RxPresenter<EducationListContract.Vi
 
 
     @Override
-    public void getCommunityCouse(String filter, int skip) {
+    public void getCommunityCourse(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
                 .getOrganizationsActivities(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
