@@ -29,16 +29,22 @@ public class StringUtils {
         DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
         DateTime dateTime = parser2.parseDateTime(isoTime);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return  format.format(new Date(dateTime.getMillis()+28800*1000));
+        return format.format(new Date(dateTime.getMillis() + 28800 * 1000));
     }
 
     public static String IOS2ToUTC(String isoTime1) {
-        String[] ss = isoTime1.split("\\.");
-        String isoTime = ss[0] + "+08:00";
-        DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
-        DateTime dateTime = parser2.parseDateTime(isoTime);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return  format.format(new Date(dateTime.getMillis()+28800*1000));
+        String ret = "Error";
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] + "+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            DateTime dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 
 
@@ -68,9 +74,10 @@ public class StringUtils {
     }
 
     public static List<IconModule> string2IconModule(String imgString) {
-        if (imgString!=null){
+        if (imgString != null) {
             Gson gson = new Gson();
-            return gson.fromJson(imgString, new TypeToken<List<IconModule>>() {}.getType());
+            return gson.fromJson(imgString, new TypeToken<List<IconModule>>() {
+            }.getType());
         }
 
         return null;
@@ -113,7 +120,6 @@ public class StringUtils {
     }
 
 
-
     /**
      * 根据list数据设置span数
      */
@@ -138,7 +144,6 @@ public class StringUtils {
         }
         return substring;
     }
-
 
 
 }

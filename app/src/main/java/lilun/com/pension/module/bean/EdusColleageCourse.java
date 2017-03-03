@@ -1,7 +1,5 @@
 package lilun.com.pension.module.bean;
 
-import android.graphics.drawable.Icon;
-
 import java.util.ArrayList;
 
 import lilun.com.pension.base.BaseBean;
@@ -11,28 +9,16 @@ import lilun.com.pension.base.BaseBean;
  */
 
 public class EdusColleageCourse extends BaseBean {
-
-    /**
-     *  "name": "string",
-     "content": "string",
-     "plan": "string",
-     "teacher": "string",
-     "startDate": "2017-02-23",
-     "endDate": "2017-02-23",
-     "maxCount": 0,
-     "maxOnlineCount": 0,
-     "count": 0,
-     "id": "string",
-     "contactId": "string",
-     "organizationEduId": "string",
-     "schoolId": "string"
-     */
+    public static int TYPE = 2;
     private String name;
     private String content;
     private String plan;
     private String teacher;
     private String startDate;
     private String endDate;
+    private String startCourseTime;// 上课时间 ,
+    private String endCourseTime;// 下课时间 ,
+    private String endSingnDate;// 截止时间 ,
     private int maxCount;
     private int maxOnlineCount;
     private int count;
@@ -42,12 +28,8 @@ public class EdusColleageCourse extends BaseBean {
     private String schoolId;
     private ArrayList<String> accountIds;
     private ArrayList<IconModule> picture;
-    private Account  contact;
-
-
-
-
-
+    private Account contact;
+    private ElderEdusColleage school;
 
 
     public String getName() {
@@ -96,6 +78,30 @@ public class EdusColleageCourse extends BaseBean {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public void setEndCourseTime(String endCourseTime) {
+        this.endCourseTime = endCourseTime;
+    }
+
+    public void setEndSingnDate(String endSingnDate) {
+        this.endSingnDate = endSingnDate;
+    }
+
+    public void setStartCourseTime(String startCourseTime) {
+        this.startCourseTime = startCourseTime;
+    }
+
+    public String getEndCourseTime() {
+        return endCourseTime;
+    }
+
+    public String getEndSingnDate() {
+        return endSingnDate;
+    }
+
+    public String getStartCourseTime() {
+        return startCourseTime;
     }
 
     public int getMaxCount() {
@@ -176,5 +182,25 @@ public class EdusColleageCourse extends BaseBean {
 
     public void setContact(Account contact) {
         this.contact = contact;
+    }
+
+    public ElderEdusColleage getSchool() {
+        return school;
+    }
+
+    public void setSchool(ElderEdusColleage school) {
+        this.school = school;
+    }
+
+    public ElderEdus toElderEdus() {
+        ElderEdus edus = new ElderEdus();
+        edus.setType(TYPE);
+        edus.setTitle(name);
+        edus.setId(id);
+        edus.setPicture(picture);
+        edus.setVisible(visible);
+        edus.setSelected(isSelected);
+        edus.setContact(contact);
+        return edus;
     }
 }

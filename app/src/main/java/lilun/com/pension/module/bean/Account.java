@@ -42,7 +42,7 @@ public class Account implements Serializable {
     private String realm;
     private Boolean emailVerified;
     private String status;
-    private String picture;
+    private List<IconModule> picture;
     private String visibility;
 
     public boolean isCustomer() {
@@ -172,11 +172,11 @@ public class Account implements Serializable {
         this.status = status;
     }
 
-    public String getPicture() {
+    public List<IconModule>  getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(List<IconModule>  picture) {
         this.picture = picture;
     }
 

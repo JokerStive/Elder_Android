@@ -5,6 +5,7 @@ import java.util.List;
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.ElderEdus;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.OrganizationProduct;
 
 /**
@@ -16,14 +17,12 @@ import lilun.com.pension.module.bean.OrganizationProduct;
  */
 public interface EducationListContract {
     interface View extends IView<Presenter> {
-        void showEdusList(List<ElderEdus> orders, boolean isLoadMore);
+        void showEdusList(List<ElderEdusColleage> orders, boolean isLoadMore);
 
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
-
-        void getCommunityCourse(String filter, int skip);
         void getColleage(String filter, int skip);
     }
 }

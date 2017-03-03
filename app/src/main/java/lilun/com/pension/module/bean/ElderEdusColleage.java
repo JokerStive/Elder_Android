@@ -1,5 +1,6 @@
 package lilun.com.pension.module.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.base.BaseBean;
@@ -10,7 +11,7 @@ import lilun.com.pension.base.BaseBean;
  */
 
 public class ElderEdusColleage extends BaseBean {
-    public static String TYPE="ElderEdusColleage";
+
     /**
      * {
      * "name": "华南理工大学",
@@ -39,7 +40,7 @@ public class ElderEdusColleage extends BaseBean {
     private String id;
     private String createdAt;
     private String updatedAt;
-    private List<IconModule> picture;
+    private ArrayList<IconModule> picture;
     private Account contact;
 
     public String getName() {
@@ -106,11 +107,11 @@ public class ElderEdusColleage extends BaseBean {
         this.updatedAt = updatedAt;
     }
 
-    public List<IconModule> getPicture() {
+    public ArrayList<IconModule> getPicture() {
         return picture;
     }
 
-    public void setPicture(List<IconModule> picture) {
+    public void setPicture(ArrayList<IconModule> picture) {
         this.picture = picture;
     }
 
@@ -124,7 +125,6 @@ public class ElderEdusColleage extends BaseBean {
 
     public ElderEdus toElderEdus() {
         ElderEdus edus = new ElderEdus();
-        edus.setSource(TYPE);
         edus.setTitle(name);
         edus.setAddress(address);
         edus.setCreatedAt(createdAt);

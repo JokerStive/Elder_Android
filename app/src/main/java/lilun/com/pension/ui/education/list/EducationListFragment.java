@@ -12,8 +12,10 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.adapter.EdusColleageAdapter;
 import lilun.com.pension.module.adapter.OrganizationEdusAdapter;
 import lilun.com.pension.module.bean.ElderEdus;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.education.edu_details.ColleageDetailFragment;
@@ -31,7 +33,7 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
         implements EducationListContract.View {
 
     ElderModule mElderModule;
-    private OrganizationEdusAdapter mActivityAdapter;
+    private EdusColleageAdapter mActivityAdapter;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
     @Bind(R.id.swipe_layout)
@@ -100,24 +102,21 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
     private void getDataList(int skip) {
         String filter = "";
-        if (mElderModule.getService().equals("Activity")) {
-            filter = "{\"include\":\"contact\",\"where\":{\"categoryId\": \"/地球村/中国/重庆市/南岸区/A小区/#activity-category.社区讲堂\"}, \"skip\":" + skip + "}";
-            mPresenter.getCommunityCourse(filter, 0);
-        } else {
-            if (mElderModule.getName().equals(getString(R.string.pension_university)))
-                filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": true}}, \"skip\":" + skip + "}";
-            else if (mElderModule.getName().equals(getString(R.string.net_university)))
-                filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": false}}, \"skip\":" + skip + "}";
-            mPresenter.getColleage(filter, skip);
-        }
+        if (mElderModule.getName().equals(getString(R.string.pension_university)))
+            filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": true}}, \"skip\":" + skip + "}";
+        else if (mElderModule.getName().equals(getString(R.string.net_university)))
+            filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": false}}, \"skip\":" + skip + "}";
+        mPresenter.getColleage(filter, skip);
+
     }
 
 
     @Override
-    public void showEdusList(List<ElderEdus> elderEdusList, boolean isLoadMore) {
+    public void showEdusList(List<ElderEdusColleage> elderEdusList, boolean isLoadMore) {
         skip += elderEdusList.size();
         if (mActivityAdapter == null) {
-            mActivityAdapter = new OrganizationEdusAdapter(this, elderEdusList);
+
+            mActivityAdapter = new EdusColleageAdapter(this, elderEdusList);
 
             mRecyclerView.setAdapter(mActivityAdapter);
             mActivityAdapter.setOnItemClickListener((item) -> {

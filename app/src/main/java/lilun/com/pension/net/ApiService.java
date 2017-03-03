@@ -7,6 +7,7 @@ import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.EdusColleageCourse;
+import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
@@ -222,6 +223,12 @@ public interface ApiService {
      */
     @GET("EduCourses/{id}")
     Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId,@Query("filter") String filter);
+
+    /**
+     * 我参加的课程 --
+     */
+    @GET("Accounts/getMyCourse")
+    Observable<Response<List<ElderEdus>>> getMyCourse(@Query("filter") String filter);
 
     /**
      * 参加课程 -- 大学课程

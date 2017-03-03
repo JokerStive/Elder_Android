@@ -22,12 +22,16 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.OrganizationEdusAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
+import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.activity.list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pension.ui.education.list.EducationListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
@@ -143,6 +147,13 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
     private void setAdapter() {
         mAdapter = new OrganizationEdusAdapter(this, products);
         mAdapter.addHeaderView(mClassifyRecycler);
+        mAdapter.setOnItemClickListener((item)->{
+            if(item.getType() == OrganizationActivity.TYPE){
+
+            }else if(item.getType() == EdusColleageCourse.TYPE){
+                start(CourseDetailFragment.newInstance(item.toEdusColleageCourse()));
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -162,7 +173,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
     }
 
     private void getServices(int skip) {
-        String filter = "{\"where\":{\"categoryId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"\":\"\"}";
         mPresenter.getAboutMe(filter, skip);
     }
 

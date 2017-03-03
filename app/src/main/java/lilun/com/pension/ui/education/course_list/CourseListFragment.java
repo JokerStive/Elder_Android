@@ -15,6 +15,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.EduCourseAdapter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
@@ -30,7 +31,7 @@ import lilun.com.pension.widget.NormalTitleBar;
 public class CourseListFragment extends BaseFragment<CourseListContract.Presenter>
         implements CourseListContract.View {
 
-    ElderEdus mColleage;
+    ElderEdusColleage mColleage;
     private EduCourseAdapter mEduCourseAdapter;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
@@ -41,7 +42,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     int skip = 0;
 
 
-    public static CourseListFragment newInstance(ElderEdus colleage) {
+    public static CourseListFragment newInstance(ElderEdusColleage colleage) {
         CourseListFragment fragment = new CourseListFragment();
         Bundle args = new Bundle();
         args.putSerializable("Colleage", colleage);
@@ -51,7 +52,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (ElderEdus) arguments.getSerializable("Colleage");
+        mColleage = (ElderEdusColleage) arguments.getSerializable("Colleage");
         Preconditions.checkNull(mColleage);
     }
 
@@ -79,7 +80,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(mColleage.getTitle());
+        titleBar.setTitle(mColleage.getName());
         titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
             @Override
             public void onBackClick() {
@@ -113,7 +114,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
             mRecyclerView.setAdapter(mEduCourseAdapter);
             mEduCourseAdapter.setOnItemClickListener((item) -> {
-                   start(CourseDetailFragment.newInstance(mColleage,item));
+                   start(CourseDetailFragment.newInstance(item));
             });
 
             mEduCourseAdapter.setOnLoadMoreListener(() -> {
