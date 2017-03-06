@@ -15,7 +15,7 @@ import lilun.com.pension.module.bean.ProductOrder;
  */
 public interface MyOrderContract {
     interface View extends IView<Presenter> {
-        void showMyOrders(List<ProductOrder> orders);
+        void showMyOrders(List<ProductOrder> orders,boolean isLoadMore);
 
         void completeRefresh();
     }

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:layout_marginBottom="20dp"
     >
 
     <RelativeLayout
@@ -94,6 +93,7 @@
                     android:layout_marginTop="15dp" />
 
                 <LinearLayout
+                    android:id="@+id/ll_reply"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -103,7 +103,7 @@
                     <TextView
                         android:id="@+id/tv_enter_rank"
                         style="@style/tv_normal"
-                        android:text="评价"
+                        android:text="@string/rank"
                         android:textColor="@color/red" />
 
 
@@ -123,30 +123,36 @@
             </LinearLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_below="@id/ll_container">
 
                 <TextView
                     android:id="@+id/tv_provider_name"
                     style="@style/tv_normal"
-                    android:layout_centerVertical="true"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
                     android:maxWidth="200dp"
-                    tools:text="金色养老院" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    tools:text="金色养老院金色养老院金色养老院" />
 
                 <TextView
                     android:id="@+id/tv_enter_provider"
                     style="@style/tv_small"
-                    android:layout_alignParentRight="true"
                     android:layout_marginBottom="25dp"
                     android:layout_marginTop="16dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
                     android:background="@drawable/shape_rect_red_corner"
-                    android:padding="18dp"
+                    android:padding="15dp"
                     android:text="@string/enter_provider"
                     android:textColor="@color/white" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </RelativeLayout>
 

@@ -29,6 +29,7 @@
             android:layout_marginRight="10dp">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_reservation"
                 style="@style/tv_small"
                 android:layout_width="60dp"

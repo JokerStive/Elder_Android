@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/btn_agree_protocol"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="30dp"
         style="@style/btn_red_deep"
         android:gravity="center"
         android:layout_marginStart="21dp"
@@ -34,6 +34,6 @@
         android:layout_marginStart="21dp"
         android:layout_marginEnd="21dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="10dp"
         />
 </LinearLayout>

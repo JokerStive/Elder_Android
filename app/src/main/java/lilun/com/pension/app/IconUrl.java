@@ -30,8 +30,7 @@ public class IconUrl {
 
 
     public static String organizationProduct(String productId, String iconName) {
-        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/images/" + iconName + "?access_token=" + User.getToken();
-//        return Config.BASE_URL + "OrganizationAids/" + encodeURL(productId) + "/downloadPicture/?picture" + iconName + "&access_token=" + User.getToken();
+        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName" + iconName + "&access_token=" + User.getToken();
     }
 
 

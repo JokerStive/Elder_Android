@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
 
@@ -61,7 +61,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Override
     protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+        return new DefaultHorizontalAnimator();
     }
 
     @Nullable

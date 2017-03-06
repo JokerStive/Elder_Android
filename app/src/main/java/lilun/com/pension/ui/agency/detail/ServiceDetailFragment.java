@@ -16,7 +16,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
@@ -24,10 +26,11 @@ import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.residential.detail.OrderDetailFragment;
+import lilun.com.pension.ui.residential.rank.RankListFragment;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.slider.BannerPager;
 
@@ -69,12 +72,18 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     @Bind(R.id.tv_provider_name)
     TextView tvProviderName;
+
     @Bind(R.id.tv_enter_provider)
     TextView tvEnterProvider;
+
     @Bind(R.id.iv_icon)
     BannerPager banner;
     @Bind(R.id.ll_container)
     LinearLayout llContainer;
+
+    @Bind(R.id.ll_reply)
+    LinearLayout llReply;
+
     private OrganizationProduct mProduct;
     private String mId;
 
@@ -114,12 +123,12 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         UIUtils.setBold(tvProviderName);
         UIUtils.setBold(tvEnterRank);
 
-        String agencyId = StringUtils.removeSpecialSuffix(mProduct.getOrganizationId());
+        String agencyId =  StringUtils.removeSpecialSuffix(mProduct.getOrganizationId());
         String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
         //显示
         tvTitle.setText(mProduct.getTitle());
         tvProvider.setText(String.format(getString(R.string.format_provider), agencyName));
-        tvPrice.setText(String.format("价格：%1$d元", mProduct.getPrice()));
+        tvPrice.setText(String.format(getString(R.string.format_price), mProduct.getPrice()));
         tvContent.setText(StringUtils.filterNull(mProduct.getContext()));
 
         rbBar.setRating(mProduct.getScore());
@@ -127,10 +136,11 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         tvProviderName.setText(agencyName);
 
 
+
         //事件
         ivBack.setOnClickListener(this);
         tvReservation.setOnClickListener(this);
-        tvEnterRank.setOnClickListener(this);
+        llReply.setOnClickListener(this);
         tvEnterProvider.setOnClickListener(this);
 
     }
@@ -138,6 +148,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+        //展示product图片
         List<String> urls = new ArrayList<>();
         if (mProduct.getImages() != null) {
             for (IconModule iconModule : mProduct.getImages()) {
@@ -145,10 +156,29 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationAid(mProduct.getId(), null);
+            String url = IconUrl.organizationProduct(mProduct.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);
+
+        //如果这个服务不是自己创建的，就要去判断是否能够预约
+        if (!User.creatorIsOwn(mProduct.getCreatorId())){
+            String filter = "{\"where\":{\"creatorId\":\""+User.getUserId()+"\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"cancel\"}]}}";
+            NetHelper.getApi()
+                    .getOrdersOfProduct(mProduct.getId(),filter)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                        @Override
+                        public void _next(List<ProductOrder> orders) {
+                            if (orders.size()!=0){
+                                tvReservation.setText("已预约");
+                            }
+                        }
+                    });
+        }
+
+
     }
 
     @Override
@@ -159,7 +189,9 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 break;
 
             case R.id.tv_reservation:
-                reservation();
+                if (tvReservation.getText().equals(getString(R.string.reservation))){
+                    reservation();
+                }
                 break;
 
             case R.id.tv_enter_provider:
@@ -168,20 +200,20 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
                 break;
 
-            case R.id.tv_enter_rank:
+            case R.id.ll_reply:
                 //TODO 进入评价列表页面
-
+                start(RankListFragment.newInstance(Constants.organizationProduct, mProduct.getId(), mProduct.getTitle()));
                 break;
         }
     }
 
     /**
-    *预约服务
-    */
+     * 预约服务
+     */
     private void reservation() {
-        if (tvReservation.getText().equals(getString(R.string.cancel))){
-            
-        }else if (tvReservation.getText().equals(getString(R.string.reservation))){
+        if (tvReservation.getText().equals(getString(R.string.cancel))) {
+
+        } else if (tvReservation.getText().equals(getString(R.string.reservation))) {
             new NormalDialog().createNormal(_mActivity, getString(R.string.reservation_desc), () -> {
                 NetHelper.getApi()
                         .createOrder(mProduct.getId())
@@ -190,20 +222,19 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                         .subscribe(new RxSubscriber<ProductOrder>() {
                             @Override
                             public void _next(ProductOrder productOrder) {
-                                ToastHelper.get().showShort("预约成功");
-                                setReservation();
-
+                                start(OrderDetailFragment.newInstance(productOrder.getId()));
+                                onBackPressedSupport();
                             }
                         });
             });
         }
     }
 
-    private void setReservation() {
-        tvReservation.setText(R.string.cancel);
-        tvReservation.setTextColor(getResources().getColor(R.color.white));
-        tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
-    }
+//    private void setReservation() {
+//        tvReservation.setText(R.string.cancel);
+//        tvReservation.setTextColor(getResources().getColor(R.color.white));
+//        tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
+//    }
 
 
 }

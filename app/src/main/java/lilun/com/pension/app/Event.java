@@ -27,4 +27,7 @@ public class Event {
             this.reply = reply;
         }
     }
+
+    //刷新我的订单列表数据
+    public static  class RefreshMyOrderData{}
 }

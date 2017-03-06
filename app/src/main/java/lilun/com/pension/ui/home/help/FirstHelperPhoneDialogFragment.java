@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import lilun.com.pension.R;
+import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RegexUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
@@ -79,7 +80,7 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
     private void help() {
         if (checkPhone()) {
             String phone = etPhone.getText().toString();
-//            PreUtils.putString("firstHelperPhone",phone);
+            PreUtils.putString("firstHelperPhone",phone);
             AlarmDialogFragment.newInstance(phone).show(getActivity().getFragmentManager(), AlarmDialogFragment.class.getSimpleName());
             dismiss();
         }

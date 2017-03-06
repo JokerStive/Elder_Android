@@ -9,13 +9,14 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/answer" />
+        app:title="@string/rank"
+         />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_layout"
-        android:layout_below="@id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,46 +35,12 @@
                 android:layout_marginTop="19dp" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="15dp"
                 android:id="@+id/rv_reply"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_reply_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_reply"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_reply"
-            style="@style/et_normal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_weight="4"
-            android:background="@null"
-            android:hint="我要回答"
-            android:maxLines="1"
-            android:padding="5dp"
-            android:textColorHint="@color/gray" />
-
-        <TextView
-            android:id="@+id/tv_confirm"
-            style="@style/tv_normal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/et_reply"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="确定"
-            android:textColor="@color/help" />
-
-    </LinearLayout>
 
 </RelativeLayout>

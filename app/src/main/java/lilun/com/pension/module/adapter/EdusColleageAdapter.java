@@ -42,7 +42,7 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
                 .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName((ArrayList<IconModule>) edu.getPicture())))
                 .placeholder(R.drawable.icon_def)
                 .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.banner));
+                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

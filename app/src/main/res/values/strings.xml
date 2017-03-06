@@ -50,6 +50,7 @@
     <string name="choose_priority">点击选择优先级</string>
     <string name="normal_priority">一般</string>
     <string name="build">新建</string>
+    <string name="add_photo">添加图片</string>
 
     <!--求助条目-->
     <string name="help_price">%1$d元补贴</string>
@@ -60,7 +61,7 @@
     <string name="answer">回答</string>
     <string name="joiners">参与者</string>
     <string name="format_creator">发起人：%1$s</string>
-    <string name="format_price">(%1$d元补贴)</string>
+    <string name="format_subsidy">(%1$d元补贴)</string>
     <string name="format_phone">联系电话：%1$s</string>
     <string name="confirm_help_other">确定帮助他人？</string>
     <string name="confirm_delete_help">确定删除这条求助？</string>
@@ -87,11 +88,11 @@
     =========================================================
     <!--养老机构-->
     <string name="pension_agency">养老机构</string>
-    <string name="rank_count">%1$d条评价</string>
+    <string name="rank">评价</string>
 
     <!--养老机构服务详情-->
     <string name="reservation">预约</string>
-    <string name="enter_provider">进入该服务提供商</string>
+    <string name="enter_provider">进入商家</string>
     <string name="format_provider">提供商：%1$s</string>
     <string name="introduction">简介</string>
     <string name="reservation_desc">确定要预约该服务吗?</string>
@@ -118,6 +119,13 @@
     <!--我的订单-->
     <string name="my_orders">我的订单</string>
 
+    <!--订单详情-->
+    <string name="format_price">价格：%1$d元</string>
+    <string name="cancel_order">取消订单</string>
+    <string name="status_reserved">已预约</string>
+    <string name="status_assigned">已受理</string>
+    <string name="status_done">已完成</string>
+    <string name="status_cancel">已取消</string>
 
     ====================================================
 

@@ -73,7 +73,7 @@ public class RankListFragment extends BaseFragment<RankListContract.Presenter> i
 
     @Override
     protected void initPresenter() {
-        mPresenter = new RankPresenter();
+        mPresenter = new RankListPresenter();
         mPresenter.bindView(this);
     }
 

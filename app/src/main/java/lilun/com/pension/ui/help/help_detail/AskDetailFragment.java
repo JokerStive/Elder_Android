@@ -25,7 +25,7 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AidAskListAdapter;
+import lilun.com.pension.module.adapter.ReplyAdapter;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -64,7 +64,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
-    private AidAskListAdapter mReplyAdapter;
+    private ReplyAdapter mReplyAdapter;
     private ImageView ivAvatar;
     private BannerPager banner;
     private String mAidId;
@@ -161,7 +161,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(17));
-        mReplyAdapter = new AidAskListAdapter(this, mDetailData, mCreatorIsOwn);
+        mReplyAdapter = new ReplyAdapter(this, mDetailData, mCreatorIsOwn);
         mReplyAdapter.addHeaderView(mHeadView);
         mReplyAdapter.setOnAgreeClickListenerr(id -> {
             mPresenter.acceptOneReply(mAid.getId(), id, mAid.getKind());
@@ -207,7 +207,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format(getString(R.string.format_price), mAid.getPrice()));
+            tvPrice.setText(String.format(getString(R.string.format_subsidy), mAid.getPrice()));
         }
 
         //显示发起人
@@ -274,7 +274,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
 
         } else if (status.equals(getString(R.string.answer))) {
-            start(ReplyFragment.newInstance(mAid));
+            start(ReplyFragment.newInstance("OrganizationAid",mAid.getId(),mAid.getTitle(),true));
         }
     }
 }

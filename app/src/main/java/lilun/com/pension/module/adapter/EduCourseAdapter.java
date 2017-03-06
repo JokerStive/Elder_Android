@@ -13,11 +13,8 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
-import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.IconModule;
-import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.BitmapUtils;
-import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 大学-课程adapter
@@ -47,7 +44,7 @@ public class EduCourseAdapter extends QuickAdapter<EdusColleageCourse> {
                 .load(IconUrl.eduCourses(course.getId(), BitmapUtils.picName(course.getPicture())))
                 .placeholder(R.drawable.icon_def)
                 .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.banner));
+                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

@@ -24,7 +24,7 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AidHelperListAdapter;
+import lilun.com.pension.module.adapter.HelperJoinerAdapter;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -64,7 +64,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
-    private AidHelperListAdapter mReplyAdapter;
+    private HelperJoinerAdapter mReplyAdapter;
     private TextView tvJoinerTitle;
     private ImageView ivAvatar;
     private BannerPager banner;
@@ -160,8 +160,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(17));
-        mReplyAdapter = new AidHelperListAdapter(this, mDetailData);
-        mReplyAdapter.setOnFunctionClickListener(new AidHelperListAdapter.OnFunctionClickListener() {
+        mReplyAdapter = new HelperJoinerAdapter(this, mDetailData);
+        mReplyAdapter.setOnFunctionClickListener(new HelperJoinerAdapter.OnFunctionClickListener() {
             @Override
             public void agree(String id) {
                 mPresenter.acceptOneReply(mAidId, id, mAid.getKind());
@@ -215,7 +215,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format(getString(R.string.format_price), mAid.getPrice()));
+            tvPrice.setText(String.format(getString(R.string.format_subsidy), mAid.getPrice()));
         }
 
         //显示发起人

@@ -21,6 +21,7 @@ import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.residential.list.ResidentialListFragment;
+import lilun.com.pension.ui.residential.main.MyOderFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
@@ -92,6 +93,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             @Override
             public void onRightClick() {
                 //TODO 查看所有订单
+                start(MyOderFragment.newInstance());
             }
         });
 

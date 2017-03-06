@@ -6,7 +6,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -17,14 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AidAskListAdapter;
-import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.adapter.ReplyAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -55,18 +59,22 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
 
     @Bind(R.id.tv_confirm)
     TextView tvConfirm;
+    @Bind(R.id.ll_reply_container)
+    LinearLayout llReplyContainer;
 
-    private AidAskListAdapter mReplyAdapter;
+    private ReplyAdapter mReplyAdapter;
     private String whatModule;
     private String whatId;
     private String title;
+    private boolean isShowReply;
 
-    public static ReplyFragment newInstance(String whatModule,String whatId,String title) {
+    public static ReplyFragment newInstance(String whatModule, String whatId, String title, boolean isShowReply) {
         ReplyFragment fragment = new ReplyFragment();
         Bundle args = new Bundle();
         args.putString("whatModule", whatModule);
         args.putString("whatId", whatId);
         args.putString("title", title);
+        args.putBoolean("isShowReply", isShowReply);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,9 +84,9 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         whatModule = arguments.getString("whatModule");
         whatId = arguments.getString("whatId");
         title = arguments.getString("title");
+        isShowReply = arguments.getBoolean("isShowReply", true);
         Preconditions.checkNull(whatModule);
         Preconditions.checkNull(whatId);
-        Preconditions.checkNull(title);
     }
 
 
@@ -90,17 +98,19 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_help_reply;
+        return R.layout.fragment_reply;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
 
-        tvTopic.setText(mAid.getTitle());
+        tvTopic.setText(StringUtils.filterNull(title));
 
         rvReply.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvReply.addItemDecoration(new NormalItemDecoration(17));
+
+        llReplyContainer.setVisibility(isShowReply?View.VISIBLE:View.GONE);
 
         //刷新
         swipeLayout.setOnRefreshListener(() -> {
@@ -109,8 +119,6 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
                     }
                 }
         );
-
-
 
 
         //提交回答
@@ -129,8 +137,8 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         if (etReply.getText() != null) {
             String replyContent = etReply.getText().toString();
             OrganizationReply reply = new OrganizationReply();
-            reply.setWhatModel("OrganizationAid");
-            reply.setWhatId(mAid.getId());
+            reply.setWhatModel(whatModule);
+            reply.setWhatId(whatId);
             reply.setContent(replyContent);
             mPresenter.newReply(reply);
         }
@@ -138,7 +146,7 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
 
     private void getReplies(int skip) {
         swipeLayout.setRefreshing(true);
-        mPresenter.getReplies(mAid.getId(), skip);
+        mPresenter.getReplies(whatModule, whatId, skip);
     }
 
 
@@ -149,7 +157,7 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
             if (replies == null) {
                 replies = new ArrayList<>();
             }
-            mReplyAdapter = new AidAskListAdapter(this, replies, false);
+            mReplyAdapter = new ReplyAdapter(this, replies, false);
             rvReply.setAdapter(mReplyAdapter);
             mReplyAdapter.setOnLoadMoreListener(() -> {
                 //TODO load_more
@@ -179,5 +187,19 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         if (swipeLayout != null && swipeLayout.isRefreshing()) {
             swipeLayout.setRefreshing(false);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

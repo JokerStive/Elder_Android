@@ -11,13 +11,15 @@ import lilun.com.pension.base.BaseBean;
 public class ProductOrder extends BaseBean {
 
     /**
+     * id : string
      * name : string
      * status : string
      * mobile : string
      * description : string
-     * id : string
+     * orderId : string
+     * assigneeId : string
+     * canceledById : string
      * productId : string
-     * organizationProductId : string
      * createdAt : $now
      * updatedAt : $now
      * creatorId : string
@@ -26,20 +28,21 @@ public class ProductOrder extends BaseBean {
      * updatorName : string
      */
 
+    private String id;
     private String name;
     private String status;
     private String mobile;
     private String description;
-    private String id;
+    private String orderId;
+    private String assigneeId;
+    private String canceledById;
     private String productId;
-    private String organizationProductId;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private OrganizationProduct product;
 
     public OrganizationProduct getProduct() {
         return product;
@@ -48,6 +51,16 @@ public class ProductOrder extends BaseBean {
     public ProductOrder setProduct(OrganizationProduct product) {
         this.product = product;
         return this;
+    }
+
+    private OrganizationProduct product;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -82,12 +95,28 @@ public class ProductOrder extends BaseBean {
         this.description = description;
     }
 
-    public String getId() {
-        return id;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(String assigneeId) {
+        this.assigneeId = assigneeId;
+    }
+
+    public String getCanceledById() {
+        return canceledById;
+    }
+
+    public void setCanceledById(String canceledById) {
+        this.canceledById = canceledById;
     }
 
     public String getProductId() {
@@ -96,14 +125,6 @@ public class ProductOrder extends BaseBean {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getOrganizationProductId() {
-        return organizationProductId;
-    }
-
-    public void setOrganizationProductId(String organizationProductId) {
-        this.organizationProductId = organizationProductId;
     }
 
     public String getCreatedAt() {

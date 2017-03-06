@@ -129,13 +129,6 @@ public interface ApiService {
     Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Path("id") String organizationId, @Query("filter") String filter);
 
 
-    /**
-     * 获取productOrder
-     */
-
-    @GET("ProductOrders")
-    Observable<Response<List<ProductOrder>>> getProductOrders(@Query("filter") String filter);
-
 
     /**
      * 根据id获取一个organization
@@ -151,6 +144,38 @@ public interface ApiService {
 
     @GET("OrganizationReplies")
     Observable<Response<List<OrganizationReply>>> getOrganizationReplies(@Query("filter") String filter);
+
+
+    /**
+     * 获取评价集合数据
+     */
+
+    @GET("OrganizationRanks")
+    Observable<Response<List<Rank>>> getRanks(@Query("filter") String filter);
+
+
+    /**
+     * 获取某个订单
+     */
+
+    @GET("ProductOrders/{id}")
+    Observable<Response<ProductOrder>> getOrder(@Path("id") String orderId,@Query("filter") String filter);
+
+    /**
+     * 获取订单列表数据
+     */
+
+    @GET("ProductOrders")
+    Observable<Response<List<ProductOrder>>> getOrders(@Query("filter") String filter);
+
+
+    /**
+     * 获取某一个product的订单列表数据
+     */
+
+    @GET("OrganizationProducts/{id}/orders")
+    Observable<Response<List<ProductOrder>>> getOrdersOfProduct(@Path("id") String productId,@Query("filter") String filter);
+
 
 
     /**
@@ -197,6 +222,8 @@ public interface ApiService {
      */
     @POST("OrganizationProducts/{id}/createOrder")
     Observable<Response<ProductOrder>> createOrder(@Path("id") String productId);
+
+
 
 
     /**
@@ -280,5 +307,13 @@ public interface ApiService {
      */
     @PUT("OrganizationReplies/{id}")
     Observable<Response<Object>> putReply(@Path("id") String replyId, @Body OrganizationReply reply);
+
+
+
+    /**
+     * 修改订单
+     */
+    @PUT("ProductOrders/{id}")
+    Observable<Response<Object>> putOrder(@Path("id") String productId,@Body ProductOrder order);
 
 }

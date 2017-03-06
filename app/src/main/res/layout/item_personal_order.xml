@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_item"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/iv_product_icon"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        tools:src="@drawable/shape_rect_red" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        style="@style/tv_small"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/iv_product_icon"
+        tools:text="卖猪肉" />
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        style="@style/tv_small"
+        android:layout_alignLeft="@id/tv_product_name"
+        android:layout_below="@id/tv_product_name"
+        android:layout_marginTop="10dp"
+        tools:text="14块" />
+
+    <RatingBar
+        android:id="@+id/rb_product"
+        style="@style/ratingBarr_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_product_price"
+        android:layout_below="@id/tv_product_price"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        tools:rating="4" />
+    <View
+       android:layout_below="@id/iv_product_icon"
+        android:layout_marginTop="17dp"
+       style="@style/line_gray"/>
+
+</RelativeLayout>

@@ -7,13 +7,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.adapter.PersonalOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
+import lilun.com.pension.ui.residential.detail.OrderDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -36,6 +41,17 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
 
+    private PersonalOrderAdapter  personalOrderAdapter;
+
+
+    public static MyOderFragment newInstance() {
+        return new MyOderFragment();
+    }
+
+    @Subscribe
+    public void refreshData(Event.RefreshMyOrderData event){
+        getMyOrder(0);
+    }
 
     @Override
     protected void initPresenter() {
@@ -80,10 +96,44 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
     }
 
     @Override
-    public void showMyOrders(List<ProductOrder> orders) {
+    public void showMyOrders(List<ProductOrder> orders,boolean isLoadMore) {
+        completeRefresh();
         if (User.isCustomer()) {
-
+            showPersonalOrder(orders, isLoadMore);
+        }else {
+            showMerchantOrder(orders, isLoadMore);
         }
+    }
+
+
+
+
+    /**
+    *个人订单展示
+    */
+    private void showPersonalOrder(List<ProductOrder> orders, boolean isLoadMore) {
+        if (personalOrderAdapter==null){
+            personalOrderAdapter = new PersonalOrderAdapter(orders);
+            personalOrderAdapter.setOnItemClickListener(order -> {
+                start(OrderDetailFragment.newInstance(order.getId()));
+            });
+            personalOrderAdapter.setOnLoadMoreListener(() -> {
+                getMyOrder(personalOrderAdapter.getItemCount());
+            });
+            mRecyclerView.setAdapter(personalOrderAdapter);
+        }else if(isLoadMore){
+            personalOrderAdapter.addAll(orders);
+        }else {
+            personalOrderAdapter.replaceAll(orders);
+        }
+    }
+
+
+    /**
+    *商家订单展示
+    */
+    private void showMerchantOrder(List<ProductOrder> orders, boolean isLoadMore) {
+
     }
 
     @Override

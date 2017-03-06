@@ -18,7 +18,7 @@ import lilun.com.pension.net.RxSubscriber;
 */
 public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements ReplyContract.Presenter{
     @Override
-    public void getReplies(String whatModule,,String aidId, int skip) {
+    public void getReplies(String whatModule,String aidId, int skip) {
         String filter = "{\"where\":{\"whatModel\":\""+whatModule+"\",\"whatId\":\"" + aidId + "\"}}";
         addSubscribe(NetHelper.getApi()
                 .getOrganizationReplies(StringUtils.addFilterWithDef(filter,skip))

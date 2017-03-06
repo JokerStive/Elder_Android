@@ -5,6 +5,7 @@ package lilun.com.pension.app;
  * 定义的一些常量
  */
 public class Constants {
-    public static final String token = "token";
+    public static final String organizationAid = "OrganizationAid";
+    public static final String organizationProduct = "OrganizationProduct";
 
 }
