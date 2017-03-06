@@ -44,7 +44,7 @@ public class EduCourseAdapter extends QuickAdapter<EdusColleageCourse> {
 
 
         Glide.with(fragment)
-                .load(IconUrl.organizationEdus(course.getId(), BitmapUtils.picName((ArrayList<IconModule>) course.getPicture())))
+                .load(IconUrl.eduCourses(course.getId(), BitmapUtils.picName(course.getPicture())))
                 .placeholder(R.drawable.icon_def)
                 .error(R.drawable.icon_def)
                 .into((ImageView) help.getView(R.id.banner));

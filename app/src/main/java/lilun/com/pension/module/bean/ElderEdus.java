@@ -13,12 +13,10 @@ import lilun.com.pension.base.BaseBean;
 public class ElderEdus extends BaseBean {
 
 
-
-
     //数据来源类别
-    public String source;
+    public int type;
 
- //   private String name;
+    //   private String name;
     private String address;
     private String mobile;
     private LocationBean location;
@@ -26,12 +24,12 @@ public class ElderEdus extends BaseBean {
     private String id;
     private String createdAt;
     private String updatedAt;
-    private List<IconModule> picture;
+    private ArrayList<IconModule> icon;
 
 
     private String title;
     private int priority;
-    private String startTime;
+    private String startDate;
     private int druation;
     private String repeatedType;
     private int repeatedCount;
@@ -48,12 +46,12 @@ public class ElderEdus extends BaseBean {
     private List<String> partners;
     private Account contact;
 
-    public String getSource() {
-        return source;
+    public int getType() {
+        return type;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setType(int type) {
+        this.type = type;
     }
 
 
@@ -121,8 +119,8 @@ public class ElderEdus extends BaseBean {
         this.updatedAt = updatedAt;
     }
 
-    public List<IconModule> getPicture() {
-        return picture;
+    public ArrayList<IconModule> getPicture() {
+        return icon;
     }
 
     public String getTitle() {
@@ -141,12 +139,12 @@ public class ElderEdus extends BaseBean {
         this.priority = priority;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     public int getDruation() {
@@ -245,8 +243,8 @@ public class ElderEdus extends BaseBean {
         this.partners = partners;
     }
 
-    public void setPicture(List<IconModule> picture) {
-        this.picture = picture;
+    public void setPicture(ArrayList<IconModule> picture) {
+        this.icon = picture;
     }
 
     public Account getContact() {
@@ -255,5 +253,14 @@ public class ElderEdus extends BaseBean {
 
     public void setContact(Account contact) {
         this.contact = contact;
+    }
+
+
+    public EdusColleageCourse toEdusColleageCourse() {
+        EdusColleageCourse course = new EdusColleageCourse();
+        course.setId(id);
+        course.setName(title);
+        course.setPicture(icon);
+        return course;
     }
 }

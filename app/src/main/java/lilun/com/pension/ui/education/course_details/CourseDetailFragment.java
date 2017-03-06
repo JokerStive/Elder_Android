@@ -17,11 +17,8 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ColleageCourseAdapter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
-import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.IconModule;
-import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.education.edu_details.ColleageDetailFragment;
@@ -37,8 +34,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         implements CourseDetailContract.View {
 
     EdusColleageCourse mCourse;
-    ElderEdus mColleage;
-    ColleageCourseAdapter mCourseAdapter;
     private boolean isJoin;
 
 
@@ -62,6 +57,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     TextView tvCourseDesp;
     @Bind(R.id.tv_colleage_name)
     TextView tvCoulleageName;
+    @Bind(R.id.tv_service_provider)
+    TextView tvServiceProvider;
 
 
     @Bind(R.id.join_in)
@@ -83,20 +80,21 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                 pop();
                 break;
             case R.id.tv_service_provider:
-              //  start(ColleageDetailFragment.newInstance(mColleage));
-                //退两层进入大学详情
-                pop();
-                pop();
+                ColleageDetailFragment fragment = findFragment(ColleageDetailFragment.class);
+                if(fragment !=null) {
+                    popTo(ColleageDetailFragment.class, false);
+                }else{
+                    start(ColleageDetailFragment.newInstance(mCourse.getSchool()));
+                }
                 break;
 
         }
     }
 
 
-    public static CourseDetailFragment newInstance(ElderEdus colleage, EdusColleageCourse course) {
+    public static CourseDetailFragment newInstance(EdusColleageCourse course) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("colleage", colleage);
         args.putSerializable("course", course);
         fragment.setArguments(args);
         return fragment;
@@ -104,7 +102,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (ElderEdus) arguments.getSerializable("colleage");
         mCourse = (EdusColleageCourse) arguments.getSerializable("course");
         Preconditions.checkNull(mCourse);
 
@@ -127,7 +124,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         List<String> urls = new ArrayList<>();
         if (mCourse.getPicture() != null) {
             for (IconModule iconModule : mCourse.getPicture()) {
-                String url = IconUrl.organizationEdus(mCourse.getId(), iconModule.getFileName());
+                String url = IconUrl.eduCourses(mCourse.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
@@ -137,19 +134,13 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         bgCourseIcon.setData(urls);
         tvCourseName.setText(mCourse.getName());
 
-        tvCoursePlan.setText(mCourse.getPlan());
-        tvCourseDesp.setText(mCourse.getContent());
-        tvCoulleageName.setText(mColleage.getTitle());
-        tvStartDate.setText(getString(R.string.course_start_date_, StringUtils.IOS2ToUTC(mCourse.getStartDate())));
-        //  tvEndDate.setText(getString(R.string.course_end_date_, StringUtils.IOS2ToUTC(mCourse.getEndDate())));
-        tvEndDate.setText(getString(R.string.course_end_date_, "无字段"));
-
+        tvServiceProvider.setVisibility(View.GONE);
         isJoin = false;
         btJoinIn.setVisibility(View.GONE);
         btCancel.setVisibility(View.GONE);
 
-        String filter ="{\"include\":\"contact\"}";
-        mPresenter.getCourseDetail(mCourse.getId(),filter);
+        String filter = "{\"include\":[\"contact\",\"school\"]}";
+        mPresenter.getCourseDetail(mCourse.getId(), filter);
 
     }
 
@@ -170,6 +161,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Override
     public void showCourseDetail(EdusColleageCourse orders) {
+        mCourse = orders;
         if (orders.getAccountIds() != null && orders.getAccountIds().size() > 0) {
             for (int i = 0; i < orders.getAccountIds().size(); i++) {
                 if (User.getUserId().equals(orders.getAccountIds().get(i))) {
@@ -178,16 +170,25 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                 }
             }
         }
-
-        if(orders.getContact()!=null) {
+        tvCoursePlan.setText(orders.getPlan());
+        tvCourseDesp.setText(orders.getContent());
+        if (orders.getContact() != null) {
             tvConnectPhone.setText(getString(R.string.connect_phone_, orders.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, orders.getContact().getUsername()));
             Glide.with(_mActivity)
-                    .load(IconUrl.account(mColleage.getOrganizationId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getPicture())))
+                    .load(IconUrl.account(orders.getContact().getId(), null))
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)
                     .into(tvConnectIcon);
         }
+        tvStartDate.setText(getString(R.string.course_start_date_, StringUtils.IOS2ToUTC(orders.getStartDate())));
+        tvEndDate.setText(getString(R.string.course_end_date_, StringUtils.IOS2ToUTC(orders.getEndDate())));
+        tvServiceProvider.setVisibility(View.VISIBLE);
+        if (orders.getSchool() != null) {
+            tvCoulleageName.setText(orders.getSchool().getName());
+        }
+
+
         if (isJoin) {
             btJoinIn.setVisibility(View.GONE);
             btCancel.setVisibility(View.VISIBLE);
@@ -195,8 +196,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             btJoinIn.setVisibility(View.VISIBLE);
             btCancel.setVisibility(View.GONE);
         }
-
-
     }
 }
 

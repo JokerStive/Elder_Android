@@ -62,7 +62,7 @@ public class OrganizationActivity extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> icon;
+    private ArrayList<IconModule> icon;
     private List<String> partners;
     private Account contact;
 
@@ -218,11 +218,11 @@ public class OrganizationActivity extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconModule> getIcon() {
+    public ArrayList<IconModule> getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconModule> icon) {
+    public void setIcon(ArrayList<IconModule> icon) {
         this.icon = icon;
     }
 
@@ -242,17 +242,17 @@ public class OrganizationActivity extends BaseBean {
         this.contact = contact;
     }
 
-    public static String TYPE = "OrganizationActivity";
+    public static int TYPE = 1;
 
     public ElderEdus toElderEdus() {
         ElderEdus edus = new ElderEdus();
-        edus.setSource(TYPE);
+        edus.setType(TYPE);
         edus.setTitle(title);
         edus.setAddress(address);
 
         edus.setLocation(location);
         edus.setPriority(priority);
-        edus.setStartTime(startTime);
+        edus.setStartDate(startTime);
         edus.setDruation(druation);
         edus.setRepeatedType(repeatedType);
         edus.setRepeatedCount(repeatedCount);

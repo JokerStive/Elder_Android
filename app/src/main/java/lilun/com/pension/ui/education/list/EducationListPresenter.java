@@ -22,32 +22,6 @@ import lilun.com.pension.net.RxSubscriber;
  */
 public class EducationListPresenter extends RxPresenter<EducationListContract.View> implements EducationListContract.Presenter {
 
-
-    @Override
-    public void getCommunityCourse(String filter, int skip) {
-        addSubscribe(NetHelper.getApi()
-                .getOrganizationsActivities(StringUtils.addFilterWithDef(filter, skip))
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationActivity>>() {
-                    @Override
-                    public void _next(List<OrganizationActivity> activities) {
-                        view.completeRefresh();
-                        ArrayList<ElderEdus> elderEduses = new ArrayList<ElderEdus>();
-                        for (OrganizationActivity tmp : activities) {
-                            elderEduses.add(tmp.toElderEdus());
-                        }
-                        view.showEdusList(elderEduses, skip == 0 ? false : true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        view.completeRefresh();
-                    }
-                }));
-    }
-
     @Override
     public void getColleage(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
@@ -56,16 +30,12 @@ public class EducationListPresenter extends RxPresenter<EducationListContract.Vi
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<ElderEdusColleage>>() {
                     @Override
-                    public void _next(List<ElderEdusColleage> elderModules) {
+                    public void _next(List<ElderEdusColleage> colleages) {
                         view.completeRefresh();
-                        ArrayList<ElderEdus> elderEduses = new ArrayList<ElderEdus>();
-                        for (ElderEdusColleage tmp : elderModules) {
-                            elderEduses.add(tmp.toElderEdus());
-                        }
                         if (skip == 0)
-                            view.showEdusList(elderEduses, false);
+                            view.showEdusList(colleages, false);
                         else
-                            view.showEdusList(elderEduses, true);
+                            view.showEdusList(colleages, true);
                     }
 
                     @Override

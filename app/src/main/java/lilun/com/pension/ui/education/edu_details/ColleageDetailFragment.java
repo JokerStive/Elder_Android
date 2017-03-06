@@ -15,11 +15,9 @@ import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ColleageCourseAdapter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
-import lilun.com.pension.module.bean.ElderEdus;
+import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.IconModule;
-import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.education.course_list.CourseListFragment;
 import lilun.com.pension.widget.CircleImageView;
@@ -33,8 +31,7 @@ import lilun.com.pension.widget.slider.BannerPager;
 public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.Presenter>
         implements ColleageDetailContract.View {
 
-    ElderEdus mColleage;
-    ColleageCourseAdapter mCourseAdapter;
+    ElderEdusColleage mColleage;
 
 
     @Bind(R.id.bp_colleage_icon)
@@ -67,7 +64,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
     }
 
 
-    public static ColleageDetailFragment newInstance(ElderEdus colleage) {
+    public static ColleageDetailFragment newInstance(ElderEdusColleage colleage) {
         ColleageDetailFragment fragment = new ColleageDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("mElderEdusColleage", colleage);
@@ -77,7 +74,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (ElderEdus) arguments.getSerializable("mElderEdusColleage");
+        mColleage = (ElderEdusColleage) arguments.getSerializable("mElderEdusColleage");
         Preconditions.checkNull(mColleage);
     }
 
@@ -106,12 +103,12 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
             urls.add(url);
         }
         bgColleageIcon.setData(urls);
-        tvColleageName.setText(mColleage.getTitle());
+        tvColleageName.setText(mColleage.getName());
         if (mColleage.getContact() != null) {
             tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, mColleage.getContact().getUsername()));
             Glide.with(_mActivity)
-                    .load(IconUrl.account(mColleage.getOrganizationId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getPicture())))
+                    .load(IconUrl.account(mColleage.getContact().getId(), null))
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)
                     .into(tvConnectIcon);
