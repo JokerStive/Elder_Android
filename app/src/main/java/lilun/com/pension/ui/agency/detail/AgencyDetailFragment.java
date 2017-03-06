@@ -6,12 +6,18 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
@@ -20,6 +26,7 @@ import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.agency.list.AgencyListFragment;
+import lilun.com.pension.widget.slider.BannerPager;
 import rx.Subscription;
 
 /**
@@ -30,7 +37,6 @@ import rx.Subscription;
  *         email : yk_developer@163.com
  */
 public class AgencyDetailFragment extends BaseFragment implements View.OnClickListener {
-
 
 
     @Bind(R.id.iv_back)
@@ -51,11 +57,6 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     @Bind(R.id.tv_price)
     TextView tvPrice;
 
-    @Bind(R.id.tv_introduction)
-    TextView tvIntroduction;
-
-    @Bind(R.id.tv_requirement)
-    TextView tvRequirement;
 
     @Bind(R.id.tv_address_title)
     TextView tvAddressTitle;
@@ -68,6 +69,18 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
     @Bind(R.id.tv_provide_service)
     TextView tvProvideService;
+    @Bind(R.id.iv_icon)
+    BannerPager banner;
+    @Bind(R.id.tv_introduction_title)
+    TextView tvIntroductionTitle;
+    @Bind(R.id.tv_introduction)
+    TextView tvIntroduction;
+    @Bind(R.id.tv_requirement_title)
+    TextView tvRequirementTitle;
+    @Bind(R.id.tv_requirement)
+    TextView tvRequirement;
+    @Bind(R.id.ll_container)
+    LinearLayout llContainer;
 
     private Organization mAgency;
     private String mId;
@@ -108,11 +121,12 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     protected void initView(LayoutInflater inflater) {
         //加粗
         UIUtils.setBold(tvTitle);
-        UIUtils.setBold(tvIntroduction);
+        UIUtils.setBold(tvIntroductionTitle);
+        UIUtils.setBold(tvRequirementTitle);
         UIUtils.setBold(tvAddressTitle);
         UIUtils.setBold(tvProvideService);
 
-        if (mAgency!=null){
+        if (mAgency != null) {
             setData();
         }
 
@@ -129,14 +143,17 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
         //显示
         tvTitle.setText(mAgency.getName());
-        tvDesc.setText(StringUtils.filterNull(description.getDescription()));
+//        tvDesc.setText(StringUtils.filterNull(description.getDescription()));
         tvPhone.setText(String.format(getString(R.string.format_phone), "18012325354"));
-        tvPhone.setText(String.format(getString(R.string.format_bedsCount), StringUtils.filterNull(description.getBedsCount())));
+//        tvPhone.setText(String.format(getString(R.string.format_bedsCount), StringUtils.filterNull(description.getBedsCount())));
         tvPrice.setText(String.format("价格区间：%1$s元——%2$s元", description.getChargingStandard().getMin(), description.getChargingStandard().getMax()));
+        tvIntroduction.setText(StringUtils.filterNull(description.getDescription()));
         tvRequirement.setText(StringUtils.filterNull(StringUtils.filterNull(description.getRequirements())));
         tvAddress.setText(StringUtils.filterNull(description.getAdress()));
 
         rbBar.setRating(description.getRanking());
+
+        setIcon();
     }
 
     @Override
@@ -150,11 +167,30 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
                         @Override
                         public void _next(Organization agency) {
                             if (agency != null && agency.getDescription() != null) {
-                                mAgency=agency;
+                                mAgency = agency;
                                 setData();
                             }
                         }
                     });
+        }
+
+        //图片
+        setIcon();
+    }
+
+    private void setIcon() {
+        if (mAgency!=null){
+            List<String> urls = new ArrayList<>();
+            if (mAgency.getIcon() != null) {
+                for (IconModule iconModule : mAgency.getIcon()) {
+                    String url = IconUrl.organizationProduct(mAgency.getId(), iconModule.getFileName());
+                    urls.add(url);
+                }
+            } else {
+                String url = IconUrl.organization(mAgency.getId(), null);
+                urls.add(url);
+            }
+            banner.setData(urls);
         }
     }
 
@@ -182,8 +218,9 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscription!=null && subscription.isUnsubscribed()){
+        if (subscription != null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
     }
+
 }

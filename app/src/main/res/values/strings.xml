@@ -92,11 +92,12 @@
     <!--养老机构服务详情-->
     <string name="reservation">预约</string>
     <string name="enter_provider">进入该服务提供商</string>
-    <string name="format_provider">提供商：</string>
+    <string name="format_provider">提供商：%1$s</string>
     <string name="introduction">简介</string>
+    <string name="reservation_desc">确定要预约该服务吗?</string>
 
     <!--养老机构详情-->
-    <string name="requirements">入住要求</string>
+    <string name="requirements">注意事项</string>
     <string name="provide_service">提供的服务</string>
     <string name="format_bedsCount">床位数：</string>
 
@@ -106,11 +107,19 @@
     <string name="community_activity">社区活动</string>
     <string name="add_activity">发起活动</string>
 
+   ===================================================================
+
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
     <string name="price_format">%1$d元</string>
     <string name="new_service">发布服务</string>
     <string name="all_orders">所有订单</string>
+
+    <!--我的订单-->
+    <string name="my_orders">我的订单</string>
+
+
+    ====================================================
 
     <!--登陆注册-->
     <string name="welcome">欢迎来到养老</string>

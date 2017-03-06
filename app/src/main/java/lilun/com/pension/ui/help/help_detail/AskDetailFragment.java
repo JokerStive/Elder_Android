@@ -33,7 +33,7 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
-import lilun.com.pension.ui.help.reply.HelpReplyFragment;
+import lilun.com.pension.ui.help.reply.ReplyFragment;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
@@ -115,7 +115,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         mHeadView = inflater.inflate(R.layout.head_help_detail, null);
 
         //不管是问还是帮都具有的
-        banner = (BannerPager) mHeadView.findViewById(R.id.banner);
+        banner = (BannerPager) mHeadView.findViewById(R.id.iv_icon);
         ivAvatar = (ImageView) mHeadView.findViewById(R.id.iv_avatar);
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
@@ -274,7 +274,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
 
         } else if (status.equals(getString(R.string.answer))) {
-            start(HelpReplyFragment.newInstance(mAid));
+            start(ReplyFragment.newInstance(mAid));
         }
     }
 }

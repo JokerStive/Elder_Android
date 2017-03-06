@@ -109,7 +109,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
         //banner
-        banner = (BannerPager) mHeadView.findViewById(R.id.banner);
+        banner = (BannerPager) mHeadView.findViewById(R.id.iv_icon);
 
 
         tvChangeStatus = (TextView) mHeadView.findViewById(R.id.tv_reservation);

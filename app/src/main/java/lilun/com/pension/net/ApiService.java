@@ -189,6 +189,15 @@ public interface ApiService {
     Observable<Response<Object>> newRank(@Body Rank rank);
 
 
+
+
+    /**
+     * 预约订单
+     */
+    @POST("OrganizationProducts/{id}/createOrder")
+    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId);
+
+
     /**
      * 上传AID多张图片
      */

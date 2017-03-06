@@ -23,14 +23,14 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         create at 2017/2/13 11:27
  *         email : yk_developer@163.com
  */
-public class AidAskListAdapter extends QuickAdapter<OrganizationReply> {
+public class ReplyAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
     private boolean isOwmCreated;
     private String answerId;
     private OnAgreeClickListener listener;
 
 
-    public AidAskListAdapter(BaseFragment fragment, List<OrganizationReply> data,boolean isOwmCreated) {
+    public ReplyAdapter(BaseFragment fragment, List<OrganizationReply> data, boolean isOwmCreated) {
         super(R.layout.item_aid_asker, data);
         this.fragment = fragment;
         this.isOwmCreated = isOwmCreated;

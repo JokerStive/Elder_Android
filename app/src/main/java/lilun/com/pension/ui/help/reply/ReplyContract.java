@@ -12,7 +12,7 @@ import lilun.com.pension.module.bean.OrganizationReply;
 *create at 2017/2/28 9:33
 *email : yk_developer@163.com
 */
-public class HelpReplyContract {
+public class ReplyContract {
     interface View extends IView<Presenter> {
         void showReplies(List<OrganizationReply> replies,boolean isLoadMore);
         void newReplySuccess(OrganizationReply reply);
@@ -20,7 +20,7 @@ public class HelpReplyContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getHelpReply(String aidId,int skip);
-        void newHelpReply(OrganizationReply reply);
+        void getReplies(String whatModule,String aidId, int skip);
+        void newReply(OrganizationReply reply);
     }
 }

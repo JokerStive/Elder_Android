@@ -20,9 +20,15 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
+import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -65,7 +71,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     TextView tvProviderName;
     @Bind(R.id.tv_enter_provider)
     TextView tvEnterProvider;
-    @Bind(R.id.banner)
+    @Bind(R.id.iv_icon)
     BannerPager banner;
     @Bind(R.id.ll_container)
     LinearLayout llContainer;
@@ -153,11 +159,10 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 break;
 
             case R.id.tv_reservation:
-                //TODO 预约
+                reservation();
                 break;
 
             case R.id.tv_enter_provider:
-                //TODO 进入提供商详情页面
                 String organizationId = mProduct.getOrganizationId();
                 Logger.d("提供商的id==" + StringUtils.removeSpecialSuffix(organizationId));
                 start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
@@ -165,8 +170,39 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
             case R.id.tv_enter_rank:
                 //TODO 进入评价列表页面
+
                 break;
         }
+    }
+
+    /**
+    *预约服务
+    */
+    private void reservation() {
+        if (tvReservation.getText().equals(getString(R.string.cancel))){
+            
+        }else if (tvReservation.getText().equals(getString(R.string.reservation))){
+            new NormalDialog().createNormal(_mActivity, getString(R.string.reservation_desc), () -> {
+                NetHelper.getApi()
+                        .createOrder(mProduct.getId())
+                        .compose(RxUtils.handleResult())
+                        .compose(RxUtils.applySchedule())
+                        .subscribe(new RxSubscriber<ProductOrder>() {
+                            @Override
+                            public void _next(ProductOrder productOrder) {
+                                ToastHelper.get().showShort("预约成功");
+                                setReservation();
+
+                            }
+                        });
+            });
+        }
+    }
+
+    private void setReservation() {
+        tvReservation.setText(R.string.cancel);
+        tvReservation.setTextColor(getResources().getColor(R.color.white));
+        tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
     }
 
 

@@ -2,7 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginBottom="20dp"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,7 +13,7 @@
         android:background="@color/white">
 
         <lilun.com.pension.widget.slider.BannerPager
-            android:id="@+id/banner"
+            android:id="@+id/iv_icon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/max_photo_height" />
 
@@ -25,7 +28,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/banner"
+            android:layout_below="@id/iv_icon"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
@@ -127,8 +130,9 @@
 
                 <TextView
                     android:id="@+id/tv_provider_name"
-                    style="@style/tv_small"
+                    style="@style/tv_normal"
                     android:layout_centerVertical="true"
+                    android:maxWidth="200dp"
                     tools:text="金色养老院" />
 
                 <TextView

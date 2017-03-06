@@ -7,11 +7,12 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pension.R;
-import lilun.com.pension.app.App;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 养老机构adapter
@@ -37,14 +38,15 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
 
         UIUtils.setBold(help.getView(R.id.tv_item_title));
         help.setText(R.id.tv_item_title, organization.getName())
-                .setText(R.id.tv_item_address, description.getAdress())
-                .setText(R.id.tv_rank_count, String.format(App.context.getString(R.string.rank_count), description.getRankCount()));
+                .setText(R.id.tv_item_address, description.getAdress());
 
         help.setOnClickListener(R.id.ll_bg,v -> {
             if (listener!=null){
                 listener.onItemClick(organization);
             }
         });
+
+        ImageLoaderUtil.instance().loadImage(IconUrl.organization(organization.getId(), null), R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 
 

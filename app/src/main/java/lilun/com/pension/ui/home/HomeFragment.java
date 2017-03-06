@@ -33,6 +33,7 @@ import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * 首页V
@@ -82,16 +83,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Bind(R.id.viewpager)
     ViewPager viewPager;
 
-//    @Bind(R.id.vp_container)
+    //    @Bind(R.id.vp_container)
 //    ViewPager viewPager;
 //
-//    @Bind(R.id.indicator)
-//    CircleIndicator indicator;
+    @Bind(R.id.indicator)
+    CircleIndicator indicator;
 //
 //    @Bind(R.id.rv_push_info)
 //    RecyclerView rvPushInfo;
-
-
 
 
     private List<Information> informations;
@@ -316,8 +315,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         if (informations.size() != 0) {
             this.informations = informations;
             List<Information> data = new ArrayList<>();
-            for(Information info:informations){
-                if (info.getParentId().equals(OrganizationChildrenConfig.information()+"/公告")){
+            for (Information info : informations) {
+                if (info.getParentId().equals(OrganizationChildrenConfig.information() + "/公告")) {
                     data.add(info);
                 }
             }
@@ -333,7 +332,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             listFragments.add(fragment);
         }
         viewPager.setAdapter(new AdItemFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
-//        indicator.setViewPager(viewPager);
+        indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -342,7 +341,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         });
 
     }
-
 
 
 }

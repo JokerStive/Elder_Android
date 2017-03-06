@@ -23,13 +23,13 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         create at 2017/2/13 11:27
  *         email : yk_developer@163.com
  */
-public class AidHelperListAdapter extends QuickAdapter<OrganizationReply> {
+public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
     private OnFunctionClickListener listener;
     private String answerId;
 
 
-    public AidHelperListAdapter(BaseFragment fragment, List<OrganizationReply> data) {
+    public HelperJoinerAdapter(BaseFragment fragment, List<OrganizationReply> data) {
         super(R.layout.item_aid_helper, data);
         this.fragment = fragment;
     }

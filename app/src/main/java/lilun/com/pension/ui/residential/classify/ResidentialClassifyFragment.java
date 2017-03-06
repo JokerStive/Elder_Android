@@ -131,7 +131,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
 
 //    private void setAdapter() {
-//        mAdapter = new ResidentialServiceAdapter(this, products);
+//        mAdapter = new ProductorAdapter(this, products);
 //        mAdapter.addHeaderView(mClassifyRecycler);
 //        mClassifyRecycler.setAdapter(mAdapter);
 //    }

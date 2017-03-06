@@ -16,10 +16,10 @@ import lilun.com.pension.net.RxSubscriber;
 *create at 2017/2/28 9:35
 *email : yk_developer@163.com
 */
-public class HelpReplyPresenter extends RxPresenter<HelpReplyContract.View> implements HelpReplyContract.Presenter{
+public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements ReplyContract.Presenter{
     @Override
-    public void getHelpReply(String aidId,int skip) {
-        String filter = "{\"where\":{\"whatModel\":\"OrganizationAid\",\"whatId\":\"" + aidId + "\"}}";
+    public void getReplies(String whatModule,,String aidId, int skip) {
+        String filter = "{\"where\":{\"whatModel\":\""+whatModule+"\",\"whatId\":\"" + aidId + "\"}}";
         addSubscribe(NetHelper.getApi()
                 .getOrganizationReplies(StringUtils.addFilterWithDef(filter,skip))
                 .compose(RxUtils.handleResult())
@@ -39,7 +39,7 @@ public class HelpReplyPresenter extends RxPresenter<HelpReplyContract.View> impl
     }
 
     @Override
-    public void newHelpReply(OrganizationReply reply) {
+    public void newReply(OrganizationReply reply) {
         addSubscribe(NetHelper.getApi()
                 .newOrganizationReply(reply)
                 .compose(RxUtils.handleResult())

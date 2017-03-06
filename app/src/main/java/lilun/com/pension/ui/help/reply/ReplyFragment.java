@@ -35,7 +35,7 @@ import lilun.com.pension.widget.NormalTitleBar;
  *         create at 2017/2/28 8:52
  *         email : yk_developer@163.com
  */
-public class HelpReplyFragment extends BaseFragment<HelpReplyContract.Presenter> implements HelpReplyContract.View {
+public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> implements ReplyContract.View {
 
 
     @Bind(R.id.titleBar)
@@ -56,27 +56,35 @@ public class HelpReplyFragment extends BaseFragment<HelpReplyContract.Presenter>
     @Bind(R.id.tv_confirm)
     TextView tvConfirm;
 
-    private OrganizationAid mAid;
     private AidAskListAdapter mReplyAdapter;
+    private String whatModule;
+    private String whatId;
+    private String title;
 
-    public static HelpReplyFragment newInstance(OrganizationAid aid) {
-        HelpReplyFragment fragment = new HelpReplyFragment();
+    public static ReplyFragment newInstance(String whatModule,String whatId,String title) {
+        ReplyFragment fragment = new ReplyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("OrganizationAid", aid);
+        args.putString("whatModule", whatModule);
+        args.putString("whatId", whatId);
+        args.putString("title", title);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mAid = (OrganizationAid) arguments.getSerializable("OrganizationAid");
-        Preconditions.checkNull(mAid);
+        whatModule = arguments.getString("whatModule");
+        whatId = arguments.getString("whatId");
+        title = arguments.getString("title");
+        Preconditions.checkNull(whatModule);
+        Preconditions.checkNull(whatId);
+        Preconditions.checkNull(title);
     }
 
 
     @Override
     protected void initPresenter() {
-        mPresenter = new HelpReplyPresenter();
+        mPresenter = new ReplyPresenter();
         mPresenter.bindView(this);
     }
 
@@ -97,13 +105,12 @@ public class HelpReplyFragment extends BaseFragment<HelpReplyContract.Presenter>
         //刷新
         swipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getHelpReplies(0);
+                        getReplies(0);
                     }
                 }
         );
 
 
-//        showReplies(mAid.getReplies(), false);
 
 
         //提交回答
@@ -115,7 +122,7 @@ public class HelpReplyFragment extends BaseFragment<HelpReplyContract.Presenter>
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        getHelpReplies(0);
+        getReplies(0);
     }
 
     private void createReply() {
@@ -125,13 +132,13 @@ public class HelpReplyFragment extends BaseFragment<HelpReplyContract.Presenter>
             reply.setWhatModel("OrganizationAid");
             reply.setWhatId(mAid.getId());
             reply.setContent(replyContent);
-            mPresenter.newHelpReply(reply);
+            mPresenter.newReply(reply);
         }
     }
 
-    private void getHelpReplies(int skip) {
+    private void getReplies(int skip) {
         swipeLayout.setRefreshing(true);
-        mPresenter.getHelpReply(mAid.getId(), skip);
+        mPresenter.getReplies(mAid.getId(), skip);
     }
 
 

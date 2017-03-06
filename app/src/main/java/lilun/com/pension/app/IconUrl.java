@@ -24,13 +24,14 @@ public class IconUrl {
         return Config.BASE_URL + "ProductCategories/" + encodeURL(productCategoryId) + "/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
-    public static String organizationAid(String organizationAidId,String iconName) {
-        return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/picture/" + iconName + "?access_token=" + User.getToken();
+    public static String organizationAid(String organizationAidId, String iconName) {
+        return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture/?pictureName" + iconName + "&access_token=" + User.getToken();
     }
 
 
-    public static String organizationProduct(String productId,String iconName) {
+    public static String organizationProduct(String productId, String iconName) {
         return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/images/" + iconName + "?access_token=" + User.getToken();
+//        return Config.BASE_URL + "OrganizationAids/" + encodeURL(productId) + "/downloadPicture/?picture" + iconName + "&access_token=" + User.getToken();
     }
 
 

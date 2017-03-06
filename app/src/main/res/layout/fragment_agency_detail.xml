@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
         <lilun.com.pension.widget.slider.BannerPager
-            android:id="@+id/banner"
+            android:id="@+id/iv_icon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/max_photo_height" />
 
@@ -24,7 +24,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/banner"
+            android:layout_below="@id/iv_icon"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp">
 
@@ -48,6 +48,7 @@
                 tools:text="度假服务" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_desc"
                 style="@style/tv_small"
                 android:layout_below="@id/tv_title"
@@ -55,6 +56,7 @@
                 tools:text="盈利组织" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_phone"
                 style="@style/tv_small"
                 android:layout_below="@id/tv_desc"
@@ -76,10 +78,29 @@
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
+
+
                 <View style="@style/line_gray" />
 
                 <TextView
+                    android:id="@+id/tv_introduction_title"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/introduction" />
+
+                <TextView
                     android:id="@+id/tv_introduction"
+                    style="@style/tv_small"
+                    android:layout_marginTop="15dp"
+                    android:lineSpacingMultiplier="1.2"
+                    tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
+
+                <View style="@style/line_gray"
+                    android:layout_marginTop="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_requirement_title"
                     style="@style/tv_normal"
                     android:layout_marginTop="15dp"
                     android:text="@string/requirements" />

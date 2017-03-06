@@ -39,13 +39,13 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         UIUtils.setBold(help.getView(R.id.tv_item_title));
         help.setText(R.id.tv_item_title, product.getTitle())
                 .setText(R.id.tv_price, String.format(App.context.getString(R.string.price_format), product.getPrice()));
-        help.setOnClickListener(R.id.ll_bg,v -> {
-            if (listener!=null){
+        help.setOnClickListener(R.id.ll_bg, v -> {
+            if (listener != null) {
                 listener.onItemClick(product);
             }
         });
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(),null),R.drawable.icon_def,help.getView(R.id.banner));
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(), null), R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 
 

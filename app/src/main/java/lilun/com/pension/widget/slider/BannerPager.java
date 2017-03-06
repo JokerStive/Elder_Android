@@ -18,6 +18,7 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * 滑动带indicator 的viewpager
@@ -31,6 +32,7 @@ public class BannerPager extends RelativeLayout {
     private Context context;
     private ViewPager mViewPager;
     private LinearLayout container;
+    private CircleIndicator indictor;
 
     public BannerPager(Context context) {
         super(context);
@@ -48,6 +50,7 @@ public class BannerPager extends RelativeLayout {
         View view = LayoutInflater.from(App.context).inflate(R.layout.banner_pager, this);
         mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         container = (LinearLayout) view.findViewById(R.id.indicator_container);
+        indictor = (CircleIndicator) view.findViewById(R.id.indicator);
     }
 
     public void setData(List<String> urls) {
@@ -64,6 +67,9 @@ public class BannerPager extends RelativeLayout {
 
         mViewPager.setAdapter(new ViewPagerAdapter(items, context) {
         });
+        if (urls.size()>1){
+            indictor.setViewPager(mViewPager);
+        }
 
     }
 

@@ -40,7 +40,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
         UIUtils.setBold(tvTitle);
         tvTitle.setText(aid.getTitle());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(),null),R.drawable.icon_def,help.getView(R.id.banner));
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(),null),R.drawable.icon_def,help.getView(R.id.iv_icon));
 
         //是否显示补贴
         TextView tvItemPrice = help.getView(R.id.tv_item_time);

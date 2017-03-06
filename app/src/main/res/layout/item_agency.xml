@@ -9,10 +9,10 @@
 
 
     <ImageView
-        android:id="@+id/banner"
+        android:id="@+id/iv_icon"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:background="@drawable/help_detail_icon" />
+        android:background="@drawable/icon_def" />
 
 
     <LinearLayout
@@ -40,13 +40,6 @@
             android:isIndicator="true"
             android:numStars="5" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:ellipsize="end"
-            android:id="@+id/tv_rank_count"
-            style="@style/tv_small"
-            android:layout_marginLeft="7dp"
-            tools:text="105条评论" />
 
     </LinearLayout>
 

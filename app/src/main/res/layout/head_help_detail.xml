@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <lilun.com.pension.widget.slider.BannerPager
-        android:id="@+id/banner"
+        android:id="@+id/iv_icon"
         android:layout_width="match_parent"
         android:layout_height="@dimen/max_photo_height" />
 
@@ -26,7 +26,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/banner"
+        android:layout_below="@id/iv_icon"
         android:layout_marginRight="10dp"
         android:layout_marginTop="27dp"
         android:background="@drawable/shape_circle_white"

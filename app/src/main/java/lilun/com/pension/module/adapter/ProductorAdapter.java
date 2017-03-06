@@ -19,11 +19,11 @@ import lilun.com.pension.module.bean.OrganizationProduct;
  *         create at 2017/2/13 11:14
  *         email : yk_developer@163.com
  */
-public class ResidentialServiceAdapter extends QuickAdapter<OrganizationProduct> {
+public class ProductorAdapter extends QuickAdapter<OrganizationProduct> {
     private  BaseFragment fragment;
 
-    public ResidentialServiceAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
-        super(R.layout.item_residential,data);
+    public ProductorAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
+        super(R.layout.item_productor,data);
         this.fragment = fragment;
     }
 
