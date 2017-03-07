@@ -20,7 +20,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AdItemFragmentAdapter;
+import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
@@ -331,7 +331,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
-        viewPager.setAdapter(new AdItemFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
+        viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
         indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

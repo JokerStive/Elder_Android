@@ -12,7 +12,7 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AdItemFragmentAdapter;
+import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.MyCallBack;
@@ -137,7 +137,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
-        viewPager.setAdapter(new AdItemFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
+        viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
         indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

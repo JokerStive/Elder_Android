@@ -12,11 +12,11 @@ import lilun.com.pension.base.BaseFragment;
  * Created by yk on 2017/1/6.
  * 广告栏adapter
  */
-public class AdItemFragmentAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
 
     private List<BaseFragment> fragments;
 
-    public AdItemFragmentAdapter(FragmentManager fm, List<BaseFragment> fragments) {
+    public ViewPagerFragmentAdapter(FragmentManager fm, List<BaseFragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }

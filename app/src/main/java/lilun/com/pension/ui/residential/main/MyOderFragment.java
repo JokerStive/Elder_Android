@@ -1,11 +1,13 @@
 package lilun.com.pension.ui.residential.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -18,8 +20,8 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PersonalOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
-import lilun.com.pension.ui.residential.detail.OrderDetailFragment;
-import lilun.com.pension.widget.NormalItemDecoration;
+import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.widget.NormalTitleBar;
 
 /**
@@ -37,19 +39,32 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
-
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
 
-    private PersonalOrderAdapter  personalOrderAdapter;
+
+    private PersonalOrderAdapter personalOrderAdapter;
+    private String mStatus;
 
 
-    public static MyOderFragment newInstance() {
-        return new MyOderFragment();
+    public static MyOderFragment newInstance(String status) {
+        MyOderFragment fragment = new MyOderFragment();
+        Bundle args = new Bundle();
+        args.putString("status", status);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        mStatus = arguments.getString("status");
+        Preconditions.checkNull(mStatus);
     }
 
     @Subscribe
-    public void refreshData(Event.RefreshMyOrderData event){
+    public void refreshData(Event.RefreshMyOrderData event) {
         getMyOrder(0);
     }
 
@@ -66,11 +81,9 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(getString(R.string.my_orders));
-        titleBar.setOnBackClickListener((this::pop));
+        titleBar.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -91,47 +104,50 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-        mPresenter.getMyOrders(skip);
+        mPresenter.getMyOrders(mStatus, skip);
 
     }
 
     @Override
-    public void showMyOrders(List<ProductOrder> orders,boolean isLoadMore) {
+    public void showMyOrders(List<ProductOrder> orders, boolean isLoadMore) {
         completeRefresh();
         if (User.isCustomer()) {
             showPersonalOrder(orders, isLoadMore);
-        }else {
+        } else {
             showMerchantOrder(orders, isLoadMore);
         }
     }
 
 
-
-
     /**
-    *个人订单展示
-    */
+     * 个人订单展示
+     */
     private void showPersonalOrder(List<ProductOrder> orders, boolean isLoadMore) {
-        if (personalOrderAdapter==null){
+        if (personalOrderAdapter == null) {
             personalOrderAdapter = new PersonalOrderAdapter(orders);
             personalOrderAdapter.setOnItemClickListener(order -> {
-                start(OrderDetailFragment.newInstance(order.getId()));
+                Intent intent =new Intent(_mActivity,OrderDetailActivity.class);
+                intent.putExtra("orderId",order.getId());
+                startActivity(intent);
+
+//                start(OrderDetailFragment.newInstance(order.getId()),SINGLETOP);
+//                showHideFragment(OrderDetailFragment.newInstance(order.getId()));
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {
                 getMyOrder(personalOrderAdapter.getItemCount());
             });
             mRecyclerView.setAdapter(personalOrderAdapter);
-        }else if(isLoadMore){
+        } else if (isLoadMore) {
             personalOrderAdapter.addAll(orders);
-        }else {
+        } else {
             personalOrderAdapter.replaceAll(orders);
         }
     }
 
 
     /**
-    *商家订单展示
-    */
+     * 商家订单展示
+     */
     private void showMerchantOrder(List<ProductOrder> orders, boolean isLoadMore) {
 
     }
@@ -142,4 +158,5 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
             mSwipeLayout.setRefreshing(false);
         }
     }
+
 }

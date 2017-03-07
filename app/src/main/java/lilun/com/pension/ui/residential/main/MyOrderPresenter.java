@@ -18,8 +18,8 @@ import lilun.com.pension.net.RxSubscriber;
 */
 public class MyOrderPresenter extends RxPresenter<MyOrderContract.View> implements MyOrderContract.Presenter {
     @Override
-    public void getMyOrders(int skip) {
-        String filter = "{\"include\":\"product\",\"where\":{\"creatorId\":\""+ User.getUserId()+"\"}}";
+    public void getMyOrders(String status,int skip) {
+        String filter = "{\"include\":\"product\",\"where\":{\"creatorId\":\""+ User.getUserId()+"\",\"status\":\""+ status+"\"}}";
         addSubscribe(NetHelper.getApi()
                 .getOrders(StringUtils.addFilterWithDef(filter,skip))
                 .compose(RxUtils.handleResult())

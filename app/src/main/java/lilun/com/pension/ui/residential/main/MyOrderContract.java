@@ -21,6 +21,6 @@ public interface MyOrderContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getMyOrders(int skip);
+        void getMyOrders(String status,int skip);
     }
 }

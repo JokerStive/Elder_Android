@@ -49,8 +49,6 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     @Bind(R.id.tv_order_status)
     TextView tvOrderStatus;
 
-//    @Bind(R.id.tv_order_id)
-//    TextView tvOrderId;
 
     @Bind(R.id.tv_order_name)
     TextView tvOrderName;
@@ -215,7 +213,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                pop();
+                getActivity().finish();
                 break;
 
             case R.id.rl_provider_detail:

@@ -39,6 +39,16 @@
         <activity
             android:name=".ui.welcome.LoginActivity"
             android:screenOrientation="portrait" />
+
+        <!-- 登录 -->
+        <activity
+            android:name=".ui.residential.main.OrderListActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- 订单详情-->
+        <activity
+            android:name=".ui.residential.detail.OrderDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.agency.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.ui.residential.detail.OrderDetailFragment;
+import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.ui.residential.rank.RankListFragment;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.slider.BannerPager;
@@ -221,9 +222,12 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                         .compose(RxUtils.applySchedule())
                         .subscribe(new RxSubscriber<ProductOrder>() {
                             @Override
-                            public void _next(ProductOrder productOrder) {
-                                start(OrderDetailFragment.newInstance(productOrder.getId()));
-                                onBackPressedSupport();
+                            public void _next(ProductOrder order) {
+                                Intent intent =new Intent(_mActivity,OrderDetailActivity.class);
+                                intent.putExtra("orderId",order.getId());
+                                startActivity(intent);
+                                pop();
+//                                startWithPop(OrderDetailFragment.newInstance(productOrder.getId()));
                             }
                         });
             });
