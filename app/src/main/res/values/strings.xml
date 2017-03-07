@@ -152,4 +152,10 @@
     <string name="course_plan">教学计划</string>
     <string name="course_desp">课程简介</string>
     <string name="service_provider">进入该服务提供商</string>
+    <string name="question">提问</string>
+
+    <string name="activity_time_">活动时间：%1$s</string>
+    <string name="originator_person_">发起人：%1$s</string>
+    <string name="participation_request">参与要求</string>
+    <string name="activity_address">活动地址</string>
 </resources>

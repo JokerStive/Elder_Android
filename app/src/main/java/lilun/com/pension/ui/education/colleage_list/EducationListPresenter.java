@@ -1,15 +1,10 @@
-package lilun.com.pension.ui.education.list;
+package lilun.com.pension.ui.education.colleage_list;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
-import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
-import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.RxUtils;
-import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 

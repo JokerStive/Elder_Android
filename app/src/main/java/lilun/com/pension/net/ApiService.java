@@ -128,6 +128,19 @@ public interface ApiService {
     @GET("Organizations/{id}/children")
     Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Path("id") String organizationId, @Query("filter") String filter);
 
+    /**
+     * 获取OrganizationActivity详情
+     */
+
+    @GET("OrganizationActivities/{id}")
+    Observable<Response<OrganizationActivity>> getOrganizationActivitiesDetail(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 根据类型 获取OrganizationActivity列表
+     */
+    @GET("OrganizationActivities")
+    Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Query("filter") String filter);
+
 
 
     /**

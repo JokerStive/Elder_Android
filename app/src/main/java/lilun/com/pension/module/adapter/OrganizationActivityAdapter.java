@@ -1,13 +1,18 @@
 package lilun.com.pension.module.adapter;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
+import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 
@@ -41,7 +46,9 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                 });
 
 
-//        Glide.with(fragment).load(IconUrl.organizationAid(activity.getId())).into((ImageView) help.getView(R.id.iv_aid_icon));
+        Glide.with(fragment)
+                .load(IconUrl.organizationActivies(activity.getId(), BitmapUtils.picName(activity.getIcon())))
+                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

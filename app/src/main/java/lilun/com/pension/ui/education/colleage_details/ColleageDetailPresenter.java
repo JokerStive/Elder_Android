@@ -1,15 +1,12 @@
-package lilun.com.pension.ui.education.edu_details;
+package lilun.com.pension.ui.education.colleage_details;
 
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
-import lilun.com.pension.module.bean.ElderEdus;
-import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.net.NetHelper;

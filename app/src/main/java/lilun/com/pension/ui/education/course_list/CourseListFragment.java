@@ -6,6 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.null_data)
+    ImageView nullData;
     int skip = 0;
 
 
@@ -109,6 +113,11 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     @Override
     public void showCollgCourseList(List<EdusColleageCourse> courses, boolean isLoadMore) {
         skip += courses.size();
+        if(skip == 0){
+            nullData.setVisibility(View.VISIBLE);
+        }else
+            nullData.setVisibility(View.GONE);
+
         if (mEduCourseAdapter == null) {
             mEduCourseAdapter = new EduCourseAdapter(this, courses);
 

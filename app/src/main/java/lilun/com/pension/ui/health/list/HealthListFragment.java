@@ -1,9 +1,12 @@
 package lilun.com.pension.ui.health.list;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,13 +14,15 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.HealtheaProduct;
-import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
-import lilun.com.pension.widget.PositionTitleBar;
+import lilun.com.pension.widget.NormalTitleBar;
 
 /**
  * 健康服务V
@@ -26,20 +31,27 @@ import lilun.com.pension.widget.PositionTitleBar;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class HealthListFragment extends BaseFragment {
+public class HealthListFragment extends BaseFragment<HealthListContact.Presenter>
+        implements HealthListContact.View {
 
-    @Bind(R.id.title_bar)
-    PositionTitleBar titleBar;
 
-    @Bind(R.id.rv_education)
-    RecyclerView rvHealth;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
+    @Bind(R.id.null_data)
+    ImageView nullData;
 
     private List<HealtheaProduct> products = new ArrayList<>();
 
     private RecyclerView rvPushInfo;
     private HealthServiceAdapter mAdapter;
     private ArrayList<String> data;
-    private ElderModule classify;
+    private ElderModule mClassify;
+    private int skip = 0;
 
     public static HealthListFragment newInstance(ElderModule classify) {
         HealthListFragment fragment = new HealthListFragment();
@@ -52,41 +64,66 @@ public class HealthListFragment extends BaseFragment {
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-         classify = (ElderModule) arguments.getSerializable("HealtheaProduct");
+        mClassify = (ElderModule) arguments.getSerializable("HealtheaProduct");
+        Preconditions.checkNull(mClassify);
     }
 
     @Override
     protected void initPresenter() {
-
+        mPresenter = new HealthListPresenter();
+        mPresenter.bindView(this);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_health_service;
+        return R.layout.layout_recycler;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(classify.getName());
-        titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
-            @Override
-            public void onBackClick() {
-                pop();
-            }
+        titleBar.setTitle(mClassify.getName());
+        titleBar.setOnBackClickListener(() -> {
+            pop();
         });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
 
-        rvHealth.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        rvHealth.addItemDecoration(new ElderModuleItemDecoration());
-        mAdapter = new HealthServiceAdapter(this, products);
+        mSwipeLayout.setOnRefreshListener(() -> {
+            refreshData();
+        });
+        refreshData();
+    }
 
-        if(classify.getName().equals("智慧健康")){
-            mAdapter.replaceAll(getData().subList(0,1));
-        } else if(classify.getName().equals("便民药房")){
-            mAdapter.replaceAll(getData().subList(1,getData().size()));
+    private void refreshData() {
+        skip = 0;
+        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\"," +
+                "\"isCat\":\"false\"," +
+                "\"parentId\":{\"like\":\"/#information/" + mClassify.getServiceConfig().getCategory() + "\"}}}";
+        mPresenter.getDataList(filter, skip);
+    }
+
+
+    @Override
+    public void showDataList(List<Information> list, boolean isLoadMore) {
+        skip += list.size();
+        if (skip == 0)
+            nullData.setVisibility(View.VISIBLE);
+        else
+            nullData.setVisibility(View.GONE);
+
+        if (mAdapter == null) {
+            mAdapter = new HealthServiceAdapter(this, list);
+            mRecyclerView.setAdapter(mAdapter);
+        } else if (isLoadMore) {
+            mAdapter.addAll(list);
+        } else
+            mAdapter.replaceAll(list);
+    }
+
+    public void completeRefresh() {
+        if (mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
         }
-        rvHealth.setAdapter(mAdapter);
-
-
     }
 
 

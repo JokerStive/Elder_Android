@@ -40,7 +40,7 @@ public class Information extends BaseBean {
     private boolean replyable;
     private boolean isCat;
     private boolean isDraft;
-    private String contextType;
+    private int contextType;
     private String context;
     private String parentId;
     private String createdAt;
@@ -108,11 +108,11 @@ public class Information extends BaseBean {
         this.isDraft = isDraft;
     }
 
-    public String getContextType() {
+    public int getContextType() {
         return contextType;
     }
 
-    public void setContextType(String contextType) {
+    public void setContextType(int contextType) {
         this.contextType = contextType;
     }
 

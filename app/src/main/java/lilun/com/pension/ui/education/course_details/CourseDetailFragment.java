@@ -21,7 +21,7 @@ import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.ui.education.edu_details.ColleageDetailFragment;
+import lilun.com.pension.ui.education.colleage_details.ColleageDetailFragment;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.slider.BannerPager;
 

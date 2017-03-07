@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.education.edu_details;
+package lilun.com.pension.ui.education.colleage_details;
 
 import java.util.List;
 

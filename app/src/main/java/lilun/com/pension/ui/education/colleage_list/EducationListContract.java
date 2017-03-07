@@ -1,12 +1,10 @@
-package lilun.com.pension.ui.education.list;
+package lilun.com.pension.ui.education.colleage_list;
 
 import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
-import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
-import lilun.com.pension.module.bean.OrganizationProduct;
 
 /**
  * 老年教育契约类

@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.education.list;
+package lilun.com.pension.ui.education.colleage_list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -13,12 +15,10 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.EdusColleageAdapter;
-import lilun.com.pension.module.adapter.OrganizationEdusAdapter;
-import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.ui.education.edu_details.ColleageDetailFragment;
+import lilun.com.pension.ui.education.colleage_details.ColleageDetailFragment;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -40,6 +40,8 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.null_data)
+    ImageView nullData;
     int skip = 0;
 
 
@@ -114,10 +116,13 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
     @Override
     public void showEdusList(List<ElderEdusColleage> elderEdusList, boolean isLoadMore) {
         skip += elderEdusList.size();
+        if(skip == 0){
+            nullData.setVisibility(View.VISIBLE);
+        }else
+            nullData.setVisibility(View.GONE);
         if (mActivityAdapter == null) {
 
             mActivityAdapter = new EdusColleageAdapter(this, elderEdusList);
-
             mRecyclerView.setAdapter(mActivityAdapter);
             mActivityAdapter.setOnItemClickListener((item) -> {
                 start(ColleageDetailFragment.newInstance(item));

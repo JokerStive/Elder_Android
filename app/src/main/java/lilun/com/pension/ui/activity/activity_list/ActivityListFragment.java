@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.activity.list;
+package lilun.com.pension.ui.activity.activity_list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -19,8 +20,7 @@ import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.ui.activity.classify.ActivityClassifyContract;
-import lilun.com.pension.ui.activity.classify.ActivityClassifyPresenter;
+import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -31,7 +31,8 @@ import lilun.com.pension.widget.NormalTitleBar;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.Presenter> implements ActivityClassifyContract.View {
+public class ActivityListFragment extends BaseFragment<ActivityListContract.Presenter>
+        implements ActivityListContract.View {
 
 
     @Bind(R.id.recycler_view)
@@ -41,9 +42,12 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
+    @Bind(R.id.null_data)
+    ImageView nullData;
 
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
+    int skip = 0;
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -62,7 +66,7 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
 
     @Override
     protected void initPresenter() {
-        mPresenter = new ActivityClassifyPresenter();
+        mPresenter = new ActivtyListPresenter();
         mPresenter.bindView(this);
     }
 
@@ -81,7 +85,8 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getHelps(0);
+                        skip = 0;
+                        getActivityList(0);
                     }
                 }
         );
@@ -91,28 +96,34 @@ public class ActivityListFragment extends BaseFragment<ActivityClassifyContract.
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
+            skip = 0;
             mSwipeLayout.setRefreshing(true);
-            getHelps(0);
+            getActivityList(0);
         }
     }
 
-    private void getHelps(int skip) {
+    private void getActivityList(int skip) {
         // TODO 关联organizationId
         String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"}}";
-        mPresenter.getAboutMe(filter, skip);
+        mPresenter.getOrganizationActivities(filter, skip);
     }
 
-    @Override
-    public void showClassifies(List<ActivityCategory> activityCategories) {
-
-    }
 
     @Override
-    public void showAboutMe(List<OrganizationActivity> activities, boolean islOadMore) {
+    public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {
         completeRefresh();
+        skip += activities.size();
+        if(skip == 0){
+            nullData.setVisibility(View.VISIBLE);
+        }else{
+            nullData.setVisibility(View.GONE);
+        }
         if (mActivityAdapter == null) {
             mActivityAdapter = new OrganizationActivityAdapter(this, activities);
             mRecyclerView.setAdapter(mActivityAdapter);
+            mActivityAdapter.setOnItemClickListener((activityItem)->{
+                start(ActivityDetailFragment.newInstance(activityItem));
+            });
         } else if (islOadMore) {
             mActivityAdapter.addAll(activities);
         } else {

@@ -53,7 +53,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     private RecyclerView mClassifyRecycler;
 
-    private List<HealtheaProduct> products = new ArrayList<>();
+    private List<Information> products = new ArrayList<>();
     private HealthServiceAdapter mAdapter;
     private ArrayList<Information> announcements;
 
@@ -89,7 +89,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
-                onBackPressedSupport();
+                pop();
             }
 
             @Override
@@ -180,15 +180,15 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     }
 
     @Override
-    public void showAboutMe(List<HealtheaProduct> products, boolean isLoadMore) {
+    public void showAboutMe(List<Information> products, boolean isLoadMore) {
         completeRefresh();
-        if (products != null) {
-            if (isLoadMore) {
-                mAdapter.addAll(products);
-            } else {
-                mAdapter.replaceAll(products);
-            }
-        }
+//        if (products != null) {
+//            if (isLoadMore) {
+//                mAdapter.addAll(products);
+//            } else {
+//                mAdapter.replaceAll(products);
+//            }
+//        }
     }
 
     @Override
