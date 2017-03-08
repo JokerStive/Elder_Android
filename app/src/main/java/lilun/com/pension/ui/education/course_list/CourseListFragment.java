@@ -84,7 +84,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(mColleage.getName());
+        titleBar.setTitle(getString(R.string.course));
         titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
             @Override
             public void onBackClick() {

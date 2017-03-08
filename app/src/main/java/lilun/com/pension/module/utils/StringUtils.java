@@ -47,6 +47,19 @@ public class StringUtils {
         return ret;
     }
 
+    public static DateTime IOS2DateTime(String isoTime1) {
+        DateTime dateTime = null;
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] + "+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            dateTime = parser2.parseDateTime(isoTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateTime;
+    }
+
 
     public static String checkNotEmpty(String s) {
         if (TextUtils.isEmpty(s)) {

@@ -15,6 +15,7 @@ import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
+import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 大学-课程adapter
@@ -31,7 +32,7 @@ public class EduCourseAdapter extends QuickAdapter<EdusColleageCourse> {
     @Override
     protected void convert(BaseViewHolder help, EdusColleageCourse course) {
         help.setText(R.id.tv_item_title, course.getName())
-                .setText(R.id.tv_item_address, course.getContent())
+                .setText(R.id.tv_item_address, StringUtils.IOS2ToUTC(course.getStartDate()))
 
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {

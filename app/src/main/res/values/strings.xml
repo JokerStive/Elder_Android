@@ -158,4 +158,5 @@
     <string name="originator_person_">发起人：%1$s</string>
     <string name="participation_request">参与要求</string>
     <string name="activity_address">活动地址</string>
+    <string name="course">课程</string>
 </resources>

@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.education.course_details;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +20,11 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
+import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.ui.education.InforPopupWindow;
+import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.education.colleage_details.ColleageDetailFragment;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.slider.BannerPager;
@@ -35,6 +39,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     EdusColleageCourse mCourse;
     private boolean isJoin;
+    private boolean retNeedRef = false;
 
 
     @Bind(R.id.bp_course_icon)
@@ -81,9 +86,9 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                 break;
             case R.id.tv_service_provider:
                 ColleageDetailFragment fragment = findFragment(ColleageDetailFragment.class);
-                if(fragment !=null) {
+                if (fragment != null) {
                     popTo(ColleageDetailFragment.class, false);
-                }else{
+                } else {
                     start(ColleageDetailFragment.newInstance(mCourse.getSchool()));
                 }
                 break;
@@ -150,6 +155,10 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         isJoin = true;
         btJoinIn.setVisibility(View.GONE);
         btCancel.setVisibility(View.VISIBLE);
+
+        String uri = IconUrl.account(mCourse.getContact().getId(), BitmapUtils.picName(mCourse.getPicture()));
+        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
+        retNeedRef = !retNeedRef;
     }
 
     @Override
@@ -157,6 +166,9 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         isJoin = false;
         btJoinIn.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.GONE);
+        String uri = IconUrl.account(mCourse.getContact().getId(), BitmapUtils.picName(mCourse.getPicture()));
+        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
+        retNeedRef = !retNeedRef;
     }
 
     @Override
@@ -181,6 +193,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                     .error(R.drawable.icon_def)
                     .into(tvConnectIcon);
         }
+
         tvStartDate.setText(getString(R.string.course_start_date_, StringUtils.IOS2ToUTC(orders.getStartDate())));
         tvEndDate.setText(getString(R.string.course_end_date_, StringUtils.IOS2ToUTC(orders.getEndDate())));
         tvServiceProvider.setVisibility(View.VISIBLE);
@@ -196,6 +209,17 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             btJoinIn.setVisibility(View.VISIBLE);
             btCancel.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(retNeedRef){
+            EducationClassifyFragment fragment = findFragment(EducationClassifyFragment.class);
+            if(fragment !=null){
+                fragment.refreshData();
+            }
+        }
+        super.onDestroy();
     }
 }
 

@@ -161,7 +161,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         refreshData();
     }
 
-    private void refreshData() {
+    public void refreshData() {
         mSwipeLayout.setRefreshing(true);
         getClassifies();
     }

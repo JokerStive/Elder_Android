@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_rect_red_corner"
+        android:padding="100dp" />
+
+
+    <TextView
+        android:id="@+id/tv_show_str"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/bt_confirm"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/dp_10"
+        android:background="@drawable/shape_rect_write_corner"
+        android:text="@string/confirm"
+        android:textColor="@color/red" />
+
+
+    <lilun.com.pension.widget.CircleImageView
+        android:id="@+id/civ_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_above="@+id/tv_show_str"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/icon_def"
+        app:border_color="@color/red"
+        app:border_width="@dimen/dp_4"/>
+
+
+</RelativeLayout>
