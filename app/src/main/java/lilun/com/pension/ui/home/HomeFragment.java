@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -27,7 +26,6 @@ import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
-import lilun.com.pension.ui.chat.ChatActivity;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
@@ -206,8 +204,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-                startActivity(new Intent(_mActivity, ChatActivity.class));
-//                startHelp();
+//                startActivity(new Intent(_mActivity, ChatActivity.class));
+                startHelp();
                 break;
 
             case R.id.iv_education:
