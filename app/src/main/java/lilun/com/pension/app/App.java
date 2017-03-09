@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
 import cn.jpush.android.api.JPushInterface;
+//import cn.jpush.im.android.api.JMessageClient;
 
 /**
 *入口
@@ -31,7 +32,8 @@ public class App extends Application {
         LeakCanary.install(this);
         JPushInterface.init(this);
 
-
+//        JMessageClient.setDebugMode(true);
+//        JMessageClient.init(this);
 
     }
 

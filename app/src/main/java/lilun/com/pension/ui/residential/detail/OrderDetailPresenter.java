@@ -17,7 +17,7 @@ import lilun.com.pension.net.RxSubscriber;
 public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> implements OrderDetailContract.Presenter {
     @Override
     public void getOrder(String orderId) {
-        String filter = "{\"include\":\"product\"}";
+        String filter = "{\"include\":[\"product\",\"assignee\"]}";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())

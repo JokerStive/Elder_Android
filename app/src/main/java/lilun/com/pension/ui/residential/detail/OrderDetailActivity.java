@@ -35,4 +35,9 @@ public class OrderDetailActivity extends BaseActivity {
     protected void initView() {
         loadRootFragment(R.id.ll_container,OrderDetailFragment.newInstance(mOrderId));
     }
+
+    @Override
+    public void onBackPressedSupport() {
+        finish();
+    }
 }

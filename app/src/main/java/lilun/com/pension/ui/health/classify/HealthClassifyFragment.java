@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,6 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
@@ -104,12 +101,8 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
         });
 
 
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-        }
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
+
 
         //类别
         mClassifyRecycler = new RecyclerView(_mActivity);
@@ -152,7 +145,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
         getClassifies();
-      //  getServices(0);
+        //  getServices(0);
     }
 
     private void getClassifies() {

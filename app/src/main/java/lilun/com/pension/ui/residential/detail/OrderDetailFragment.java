@@ -20,7 +20,9 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
@@ -91,6 +93,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     @Bind(R.id.ll_operate)
     LinearLayout llOperate;
+    @Bind(R.id.tv_cancel)
+    TextView tvCancel;
 
     private String mOrderId;
     private String status_reserved = "reserved";
@@ -99,6 +103,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private String status_cancel = "cancel";
     private ProductOrder mOrder;
     private String agencyId;
+//    private String mNextStatus;
 
     public static OrderDetailFragment newInstance(String orderId) {
         OrderDetailFragment fragment = new OrderDetailFragment();
@@ -130,6 +135,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     protected void initView(LayoutInflater inflater) {
         UIUtils.setBold(tvProviderName);
         UIUtils.setBold(tvOperate);
+        UIUtils.setBold(tvCancel);
 
 
         ivBack.setOnClickListener(this);
@@ -137,6 +143,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         rlProductPhone.setOnClickListener(this);
         rlProductDetail.setOnClickListener(this);
         rlProviderDetail.setOnClickListener(this);
+        tvCancel.setOnClickListener(this);
     }
 
     @Override
@@ -156,26 +163,50 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         }
 
 
-        tvProductPhone.setText(order.getMobile());
-        if (order.getStatus().equals(status_reserved)) {
-            llOperate.setVisibility(View.VISIBLE);
-            tvOperate.setText(R.string.cancel_order);
-        }else if (order.getStatus().equals(status_done)){
-            llOperate.setVisibility(View.VISIBLE);
-            tvOperate.setText(R.string.rank);
+        if (User.isCustomer()) {
+            if (order.getStatus().equals(status_reserved)) {
+                llOperate.setVisibility(View.VISIBLE);
+                tvOperate.setText(R.string.operate_cancel);
+            } else if (order.getStatus().equals(status_done)) {
+                llOperate.setVisibility(View.VISIBLE);
+                tvOperate.setText(R.string.rank);
+            }
+        } else {
+            if (!order.getStatus().equals(status_cancel) && !order.getStatus().equals(status_done)) {
+                llOperate.setVisibility(View.VISIBLE);
+                if (order.getStatus().equals(status_reserved)) {
+                    tvCancel.setVisibility(View.VISIBLE);
+                    tvOperate.setText(getStatusOperate(status_assigned));
+                    tvCancel.setText(getStatusOperate(status_cancel));
+//                    mNextStatus = status_assigned;
+                } else if (order.getStatus().equals(status_assigned)) {
+                    tvCancel.setVisibility(View.GONE);
+                    tvOperate.setText(getStatusOperate(status_done));
+//                    mNextStatus = status_done;
+                }
+            }
         }
 
         //show product
         OrganizationProduct product = order.getProduct();
-        if (product == null) {
+        Account account = order.getAssignee();
+
+        if (product == null || account == null) {
             return;
         }
 
-        agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
-        String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
-        ImageLoaderUtil.instance().loadImage(IconUrl.organization(agencyId, null), R.drawable.avatar, ivProviderAvatar);
-        //TODO 现在是获取组织的icon，也可能是information的icon
-        tvProviderName.setText(StringUtils.filterNull(agencyName));
+        if (User.isCustomer()) {
+            agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
+            String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
+            ImageLoaderUtil.instance().loadImage(IconUrl.organization(agencyId, null), R.drawable.avatar, ivProviderAvatar);
+            //TODO 现在是获取组织的icon，也可能是information的icon
+            tvProviderName.setText(StringUtils.filterNull(agencyName));
+            tvProductPhone.setText(account.getMobile());
+        } else {
+            ImageLoaderUtil.instance().loadImage(IconUrl.account(mOrder.getCreatorId(), null), R.drawable.avatar, ivProviderAvatar);
+            tvProviderName.setText(mOrder.getCreatorName());
+            tvProductPhone.setText(mOrder.getMobile());
+        }
 
         ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(), null), R.drawable.icon_def, ivProductIcon);
         tvProductName.setText(product.getName());
@@ -187,12 +218,11 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     @Override
     public void changeOrderStatusSuccess(String status) {
-        //取消订单后的操作
-        if (status.equals(status_cancel)) {
-            llOperate.setVisibility(View.GONE);
-            tvOrderStatus.setText(getStatus(status_cancel));
-            EventBus.getDefault().post(new Event.RefreshMyOrderData());
-        }
+        //更改订单状态后的操作
+        llOperate.setVisibility(View.GONE);
+        tvOrderStatus.setText(getStatus(status));
+        EventBus.getDefault().post(new Event.RefreshMyOrderData());
+
     }
 
     private int getStatus(String status) {
@@ -209,6 +239,21 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         return stringRes;
     }
 
+
+    private int getStatusOperate(String status) {
+        int statusOperate = 0;
+        if (status.equals(status_reserved)) {
+            statusOperate = R.string.operate_assigned;
+        } else if (status.equals(status_assigned)) {
+            statusOperate = R.string.operate_assigned;
+        } else if (status.equals(status_done)) {
+            statusOperate = R.string.operate_done;
+        } else if (status.equals(status_cancel)) {
+            statusOperate = R.string.operate_cancel;
+        }
+        return statusOperate;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -217,48 +262,77 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
                 break;
 
             case R.id.rl_provider_detail:
-                start(AgencyDetailFragment.newInstance(agencyId,null));
+                if (User.isCustomer()) {
+                    start(AgencyDetailFragment.newInstance(agencyId, null));
+                }
                 break;
 
             case R.id.rl_product_detail:
-                if (mOrder.getProduct()!=null){
+                if (mOrder.getProduct() != null) {
                     start(ServiceDetailFragment.newInstance(mOrder.getProduct()));
                 }
                 break;
 
             case R.id.rl_product_phone:
                 //TODO 拨打电话
-                call();
+                if (User.isCustomer()) {
+                    call("确定联系商家？");
+                } else {
+                    call("确定联系顾客？");
+                }
                 break;
 
             case R.id.tv_operate:
-                //TODO 根据不同状态做不同的操作
                 operate();
+                break;
 
+            case R.id.tv_cancel:
+                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
                 break;
         }
     }
 
     private void operate() {
-        String status = mOrder.getStatus();
-        if (status.equals(status_reserved)){
-            cancelOrder();
-        }else if (status.equals(status_done)){
-            start(RankFragment.newInstance(Constants.organizationProduct,mOrder.getProductId()));
+        String operate = tvOperate.getText().toString();
+        if (!TextUtils.isEmpty(operate)) {
+            //取消订单
+            if (operate.equals(getString(R.string.operate_cancel))) {
+                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
+            }
+
+            //受理订单
+            if (operate.equals(getString(R.string.operate_assigned))) {
+                changeOrderStatus(status_assigned, getAlartMsg(R.string.operate_assigned));
+            }
+
+            //完成订单
+            if (operate.equals(getString(R.string.operate_done))) {
+                changeOrderStatus(status_done, "确定已经给顾客服务过了吗？不然会收到差评的哟！");
+            }
+
+
+            //评价
+            if (operate.equals(getString(R.string.rank))) {
+                start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
+            }
         }
     }
 
-    private void cancelOrder() {
-        new NormalDialog().createNormal(_mActivity, "确定取消订单？", () -> {
-            mPresenter.changeOrderStatus(mOrderId, status_cancel);
+    private void changeOrderStatus(String status, String msg) {
+        new NormalDialog().createNormal(_mActivity, msg, () -> {
+            mPresenter.changeOrderStatus(mOrderId, status);
         });
 
     }
 
-    private void call() {
+    public String getAlartMsg(int operate) {
+        return "确定要" + getString(operate) + "吗？";
+    }
+
+    private void call(String msg) {
         String phoneDesc = tvProductPhone.getText().toString();
         if (!TextUtils.isEmpty(phoneDesc)) {
-            new NormalDialog().createNormal(_mActivity, "确定联系商家？", () -> {
+            new NormalDialog().createNormal(_mActivity, msg, () -> {
                 Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneDesc));
                 startActivity(intent);
             });

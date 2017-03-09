@@ -114,7 +114,8 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
         if (User.isCustomer()) {
             showPersonalOrder(orders, isLoadMore);
         } else {
-            showMerchantOrder(orders, isLoadMore);
+            showPersonalOrder(orders, isLoadMore);
+//            showMerchantOrder(orders, isLoadMore);
         }
     }
 
@@ -126,8 +127,8 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
         if (personalOrderAdapter == null) {
             personalOrderAdapter = new PersonalOrderAdapter(orders);
             personalOrderAdapter.setOnItemClickListener(order -> {
-                Intent intent =new Intent(_mActivity,OrderDetailActivity.class);
-                intent.putExtra("orderId",order.getId());
+                Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+                intent.putExtra("orderId", order.getId());
                 startActivity(intent);
 
 //                start(OrderDetailFragment.newInstance(order.getId()),SINGLETOP);

@@ -6,8 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,6 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
-
 
 
     private ArrayList<Information> announcements;
@@ -94,30 +91,13 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             public void onRightClick() {
                 //TODO 查看所有订单
                 start(new OrderListFragment());
-//                startActivity(new Intent(_mActivity, OrderListActivity.class));
             }
         });
 
 
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-//            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(information), false);
-        }
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
 
-        //类别
-//        mClassifyRecycler = new RecyclerView(_mActivity);
-//        mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
-
-
-        //求助列表
-//        mClassifyRecycler.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-//        mClassifyRecycler.addItemDecoration(new ElderModuleItemDecoration());
-
-
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -149,7 +129,6 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         mSwipeLayout.setRefreshing(true);
         mPresenter.getClassifies();
     }
-
 
 
     @Override

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="@dimen/info_bar_height"
-    android:background="@drawable/home_bg"
+    android:layout_height="195dp"
+    android:background="@drawable/shape_item_push_info"
     >
 
 

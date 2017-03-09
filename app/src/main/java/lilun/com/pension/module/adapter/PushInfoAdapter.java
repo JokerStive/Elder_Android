@@ -4,12 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pension.R;
+import lilun.com.pension.base.QuickAdapter;
 
 /**
  * 展示推送消息的adapter
@@ -18,19 +18,22 @@ import lilun.com.pension.R;
  *         create at 2017/2/8 16:31
  *         email : yk_developer@163.com
  */
-public class PushInfoAdapter extends BaseQuickAdapter<String> {
+public class PushInfoAdapter extends QuickAdapter<String> {
 
 
-    private  RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private List<String> data;
     private Context context;
     private onPushClickListener listener;
 
-    public PushInfoAdapter(RecyclerView recyclerView,List<String> data, int id) {
-        super(id,data);
+    public PushInfoAdapter(RecyclerView recyclerView, List<String> data, int id) {
+        super(id, data);
         this.recyclerView = recyclerView;
     }
-//
+
+
+
+    //
 //    @Override
 //    protected void convert(RecyclerAdapterHelper helper, String item) {
 //        helper.setOnClickListener(R.id.delete,v -> {
@@ -47,6 +50,7 @@ public class PushInfoAdapter extends BaseQuickAdapter<String> {
 //        });
 //    }
 
+
     @Override
     public void setEmptyView(View emptyView) {
         super.setEmptyView(emptyView);
@@ -54,15 +58,15 @@ public class PushInfoAdapter extends BaseQuickAdapter<String> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setOnClickListener(R.id.delete,v -> {
-            if (listener!=null){
+        helper.setOnClickListener(R.id.delete, v -> {
+            if (listener != null) {
                 //传viewHolder,实现点击删除拖拽
                 listener.onDeleteClick(item);
 //                listener.onDeleteClick(helper.);
             }
         });
-        helper.setOnClickListener(R.id.expand,v1 -> {
-            if (listener!=null){
+        helper.setOnClickListener(R.id.expand, v1 -> {
+            if (listener != null) {
                 listener.onExpandClick();
             }
         });
@@ -105,11 +109,9 @@ public class PushInfoAdapter extends BaseQuickAdapter<String> {
 //    }
 
 
-
     public void setOnPushClickListener(onPushClickListener listener) {
         this.listener = listener;
     }
-
 
 
     public interface onPushClickListener {

@@ -111,12 +111,13 @@
 
                 <lilun.com.pension.widget.CircleImageView
                     android:id="@+id/cig_connect_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_22"
-                    android:layout_marginTop="@dimen/dp_10" />
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:src="@drawable/avatar" />
             </RelativeLayout>
 
             <View

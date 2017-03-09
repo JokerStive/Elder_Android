@@ -12,6 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.orhanobut.logger.Logger;
 
 import lilun.com.pension.widget.CardConfig;
 
@@ -47,6 +48,10 @@ public class MyCallBack extends SimpleCallback {
     public void onSwiped(ViewHolder viewHolder, int direction) {
         if (mAdapter.getItemCount()!=0){
             mAdapter.remove(mAdapter.getItemCount()-1);
+            if (mAdapter.getItemCount()==0){
+                Logger.d("推送栏设置gone");
+                mRv.setVisibility(View.GONE);
+            }
         }
 
     }

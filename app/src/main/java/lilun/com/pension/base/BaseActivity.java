@@ -2,13 +2,24 @@ package lilun.com.pension.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
+import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.module.adapter.PushInfoAdapter;
+import lilun.com.pension.module.callback.MyCallBack;
+import lilun.com.pension.widget.CardConfig;
+import lilun.com.pension.widget.OverLayCardLayoutManager;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
 
@@ -20,12 +31,29 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     protected T mPresenter;
     private Subscription subscribe;
-//    final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
+    private RecyclerView rvPushInfo;
+    private FrameLayout mFrameLayout;
+    private PushInfoAdapter pushInfoAdapter;
+    private List<String> data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
+
+        setContentView(R.layout.activity_base);
+        rvPushInfo = (RecyclerView) findViewById(R.id.rv_push_container);
+
+        mFrameLayout = (FrameLayout) findViewById(R.id.fl_root_container);
+        mFrameLayout.addView(LayoutInflater.from(this).inflate(getLayoutId(), null));
+
+
+//        data = new ArrayList<>();
+//        for (int i = 0; i < 3; i++) {
+//            data.add(i + "");
+//        }
+
+//        initPushBar();
+
         EventBus.getDefault().register(this);
 
         getTransferData();
@@ -39,7 +67,9 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         initView();
 
         initEvent();
+
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void tokenFailure(Event.TokenFailure event) {
@@ -91,7 +121,44 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     protected void initEvent() {
     }
 
-    ;
+    private void initPushBar() {
+        if (data == null || data.size() == 0) {
+            return;
+        }
+
+        pushInfoAdapter = new PushInfoAdapter(rvPushInfo, data, R.layout.item_push_info);
+
+
+        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
+//        rvPushInfo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL,false));
+        rvPushInfo.setAdapter(pushInfoAdapter);
+        CardConfig.initConfig(this);
+        CardConfig.MAX_SHOW_COUNT = 3;
+
+
+        ItemTouchHelper.Callback callback = new MyCallBack(rvPushInfo, pushInfoAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(rvPushInfo);
+
+
+        pushInfoAdapter.setOnPushClickListener(new PushInfoAdapter.onPushClickListener() {
+            @Override
+            public void onDeleteClick(String item) {
+//                pushInfoAdapter.re
+
+            }
+
+            @Override
+            public void onItemClick() {
+
+            }
+
+            @Override
+            public void onExpandClick() {
+
+            }
+        });
+    }
 
     @Override
     public void onBackPressedSupport() {
@@ -101,10 +168,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
             finish();
         }
     }
-
-//    public void showHintToPop(){
-//        FragmentTransaction ft = fragmentManager.beginTransaction().show(showFragment);
-//    }
 
 
     @Override

@@ -170,22 +170,39 @@
 
     <LinearLayout
         android:id="@+id/ll_operate"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
         android:orientation="vertical">
 
         <View style="@style/line_gray" />
 
-        <TextView
-            android:id="@+id/tv_operate"
-            style="@style/tv_normal"
+        <LinearLayout
+
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/tv_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:padding="15dp"
+            android:visibility="gone"
             android:textSize="@dimen/tv_size"
             tools:text="取消订单" />
 
+            <TextView
+                android:id="@+id/tv_operate"
+                style="@style/tv_normal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="15dp"
+                android:textSize="@dimen/tv_size"
+                tools:text="受理订单" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

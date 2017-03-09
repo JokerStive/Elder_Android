@@ -53,6 +53,11 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     protected void initPresenter() {
         mPresenter = new AnnouncementPresenter();
         mPresenter.bindView(this);
+
+//        data = new ArrayList<>();
+//        for(int i=0;i<3;i++){
+//            data.add(i+"");
+//        }
     }
 
     @Override

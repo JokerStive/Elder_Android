@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,7 @@ import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
+import lilun.com.pension.ui.chat.ChatActivity;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
@@ -204,7 +206,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-                startHelp();
+                startActivity(new Intent(_mActivity, ChatActivity.class));
+//                startHelp();
                 break;
 
             case R.id.iv_education:
@@ -244,7 +247,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
 
     private List<Information> getClassifyAnnouncements(String moduleName) {
-        if (informations != null && informations.size() != 0) {
+        if (informations != null) {
             if (mInformationData == null) {
                 mInformationData = new ArrayList<>();
             }
@@ -253,6 +256,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 if (info.getParentId().contains(moduleName)) {
                     mInformationData.add(info);
                 }
+            }
+
+            if (mInformationData.size()==0){
+                Information information = new Information();
+                mInformationData.add(information);
             }
             return mInformationData;
         }
@@ -312,7 +320,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void showInformation(List<Information> informations) {
-        if (informations.size() != 0) {
             this.informations = informations;
             List<Information> data = new ArrayList<>();
             for (Information info : informations) {
@@ -320,8 +327,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     data.add(info);
                 }
             }
+            if (data.size()==0){
+                Information information = new Information();
+                data.add(information);
+            }
             setInformation(data);
-        }
     }
 
 

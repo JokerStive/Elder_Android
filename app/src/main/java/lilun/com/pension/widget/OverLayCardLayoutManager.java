@@ -14,7 +14,7 @@ import android.view.View;
 
 public class OverLayCardLayoutManager extends LayoutManager {
     private static final String TAG = "swipecard";
-    private   float initScaleY = 1f;
+    private   float initScaleY = 10f;
 
     public OverLayCardLayoutManager() {
     }

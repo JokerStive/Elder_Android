@@ -41,8 +41,19 @@ public class ProductOrder extends BaseBean {
     private String updatedAt;
     private String creatorId;
     private String creatorName;
+
+    public Account getAssignee() {
+        return assignee;
+    }
+
+    public ProductOrder setAssignee(Account assignee) {
+        this.assignee = assignee;
+        return this;
+    }
+
     private String updatorId;
     private String updatorName;
+    private Account assignee;
 
     public OrganizationProduct getProduct() {
         return product;
