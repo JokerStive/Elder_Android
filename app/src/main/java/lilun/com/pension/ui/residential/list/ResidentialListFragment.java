@@ -104,6 +104,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         if (mIsMerchant) {
             filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         } else {
+//            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"areas \":{\"like\":\"" + User.getCurrentOrganizationId() + "\"}}}";
             filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\"}}";
         }
         mPresenter.getResidentialServices(filter, skip);

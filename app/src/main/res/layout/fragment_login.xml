@@ -46,6 +46,7 @@
             style="@style/et_normal"
             android:layout_marginTop="16dp"
             tools:text="1320514"
+            android:maxLines="1"
             android:textSize="20sp" />
 
         <View
@@ -77,6 +78,7 @@
             style="@style/et_normal"
             android:layout_marginTop="16dp"
             tools:text="1320514"
+            android:maxLines="1"
             android:textSize="20sp" />
 
         <View

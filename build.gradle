@@ -12,6 +12,8 @@ buildscript {
 
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
+        classpath 'com.antfortune.freeline:gradle:0.8.6'
+
 
 
 

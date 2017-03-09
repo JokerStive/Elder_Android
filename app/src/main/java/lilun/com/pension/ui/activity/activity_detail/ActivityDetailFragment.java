@@ -1,13 +1,18 @@
 package lilun.com.pension.ui.activity.activity_detail;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
@@ -22,7 +27,7 @@ import lilun.com.pension.widget.slider.BannerPager;
  */
 
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter>
-        implements ActivityDetailContact.View {
+        implements ActivityDetailContact.View, View.OnClickListener {
     OrganizationActivity mActivity;
 
     @Bind(R.id.bp_actvity_icon)
@@ -35,6 +40,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     TextView tvParticipationRequest;
     @Bind(R.id.tv_activity_address)
     TextView tvActivityAddress;
+
+    @Bind(R.id.iv_back)
+    ImageView ivBack;
+
+    @Bind(R.id.tv_originator_person)
+    TextView tvOriginatorPerson;
 
     public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
@@ -63,6 +74,13 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        ivBack.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
         mPresenter.getActivityDetail(mActivity.getId());
     }
 
@@ -82,6 +100,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         bgActivityIcon.setData(urls);
         tvActivityName.setText(mActivity.getTitle() + getRepeatedType(mActivity.getRepeatedType()));
         tvActivityTime.setText(getString(R.string.activity_time_, StringUtils.IOS2ToUTC(mActivity.getStartTime())));
+        tvOriginatorPerson.setText(getString(R.string.originator_person_,activity.getCreatorName()));
         tvParticipationRequest.setText("无");
         tvActivityAddress.setText(mActivity.getAddress());
     }
@@ -103,5 +122,28 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             ret = "(每年)";
         }
         return ret;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_back:
+                pop();
+                break;
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

@@ -203,7 +203,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvProviderName.setText(StringUtils.filterNull(agencyName));
             tvProductPhone.setText(account.getMobile());
         } else {
-            ImageLoaderUtil.instance().loadImage(IconUrl.account(mOrder.getCreatorId(), null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivProviderAvatar);
             tvProviderName.setText(mOrder.getCreatorName());
             tvProductPhone.setText(mOrder.getMobile());
         }

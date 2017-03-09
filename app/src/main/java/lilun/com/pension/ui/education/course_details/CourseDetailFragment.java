@@ -156,7 +156,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         btJoinIn.setVisibility(View.GONE);
         btCancel.setVisibility(View.VISIBLE);
 
-        String uri = IconUrl.account(mCourse.getContact().getId(), BitmapUtils.picName(mCourse.getPicture()));
+        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
         InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
         retNeedRef = !retNeedRef;
     }
@@ -166,7 +166,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         isJoin = false;
         btJoinIn.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.GONE);
-        String uri = IconUrl.account(mCourse.getContact().getId(), BitmapUtils.picName(mCourse.getPicture()));
+        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
         InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
         retNeedRef = !retNeedRef;
     }
@@ -188,7 +188,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             tvConnectPhone.setText(getString(R.string.connect_phone_, orders.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, orders.getContact().getUsername()));
             Glide.with(_mActivity)
-                    .load(IconUrl.account(orders.getContact().getId(), null))
+                    .load(IconUrl.account(User.getUserId(), null))
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)
                     .into(tvConnectIcon);

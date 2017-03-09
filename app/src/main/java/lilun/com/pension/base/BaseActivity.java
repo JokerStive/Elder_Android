@@ -94,7 +94,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     @Override
     protected void onStart() {
-
         super.onStart();
 
     }

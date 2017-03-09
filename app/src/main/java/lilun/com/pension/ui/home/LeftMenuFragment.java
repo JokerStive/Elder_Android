@@ -1,17 +1,14 @@
 package lilun.com.pension.ui.home;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
@@ -66,7 +63,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Override
     protected void initView(LayoutInflater inflater) {
         ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,ivAvatar);
-        tvName.setText(User.getToken());
+        tvName.setText(User.getName());
 
         tvAccountData.setOnClickListener(this);
         tvAccountSetting.setOnClickListener(this);
@@ -104,17 +101,5 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

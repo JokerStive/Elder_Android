@@ -7,8 +7,12 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Constants;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Rank;
 import lilun.com.pension.module.utils.Preconditions;
@@ -93,6 +97,9 @@ public class RankFragment extends BaseFragment {
                     .subscribe(new RxSubscriber<Object>(_mActivity) {
                         @Override
                         public void _next(Object o) {
+                            if (TextUtils.equals(whatModule, Constants.organizationAid)){
+                                EventBus.getDefault().post(new Event.RefreshHelpData());
+                            }
                             pop();
                         }
                     });

@@ -1,5 +1,9 @@
 package lilun.com.pension.app;
 
+import android.text.TextUtils;
+
+import com.orhanobut.logger.Logger;
+
 import java.net.URLEncoder;
 
 /**
@@ -24,16 +28,24 @@ public class IconUrl {
         return Config.BASE_URL + "ProductCategories/" + encodeURL(productCategoryId) + "/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
-    public static String organizationAid(String organizationAidId,String iconName) {
-        return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/icon/" + iconName + "?access_token=" + User.getToken();
+    public static String organizationAid(String organizationAidId, String iconName) {
+        Logger.d("加载aid图片地址 = " + Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?pictureName=" + iconName + "&access_token=" + User.getToken());
+        if (TextUtils.isEmpty(iconName)){
+            return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?access_token=" + User.getToken();
+        }else {
+            return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?pictureName=" + iconName + "&access_token=" + User.getToken();
+
+        }
     }
-    public static String organizationActivies(String activityId,String iconName) {
+
+    public static String organizationActivies(String activityId, String iconName) {
         return Config.BASE_URL + "OrganizationActivities/" + encodeURL(activityId) + "/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
 
     public static String organizationProduct(String productId, String iconName) {
-        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName" + iconName + "&access_token=" + User.getToken();
+        Logger.d("加载aid图片地址 = " + Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName=" + iconName + "&access_token=" + User.getToken());
+        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName=" + iconName + "&access_token=" + User.getToken();
     }
 
 
@@ -42,6 +54,8 @@ public class IconUrl {
     }
 
     public static String account(String accountId, String iconName) {
+        Logger.d("加载account图片地址 = "+Config.BASE_URL + "Accounts/" + encodeURL(accountId) + "/picture/" + iconName + "?access_token=" + User.getToken());
+
         return Config.BASE_URL + "Accounts/" + encodeURL(accountId) + "/picture/" + iconName + "?access_token=" + User.getToken();
     }
 

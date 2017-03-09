@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdusColleage;
@@ -108,7 +109,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
             tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, mColleage.getContact().getUsername()));
             Glide.with(_mActivity)
-                    .load(IconUrl.account(mColleage.getContact().getId(), null))
+                    .load(IconUrl.account(User.getUserId(), null))
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)
                     .into(tvConnectIcon);

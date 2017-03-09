@@ -80,7 +80,7 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
     private void help() {
         if (checkPhone()) {
             String phone = etPhone.getText().toString();
-            PreUtils.putString("firstHelperPhone",phone);
+            PreUtils.putString("firstHelperPhone", phone);
             AlarmDialogFragment.newInstance(phone).show(getActivity().getFragmentManager(), AlarmDialogFragment.class.getSimpleName());
             dismiss();
         }

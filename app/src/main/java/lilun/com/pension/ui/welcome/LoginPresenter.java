@@ -31,6 +31,8 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         if (!checkAccountData(username, password)) {
             return;
         }
+        username = username.replace(" ","");
+        password = password.replace(" ","");
         addSubscribe(mModule.login(username, password)
                 .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo))
                 .subscribe(new RxSubscriber<Account>((Activity) mView) {

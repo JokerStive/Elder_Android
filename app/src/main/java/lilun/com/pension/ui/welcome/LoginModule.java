@@ -52,7 +52,7 @@ public class LoginModule implements LoginContract.Module {
         User.putBelongsOrganizationId(organizationId);
         User.puttCurrentOrganizationId(organizationId);
         User.putIsCustomer(account.isCustomer());
-        User.putName(account.getName());
+        User.putName(account.getUsername());
     }
 
     private Account getAccount(String username, String password) {

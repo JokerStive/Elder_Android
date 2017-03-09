@@ -11,6 +11,7 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -27,6 +28,7 @@ public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
     private OnFunctionClickListener listener;
     private String answerId;
+    private String rankId;
 
 
     public HelperJoinerAdapter(BaseFragment fragment, List<OrganizationReply> data) {
@@ -41,7 +43,7 @@ public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
         if (TextUtils.isEmpty(answerId)) {
             tvAgree.setVisibility(View.VISIBLE);
         } else {
-            if (answerId.equals(reply.getId())) {
+            if (answerId.equals(reply.getId()) && TextUtils.isEmpty(rankId)) {
                 tvAgree.setVisibility(View.VISIBLE);
                 tvAgree.setText(App.context.getString(R.string.evaluation));
             } else {
@@ -60,12 +62,13 @@ public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
                         }
                     }
                 });
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(), null),R.drawable.avatar, helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null),R.drawable.avatar, helper.getView(R.id.iv_avatar));
     }
 
 
-    public void setAnswerId(String answerId) {
+    public void setAnswerId(String answerId, String rankId) {
         this.answerId = answerId;
+        this.rankId = rankId;
     }
 
     public void setOnFunctionClickListener(OnFunctionClickListener listener) {

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
@@ -77,6 +79,12 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         args.putString("adiId", aidId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Subscribe
+    public void reFreshData(Event.RefreshHelpData event){
+        getDeTail();
     }
 
     @Override
@@ -151,6 +159,11 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+        getDeTail();
+    }
+
+
+    private void getDeTail() {
         mPresenter.getHelpDetail(_mActivity, mAidId);
     }
 
@@ -169,7 +182,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
             @Override
             public void evaluation(String replyId) {
-                start(RankFragment.newInstance("OrganizationReply", replyId));
+                start(RankFragment.newInstance(Constants.organizationAid, mAidId));
             }
         });
         mReplyAdapter.addHeaderView(mHeadView);
@@ -199,7 +212,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationAid(mAid.getId(),null);
+            String url = IconUrl.organizationAid(mAid.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);
@@ -257,7 +270,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         } else {
             //如果已经接受某人的帮忙，就只显示那一条数据
             String answerId = mAid.getAnswerId();
-            mReplyAdapter.addAll(acceptOneAnswer(replies, answerId));
+            mReplyAdapter.replaceAll(acceptOneAnswer(replies, answerId));
         }
 
     }
@@ -281,7 +294,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
                 }
             }
         }
-        mReplyAdapter.setAnswerId(answerId);
+        mReplyAdapter.setAnswerId(answerId,mAid.getRankId());
         return replies;
     }
 

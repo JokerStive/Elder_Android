@@ -10,6 +10,7 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -68,7 +69,7 @@ public class ReplyAdapter extends QuickAdapter<OrganizationReply> {
 //        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
 //                .error(R.drawable.avatar)
 //                .into((ImageView) helper.getView(R.id.iv_avatar));
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
     }
 
 

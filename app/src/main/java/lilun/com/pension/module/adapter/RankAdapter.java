@@ -6,6 +6,7 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Rank;
 import lilun.com.pension.module.utils.StringUtils;
@@ -34,7 +35,7 @@ public class RankAdapter extends QuickAdapter<Rank> {
                 .setText(R.id.tv_content, StringUtils.filterNull(rank.getDescription()));
 
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(rank.getId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
     }
 
 
