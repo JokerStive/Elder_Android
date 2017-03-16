@@ -18,7 +18,10 @@ public class EdusColleageCourse extends BaseBean {
     private String endDate;
     private String startCourseTime;// 上课时间 ,
     private String endCourseTime;// 下课时间 ,
-    private String endSingnDate;// 截止时间 ,
+
+
+    private String startSingnDate;// 开课时间 ,
+    private String endSingnDate;// 开课时间 ,
     private int maxCount;
     private int maxOnlineCount;
     private int count;
@@ -26,7 +29,7 @@ public class EdusColleageCourse extends BaseBean {
     private String contactId;
     private String organizationEduId;
     private String schoolId;
-    private ArrayList<String> accountIds;
+    private ArrayList<String> joinerList;
     private ArrayList<IconModule> picture;
     private Account contact;
     private ElderEdusColleage school;
@@ -94,6 +97,14 @@ public class EdusColleageCourse extends BaseBean {
 
     public String getEndCourseTime() {
         return endCourseTime;
+    }
+
+    public String getStartSingnDate() {
+        return startSingnDate;
+    }
+
+    public void setStartSingnDate(String startSingnDate) {
+        this.startSingnDate = startSingnDate;
     }
 
     public String getEndSingnDate() {
@@ -168,12 +179,12 @@ public class EdusColleageCourse extends BaseBean {
         this.picture = picture;
     }
 
-    public ArrayList<String> getAccountIds() {
-        return accountIds;
+    public ArrayList<String> getJoinerList() {
+        return joinerList;
     }
 
-    public void setAccountIds(ArrayList<String> accountIds) {
-        this.accountIds = accountIds;
+    public void setJoinerList(ArrayList<String> accountIds) {
+        this.joinerList = accountIds;
     }
 
     public Account getContact() {

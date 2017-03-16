@@ -15,6 +15,7 @@ import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 老年教育  我参加的课程（讲堂 /课程）  adapter
@@ -31,22 +32,24 @@ public class OrganizationEdusAdapter extends QuickAdapter<ElderEdus> {
     @Override
     protected void convert(BaseViewHolder help, ElderEdus edu) {
         help.setText(R.id.tv_item_title, edu.getTitle())
-                .setText(R.id.tv_item_address, StringUtils.IOS2ToUTC(edu.getStartDate()))
+                .setText(R.id.tv_item_address, edu.getAddress())
+                .setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(),0))
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(edu);
                     }
                 });
-        if (edu.getType() == OrganizationActivity.TYPE) {
-            help.setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getCreatedAt()));
-        }
+//        if (edu.getType() == OrganizationActivity.TYPE) {
+//            help.setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(),0));
+//        }
 
-
-        Glide.with(fragment)
-                .load(IconUrl.eduCourses(edu.getId(), BitmapUtils.picName(edu.getPicture())))
-                .placeholder(R.drawable.icon_def)
-                .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.eduCourses(edu.getId(), BitmapUtils.picName(edu.getPicture())),
+                R.drawable.icon_def, help.getView(R.id.iv_icon));
+//        Glide.with(fragment)
+//                .load(IconUrl.eduCourses(edu.getId(), BitmapUtils.picName(edu.getPicture())))
+//                .placeholder(R.drawable.icon_def)
+//                .error(R.drawable.icon_def)
+//                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

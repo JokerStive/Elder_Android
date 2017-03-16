@@ -15,6 +15,7 @@ import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 大学adapter
@@ -38,11 +39,13 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
                         listener.onItemClick(edu);
                     }
                 });
-        Glide.with(fragment)
-                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName((ArrayList<IconModule>) edu.getPicture())))
-                .placeholder(R.drawable.icon_def)
-                .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName(edu.getPicture())),
+                R.drawable.icon_def, help.getView(R.id.iv_icon));
+//        Glide.with(fragment)
+//                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName((ArrayList<IconModule>) edu.getPicture())))
+//                .placeholder(R.drawable.icon_def)
+//                .error(R.drawable.icon_def)
+//                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

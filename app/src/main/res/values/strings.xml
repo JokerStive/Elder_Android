@@ -144,8 +144,9 @@
     <!--养老教育-->
     <string name="connect_phone_">联系电话：%1$s</string>
     <string name="connect_person_">联系人：%1$s</string>
-    <string name="course_start_date_">开课时间：%1$s</string>
-    <string name="course_end_date_">截止时间：%1$s</string>
+    <string name="course_sign_date_">报名时间：%1$s</string>
+    <string name="course_during_date_">课程时间：%1$s</string>
+    <string name="course_start_end_time_">上课时间：%1$s</string>
     <string name="join_in">报名</string>
     <string name="cancle">取消</string>
 

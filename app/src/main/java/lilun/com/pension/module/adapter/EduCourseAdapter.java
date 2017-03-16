@@ -16,6 +16,7 @@ import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 大学-课程adapter
@@ -31,21 +32,22 @@ public class EduCourseAdapter extends QuickAdapter<EdusColleageCourse> {
 
     @Override
     protected void convert(BaseViewHolder help, EdusColleageCourse course) {
+        String signDateStr =  StringUtils.IOS2ToUTC(course.getStartSingnDate(), 0) +" ~ "+ StringUtils.IOS2ToUTC(course.getEndSingnDate(), 0);
         help.setText(R.id.tv_item_title, course.getName())
-                .setText(R.id.tv_item_address, StringUtils.IOS2ToUTC(course.getStartDate()))
-
+                .setText(R.id.tv_item_address, mContext.getString(R.string.course_sign_date_, signDateStr))
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(course);
                     }
                 });
 
-
-        Glide.with(fragment)
-                .load(IconUrl.eduCourses(course.getId(), BitmapUtils.picName(course.getPicture())))
-                .placeholder(R.drawable.icon_def)
-                .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.eduCourses(course.getId(), BitmapUtils.picName(course.getPicture())),
+                R.drawable.icon_def, help.getView(R.id.iv_icon));
+//        Glide.with(fragment)
+//                .load(IconUrl.eduCourses(course.getId(), BitmapUtils.picName(course.getPicture())))
+//                .placeholder(R.drawable.icon_def)
+//                .error(R.drawable.icon_def)
+//                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

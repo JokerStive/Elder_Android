@@ -57,7 +57,7 @@ public class BannerPager extends RelativeLayout {
         List<ImageView> items = new ArrayList<>();
         for (int i = 0; i < urls.size(); i++) {
             ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
-            Glide.with(getContext()).load(urls.get(i))
+            Glide.with(getContext()).load(urls.get(i)).dontAnimate()
                     .error(R.drawable.icon_def)
                     .placeholder(R.drawable.icon_def)
                     .fitCenter()
