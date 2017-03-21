@@ -2,8 +2,6 @@ package lilun.com.pension.ui.announcement;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 
 import java.io.Serializable;
@@ -13,11 +11,7 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
-import lilun.com.pension.module.adapter.PushInfoAdapter;
 import lilun.com.pension.module.bean.Information;
-import lilun.com.pension.module.callback.MyCallBack;
-import lilun.com.pension.widget.CardConfig;
-import lilun.com.pension.widget.OverLayCardLayoutManager;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -32,13 +26,9 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     public ViewPager viewPager;
     private CircleIndicator indicator;
 
-//    private HomeActivity mActivity;
 
     private int currentPosition = 0;
     private List<Information> informationList;
-    private RecyclerView rvPushInfo;
-    private PushInfoAdapter pushInfoAdapter;
-    private List<String> data;
 
     public static AnnouncementFragment newInstance(List<Information> information) {
         AnnouncementFragment fragment = new AnnouncementFragment();
@@ -54,10 +44,6 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         mPresenter = new AnnouncementPresenter();
         mPresenter.bindView(this);
 
-//        data = new ArrayList<>();
-//        for(int i=0;i<3;i++){
-//            data.add(i+"");
-//        }
     }
 
     @Override
@@ -82,7 +68,6 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        initPushBar();
 
         viewPager = (ViewPager) mRootView.findViewById(R.id.vp_container);
         indicator = (CircleIndicator) mRootView.findViewById(R.id.indicator);
@@ -91,45 +76,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         initViewPager();
     }
 
-    private void initPushBar() {
-        if (data == null || data.size() == 0) {
-            return;
-        }
 
-        rvPushInfo = (RecyclerView) mRootView.findViewById(R.id.rv_push_info);
-        pushInfoAdapter = new PushInfoAdapter(rvPushInfo, data, R.layout.item_push_info);
-
-
-        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-//        rvPushInfo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL,false));
-        rvPushInfo.setAdapter(pushInfoAdapter);
-        CardConfig.initConfig(_mActivity);
-        CardConfig.MAX_SHOW_COUNT = 5;
-
-
-        ItemTouchHelper.Callback callback = new MyCallBack(rvPushInfo, pushInfoAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(rvPushInfo);
-
-
-        pushInfoAdapter.setOnPushClickListener(new PushInfoAdapter.onPushClickListener() {
-            @Override
-            public void onDeleteClick(String item) {
-//                pushInfoAdapter.re
-
-            }
-
-            @Override
-            public void onItemClick() {
-
-            }
-
-            @Override
-            public void onExpandClick() {
-
-            }
-        });
-    }
 
 
     private void initIndicator() {

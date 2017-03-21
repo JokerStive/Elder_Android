@@ -1,10 +1,14 @@
 package lilun.com.pension.base;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
+
+import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 
 /**
 *添加header、footer快速集成的adapter
@@ -16,6 +20,15 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
 
     public QuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
+
+    }
+
+
+    public void setEmptyView(){
+        setEmptyView(getEmptyView());
+    }
+    public View getEmptyView() {
+        return LayoutInflater.from(App.context).inflate(R.layout.empty_data,null);
     }
 
     public void clear(){
@@ -70,8 +83,4 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
 
     }
 
-    @Override
-    public void setEmptyView(View emptyView) {
-        super.setEmptyView(emptyView);
-    }
 }

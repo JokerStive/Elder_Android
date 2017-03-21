@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.help;
+package lilun.com.pension.ui.help.list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -56,7 +56,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     }
 
     @Subscribe
-    public void refreshData(Event.RefreshHelpData event){
+    public void refreshData(Event.RefreshHelpData event) {
         getHelps(0);
     }
 
@@ -128,6 +128,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
                 mAidAdapter.setOnItemClickListener((aid) -> {
                     start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
                 });
+                mAidAdapter.setEmptyView();
                 mRecyclerView.setAdapter(mAidAdapter);
             } else if (isLoadMore) {
                 mAidAdapter.addAll(helps);
@@ -143,6 +144,5 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             mSwipeLayout.setRefreshing(false);
         }
     }
-
 
 }

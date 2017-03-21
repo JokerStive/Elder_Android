@@ -32,8 +32,8 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PositionTitleBar);
         title = array.getString(R.styleable.PositionTitleBar_title);
-        array.recycle();
         init(context);
+        array.recycle();
     }
 
     private void init(Context context) {

@@ -26,7 +26,7 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.HelperJoinerAdapter;
+import lilun.com.pension.module.adapter.AidJoinerAdapter;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -66,7 +66,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
-    private HelperJoinerAdapter mReplyAdapter;
+    private AidJoinerAdapter mReplyAdapter;
     private TextView tvJoinerTitle;
     private ImageView ivAvatar;
     private BannerPager banner;
@@ -83,8 +83,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
 
     @Subscribe
-    public void reFreshData(Event.RefreshHelpData event){
-        getDeTail();
+    public void RefreshHelpDetail(Event.RefreshHelpDetail event) {
+        getDetail();
     }
 
     @Override
@@ -159,11 +159,11 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        getDeTail();
+        getDetail();
     }
 
 
-    private void getDeTail() {
+    private void getDetail() {
         mPresenter.getHelpDetail(_mActivity, mAidId);
     }
 
@@ -173,8 +173,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(17));
-        mReplyAdapter = new HelperJoinerAdapter(this, mDetailData);
-        mReplyAdapter.setOnFunctionClickListener(new HelperJoinerAdapter.OnFunctionClickListener() {
+        mReplyAdapter = new AidJoinerAdapter(this, mDetailData);
+        mReplyAdapter.setOnFunctionClickListener(new AidJoinerAdapter.OnFunctionClickListener() {
             @Override
             public void agree(String id) {
                 mPresenter.acceptOneReply(mAidId, id, mAid.getKind());
@@ -294,7 +294,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
                 }
             }
         }
-        mReplyAdapter.setAnswerId(answerId,mAid.getRankId());
+        mReplyAdapter.setAnswerId(answerId, mAid.getRankId());
         return replies;
     }
 

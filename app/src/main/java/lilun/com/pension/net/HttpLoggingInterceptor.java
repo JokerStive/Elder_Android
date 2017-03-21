@@ -212,7 +212,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
                 + bodySize + " body" : "") + ')');
 
 //        if (tookMs>80000){
-//            ACache.get(App.app,"retrofitLog").put("HttpResponse"+tookMs,"<-- " + response.code() + ' ' + response.message() + ' '
+//            ACache.get(App.app,"retrofitLog").put("HttpResponse"+tookMs,"<-- " + response.code() + ' ' + response.PushMessage() + ' '
 //                    + response.request().url() + " (" + tookMs + "ms" + (!logHeaders ? ", "
 //                    + bodySize + " body" : "") + ')');
 //        }

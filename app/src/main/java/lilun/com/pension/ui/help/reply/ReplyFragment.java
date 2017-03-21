@@ -8,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -25,10 +23,11 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ReplyAdapter;
+import lilun.com.pension.module.adapter.AidReplyAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.ChatInputView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -53,16 +52,18 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
+    @Bind(R.id.input)
+    ChatInputView inputView;
 
-    @Bind(R.id.et_reply)
-    EditText etReply;
+//    @Bind(R.id.et_reply)
+//    EditText etReply;
+//
+//    @Bind(R.id.tv_confirm)
+//    TextView tvConfirm;
+//    @Bind(R.id.ll_reply_container)
+//    LinearLayout llReplyContainer;
 
-    @Bind(R.id.tv_confirm)
-    TextView tvConfirm;
-    @Bind(R.id.ll_reply_container)
-    LinearLayout llReplyContainer;
-
-    private ReplyAdapter mReplyAdapter;
+    private AidReplyAdapter mReplyAdapter;
     private String whatModule;
     private String whatId;
     private String title;
@@ -110,7 +111,7 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         rvReply.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvReply.addItemDecoration(new NormalItemDecoration(17));
 
-        llReplyContainer.setVisibility(isShowReply?View.VISIBLE:View.GONE);
+        inputView.setVisibility(isShowReply ? View.VISIBLE : View.GONE);
 
         //刷新
         swipeLayout.setOnRefreshListener(() -> {
@@ -122,7 +123,7 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
 
 
         //提交回答
-        tvConfirm.setOnClickListener(v -> createReply());
+        inputView.setOnConfirmClickListener(this::createReply);
 
 
     }
@@ -133,15 +134,12 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         getReplies(0);
     }
 
-    private void createReply() {
-        if (etReply.getText() != null) {
-            String replyContent = etReply.getText().toString();
+    private void createReply(String replyContent) {
             OrganizationReply reply = new OrganizationReply();
             reply.setWhatModel(whatModule);
             reply.setWhatId(whatId);
             reply.setContent(replyContent);
             mPresenter.newReply(reply);
-        }
     }
 
     private void getReplies(int skip) {
@@ -157,7 +155,7 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
             if (replies == null) {
                 replies = new ArrayList<>();
             }
-            mReplyAdapter = new ReplyAdapter(this, replies, false);
+            mReplyAdapter = new AidReplyAdapter(this, replies, false);
             rvReply.setAdapter(mReplyAdapter);
             mReplyAdapter.setOnLoadMoreListener(() -> {
                 //TODO load_more

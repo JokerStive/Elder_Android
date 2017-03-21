@@ -102,11 +102,28 @@
     <string name="provide_service">提供的服务</string>
     <string name="format_bedsCount">床位数：</string>
 
-    ====================================================================
+    =====================社区活动===============================================
 
     <!--社区活动-->
     <string name="community_activity">社区活动</string>
     <string name="add_activity">发起活动</string>
+
+    <!--新建活动-->
+    <string name="activity_title">活动主题</string>
+    <string name="activity_time">开始时间</string>
+    <string name="activity_end_time">预期结束活动</string>
+    <string name="activity_repeat_type">周期活动类型</string>
+    <string name="activity_require">加入要求</string>
+    <string name="activity_maxPartner">邀约人数</string>
+    <string name="activity_location">邀约区域</string>
+
+    <!--活动详情-->
+    <string name="confirm_join_activity">确定参加这个活动吗？</string>
+    <string name="confirm_cancel_activity">确定取消这个活动吗？</string>
+    <string name="confirm_quite_activity">确定退出这个活动吗？</string>
+    <string name="joined">已参加</string>
+    <string name="join">参加</string>
+    <string name="quit">退出</string>
 
    ===================================================================
 
@@ -115,6 +132,10 @@
     <string name="price_format">%1$d元</string>
     <string name="new_service">发布服务</string>
     <string name="all_orders">所有订单</string>
+
+
+
+
 
     <!--我的订单-->
     <string name="my_orders">我的订单</string>

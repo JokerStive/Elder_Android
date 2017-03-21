@@ -23,7 +23,7 @@ import rx.Subscription;
  * fragment基类
  */
 public abstract class BaseFragment<T extends IPresenter> extends SupportFragment {
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = "fragment";
     protected Context mContent;
     protected View mRootView;
     protected T mPresenter;
@@ -50,7 +50,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         initData();
 
     }
-
 
 
     @Subscribe

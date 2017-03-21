@@ -8,7 +8,7 @@ import java.io.Serializable;
 *create at 2017/2/13 10:50
 *email : yk_developer@163.com
 */
-public class BaseBean implements Serializable{
+public class BaseBean  implements Serializable{
     private static final long serialVersionUID = 1L;
     protected int visible;
 

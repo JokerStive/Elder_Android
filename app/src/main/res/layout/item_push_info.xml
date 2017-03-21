@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="195dp"
-    android:background="@drawable/shape_item_push_info"
-    >
+    android:background="@drawable/shape_item_push_info">
 
+    <TextView
+        android:id="@+id/tv_kind"
+        tools:text="类型"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        style="@style/tv_normal" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_marginTop="20dp"
+        tools:text="类容"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        style="@style/tv_normal" />
 
     <Button
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="删除"
@@ -14,6 +30,7 @@
         android:layout_gravity="right" />
 
     <Button
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="展开"

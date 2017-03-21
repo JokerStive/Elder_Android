@@ -10,7 +10,6 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -24,14 +23,14 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         create at 2017/2/13 11:27
  *         email : yk_developer@163.com
  */
-public class ReplyAdapter extends QuickAdapter<OrganizationReply> {
+public class AidReplyAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
     private boolean isOwmCreated;
     private String answerId;
     private OnAgreeClickListener listener;
 
 
-    public ReplyAdapter(BaseFragment fragment, List<OrganizationReply> data, boolean isOwmCreated) {
+    public AidReplyAdapter(BaseFragment fragment, List<OrganizationReply> data, boolean isOwmCreated) {
         super(R.layout.item_aid_asker, data);
         this.fragment = fragment;
         this.isOwmCreated = isOwmCreated;
@@ -69,7 +68,7 @@ public class ReplyAdapter extends QuickAdapter<OrganizationReply> {
 //        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
 //                .error(R.drawable.avatar)
 //                .into((ImageView) helper.getView(R.id.iv_avatar));
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getCreatorId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
     }
 
 

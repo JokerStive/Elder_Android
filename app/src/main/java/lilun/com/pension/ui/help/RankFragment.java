@@ -98,7 +98,7 @@ public class RankFragment extends BaseFragment {
                         @Override
                         public void _next(Object o) {
                             if (TextUtils.equals(whatModule, Constants.organizationAid)){
-                                EventBus.getDefault().post(new Event.RefreshHelpData());
+                                EventBus.getDefault().post(new Event.RefreshHelpDetail());
                             }
                             pop();
                         }

@@ -1,9 +1,7 @@
 package lilun.com.pension.module.adapter;
 
 import android.content.res.Resources;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -14,6 +12,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -68,10 +67,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
         if (elderModule.getIcon() != null) {
             String iconUrl = IconUrl.elderModule(elderModule.getId() + "", elderModule.getIcon().get(0).getFileName());
-            Glide.with(fragment).load(iconUrl)
-            .error(R.drawable.icon_def)
-            .placeholder(R.drawable.icon_def)
-            .into((ImageView) helper.getView(R.id.iv_module_icon));
+            ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,helper.getView(R.id.iv_module_icon));
         }
     }
 

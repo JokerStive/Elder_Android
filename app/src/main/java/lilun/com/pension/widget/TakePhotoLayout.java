@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.jph.takephoto.model.TImage;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
 
     private void initAdapter() {
         List<TakePhotoResult> results = new ArrayList<>();
-        TakePhotoResult result = new TakePhotoResult(null, null, TakePhotoResult.TYPE_ADD);
+        TakePhotoResult result = new TakePhotoResult(null, null, TImage.FromType.CAMERA,TakePhotoResult.TYPE_ADD);
         results.add(result);
         adapter = new TakePhotoAdapter(results);
         adapter.setOnItemClickListener(result1 -> {
@@ -100,11 +101,6 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     public void showPhotos(List<TakePhotoResult> results) {
         if (adapter != null) {
             adapter.addAll(results);
-//            for(TakePhotoResult result:adapter.getData()){
-//                if (result.getItemType()==TakePhotoResult.TYPE_ADD){
-//                    adapter.remove(result);
-//                }
-//            }
         }
     }
 
@@ -122,11 +118,11 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     /**
      * 获取图片地址集合
      */
-    public List<String> getData() {
+    public ArrayList<String> getData() {
         if (adapter != null) {
             List<TakePhotoResult> data = adapter.getData();
             if (data != null && data.size() > 1) {
-                    List<String> iconPath = new ArrayList<>();
+                ArrayList<String> iconPath = new ArrayList<>();
                     for (TakePhotoResult result : data) {
                         if (result.getItemType()==TakePhotoResult.TYPE_PHOTO && !TextUtils.isEmpty(result.getCompressPath())){
                             iconPath.add(result.getCompressPath());

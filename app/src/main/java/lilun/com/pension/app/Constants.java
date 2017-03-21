@@ -7,5 +7,6 @@ package lilun.com.pension.app;
 public class Constants {
     public static final String organizationAid = "OrganizationAid";
     public static final String organizationProduct = "OrganizationProduct";
+    public static final String organizationActivity = "OrganizationActivity";
 
 }

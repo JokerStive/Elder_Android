@@ -11,12 +11,15 @@ import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
@@ -25,6 +28,8 @@ import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.ui.activity.activity_add.AddActivityFragment;
+import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pension.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
@@ -55,7 +60,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     SwipeRefreshLayout mSwipeLayout;
 
     private ArrayList<Information> announcements;
-    private List<ActivityCategory> activityCategories;
+    private ArrayList<ActivityCategory> activityCategories;
     private RecyclerView mClassifyRecycler;
     private OrganizationActivityAdapter mContentAdapter;
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
@@ -67,6 +72,11 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         args.putSerializable("announcements", (Serializable) announcements);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Subscribe
+    public void refreshData(Event.RefreshActivityData event) {
+        refreshData(false);
     }
 
     @Override
@@ -103,7 +113,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             @Override
             public void onRightClick() {
                 if (activityCategories != null) {
-//                    start(AddHelpFragment.newInstance(activityCategories));
+                    start(AddActivityFragment.newInstance(activityCategories));
                 }
             }
         });
@@ -129,7 +139,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getAboutMe(0);
+                        refreshData(activityCategories == null);
                     }
                 }
         );
@@ -142,6 +152,10 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(this, organizationActivities);
         mContentAdapter.addHeaderView(mClassifyRecycler);
+        mContentAdapter.setOnItemClickListener((activityItem) -> {
+            start(ActivityDetailFragment.newInstance(activityItem.getId()));
+        });
+        mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);
     }
 
@@ -149,13 +163,15 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     @Override
     protected void initEvent() {
         super.initData();
-        refreshData();
+        refreshData(true);
     }
 
 
-    private void refreshData() {
+    private void refreshData(boolean needRefreshClassify) {
         mSwipeLayout.setRefreshing(true);
-        getClassifies();
+        if (needRefreshClassify) {
+            getClassifies();
+        }
         getAboutMe(0);
     }
 
@@ -164,7 +180,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void getAboutMe(int skip) {
-//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
+        //TODO 获取关于我的活动
         String filter = "";
         mPresenter.getAboutMe(filter, skip);
     }
@@ -172,7 +188,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     @Override
     public void showClassifies(List<ActivityCategory> activityCategories) {
         completeRefresh();
-        this.activityCategories = activityCategories;
+        this.activityCategories = (ArrayList<ActivityCategory>) activityCategories;
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
         ActivityCategoryAdapter adapter = new ActivityCategoryAdapter(this, activityCategories);
         adapter.setOnItemClickListener((activityCategory -> {

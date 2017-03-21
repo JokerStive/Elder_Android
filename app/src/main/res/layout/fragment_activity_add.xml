@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="新建活动" />
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_activity_classify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.24"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <RadioGroup
+                android:id="@+id/rg_repeat_type"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="50dp">
+
+                <RadioButton
+                    android:id="@+id/rbtn_repeat"
+                    android:layout_width="wrap_content"
+                    android:text="周期活动"
+                    android:layout_height="match_parent" />
+
+
+                <RadioButton
+                    android:id="@+id/rbtn_once"
+                    android:layout_marginLeft="20dp"
+                    android:text="单次活动"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+
+            </RadioGroup>
+
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="17dp"
+                app:et_max_length="15"
+                app:input_title="@string/activity_title" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="17dp"
+                app:et_max_length="15"
+                app:input_title="@string/activity_address" />
+
+            <RelativeLayout
+                android:layout_marginTop="17dp"
+                android:id="@+id/rl_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_input_title"
+                    style="@style/tv_normal"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/tv_size_small"
+                    android:text="@string/activity_time" />
+
+                <RelativeLayout
+                    android:layout_marginLeft="22dp"
+                    android:id="@+id/rl_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_input_title"
+                    >
+
+                    <EditText
+
+                        android:id="@+id/et_start_time"
+                        style="@style/et_normal"
+                        android:background="@null"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/tv_size_small"
+                         />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_start_time"
+                        style="@style/et_normal"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:textSize="@dimen/tv_size_small"
+                        />
+                </RelativeLayout>
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/rl_container"
+                    android:layout_marginTop="8dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="17dp"
+                android:id="@+id/rl_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_end_title"
+                style="@style/tv_normal"
+                android:layout_centerVertical="true"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/tv_size_small"
+                android:text="@string/activity_time" />
+
+
+                <TextView
+                    android:id="@+id/tv_end_time"
+                    style="@style/et_normal"
+                    android:background="@null"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/tv_size_small"
+                    />
+
+
+
+
+            <View
+                style="@style/line_gray"
+                android:layout_below="@id/tv_end_title"
+                android:layout_marginTop="8dp" />
+</RelativeLayout>
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_repeat_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="17dp"
+                app:allow_input="false"
+                app:input_title="@string/activity_repeat_type" />
+
+
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_require"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="17dp"
+                app:input_title="@string/activity_require" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_maxPartner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="17dp"
+                app:input_title="@string/activity_maxPartner" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="17dp"
+                app:input_title="@string/activity_location" />
+
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginTop="17dp"
+                android:text="@string/add_photo"
+                android:textColor="@color/gray" />
+
+
+            <lilun.com.pension.widget.TakePhotoLayout
+                android:id="@+id/take_photo"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <lilun.com.pension.widget.CommonButton
+        android:id="@+id/btn_add_activity"
+        style="@style/btn_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_activity"
+        android:text="新建活动" />
+</RelativeLayout>

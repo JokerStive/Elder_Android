@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <lilun.com.pension.widget.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/avatar" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/tv_small"
+                tools:text="尼玛" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                style="@style/tv_small"
+                tools:text="2016-7-29" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/rl_avatar"
+        >
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/tv_small"
+        android:layout_marginTop="5dp"
+        tools:text="你说你是不是傻啊，这都不会" />
+
+
+
+        <TextView
+            android:textColor="@color/answer_color"
+            android:id="@+id/tv_creator_reply"
+            android:textSize="14sp"
+            style="@style/tv_small"
+            android:layout_marginTop="6dp"
+            tools:text="你说你是不是傻啊，这都不会" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_below="@id/tv_content"
+            android:layout_marginTop="16dp"
+            />
+
+    </LinearLayout>
+</RelativeLayout>

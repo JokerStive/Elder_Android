@@ -37,10 +37,10 @@ public class HttpInterceptor implements Interceptor {
         //401并且不是登陆
         if (code == 401 && !TextUtils.isEmpty(User.getToken())) {
             if (!request.url().toString().contains("Accounts/me")) {
-                Logger.d("401 permission denied");
+                Logger.d("出现了401需要去检查");
                 EventBus.getDefault().post(new Event.PermissionDenied());
             } else {
-                Logger.d("TokenFailure");
+                Logger.d("Accounts/me检查也是410，跳转登录界面");
                 EventBus.getDefault().post(new Event.TokenFailure());
             }
         }

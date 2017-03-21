@@ -21,7 +21,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "4d74a430f7c856a1622ba216", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "23ee8003f4ff20630c17f48e", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -48,7 +48,6 @@ android {
     }
 
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -72,20 +71,38 @@ dependencies {
     compile 'com.github.orhanobut:logger:1.12'
     //one activity multiple fragment
     compile 'me.yokeyword:fragmentation:0.9.3'
+
     //photo load
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'me.relex:circleindicator:1.2.2'
+
     //viewpager指示器
     compile 'com.github.hackware1993:MagicIndicator:1.4.0'
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
+
     //refresh and loadMore recyclerView
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.8'
+
+
     //极光推送
-    compile 'cn.jiguang.sdk:jpush:3.0.0'
     // 此处以JPush 3.0.0 版本为例。
+    // 此处以JCore 1.0.0 版本为例
     compile 'cn.jiguang.sdk:jcore:1.0.0'
-    // 此处以JCore 1.0.0 版本为例。
+    compile 'cn.jiguang.sdk:jpush:3.0.0'
+
     //图片选择压缩裁剪
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
+
+
+    //时间/地址...选择器
+    compile 'cn.qqtheme.framework:WheelPicker:1.4.4'
+
+
+    //数据库，用来处理推送消息的crud
+    compile 'org.litepal.android:core:1.5.0'
+
+
+
 }
+

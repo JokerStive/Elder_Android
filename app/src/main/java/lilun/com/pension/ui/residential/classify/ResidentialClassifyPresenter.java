@@ -1,10 +1,12 @@
 package lilun.com.pension.ui.residential.classify;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lilun.com.pension.app.Config;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ProductCategory;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -21,6 +23,11 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
 
     @Override
     public void getClassifies() {
+        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("productClassify");
+        if (productCategories != null && productCategories.size() != 0) {
+            view.showClassifies(productCategories);
+            return;
+        }
         String filter = "{\"where\":{\"parentId\":\"" + Config.residential_service_classify_parentId + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getProductCategories(filter)
@@ -29,6 +36,7 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
                 .subscribe(new RxSubscriber<List<ProductCategory>>() {
                     @Override
                     public void _next(List<ProductCategory> productCategories) {
+                        ACache.get().put("productClassify", (Serializable) productCategories);
                         view.showClassifies(productCategories);
                     }
 

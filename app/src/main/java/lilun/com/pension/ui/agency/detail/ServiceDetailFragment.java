@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.agency.detail;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -124,7 +125,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         UIUtils.setBold(tvProviderName);
         UIUtils.setBold(tvEnterRank);
 
-        String agencyId =  StringUtils.removeSpecialSuffix(mProduct.getOrganizationId());
+        String agencyId = StringUtils.removeSpecialSuffix(mProduct.getOrganizationId());
         String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
         //显示
         tvTitle.setText(mProduct.getTitle());
@@ -135,7 +136,6 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         rbBar.setRating(mProduct.getScore());
 
         tvProviderName.setText(agencyName);
-
 
 
         //事件
@@ -163,16 +163,18 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         banner.setData(urls);
 
         //如果这个服务不是自己创建的，就要去判断是否能够预约
-        if (!User.creatorIsOwn(mProduct.getCreatorId())){
-            String filter = "{\"where\":{\"creatorId\":\""+User.getUserId()+"\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"cancel\"}]}}";
+        if (!User.creatorIsOwn(mProduct.getCreatorId())) {
+            String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
             NetHelper.getApi()
-                    .getOrdersOfProduct(mProduct.getId(),filter)
+                    .getOrdersOfProduct(mProduct.getId(), filter)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
                     .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
                         @Override
                         public void _next(List<ProductOrder> orders) {
-                            if (orders.size()!=0){
+                            if (orders.size() != 0) {
+                                tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
+                                tvReservation.setTextColor(Color.WHITE);
                                 tvReservation.setText("已预约");
                             }
                         }
@@ -190,7 +192,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                 break;
 
             case R.id.tv_reservation:
-                if (tvReservation.getText().equals(getString(R.string.reservation))){
+                if (tvReservation.getText().equals(getString(R.string.reservation))) {
                     reservation();
                 }
                 break;
@@ -223,8 +225,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                         .subscribe(new RxSubscriber<ProductOrder>() {
                             @Override
                             public void _next(ProductOrder order) {
-                                Intent intent =new Intent(_mActivity,OrderDetailActivity.class);
-                                intent.putExtra("orderId",order.getId());
+                                Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+                                intent.putExtra("orderId", order.getId());
                                 startActivity(intent);
                                 pop();
 //                                startWithPop(OrderDetailFragment.newInstance(productOrder.getId()));

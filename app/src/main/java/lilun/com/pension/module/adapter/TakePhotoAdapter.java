@@ -4,6 +4,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.jph.takephoto.model.TImage;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -37,7 +39,14 @@ public class TakePhotoAdapter extends QuickAdapter<TakePhotoResult> {
         if (result.getItemType() == TakePhotoResult.TYPE_ADD) {
             ivPhoto.setBackgroundResource(R.drawable.add_photo);
         } else if (result.getItemType() == TakePhotoResult.TYPE_PHOTO) {
-            String path = result.getOriginalPath();
+            // TODO 根据图片来源怎么加载
+            String path;
+            if (result.getFrom()== TImage.FromType.CAMERA){
+                path= result.getOriginalPath();
+            }else {
+                path = result.getOriginalPath();
+            }
+            Logger.d("图片的位置"+path);
             Glide.with(App.context).load(path)
                     .error(R.drawable.avatar)
                     .centerCrop()

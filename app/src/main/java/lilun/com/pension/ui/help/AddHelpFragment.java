@@ -1,9 +1,6 @@
 package lilun.com.pension.ui.help;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,22 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.jph.takephoto.app.TakePhoto;
-import com.jph.takephoto.app.TakePhotoImpl;
-import com.jph.takephoto.compress.CompressConfig;
-import com.jph.takephoto.model.InvokeParam;
-import com.jph.takephoto.model.LubanOptions;
-import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
-import com.jph.takephoto.permission.InvokeListener;
-import com.jph.takephoto.permission.PermissionManager;
-import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +23,14 @@ import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
-import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.base.BaseTakePhotoFragment;
 import lilun.com.pension.module.adapter.ElderModuleAdapter;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.TakePhotoResult;
-import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
@@ -69,7 +54,7 @@ import rx.Subscription;
  *         create at 2017/2/16 17:33
  *         email : yk_developer@163.com
  */
-public class AddHelpFragment extends BaseFragment implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener, TakePhotoClickListener {
+public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnClickListener {
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
@@ -103,10 +88,6 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     private int mPriority = 0;
     private Subscription subscription;
     private String[] helpPriority;
-    private Observable<OrganizationAid> observable;
-    private TakePhoto takePhoto;
-    private InvokeParam invokeParam;
-    private Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));
 
     public static AddHelpFragment newInstance(List<ElderModule> elderModules) {
         AddHelpFragment fragment = new AddHelpFragment();
@@ -116,31 +97,6 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
         return fragment;
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        getTakePhoto().onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        getTakePhoto().onSaveInstanceState(outState);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getTakePhoto().onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionManager.handlePermissionsResult(getActivity(), type, invokeParam, this);
-    }
 
     @Override
     protected void getTransferData(Bundle arguments) {
@@ -164,6 +120,7 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
 
         takePhotoLayout.setFragmentManager(_mActivity.getFragmentManager());
         takePhotoLayout.setOnResultListener(this);
+        setTakePhotoLayout(takePhotoLayout);
 
         inputPrice.setInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -248,12 +205,15 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
 
             //如果是帮，必须填求助的地址
             if (mKind == 1) {
-                StringUtils.checkNotEmptyWithMessage(address, "请输入地址");
+                if (TextUtils.isEmpty(address)) {
+                    ToastHelper.get().showWareShort("请输入地址");
+                    return;
+                }
             }
 
             //如果有图片，需要先上传图片
             Observable<OrganizationAid> observable = aidObservable(null);
-            List<String> data = takePhotoLayout.getData();
+            List<String> data = getPhotoData();
             if (data != null) {
                 Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(data);
                 if (requestBodies != null) {
@@ -320,42 +280,11 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
     }
 
 
-    /**
-     * 获取TakePhoto实例
-     *
-     * @return
-     */
-    public TakePhoto getTakePhoto() {
-        if (takePhoto == null) {
-            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
-            LubanOptions option = new LubanOptions.Builder()
-                    .setMaxHeight(Config.uploadPhotoMaxHeight)
-                    .setMaxWidth(Config.uploadPhotoMaxWidth)
-                    .setMaxSize(Config.uploadPhotoMaxSize)
-                    .create();
-            CompressConfig config = CompressConfig.ofLuban(option);
-            takePhoto.onEnableCompress(config, true);
-        }
-        return takePhoto;
-    }
-
-
     @Override
-    public void onCameraClick() {
-        getTakePhoto().onPickFromCapture(uri);
-    }
-
-    @Override
-    public void onAlbumClick() {
-        getTakePhoto().onPickMultiple(takePhotoLayout.getEnableDataCount());
-    }
-
-    @Override
-    public void takeSuccess(TResult result) {
-        Logger.d("take photo success");
+    protected void onTakePhotoSuccess(TResult tResult) {
         List<TakePhotoResult> results = new ArrayList<>();
-        for (TImage tImage : result.getImages()) {
-            TakePhotoResult result1 = TakePhotoResult.of(tImage.getOriginalPath(), tImage.getCompressPath(), TakePhotoResult.TYPE_PHOTO);
+        for (TImage tImage : tResult.getImages()) {
+            TakePhotoResult result1 = TakePhotoResult.of(tImage.getOriginalPath(), tImage.getCompressPath(), tImage.getFromType(), TakePhotoResult.TYPE_PHOTO);
             results.add(result1);
         }
         Observable.just("")
@@ -365,22 +294,4 @@ public class AddHelpFragment extends BaseFragment implements View.OnClickListene
                 });
     }
 
-    @Override
-    public void takeFail(TResult result, String msg) {
-        Logger.d("take photo false " + msg);
-    }
-
-    @Override
-    public void takeCancel() {
-        Logger.d("take photo cancel ");
-    }
-
-    @Override
-    public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
-        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod());
-        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
-            this.invokeParam = invokeParam;
-        }
-        return type;
-    }
 }

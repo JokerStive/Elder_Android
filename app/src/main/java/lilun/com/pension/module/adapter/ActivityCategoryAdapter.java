@@ -25,21 +25,41 @@ import lilun.com.pension.module.utils.StringUtils;
  */
 public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
     private BaseFragment fragment;
-    private int color;
     private OnItemClickListener listener;
+    private int mSelectedPosition = -1;
+    private boolean isRadioMode =false;
 
     public ActivityCategoryAdapter(BaseFragment fragment, List<ActivityCategory> data) {
         super(R.layout.item_elder_module, data);
         this.fragment = fragment;
+        initData();
+    }
+
+    private void initData() {
+        if (isRadioMode) {
+            for (int i = 0; i < getData().size(); i++) {
+                if (getData().get(i).isSelected()) {
+                    mSelectedPosition = i;
+                }
+            }
+        }
+    }
+
+    public void setIsRadioModule(boolean isRadioMode) {
+        this.isRadioMode = isRadioMode;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, ActivityCategory activityCategory) {
+        if (isRadioMode){
+            helper.getView(R.id.ll_module_background).setSelected(mSelectedPosition == helper.getAdapterPosition());
+        }
         helper.setText(R.id.tv_module_name, activityCategory.getName())
-                .setBackgroundColor(R.id.ll_module_background, getColor())
+                .setBackgroundRes(R.id.ll_module_background,  R.drawable.selector_activity)
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(activityCategory);
+                        setRadio(helper);
                     }
                 });
 
@@ -47,8 +67,15 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
         if (activityCategory.getIcon()!=null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
             String iconUrl = IconUrl.activityCategory(activityCategory.getId(),firstIconName);
-//            ImageLoaderUtil.instance().loadImage();
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
+        }
+    }
+
+
+    private void setRadio(BaseViewHolder helper) {
+        if (isRadioMode) {
+            mSelectedPosition = helper.getAdapterPosition();
+            notifyDataSetChanged();
         }
     }
 

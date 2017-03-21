@@ -1,150 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="@dimen/max_photo_height">
+
+        <lilun.com.pension.widget.slider.BannerPager
+            android:id="@+id/bp_actvity_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="29dp"
+            android:background="@drawable/back_with_circle" />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/max_photo_height">
-
-                <lilun.com.pension.widget.slider.BannerPager
-                    android:id="@+id/bp_actvity_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="29dp"
-                    android:background="@drawable/back_with_circle" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/question"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_cicle"
-                    android:text="@string/question" />
+            <Button
+                android:id="@+id/question"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_cicle"
+                android:text="@string/question"
+                />
 
 
-                <Button
-                    android:id="@+id/join_in"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_cicle"
-                    android:text="@string/join_in" />
+            <Button
+                android:id="@+id/join_in"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_cicle"
+                android:text="@string/join"
+                 />
 
-                <Button
-                    android:id="@+id/cancle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_cicle"
-                    android:text="@string/cancle"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_activity_name"
-                style="@style/tv_normal"
-                android:layout_marginBottom="@dimen/dp_4"
-                android:paddingLeft="@dimen/dp_10"
-                android:text="大学" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_activity_time"
-                    style="@style/tv_small"
-                    android:paddingLeft="@dimen/dp_10"
-                    android:paddingTop="@dimen/dp_10"
-                    android:text="@string/activity_time_" />
-
-                <TextView
-                    android:id="@+id/tv_originator_person"
-                    style="@style/tv_small"
-                    android:layout_below="@id/tv_activity_time"
-                    android:paddingLeft="@dimen/dp_10"
-                    android:paddingTop="@dimen/dp_10"
-                    android:text="@string/originator_person_" />
-
-                <lilun.com.pension.widget.CircleImageView
-                    android:id="@+id/cig_connect_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_22"
-                    android:layout_marginTop="@dimen/dp_10" />
-            </RelativeLayout>
-
-            <View
-                style="@style/line_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_066"
-                android:layout_margin="@dimen/dp_10" />
-
-            <TextView
-                style="@style/tv_normal"
-                android:layout_marginBottom="@dimen/dp_4"
-                android:paddingLeft="@dimen/dp_10"
-                android:text="@string/participation_request" />
-
-            <TextView
-                android:id="@+id/tv_participation_request"
-                style="@style/tv_small"
-                android:paddingLeft="@dimen/dp_10" />
-
-            <View
-                style="@style/line_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_066"
-                android:layout_margin="@dimen/dp_10" />
-
-            <TextView
-                style="@style/tv_normal"
-                android:layout_marginBottom="@dimen/dp_4"
-                android:paddingLeft="@dimen/dp_10"
-                android:text="@string/activity_address" />
-
-            <TextView
-                android:id="@+id/tv_activity_address"
-                style="@style/tv_small"
-                android:paddingLeft="@dimen/dp_10" />
+            <Button
+                android:id="@+id/cancel"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_cicle"
+                android:text="@string/cancle"
+               />
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+
+
+        <TextView
+            android:id="@+id/tv_activity_name"
+            style="@style/tv_normal"
+            tools:text="大学" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/tv_activity_time"
+                style="@style/tv_small"
+                android:text="@string/activity_time_" />
+
+            <TextView
+                android:id="@+id/tv_originator_person"
+                style="@style/tv_small"
+                android:layout_below="@id/tv_activity_time"
+                android:layout_marginTop="5dp"
+                android:text="@string/originator_person_" />
+
+            <lilun.com.pension.widget.CircleImageView
+                android:id="@+id/cig_connect_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="22dp"
+                tools:src="@drawable/avatar" />
+        </RelativeLayout>
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginTop="17dp" />
+
+        <TextView
+            android:id="@+id/tv_require_title"
+            style="@style/tv_normal"
+            android:layout_marginTop="17dp"
+            android:text="@string/participation_request" />
+
+        <TextView
+            android:id="@+id/tv_participation_request"
+            style="@style/tv_small"
+            android:layout_marginTop="15dp"
+            tools:text="很多的" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginTop="17dp" />
+
+        <TextView
+            android:id="@+id/tv_address_title"
+            style="@style/tv_normal"
+            android:layout_marginTop="17dp"
+            android:text="@string/activity_address" />
+
+        <TextView
+            android:id="@+id/tv_activity_address"
+            style="@style/tv_small"
+            android:layout_marginTop="17dp"
+            tools:text="茶园的额额谔谔额" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="17dp" />
+
+        <TextView
+            android:id="@+id/tv_activity_question_title"
+            style="@style/tv_normal"
+            android:text="问题列表"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

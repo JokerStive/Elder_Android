@@ -25,7 +25,7 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ReplyAdapter;
+import lilun.com.pension.module.adapter.AidReplyAdapter;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -64,7 +64,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private List<OrganizationReply> mDetailData = new ArrayList<>();
     private View mHeadView;
     private TextView tvPrice;
-    private ReplyAdapter mReplyAdapter;
+    private AidReplyAdapter mReplyAdapter;
     private ImageView ivAvatar;
     private BannerPager banner;
     private String mAidId;
@@ -161,7 +161,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private void setJoinerAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(17));
-        mReplyAdapter = new ReplyAdapter(this, mDetailData, mCreatorIsOwn);
+        mReplyAdapter = new AidReplyAdapter(this, mDetailData, mCreatorIsOwn);
         mReplyAdapter.addHeaderView(mHeadView);
         mReplyAdapter.setOnAgreeClickListenerr(id -> {
             mPresenter.acceptOneReply(mAid.getId(), id, mAid.getKind());

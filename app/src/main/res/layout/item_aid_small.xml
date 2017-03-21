@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical"
+    android:padding="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_creatorName"
+            style="@style/tv_small"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dp_14"
+            tools:text="张三" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/tv_small"
+            android:layout_marginLeft="16dp"
+            tools:text="张三" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_address"
+        style="@style/tv_small"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dp_14"
+        tools:text="重庆市半区去啊啊" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/tv_small"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/red"
+            android:textSize="@dimen/dp_14"
+            tools:text="补贴30元" />
+
+        <TextView
+            android:layout_marginLeft="3dp"
+            android:id="@+id/tv_time_joinCount"
+            style="@style/tv_small"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dp_14"
+            tools:text="/03.19 / 50人参与" />
+
+    </LinearLayout>
+</LinearLayout>

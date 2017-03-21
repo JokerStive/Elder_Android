@@ -7,5 +7,20 @@
         <item>危急</item>
     </string-array>
 
+    <string-array name="activity_repeatedType">
+        <item>每天</item>
+        <item>每周</item>
+        <item>每月</item>
+        <item>每年</item>
+    </string-array>
+
+
+    <string-array name="activity_duration">
+        <item>1小时</item>
+        <item>2小时</item>
+        <item>3小时</item>
+        <item>4小时</item>
+    </string-array>
+
 
 </resources>

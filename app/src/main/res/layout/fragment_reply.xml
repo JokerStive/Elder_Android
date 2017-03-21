@@ -41,8 +41,14 @@
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_reply_container"
+    <lilun.com.pension.widget.ChatInputView
+        android:id="@+id/input"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <!--<LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -74,6 +80,6 @@
             android:text="确定"
             android:textColor="@color/help" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 </RelativeLayout>

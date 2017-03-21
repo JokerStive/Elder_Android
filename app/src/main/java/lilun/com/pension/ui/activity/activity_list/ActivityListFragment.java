@@ -6,15 +6,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
@@ -42,12 +41,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
-    @Bind(R.id.null_data)
-    ImageView nullData;
 
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
-    int skip = 0;
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -55,6 +51,11 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         args.putSerializable("OrganizationActivityCategory", category);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Subscribe
+    public void refreshData(Event.RefreshActivityData event){
+        getActivityList(0);
     }
 
 
@@ -85,7 +86,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        skip = 0;
                         getActivityList(0);
                     }
                 }
@@ -96,7 +96,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            skip = 0;
             mSwipeLayout.setRefreshing(true);
             getActivityList(0);
         }
@@ -112,18 +111,13 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     @Override
     public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {
         completeRefresh();
-        skip += activities.size();
-        if(skip == 0){
-            nullData.setVisibility(View.VISIBLE);
-        }else{
-            nullData.setVisibility(View.GONE);
-        }
         if (mActivityAdapter == null) {
             mActivityAdapter = new OrganizationActivityAdapter(this, activities);
-            mRecyclerView.setAdapter(mActivityAdapter);
+            mActivityAdapter.setEmptyView();
             mActivityAdapter.setOnItemClickListener((activityItem)->{
-                start(ActivityDetailFragment.newInstance(activityItem));
+                start(ActivityDetailFragment.newInstance(activityItem.getId()));
             });
+            mRecyclerView.setAdapter(mActivityAdapter);
         } else if (islOadMore) {
             mActivityAdapter.addAll(activities);
         } else {
@@ -138,17 +132,5 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

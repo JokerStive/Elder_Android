@@ -84,8 +84,8 @@ public class AnnouncementItemFragment extends BaseFragment {
             //TODO 占位图
         } else {
             String url = IconUrl.information(this.information.getId(), mFileName);
-            Logger.d("公告的地址----"+url   );
-            Logger.d("公告的title----"+information.getTitle());
+//            Logger.d("公告的地址----"+url   );
+//            Logger.d("公告的title----"+information.getTitle());
             ImageLoaderUtil.instance().loadImage(url,R.drawable.icon_def,ivIcon);
         }
     }

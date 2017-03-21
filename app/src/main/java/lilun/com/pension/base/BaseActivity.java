@@ -1,15 +1,20 @@
 package lilun.com.pension.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
+
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
@@ -17,7 +22,12 @@ import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
+import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.MyCallBack;
+import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.welcome.LoginActivity;
 import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -34,7 +44,8 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private RecyclerView rvPushInfo;
     private FrameLayout mFrameLayout;
     private PushInfoAdapter pushInfoAdapter;
-    private List<String> data;
+    private MyCallBack callback;
+    //    private List<PushMessage> pushMessages;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,13 +57,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         mFrameLayout = (FrameLayout) findViewById(R.id.fl_root_container);
         mFrameLayout.addView(LayoutInflater.from(this).inflate(getLayoutId(), null));
 
-
-//        data = new ArrayList<>();
-//        for (int i = 0; i < 3; i++) {
-//            data.add(i + "");
-//        }
-
-//        initPushBar();
 
         EventBus.getDefault().register(this);
 
@@ -68,35 +72,37 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
         initEvent();
 
+        initRecyclerView();
+
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void tokenFailure(Event.TokenFailure event) {
-//        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Subscribe
     public void permissionDenied(Event.PermissionDenied event) {
 //        Logger.d("prepare http me");
-//        subscribe = NetHelper.getApi().getMe().
-//                compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<Object>() {
-//                    @Override
-//                    public void _next(Object o) {
-//
-//                    }
-//                });
+        subscribe = NetHelper.getApi().getMe().
+                compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>() {
+                    @Override
+                    public void _next(Object o) {
+
+                    }
+                });
 
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshPushMessage(Event.RefreshPushMessage event) {
+        showPushMessage(getPushMessageFromDatabase());
     }
+
 
     //    ===============子类需要实现的方法=============================
 
@@ -120,43 +126,59 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     protected void initEvent() {
     }
 
-    private void initPushBar() {
-        if (data == null || data.size() == 0) {
+    /**
+     * 显示推送过来的消息
+     */
+    private void showPushMessage(List<PushMessage> pushMessages) {
+        if (pushMessages == null || pushMessages.size() == 0) {
+            rvPushInfo.setVisibility(View.GONE);
             return;
         }
 
-        pushInfoAdapter = new PushInfoAdapter(rvPushInfo, data, R.layout.item_push_info);
+        rvPushInfo.setVisibility(View.VISIBLE);
+        if (pushInfoAdapter == null) {
+            pushInfoAdapter = new PushInfoAdapter(rvPushInfo, pushMessages);
+            rvPushInfo.setAdapter(pushInfoAdapter);
+        } else {
+            pushInfoAdapter.replaceAll(pushMessages);
+        }
 
+    }
 
+    /**
+     * 初始化推送消息栏
+     */
+    private void initRecyclerView() {
         rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-//        rvPushInfo.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL,false));
-        rvPushInfo.setAdapter(pushInfoAdapter);
         CardConfig.initConfig(this);
         CardConfig.MAX_SHOW_COUNT = 3;
 
+        callback = new MyCallBack(rvPushInfo);
+        callback.setOnItemSwipedListener(() -> {
+            if (pushInfoAdapter != null && pushInfoAdapter.getItemCount() != 0) {
+                PushMessage item = pushInfoAdapter.getItem(pushInfoAdapter.getItemCount() - 1);
+                pushInfoAdapter.remove(item);
+                if (pushInfoAdapter.getItemCount() == 0) {
+                    Logger.d("推送栏设置gone");
+                    rvPushInfo.setVisibility(View.GONE);
+                }
 
-        ItemTouchHelper.Callback callback = new MyCallBack(rvPushInfo, pushInfoAdapter);
+                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
+            }
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(rvPushInfo);
 
+        showPushMessage(getPushMessageFromDatabase());
+    }
 
-        pushInfoAdapter.setOnPushClickListener(new PushInfoAdapter.onPushClickListener() {
-            @Override
-            public void onDeleteClick(String item) {
-//                pushInfoAdapter.re
 
-            }
-
-            @Override
-            public void onItemClick() {
-
-            }
-
-            @Override
-            public void onExpandClick() {
-
-            }
-        });
+    /**
+     * 从数据库中取消息
+     */
+    public List<PushMessage> getPushMessageFromDatabase() {
+        List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
+        return allMessage;
     }
 
     @Override

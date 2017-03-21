@@ -1,10 +1,12 @@
 package lilun.com.pension.net;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
+import lilun.com.pension.module.bean.ActivityDetail;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
@@ -114,32 +116,6 @@ public interface ApiService {
     Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId);
 
 
-    /**
-     * 获取ActivityCategory
-     */
-
-    @GET("OrganizationActivityCategories")
-    Observable<Response<List<ActivityCategory>>> getActivityCategories(@Query("filter") String filter);
-
-    /**
-     * 获取OrganizationActivity
-     */
-
-    @GET("Organizations/{id}/children")
-    Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Path("id") String organizationId, @Query("filter") String filter);
-
-    /**
-     * 获取OrganizationActivity详情
-     */
-
-    @GET("OrganizationActivities/{id}")
-    Observable<Response<OrganizationActivity>> getOrganizationActivitiesDetail(@Path("id") String organizationId, @Query("filter") String filter);
-
-    /**
-     * 根据类型 获取OrganizationActivity列表
-     */
-    @GET("OrganizationActivities")
-    Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Query("filter") String filter);
 
 
 
@@ -291,7 +267,79 @@ public interface ApiService {
     @DELETE("EduCourses/{id}/quitCourse")
     Observable<Response<Object>> quitCourse(@Path("id") String courseId, @Query("filter") String filter);
 
-//==========================================DELETE
+
+
+//========================================社区活动
+
+    /**
+     * 获取ActivityCategory
+     */
+
+    @GET("OrganizationActivityCategories")
+    Observable<Response<List<ActivityCategory>>> getActivityCategories(@Query("filter") String filter);
+
+    /**
+     * 获取OrganizationActivity
+     */
+
+    @GET("Organizations/{id}/children")
+    Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 获取OrganizationActivity详情
+     */
+
+    @GET("OrganizationActivities/{id}/details")
+    Observable<Response<ActivityDetail>> getOrganizationActivitiesDetail(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 根据类型 获取OrganizationActivity列表
+     */
+    @GET("OrganizationActivities")
+    Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Query("filter") String filter);
+
+
+
+
+    /**
+     * 新建一个活动
+     */
+    @POST("OrganizationActivities")
+    Observable<Response<OrganizationActivity>> newActivity(@Body OrganizationActivity activity);
+
+
+    /**
+     * 键入一个活动
+     */
+    @POST("OrganizationActivities/{id}/join")
+    Observable<Response<Object>> joinActivity(@Path("id") String activityId);
+
+
+    /**
+     * 退出一个活动
+     */
+    @DELETE("OrganizationActivities/{id}/quit")
+    Observable<Response<Object>> quitActivity(@Path("id") String activityId);
+
+   /**
+   *删除一个活动
+   */
+    @DELETE("OrganizationActivities/{id}")
+    Observable<Response<Object>> cancelActivity(@Path("id") String activityId);
+
+
+    /**
+     * 上传活动多张图片
+     */
+    @Multipart
+    @POST("OrganizationActivities/uploadicon")
+    Observable<Response<ArrayList<IconModule>>> newActivityIcons(@PartMap Map<String, RequestBody> params);
+
+
+
+
+
+//    ================================================================
 
     /**
      * 删除一个reply
@@ -304,6 +352,9 @@ public interface ApiService {
      */
     @DELETE("OrganizationAids/{id}")
     Observable<Response<Object>> deleteAid(@Path("id") String aidId);
+
+
+
 
 
 

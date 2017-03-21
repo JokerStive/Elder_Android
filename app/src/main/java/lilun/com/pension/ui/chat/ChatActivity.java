@@ -35,10 +35,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.rv_chat_container)
     RecyclerView rvChatContainer;
 
-    @Bind(R.id.tv_chat_sent)
+    @Bind(R.id.tv_confirm)
     TextView tvChatSent;
 
-    @Bind(R.id.et_chat_input)
+    @Bind(R.id.et_input)
     EditText etChatInput;
     @Bind(R.id.btn_createGgroup)
     Button btnCreateGgroup;
@@ -89,7 +89,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_chat_sent:
+            case R.id.tv_confirm:
 //                sendChat();
                 break;
             case R.id.btn_createGgroup:

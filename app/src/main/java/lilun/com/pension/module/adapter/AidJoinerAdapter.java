@@ -11,7 +11,6 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -24,14 +23,14 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         create at 2017/2/13 11:27
  *         email : yk_developer@163.com
  */
-public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
+public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
     private BaseFragment fragment;
     private OnFunctionClickListener listener;
     private String answerId;
     private String rankId;
 
 
-    public HelperJoinerAdapter(BaseFragment fragment, List<OrganizationReply> data) {
+    public AidJoinerAdapter(BaseFragment fragment, List<OrganizationReply> data) {
         super(R.layout.item_aid_helper, data);
         this.fragment = fragment;
     }
@@ -53,6 +52,7 @@ public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
 
 
         helper.setText(R.id.tv_name, reply.getCreatorName())
+                .setText(R.id.tv_mobile,"13202011223")
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {
                         if (answerId != null) {
@@ -62,7 +62,7 @@ public class HelperJoinerAdapter extends QuickAdapter<OrganizationReply> {
                         }
                     }
                 });
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null),R.drawable.avatar, helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(reply.getCreatorId(), null),R.drawable.avatar, helper.getView(R.id.iv_avatar));
     }
 
 

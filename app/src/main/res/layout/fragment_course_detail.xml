@@ -41,8 +41,8 @@
 
                 <Button
                     android:id="@+id/join_in"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -53,9 +53,9 @@
                     android:text="@string/join_in" />
 
                 <Button
-                    android:id="@+id/cancle"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:id="@+id/cancel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -65,19 +65,6 @@
                     android:background="@drawable/shape_cicle"
                     android:text="@string/cancle"
                     android:visibility="gone" />
-                <Button
-                    android:id="@+id/other_status"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:textColor="@color/white"
-                    android:background="@drawable/shape_cicle_grey"
-                    android:visibility="visible" />
             </RelativeLayout>
 
             <TextView
@@ -107,27 +94,20 @@
                     android:text="@string/connect_person_" />
 
                 <TextView
-                    android:id="@+id/tv_course_sign_date"
+                    android:id="@+id/tv_start_date"
                     style="@style/tv_small"
                     android:layout_below="@id/tv_connect_person"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
-                    android:text="@string/course_sign_date_" />
-                <TextView
-                    android:id="@+id/tv_course_during_date"
-                    style="@style/tv_small"
-                    android:layout_below="@id/tv_course_sign_date"
-                    android:paddingLeft="@dimen/dp_10"
-                    android:paddingTop="@dimen/dp_10"
-                    android:text="@string/course_during_date_" />
+                    android:text="@string/course_start_date_" />
 
                 <TextView
-                    android:id="@+id/tv_course_start_end_time"
+                    android:id="@+id/tv_end_date"
                     style="@style/tv_small"
-                    android:layout_below="@id/tv_course_during_date"
+                    android:layout_below="@id/tv_start_date"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
-                    android:text="@string/course_start_end_time_" />
+                    android:text="@string/course_end_date_" />
 
                 <lilun.com.pension.widget.CircleImageView
                     android:id="@+id/cig_connect_icon"
@@ -137,7 +117,7 @@
                     android:layout_marginBottom="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_22"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:src="@drawable/icon_def" />
+                    android:src="@drawable/avatar" />
             </RelativeLayout>
 
             <View

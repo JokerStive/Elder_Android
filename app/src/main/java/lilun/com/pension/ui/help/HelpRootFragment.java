@@ -29,6 +29,7 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.help.help_detail.AskDetailFragment;
 import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
@@ -112,9 +113,10 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onRightClick() {
-                if (elderModules != null) {
-                    start(AddHelpFragment.newInstance(elderModules));
-                }
+                ToastHelper.get().showWareShort("点击了");
+//                if (elderModules != null) {
+//                    start(AddHelpFragment.newInstance(elderModules));
+//                }
             }
         });
 
@@ -132,7 +134,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getHelps(0);
+                        refreshData(elderModules == null);
                     }
                 }
         );
@@ -145,6 +147,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     private void setAdapter() {
         mAidAdapter = new OrganizationAidAdapter(this, organizationAids);
         mAidAdapter.addHeaderView(mClassifyRecycler);
+        mAidAdapter.setEmptyView();
         mAidAdapter.setOnItemClickListener(aid -> {
             start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
         });
@@ -155,7 +158,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Override
     protected void initEvent() {
         super.initData();
-        refreshData();
+        refreshData(true);
     }
 
     @Override
@@ -165,27 +168,24 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         if (informationList == null || informationList.size() == 0) {
             Logger.d("公告数据为空");
         } else {
-//            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(informationList),false);
             AnnouncementFragment fragment = new AnnouncementFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable("information", informationList);
             fragment.setArguments(bundle);
-            replaceLoadRootFragment(R.id.fl_announcement_container,fragment,false);
+            replaceLoadRootFragment(R.id.fl_announcement_container, fragment, false);
         }
     }
 
-    private void refreshData() {
+    private void refreshData(boolean needRefreshClassify) {
         mSwipeLayout.setRefreshing(true);
-        getHelpClassifies();
+        if (needRefreshClassify) {
+            mPresenter.getClassifies();
+        }
         getHelps(0);
     }
 
-    private void getHelpClassifies() {
-        mPresenter.getClassifies();
-    }
 
     private void getHelps(int skip) {
-//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
         mPresenter.getAboutMe("", skip);
     }
 

@@ -19,6 +19,9 @@ public class Event {
     //刷新邻居互助分类、列表页面数据
     public static  class RefreshHelpData{}
 
+    //刷新互助详情页面
+    public static  class RefreshHelpDetail{}
+
 
     //刷新邻居互助回答列表
     public static  class RefreshHelpReply{
@@ -30,4 +33,12 @@ public class Event {
 
     //刷新我的订单列表数据
     public static  class RefreshMyOrderData{}
+
+
+    //刷新我的活动。活动列表数据
+    public static  class RefreshActivityData{}
+
+
+    //刷新消息推送栏
+    public static  class RefreshPushMessage{}
 }

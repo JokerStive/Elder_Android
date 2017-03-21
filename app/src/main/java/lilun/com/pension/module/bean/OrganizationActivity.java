@@ -50,8 +50,19 @@ public class OrganizationActivity extends BaseBean {
     private String startTime;
     private int druation;
     private String repeatedType;
+    private String description ;
     private int repeatedCount;
     private int maxPartner;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public OrganizationActivity setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     private String id;
     private String masterId;
     private String categoryId;

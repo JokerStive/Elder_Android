@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
-            app:et_max_length="10"
+            app:et_max_length="@integer/leak_canary_watch_delay_millis"
             app:input_title="@string/topic" />
 
         <lilun.com.pension.widget.InputView

@@ -14,16 +14,18 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 
 /**
-*带标题的输入框
-*@author yk
-*create at 2017/2/16 18:50
-*email : yk_developer@163.com
-*/
+ * 带标题的输入框
+ *
+ * @author yk
+ *         create at 2017/2/16 18:50
+ *         email : yk_developer@163.com
+ */
 public class InputView extends RelativeLayout {
 
 
     TextView tvInputTitle;
     EditText etInput;
+    private  boolean allowInput;
 
 
     public InputView(Context context, AttributeSet attrs) {
@@ -35,7 +37,7 @@ public class InputView extends RelativeLayout {
         String inputTitle = attr.getString(R.styleable.InputView_input_title);
         String inputHint = attr.getString(R.styleable.InputView_input_hint);
 
-        Boolean allowInput = attr.getBoolean(R.styleable.InputView_allow_input, true);
+        allowInput = attr.getBoolean(R.styleable.InputView_allow_input, true);
 
         int etTextColor = attr.getColor(R.styleable.InputView_et_text_color, -1);
         int titleTextColor = attr.getColor(R.styleable.InputView_title_text_color, -1);
@@ -71,9 +73,10 @@ public class InputView extends RelativeLayout {
         View view = LayoutInflater.from(App.context).inflate(R.layout.custom_input_view, this);
         tvInputTitle = (TextView) view.findViewById(R.id.tv_input_title);
         etInput = (EditText) view.findViewById(R.id.et_input);
-
         etInput.setMaxLines(1);
+
     }
+
 
     public String getInput() {
         return etInput.getText().toString();
@@ -94,10 +97,17 @@ public class InputView extends RelativeLayout {
     }
 
 
-
     public void setTitle(String s) {
         tvInputTitle.setText(s);
     }
+
+
+
+
+
+
+
+
 
 
 }
