@@ -10,10 +10,11 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -24,40 +25,61 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
-    private BaseFragment fragment;
+    private SearchTitleBar.LayoutType layoutType;
     private OnItemClickListener listener;
 
-    public OrganizationAidAdapter(BaseFragment fragment, List<OrganizationAid> data) {
-        super(R.layout.item_module_second, data);
-        this.fragment = fragment;
+    public OrganizationAidAdapter(List<OrganizationAid> data,int itemRes, SearchTitleBar.LayoutType layoutType) {
+        super(itemRes, data);
+        this.layoutType = layoutType;
     }
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationAid aid) {
 
         //标题加粗
-        TextView tvTitle = help.getView(R.id.tv_item_title);
+        TextView tvTitle = help.getView(R.id.tv_title);
         UIUtils.setBold(tvTitle);
         tvTitle.setText(aid.getTitle());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(),null),R.drawable.icon_def,help.getView(R.id.iv_icon));
-
-        //是否显示补贴
-        TextView tvItemPrice = help.getView(R.id.tv_item_time);
-        tvItemPrice.setVisibility(aid.getPrice() == 0 ? View.GONE : View.VISIBLE);
-        if (tvItemPrice.getVisibility() == View.VISIBLE) {
-            tvItemPrice.setText(String.format(App.context.getString(R.string.help_price), aid.getPrice()));
+        //是否有图片需要加载
+        if (layoutType != SearchTitleBar.LayoutType.NULL) {
+            ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(), null), R.drawable.icon_def, help.getView(R.id.iv_icon));
         }
 
 
+        //是否显示补贴和创建者
+        if (layoutType != SearchTitleBar.LayoutType.BIG) {
+            //创建者
+            help.setText(R.id.tv_creatorName,aid.getCreatorName());
+
+            //补贴
+            TextView tvItemPrice = help.getView(R.id.tv_price);
+            tvItemPrice.setText(String.format(App.context.getString(R.string.help_price), aid.getPrice()));
+
+            //参与者和时间
+            TextView time_joinerCount = help.getView(R.id.tv_time_joinCount);
+            time_joinerCount.setText("/"+ StringUtils.IOS2ToUTC(aid.getCreatedAt(),4)+"/"+"50人参与");
+        }else {
+            help.setText(R.id.tv_time, StringUtils.IOS2ToUTC(aid.getCreatedAt(),3));
+            help.setText(R.id.tv_joinCount,"参与人数50人");
+
+        }
+
         //是否显示地址
-        TextView tvItemAddress = help.getView(R.id.tv_item_address);
+        TextView tvItemAddress = help.getView(R.id.tv_address);
         tvItemAddress.setVisibility(aid.getKind() == 0 ? View.GONE : View.VISIBLE);
         if (tvItemAddress.getVisibility() == View.VISIBLE) {
             tvItemAddress.setText(aid.getAddress());
         }
 
-        help.setOnClickListener(R.id.ll_module_background, v -> {
+        //显示时间和参与人数
+        if (layoutType != SearchTitleBar.LayoutType.BIG){
+
+        }else {
+
+        }
+
+        help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {
                 listener.onItemClick(aid);
             }

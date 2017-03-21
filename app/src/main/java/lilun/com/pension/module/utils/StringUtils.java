@@ -12,6 +12,8 @@ import org.joda.time.format.ISODateTimeFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
@@ -40,6 +42,39 @@ public class StringUtils {
             DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
             DateTime dateTime = parser2.parseDateTime(isoTime);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * @param isoTime1
+     * @param mode     0 - 返回年月日   1- 返回时分  -2 返回所有 -3 返回月/日 时:分  -4 返回月/日
+     * @return
+     */
+    public static String IOS2ToUTC(String isoTime1, int mode) {
+        String ret = "Error";
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] + "+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            DateTime dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat format = null;
+            if (mode == 0) {
+                format = new SimpleDateFormat("yyyy.MM.dd");
+            }
+            else if (mode == 1) {
+                format = new SimpleDateFormat("HH:mm");
+            } else if (mode == 3){
+                format = new SimpleDateFormat("MM/dd HH:mm");
+            }else if (mode == 4){
+                format = new SimpleDateFormat("MM.dd");
+            }
+
+            else
+                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
         } catch (Exception e) {
             e.printStackTrace();
@@ -172,5 +207,16 @@ public class StringUtils {
         return result;
     }
 
+    /**
+     * 验证手机号码
+     *
+     * @param mobiles
+     * @return
+     */
+    public static boolean isMobileNo(String mobiles) {
+        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
+    }
 
 }

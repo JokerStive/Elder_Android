@@ -10,36 +10,77 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!--<RelativeLayout-->
-        <!---->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
     <FrameLayout
         android:id="@+id/fl_announcement_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/info_bar_height"
         android:background="@drawable/announcement_def" />
 
-    <!--</RelativeLayout>-->
 
-    <FrameLayout
-        android:id="@+id/fl_module_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-
-        >
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                >
+                
+                <TextView
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:id="@+id/tv_need_help"
+                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/need_help"
+                    android:background="@drawable/selector_help"
+                    style="@style/tv_normal"
+                    android:text="@string/need_help"
+                    android:padding="10dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_horizontal"
+                    />
+
+
+                <TextView
+                    android:focusable="false"
+                    android:id="@+id/tv_find_help"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="1dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:drawableTop="@drawable/find_help"
+                    android:background="@drawable/selector_help"
+                    style="@style/tv_normal"
+                    android:drawablePadding="8dp"
+                    android:text="疑问帮忙"
+                    android:gravity="center_horizontal"
+                    />
+
+                
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                />
+            </LinearLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
-    </FrameLayout>
 </LinearLayout>

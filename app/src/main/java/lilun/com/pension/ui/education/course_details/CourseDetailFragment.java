@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +20,13 @@ import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.StartOtherUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.education.InforPopupWindow;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.education.colleage_details.ColleageDetailFragment;
 import lilun.com.pension.widget.CircleImageView;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -52,10 +52,12 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     TextView tvConnectPerson;
     @Bind(R.id.cig_connect_icon)
     CircleImageView tvConnectIcon;
-    @Bind(R.id.tv_start_date)
-    TextView tvStartDate;
-    @Bind(R.id.tv_end_date)
-    TextView tvEndDate;
+    @Bind(R.id.tv_course_sign_date)
+    TextView tvSignDate;
+    @Bind(R.id.tv_course_during_date)
+    TextView tvDuringDate;
+    @Bind(R.id.tv_course_start_end_time)
+    TextView tvStartEndTime;
     @Bind(R.id.tv_course_plan)
     TextView tvCoursePlan;
     @Bind(R.id.tv_course_desp)
@@ -68,18 +70,24 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Bind(R.id.join_in)
     Button btJoinIn;
-    @Bind(R.id.cancel)
+    @Bind(R.id.cancle)
     Button btCancel;
+    @Bind(R.id.other_status)
+    Button btOtherStatus;
 
 
-    @OnClick({R.id.join_in, R.id.cancel, R.id.iv_back, R.id.tv_service_provider})
+    @OnClick({R.id.join_in, R.id.cancle, R.id.tv_connect_phone, R.id.iv_back, R.id.tv_service_provider})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.join_in:
                 mPresenter.joinCourse(mCourse.getId(), "");
                 break;
-            case R.id.cancel:
+            case R.id.cancle:
                 mPresenter.quitCourse(mCourse.getId(), "");
+                break;
+            case R.id.tv_connect_phone:
+                if (mCourse != null && mCourse.getContact() != null)
+                    StartOtherUtils.cellPhone(_mActivity, mCourse.getContact().getMobile());
                 break;
             case R.id.iv_back:
                 pop();
@@ -92,7 +100,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                     start(ColleageDetailFragment.newInstance(mCourse.getSchool()));
                 }
                 break;
-
         }
     }
 
@@ -157,7 +164,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         btCancel.setVisibility(View.VISIBLE);
 
         String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
+        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
         retNeedRef = !retNeedRef;
     }
 
@@ -167,16 +174,16 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         btJoinIn.setVisibility(View.VISIBLE);
         btCancel.setVisibility(View.GONE);
         String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER,0,0);
+        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
         retNeedRef = !retNeedRef;
     }
 
     @Override
     public void showCourseDetail(EdusColleageCourse orders) {
         mCourse = orders;
-        if (orders.getAccountIds() != null && orders.getAccountIds().size() > 0) {
-            for (int i = 0; i < orders.getAccountIds().size(); i++) {
-                if (User.getUserId().equals(orders.getAccountIds().get(i))) {
+        if (orders.getJoinerList() != null && orders.getJoinerList().size() > 0) {
+            for (int i = 0; i < orders.getJoinerList().size(); i++) {
+                if (User.getUserId().equals(orders.getJoinerList().get(i))) {
                     isJoin = true;
                     break;
                 }
@@ -187,35 +194,53 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         if (orders.getContact() != null) {
             tvConnectPhone.setText(getString(R.string.connect_phone_, orders.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, orders.getContact().getUsername()));
-            Glide.with(_mActivity)
-                    .load(IconUrl.account(User.getUserId(), null))
-                    .placeholder(R.drawable.icon_def)
-                    .error(R.drawable.icon_def)
-                    .into(tvConnectIcon);
+            // if (!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
+            ImageLoaderUtil.instance().loadImage(
+                    IconUrl.account(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())),
+                    R.drawable.icon_def,tvConnectIcon);
+//                Glide.with(this)
+//                        .load(IconUrl.account(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
+//                        .into(tvConnectIcon);
         }
 
-        tvStartDate.setText(getString(R.string.course_start_date_, StringUtils.IOS2ToUTC(orders.getStartDate())));
-        tvEndDate.setText(getString(R.string.course_end_date_, StringUtils.IOS2ToUTC(orders.getEndDate())));
+        String signDateStr = StringUtils.IOS2ToUTC(orders.getStartSingnDate(), 0) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndSingnDate(), 0);
+        String duringDateStr = StringUtils.IOS2ToUTC(orders.getStartDate(), 0) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndDate(), 0);
+        String startEndTimeStr = StringUtils.IOS2ToUTC(orders.getStartCourseTime(), 1) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndCourseTime(), 1);
+
+        tvSignDate.setText(getString(R.string.course_sign_date_, signDateStr));
+        tvDuringDate.setText(getString(R.string.course_during_date_, duringDateStr));
+        tvStartEndTime.setText(getString(R.string.course_start_end_time_, startEndTimeStr));
         tvServiceProvider.setVisibility(View.VISIBLE);
         if (orders.getSchool() != null) {
             tvCoulleageName.setText(orders.getSchool().getName());
         }
-
-
-        if (isJoin) {
+        if (StringUtils.IOS2DateTime(mCourse.getStartSingnDate()).isAfterNow()) {
+            btOtherStatus.setVisibility(View.VISIBLE);
             btJoinIn.setVisibility(View.GONE);
-            btCancel.setVisibility(View.VISIBLE);
-        } else {
-            btJoinIn.setVisibility(View.VISIBLE);
             btCancel.setVisibility(View.GONE);
+            btOtherStatus.setText("报名未开始");
+        } else if (StringUtils.IOS2DateTime(mCourse.getEndSingnDate()).isBeforeNow()) {
+            btOtherStatus.setVisibility(View.VISIBLE);
+            btJoinIn.setVisibility(View.GONE);
+            btCancel.setVisibility(View.GONE);
+            btOtherStatus.setText("报名已结束");
+        } else {
+            btOtherStatus.setVisibility(View.GONE);
+            if (isJoin) {
+                btJoinIn.setVisibility(View.GONE);
+                btCancel.setVisibility(View.VISIBLE);
+            } else {
+                btJoinIn.setVisibility(View.VISIBLE);
+                btCancel.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void onDestroy() {
-        if(retNeedRef){
+        if (retNeedRef) {
             EducationClassifyFragment fragment = findFragment(EducationClassifyFragment.class);
-            if(fragment !=null){
+            if (fragment != null) {
                 fragment.refreshData();
             }
         }

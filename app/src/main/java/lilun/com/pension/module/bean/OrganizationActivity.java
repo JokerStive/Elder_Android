@@ -52,7 +52,7 @@ public class OrganizationActivity extends BaseBean {
     private String repeatedType;
     private String description ;
     private int repeatedCount;
-    private int maxPartner;
+    private Integer maxPartner;
 
     public String getDescription() {
         return description;
@@ -145,7 +145,7 @@ public class OrganizationActivity extends BaseBean {
         return maxPartner;
     }
 
-    public void setMaxPartner(int maxPartner) {
+    public void setMaxPartner(Integer maxPartner) {
         this.maxPartner = maxPartner;
     }
 

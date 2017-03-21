@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     private String title;
     public TextView tvPosition;
     private TextView tvTitle;
-    private TextView tvRight;
+    private Button tvRight;
     private ImageView ivBack;
     private ImageView ivPosition;
     private TitleBarClickCallBack listener;
@@ -47,7 +48,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
         ivPosition = (ImageView) view.findViewById(R.id.iv_position);
         tvPosition = (TextView) view.findViewById(R.id.tv_position);
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        tvRight = (TextView) view.findViewById(R.id.tv_right);
+        tvRight = (Button) view.findViewById(R.id.tv_right);
 
         setTitle(title);
         setTvRightText(rightText);

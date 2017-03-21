@@ -4,7 +4,6 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
-import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 
 /**
@@ -15,13 +14,11 @@ import lilun.com.pension.module.bean.OrganizationAid;
 */
 public interface HelpContract {
     interface View extends IView<Presenter> {
-        void showClassifies(List<ElderModule> elderModules);
         void showAboutMe(List<OrganizationAid>  helps, boolean isLoadMore);
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
-        void getClassifies();
         void getAboutMe(String filter, int skip);
         void getHelps(String filter, int skip);
     }

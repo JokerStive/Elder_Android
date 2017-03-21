@@ -3,12 +3,11 @@ package lilun.com.pension.ui.help;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
@@ -21,20 +20,16 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.ElderModuleAdapter;
-import lilun.com.pension.module.adapter.OrganizationAidAdapter;
-import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.adapter.AidRootAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
-import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
-import lilun.com.pension.ui.help.help_detail.AskDetailFragment;
-import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
-import lilun.com.pension.widget.ElderModuleClassifyDecoration;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
+import lilun.com.pension.ui.help.list.HelpContract;
+import lilun.com.pension.ui.help.list.HelpFragment;
+import lilun.com.pension.ui.help.list.HelpPresenter;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
 /**
@@ -49,7 +44,7 @@ import lilun.com.pension.widget.PositionTitleBar;
  *         3、点击分类  ： 修改activity标题栏、XX分类的fragment替换fragmentContainer、传递的参数有互助分类名称（name）、icon地址
  *         4、回退 ：层级为宿主activity时宿主activity出栈，否则fragment出栈
  */
-public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> implements HelpContract.View {
+public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> implements HelpContract.View, View.OnClickListener {
 
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
@@ -59,11 +54,15 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.tv_need_help)
+    TextView tvNeedHelp;
+    @Bind(R.id.tv_find_help)
+    TextView tvFindHelp;
 
     private ArrayList<Information> informationList;
-    private List<ElderModule> elderModules;
-    private RecyclerView mClassifyRecycler;
-    private OrganizationAidAdapter mAidAdapter;
+    //    private List<ElderModule> elderModules;
+//    private RecyclerView mClassifyRecycler;
+    private AidRootAdapter adapter;
     private List<OrganizationAid> organizationAids = new ArrayList<>();
 
 
@@ -87,7 +86,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_second_module;
+        return R.layout.fragment_aid_classify;
     }
 
     @Override
@@ -99,7 +98,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.neighbor_help));
-        titleBar.setTvRightText(getString(R.string.need_help));
+        titleBar.setTvRightText("关于我的");
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -113,28 +112,20 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onRightClick() {
-                ToastHelper.get().showWareShort("点击了");
-//                if (elderModules != null) {
-//                    start(AddHelpFragment.newInstance(elderModules));
-//                }
             }
         });
 
+        tvFindHelp.setOnClickListener(this);
+        tvNeedHelp.setOnClickListener(this);
 
-        //类别
-        mClassifyRecycler = new RecyclerView(_mActivity);
-        mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-
-        //求助列表
-        mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
 
 
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        refreshData(elderModules == null);
+                        refreshData();
                     }
                 }
         );
@@ -145,20 +136,16 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     }
 
     private void setAdapter() {
-        mAidAdapter = new OrganizationAidAdapter(this, organizationAids);
-        mAidAdapter.addHeaderView(mClassifyRecycler);
-        mAidAdapter.setEmptyView();
-        mAidAdapter.setOnItemClickListener(aid -> {
-            start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
-        });
-        mRecyclerView.setAdapter(mAidAdapter);
+        adapter = new AidRootAdapter(organizationAids);
+        adapter.setEmptyView();
+        mRecyclerView.setAdapter(adapter);
     }
 
 
     @Override
     protected void initEvent() {
         super.initData();
-        refreshData(true);
+        refreshData();
     }
 
     @Override
@@ -176,31 +163,17 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         }
     }
 
-    private void refreshData(boolean needRefreshClassify) {
+    private void refreshData() {
         mSwipeLayout.setRefreshing(true);
-        if (needRefreshClassify) {
-            mPresenter.getClassifies();
-        }
         getHelps(0);
     }
 
 
     private void getHelps(int skip) {
-        mPresenter.getAboutMe("", skip);
+        mPresenter.getHelps("", skip);
     }
 
-    @Override
-    public void showClassifies(List<ElderModule> elderModules) {
-        completeRefresh();
-        this.elderModules = elderModules;
-        mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
-        ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((elderModule -> {
-            start(HelpFragment.newInstance(elderModule));
-        }));
 
-        mClassifyRecycler.setAdapter(adapter);
-    }
 
     @Override
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
@@ -210,9 +183,9 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
                 aid.setItemType(aid.getKind());
             }
             if (isLoadMore) {
-                mAidAdapter.addAll(helps);
+                adapter.addAll(helps);
             } else {
-                mAidAdapter.replaceAll(helps);
+                adapter.replaceAll(helps);
             }
         }
     }
@@ -224,15 +197,18 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         }
     }
 
-    private int spanCountByData(List data) {
-        int count;
-        if (data.size() == 0) {
-            count = 1;
-        } else {
-            count = data.size() >= 3 ? 3 : data.size();
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_need_help:
+                start(AddHelpFragment.newInstance());
+                break;
+            case R.id.tv_find_help:
+                start(HelpFragment.newInstance());
+                break;
         }
-        return count;
     }
-
-
 }

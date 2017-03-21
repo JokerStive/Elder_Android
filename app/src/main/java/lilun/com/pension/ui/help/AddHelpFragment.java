@@ -2,12 +2,13 @@ package lilun.com.pension.ui.help;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jph.takephoto.model.TImage;
@@ -16,30 +17,25 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseTakePhotoFragment;
-import lilun.com.pension.module.adapter.ElderModuleAdapter;
-import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.utils.BitmapUtils;
-import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.widget.CommonButton;
-import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.InputView;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.TakePhotoLayout;
@@ -56,14 +52,14 @@ import rx.Subscription;
  */
 public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnClickListener {
 
-    @Bind(R.id.title_bar)
+    @Bind(R.id.title_bar
+
+    )
     NormalTitleBar titleBar;
 
-    @Bind(R.id.rv_help_classify)
-    RecyclerView rvHelpClassify;
 
-    @Bind(R.id.input_priority)
-    InputView inputPriority;
+    @Bind(R.id.tv_priority)
+    TextView tvPriority;
 
     @Bind(R.id.input_topic)
     InputView inputTopic;
@@ -77,41 +73,33 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     @Bind(R.id.input_memo)
     InputView inputMemo;
 
-    @Bind(R.id.btn_create)
-    CommonButton btnCreate;
+    @Bind(R.id.tv_create)
+    TextView btnCreate;
+
     @Bind(R.id.take_photo)
     TakePhotoLayout takePhotoLayout;
 
-    private List<ElderModule> elderModules;
+    @Bind(R.id.rg_classify)
+    RadioGroup rgClassify;
 
-    private Integer mKind;
+
+    private Integer mKind = 0;
     private int mPriority = 0;
     private Subscription subscription;
     private String[] helpPriority;
 
-    public static AddHelpFragment newInstance(List<ElderModule> elderModules) {
-        AddHelpFragment fragment = new AddHelpFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("elderModules", (Serializable) elderModules);
-        fragment.setArguments(args);
-        return fragment;
+    public static AddHelpFragment newInstance() {
+        return new AddHelpFragment();
     }
 
 
     @Override
-    protected void getTransferData(Bundle arguments) {
-        elderModules = (List<ElderModule>) arguments.getSerializable("elderModules");
-        Preconditions.checkNull(elderModules);
-    }
 
-    @Override
     protected void initPresenter() {
-
     }
 
     @Override
     protected int getLayoutId() {
-
         return R.layout.fragment_add_help;
     }
 
@@ -126,27 +114,29 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
         titleBar.setOnBackClickListener(this::pop);
         btnCreate.setOnClickListener(this);
-        inputPriority.setOnClickListener(this);
+        tvPriority.setOnClickListener(this);
 
 
-        rvHelpClassify.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(elderModules)));
-        rvHelpClassify.addItemDecoration(new ElderModuleClassifyDecoration());
-        ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setIsRadioModule(true);
-        adapter.setOnItemClickListener(elderModule -> {
-            this.mKind = elderModule.getServiceConfig().getKind();
-            inputAddress.setVisibility(mKind == 0 ? View.GONE : View.VISIBLE);
+        rgClassify.check(R.id.rb_ask);
+        rgClassify.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_ask:
+                    mKind = 0;
+                    break;
+                case R.id.rb_help:
+                    mKind = 1;
+                    break;
+            }
         });
-        rvHelpClassify.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.input_priority:
+            case R.id.tv_priority:
                 choosePriority();
                 break;
-            case R.id.btn_create:
+            case R.id.tv_create:
                 createHelp();
                 break;
         }
@@ -160,10 +150,9 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
             helpPriority = getResources().getStringArray(R.array.help_priority);
         }
         new MaterialDialog.Builder(_mActivity)
-                .title(R.string.choose_priority)
                 .items(helpPriority)
                 .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-                    inputPriority.setInput(helpPriority[which]);
+                    tvPriority.setText(helpPriority[which]);
                     return true;
                 })
                 .positiveText(R.string.choose)
@@ -176,7 +165,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      * 新建一个求助信息
      */
     private void createHelp() {
-        String priority = inputPriority.getInput();
+        String priority = tvPriority.getText().toString();
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
         String price = inputPrice.getInput();
@@ -294,4 +283,17 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 });
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

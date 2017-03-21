@@ -43,9 +43,11 @@
         style="@style/tv_normal" />
 
 
-    <TextView
+    <Button
+        android:focusable="false"
         android:id="@+id/tv_right"
         android:text="我要干啥"
+        android:background="@null"
         style="@style/tv_normal"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"

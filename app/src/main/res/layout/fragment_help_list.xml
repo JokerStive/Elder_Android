@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+    <lilun.com.pension.widget.SearchTitleBar
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:background="@color/red"
+        android:gravity="center_horizontal"
+        android:layout_height="45dp">
+
+        <RadioGroup
+            android:id="@+id/rg_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/rb_kind"
+                android:textSize="@dimen/tv_size_small"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_indicator"
+                android:button="@null"
+                android:text="@string/all_kind" />
+
+
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/rb_near"
+                android:textSize="@dimen/tv_size_small"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="54dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:background="@drawable/selector_indicator"
+                android:text="附近" />
+
+            <RadioButton
+                android:textColor="@color/white"
+                android:id="@+id/rb_property"
+                android:textSize="@dimen/tv_size_small"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="54dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:background="@drawable/selector_indicator"
+                android:text="@string/def_priority" />
+
+
+
+        </RadioGroup>
+
+    </HorizontalScrollView>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

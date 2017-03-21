@@ -2,12 +2,15 @@ package lilun.com.pension.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import lilun.com.pension.R;
 
@@ -21,44 +24,37 @@ import lilun.com.pension.R;
 
 public class SearchTitleBar extends RelativeLayout implements View.OnClickListener {
 
-    private String title;
-    private TextView tvTitle;
+    private  Context content;
     private ImageView ivBack;
-    private OnBackClickListener listener;
-    private TextView tvDoWhat;
-    private OnRightClickListener listener1;
+    private OnItemClickListener listener;
+    private EditText etSearch;
+    private ImageView ivSearch;
+    private ImageView ivChangeLayout;
+    private String[] layoutTypes = new String[]{"大图模式","小图模式","无图模式"};
 
     public SearchTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PositionTitleBar);
-        title = array.getString(R.styleable.PositionTitleBar_title);
+//        title = array.getString(R.styleable.PositionTitleBar_title);
+        this.content = context;
         init(context);
         array.recycle();
     }
 
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_normal_title_bar, this);
+        View view = LayoutInflater.from(context).inflate(R.layout.search_title_bar, this);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
-        tvTitle = (TextView) view.findViewById(R.id.tv_title);
-        tvDoWhat= (TextView) view.findViewById(R.id.tv_doWhat);
-
-        setTitle(title);
+        etSearch = (EditText) view.findViewById(R.id.et_search);
+        ivSearch = (ImageView) view.findViewById(R.id.iv_search);
+        ivChangeLayout = (ImageView) view.findViewById(R.id.iv_change_layout);
 
 
         ivBack.setOnClickListener(this);
-        tvDoWhat.setOnClickListener(this);
+        ivSearch.setOnClickListener(this);
+        ivChangeLayout.setOnClickListener(this);
+
 
     }
-
-    public void setTitle(String title) {
-        tvTitle.setText(title);
-    }
-
-    public void setRightText(String doWhat) {
-        tvDoWhat.setVisibility(VISIBLE);
-        tvDoWhat.setText(doWhat);
-    }
-
 
 
     @Override
@@ -66,38 +62,59 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
         switch (v.getId()) {
             case R.id.iv_back:
                 if (listener != null) {
-                    listener.onBackClick();
+                    listener.onBack();
                 }
                 break;
 
-            case R.id.tv_doWhat:
-                if (listener1 != null) {
-                    listener1.onRightClick();
+            case R.id.iv_search:
+                String searchStr = etSearch.getText().toString();
+                if (listener != null && TextUtils.isEmpty(searchStr)) {
+                    listener.onSearch(searchStr);
                 }
                 break;
-
+            case R.id.iv_change_layout:
+                //TODO 弹出切换布局框
+                new MaterialDialog.Builder(content)
+                        .items(layoutTypes)
+                        .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
+                            if (listener!=null){
+                                listener.onChangeLayout(getType(text));
+                            }
+                            return true;
+                        })
+                        .positiveText(R.string.choose)
+                        .show();
+                break;
 
         }
     }
 
+    private LayoutType getType(CharSequence text) {
+        if (TextUtils.equals(text,layoutTypes[0])){
+            return LayoutType.BIG;
+        }else if (TextUtils.equals(text,layoutTypes[1])){
+            return LayoutType.SMALL;
+        }else {
+            return LayoutType.NULL;
+        }
 
-    public void setOnBackClickListener(OnBackClickListener listener) {
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public interface  OnBackClickListener{
-        void onBackClick();
+    public interface OnItemClickListener {
+        void onBack();
+
+        void onSearch(String searchStr);
+
+        void onChangeLayout(LayoutType layoutType);
     }
 
-    public void setOnRightClickListener(OnRightClickListener listener) {
-        this.listener1 = listener;
+    public enum LayoutType {
+        BIG, SMALL, NULL
     }
-
-    public interface  OnRightClickListener{
-        void onRightClick();
-    }
-
-
-
 
 }

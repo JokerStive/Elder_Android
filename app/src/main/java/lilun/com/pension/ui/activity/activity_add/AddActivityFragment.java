@@ -7,9 +7,9 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
@@ -68,10 +67,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     InputView inputAddress;
 
 
-    @Bind(R.id.input_end_time)
-    InputView inputEndTime;
-
-
     @Bind(R.id.input_require)
     InputView inputRequire;
 
@@ -93,8 +88,11 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     @Bind(R.id.input_repeat_type)
     InputView inputRepeatType;
 
-    @Bind(R.id.tv_input_title)
-    TextView tvInputTitle;
+    @Bind(R.id.tv_end_time)
+    TextView tvEndTime;
+
+    @Bind(R.id.rl_end_time)
+    RelativeLayout rlEndTime;
 
     @Bind(R.id.et_start_time)
     EditText etStartTime;
@@ -105,6 +103,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     private ArrayList<ActivityCategory> activityCategories;
     private String mCategoryId;
     private String[] repeatedTypeArray;
+    private int chooseTime = 0;
 
 
     public static AddActivityFragment newInstance(ArrayList<ActivityCategory> activityCategories) {
@@ -155,7 +154,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         rgRepeatType.check(R.id.rbtn_repeat);
         rgRepeatType.setOnCheckedChangeListener((group, checkedId) -> {
             //选择周期活动
-            inputEndTime.setVisibility(checkedId == R.id.rbtn_repeat ? View.GONE : View.VISIBLE);
+            rlEndTime.setVisibility(checkedId == R.id.rbtn_repeat ? View.GONE : View.VISIBLE);
             inputRepeatType.setVisibility(checkedId != R.id.rbtn_repeat ? View.GONE : View.VISIBLE);
             etStartTime.setVisibility(checkedId == R.id.rbtn_repeat ? View.VISIBLE : View.GONE);
             tvStartTime.setVisibility(checkedId != R.id.rbtn_repeat ? View.VISIBLE : View.GONE);
@@ -163,7 +162,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
         tvStartTime.setOnClickListener(this);
         btnAddActivity.setOnClickListener(this);
-        inputEndTime.setOnClickListener(this);
+        tvEndTime.setOnClickListener(this);
         inputRepeatType.setOnClickListener(this);
     }
 
@@ -224,6 +223,19 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             return;
         }
 
+        if (TextUtils.isEmpty(time)) {
+            showNotEmpty(R.string.activity_time);
+            return;
+        }
+
+        String max = StringUtils.get_StringNum(maxPartner);
+        Integer maxPart = null;
+        if (!TextUtils.isEmpty(max)) {
+            maxPart = Integer.parseInt(maxPartner);
+            if (maxPart > 10) {
+                ToastHelper.get().showWareShort("最大人数不能超过10个");
+            }
+        }
 
         OrganizationActivity activity = new OrganizationActivity();
         activity.setCategoryId(mCategoryId);
@@ -234,9 +246,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
         activity.setOrganizationId(OrganizationChildrenConfig.activity());
         activity.setDescription(require);
+        activity.setMaxPartner(maxPart);
 
 
-        String max = StringUtils.get_StringNum(maxPartner);
         if (!TextUtils.isEmpty(max)) {
             activity.setMaxPartner(Integer.parseInt(maxPartner));
         }
@@ -272,10 +284,12 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
             case R.id.tv_start_time:
                 // 选择活动开始时间
+                chooseTime = 0;
                 chooseTime();
                 break;
-            case R.id.input_end_time:
+            case R.id.tv_end_time:
                 // 选择活动预期结束时间
+                chooseTime = 1;
                 chooseTime();
                 break;
 
@@ -287,10 +301,14 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         picker.setOnDateTimePickListener((DateTimePicker.OnMonthDayTimePickListener) (month, day, hour, minute) -> {
             int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-            if (etStartTime.getVisibility()==View.VISIBLE){
-                etStartTime.setText(time);
-            }else {
-                tvStartTime.setText(time);
+            if (chooseTime == 0) {
+                if (etStartTime.getVisibility() == View.VISIBLE) {
+                    etStartTime.setText(time);
+                } else {
+                    tvStartTime.setText(time);
+                }
+            } else {
+                tvEndTime.setText(time);
             }
             Logger.d(time);
         });
@@ -350,17 +368,4 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

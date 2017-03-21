@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
+    android:id="@+id/ll_bg"
     android:padding="7dp">
 
     <LinearLayout
+        android:id="@+id/ll_text"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:padding="7dp"
+        android:layout_marginRight="18dp"
+        android:layout_toStartOf="@+id/iv_icon"
+        android:layout_toLeftOf="@+id/iv_icon">
 
         <TextView
             android:id="@+id/tv_creatorName"
@@ -20,17 +26,19 @@
             tools:text="张三" />
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/tv_title"
             style="@style/tv_small"
-            android:layout_marginLeft="16dp"
-            tools:text="张三" />
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
-    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tv_address"
         style="@style/tv_small"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="7dp"
         android:textColor="@color/gray"
         android:textSize="@dimen/dp_14"
         tools:text="重庆市半区去啊啊" />
@@ -58,4 +66,17 @@
             tools:text="/03.19 / 50人参与" />
 
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        tools:src="@drawable/selector_agency"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_alignTop="@id/ll_text"
+        android:layout_alignBottom="@id/ll_text"
+        android:layout_width="87dp"
+        android:layout_height="85dp"
+         />
+</RelativeLayout>

@@ -40,13 +40,15 @@
     <string name="need_help">我要求助</string>
     <string name="ask_neighbor">问邻居</string>
     <string name="help_neighbor">帮邻居</string>
+    <string name="all_kind">所有类别</string>
+    <string name="def_priority">默认优先级</string>
 
     <!--新建求助-->
     <string name="priority">优&#160;先&#160;级</string>
     <string name="topic">主&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;题</string>
     <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址</string>
     <string name="price">补&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;贴</string>
-    <string name="memo">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注</string>
+    <string name="memo">内&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容</string>
     <string name="choose_priority">点击选择优先级</string>
     <string name="normal_priority">一般</string>
     <string name="build">新建</string>
@@ -170,6 +172,7 @@
     <string name="course_start_end_time_">上课时间：%1$s</string>
     <string name="join_in">报名</string>
     <string name="cancle">取消</string>
+
 
 
     <!--评价-->

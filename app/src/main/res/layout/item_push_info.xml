@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="195dp"
+    android:layout_height="120dp"
     android:background="@drawable/shape_item_push_info">
 
     <TextView

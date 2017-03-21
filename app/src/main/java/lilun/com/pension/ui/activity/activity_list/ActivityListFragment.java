@@ -21,7 +21,6 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
-import lilun.com.pension.widget.NormalTitleBar;
 
 /**
  * 分类活动V
@@ -39,8 +38,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
-    @Bind(R.id.titleBar)
-    NormalTitleBar titleBar;
+//    @Bind(R.id.titleBar)
+//    NormalTitleBar titleBar;
 
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
@@ -73,13 +72,13 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_recycler;
+        return R.layout.fragment_search_list;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(mCategory.getName());
-        titleBar.setOnBackClickListener(this::pop);
+//        titleBar.setTitle(mCategory.getName());
+//        titleBar.setOnBackClickListener(this::pop);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());

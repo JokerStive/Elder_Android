@@ -4,6 +4,11 @@ import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.OrganizationAccount;
@@ -62,6 +67,29 @@ public class LoginModule implements LoginContract.Module {
         User.puttCurrentOrganizationId(organizationId);
         User.putIsCustomer(account.isCustomer());
         User.putName(account.getUsername());
+
+
+        //设置极光标签
+        setPushTags(organizationId);
+
+    }
+
+    private void setPushTags(String organizationId) {
+        Logger.d("organization iD = "+organizationId);
+        String[] split = organizationId.split("/");
+        Set<String> tags = new HashSet<>();
+        for(int i=0;i<split.length;i++){
+            tags.add(split[i]);
+        }
+        Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+            JPushInterface.setTags(App.context, tags, (i, s, set) -> {
+                Logger.d("Jpush tage res code = " + i);
+                Logger.d("Jpush tags = " + set);
+            });
+
+        })
+                .compose(RxUtils.applySchedule())
+                .subscribe();
     }
 
     private Account getAccount(String username, String password) {

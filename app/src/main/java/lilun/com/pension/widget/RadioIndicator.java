@@ -13,14 +13,16 @@ import android.widget.HorizontalScrollView;
 public class RadioIndicator extends HorizontalScrollView {
     public RadioIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public RadioIndicator(Context context) {
-        super(context);
-        init();
+        super(context);//
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
 
+//        RadioGroup radioGroup = new RadioGroup(context,)
     }
 }

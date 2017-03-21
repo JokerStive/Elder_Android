@@ -5,86 +5,155 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <lilun.com.pension.widget.NormalTitleBar
-        android:id="@id/title_bar"
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/need_help" />
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_help_classify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <lilun.com.pension.widget.InputView
-            android:id="@+id/input_topic"
+        <lilun.com.pension.widget.NormalTitleBar
+            android:id="@id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            app:et_max_length="@integer/leak_canary_watch_delay_millis"
-            app:input_title="@string/topic" />
-
-        <lilun.com.pension.widget.InputView
-            android:id="@+id/input_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/address" />
-
-        <lilun.com.pension.widget.InputView
-            android:id="@+id/input_priority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            app:allow_input="false"
-            app:input_hint="@string/normal_priority"
-            app:input_title="@string/priority" />
-
-        <lilun.com.pension.widget.InputView
-            android:id="@+id/input_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/price" />
-
-        <lilun.com.pension.widget.InputView
-            android:id="@+id/input_memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            app:input_title="@string/memo" />
+            app:title="@string/need_help" />
 
         <TextView
-            android:layout_marginTop="19dp"
-            android:textColor="@color/gray"
-            android:text="@string/add_photo"
-            style="@style/tv_small" />
-
-
-        <lilun.com.pension.widget.TakePhotoLayout
-            android:layout_marginTop="5dp"
-            android:id="@+id/take_photo"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_create"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:text="发布"
+            android:textColor="@color/red"
+            android:textSize="@dimen/tv_size" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RadioGroup
+                android:id="@+id/rg_classify"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_ask"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:padding="10dp"
+                    android:background="@drawable/selector_aid_ask"
+                     />
+
+                <RadioButton
+                    android:id="@+id/rb_help"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:padding="10dp"
+                    android:background="@drawable/selector_aid_help"
+                     />
+
+            </RadioGroup>
 
 
-    </LinearLayout>
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                app:et_max_length="20"
+                app:input_title="@string/topic" />
 
-    <lilun.com.pension.widget.CommonButton
-        android:id="@+id/btn_create"
-        style="@style/btn_normal"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/selector_help"
-        android:text="@string/build" />
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                app:input_title="@string/address" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_priority_title"
+                    style="@style/tv_normal"
+                    android:layout_centerVertical="true"
+                    android:text="@string/priority"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/tv_size_small" />
+
+
+                <TextView
+                    android:id="@+id/tv_priority"
+                    style="@style/tv_small"
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="22dp"
+                    android:layout_toRightOf="@id/tv_priority_title"
+                    android:textColor="@color/gray" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_priority_title"
+                    android:layout_marginTop="8dp" />
+            </RelativeLayout>
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                app:input_title="@string/price" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                app:input_title="@string/memo" />
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginTop="19dp"
+                android:text="@string/add_photo"
+                android:textColor="@color/gray" />
+
+
+            <lilun.com.pension.widget.TakePhotoLayout
+                android:id="@+id/take_photo"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="5dp" />
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--<lilun.com.pension.widget.CommonButton-->
+    <!--android:id="@+id/btn_create"-->
+    <!--style="@style/btn_normal"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="@drawable/selector_help"-->
+    <!--android:text="@string/build" />-->
 
 
 </RelativeLayout>

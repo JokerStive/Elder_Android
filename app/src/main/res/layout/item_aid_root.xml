@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:maxLines="5"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        tools:text="俩就带飞机撒i封建时代fda就是分手多久啊俩就带飞机撒i封建时代fda就是分手多久啊俩就带飞机撒i封建时代fda就是分手多久啊俩就带飞机撒i封建时代fda就是分手多久啊"
+        />
 
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/tv_small"
+        tools:text="03/18"
+        android:textColor="@color/gray"
+        android:layout_marginTop="5dp"
+        />
+    <View
+        android:layout_marginTop="8dp"
+        style="@style/line_gray"/>
 </LinearLayout>

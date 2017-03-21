@@ -17,14 +17,6 @@ public class FlowLayoutManage extends RecyclerView.LayoutManager{
 
     private SparseArray<Rect> mItemRects;//key 是View的position，保存View的bounds 和 显示标志，
 
-/*    private class FlowItem {
-        public Rect bounds;//View的边界
-        public boolean isShow;//View 是否显示
-        public FlowItem(Rect bounds, boolean isShow) {
-            this.bounds = bounds;
-            this.isShow = isShow;
-        }
-    }*/
 
     public FlowLayoutManage() {
         setAutoMeasureEnabled(true);
