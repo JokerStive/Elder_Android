@@ -8,9 +8,6 @@ import com.orhanobut.logger.Logger;
 
 import org.litepal.LitePal;
 
-import cn.jpush.android.api.JPushInterface;
-//import cn.jpush.im.android.api.JMessageClient;
-
 /**
  * 入口
  *
@@ -37,8 +34,6 @@ public class App extends Application {
         //内存泄漏
 //        LeakCanary.install(this);
 
-        //激光推送
-        JPushInterface.init(this);
 
         //数据库
         LitePal.initialize(this);

@@ -8,29 +8,32 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioButton;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.adapter.NormalFilterAdapter;
 import lilun.com.pension.module.adapter.OrganizationAidAdapter;
+import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.OrganizationAid;
-import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.help.help_detail.AskDetailFragment;
 import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
  * 分类求助（问？帮？）V
@@ -39,7 +42,7 @@ import lilun.com.pension.widget.SearchTitleBar;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class HelpFragment extends BaseFragment<HelpContract.Presenter> implements HelpContract.View, View.OnClickListener {
+public class HelpFragment extends BaseFragment<HelpContract.Presenter> implements HelpContract.View {
 
 
     @Bind(R.id.recycler_view)
@@ -50,27 +53,39 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
+    @Bind(R.id.filter_view)
+    FilterView filterView;
 
-    @Bind(R.id.rb_kind)
-    RadioButton rbKind;
 
-    @Bind(R.id.rb_near)
-    RadioButton rbNear;
-
-    @Bind(R.id.rb_property)
-    RadioButton rbProperty;
+    private String condition_title = "title";
+    private String condition_kind = "kind";
+    private String condition_priority = "priority";
+    private String condition_near = "near";
+    private boolean isMain;
 
     private Map<String, String> conditionMap;
     private String[] conditionKind;
     private String[] conditionPriority;
+    private String[] hedaers = new String[]{"类别","优先级"};
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
 
 
     private OrganizationAidAdapter mAidAdapter;
     private List<OrganizationAid> helps;
 
-    public static HelpFragment newInstance() {
-        return new HelpFragment();
+    public static HelpFragment newInstance(boolean isMain) {
+        HelpFragment fragment = new HelpFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("isMain", isMain);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        isMain = arguments.getBoolean("isMain", false);
     }
 
     @Subscribe
@@ -92,6 +107,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        initConditionModules();
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
@@ -99,22 +115,14 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             }
 
             @Override
-            public void onSearch(String searchStr) {
-                getHelps(0);
-            }
-
-            @Override
             public void onChangeLayout(SearchTitleBar.LayoutType type) {
                 layoutType = type;
-                if (helps!=null && helps.size()!=0){
+                if (helps != null && helps.size() != 0) {
                     setRecyclerAdapter(helps);
                 }
             }
         });
 
-        rbKind.setOnClickListener(this);
-        rbNear.setOnClickListener(this);
-        rbProperty.setOnClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(6));
@@ -127,6 +135,99 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         );
 
         initConditionMap();
+
+    }
+
+    private void initConditionModules() {
+        List<ConditionOption> kindOptions = new ArrayList<>();
+        ConditionOption kindOptionNull = new ConditionOption("kind","","不限");
+        ConditionOption kindOptionAsk = new ConditionOption("kind","0","邻居问");
+        ConditionOption kindOptionHelp = new ConditionOption("kind","1","帮邻居");
+        kindOptions.add(kindOptionNull);
+        kindOptions.add(kindOptionAsk);
+        kindOptions.add(kindOptionHelp);
+
+        List<ConditionOption> priorityOptions = new ArrayList<>();
+        ConditionOption priorityOptionNull = new ConditionOption("priority","","不限");
+        ConditionOption priorityOption0 = new ConditionOption("priority","0","一般");
+        ConditionOption priorityOption1 = new ConditionOption("priority","1","加急");
+        ConditionOption priorityOption2 = new ConditionOption("priority","2","紧急");
+        ConditionOption priorityOption10 = new ConditionOption("priority","10","危急");
+        priorityOptions.add(priorityOptionNull);
+        priorityOptions.add(priorityOption0);
+        priorityOptions.add(priorityOption1);
+        priorityOptions.add(priorityOption2);
+        priorityOptions.add(priorityOption10);
+
+
+        List<View>  popViews = new ArrayList<>();
+        RecyclerView kindOptionView = new RecyclerView(App.context);
+        kindOptionView.setLayoutManager(new LinearLayoutManager(App.context,LinearLayoutManager.VERTICAL,false));
+        NormalFilterAdapter kindOptionAdapter = new NormalFilterAdapter(kindOptions);
+        kindOptionAdapter.setOnItemClickListener((position, option) -> {
+            filterView.setTabText(position==0?hedaers[0]:option.getConditionValue(),position==0);
+            conditionMap.put(option.getKey(),option.getConditionKey());
+            getHelps(0);
+        });
+        kindOptionView.setAdapter(kindOptionAdapter);
+
+        RecyclerView priorityOptionView = new RecyclerView(App.context);
+        priorityOptionView.setLayoutManager(new LinearLayoutManager(App.context,LinearLayoutManager.VERTICAL,false));
+        NormalFilterAdapter priorityOptionAdapter = new NormalFilterAdapter(priorityOptions);
+        priorityOptionAdapter.setOnItemClickListener((position, option) -> {
+            filterView.setTabText(position==0?hedaers[1]:option.getConditionValue(),position==0);
+            conditionMap.put(option.getKey(),option.getConditionKey());
+            getHelps(0);
+        });
+        priorityOptionView.setAdapter(priorityOptionAdapter);
+
+        popViews.add(kindOptionView);
+        popViews.add(priorityOptionView);
+
+        filterView.setTitlesAndPops(Arrays.asList(hedaers),popViews,mSwipeLayout);
+
+//        ArrayList<ConditionModule> conditionModules = new ArrayList<>();
+//
+//        ArrayList<ConditionModule.ConditionBean> kindConditionBeans = new ArrayList<>();
+//        ConditionModule kindConditionModule = new ConditionModule();
+//        kindConditionModule.setTitle("所有分类");
+//        kindConditionModule.setKey(condition_kind);
+//        ConditionModule.ConditionBean kindConditionBean0 = new ConditionModule.ConditionBean("所有分类", "");
+//        ConditionModule.ConditionBean kindConditionBean1 = new ConditionModule.ConditionBean("问邻居", "0");
+//        ConditionModule.ConditionBean kindConditionBean2 = new ConditionModule.ConditionBean("帮邻居", "1");
+//        kindConditionBeans.add(kindConditionBean0);
+//        kindConditionBeans.add(kindConditionBean1);
+//        kindConditionBeans.add(kindConditionBean2);
+//        kindConditionModule.setConditions(kindConditionBeans);
+//        conditionModules.add(kindConditionModule);
+//
+//        if (!isMain) {
+//            ConditionModule module1 = new ConditionModule();
+//            module1.setTitle("附近");
+//            module1.setKey(condition_near);
+//            conditionModules.add(module1);
+//        }
+//
+//
+//        ArrayList<ConditionModule.ConditionBean> conditionBeens2 = new ArrayList<>();
+//        ConditionModule module2 = new ConditionModule();
+//        module2.setTitle("默认优先级");
+//        module2.setKey(condition_priority);
+//        ConditionModule.ConditionBean bean0 = new ConditionModule.ConditionBean("默认优先级", "");
+//        ConditionModule.ConditionBean bean1 = new ConditionModule.ConditionBean("一般", "0");
+//        ConditionModule.ConditionBean bean2 = new ConditionModule.ConditionBean("加急", "1");
+//        ConditionModule.ConditionBean bean3 = new ConditionModule.ConditionBean("紧急", "2");
+//        ConditionModule.ConditionBean bean4 = new ConditionModule.ConditionBean("危急", "10");
+//        conditionBeens2.add(bean0);
+//        conditionBeens2.add(bean1);
+//        conditionBeens2.add(bean2);
+//        conditionBeens2.add(bean3);
+//        conditionBeens2.add(bean4);
+//
+//        module2.setConditions(conditionBeens2);
+//        conditionModules.add(module2);
+
+//        searchBar.setConditionModules(conditionModules);
 
     }
 
@@ -148,19 +249,34 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     private void getHelps(int skip) {
         String filter = getFilterWithCondition();
-        mPresenter.getHelps(filter, skip);
+        if (isMain) {
+            mPresenter.getAboutMe(filter, skip);
+        } else {
+            mPresenter.getHelps(filter, skip);
+        }
     }
 
     private String getFilterWithCondition() {
         String filter = "{\"where\":{";
+//        String filter = "{\"where\":{\"kind\":\""+conditionMap.get(condition_kind)+"\",\"priority\":\""+conditionMap.get(condition_priority)+"\",\"title\":{\"like\":\"\"}}}";
         int index = 0;
         for (String key : conditionMap.keySet()) {
             String value = conditionMap.get(key);
             if (!TextUtils.isEmpty(value)) {
                 if (index == 0) {
-                    filter = filter + "\"" + key + "\"" + ":" + "\"" + value + "\"";
+                    if (TextUtils.equals(key, condition_title)) {
+                        filter = filter + "\"" + key + "\"" + ":" + "{\"like\":\"" + value + "\"}";
+                    } else {
+                        filter = filter + "\"" + key + "\"" + ":" + "\"" + value + "\"";
+                    }
                 } else {
-                    filter = filter + "," + "\"" + key + "\"" + ":" + "\"" + value + "\"";
+                    if (TextUtils.equals(key, condition_title)) {
+                        filter = filter + "," + "\"" + key + "\"" + ":" + "{\"like\":\"" + value + "\"}";
+                    } else {
+
+
+                        filter = filter + "," + "\"" + key + "\"" + ":" + "\"" + value + "\"";
+                    }
                 }
                 index++;
             }
@@ -169,7 +285,6 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         Logger.d("filter = " + filter);
         return filter;
     }
-
 
 
     @Override
@@ -191,9 +306,8 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     }
 
     private void setRecyclerAdapter(List<OrganizationAid> helps) {
-//        mRecyclerView.setAdapter(null);
         mAidAdapter = getAdapterFromLayoutType(helps);
-        if (mAidAdapter!=null){
+        if (mAidAdapter != null) {
             mAidAdapter.setOnItemClickListener((aid) -> {
                 start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
             });
@@ -205,14 +319,14 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     private OrganizationAidAdapter getAdapterFromLayoutType(List<OrganizationAid> helps) {
         OrganizationAidAdapter adapter;
         int layoutId;
-        if (layoutType==SearchTitleBar.LayoutType.BIG){
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
             layoutId = R.layout.item_aid_big;
-        }else if(layoutType==SearchTitleBar.LayoutType.SMALL){
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
             layoutId = R.layout.item_aid_small;
-        }else {
+        } else {
             layoutId = R.layout.item_aid_null;
         }
-        adapter = new OrganizationAidAdapter(helps,layoutId,layoutType);
+        adapter = new OrganizationAidAdapter(helps, layoutId, layoutType);
         return adapter;
     }
 
@@ -223,69 +337,6 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         }
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rb_kind:
-                //TODO 弹出类型框
-                new MaterialDialog.Builder(_mActivity)
-                        .items(conditionKind)
-                        .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-                            rbKind.setText("");
-                            rbKind.setText(text);
-                            conditionMap.put("kind", getKindByString(text.toString()));
-                            getHelps(0);
-                            return true;
-                        })
-                        .positiveText(R.string.choose)
-                        .show();
-                break;
-            case R.id.rb_near:
-                //TODO 附近
-                ToastHelper.get().showWareShort("附近");
-                break;
-            case R.id.rb_property:
-                //TODO 弹出优先级框
-                new MaterialDialog.Builder(_mActivity)
-                        .items(conditionPriority)
-                        .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-                            rbProperty.setText(text);
-                            conditionMap.put("priority", getPriorityByString(text.toString()));
-                            getHelps(0);
-                            return true;
-                        })
-                        .positiveText(R.string.choose)
-                        .show();
-                break;
-        }
-    }
-
-    private String getPriorityByString(CharSequence text) {
-        String priority = "";
-        if (TextUtils.equals(text, conditionPriority[1])) {
-            priority = "0";
-        } else if (TextUtils.equals(text, conditionPriority[2])) {
-            priority = "1";
-        } else if (TextUtils.equals(text, conditionPriority[3])) {
-            priority = "2";
-        } else if (TextUtils.equals(text, conditionPriority[4])) {
-            priority = "3";
-        }
-        return priority;
-    }
-
-
-    private String getKindByString(CharSequence text) {
-        String kind = "";
-        if (TextUtils.equals(text, conditionKind[1])) {
-            kind = "0";
-        } else if (TextUtils.equals(text, conditionKind[2])) {
-            kind = "1";
-        }
-
-        return kind;
-    }
 
 
 }

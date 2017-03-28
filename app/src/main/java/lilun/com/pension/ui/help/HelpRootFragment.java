@@ -63,7 +63,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     //    private List<ElderModule> elderModules;
 //    private RecyclerView mClassifyRecycler;
     private AidRootAdapter adapter;
-    private List<OrganizationAid> organizationAids = new ArrayList<>();
+//    private List<OrganizationAid> organizationAids = new ArrayList<>();
 
 
     public static HelpRootFragment newInstance(List<Information> announcements) {
@@ -112,6 +112,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onRightClick() {
+
             }
         });
 
@@ -123,22 +124,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
         //刷新
-        mSwipeLayout.setOnRefreshListener(() -> {
-                    if (mPresenter != null) {
-                        refreshData();
-                    }
-                }
-        );
-
-
-        //设置数据
-        setAdapter();
-    }
-
-    private void setAdapter() {
-        adapter = new AidRootAdapter(organizationAids);
-        adapter.setEmptyView();
-        mRecyclerView.setAdapter(adapter);
+        mSwipeLayout.setEnabled(false);
     }
 
 
@@ -174,20 +160,18 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     }
 
 
-
     @Override
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
         completeRefresh();
-        if (helps != null) {
-            for (OrganizationAid aid : helps) {
-                aid.setItemType(aid.getKind());
-            }
-            if (isLoadMore) {
-                adapter.addAll(helps);
-            } else {
-                adapter.replaceAll(helps);
-            }
+        if (adapter == null) {
+            adapter = new AidRootAdapter(helps);
+            mRecyclerView.setAdapter(adapter);
+        } else if (isLoadMore) {
+            adapter.addAll(helps);
+        } else {
+            adapter.replaceAll(helps);
         }
+
     }
 
     @Override
@@ -198,16 +182,14 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     }
 
 
-
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_need_help:
                 start(AddHelpFragment.newInstance());
                 break;
             case R.id.tv_find_help:
-                start(HelpFragment.newInstance());
+                start(HelpFragment.newInstance(false));
                 break;
         }
     }

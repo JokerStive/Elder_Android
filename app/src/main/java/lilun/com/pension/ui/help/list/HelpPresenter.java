@@ -18,34 +18,6 @@ import lilun.com.pension.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class HelpPresenter extends RxPresenter<HelpContract.View> implements HelpContract.Presenter {
-//    @Override
-//    public void getClassifies() {
-//        String neighbor_help = App.context.getString(R.string.neighbor_help);
-//        List<ElderModule> elderModules = (List<ElderModule>) ACache.get().getAsObject("helpClassify");
-//        if (elderModules != null && elderModules.size() != 0) {
-//            Logger.i("help classify has cache");
-//            view.showClassifies(elderModules);
-//            return;
-//        }
-//        String filter = "{\"where\":{\"parent\":\"" + neighbor_help + "\"},\"order\":\"orderId\"}";
-//        addSubscribe(NetHelper.getApi()
-//                .getElderModules(filter)
-//                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<List<ElderModule>>() {
-//                    @Override
-//                    public void _next(List<ElderModule> elderModules) {
-//                        ACache.get().put("helpClassify", (Serializable) elderModules);
-//                        view.showClassifies(elderModules);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        super.onError(e);
-//                        view.completeRefresh();
-//                    }
-//                }));
-//    }
 
 
     @Override
