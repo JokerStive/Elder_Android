@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="45dp">
+        android:layout_height="45dp"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@drawable/shape_rect_write_corner"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:background="@drawable/shape_rect_write_corner"
             android:paddingLeft="20dp">
 
             <EditText
@@ -35,8 +35,8 @@
                 style="@style/et_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:enabled="true"
                 android:hint="请输入您要搜索的关键字"
-
                 android:maxLength="10"
                 android:singleLine="true"
                 android:textSize="14sp" />
@@ -61,7 +61,6 @@
             android:padding="10dp"
             android:src="@drawable/layout_type_big" />
     </RelativeLayout>
-
 
 
 </LinearLayout>
