@@ -7,13 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +19,9 @@ import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.NormalFilterAdapter;
 import lilun.com.pension.module.adapter.OrganizationAidAdapter;
 import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -64,9 +60,9 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     private boolean isMain;
 
     private Map<String, String> conditionMap;
-    private String[] conditionKind;
-    private String[] conditionPriority;
-    private String[] hedaers = new String[]{"类别","优先级"};
+    //    private String[] conditionKind;
+//    private String[] conditionPriority;
+    private String[] conditionTitles = new String[]{"类别", "状态", "优先级"};
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
 
 
@@ -107,7 +103,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        initConditionModules();
+        initConditionOption();
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
@@ -138,103 +134,20 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     }
 
-    private void initConditionModules() {
-        List<ConditionOption> kindOptions = new ArrayList<>();
-        ConditionOption kindOptionNull = new ConditionOption("kind","","不限");
-        ConditionOption kindOptionAsk = new ConditionOption("kind","0","邻居问");
-        ConditionOption kindOptionHelp = new ConditionOption("kind","1","帮邻居");
-        kindOptions.add(kindOptionNull);
-        kindOptions.add(kindOptionAsk);
-        kindOptions.add(kindOptionHelp);
-
-        List<ConditionOption> priorityOptions = new ArrayList<>();
-        ConditionOption priorityOptionNull = new ConditionOption("priority","","不限");
-        ConditionOption priorityOption0 = new ConditionOption("priority","0","一般");
-        ConditionOption priorityOption1 = new ConditionOption("priority","1","加急");
-        ConditionOption priorityOption2 = new ConditionOption("priority","2","紧急");
-        ConditionOption priorityOption10 = new ConditionOption("priority","10","危急");
-        priorityOptions.add(priorityOptionNull);
-        priorityOptions.add(priorityOption0);
-        priorityOptions.add(priorityOption1);
-        priorityOptions.add(priorityOption2);
-        priorityOptions.add(priorityOption10);
-
-
-        List<View>  popViews = new ArrayList<>();
-        RecyclerView kindOptionView = new RecyclerView(App.context);
-        kindOptionView.setLayoutManager(new LinearLayoutManager(App.context,LinearLayoutManager.VERTICAL,false));
-        NormalFilterAdapter kindOptionAdapter = new NormalFilterAdapter(kindOptions);
-        kindOptionAdapter.setOnItemClickListener((position, option) -> {
-            filterView.setTabText(position==0?hedaers[0]:option.getConditionValue(),position==0);
-            conditionMap.put(option.getKey(),option.getConditionKey());
-            getHelps(0);
-        });
-        kindOptionView.setAdapter(kindOptionAdapter);
-
-        RecyclerView priorityOptionView = new RecyclerView(App.context);
-        priorityOptionView.setLayoutManager(new LinearLayoutManager(App.context,LinearLayoutManager.VERTICAL,false));
-        NormalFilterAdapter priorityOptionAdapter = new NormalFilterAdapter(priorityOptions);
-        priorityOptionAdapter.setOnItemClickListener((position, option) -> {
-            filterView.setTabText(position==0?hedaers[1]:option.getConditionValue(),position==0);
-            conditionMap.put(option.getKey(),option.getConditionKey());
-            getHelps(0);
-        });
-        priorityOptionView.setAdapter(priorityOptionAdapter);
-
-        popViews.add(kindOptionView);
-        popViews.add(priorityOptionView);
-
-        filterView.setTitlesAndPops(Arrays.asList(hedaers),popViews,mSwipeLayout);
-
-//        ArrayList<ConditionModule> conditionModules = new ArrayList<>();
-//
-//        ArrayList<ConditionModule.ConditionBean> kindConditionBeans = new ArrayList<>();
-//        ConditionModule kindConditionModule = new ConditionModule();
-//        kindConditionModule.setTitle("所有分类");
-//        kindConditionModule.setKey(condition_kind);
-//        ConditionModule.ConditionBean kindConditionBean0 = new ConditionModule.ConditionBean("所有分类", "");
-//        ConditionModule.ConditionBean kindConditionBean1 = new ConditionModule.ConditionBean("问邻居", "0");
-//        ConditionModule.ConditionBean kindConditionBean2 = new ConditionModule.ConditionBean("帮邻居", "1");
-//        kindConditionBeans.add(kindConditionBean0);
-//        kindConditionBeans.add(kindConditionBean1);
-//        kindConditionBeans.add(kindConditionBean2);
-//        kindConditionModule.setConditions(kindConditionBeans);
-//        conditionModules.add(kindConditionModule);
-//
-//        if (!isMain) {
-//            ConditionModule module1 = new ConditionModule();
-//            module1.setTitle("附近");
-//            module1.setKey(condition_near);
-//            conditionModules.add(module1);
-//        }
-//
-//
-//        ArrayList<ConditionModule.ConditionBean> conditionBeens2 = new ArrayList<>();
-//        ConditionModule module2 = new ConditionModule();
-//        module2.setTitle("默认优先级");
-//        module2.setKey(condition_priority);
-//        ConditionModule.ConditionBean bean0 = new ConditionModule.ConditionBean("默认优先级", "");
-//        ConditionModule.ConditionBean bean1 = new ConditionModule.ConditionBean("一般", "0");
-//        ConditionModule.ConditionBean bean2 = new ConditionModule.ConditionBean("加急", "1");
-//        ConditionModule.ConditionBean bean3 = new ConditionModule.ConditionBean("紧急", "2");
-//        ConditionModule.ConditionBean bean4 = new ConditionModule.ConditionBean("危急", "10");
-//        conditionBeens2.add(bean0);
-//        conditionBeens2.add(bean1);
-//        conditionBeens2.add(bean2);
-//        conditionBeens2.add(bean3);
-//        conditionBeens2.add(bean4);
-//
-//        module2.setConditions(conditionBeens2);
-//        conditionModules.add(module2);
-
-//        searchBar.setConditionModules(conditionModules);
-
+    private void initConditionOption() {
+        List<List<ConditionOption>> conditionOptionsList = mPresenter.getConditionOptionsList();
+        if (conditionOptionsList != null) {
+            filterView.setTitlesAndDatas(Arrays.asList(conditionTitles), conditionOptionsList, mSwipeLayout);
+            filterView.setOnOptionClickListener(option -> {
+                conditionMap.put(option.getKey(), option.getConditionKey());
+                getHelps(0);
+            });
+        }
     }
 
     private void initConditionMap() {
-        conditionKind = getResources().getStringArray(R.array.help_kind);
-        conditionPriority = new String[]{"默认优先级", "一般", "加急", "紧急", "危急"};
-
+//        conditionKind = getResources().getStringArray(R.array.help_kind);
+//        conditionPriority = new String[]{"默认优先级", "一般", "加急", "紧急", "危急"};
         conditionMap = new HashMap<>();
     }
 
@@ -242,12 +155,12 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mSwipeLayout.setRefreshing(true);
             getHelps(0);
         }
     }
 
     private void getHelps(int skip) {
+        mSwipeLayout.setRefreshing(true);
         String filter = getFilterWithCondition();
         if (isMain) {
             mPresenter.getAboutMe(filter, skip);
@@ -258,7 +171,6 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     private String getFilterWithCondition() {
         String filter = "{\"where\":{";
-//        String filter = "{\"where\":{\"kind\":\""+conditionMap.get(condition_kind)+"\",\"priority\":\""+conditionMap.get(condition_priority)+"\",\"title\":{\"like\":\"\"}}}";
         int index = 0;
         for (String key : conditionMap.keySet()) {
             String value = conditionMap.get(key);
@@ -273,8 +185,6 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
                     if (TextUtils.equals(key, condition_title)) {
                         filter = filter + "," + "\"" + key + "\"" + ":" + "{\"like\":\"" + value + "\"}";
                     } else {
-
-
                         filter = filter + "," + "\"" + key + "\"" + ":" + "\"" + value + "\"";
                     }
                 }
@@ -336,7 +246,6 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             mSwipeLayout.setRefreshing(false);
         }
     }
-
 
 
 }

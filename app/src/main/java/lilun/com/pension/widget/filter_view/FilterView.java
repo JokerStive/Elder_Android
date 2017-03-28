@@ -1,6 +1,8 @@
 package lilun.com.pension.widget.filter_view;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -10,9 +12,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
+import lilun.com.pension.module.adapter.NormalFilterAdapter;
+import lilun.com.pension.module.bean.ConditionOption;
 
 /**
  * 筛选栏
@@ -38,6 +44,7 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     private int maxHeight = -1;
     private FilterTabView mCurrentClickTabView;
     private FrameLayout popContainer;
+    private OnOptionClickListener listener;
 
     public FilterView(Context context) {
         super(context, null);
@@ -82,7 +89,34 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         addView(pop);
 
 
+    }
 
+    public void setTitlesAndDatas(List<String> tabTitles, List<List<ConditionOption>> optionsList, View contentView) {
+        List<View> pops = new ArrayList<>();
+        for (int i = 0; i < optionsList.size(); i++) {
+            RecyclerView recyclerView = new RecyclerView(App.context);
+            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
+            final int finalI = i;
+            adapter.setOnItemClickListener((position, option) -> {
+                setTabText(position == 0 ? tabTitles.get(finalI) : option.getConditionValue(), position == 0);
+                if (listener != null) {
+                    listener.onOptionClick(option);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            pops.add(recyclerView);
+        }
+
+        setTitlesAndPops(tabTitles, pops, contentView);
+    }
+
+    public interface OnOptionClickListener {
+        void onOptionClick(ConditionOption option);
+    }
+
+    public void setOnOptionClickListener(OnOptionClickListener listener) {
+        this.listener = listener;
     }
 
     public void setTitlesAndPops(List<String> tabTitles, List<View> pops, View contentView) {

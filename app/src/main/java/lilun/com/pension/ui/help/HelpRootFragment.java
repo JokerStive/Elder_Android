@@ -112,7 +112,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onRightClick() {
-
+                    start(HelpFragment.newInstance(true));
             }
         });
 
