@@ -117,6 +117,12 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
                     setRecyclerAdapter(helps);
                 }
             }
+
+            @Override
+            public void onSearch(String searchStr) {
+                conditionMap.put(condition_title,searchStr);
+                getHelps(0);
+            }
         });
 
 

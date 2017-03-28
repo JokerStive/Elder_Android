@@ -21,7 +21,6 @@ import lilun.com.pension.net.RxSubscriber;
  */
 public class HelpPresenter extends RxPresenter<HelpContract.View> implements HelpContract.Presenter {
 
-
     @Override
     public void getAboutMe(String filter, int skip) {
         addSubscribe(NetHelper.getApi()

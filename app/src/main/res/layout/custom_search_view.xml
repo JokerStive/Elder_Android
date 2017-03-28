@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back"
+            android:padding="20dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_rect_write_corner"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp">
+
+            <EditText
+                android:id="@+id/et_search"
+                style="@style/et_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:hint="请输入您要搜索的关键字"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:id="@+id/iv_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:padding="5dp"
+                android:src="@drawable/search" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_null"
+            style="@style/tv_normal"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:focusable="false"
+            android:text="清空" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_records"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_clear_records"
+        style="@style/tv_small"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:focusable="false"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="清空搜索记录"
+        android:visibility="gone" />
+
+
+</LinearLayout>
