@@ -115,7 +115,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         completeRefresh();
         if (products != null) {
             if (mAdapter == null) {
-                mAdapter = new AgencyServiceAdapter(this, products);
+                mAdapter = new AgencyServiceAdapter(products,R.layout.item_agency_service);
                 mAdapter.setOnItemClickListener(product -> {
                     start(ServiceDetailFragment.newInstance(product));
                 });

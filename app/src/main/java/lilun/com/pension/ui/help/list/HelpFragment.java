@@ -104,6 +104,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     @Override
     protected void initView(LayoutInflater inflater) {
         initConditionOption();
+        searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {

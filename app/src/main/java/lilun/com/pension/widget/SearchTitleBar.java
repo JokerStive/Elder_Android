@@ -11,7 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import lilun.com.pension.R;
-import lilun.com.pension.widget.filter_view.SearchPop;
+import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.widget.filter_view.SearchFragment;
 
 /**
  * 带搜索框和布局切换的标题栏
@@ -32,6 +33,8 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     private int layoutTypeIndex = 0;
     private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.BIG, LayoutType.SMALL, LayoutType.NULL};
     private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_big, R.drawable.layout_type_small, R.drawable.layout_type_null};
+    private boolean noNullLayout;
+    private BaseFragment fragment;
 
     public SearchTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,6 +58,13 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
 
     }
 
+    public void setFragment(BaseFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public void setNoNullLayout() {
+        this.noNullLayout = true;
+    }
 
     @Override
     public void onClick(View v) {
@@ -66,13 +76,16 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
                 break;
 
             case R.id.et_search:
-                SearchPop searchPop = new SearchPop(getContext(), this, tvSearch.getText() + "");
-                searchPop.setOnSearchListenerListener(str -> {
-                    tvSearch.setText(str);
-                    if (listener != null) {
-                        listener.onSearch(str);
-                    }
-                });
+                if (fragment != null) {
+                    SearchFragment searchPop = SearchFragment.newInstance(tvSearch.getText() + "");
+                    searchPop.setOnSearchListenerListener(str -> {
+                        tvSearch.setText(str);
+                        if (listener != null) {
+                            listener.onSearch(str);
+                        }
+                    });
+                    fragment.start(searchPop);
+                }
                 break;
 
         }
@@ -86,9 +99,10 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int indexCount = noNullLayout ? layoutTypes.length - 2 : layoutTypes.length - 1;
             if (v.getId() == R.id.iv_change_layout) {
                 if (listener != null) {
-                    if (layoutTypeIndex == layoutTypes.length - 1) {
+                    if (layoutTypeIndex == indexCount) {
                         layoutTypeIndex = 0;
                     } else {
                         layoutTypeIndex++;

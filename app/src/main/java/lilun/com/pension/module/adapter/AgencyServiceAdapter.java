@@ -9,7 +9,6 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.UIUtils;
@@ -23,12 +22,10 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
-    private BaseFragment fragment;
     private OnItemClickListener listener;
 
-    public AgencyServiceAdapter(BaseFragment fragment, List<OrganizationProduct> data) {
-        super(R.layout.item_agency_service, data);
-        this.fragment = fragment;
+    public AgencyServiceAdapter(List<OrganizationProduct> data,int itemRes) {
+        super(itemRes, data);
     }
 
     @Override

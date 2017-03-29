@@ -31,6 +31,7 @@ import lilun.com.pension.ui.help.list.HelpFragment;
 import lilun.com.pension.ui.help.list.HelpPresenter;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
+import lilun.com.pension.widget.filter_view.SearchPop;
 
 /**
  * 邻里互助宿主activity
@@ -112,8 +113,12 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onRightClick() {
-                    start(HelpFragment.newInstance(true));
+//                    start(HelpFragment.newInstance(true));
+//                sta|);
+//                start(SearchPop.newInstance(""));
+                new SearchPop(getContext(), "哈哈");
             }
+
         });
 
         tvFindHelp.setOnClickListener(this);

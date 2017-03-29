@@ -21,7 +21,8 @@ import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.agency.detail.AgencyDetailFragment;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
-import lilun.com.pension.widget.NormalTitleBar;
+import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
  * 养老机构V
@@ -33,19 +34,23 @@ import lilun.com.pension.widget.NormalTitleBar;
 public class AgencyListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
 
 
+    @Bind(R.id.searchBar)
+    SearchTitleBar searchBar;
+    @Bind(R.id.filter_view)
+    FilterView filterView;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
-
-    @Bind(R.id.titleBar)
-    NormalTitleBar titleBar;
     private String mCategoryId;
     private String mTitle;
     private AgencyAdapter mAgencyAdapter;
     private AgencyServiceAdapter mAgencyServiceAdapter;
+    // 0 获取服务  1获取机构  2
     private int mType;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
+    private List<OrganizationProduct> products;
+    private List<Organization> organizations;
 
     public static AgencyListFragment newInstance(String title, String categoryId, int type) {
         AgencyListFragment fragment = new AgencyListFragment();
@@ -75,20 +80,42 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_recycler;
+        return R.layout.layout_search_filter_list;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(mTitle);
-        titleBar.setOnBackClickListener(this::pop);
+        searchBar.setNoNullLayout();
+        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
+            @Override
+            public void onBack() {
+                pop();
+            }
+
+            @Override
+            public void onSearch(String searchStr) {
+
+            }
+
+            @Override
+            public void onChangeLayout(SearchTitleBar.LayoutType type) {
+                layoutType = type;
+                if (mType != 0) {
+                    if (products!=null && products.size()!=0){
+                        setServiceRecyclerAdapter(products);
+                    }
+                }else {
+                    if (organizations!=null && organizations.size()!=0){
+                        setOrganizationRecyclerAdapter(organizations);
+                    }
+                }
+            }
+        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        if (mType==0){
-            mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
-        }else{
-            mRecyclerView.addItemDecoration(new NormalItemDecoration(17));
-        }
+
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -96,6 +123,56 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
                     }
                 }
         );
+    }
+
+    private void setOrganizationRecyclerAdapter(List<Organization> organizations) {
+        mAgencyAdapter = getAgencyAdapterFromLayoutType(organizations);
+        if (mAgencyAdapter != null) {
+            mAgencyAdapter.setOnItemClickListener((agency) -> {
+                start(AgencyDetailFragment.newInstance("", agency), SINGLETASK);
+            });
+            mAgencyAdapter.setEmptyView();
+        }
+        mRecyclerView.setAdapter(mAgencyAdapter);
+    }
+
+    private AgencyAdapter getAgencyAdapterFromLayoutType(List<Organization> organizations) {
+        AgencyAdapter adapter = null;
+        int layoutId=0;
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
+            layoutId = R.layout.item_agency_big;
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
+            layoutId = R.layout.item_agency_small;
+        }
+        if (layoutId!=0){
+            adapter = new AgencyAdapter(organizations, layoutId, layoutType);
+        }
+        return adapter;
+    }
+
+    private void setServiceRecyclerAdapter(List<OrganizationProduct> products) {
+        mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
+        if (mAgencyServiceAdapter != null) {
+            mAgencyServiceAdapter.setOnItemClickListener((product) -> {
+                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
+            });
+            mAgencyServiceAdapter.setEmptyView();
+        }
+        mRecyclerView.setAdapter(mAgencyServiceAdapter);
+    }
+
+    private AgencyServiceAdapter getServiceAdapterFromLayoutType(List<OrganizationProduct> products) {
+        AgencyServiceAdapter adapter = null;
+        int layoutId=0;
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
+            layoutId = R.layout.item_agency_service;
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
+            layoutId = R.layout.item_agency_service;
+        }
+        if (layoutId!=0){
+            adapter = new AgencyServiceAdapter(products, layoutId);
+        }
+        return adapter;
     }
 
 
@@ -110,9 +187,9 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
     private void getData(int skip) {
         if (mType == 0) {
             getOrganizations(skip);
-        } else if (mType==1){
+        } else if (mType == 1) {
             getProductsByCategoryId(skip);
-        }else if (mType==2){
+        } else if (mType == 2) {
             getProductsByOrganizationId(skip);
         }
     }
@@ -130,20 +207,17 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
 
 
     private void getOrganizations(int skip) {
-        mPresenter.getOrganizationAgency(mCategoryId, "",skip);
+        mPresenter.getOrganizationAgency(mCategoryId, "", skip);
     }
 
 
     @Override
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
+        this.products = products;
         completeRefresh();
         if (products != null) {
             if (mAgencyServiceAdapter == null) {
-                mAgencyServiceAdapter = new AgencyServiceAdapter(this, products);
-                mAgencyServiceAdapter.setOnItemClickListener(product -> {
-                    start(ServiceDetailFragment.newInstance(product),SINGLETASK);
-                });
-                mRecyclerView.setAdapter(mAgencyServiceAdapter);
+                setServiceRecyclerAdapter(products);
             } else if (isLoadMore) {
                 mAgencyServiceAdapter.addAll(products);
             } else {
@@ -154,14 +228,11 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
 
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
+        this.organizations = organizations;
         completeRefresh();
         if (organizations != null) {
             if (mAgencyAdapter == null) {
-                mAgencyAdapter = new AgencyAdapter(this, organizations);
-                mAgencyAdapter.setOnItemClickListener(agency -> {
-                    start(AgencyDetailFragment.newInstance("",agency),SINGLETASK);
-                });
-                mRecyclerView.setAdapter(mAgencyAdapter);
+               setOrganizationRecyclerAdapter(organizations);
             } else if (isLoadMore) {
                 mAgencyAdapter.addAll(organizations);
             } else {
@@ -176,4 +247,6 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
             mSwipeLayout.setRefreshing(false);
         }
     }
+
+
 }

@@ -8,10 +8,10 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -22,12 +22,12 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class AgencyAdapter extends QuickAdapter<Organization> {
-    private BaseFragment fragment;
+    private SearchTitleBar.LayoutType layoutType;
     private OnItemClickListener listener;
 
-    public AgencyAdapter(BaseFragment fragment, List<Organization> data) {
-        super(R.layout.item_agency, data);
-        this.fragment = fragment;
+    public AgencyAdapter(List<Organization>  data,int itemRes,  SearchTitleBar.LayoutType layoutType) {
+        super(itemRes, data);
+        this.layoutType = layoutType;
     }
 
     @Override

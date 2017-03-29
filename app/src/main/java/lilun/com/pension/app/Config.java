@@ -6,8 +6,8 @@ package lilun.com.pension.app;
  */
 public class Config {
     public static final String TAG_LOGGER = "yk";
-    public static final String BASE_URL = "http://192.168.3.14:3001/api/";
-//    public static final String BASE_URL = "http://112.74.97.254:3000/api/";
+//    public static final String BASE_URL = "http://192.168.3.14:3001/api/";
+    public static final String BASE_URL = "http://112.74.97.254:3000/api/";
 
     public static final String help = "help";
 

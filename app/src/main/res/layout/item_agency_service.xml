@@ -11,24 +11,18 @@
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-         />
+        android:layout_height="210dp" />
 
 
     <TextView
         android:id="@+id/tv_item_title"
         style="@style/tv_normal"
+        android:layout_marginTop="8dp"
         android:maxLength="15"
         android:maxLines="1"
-        android:layout_marginTop="8dp"
         tools:text="下水道堵了下水道堵了下水道堵了" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        >
     <RatingBar
         android:id="@+id/rb_bar"
         style="@style/ratingBarr_small"
@@ -44,6 +38,6 @@
         style="@style/tv_small"
         android:layout_marginLeft="7dp"
         tools:text="1111条评论" />
-    </LinearLayout>
+
 
 </LinearLayout>
