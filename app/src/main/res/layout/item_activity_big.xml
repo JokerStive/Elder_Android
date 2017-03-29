@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/icon_def"
+        android:layout_height="197dp">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="197dp"
+             />
+        
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/activity_check"
+            android:layout_alignParentRight="true"
+            />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/tv_small"
+        android:layout_width="300dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp">
+
+
+        <TextView
+            android:id="@+id/tv_isJoin"
+            style="@style/tv_normal"
+            android:textColor="@color/red"
+            android:textSize="12dp"
+            tools:text="未参与" />
+
+        <TextView
+            android:id="@+id/tv_time_joinCount"
+            style="@style/tv_small"
+            android:layout_marginLeft="3dp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/dp_14"
+            tools:text="/ 03.18 / 参与人数(8/10)" />
+
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_environment"
+        style="@style/tv_small"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/dp_14"
+        tools:text="重庆市半区去啊啊" />
+
+</LinearLayout>

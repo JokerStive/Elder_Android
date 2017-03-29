@@ -19,7 +19,8 @@ import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
-import lilun.com.pension.widget.NormalTitleBar;
+import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
  * 居家服务列表V
@@ -37,11 +38,17 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    @Bind(R.id.titleBar)
-    NormalTitleBar titleBar;
+    @Bind(R.id.searchBar)
+    SearchTitleBar searchBar;
+
+    @Bind(R.id.filter_view)
+    FilterView filterView;
+
     private ProductCategory productCategory;
     private AgencyServiceAdapter mAdapter;
     private boolean mIsMerchant;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType .BIG;
+    private List<OrganizationProduct> products;
 
 
     public static ResidentialListFragment newInstance(ProductCategory productCategory) {
@@ -68,21 +75,35 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_recycler;
+        return R.layout.layout_search_filter_list;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(productCategory.getName());
-        titleBar.setRightText(getString(R.string.new_service));
-        titleBar.setOnBackClickListener(this::pop);
-        titleBar.setOnRightClickListener(() -> {
-            //TODO 发布一个服务
+        searchBar.setFragment(this);
+        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
+            @Override
+            public void onBack() {
+                pop();
+            }
+
+            @Override
+            public void onChangeLayout(SearchTitleBar.LayoutType type) {
+                layoutType = type;
+                if (products != null && products.size() != 0) {
+                    setRecyclerAdapter(products);
+                }
+            }
+
+            @Override
+            public void onSearch(String searchStr) {
+//                conditionMap.put(condition_title,searchStr);
+//                getHelps(0);
+            }
         });
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(27));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -90,6 +111,32 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
                     }
                 }
         );
+    }
+
+
+    private void setRecyclerAdapter(List<OrganizationProduct> products) {
+        mAdapter = getAdapterFromLayoutType(products);
+        if (mAdapter != null) {
+            mAdapter.setOnItemClickListener((product) -> {
+                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
+            });
+            mAdapter.setEmptyView();
+        }
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private AgencyServiceAdapter getAdapterFromLayoutType(List<OrganizationProduct> products) {
+        AgencyServiceAdapter adapter = null;
+        int layoutId = 0;
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
+            layoutId = R.layout.item_agency_service_big;
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
+            layoutId = R.layout.item_agency_service_small;
+        }
+        if (layoutId != 0) {
+            adapter = new AgencyServiceAdapter(products, layoutId);
+        }
+        return adapter;
     }
 
     @Override
@@ -112,15 +159,11 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
 
     @Override
     public void showResidentialServices(List<OrganizationProduct> products, boolean isLoadMore) {
+        this.products = products;
         completeRefresh();
         if (products != null) {
             if (mAdapter == null) {
-                mAdapter = new AgencyServiceAdapter(products,R.layout.item_agency_service);
-                mAdapter.setOnItemClickListener(product -> {
-                    start(ServiceDetailFragment.newInstance(product));
-                });
-                mAdapter.setEmptyView();
-                mRecyclerView.setAdapter(mAdapter);
+                setRecyclerAdapter(products);
             } else if (isLoadMore) {
                 mAdapter.addAll(products);
             } else {

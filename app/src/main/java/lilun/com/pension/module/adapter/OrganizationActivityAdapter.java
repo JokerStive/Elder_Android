@@ -1,16 +1,19 @@
 package lilun.com.pension.module.adapter;
 
+import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -21,30 +24,51 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
-    private BaseFragment fragment;
+    private String isjoined = "未参加";
     private OnItemClickListener listener;
 
-    public OrganizationActivityAdapter(BaseFragment fragment, List<OrganizationActivity> data) {
-        super(R.layout.item_module_second, data);
-        this.fragment = fragment;
+    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
+        super(layoutRes, data);
     }
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
-        UIUtils.setBold(help.getView(R.id.tv_item_title));
+        UIUtils.setBold(help.getView(R.id.tv_title));
 
-        help.setText(R.id.tv_item_title, activity.getTitle())
-                .setText(R.id.tv_item_time, StringUtils.timeFormat(activity.getCreatedAt()))
-                .setText(R.id.tv_item_address, activity.getAddress())
-                .setOnClickListener(R.id.ll_module_background, v -> {
+        help.setText(R.id.tv_title, activity.getTitle())
+                .setText(R.id.tv_environment, activity.getAddress())
+                .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {
                         listener.onItemClick(activity);
                     }
                 });
-        String fileName = activity.getIcon()!=null?activity.getIcon().get(0).getFileName():null;
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationActivies(activity.getId(),fileName),
-                R.drawable.icon_def,help.getView(R.id.iv_icon));
 
+
+        List<String> partners = activity.getPartners();
+        String timeAndJoinCount = "/ " + StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4);
+        if (partners != null) {
+            timeAndJoinCount = timeAndJoinCount + " / " + "参与人数(" + partners.size() + "/" + activity.getMaxPartner() + ")";
+        }else {
+            timeAndJoinCount = timeAndJoinCount + " / " + "参与人数(0 /" + activity.getMaxPartner() + ")";
+        }
+
+        //时间和参与的人
+        help.setText(R.id.tv_time_joinCount,timeAndJoinCount);
+
+        //是否参加
+        if (partners != null && partners.size() != 0) {
+            for (String partnerId : partners) {
+                if (TextUtils.equals(partnerId, User.getUserId())) {
+                    isjoined = "已参加";
+                }
+            }
+        }
+        help.setText(R.id.tv_isJoin, isjoined);
+
+
+        String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;
+        ImageLoaderUtil.instance().loadImage(IconUrl.organizationActivies(activity.getId(), fileName),
+                R.drawable.icon_def, help.getView(R.id.iv_icon));
 
 
     }

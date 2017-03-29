@@ -33,8 +33,9 @@ import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pension.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
+import lilun.com.pension.widget.SearchTitleBar;
 
 /**
  * 社区活动宿主activity
@@ -133,7 +134,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
         //我参与的活动列表
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10     ));
 
 
         //刷新
@@ -150,7 +151,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void setAdapter() {
-        mContentAdapter = new OrganizationActivityAdapter(this, organizationActivities);
+        mContentAdapter = new OrganizationActivityAdapter( organizationActivities,R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL);
         mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
             start(ActivityDetailFragment.newInstance(activityItem.getId()));

@@ -165,9 +165,9 @@ public class AgencyListFragment extends BaseFragment<AgencyListContract.Presente
         AgencyServiceAdapter adapter = null;
         int layoutId=0;
         if (layoutType == SearchTitleBar.LayoutType.BIG) {
-            layoutId = R.layout.item_agency_service;
+            layoutId = R.layout.item_agency_service_big;
         } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
-            layoutId = R.layout.item_agency_service;
+            layoutId = R.layout.item_agency_service_small;
         }
         if (layoutId!=0){
             adapter = new AgencyServiceAdapter(products, layoutId);

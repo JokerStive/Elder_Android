@@ -128,7 +128,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         UIUtils.setBold(tvTitle);
 
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
-        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_price);
+        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
         //回答者列表

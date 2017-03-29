@@ -32,7 +32,7 @@ public class ProductorAdapter extends QuickAdapter<OrganizationProduct> {
         RatingBar ratingBar = help.getView(R.id.rb_bar);
         ratingBar.setRating(product.getScore());
         help.setText(R.id.tv_title, product.getName())
-                .setText(R.id.tv_price, String.format(App.context.getString(R.string.price_format), product.getPrice()))
+                .setText(R.id.tv_mobile, String.format(App.context.getString(R.string.price_format), product.getPrice()))
         ;
     }
 }

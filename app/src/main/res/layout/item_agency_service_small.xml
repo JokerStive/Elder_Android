@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical"
+    android:padding="7dp">
+
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        tools:src="@drawable/selector_agency" />
+
+    <LinearLayout
+        android:id="@+id/ll_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="18dp"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/tv_item_title"
+            style="@style/tv_normal"
+            android:layout_marginTop="8dp"
+            android:maxLength="15"
+            android:maxLines="1"
+            tools:text="下水道堵了下水道堵了下水道堵了" />
+
+
+        <RatingBar
+            android:id="@+id/rb_bar"
+            style="@style/ratingBarr_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:isIndicator="true"
+            android:layout_marginTop="3dp"
+            android:numStars="5" />
+
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/tv_mobile"
+            style="@style/tv_small"
+            tools:text="1111条评论" />
+    </LinearLayout>
+
+</RelativeLayout>

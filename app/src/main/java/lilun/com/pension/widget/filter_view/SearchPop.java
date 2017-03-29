@@ -1,6 +1,5 @@
 package lilun.com.pension.widget.filter_view;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,7 +11,10 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,9 @@ import lilun.com.pension.module.db.RecordDbOpenHelper;
  *         create at 2017/3/28 14:51
  *         email : yk_developer@163.com
  */
-public class SearchPop extends Dialog implements View.OnClickListener {
+public class SearchPop extends PopupWindow implements View.OnClickListener {
 
-    private  Context context;
+    private Context context;
     private String oldSerach;
     private EditText etSearch;
     private RecyclerView rvRecord;
@@ -40,17 +42,19 @@ public class SearchPop extends Dialog implements View.OnClickListener {
     private SearchRecordAdapter adapter;
     private OnSearchListener listener;
     private View clear;
+    private InputMethodManager imm;
 
-    public SearchPop(Context context, View container, String string) {
-        super(context,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+    public SearchPop(Context context, String string) {
+        super(context);
         this.oldSerach = string;
         helper = new RecordDbOpenHelper(context);
         this.context = context;
-        init(container);
+        init();
     }
 
 
-    private void init(View container) {
+    private void init() {
+        imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         View view = LayoutInflater.from(App.context).inflate(R.layout.custom_search_view, null);
         view.findViewById(R.id.iv_back).setOnClickListener(this);
         view.findViewById(R.id.tv_null).setOnClickListener(this);
@@ -60,8 +64,7 @@ public class SearchPop extends Dialog implements View.OnClickListener {
         etSearch.setText(oldSerach);
         etSearch.setSelection(oldSerach.length());
         etSearch.setFocusable(true);
-//        InputMethodManager inputManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 
 //        setFocusable(true);
 //        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -97,18 +100,19 @@ public class SearchPop extends Dialog implements View.OnClickListener {
         rvRecord.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
 
         setContentView(view);
-//        setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-//        setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-//        setFocusable(true);
-//
-//        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_rect_white));
-//        showAsDropDown(etSearch);
+        setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        setFocusable(true);
+
+        setBackgroundDrawable(context.getResources().getDrawable(R.drawable.shape_rect_white));
+        showAsDropDown(etSearch);
 
 
         queryRecord("");
     }
 
     private void search(String str) {
+        hintKeyBord();
         if (!TextUtils.isEmpty(str)) {
             str = str.replace(" ", "");
             insertData(str);
@@ -141,10 +145,6 @@ public class SearchPop extends Dialog implements View.OnClickListener {
             case R.id.tv_clear_records:
                 //清空
                 clearRecords();
-                if (adapter != null && adapter.getItemCount() != 0) {
-//                    adapter.replaceAll(new ArrayList<>());
-                    adapter.clear();
-                }
                 break;
 
         }
@@ -165,17 +165,19 @@ public class SearchPop extends Dialog implements View.OnClickListener {
             if (searchData.size() != 0) {
                 clear.setVisibility(View.VISIBLE);
             }
-            if (adapter == null) {
-                adapter = new SearchRecordAdapter(searchData);
-                adapter.setOnItemClickListener(str1 -> {
-                    //搜索
-                    etSearch.setText(str1);
-                    search(str1);
-                });
-                rvRecord.setAdapter(adapter);
-            } else {
-                adapter.replaceAll(searchData);
-            }
+//            if (adapter == null) {
+            rvRecord.setVisibility(View.VISIBLE);
+            adapter = new SearchRecordAdapter(searchData);
+            adapter.setOnItemClickListener(str1 -> {
+                //搜索
+                etSearch.setText(str1);
+                search(str1);
+            });
+            rvRecord.setAdapter(adapter);
+//            }
+//            else {
+//                adapter.replaceAll(searchData);
+//            }
         }
     }
 
@@ -194,19 +196,32 @@ public class SearchPop extends Dialog implements View.OnClickListener {
             db = helper.getWritableDatabase();
             db.execSQL("insert into records(searchStr) values('" + str + "')");
             db.close();
-//            if (adapter!=null){
-//                adapter.add(str);
-//            }
+        }
+    }
+
+
+    private void hintKeyBord() {
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
+            imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0); //强制隐藏键盘
         }
     }
 
 
     private void clearRecords() {
+        hintKeyBord();
         db = helper.getWritableDatabase();
         db.execSQL("delete from records");
         db.close();
+
         clear.setVisibility(View.GONE);
+//        if (adapter != null && adapter.getItemCount() != 0) {
+//            adapter.replaceAll(new ArrayList<>());
+//        }
+        rvRecord.setVisibility(View.INVISIBLE);
+        rvRecord.setAdapter(new SearchRecordAdapter(new ArrayList<>()));
     }
+
 
     public interface OnSearchListener {
         void onSearch(String str);
@@ -217,3 +232,4 @@ public class SearchPop extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 }
+

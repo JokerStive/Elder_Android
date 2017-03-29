@@ -60,7 +60,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         tvRequireTitle = (TextView) mHeadView.findViewById(R.id.tv_require_title);
         tvOriginatorPerson = (TextView) mHeadView.findViewById(R.id.tv_originator_person);
         tvParticipationRequest = (TextView) mHeadView.findViewById(R.id.tv_participation_request);
-        tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_address_title);
+        tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_environment_title);
         tvActivityAddress = (TextView) mHeadView.findViewById(R.id.tv_activity_address);
         tvQuestTitle = (TextView) mHeadView.findViewById(R.id.tv_activity_question_title);
         cigConnectIcon = (CircleImageView) mHeadView.findViewById(R.id.cig_connect_icon);

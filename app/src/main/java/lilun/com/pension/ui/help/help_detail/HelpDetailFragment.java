@@ -130,7 +130,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //各种信息
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
-        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_price);
+        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
         //参与者或者回答者列表的title
@@ -141,7 +141,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         //  只有 "帮" 才具有的=============================
         tvPhone = (TextView) mHeadView.findViewById(R.id.tv_aid_phone);
         tvAddress = (TextView) mHeadView.findViewById(R.id.tv_aid_address);
-        TextView tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_address_title);
+        TextView tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_environment_title);
         setBold(tvAddressTitle);
 
 

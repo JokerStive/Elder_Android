@@ -26,7 +26,7 @@ import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
-import lilun.com.pension.widget.ElderModuleItemDecoration;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.filter_view.FilterView;
 
@@ -46,14 +46,18 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
+
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
+
     @Bind(R.id.filter_view)
     FilterView filterView;
 
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
     private String[] hedaers = new String[]{"周期类型", "区域", "时间"};
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
+    private List<OrganizationActivity> activities;
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -83,14 +87,37 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_search_list;
+        return R.layout.layout_search_filter_list;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        searchBar.setNoNullLayout();
+        searchBar.setFragment(this);
+        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
+            @Override
+            public void onBack() {
+                pop();
+            }
+
+            @Override
+            public void onChangeLayout(SearchTitleBar.LayoutType type) {
+                layoutType = type;
+                if (activities != null && activities.size() != 0) {
+                    setRecyclerAdapter(activities);
+                }
+            }
+
+            @Override
+            public void onSearch(String searchStr) {
+//                conditionMap.put(condition_title,searchStr);
+//                getHelps(0);
+            }
+        });
+
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -102,6 +129,34 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         initConditionModules();
     }
 
+
+    private void setRecyclerAdapter(List<OrganizationActivity> activities) {
+        mActivityAdapter = getAdapterFromLayoutType(activities);
+        if (mActivityAdapter != null) {
+            mActivityAdapter.setOnItemClickListener((activityItem) -> {
+                start(ActivityDetailFragment.newInstance(activityItem.getId()));
+            });
+            mActivityAdapter.setEmptyView();
+        }
+        mRecyclerView.setAdapter(mActivityAdapter);
+    }
+
+
+    private OrganizationActivityAdapter getAdapterFromLayoutType(List<OrganizationActivity> activities) {
+        OrganizationActivityAdapter adapter = null;
+        int layoutId = 0;
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
+            layoutId = R.layout.item_activity_big;
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
+            layoutId = R.layout.item_activity_small;
+        }
+
+//        else {
+//            layoutId = R.layout.item_aid_null;
+//        }
+        adapter = new OrganizationActivityAdapter(activities, layoutId, layoutType);
+        return adapter;
+    }
 
     private void initConditionModules() {
         List<ConditionOption> kindOptions = new ArrayList<>();
@@ -181,13 +236,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     @Override
     public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {
         completeRefresh();
+        this.activities = activities;
         if (mActivityAdapter == null) {
-            mActivityAdapter = new OrganizationActivityAdapter(this, activities);
-            mActivityAdapter.setEmptyView();
-            mActivityAdapter.setOnItemClickListener((activityItem) -> {
-                start(ActivityDetailFragment.newInstance(activityItem.getId()));
-            });
-            mRecyclerView.setAdapter(mActivityAdapter);
+            setRecyclerAdapter(activities);
         } else if (islOadMore) {
             mActivityAdapter.addAll(activities);
         } else {

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/tv_small"
+            tools:text="张三 ( 男 )" />
+
+        <TextView
+            android:id="@+id/tv_health_status"
+            style="@style/tv_small"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            tools:text="半自理" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/tv_small"
+        android:layout_marginTop="8dp"
+        tools:text="3.18" />
+
+    <TextView
+        android:id="@+id/tv_health_desc"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="3"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
+
+    <View
+        style="@style/line_gray"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_edit"
+            style="@style/tv_small"
+            android:layout_marginTop="8dp"
+            android:text="编辑" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            style="@style/tv_small"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="8dp"
+            android:text="删除" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -137,7 +137,7 @@
             android:layout_marginTop="17dp" />
 
         <TextView
-            android:id="@+id/tv_address_title"
+            android:id="@+id/tv_environment_title"
             style="@style/tv_normal"
             android:layout_marginTop="17dp"
             android:text="@string/activity_address" />

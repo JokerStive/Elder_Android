@@ -31,6 +31,7 @@ import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
+import lilun.com.pension.ui.personal_center.InformationCenterFragment;
 import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
@@ -127,6 +128,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ivHelp.setOnClickListener(this);
         ivHelpEach.setOnClickListener(this);
         ivResidentialService.setOnClickListener(this);
+        ivMessage.setOnClickListener(this);
     }
 
     @Override
@@ -221,6 +223,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             case R.id.iv_residential_service:
                 //TODO 居家服务
                 startResidentialService();
+                break;
+
+            case R.id.iv_message:
+                start(InformationCenterFragment.newInstance());
                 break;
         }
 

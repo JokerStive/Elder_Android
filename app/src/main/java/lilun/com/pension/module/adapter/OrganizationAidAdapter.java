@@ -55,7 +55,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
         }
 
         //补贴
-        TextView tvItemPrice = help.getView(R.id.tv_price);
+        TextView tvItemPrice = help.getView(R.id.tv_mobile);
         tvItemPrice.setText(String.format(App.context.getString(R.string.help_price), aid.getPrice()));
 
         //参与者和时间
@@ -69,7 +69,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 //        }
 
         //是否显示地址
-        TextView tvItemAddress = help.getView(R.id.tv_address);
+        TextView tvItemAddress = help.getView(R.id.tv_environment);
         tvItemAddress.setVisibility(aid.getKind() == 0 ? View.GONE : View.VISIBLE);
         if (tvItemAddress.getVisibility() == View.VISIBLE) {
             tvItemAddress.setText(aid.getAddress());

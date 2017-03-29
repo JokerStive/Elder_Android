@@ -57,13 +57,13 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.tv_desc)
     TextView tvProvider;
 
-    @Bind(R.id.tv_price)
+    @Bind(R.id.tv_mobile)
     TextView tvPrice;
 
     @Bind(R.id.tv_introduction)
     TextView tvIntroduction;
 
-    @Bind(R.id.tv_requirement)
+    @Bind(R.id.tv_equipment)
     TextView tvContent;
 
     @Bind(R.id.tv_enter_rank)

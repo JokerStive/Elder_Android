@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
+
         <lilun.com.pension.widget.slider.BannerPager
             android:id="@+id/iv_icon"
             android:layout_width="match_parent"
@@ -29,7 +30,6 @@
             android:layout_marginRight="10dp">
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_reservation"
                 style="@style/tv_small"
                 android:layout_width="60dp"
@@ -39,7 +39,8 @@
                 android:layout_marginTop="27dp"
                 android:background="@drawable/shape_circle_white"
                 android:gravity="center"
-                android:text="@string/reservation" />
+                android:text="@string/reservation"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -49,7 +50,6 @@
                 tools:text="度假服务" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_desc"
                 style="@style/tv_small"
                 android:layout_below="@id/tv_title"
@@ -57,28 +57,27 @@
                 tools:text="盈利组织" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_phone"
                 style="@style/tv_small"
                 android:layout_below="@id/tv_desc"
                 android:layout_marginTop="3dp"
+                android:visibility="gone"
                 tools:text="床位数：32" />
 
             <TextView
-                android:id="@+id/tv_price"
+                android:id="@+id/tv_mobile"
                 style="@style/tv_small"
                 android:layout_below="@id/tv_phone"
-                android:layout_marginTop="3dp"
-                tools:text="价格区间:2000-5000" />
+                android:layout_marginTop="6dp"
+                tools:text="13206011223" />
 
             <LinearLayout
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_price"
+                android:layout_below="@id/tv_mobile"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
-
 
 
                 <View style="@style/line_gray" />
@@ -96,18 +95,18 @@
                     android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
 
-                <View style="@style/line_gray"
-                    android:layout_marginTop="15dp"
-                    />
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="15dp" />
 
                 <TextView
-                    android:id="@+id/tv_requirement_title"
+                    android:id="@+id/tv_equipment_title"
                     style="@style/tv_normal"
                     android:layout_marginTop="15dp"
-                    android:text="@string/requirements" />
+                    android:text="@string/equipment" />
 
                 <TextView
-                    android:id="@+id/tv_requirement"
+                    android:id="@+id/tv_equipment"
                     style="@style/tv_small"
                     android:layout_marginTop="15dp"
                     android:lineSpacingMultiplier="1.2"
@@ -120,14 +119,33 @@
 
 
                 <TextView
-                    android:id="@+id/tv_address_title"
+                    android:id="@+id/tv_environment_title"
                     style="@style/tv_normal"
                     android:layout_marginTop="15dp"
-                    android:text="地址" />
+                    android:text="@string/environment" />
 
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_environment"
+                    style="@style/tv_small"
+                    android:layout_marginTop="15dp"
+                    android:lineSpacingMultiplier="1.2"
+                    tools:text="茶园新城时代都会7-1" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_roomType_title"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/roomType" />
+
+
+                <TextView
+                    android:id="@+id/tv_roomType"
                     style="@style/tv_small"
                     android:layout_marginTop="15dp"
                     android:lineSpacingMultiplier="1.2"
@@ -157,16 +175,15 @@
                 <TextView
                     android:id="@+id/tv_provide_service"
                     style="@style/tv_normal"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
                     android:layout_width="match_parent"
-                    android:textColor="@color/red"
-                    android:text="@string/provide_service" />
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/provide_service"
+                    android:textColor="@color/red" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_marginBottom="15dp"
-                     />
+                    android:layout_marginBottom="15dp" />
 
             </LinearLayout>
 

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f4f4f4"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10dp"
+                android:text="@string/occupant_info" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/name" />
+
+                    <EditText
+                        android:id="@+id/et_occupant_name"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="请输入入住者姓名"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/et_occupant_name" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/sex" />
+
+                    <TextView
+                        android:id="@+id/tv_sex"
+                        style="@style/tv_small"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择性别"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_sex" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/birthday" />
+
+                    <TextView
+                        android:id="@+id/tv_birthday"
+                        style="@style/tv_small"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择出生日期"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_birthday" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/health_status" />
+
+                    <TextView
+                        android:id="@+id/tv_health_status"
+                        style="@style/tv_small"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择健康状况"
+                        android:padding="10dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:background="@drawable/home_bg">
+
+                    <EditText
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="6dp"
+                        android:hint="请填写详细的健康状况"
+
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10dp"
+                android:text="@string/reservation_info" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/relation" />
+
+                    <TextView
+                        android:id="@+id/tv_relation"
+                        style="@style/tv_small"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择您与入住人的关系"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_relation" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="@string/name" />
+
+                    <EditText
+                        android:id="@+id/et_reservation_name"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="请输入入住者姓名"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/et_reservation_name" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small"
+                        android:layout_centerVertical="true"
+                        android:text="电话" />
+
+                    <EditText
+                        android:id="@+id/et_reservation_phone"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="请输入电话号码"
+                        android:padding="10dp" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/et_reservation_phone" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10dp"
+                android:text="@string/check_in_time" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_bg"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/tv_small"
+                    android:layout_centerVertical="true"
+                    android:text="@string/check_in_time" />
+
+                <TextView
+                    android:id="@+id/tv_check_in_time"
+                    style="@style/tv_small"
+                    android:layout_width="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:hint="点击选择入住日期" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/home_bg"
+        android:text="确定预约"
+        android:textColor="@color/red"
+        android:textSize="17sp" />
+</RelativeLayout>

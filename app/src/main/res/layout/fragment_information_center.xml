@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/information_center" />
+
+    <View style="@style/line_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tv_system"
+            style="@style/tv_small"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="@string/system_information"
+            android:textColor="@color/selector_filter_bar_text" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="7dp" />
+
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tv_personal"
+            style="@style/tv_small"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="@string/personal_information"
+            android:textColor="@color/selector_filter_bar_text" />
+    </LinearLayout>
+
+    <View style="@style/line_gray" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_system"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_personal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

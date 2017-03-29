@@ -10,13 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="197dp">
+        android:layout_height="197dp"
+        android:background="@color/icon_def">
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/iv_icon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:src="@drawable/selector_agency" />
+            android:layout_height="match_parent" />
 
 
     </RelativeLayout>
@@ -36,7 +37,7 @@
 
 
         <TextView
-            android:id="@+id/tv_price"
+            android:id="@+id/tv_mobile"
             style="@style/tv_normal"
             android:textColor="@color/red"
             android:textSize="12dp"
@@ -54,7 +55,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tv_environment"
         style="@style/tv_small"
         android:layout_marginTop="2dp"
         android:textColor="@color/gray"

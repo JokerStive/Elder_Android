@@ -100,9 +100,22 @@
     <string name="reservation_desc">确定要预约该服务吗?</string>
 
     <!--养老机构详情-->
-    <string name="requirements">注意事项</string>
+    <string name="equipment">设施设备</string>
     <string name="provide_service">提供的服务</string>
+    <string name="agency_introduction">机构简介</string>
+    <string name="environment">环境</string>
+    <string name="roomType">房型</string>
     <string name="format_bedsCount">床位数：</string>
+
+    <!--新增预约信息-->
+    <string name="occupant_info">入住者信息登记</string>
+    <string name="reservation_info">预约者信息登记</string>
+    <string name="name">姓名</string>
+    <string name="birthday">出生日期</string>
+    <string name="check_in_time">入住日期</string>
+    <string name="relation">您与入住人的关系</string>
+    <string name="sex">性别</string>
+    <string name="health_status">健康状况</string>
 
     =====================社区活动===============================================
 
@@ -187,4 +200,9 @@
     <string name="participation_request">参与要求</string>
     <string name="activity_address">活动地址</string>
     <string name="course">课程</string>
+
+    <!--消息中心-->
+    <string name="information_center">消息中心</string>
+    <string name="system_information">系统消息</string>
+    <string name="personal_information">个人消息</string>
 </resources>
