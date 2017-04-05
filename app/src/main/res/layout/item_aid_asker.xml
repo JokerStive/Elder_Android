@@ -28,19 +28,19 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 tools:text="尼玛" />
 
             <TextView
                 android:id="@+id/tv_time"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 tools:text="2016-7-29" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_agree"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_rect_red"
@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/tv_content"
-        style="@style/tv_small"
+        style="@style/tv_small_ellipsize"
         android:layout_below="@id/rl_avatar"
         android:layout_marginTop="5dp"
         tools:text="你说你是不是傻啊，这都不会" />

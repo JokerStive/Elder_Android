@@ -78,7 +78,7 @@
 
             <TextView
                 android:id="@+id/tv_confirm"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"

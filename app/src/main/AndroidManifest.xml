@@ -60,24 +60,8 @@
             android:name=".ui.chat.ChatActivity"
             android:screenOrientation="portrait" />
 
-
-        <receiver
-            android:name=".module.receiver.MyJPushReceiver"
-            android:enabled="true">
-
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-
-                <category android:name="lilun.com.pension" />
-
-            </intent-filter>
-
-        </receiver>
+        //mqtt service
+        <service android:name="org.eclipse.paho.android.service.MqttService"/>
 
         =================================PUSHY======================
 

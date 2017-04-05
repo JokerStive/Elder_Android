@@ -22,6 +22,7 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
+import lilun.com.pension.module.bean.ServiceUserInformation;
 import lilun.com.pension.module.bean.TokenInfo;
 import okhttp3.RequestBody;
 import retrofit2.Response;
@@ -379,5 +380,12 @@ public interface ApiService {
      */
     @PUT("ProductOrders/{id}")
     Observable<Response<Object>> putOrder(@Path("id") String productId,@Body ProductOrder order);
+
+//    ====================养老机构
+    /**
+     * 获取预约登记信息
+     */
+    @GET("ServiceUserInformations")
+    Observable<Response<List<ServiceUserInformation>>> getServiceUserInfos(@Query("filter") String filter);
 
 }

@@ -17,6 +17,12 @@ public class ConditionOption {
         this.conditionValue = conditionValue;
     }
 
+    public ConditionOption(String key, String conditionKey) {
+        this.key = key;
+        this.conditionKey = conditionKey;
+        this.conditionValue = conditionKey;
+    }
+
     private String conditionValue;
 
     public String getKey() {

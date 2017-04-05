@@ -4,6 +4,7 @@
     <!--token-->
     <string name="ware">警告</string>
     <string name="token_failure">登录已失效，请重新登录</string>
+    <string name="not_complete">功能暂未开放,敬请期待</string>
 
 
     <!--一键求助-->
@@ -116,6 +117,10 @@
     <string name="relation">您与入住人的关系</string>
     <string name="sex">性别</string>
     <string name="health_status">健康状况</string>
+
+    <!--个人信息列表-->
+    <string name="add_new_info">添加新的信息</string>
+    <string name="checkIn_info_list">入住者信息列表</string>
 
     =====================社区活动===============================================
 

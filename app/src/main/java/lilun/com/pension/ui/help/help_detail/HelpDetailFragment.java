@@ -208,11 +208,11 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         List<String> urls = new ArrayList<>();
         if (mAid.getPicture() != null) {
             for (IconModule iconModule : mAid.getPicture()) {
-                String url = IconUrl.organizationAid(mAid.getId(), iconModule.getFileName());
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationAid(mAid.getId(), null);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);

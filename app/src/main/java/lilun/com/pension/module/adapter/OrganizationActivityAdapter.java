@@ -67,7 +67,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
 
         String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationActivies(activity.getId(), fileName),
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), fileName),
                 R.drawable.icon_def, help.getView(R.id.iv_icon));
 
 

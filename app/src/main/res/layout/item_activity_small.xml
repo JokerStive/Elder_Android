@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/tv_title"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_width="300dp"
             android:layout_marginTop="8dp"
             android:maxLines="1"
@@ -36,14 +36,14 @@
 
             <TextView
                 android:id="@+id/tv_isJoin"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:textColor="@color/red"
                 android:textSize="12dp"
                 tools:text="未参与" />
 
             <TextView
                 android:id="@+id/tv_time_joinCount"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginLeft="3dp"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/dp_14"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/tv_environment"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginTop="2dp"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"

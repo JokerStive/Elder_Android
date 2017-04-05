@@ -83,7 +83,7 @@
 
                 <TextView
                     android:id="@+id/tv_input_title"
-                    style="@style/tv_normal"
+                    style="@style/tv_normal_ellipsize"
                     android:layout_centerVertical="true"
                     android:text="@string/activity_time"
                     android:textColor="@color/gray"
@@ -135,7 +135,7 @@
 
                 <TextView
                     android:id="@+id/tv_priority_title"
-                    style="@style/tv_normal"
+                    style="@style/tv_normal_ellipsize"
                     android:layout_centerVertical="true"
                     android:text="@string/activity_end_time"
                     android:textColor="@color/gray"
@@ -149,7 +149,7 @@
                     android:id="@+id/tv_end_time"
                     android:layout_width="match_parent"
                     android:textColor="@color/gray"
-                    style="@style/tv_small" />
+                    style="@style/tv_small_ellipsize" />
 
 
                 <View
@@ -190,7 +190,7 @@
 
 
             <TextView
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginTop="17dp"
                 android:text="@string/add_photo"
                 android:textColor="@color/gray" />

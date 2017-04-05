@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tv_camera"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
         android:gravity="center"
         android:paddingBottom="10dp"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/tv_album"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
         android:gravity="center"
         android:paddingBottom="10dp"

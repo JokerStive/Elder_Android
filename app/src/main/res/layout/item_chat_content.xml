@@ -25,7 +25,7 @@
             android:id="@+id/tv_other_content"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/iv_other_avatar"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:background="@drawable/chat_other_bg"
             tools:text="哈哈哈哈专用羽绒服洗涤剂哈哈哈哈哈哈哈哈专用羽绒服洗涤剂哈哈哈哈哈哈哈哈专用羽绒服洗涤剂哈哈哈哈" />
     </RelativeLayout>
@@ -50,7 +50,7 @@
             android:id="@+id/tv_my_content"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/iv_my_avatar"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:background="@drawable/chat_my_bg"
             tools:text="哈哈哈哈哈哈哈哈哈哈哈哈专用羽绒服洗涤剂哈哈哈哈哈哈哈哈哈哈专用羽绒服洗涤剂哈哈哈哈哈哈哈哈哈哈哈哈专用羽绒服洗涤剂哈哈哈哈哈哈哈哈哈哈哈哈哈哈专用羽绒服洗涤剂" />
     </RelativeLayout>

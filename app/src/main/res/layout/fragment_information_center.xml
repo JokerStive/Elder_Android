@@ -22,7 +22,7 @@
         <TextView
             android:focusable="false"
             android:id="@+id/tv_system"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:gravity="center"
@@ -43,7 +43,7 @@
         <TextView
             android:focusable="false"
             android:id="@+id/tv_personal"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:gravity="center"

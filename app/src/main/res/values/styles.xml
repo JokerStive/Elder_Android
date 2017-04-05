@@ -23,21 +23,21 @@
     <!--拍照获取图片dialogFragment-->
     <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
 
-    <!-- 背景透明 -->
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowContentOverlay">@null</item>
-    <!-- 浮于Activity之上 -->
-    <item name="android:windowIsFloating">true</item>
-    <!-- 边框 -->
-    <item name="android:windowFrame">@null</item>
-    <!-- Dialog以外的区域模糊效果 -->
-    <item name="android:backgroundDimEnabled">true</item>
-    <!-- 无标题 -->
-    <item name="android:windowNoTitle">true</item>
-    <!-- 半透明 -->
-    <item name="android:windowIsTranslucent">true</item>
-    <!-- Dialog进入及退出动画 -->
-    <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- Dialog进入及退出动画 -->
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
     </style>
 
     <!-- photo_dialog进出动画 -->
@@ -49,7 +49,7 @@
 
     <style name="autoScroll">
         <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">marquee</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -57,7 +57,16 @@
     </style>
 
     <!--默认黑色tv-->
-    <style name="tv_normal" parent="autoScroll">
+    <style name="tv_normal_ellipsize" parent="autoScroll">
+        <item name="android:focusable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/tv_size</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--默认黑色tv-->
+    <style name="tv_normal">
         <item name="android:focusable">false</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -76,7 +85,16 @@
     </style>
 
     <!--默认黑色tv-->
-    <style name="tv_small" parent="autoScroll">
+    <style name="tv_small_ellipsize" parent="autoScroll">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/tv_size_small</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--默认黑色tv-->
+    <style name="tv_small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:focusable">false</item>
         <item name="android:layout_height">wrap_content</item>

@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/tv_new_rank"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"

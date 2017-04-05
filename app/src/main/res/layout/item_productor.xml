@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/tv_title"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:ellipsize="end"
             android:maxWidth="@dimen/title_max_width"
             android:maxLines="1"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_mobile"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:textSize="14sp"
             android:layout_marginLeft="12dp"
             tools:text="免费" />
@@ -59,7 +59,7 @@
 
         <TextView
             android:id="@+id/tv_rank_count"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginLeft="7dp"
             android:textSize="14sp"
             tools:text="105条评论" />

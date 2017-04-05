@@ -10,6 +10,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Organization;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
@@ -46,7 +47,7 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
             }
         });
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organization(organization.getId(), null), R.drawable.icon_def, help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations,organization.getId(), StringUtils.getFirstIconNameFromIcon(organization.getIcon())), R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 
 

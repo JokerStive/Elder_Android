@@ -26,19 +26,19 @@
 
         <TextView
             android:id="@+id/tv_name"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             tools:text="尼玛" />
 
         <TextView
             android:id="@+id/tv_mobile"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             tools:text="132222222" />
     </LinearLayout>
 
     <TextView
         android:visibility="gone"
         android:id="@+id/tv_agree"
-        style="@style/tv_small"
+        style="@style/tv_small_ellipsize"
         android:layout_alignParentRight="true"
         android:layout_below="@id/rl_avatar"
         android:layout_centerVertical="true"

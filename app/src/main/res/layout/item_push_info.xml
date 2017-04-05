@@ -11,7 +11,7 @@
         tools:text="类型"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -19,7 +19,7 @@
         tools:text="类容"
         android:layout_gravity="center"
         android:textColor="@color/white"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
     <Button
         android:visibility="gone"

@@ -12,6 +12,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -66,7 +67,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = IconUrl.elderModule(elderModule.getId() + "", elderModule.getIcon().get(0).getFileName());
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules,elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()));
             ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,helper.getView(R.id.iv_module_icon));
         }
     }

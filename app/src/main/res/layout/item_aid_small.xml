@@ -20,14 +20,14 @@
 
         <TextView
             android:id="@+id/tv_creatorName"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
             tools:text="张三" />
 
         <TextView
             android:id="@+id/tv_title"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
             android:maxLines="1"
@@ -36,7 +36,7 @@
 
         <TextView
             android:id="@+id/tv_environment"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginTop="7dp"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/tv_mobile"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/red"
                 android:textSize="@dimen/dp_14"
@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/tv_time_joinCount"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/gray"

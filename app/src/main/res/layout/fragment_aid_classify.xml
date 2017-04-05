@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/tv_need_help"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/selector_help"
@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/tv_find_help"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_width="0dp"
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"

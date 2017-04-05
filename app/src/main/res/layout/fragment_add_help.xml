@@ -93,7 +93,7 @@
 
                 <TextView
                     android:id="@+id/tv_priority_title"
-                    style="@style/tv_normal"
+                    style="@style/tv_normal_ellipsize"
                     android:layout_centerVertical="true"
                     android:text="@string/priority"
                     android:textColor="@color/gray"
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/tv_priority"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_width="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="22dp"
@@ -131,7 +131,7 @@
                 app:input_title="@string/memo" />
 
             <TextView
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginTop="19dp"
                 android:text="@string/add_photo"
                 android:textColor="@color/gray" />

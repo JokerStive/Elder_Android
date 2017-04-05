@@ -7,7 +7,7 @@
         android:textSize="50dp"
         android:layout_gravity="center"
         android:id="@+id/tv_test"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:text="nima"
         />
 

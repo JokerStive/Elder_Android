@@ -31,6 +31,7 @@ import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.agency.reservation.ServiceUserInfoFragment;
 import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.ui.residential.rank.RankListFragment;
 import lilun.com.pension.widget.NormalDialog;
@@ -93,7 +94,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     public static ServiceDetailFragment newInstance(OrganizationProduct product) {
         ServiceDetailFragment fragment = new ServiceDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("product", product);
+        args.putSerializable("pro" +
+                "duct", product);
         fragment.setArguments(args);
         return fragment;
     }
@@ -153,11 +155,11 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         List<String> urls = new ArrayList<>();
         if (mProduct.getImages() != null) {
             for (IconModule iconModule : mProduct.getImages()) {
-                String url = IconUrl.organizationProduct(mProduct.getId(), iconModule.getFileName());
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mProduct.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationProduct(mProduct.getId(), null);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mProduct.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);
@@ -193,7 +195,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
             case R.id.tv_reservation:
                 if (tvReservation.getText().equals(getString(R.string.reservation))) {
-                    reservation();
+                    start(ServiceUserInfoFragment.newInstance());
                 }
                 break;
 

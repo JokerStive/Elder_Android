@@ -29,7 +29,7 @@
 
         <TextView
             android:id="@+id/tv_item_title"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
             android:maxLines="1"
@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/tv_item_address"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_below="@+id/tv_help_priority"
             android:layout_marginTop="3dp"
             tools:text="茶园新城茶园新城茶园新城茶" />

@@ -1,23 +1,19 @@
 package lilun.com.pension.module.adapter;
 
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
-import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
-import lilun.com.pension.module.utils.BitmapUtils;
+import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -37,11 +33,11 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
     }
 
     @Override
-    protected void convert(BaseViewHolder help, Information product) {
+    protected void convert(BaseViewHolder help, Information info) {
 
-        if (5 == product.getContextType()) {
+        if (5 == info.getContextType()) {
             try {
-                JSONObject object = new JSONObject(product.getContext());
+                JSONObject object = new JSONObject(info.getContext());
                 item.setAddress(object.getString("address"));
                 item.setMobile(object.getString("mobile"));
                 item.setDescription(object.getString("description"));
@@ -49,20 +45,21 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
                 e.printStackTrace();
             }
         }
-        help.setText(R.id.tv_item_title, product.getTitle())
+        help.setText(R.id.tv_item_title, info.getTitle())
                 .setText(R.id.tv_item_address, item.getAddress())
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
-                        listener.onItemClick(product);
+                        listener.onItemClick(info);
                     }
                 });
 
-
-        Glide.with(fragment)
-                .load(IconUrl.information(product.getId(), BitmapUtils.picName((ArrayList<IconModule>) product.getPicture())))
-                .placeholder(R.drawable.icon_def)
-                .error(R.drawable.icon_def)
-                .into((ImageView) help.getView(R.id.iv_icon));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getPicture()));
+        ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,help.getView(R.id.iv_icon));
+//        Glide.with(fragment)
+//                .load(IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getPicture()))
+//                .placeholder(R.drawable.icon_def)
+//                .error(R.drawable.icon_def)
+//                .into((ImageView) help.getView(R.id.iv_icon));
 
     }
 

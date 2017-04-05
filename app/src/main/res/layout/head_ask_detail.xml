@@ -33,7 +33,7 @@
         android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
         tools:text="回答"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:textSize="10dp"
         android:background="@drawable/shape_circle_white"
         />
@@ -44,7 +44,7 @@
         android:layout_below="@id/tv_reservation"
         android:layout_marginTop="19dp"
         android:layout_marginLeft="11dp"
-       style="@style/tv_normal" />
+       style="@style/tv_normal_ellipsize" />
 
     <TextView
         android:id="@+id/tv_desc"
@@ -53,7 +53,7 @@
         android:layout_below="@id/tv_title"
         android:layout_alignLeft="@id/tv_title"
         android:layout_marginTop="17dp"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
     <TextView
         android:id="@+id/tv_mobile"
@@ -62,14 +62,14 @@
         android:layout_below="@id/tv_desc"
         android:layout_alignLeft="@id/tv_title"
         android:layout_marginTop="7dp"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
     <TextView
         tools:text="回答"
         android:layout_below="@id/tv_mobile"
         android:layout_marginTop="37dp"
         android:layout_alignLeft="@id/tv_title"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_marginBottom="16dp"
         />
 

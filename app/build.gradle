@@ -65,39 +65,31 @@ dependencies {
     compile 'com.android.support:design:+'
     compile 'joda-time:joda-time:2.9.4'
     //内存泄漏检查
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
     //日志打印
     compile 'com.github.orhanobut:logger:1.12'
     //one activity multiple fragment
     compile 'me.yokeyword:fragmentation:0.9.3'
-
     //photo load
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'me.relex:circleindicator:1.2.2'
-
     //viewpager指示器
     compile 'com.github.hackware1993:MagicIndicator:1.4.0'
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
-
     //refresh and loadMore recyclerView
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.8'
-
-
-
     //图片选择压缩裁剪
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
-
-
     //时间/地址...选择器
     compile 'cn.qqtheme.framework:WheelPicker:1.4.4'
-
-
     //数据库，用来处理推送消息的crud
     compile 'org.litepal.android:core:1.5.0'
+    compile files('libs/fastjson-1.2.9.jar')
 
-
-
+    //MQTT sub-pub
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 

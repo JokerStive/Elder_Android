@@ -23,6 +23,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.PreUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
@@ -32,7 +33,6 @@ import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.personal_center.InformationCenterFragment;
-import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -262,7 +262,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 }
             }
 
-            if (mInformationData.size()==0){
+            if (mInformationData.size() == 0) {
                 Information information = new Information();
                 mInformationData.add(information);
             }
@@ -306,7 +306,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 居家服务
      */
     private void startResidentialService() {
-        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
+        ToastHelper.get().showWareShort(getString(R.string.not_complete));
+//        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
     }
 
     /**
@@ -324,18 +325,18 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void showInformation(List<Information> informations) {
-            this.informations = informations;
-            List<Information> data = new ArrayList<>();
-            for (Information info : informations) {
-                if (info.getParentId().equals(OrganizationChildrenConfig.information() + "/公告")) {
-                    data.add(info);
-                }
+        this.informations = informations;
+        List<Information> data = new ArrayList<>();
+        for (Information info : informations) {
+            if (info.getParentId().equals(OrganizationChildrenConfig.information() + "/公告")) {
+                data.add(info);
             }
-            if (data.size()==0){
-                Information information = new Information();
-                data.add(information);
-            }
-            setInformation(data);
+        }
+        if (data.size() == 0) {
+            Information information = new Information();
+            data.add(information);
+        }
+        setInformation(data);
     }
 
 

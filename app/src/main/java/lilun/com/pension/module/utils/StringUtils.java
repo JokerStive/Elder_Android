@@ -164,7 +164,11 @@ public class StringUtils {
      * 从module的icon字段获取第一张icon的名称
      */
     public static String getFirstIconNameFromIcon(List<IconModule> iconModules) {
-        return iconModules.get(0).getFileName();
+        if (iconModules!=null && iconModules.size()!=0){
+            return iconModules.get(0).getFileName();
+        }else {
+            return null;
+        }
     }
 
 

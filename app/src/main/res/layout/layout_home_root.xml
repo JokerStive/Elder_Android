@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/tv_position"
-               style="@style/tv_normal"
+               style="@style/tv_normal_ellipsize"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="6dp"
                 android:layout_toEndOf="@id/iv_position"

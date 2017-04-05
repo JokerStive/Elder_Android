@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/tv_reservation"
-        style="@style/tv_small"
+        style="@style/tv_small_ellipsize"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/tv_item_title"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_below="@id/tv_reservation"
         android:layout_marginLeft="11dp"
         android:layout_marginTop="19dp"
@@ -52,12 +52,12 @@
 
         <TextView
             android:id="@+id/tv_aid_time"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             tools:text="2017.3.6" />
 
         <TextView
             android:id="@+id/tv_mobile"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginLeft="10dp"
             tools:text="(50元补贴)" />
     </LinearLayout>
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/tv_aid_creator"
-        style="@style/tv_small"
+        style="@style/tv_small_ellipsize"
         android:layout_alignLeft="@id/tv_item_title"
         android:layout_below="@id/ll_time"
         android:layout_marginTop="3dp"
@@ -90,7 +90,7 @@
 
         <TextView
             android:id="@+id/tv_aid_phone"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_alignLeft="@id/tv_item_title"
             android:layout_below="@id/tv_aid_creator"
             android:layout_marginTop="3dp"
@@ -103,13 +103,13 @@
 
         <TextView
             android:id="@+id/tv_environment_title"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="16dp"
             android:text="地址" />
 
         <TextView
             android:id="@+id/tv_aid_address"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical"
             tools:text="茶韵新城规范" />
@@ -127,7 +127,7 @@
 
     <TextView
         android:id="@+id/tv_joiner_title"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_item_title"
         android:layout_below="@id/line"
         android:layout_marginTop="17dp"

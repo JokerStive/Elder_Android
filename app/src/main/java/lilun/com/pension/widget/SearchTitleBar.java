@@ -92,6 +92,10 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     }
 
 
+    public void isChangeLayout(boolean changeLayout){
+        ivChangeLayout.setVisibility(changeLayout?VISIBLE:GONE);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

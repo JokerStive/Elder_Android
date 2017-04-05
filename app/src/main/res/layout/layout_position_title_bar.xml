@@ -34,13 +34,13 @@
         android:layout_marginStart="2dp"
         android:layout_centerVertical="true"
         android:text="枫叶小区"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_centerInParent="true"
         tools:text="我是标题"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
 
     <Button
@@ -48,7 +48,7 @@
         android:id="@+id/tv_right"
         android:text="我要干啥"
         android:background="@null"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="10dp"

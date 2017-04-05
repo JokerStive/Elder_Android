@@ -40,7 +40,7 @@ public class NestedReplyAdapter extends QuickAdapter<NestedReply> {
                     .setText(R.id.tv_time, StringUtils.timeFormat(question.getCreatedAt()))
                     .setText(R.id.tv_content, StringUtils.filterNull(question.getContent()));
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.account(question.getCreatorId(),null),R.drawable.avatar,helper.getView(R.id.iv_avatar));
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,question.getCreatorId(),null),R.drawable.icon_def,helper.getView(R.id.iv_avatar));
         }
 
         TextView tvCrartorReply = helper.getView(R.id.tv_creator_reply);

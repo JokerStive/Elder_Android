@@ -11,7 +11,7 @@
 
         <TextView
             android:textSize="24sp"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:text="@string/welcome"
             android:textColor="@color/white"
             android:layout_alignParentBottom="true"

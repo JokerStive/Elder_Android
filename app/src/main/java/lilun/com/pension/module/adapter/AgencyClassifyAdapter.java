@@ -12,6 +12,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Organization;
+import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 分类模块adapter
@@ -48,7 +49,7 @@ public class AgencyClassifyAdapter extends QuickAdapter<Organization> {
 
 
         if (organization.getIcon() != null) {
-            String iconUrl = IconUrl.organization(organization.getId() , organization.getIcon().get(0).getFileName());
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, organization.getId() , StringUtils.getFirstIconNameFromIcon(organization.getIcon()));
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }

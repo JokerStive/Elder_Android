@@ -21,8 +21,10 @@ import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
-import lilun.com.pension.ui.agency.list.AgencyListFragment;
+import lilun.com.pension.ui.agency.list.AgencyOrganizationListFragment;
+import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.residential.main.OrderListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
@@ -78,6 +80,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        titleBar.setTvRightText(getString(R.string.all_orders));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -87,6 +90,12 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             @Override
             public void onPositionClick() {
 
+            }
+
+            @Override
+            public void onRightClick() {
+                //TODO 查看所有订单
+                start(new OrderListFragment());
             }
         });
 
@@ -123,7 +132,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(organizations)));
         AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
         adapter.setOnItemClickListener((organization -> {
-            start(AgencyListFragment.newInstance(organization.getName(),organization.getId(),0));
+            start(AgencyOrganizationListFragment.newInstance(organization.getName(),organization.getId()));
 
         }));
         rvAgency.setAdapter(adapter);
@@ -137,7 +146,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvServer.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((productCategory -> {
-           start(AgencyListFragment.newInstance(productCategory.getName(),productCategory.getId(),1));
+           start(AgencyServiceListFragment.newInstance(productCategory.getName(),productCategory.getId(),0));
 
         }));
         rvServer.setAdapter(adapter);

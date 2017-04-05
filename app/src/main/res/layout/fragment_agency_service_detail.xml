@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/tv_reservation"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentRight="true"
@@ -44,21 +44,21 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_below="@id/tv_reservation"
                 android:layout_marginTop="17dp"
                 tools:text="度假服务" />
 
             <TextView
                 android:id="@+id/tv_desc"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_below="@id/tv_title"
                 android:layout_marginTop="15dp"
                 tools:text="提供商：金色养老院" />
 
             <TextView
                 android:id="@+id/tv_mobile"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_below="@id/tv_desc"
                 android:layout_marginTop="3dp"
                 tools:text="价格:2000" />
@@ -75,13 +75,13 @@
 
                 <TextView
                     android:id="@+id/tv_introduction"
-                    style="@style/tv_normal"
+                    style="@style/tv_normal_ellipsize"
                     android:layout_marginTop="15dp"
                     android:text="@string/introduction" />
 
                 <TextView
                     android:id="@+id/tv_equipment"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_marginTop="15dp"
                     android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
@@ -101,7 +101,7 @@
 
                     <TextView
                         android:id="@+id/tv_enter_rank"
-                        style="@style/tv_normal"
+                        style="@style/tv_normal_ellipsize"
                         android:text="@string/rank"
                         android:textColor="@color/red" />
 
@@ -130,7 +130,7 @@
 
                 <TextView
                     android:id="@+id/tv_provider_name"
-                    style="@style/tv_normal"
+                    style="@style/tv_normal_ellipsize"
                     android:layout_width="0dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="10dp"
@@ -140,7 +140,7 @@
 
                 <TextView
                     android:id="@+id/tv_enter_provider"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_width="0dp"
                     android:layout_marginBottom="25dp"
                     android:layout_marginTop="16dp"

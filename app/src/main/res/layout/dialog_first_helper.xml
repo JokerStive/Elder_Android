@@ -18,14 +18,14 @@
     <TextView
         android:layout_gravity="center"
         android:id="@+id/tv_family"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_marginTop="70dp"
         android:text="@string/family"
         />
 
     <TextView
         android:id="@+id/tv_neighbor"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:text="@string/neigh"
@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/tv_security"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:text="@string/security"

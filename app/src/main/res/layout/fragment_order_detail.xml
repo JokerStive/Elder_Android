@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/tv_order_status"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_order_name"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_above="@+id/tv_order_address"
             android:layout_marginBottom="6dp"
             android:textColor="@color/white"
@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/tv_order_address"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp"
             android:textColor="@color/white"
@@ -74,7 +74,7 @@
 
             <TextView
                 android:id="@+id/tv_provider_name"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
                 android:layout_toEndOf="@+id/iv_provider_avatar"
@@ -101,14 +101,14 @@
 
             <TextView
                 android:id="@+id/tv_product_name"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginLeft="14dp"
                 android:layout_toRightOf="@+id/iv_product_icon"
                 tools:text="卖猪肉" />
 
             <TextView
                 android:id="@+id/tv_product_price"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_alignLeft="@id/tv_product_name"
                 android:layout_below="@id/tv_product_name"
                 android:layout_marginTop="10dp"
@@ -156,7 +156,7 @@
 
             <TextView
                 android:id="@+id/tv_product_phone"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="13dp"
                 android:layout_toRightOf="@id/iv_call"
@@ -185,7 +185,7 @@
 
         <TextView
             android:id="@+id/tv_cancel"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -196,7 +196,7 @@
 
             <TextView
                 android:id="@+id/tv_operate"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"

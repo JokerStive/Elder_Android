@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_input_title"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_centerVertical="true"
         android:textColor="@color/gray"
         android:textSize="@dimen/tv_size_small"

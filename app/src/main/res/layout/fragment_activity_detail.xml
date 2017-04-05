@@ -87,7 +87,7 @@
 
         <TextView
             android:id="@+id/tv_activity_name"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             tools:text="大学" />
 
         <RelativeLayout
@@ -97,12 +97,12 @@
 
             <TextView
                 android:id="@+id/tv_activity_time"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:text="@string/activity_time_" />
 
             <TextView
                 android:id="@+id/tv_originator_person"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_below="@id/tv_activity_time"
                 android:layout_marginTop="5dp"
                 android:text="@string/originator_person_" />
@@ -122,13 +122,13 @@
 
         <TextView
             android:id="@+id/tv_require_title"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="17dp"
             android:text="@string/participation_request" />
 
         <TextView
             android:id="@+id/tv_participation_request"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginTop="15dp"
             tools:text="很多的" />
 
@@ -138,13 +138,13 @@
 
         <TextView
             android:id="@+id/tv_environment_title"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="17dp"
             android:text="@string/activity_address" />
 
         <TextView
             android:id="@+id/tv_activity_address"
-            style="@style/tv_small"
+            style="@style/tv_small_ellipsize"
             android:layout_marginTop="17dp"
             tools:text="茶园的额额谔谔额" />
 
@@ -155,7 +155,7 @@
 
         <TextView
             android:id="@+id/tv_activity_question_title"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:text="问题列表"
             android:visibility="gone" />
     </LinearLayout>

@@ -24,14 +24,14 @@
         <TextView
             android:id="@+id/tv_name"
             android:textSize="20dp"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_gravity="center"
             android:layout_marginTop="11dp"
             tools:text="游珂" />
 
         <TextView
             android:id="@+id/tv_account_data"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="34dp"
             android:drawablePadding="11dp"
             android:drawableStart="@drawable/account_data"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/tv_account_setting"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="11dp"
             android:drawableStart="@drawable/account_setting"
@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/tv_account_share"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="11dp"
             android:drawableStart="@drawable/account_safe"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/tv_account_info"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="11dp"
             android:drawableStart="@drawable/account_info"
@@ -65,7 +65,7 @@
 
         <TextView
             android:id="@+id/tv_account_safe"
-            style="@style/tv_normal"
+            style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="11dp"
             android:drawableStart="@drawable/account_safe"
@@ -75,7 +75,7 @@
 
     <TextView
         android:id="@+id/tv_logout"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:textSize="20dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="28dp"

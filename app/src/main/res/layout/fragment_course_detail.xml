@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/tv_course_name"
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_marginBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="大学" />
@@ -93,14 +93,14 @@
 
                 <TextView
                     android:id="@+id/tv_connect_phone"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
                     android:text="@string/connect_phone_" />
 
                 <TextView
                     android:id="@+id/tv_connect_person"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_below="@id/tv_connect_phone"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
@@ -108,14 +108,14 @@
 
                 <TextView
                     android:id="@+id/tv_course_sign_date"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_below="@id/tv_connect_person"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
                     android:text="@string/course_sign_date_" />
                 <TextView
                     android:id="@+id/tv_course_during_date"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_below="@id/tv_course_sign_date"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
@@ -123,7 +123,7 @@
 
                 <TextView
                     android:id="@+id/tv_course_start_end_time"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_below="@id/tv_course_during_date"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
@@ -147,14 +147,14 @@
                 android:layout_margin="@dimen/dp_10" />
 
             <TextView
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_marginBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="@string/course_plan" />
 
             <TextView
                 android:id="@+id/tv_course_plan"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="教学计划详情" />
 
@@ -165,14 +165,14 @@
                 android:layout_margin="@dimen/dp_10" />
 
             <TextView
-                style="@style/tv_normal"
+                style="@style/tv_normal_ellipsize"
                 android:layout_marginBottom="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="@string/course_desp" />
 
             <TextView
                 android:id="@+id/tv_course_desp"
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="课程简介详情" />
 

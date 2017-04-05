@@ -25,7 +25,7 @@ import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.ui.agency.list.AgencyListFragment;
+import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.widget.slider.BannerPager;
 import rx.Subscription;
 
@@ -179,15 +179,15 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setIcon() {
-        if (mAgency!=null){
+        if (mAgency != null) {
             List<String> urls = new ArrayList<>();
             if (mAgency.getIcon() != null) {
                 for (IconModule iconModule : mAgency.getIcon()) {
-                    String url = IconUrl.organizationProduct(mAgency.getId(), iconModule.getFileName());
+                    String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), iconModule.getFileName());
                     urls.add(url);
                 }
             } else {
-                String url = IconUrl.organization(mAgency.getId(), null);
+                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), null);
                 urls.add(url);
             }
             banner.setData(urls);
@@ -208,7 +208,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
             case R.id.tv_provide_service:
                 //TODO 进入提供的服务列表页面
-                start(AgencyListFragment.newInstance(mAgency.getName(), mAgency.getId(), 2));
+                start(AgencyServiceListFragment.newInstance(mAgency.getName(), mAgency.getId(), 1));
                 break;
 
 

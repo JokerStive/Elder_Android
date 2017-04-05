@@ -4,6 +4,7 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
+import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 
@@ -23,6 +24,7 @@ public interface AgencyListContract {
     interface Presenter extends IPresenter<View> {
         void getOrganizationAgency(String organizationId,String filter,int skip);
         void getProductAgency(String filter,int skip);
+        List<List<ConditionOption>> getConditionOptionsList();
     }
 
 }

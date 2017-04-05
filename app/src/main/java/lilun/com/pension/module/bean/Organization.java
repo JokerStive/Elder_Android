@@ -5,11 +5,12 @@ import java.util.List;
 import lilun.com.pension.base.BaseBean;
 
 /**
-*组织模型
-*@author yk
-*create at 2017/2/21 11:34
-*email : yk_developer@163.com
-*/
+ * 组织模型
+ *
+ * @author yk
+ *         create at 2017/2/21 11:34
+ *         email : yk_developer@163.com
+ */
 
 public class Organization extends BaseBean {
 
@@ -26,8 +27,6 @@ public class Organization extends BaseBean {
     private String id;
     private String name;
     private String parentId;
-
-
 
 
     /**
@@ -92,6 +91,7 @@ public class Organization extends BaseBean {
     }
 
     public static class DescriptionBean {
+        private static final long serialVersionUID = 1L;
         private String description;
         private String adress;
         private String property;

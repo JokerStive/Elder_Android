@@ -1,16 +1,18 @@
-package lilun.com.pension.ui.agency.reservation;
+package lilun.com.pension.ui.change_organization;
 
 import android.view.LayoutInflater;
 
 import lilun.com.pension.base.BaseFragment;
 
 /**
-*自己预约信息列表V
-*@author yk
-*create at 2017/3/29 18:47
-*email : yk_developer@163.com
-*/
-public class ReservationInforFragment extends BaseFragment{
+ * 切换当前位置
+ *
+ * @author yk
+ *         create at 2017/4/5 13:13
+ *         email : yk_developer@163.com
+ */
+
+public class ChangeOrganizationFragment extends BaseFragment {
     @Override
     protected void initPresenter() {
 

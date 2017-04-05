@@ -44,7 +44,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //是否有图片需要加载
         if (layoutType != SearchTitleBar.LayoutType.NULL) {
-            ImageLoaderUtil.instance().loadImage(IconUrl.organizationAid(aid.getId(), null), R.drawable.icon_def, help.getView(R.id.iv_icon));
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationAids,aid.getId(), StringUtils.getFirstIconNameFromIcon(aid.getPicture())), R.drawable.icon_def, help.getView(R.id.iv_icon));
         }
 
 

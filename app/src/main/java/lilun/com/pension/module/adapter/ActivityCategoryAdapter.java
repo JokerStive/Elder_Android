@@ -1,9 +1,7 @@
 package lilun.com.pension.module.adapter;
 
 import android.content.res.Resources;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -15,6 +13,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -27,7 +26,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
     private BaseFragment fragment;
     private OnItemClickListener listener;
     private int mSelectedPosition = -1;
-    private boolean isRadioMode =false;
+    private boolean isRadioMode = false;
 
     public ActivityCategoryAdapter(BaseFragment fragment, List<ActivityCategory> data) {
         super(R.layout.item_elder_module, data);
@@ -51,11 +50,11 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
 
     @Override
     protected void convert(BaseViewHolder helper, ActivityCategory activityCategory) {
-        if (isRadioMode){
+        if (isRadioMode) {
             helper.getView(R.id.ll_module_background).setSelected(mSelectedPosition == helper.getAdapterPosition());
         }
         helper.setText(R.id.tv_module_name, activityCategory.getName())
-                .setBackgroundRes(R.id.ll_module_background,  R.drawable.selector_activity)
+                .setBackgroundRes(R.id.ll_module_background, R.drawable.selector_activity)
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(activityCategory);
@@ -64,10 +63,10 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
                 });
 
 
-        if (activityCategory.getIcon()!=null) {
+        if (activityCategory.getIcon() != null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
-            String iconUrl = IconUrl.activityCategory(activityCategory.getId(),firstIconName);
-            Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ProductCategories, activityCategory.getId(), firstIconName);
+            ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
         }
     }
 
@@ -86,7 +85,6 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
     public interface OnItemClickListener {
         void onItemClick(ActivityCategory activityCategory);
     }
-
 
 
     private int getColor() {

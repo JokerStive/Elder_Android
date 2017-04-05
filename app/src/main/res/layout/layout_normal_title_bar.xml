@@ -22,7 +22,7 @@
         android:id="@+id/tv_title"
         android:layout_centerInParent="true"
         tools:text="我是标题"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_centerVertical="true"
         android:padding="10dp"
         tools:text="我是标题"
-        style="@style/tv_normal" />
+        style="@style/tv_normal_ellipsize" />
 
 
 

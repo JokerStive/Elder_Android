@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:title="@string/reservation" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/home_bg"
+        android:text="确定预约"
+        android:textColor="@color/red"
+        android:textSize="17sp" />
+
+    <ScrollView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_confirm"
+        android:layout_below="@id/titleBar">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#f4f4f4"
             android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
+
+                android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:drawableLeft="@drawable/pension_agency_icon"
                 android:drawablePadding="10dp"
@@ -35,7 +57,7 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/name" />
 
@@ -62,13 +84,13 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/sex" />
 
                     <TextView
                         android:id="@+id/tv_sex"
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
@@ -89,13 +111,13 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/birthday" />
 
                     <TextView
                         android:id="@+id/tv_birthday"
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
@@ -116,13 +138,13 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/health_status" />
 
                     <TextView
                         android:id="@+id/tv_health_status"
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
@@ -148,7 +170,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="16dp"
                 android:drawableLeft="@drawable/pension_agency_icon"
@@ -170,17 +192,17 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/relation" />
 
                     <TextView
                         android:id="@+id/tv_relation"
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
-                        android:hint="点击选择您与入住人的关系"
+                        android:hint="选择关系"
                         android:padding="10dp" />
 
                     <View
@@ -197,7 +219,7 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="@string/name" />
 
@@ -224,7 +246,7 @@
                     >
 
                     <TextView
-                        style="@style/tv_small"
+                        style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
                         android:text="电话" />
 
@@ -247,7 +269,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/tv_small"
+                style="@style/tv_small_ellipsize"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="16dp"
                 android:drawableLeft="@drawable/pension_agency_icon"
@@ -261,13 +283,13 @@
                 android:padding="10dp">
 
                 <TextView
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_centerVertical="true"
                     android:text="@string/check_in_time" />
 
                 <TextView
                     android:id="@+id/tv_check_in_time"
-                    style="@style/tv_small"
+                    style="@style/tv_small_ellipsize"
                     android:layout_width="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="right"
@@ -279,12 +301,4 @@
     </ScrollView>
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/home_bg"
-        android:text="确定预约"
-        android:textColor="@color/red"
-        android:textSize="17sp" />
 </RelativeLayout>

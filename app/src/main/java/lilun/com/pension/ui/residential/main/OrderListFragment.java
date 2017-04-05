@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 
@@ -46,7 +47,13 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     protected void initPresenter() {
-
+        if (User.isCustomer()) {
+            statusTitle = getResources().getStringArray(R.array.personal_order_condition);
+            status = getResources().getStringArray(R.array.personal_order_condition_value);
+        } else {
+            statusTitle = getResources().getStringArray(R.array.merchant_order_condition);
+            status = getResources().getStringArray(R.array.merchant_order_condition_value);
+        }
     }
 
     @Override
@@ -71,7 +78,7 @@ public class OrderListFragment extends BaseFragment {
             MyOderFragment fragment = MyOderFragment.newInstance(status[i]);
             listFragments.add(fragment);
         }
-        mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(),listFragments) {
+        mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {
         });
     }
 

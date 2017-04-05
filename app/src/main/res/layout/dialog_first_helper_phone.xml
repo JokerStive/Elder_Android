@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/tv_family"
-        style="@style/tv_normal"
+        style="@style/tv_normal_ellipsize"
         android:layout_marginTop="57dp"
         android:paddingStart="39dp"
         android:text="@string/phone_number"

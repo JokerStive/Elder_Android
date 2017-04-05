@@ -1,6 +1,8 @@
 package lilun.com.pension.widget.filter_view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -83,6 +85,13 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         filterTabContainer.setLayoutParams(params);
         addView(filterTabContainer);
 
+
+        //分割线
+        View view = new View(context);
+        view.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        view.setBackgroundColor(Color.BLACK);
+        addView(view);
+
         pop = new FrameLayout(context);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         pop.setLayoutParams(lp);
@@ -99,6 +108,7 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
             NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
             final int finalI = i;
             adapter.setOnItemClickListener((position, option) -> {
+
                 setTabText(position == 0 ? tabTitles.get(finalI) : option.getConditionValue(), position == 0);
                 if (listener != null) {
                     listener.onOptionClick(option);
@@ -215,11 +225,6 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     private void closePop() {
         popContainer.setVisibility(GONE);
         popContainer.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pop_container_out));
-//        popViews.setVisibility(View.GONE);
-//        popViews.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pop_container_out));
-//
-//        maskView.setVisibility(GONE);
-//        maskView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pop_container_out));
 
         checkedTabPosition = -1;
     }
@@ -229,12 +234,6 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
             switchPop(mCurrentClickTabView);
-//            float rawX = event.getX();
-//            float rawY = event.getY();
-//            Log.d("yk", "点击位置的坐标 ==" + rawX + "---" + rawY);
-//            if (!(rawX <= maxWidth && rawY <= maxHeight) && mCurrentClickTabView != null) {
-//
-//            }
         }
         return true;
     }

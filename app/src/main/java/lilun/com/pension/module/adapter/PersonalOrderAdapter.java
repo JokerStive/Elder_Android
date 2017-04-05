@@ -36,7 +36,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             RatingBar rb = helper.getView(R.id.rb_product);
             rb.setRating(product.getScore());
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
             helper.setText(R.id.tv_product_name, product.getName())
                     .setText(R.id.tv_product_price, String.format(App.context.getResources().getString(R.string.format_price), product.getPrice()))
                     .setOnClickListener(R.id.rl_item,v ->{

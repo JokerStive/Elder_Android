@@ -34,6 +34,8 @@ import lilun.com.pension.widget.NormalTitleBar;
 public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> implements MyOrderContract.View {
 
 
+
+
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
