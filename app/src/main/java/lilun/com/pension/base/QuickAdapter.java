@@ -18,6 +18,7 @@ import lilun.com.pension.app.App;
 */
 public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
 
+
     public QuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
 

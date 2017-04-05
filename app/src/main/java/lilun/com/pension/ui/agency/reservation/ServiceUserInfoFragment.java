@@ -56,7 +56,7 @@ public class ServiceUserInfoFragment extends BaseFragment {
     protected void initPresenter() {
         //TODO 获取个人健康信息列表
         String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
-        NetHelper.getApi().getServiceUserInfos(null)
+        NetHelper.getApi().getServiceUserInfos(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<ServiceUserInformation>>() {

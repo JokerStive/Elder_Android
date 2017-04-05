@@ -141,7 +141,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         llTypeControl.setVisibility(View.GONE);
 
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
 
         setJoinerAdapter();
 
@@ -186,8 +186,8 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
         //显示aid图片
         List<String> urls = new ArrayList<>();
-        if (mAid.getPicture() != null) {
-            for (IconModule iconModule : mAid.getPicture()) {
+        if (mAid.getImage() != null) {
+            for (IconModule iconModule : mAid.getImage()) {
                 String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids,mAid.getId(), iconModule.getFileName());
                 urls.add(url);
             }

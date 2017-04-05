@@ -198,17 +198,17 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         if (User.isCustomer()) {
             agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
             String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
-            ImageLoaderUtil.instance().loadImage(IconUrl.organization(agencyId, null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations,agencyId, null), R.drawable.avatar, ivProviderAvatar);
             //TODO 现在是获取组织的icon，也可能是information的icon
             tvProviderName.setText(StringUtils.filterNull(agencyName));
             tvProductPhone.setText(account.getMobile());
         } else {
-            ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.avatar, ivProviderAvatar);
             tvProviderName.setText(mOrder.getCreatorName());
             tvProductPhone.setText(mOrder.getMobile());
         }
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationProduct(product.getId(), null), R.drawable.icon_def, ivProductIcon);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), null), R.drawable.icon_def, ivProductIcon);
         tvProductName.setText(product.getName());
         tvProductPrice.setText(String.format(getString(R.string.format_price), product.getPrice()));
         rbProduct.setRating(product.getScore());

@@ -1,11 +1,12 @@
 package lilun.com.pension.ui.welcome;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.util.List;
+
 import lilun.com.pension.base.RxPresenter;
-import lilun.com.pension.module.bean.Account;
+import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -35,11 +36,11 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         password = password.replace(" ","");
         addSubscribe(mModule.login(username, password)
                 .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo))
-                .subscribe(new RxSubscriber<Account>((Activity) mView) {
+                .flatMap(account -> mModule.getBelongOrganizations(account))
+                .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
                     @Override
-                    public void _next(Account account) {
-                        mModule.putAccountInfo(account);
-                        mView.loginSuccess();
+                    public void _next(List<OrganizationAccount> organizationAccounts) {
+
                     }
                 }));
     }

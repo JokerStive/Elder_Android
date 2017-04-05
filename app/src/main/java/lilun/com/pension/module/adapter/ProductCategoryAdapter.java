@@ -45,7 +45,7 @@ public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
 
         if (productCategory.getIcon()!=null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(productCategory.getIcon());
-            String iconUrl = IconUrl.productCategory(productCategory.getId(),firstIconName);
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ProductCategories,productCategory.getId(),firstIconName,"");
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }

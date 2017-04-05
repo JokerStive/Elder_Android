@@ -49,7 +49,7 @@ public class AgencyClassifyAdapter extends QuickAdapter<Organization> {
 
 
         if (organization.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, organization.getId() , StringUtils.getFirstIconNameFromIcon(organization.getIcon()));
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, organization.getId() , StringUtils.getFirstIconNameFromIcon(organization.getIcon()),"");
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }

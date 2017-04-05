@@ -65,7 +65,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
 
         if (activityCategory.getIcon() != null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ProductCategories, activityCategory.getId(), firstIconName);
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities, activityCategory.getId(), firstIconName,"");
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
         }
     }

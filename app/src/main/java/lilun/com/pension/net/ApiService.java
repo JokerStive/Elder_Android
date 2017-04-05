@@ -15,6 +15,7 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
+import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationProduct;
@@ -47,6 +48,7 @@ import rx.Observable;
 public interface ApiService {
 
 
+//    ====================用户账户相关
     /**
      * token检查
      */
@@ -55,11 +57,32 @@ public interface ApiService {
     Observable<Response<Object>> getMe();
 
     /**
+     * 获取所属组织列表
+     */
+
+    @GET("Accounts/{id}/")
+    Observable<Response<List<OrganizationAccount>>> getOrganizationAccounts(@Path("id") String organizationId,@Query("filter") String filter);
+
+
+    /**
      * 获取当前账户信息
      */
 
     @GET("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
     Observable<Response<Account>> getAccountInfo(@Path("id") String accountId);
+
+    /**
+     * 更新一个account
+     */
+    @PUT("Accounts/{id}")
+    Observable<Response<Object>> putAccount(@Path("id") String replyId, @Body Account account);
+
+
+
+
+
+
+
 
 
     /**

@@ -2,6 +2,10 @@ package lilun.com.pension.app;
 
 import android.text.TextUtils;
 
+import java.util.List;
+
+import lilun.com.pension.module.bean.OrganizationAccount;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.StringUtils;
 
@@ -20,11 +24,13 @@ public class User {
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
+    public static final String belongOrganizations = "belongOrganizations";
 
     public static String getUserId() {
         return PreUtils.getString(userId, "");
 
     }
+
     public static String getToken() {
         return PreUtils.getString(token, "");
     }
@@ -34,13 +40,12 @@ public class User {
     }
 
     public static void putName(String nam) {
-         PreUtils.putString(name, nam);
+        PreUtils.putString(name, nam);
     }
 
 
-
     public static void putUserId(String userId) {
-         PreUtils.putString(User.userId, userId);
+        PreUtils.putString(User.userId, userId);
     }
 
     public static void putIsCustomer(boolean isCustomer) {
@@ -48,38 +53,46 @@ public class User {
     }
 
     public static boolean isCustomer() {
-       return PreUtils.getBoolean(User.isCustomer, true);
+        return PreUtils.getBoolean(User.isCustomer, true);
     }
 
     public static String getCurrentOrganizationId() {
-       return PreUtils.getString(currentOrganizationId, defOrganizationId);
+        return PreUtils.getString(currentOrganizationId, defOrganizationId);
     }
 
     public static void puttCurrentOrganizationId(String id) {
-        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id)?User.defOrganizationId:id);
+        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
     }
 
     public static String getBelongsOrganizationId() {
-       return PreUtils.getString(belongsOrganizationId, defOrganizationId);
+        return PreUtils.getString(belongsOrganizationId, defOrganizationId);
     }
 
     public static void putBelongsOrganizationId(String id) {
-        PreUtils.putString(belongsOrganizationId,  TextUtils.isEmpty(id)?User.defOrganizationId:id);
+        PreUtils.putString(belongsOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
     }
 
 
     public static String getCurrentOrganizationName() {
-       return StringUtils.getOrganizationNameFromId(PreUtils.getString(currentOrganizationId, defOrganizationId));
+        return StringUtils.getOrganizationNameFromId(PreUtils.getString(currentOrganizationId, defOrganizationId));
     }
 
 
     public static String getBelongsOrganizationName() {
-       return StringUtils.getOrganizationNameFromId(PreUtils.getString(belongsOrganizationId, defOrganizationId));
+        return StringUtils.getOrganizationNameFromId(PreUtils.getString(belongsOrganizationId, defOrganizationId));
     }
 
 
-    public static boolean creatorIsOwn(String creatorId){
+    public static boolean creatorIsOwn(String creatorId) {
         return getUserId().equals(creatorId);
+    }
+
+
+    public static List<OrganizationAccount> getBelongOrganization() {
+        if (ACache.get().getAsObject(belongOrganizations) != null) {
+          return   (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
+        }
+        return null;
     }
 
 }

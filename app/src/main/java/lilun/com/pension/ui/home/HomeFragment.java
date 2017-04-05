@@ -113,7 +113,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     protected void initView(LayoutInflater inflater) {
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 

@@ -145,7 +145,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         setBold(tvAddressTitle);
 
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(), null), R.drawable.avatar, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
 
         setJoinerAdapter();
 
@@ -206,8 +206,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //显示图片
         List<String> urls = new ArrayList<>();
-        if (mAid.getPicture() != null) {
-            for (IconModule iconModule : mAid.getPicture()) {
+        if (mAid.getImage() != null) {
+            for (IconModule iconModule : mAid.getImage()) {
                 String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), iconModule.getFileName());
                 urls.add(url);
             }

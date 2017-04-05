@@ -41,7 +41,7 @@ public class AnnouncementItemFragment extends BaseFragment {
     protected void getTransferData(Bundle arguments) {
         information = (Information) arguments.getSerializable("information");
         Preconditions.checkNull(information);
-        List<IconModule> picture = information.getPicture();
+        List<IconModule> picture = information.getImage();
         if (picture!=null && picture.size()>0){
             mFileName = picture.get(0).getFileName();
         }
@@ -83,7 +83,7 @@ public class AnnouncementItemFragment extends BaseFragment {
         if (TextUtils.isEmpty(mFileName) ){
             //TODO 占位图
         } else {
-            String url = IconUrl.information(this.information.getId(), mFileName);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,this.information.getId(), mFileName);
 //            Logger.d("公告的地址----"+url   );
 //            Logger.d("公告的title----"+information.getTitle());
             ImageLoaderUtil.instance().loadImage(url,R.drawable.icon_def,ivIcon);

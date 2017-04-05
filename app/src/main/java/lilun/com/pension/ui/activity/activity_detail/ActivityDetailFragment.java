@@ -211,17 +211,17 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         List<String> urls = new ArrayList<>();
         if (activity.getIcon() != null) {
             for (IconModule iconModule : activity.getIcon()) {
-                String url = IconUrl.organizationActivies(activity.getId(), iconModule.getFileName());
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationActivies(activity.getId(), null);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), null);
             urls.add(url);
         }
         iconBanner.setData(urls);
 
         ///显示活动创建头像
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(activity.getCreatorId(), null), R.drawable.avatar, cigConnectIcon);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,activity.getCreatorId(), null), R.drawable.avatar, cigConnectIcon);
 
         mActivityTitle = activity.getTitle();
         tvActivityName.setText(activity.getTitle() + getRepeatedType(activity.getRepeatedType()));

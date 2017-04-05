@@ -37,7 +37,7 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
      * updatorName : string
      * organizationId : string
      * visible : 0
-     * picture : {}
+     * image : {}
      */
 
     private String id;
@@ -60,14 +60,14 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String organizationId;
     private int visible;
     private List<String> tags;
-    private List<IconModule> picture;
+    private List<IconModule> image;
 
-    public List<IconModule> getPicture() {
-        return picture;
+    public List<IconModule> getImage() {
+        return image;
     }
 
-    public OrganizationAid setPicture(List<IconModule> picture) {
-        this.picture = picture;
+    public OrganizationAid setImage(List<IconModule> image) {
+        this.image = image;
         return this;
     }
 

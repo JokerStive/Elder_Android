@@ -134,7 +134,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
         //我参与的活动列表
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(10     ));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
 
 
         //刷新
@@ -151,7 +151,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void setAdapter() {
-        mContentAdapter = new OrganizationActivityAdapter( organizationActivities,R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL);
+        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL);
         mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
             start(ActivityDetailFragment.newInstance(activityItem.getId()));

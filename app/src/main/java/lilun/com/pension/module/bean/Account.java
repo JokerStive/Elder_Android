@@ -4,33 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
-*账户模型
-*@author yk
-*create at 2017/2/6 15:30
-*email : yk_developer@163.com
-*/
+ * 账户模型
+ *
+ * @author yk
+ *         create at 2017/2/6 15:30
+ *         email : yk_developer@163.com
+ */
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
-
-
-    /**
-     * id : string
-     * mobile : string
-     * mobileVerified : true
-     * name : string
-     * username : string
-     * email : string
-     * defaultOrganizationId : 0
-     * isAdmin : true
-     * realm : string
-     * credentials : {}
-     * challenges : {}
-     * emailVerified : true
-     * status : string
-     * picture : string
-     * roles : [{}]
-     * _perms : [{}]
-     */
 
     private String id;
     private String mobile;
@@ -42,7 +23,7 @@ public class Account implements Serializable {
     private String realm;
     private Boolean emailVerified;
     private String status;
-    private List<IconModule> picture;
+    private List<IconModule> image;
     private String visibility;
 
     public boolean isCustomer() {
@@ -55,7 +36,7 @@ public class Account implements Serializable {
     }
 
     private String password;
-    private boolean isCustomer=true;
+    private boolean isCustomer = true;
     private List<String> roles;
     private List<String> _perms;
 
@@ -147,7 +128,6 @@ public class Account implements Serializable {
     }
 
 
-
     public String getRealm() {
         return realm;
     }
@@ -172,12 +152,12 @@ public class Account implements Serializable {
         this.status = status;
     }
 
-    public List<IconModule>  getPicture() {
-        return picture;
+    public List<IconModule> getImage() {
+        return image;
     }
 
-    public void setPicture(List<IconModule>  picture) {
-        this.picture = picture;
+    public void setImage(List<IconModule> image) {
+        this.image = image;
     }
 
     public List<String> getRoles() {
@@ -195,8 +175,6 @@ public class Account implements Serializable {
     public void set_perms(List<String> _perms) {
         this._perms = _perms;
     }
-
-
 
 
 }

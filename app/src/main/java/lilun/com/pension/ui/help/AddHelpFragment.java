@@ -252,7 +252,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
     private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
         OrganizationAid aid = getOrganizationAid();
-        aid.setPicture(iconModules);
+        aid.setImage(iconModules);
         return NetHelper.getApi()
                 .newOrganizationAid(aid)
                 .compose(RxUtils.handleResult());

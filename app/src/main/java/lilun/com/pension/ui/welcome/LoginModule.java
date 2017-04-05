@@ -4,10 +4,15 @@ import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
+import java.io.Serializable;
+import java.util.List;
+
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.Account;
+import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.TokenInfo;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -30,7 +35,9 @@ public class LoginModule implements LoginContract.Module {
         return NetHelper.getApi()
                 .login(getAccount(username, password))
                 .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule());
+//                .compose(RxUtils.applySchedule())
+
+                ;
     }
 
     @Override
@@ -39,7 +46,19 @@ public class LoginModule implements LoginContract.Module {
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
                 .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule());
+//                .compose(RxUtils.applySchedule())
+
+                ;
+    }
+
+    @Override
+    public Observable<List<OrganizationAccount>> getBelongOrganizations(Account account) {
+        putAccountInfo(account);
+        return NetHelper.getApi()
+                .getOrganizationAccounts(account.getId(), "")
+                .compose(RxUtils.handleResult());
+
+
     }
 
     @Override
@@ -62,9 +81,11 @@ public class LoginModule implements LoginContract.Module {
         User.puttCurrentOrganizationId(organizationId);
         User.putIsCustomer(account.isCustomer());
         User.putName(account.getUsername());
+    }
 
-
-
+    @Override
+    public void putBelongOrganizations(List<Organization> organizations) {
+        ACache.get().put(User.belongOrganizations, (Serializable) organizations);
     }
 
 

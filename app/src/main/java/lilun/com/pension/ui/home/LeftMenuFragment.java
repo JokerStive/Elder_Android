@@ -62,7 +62,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(User.getUserId(),null),R.drawable.avatar,ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
 
         tvAccountData.setOnClickListener(this);

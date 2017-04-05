@@ -53,10 +53,10 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
                     }
                 });
 
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getPicture()));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
         ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,help.getView(R.id.iv_icon));
 //        Glide.with(fragment)
-//                .load(IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getPicture()))
+//                .load(IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()))
 //                .placeholder(R.drawable.icon_def)
 //                .error(R.drawable.icon_def)
 //                .into((ImageView) help.getView(R.id.iv_icon));
