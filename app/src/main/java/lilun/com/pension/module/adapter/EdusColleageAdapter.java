@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.R;
@@ -13,7 +12,6 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ElderEdusColleage;
-import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -29,23 +27,27 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
         this.fragment = fragment;
     }
 
+    public EdusColleageAdapter(List<ElderEdusColleage> data, int layoutId) {
+        super(layoutId, data);
+    }
+
+
     @Override
     protected void convert(BaseViewHolder help, ElderEdusColleage edu) {
-        help.setText(R.id.tv_item_title, edu.getName())
-                .setText(R.id.tv_item_address, edu.getAddress())
+        help.setText(R.id.tv_title, edu.getName())
+                .setText(R.id.tv_address, edu.getAddress())
 
-                .setOnClickListener(R.id.ll_module_background, v -> {
+                .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {
                         listener.onItemClick(edu);
                     }
                 });
-        ImageLoaderUtil.instance().loadImage(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName(edu.getPicture())),
-                R.drawable.icon_def, help.getView(R.id.iv_icon));
-//        Glide.with(fragment)
-//                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName((ArrayList<IconModule>) edu.getPicture())))
-//                .placeholder(R.drawable.icon_def)
-//                .error(R.drawable.icon_def)
-//                .into((ImageView) help.getView(R.id.iv_icon));
+        Glide.with(help.getConvertView().getContext().getApplicationContext())
+                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName(edu.getPicture())))
+                .dontAnimate()
+                .placeholder(R.drawable.icon_def)
+                .error(R.drawable.icon_def)
+                .into((ImageView) help.getView(R.id.iv_icon));
 
 
     }

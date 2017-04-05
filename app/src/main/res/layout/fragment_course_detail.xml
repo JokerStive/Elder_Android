@@ -34,56 +34,11 @@
                     android:background="@drawable/back_with_circle" />
             </RelativeLayout>
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/join_in"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_cicle"
-                    android:text="@string/join_in" />
-
-                <Button
-                    android:id="@+id/cancle"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_cicle"
-                    android:text="@string/cancle"
-                    android:visibility="gone" />
-                <Button
-                    android:id="@+id/other_status"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:textColor="@color/white"
-                    android:background="@drawable/shape_cicle_grey"
-                    android:visibility="visible" />
-            </RelativeLayout>
-
             <TextView
                 android:id="@+id/tv_course_name"
                 style="@style/tv_normal_ellipsize"
                 android:layout_marginBottom="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="大学" />
 
@@ -113,6 +68,7 @@
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingTop="@dimen/dp_10"
                     android:text="@string/course_sign_date_" />
+
                 <TextView
                     android:id="@+id/tv_course_during_date"
                     style="@style/tv_small_ellipsize"

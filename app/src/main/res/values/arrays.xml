@@ -65,6 +65,14 @@
         <item>100-500</item>
         <item>500以上</item>
     </string-array>
+    <string-array name="education_level">
+        <item>不限</item>
+        <item>1星</item>
+        <item>2星</item>
+        <item>3星</item>
+        <item>4星</item>
+        <item>5星</item>
+    </string-array>
 
 
     //==========订单筛选条件

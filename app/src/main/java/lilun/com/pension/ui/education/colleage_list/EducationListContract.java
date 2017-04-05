@@ -4,6 +4,7 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
+import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 
 /**
@@ -22,5 +23,6 @@ public interface EducationListContract {
 
     interface Presenter extends IPresenter<View> {
         void getColleage(String filter, int skip);
+        List<List<ConditionOption>> getConditionOptionsList();
     }
 }

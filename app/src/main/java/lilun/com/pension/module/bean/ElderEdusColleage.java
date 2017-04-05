@@ -40,7 +40,7 @@ public class ElderEdusColleage extends BaseBean {
     private String id;
     private String createdAt;
     private String updatedAt;
-    private ArrayList<IconModule> picture;
+    private ArrayList<IconModule> image;
     private Account contact;
 
     public String getName() {
@@ -108,11 +108,11 @@ public class ElderEdusColleage extends BaseBean {
     }
 
     public ArrayList<IconModule> getPicture() {
-        return picture;
+        return image;
     }
 
     public void setPicture(ArrayList<IconModule> picture) {
-        this.picture = picture;
+        this.image = picture;
     }
 
     public Account getContact() {
@@ -133,7 +133,7 @@ public class ElderEdusColleage extends BaseBean {
         edus.setLocation(location);
         edus.setMobile(mobile);
         edus.setUpdatedAt(updatedAt);
-        edus.setPicture(picture);
+        edus.setPicture(image);
         edus.setVisible(visible);
         edus.setSelected(isSelected);
         edus.setContact(contact);

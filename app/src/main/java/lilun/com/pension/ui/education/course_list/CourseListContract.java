@@ -4,6 +4,7 @@ import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
+import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
 
@@ -26,5 +27,6 @@ public interface CourseListContract {
     interface Presenter extends IPresenter<View> {
 
         void getCollgCourseList(String courseId,String filter, int skip);
+        List<List<ConditionOption>> getConditionOptionsList();
     }
 }

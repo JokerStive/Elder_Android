@@ -77,7 +77,7 @@ public class IconUrl {
 //
 //
     public static String organizationEdus(String organizationId, String iconName) {
-        return Config.BASE_URL + "OrganizationEdus/" + encodeURL(organizationId) + "/picture/" + iconName + "?access_token=" + User.getToken();
+        return Config.BASE_URL + "OrganizationEdus/" + encodeURL(organizationId) + "/download/image/" + iconName + "?access_token=" + User.getToken();
     }
 
     public static String eduCourses(String organizationId, String iconName) {
