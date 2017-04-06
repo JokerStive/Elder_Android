@@ -1,12 +1,9 @@
 package lilun.com.pension.ui.education.colleage_details;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +112,12 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
         if (mColleage.getContact() != null) {
             tvConnectPhone.setText(getString(R.string.connect_phone_, mColleage.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, mColleage.getContact().getUsername()));
-            //if(!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getPicture())))
+            //if(!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())))
             ImageLoaderUtil.instance().loadImage(
-                    IconUrl.account(mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getPicture())),
+                    IconUrl.moduleIconUrl(IconUrl.Accounts,mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())),
                     R.drawable.icon_def,tvConnectIcon);
 //            Glide.with(this)
-//                    .load(IconUrl.account(mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getPicture())))
+//                    .load(IconUrl.account(mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())))
 //                    .error(R.drawable.icon_def)
 //                    .placeholder(R.drawable.icon_def)
 //                    .into(tvConnectIcon);
