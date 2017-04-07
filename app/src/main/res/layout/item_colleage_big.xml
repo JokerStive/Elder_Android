@@ -30,7 +30,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_provider_name"
         style="@style/tv_small_ellipsize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

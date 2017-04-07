@@ -8,14 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
@@ -59,15 +61,14 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
     private String mCategoryId;
     private String mTitle;
-    //    private AgencyAdapter mAgencyAdapter;
     private AgencyServiceAdapter mAgencyServiceAdapter;
     // 0 获取服务从categoryId  1 获取服务从organizationId
     private int mType;
-    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.SMALL;
+    private SearchTitleBar.LayoutType layoutType;
     private List<OrganizationProduct> products;
-//    private List<Organization> organizations;
+    private Map<String, Object> conditionMap;
+    private Map<String, String> whereConditionMap;
 
-    private String[] filterTitles = App.context.getResources().getStringArray(R.array.product_condition);
 
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
         AgencyServiceListFragment fragment = new AgencyServiceListFragment();
@@ -81,7 +82,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
 
     @OnClick({R.id.fab_add_service})
-    public void click() {
+    public void click(View view) {
         //TODO 新增一个服务
     }
 
@@ -98,6 +99,8 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     protected void initPresenter() {
         mPresenter = new AgencyListPresenter();
         mPresenter.bindView(this);
+        conditionMap = new HashMap<>();
+        whereConditionMap = new HashMap<>();
     }
 
     @Override
@@ -107,21 +110,20 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        if (!User.isCustomer()) {
-            fabAddService.setVisibility(View.VISIBLE);
-            searchBar.isChangeLayout(false);
-        }
-
+        searchBar.isChangeLayout(User.isCustomer());
+        layoutType = User.isCustomer() ? SearchTitleBar.LayoutType.BIG : SearchTitleBar.LayoutType.SMALL;
         searchBar.setNoNullLayout();
+        searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
                 pop();
-//                area();
             }
 
             @Override
             public void onSearch(String searchStr) {
+                whereConditionMap.put("name", "{\"like\":\"" + searchStr + "\"}");
+                getData(0);
             }
 
             @Override
@@ -150,57 +152,33 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
     private void initFilter() {
         List<View> pops = new ArrayList<>();
-
+        List<String> filterTitles = new ArrayList<>();
+        filterTitles.add("区域");
         //除了区域以外的条件弹窗
-        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();
-        for (int i = 0; i < optionsList.size(); i++) {
-            RecyclerView recyclerView = new RecyclerView(App.context);
-            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
-            final int finalI = i + 1;
-            adapter.setOnItemClickListener((position, option) -> {
-                filterView.setTabText(position == 0 ? Arrays.asList(filterTitles).get(finalI) : option.getConditionValue(), position == 0);
-                //TODO 条件的map加入条件
-            });
-            recyclerView.setAdapter(adapter);
-            pops.add(recyclerView);
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
+        if (conditionOptionsList != null) {
+            for (int i = 0; i < conditionOptionsList.size(); i++) {
+                ConditionOption conditionOption = conditionOptionsList.get(i);
+                filterTitles.add(conditionOption.getCondition());
+                RecyclerView recyclerView = new RecyclerView(App.context);
+                recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+                NormalFilterAdapter adapter = new NormalFilterAdapter(conditionOption);
+                final int finalI = i + 1;
+                adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
+                    filterView.setTabText(position == 0 ? filterTitles.get(finalI) : title, position == 0);
+                });
+                recyclerView.setAdapter(adapter);
+                pops.add(recyclerView);
+            }
         }
 
 
         //TODO 区域
-
         AreaFilter areaFilter = new AreaFilter(mContent);
         pops.add(0, areaFilter);
-
-
-        filterView.setTitlesAndPops(Arrays.asList(filterTitles), pops, mSwipeLayout);
+        filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
     }
 
-
-//    private void setOrganizationRecyclerAdapter(List<Organization> organizations) {
-//        mAgencyAdapter = getAgencyAdapterFromLayoutType(organizations);
-//        if (mAgencyAdapter != null) {
-//            mAgencyAdapter.setOnItemClickListener((agency) -> {
-//                start(AgencyDetailFragment.newInstance("", agency), SINGLETASK);
-//            });
-//            mAgencyAdapter.setEmptyView();
-//        }
-//        mRecyclerView.setAdapter(mAgencyAdapter);
-//    }
-//
-//    private AgencyAdapter getAgencyAdapterFromLayoutType(List<Organization> organizations) {
-//        AgencyAdapter adapter = null;
-//        int layoutId = 0;
-//        if (layoutType == SearchTitleBar.LayoutType.BIG) {
-//            layoutId = R.layout.item_agency_big;
-//        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
-//            layoutId = R.layout.item_agency_small;
-//        }
-//        if (layoutId != 0) {
-//            adapter = new AgencyAdapter(organizations, layoutId, layoutType);
-//        }
-//        return adapter;
-//    }
 
     private void setServiceRecyclerAdapter(List<OrganizationProduct> products) {
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
@@ -246,7 +224,16 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
 
     private void getProductsByCategoryId(int skip) {
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
+        // TODO 有商家判断
+        if (User.isCustomer()) {
+            whereConditionMap.put("categoryId", mCategoryId);
+//            filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
+        } else {
+            whereConditionMap.put("categoryId", mCategoryId);
+            whereConditionMap.put("creatorId", User.getUserId());
+//            filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+        }
+        String filter = getFilterWithCondition();
         mPresenter.getProductAgency(filter, skip);
     }
 
@@ -255,11 +242,14 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         mPresenter.getProductAgency(filter, skip);
     }
 
-
-//    private void getOrganizations(int skip) {
-//        mPresenter.getOrganizationAgency(mCategoryId, "", skip);
-//    }
-
+    private String getFilterWithCondition() {
+        conditionMap.put("where", whereConditionMap);
+        String filter;
+        Gson gson = new Gson();
+        filter = gson.toJson(conditionMap);
+        Logger.d("agency service filter = " + filter);
+        return filter;
+    }
 
     @Override
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
@@ -278,17 +268,6 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
-//        this.organizations = organizations;
-//        completeRefresh();
-//        if (organizations != null) {
-//            if (mAgencyAdapter == null) {
-//                setOrganizationRecyclerAdapter(organizations);
-//            } else if (isLoadMore) {
-//                mAgencyAdapter.addAll(organizations);
-//            } else {
-//                mAgencyAdapter.replaceAll(organizations);
-//            }
-//        }
     }
 
     @Override
@@ -299,17 +278,4 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

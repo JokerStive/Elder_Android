@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="订单详情" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_rect_red"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+
+    <ScrollView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f4f4f4"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+            <TextView
+                style="@style/tv_small_ellipsize"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10dp"
+                android:text="服务详情" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_provider_name"
+                        style="@style/tv_small_ellipsize"
+                        android:layout_width="wrap_content"
+                        android:maxWidth="200dp"
+                        tools:text="佩珍服务佩珍服务佩珍服务佩珍服务" />
+
+                    <TextView
+                        android:id="@+id/tv_health_status"
+                        style="@style/tv_small"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:textColor="@color/red"
+                        tools:text="带受理" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        tools:src="@drawable/shape_rect_red" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        style="@style/tv_small"
+                        android:layout_alignTop="@id/iv_image"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/iv_image"
+                        android:maxLines="3"
+                        android:textSize="14sp"
+                        tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
+
+
+                    <RatingBar
+                        android:id="@+id/rb_bar"
+                        style="@style/ratingBarr_small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tv_name"
+                        android:layout_alignStart="@+id/tv_name"
+                        android:layout_below="@id/tv_name"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="8dp"
+                        android:isIndicator="true"
+                        android:numStars="5" />
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        style="@style/tv_small"
+                        android:layout_alignLeft="@+id/rb_bar"
+                        android:layout_alignStart="@+id/rb_bar"
+                        android:layout_below="@id/rb_bar"
+                        android:layout_marginTop="8dp"
+                        tools:text="价格:500/月" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/tv_small"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10dp"
+                android:text="备注" />
+
+            <include
+                layout="@layout/item_order_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+
+            <TextView
+                android:id="@+id/tv_user_info"
+                style="@style/tv_small"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/home_bg"
+                android:drawableRight="@drawable/next"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="用户资料" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

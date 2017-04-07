@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <application
@@ -45,15 +47,25 @@
             android:name=".ui.welcome.LoginActivity"
             android:screenOrientation="portrait" />
 
-        <!-- 登录 -->
-        <activity
-            android:name=".ui.residential.main.OrderListActivity"
-            android:screenOrientation="portrait" />
+
 
         <!-- 订单详情-->
         <activity
             android:name=".ui.residential.detail.OrderDetailActivity"
             android:screenOrientation="portrait" />
+
+
+        <!-- 商家订单详情-->
+        <activity
+            android:name=".ui.order.detail.MerchantOrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <!-- 商家备注-->
+        <activity
+            android:name=".ui.agency.merchant.MemoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <!-- 聊天-->
         <activity

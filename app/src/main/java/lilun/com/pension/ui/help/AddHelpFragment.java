@@ -1,12 +1,10 @@
 package lilun.com.pension.ui.help;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
@@ -283,17 +280,5 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

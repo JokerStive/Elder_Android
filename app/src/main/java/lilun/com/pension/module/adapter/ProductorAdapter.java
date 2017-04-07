@@ -31,7 +31,7 @@ public class ProductorAdapter extends QuickAdapter<OrganizationProduct> {
     protected void convert(BaseViewHolder help, OrganizationProduct product) {
         RatingBar ratingBar = help.getView(R.id.rb_bar);
         ratingBar.setRating(product.getScore());
-        help.setText(R.id.tv_title, product.getName())
+        help.setText(R.id.tv_provider_name, product.getName())
                 .setText(R.id.tv_mobile, String.format(App.context.getString(R.string.price_format), product.getPrice()))
         ;
     }

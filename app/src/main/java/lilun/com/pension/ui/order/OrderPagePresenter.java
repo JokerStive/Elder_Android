@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.residential.main;
+package lilun.com.pension.ui.order;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import lilun.com.pension.net.RxSubscriber;
  *         create at 2017/3/3 11:32
  *         email : yk_developer@163.com
  */
-public class MyOrderPresenter extends RxPresenter<MyOrderContract.View> implements MyOrderContract.Presenter {
+public class OrderPagePresenter extends RxPresenter<OrderPageContract.View> implements OrderPageContract.Presenter {
     @Override
     public void getMyOrders(String status, int skip) {
         String filter;

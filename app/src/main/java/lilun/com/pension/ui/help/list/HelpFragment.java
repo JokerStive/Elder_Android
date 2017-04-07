@@ -5,14 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +59,11 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     private String condition_near = "near";
     private boolean isMain;
 
-    private Map<String, String> conditionMap;
+    private Map<String, String> whereConditionMap;
+    private Map<String, Object> conditionMap;
     //    private String[] conditionKind;
 //    private String[] conditionPriority;
-    private String[] conditionTitles = new String[]{"类别", "状态", "优先级"};
+//    private String[] conditionTitles = new String[]{"类别", "状态", "优先级"};
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
 
 
@@ -121,7 +122,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
             @Override
             public void onSearch(String searchStr) {
-                conditionMap.put(condition_title,searchStr);
+                whereConditionMap.put(condition_title, "{\"like\":\"" + searchStr + "\"}");
                 getHelps(0);
             }
         });
@@ -142,20 +143,23 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     }
 
     private void initConditionOption() {
-        List<List<ConditionOption>> conditionOptionsList = mPresenter.getConditionOptionsList();
+        List<String> conditionTitles = new ArrayList<>();
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
         if (conditionOptionsList != null) {
-            filterView.setTitlesAndDatas(Arrays.asList(conditionTitles), conditionOptionsList, mSwipeLayout);
-            filterView.setOnOptionClickListener(option -> {
-                conditionMap.put(option.getKey(), option.getConditionKey());
+            for (ConditionOption conditionOption : conditionOptionsList) {
+                conditionTitles.add(conditionOption.getCondition());
+            }
+            filterView.setTitlesAndDatas(conditionTitles, conditionOptionsList, mSwipeLayout);
+            filterView.setOnOptionClickListener((whereKey, whereValue) -> {
+                whereConditionMap.put(whereKey, whereValue);
                 getHelps(0);
             });
         }
     }
 
     private void initConditionMap() {
-//        conditionKind = getResources().getStringArray(R.array.help_kind);
-//        conditionPriority = new String[]{"默认优先级", "一般", "加急", "紧急", "危急"};
         conditionMap = new HashMap<>();
+        whereConditionMap = new HashMap<>();
     }
 
 
@@ -177,28 +181,9 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     }
 
     private String getFilterWithCondition() {
-        String filter = "{\"where\":{";
-        int index = 0;
-        for (String key : conditionMap.keySet()) {
-            String value = conditionMap.get(key);
-            if (!TextUtils.isEmpty(value)) {
-                if (index == 0) {
-                    if (TextUtils.equals(key, condition_title)) {
-                        filter = filter + "\"" + key + "\"" + ":" + "{\"like\":\"" + value + "\"}";
-                    } else {
-                        filter = filter + "\"" + key + "\"" + ":" + "\"" + value + "\"";
-                    }
-                } else {
-                    if (TextUtils.equals(key, condition_title)) {
-                        filter = filter + "," + "\"" + key + "\"" + ":" + "{\"like\":\"" + value + "\"}";
-                    } else {
-                        filter = filter + "," + "\"" + key + "\"" + ":" + "\"" + value + "\"";
-                    }
-                }
-                index++;
-            }
-        }
-        filter = filter + "}}";
+        conditionMap.put("where", whereConditionMap);
+        Gson gson = new Gson();
+        String filter = gson.toJson(conditionMap);
         Logger.d("filter = " + filter);
         return filter;
     }

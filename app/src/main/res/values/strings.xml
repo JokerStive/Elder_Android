@@ -170,6 +170,15 @@
     <string name="operate_assigned">受理订单</string>
     <string name="operate_done">完成订单</string>
     <string name="operate_cancel">取消订单</string>
+    <string name="order_detail">订单详情</string>
+
+    <!--商家订单详情-->
+
+    <!--备注-->
+    <string name="order_call_situation">外呼情况</string>
+    <string name="write_call_situation">预约情况填写</string>
+    <string name="status_complete">完成</string>
+    <string name="status_delay">延期</string>
 
     ====================================================
 
@@ -210,4 +219,5 @@
     <string name="information_center">消息中心</string>
     <string name="system_information">系统消息</string>
     <string name="personal_information">个人消息</string>
+    <string name="save">保存</string>
 </resources>

@@ -7,9 +7,9 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.Account;
-import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.TokenInfo;
 import lilun.com.pension.module.utils.ACache;
@@ -55,7 +55,7 @@ public class LoginModule implements LoginContract.Module {
     public Observable<List<OrganizationAccount>> getBelongOrganizations(Account account) {
         putAccountInfo(account);
         return NetHelper.getApi()
-                .getOrganizationAccounts(account.getId(), "")
+                .getOrganizationAccounts(account.getId())
                 .compose(RxUtils.handleResult());
 
 
@@ -83,9 +83,17 @@ public class LoginModule implements LoginContract.Module {
         User.putName(account.getUsername());
     }
 
+
     @Override
-    public void putBelongOrganizations(List<Organization> organizations) {
+    public void putBelongOrganizations(List<OrganizationAccount> organizations) {
         ACache.get().put(User.belongOrganizations, (Serializable) organizations);
+        for (OrganizationAccount oa : organizations) {
+            if (oa.getOrganizationId().contains(Constants.special_organization_root)) {
+                User.putIsCustomer(false);
+                return;
+            }
+        }
+        User.putIsCustomer(true);
     }
 
 

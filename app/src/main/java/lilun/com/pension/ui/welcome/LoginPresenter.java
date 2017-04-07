@@ -5,18 +5,21 @@ import android.text.TextUtils;
 
 import java.util.List;
 
+import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.RxSubscriber;
 
 /**
-*登录P
-*@author yk
-*create at 2017/1/23 13:57
-*email : yk_developer@163.com
-*/
+ * 登录P
+ *
+ * @author yk
+ *         create at 2017/1/23 13:57
+ *         email : yk_developer@163.com
+ */
 public class LoginPresenter extends RxPresenter<LoginContract.View> implements LoginContract.Presenter {
 
     private LoginContract.Module mModule;
@@ -32,15 +35,17 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         if (!checkAccountData(username, password)) {
             return;
         }
-        username = username.replace(" ","");
-        password = password.replace(" ","");
+        username = username.replace(" ", "");
+        password = password.replace(" ", "");
         addSubscribe(mModule.login(username, password)
                 .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo))
                 .flatMap(account -> mModule.getBelongOrganizations(account))
-                .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity)mView) {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
-
+                        mModule.putBelongOrganizations(organizationAccounts);
+                        mView.loginSuccess();
                     }
                 }));
     }

@@ -49,6 +49,7 @@ public interface ApiService {
 
 
 //    ====================用户账户相关
+
     /**
      * token检查
      */
@@ -60,8 +61,8 @@ public interface ApiService {
      * 获取所属组织列表
      */
 
-    @GET("Accounts/{id}/")
-    Observable<Response<List<OrganizationAccount>>> getOrganizationAccounts(@Path("id") String organizationId,@Query("filter") String filter);
+    @GET("Accounts/{id}/organizations")
+    Observable<Response<List<OrganizationAccount>>> getOrganizationAccounts(@Path("id") String organizationId);
 
 
     /**
@@ -75,14 +76,7 @@ public interface ApiService {
      * 更新一个account
      */
     @PUT("Accounts/{id}")
-    Observable<Response<Object>> putAccount(@Path("id") String replyId, @Body Account account);
-
-
-
-
-
-
-
+    Observable<Response<Object>> putAccount(@Path("id") String accountId, @Body Account account);
 
 
     /**
@@ -140,9 +134,6 @@ public interface ApiService {
     Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId);
 
 
-
-
-
     /**
      * 根据id获取一个organization
      */
@@ -172,7 +163,7 @@ public interface ApiService {
      */
 
     @GET("ProductOrders/{id}")
-    Observable<Response<ProductOrder>> getOrder(@Path("id") String orderId,@Query("filter") String filter);
+    Observable<Response<ProductOrder>> getOrder(@Path("id") String orderId, @Query("filter") String filter);
 
     /**
      * 获取订单列表数据
@@ -187,13 +178,13 @@ public interface ApiService {
      */
 
     @GET("OrganizationProducts/{id}/orders")
-    Observable<Response<List<ProductOrder>>> getOrdersOfProduct(@Path("id") String productId,@Query("filter") String filter);
-
+    Observable<Response<List<ProductOrder>>> getOrdersOfProduct(@Path("id") String productId, @Query("filter") String filter);
 
 
     /**
-//     * 获取information集合数据
-//     */
+     * //     * 获取information集合数据
+     * //
+     */
 
     @GET("OrganizationInformations")
     Observable<Response<List<Information>>> getInformations(@Query("filter") String filter);
@@ -228,15 +219,11 @@ public interface ApiService {
     Observable<Response<Object>> newRank(@Body Rank rank);
 
 
-
-
     /**
      * 预约订单
      */
     @POST("OrganizationProducts/{id}/createOrder")
     Observable<Response<ProductOrder>> createOrder(@Path("id") String productId);
-
-
 
 
     /**
@@ -271,7 +258,7 @@ public interface ApiService {
      * 获取课程详情
      */
     @GET("EduCourses/{id}")
-    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId,@Query("filter") String filter);
+    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId, @Query("filter") String filter);
 
     /**
      * 我参加的课程 --
@@ -285,12 +272,11 @@ public interface ApiService {
     @POST("EduCourses/{id}/joinCourse")
     Observable<Response<Object>> joinCourse(@Path("id") String courseId, @Query("filter") String filter);
 
-   /**
+    /**
      * 参加课程 -- 大学课程
      */
     @DELETE("EduCourses/{id}/quitCourse")
     Observable<Response<Object>> quitCourse(@Path("id") String courseId, @Query("filter") String filter);
-
 
 
 //========================================社区活动
@@ -323,8 +309,6 @@ public interface ApiService {
     Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Query("filter") String filter);
 
 
-
-
     /**
      * 新建一个活动
      */
@@ -345,9 +329,9 @@ public interface ApiService {
     @DELETE("OrganizationActivities/{id}/quit")
     Observable<Response<Object>> quitActivity(@Path("id") String activityId);
 
-   /**
-   *删除一个活动
-   */
+    /**
+     * 删除一个活动
+     */
     @DELETE("OrganizationActivities/{id}")
     Observable<Response<Object>> cancelActivity(@Path("id") String activityId);
 
@@ -358,9 +342,6 @@ public interface ApiService {
     @Multipart
     @POST("OrganizationActivities/uploadicon")
     Observable<Response<ArrayList<IconModule>>> newActivityIcons(@PartMap Map<String, RequestBody> params);
-
-
-
 
 
 //    ================================================================
@@ -378,10 +359,6 @@ public interface ApiService {
     Observable<Response<Object>> deleteAid(@Path("id") String aidId);
 
 
-
-
-
-
 //    =========================================PUT
 
     /**
@@ -397,14 +374,14 @@ public interface ApiService {
     Observable<Response<Object>> putReply(@Path("id") String replyId, @Body OrganizationReply reply);
 
 
-
     /**
      * 修改订单
      */
     @PUT("ProductOrders/{id}")
-    Observable<Response<Object>> putOrder(@Path("id") String productId,@Body ProductOrder order);
+    Observable<Response<Object>> putOrder(@Path("id") String productId, @Body ProductOrder order);
 
 //    ====================养老机构
+
     /**
      * 获取预约登记信息
      */

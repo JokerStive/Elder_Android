@@ -1,10 +1,13 @@
 package lilun.com.pension.module.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by yk on 2017/1/3.
  * 用户账户模型
  */
-public class OrganizationAccount {
+public class OrganizationAccount implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     /**
      * visibility : 1

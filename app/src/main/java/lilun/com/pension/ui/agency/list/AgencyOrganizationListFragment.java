@@ -8,16 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyAdapter;
-import lilun.com.pension.module.adapter.AgencyServiceAdapter;
 import lilun.com.pension.module.adapter.NormalFilterAdapter;
 import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.Organization;
@@ -50,14 +53,11 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     private String mCategoryId;
     private String mTitle;
     private AgencyAdapter mAgencyAdapter;
-    private AgencyServiceAdapter mAgencyServiceAdapter;
-    // 0 获取服务  1获取机构  2
-//    private int mType;
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
-    private List<OrganizationProduct> products;
     private List<Organization> organizations;
+    private Map<String, Object> conditionMap;
+    private Map<String, String> whereConditionMap;
 
-    private String[] filterTitles = App.context.getResources().getStringArray(R.array.product_condition);
 
     public static AgencyOrganizationListFragment newInstance(String title, String categoryId) {
         AgencyOrganizationListFragment fragment = new AgencyOrganizationListFragment();
@@ -81,6 +81,8 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     protected void initPresenter() {
         mPresenter = new AgencyListPresenter();
         mPresenter.bindView(this);
+        conditionMap = new HashMap<>();
+        whereConditionMap = new HashMap<>();
     }
 
     @Override
@@ -95,11 +97,12 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
             @Override
             public void onBack() {
                 pop();
-//                area();
             }
 
             @Override
             public void onSearch(String searchStr) {
+                whereConditionMap.put("name", "{like," + searchStr + "}");
+                getData(0);
             }
 
             @Override
@@ -130,30 +133,31 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
     private void initFilter() {
         List<View> pops = new ArrayList<>();
-
+        List<String> filterTitles = new ArrayList<>();
+        filterTitles.add("区域");
         //除了区域以外的条件弹窗
-        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();
-        for (int i = 0; i < optionsList.size(); i++) {
-            RecyclerView recyclerView = new RecyclerView(App.context);
-            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
-            final int finalI = i + 1;
-            adapter.setOnItemClickListener((position, option) -> {
-                filterView.setTabText(position == 0 ? Arrays.asList(filterTitles).get(finalI) : option.getConditionValue(), position == 0);
-                //TODO 条件的map加入条件
-            });
-            recyclerView.setAdapter(adapter);
-            pops.add(recyclerView);
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
+        if (conditionOptionsList != null) {
+            for (int i = 0; i < conditionOptionsList.size(); i++) {
+                ConditionOption conditionOption = conditionOptionsList.get(i);
+                filterTitles.add(conditionOption.getCondition());
+                RecyclerView recyclerView = new RecyclerView(App.context);
+                recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+                NormalFilterAdapter adapter = new NormalFilterAdapter(conditionOption);
+                final int finalI = i + 1;
+                adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
+                    filterView.setTabText(position == 0 ? filterTitles.get(finalI) : title, position == 0);
+                });
+                recyclerView.setAdapter(adapter);
+                pops.add(recyclerView);
+            }
         }
 
 
         //TODO 区域
-
         AreaFilter areaFilter = new AreaFilter(mContent);
         pops.add(0, areaFilter);
-
-
-        filterView.setTitlesAndPops(Arrays.asList(filterTitles), pops, mSwipeLayout);
+        filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
     }
 
 
@@ -192,39 +196,22 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     }
 
     private void getData(int skip) {
-        getOrganizations(skip);
+        String filter = getFilterWithCondition();
+        mPresenter.getOrganizationAgency(mCategoryId, filter, skip);
     }
 
 
-//    private void getProductsByCategoryId(int skip) {
-//        String filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
-//        mPresenter.getProductAgency(filter, skip);
-//    }
-//
-//    private void getProductsByOrganizationId(int skip) {
-//        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.product(mCategoryId) + "\"}}";
-//        mPresenter.getProductAgency(filter, skip);
-//    }
-
-
-    private void getOrganizations(int skip) {
-        mPresenter.getOrganizationAgency(mCategoryId, "", skip);
+    private String getFilterWithCondition() {
+        conditionMap.put("where", whereConditionMap);
+        Gson gson = new Gson();
+        String filter = gson.toJson(conditionMap);
+        Logger.d("agency organization filter = " + filter);
+        return filter;
     }
 
 
     @Override
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
-//        this.products = products;
-//        completeRefresh();
-//        if (products != null) {
-//            if (mAgencyServiceAdapter == null) {
-//                setServiceRecyclerAdapter(products);
-//            } else if (isLoadMore) {
-//                mAgencyServiceAdapter.addAll(products);
-//            } else {
-//                mAgencyServiceAdapter.replaceAll(products);
-//            }
-//        }
     }
 
     @Override

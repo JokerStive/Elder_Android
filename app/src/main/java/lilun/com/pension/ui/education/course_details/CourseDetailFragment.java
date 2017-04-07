@@ -1,10 +1,8 @@
 package lilun.com.pension.ui.education.course_details;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,15 +16,12 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.IconModule;
-import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StartOtherUtils;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.ui.education.InforPopupWindow;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.education.colleage_details.ColleageDetailFragment;
 import lilun.com.pension.widget.CircleImageView;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -68,23 +63,23 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     TextView tvServiceProvider;
 
 
-    @Bind(R.id.join_in)
-    Button btJoinIn;
-    @Bind(R.id.cancle)
-    Button btCancel;
-    @Bind(R.id.other_status)
-    Button btOtherStatus;
+//    @Bind(R.id.join_in)
+//    Button btJoinIn;
+//    @Bind(R.id.cancle)
+//    Button btCancel;
+//    @Bind(R.id.other_status)
+//    Button btOtherStatus;
 
 
-    @OnClick({R.id.join_in, R.id.cancle, R.id.tv_connect_phone, R.id.iv_back, R.id.tv_service_provider})
+    @OnClick({R.id.tv_connect_phone, R.id.iv_back, R.id.tv_service_provider})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.join_in:
-                mPresenter.joinCourse(mCourse.getId(), "");
-                break;
-            case R.id.cancle:
-                mPresenter.quitCourse(mCourse.getId(), "");
-                break;
+//            case R.id.join_in:
+//                mPresenter.joinCourse(mCourse.getId(), "");
+//                break;
+//            case R.id.cancle:
+//                mPresenter.quitCourse(mCourse.getId(), "");
+//                break;
             case R.id.tv_connect_phone:
                 if (mCourse != null && mCourse.getContact() != null)
                     StartOtherUtils.cellPhone(_mActivity, mCourse.getContact().getMobile());
@@ -148,8 +143,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
         tvServiceProvider.setVisibility(View.GONE);
         isJoin = false;
-        btJoinIn.setVisibility(View.GONE);
-        btCancel.setVisibility(View.GONE);
+
 
         String filter = "{\"include\":[\"contact\",\"school\"]}";
         mPresenter.getCourseDetail(mCourse.getId(), filter);
@@ -159,23 +153,23 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Override
     public void showJoinCourse() {
-        isJoin = true;
-        btJoinIn.setVisibility(View.GONE);
-        btCancel.setVisibility(View.VISIBLE);
-
-        String uri = IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
-        retNeedRef = !retNeedRef;
+//        isJoin = true;
+//        btJoinIn.setVisibility(View.GONE);
+//        btCancel.setVisibility(View.VISIBLE);
+//
+//        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
+//        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
+//        retNeedRef = !retNeedRef;
     }
 
     @Override
     public void showQuitCourse() {
-        isJoin = false;
-        btJoinIn.setVisibility(View.VISIBLE);
-        btCancel.setVisibility(View.GONE);
-        String uri = IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
-        retNeedRef = !retNeedRef;
+//        isJoin = false;
+//        btJoinIn.setVisibility(View.VISIBLE);
+//        btCancel.setVisibility(View.GONE);
+//        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
+//        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
+//        retNeedRef = !retNeedRef;
     }
 
     @Override
@@ -194,12 +188,12 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         if (orders.getContact() != null) {
             tvConnectPhone.setText(getString(R.string.connect_phone_, orders.getContact().getMobile()));
             tvConnectPerson.setText(getString(R.string.connect_person_, orders.getContact().getUsername()));
-            // if (!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getImage())))
-            ImageLoaderUtil.instance().loadImage(
-                    IconUrl.moduleIconUrl(IconUrl.Accounts,orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getImage())),
-                    R.drawable.icon_def,tvConnectIcon);
+            // if (!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
+//            ImageLoaderUtil.instance().loadImage(
+//                    IconUrl.moduleIconUrl(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())),
+//                    R.drawable.icon_def,tvConnectIcon);
 //                Glide.with(this)
-//                        .load(IconUrl.account(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getImage())))
+//                        .load(IconUrl.account(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
 //                        .into(tvConnectIcon);
         }
 
@@ -214,26 +208,26 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         if (orders.getSchool() != null) {
             tvCoulleageName.setText(orders.getSchool().getName());
         }
-        if (StringUtils.IOS2DateTime(mCourse.getStartSingnDate()).isAfterNow()) {
-            btOtherStatus.setVisibility(View.VISIBLE);
-            btJoinIn.setVisibility(View.GONE);
-            btCancel.setVisibility(View.GONE);
-            btOtherStatus.setText("报名未开始");
-        } else if (StringUtils.IOS2DateTime(mCourse.getEndSingnDate()).isBeforeNow()) {
-            btOtherStatus.setVisibility(View.VISIBLE);
-            btJoinIn.setVisibility(View.GONE);
-            btCancel.setVisibility(View.GONE);
-            btOtherStatus.setText("报名已结束");
-        } else {
-            btOtherStatus.setVisibility(View.GONE);
-            if (isJoin) {
-                btJoinIn.setVisibility(View.GONE);
-                btCancel.setVisibility(View.VISIBLE);
-            } else {
-                btJoinIn.setVisibility(View.VISIBLE);
-                btCancel.setVisibility(View.GONE);
-            }
-        }
+//        if (StringUtils.IOS2DateTime(mCourse.getStartSingnDate()).isAfterNow()) {
+//            btOtherStatus.setVisibility(View.VISIBLE);
+//            btJoinIn.setVisibility(View.GONE);
+//            btCancel.setVisibility(View.GONE);
+//            btOtherStatus.setText("报名未开始");
+//        } else if (StringUtils.IOS2DateTime(mCourse.getEndSingnDate()).isBeforeNow()) {
+//            btOtherStatus.setVisibility(View.VISIBLE);
+//            btJoinIn.setVisibility(View.GONE);
+//            btCancel.setVisibility(View.GONE);
+//            btOtherStatus.setText("报名已结束");
+//        } else {
+//            btOtherStatus.setVisibility(View.GONE);
+//            if (isJoin) {
+//                btJoinIn.setVisibility(View.GONE);
+//                btCancel.setVisibility(View.VISIBLE);
+//            } else {
+//                btJoinIn.setVisibility(View.VISIBLE);
+//                btCancel.setVisibility(View.GONE);
+//            }
+//        }
     }
 
     @Override

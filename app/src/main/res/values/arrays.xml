@@ -76,21 +76,21 @@
 
 
     //==========订单筛选条件
-    <string-array name="merchant_order_condition">
+    <string-array name="order_condition">
         <item>已预约</item>
         <item>已受理</item>
         <item>已完成</item>
         <item>已取消</item>
     </string-array>
 
-    <string-array name="merchant_order_condition_value">
+    <string-array name="order_condition_value">
         <item>reserved</item>
         <item>assigned</item>
         <item>done</item>
         <item>cancel</item>
     </string-array>
 
-    <string-array name="personal_order_condition">
+    <string-array name="merchant_order_condition">
         <item>已预约</item>
         <item>已受理</item>
         <item>延期中</item>
@@ -98,11 +98,43 @@
         <item>已取消</item>
     </string-array>
 
-    <string-array name="personal_order_condition_value">
+    <string-array name="merchant_order_condition_value">
         <item>reserved</item>
         <item>assigned</item>
         <item>delay</item>
         <item>done</item>
         <item>cancel</item>
     </string-array>
+
+
+    //=========备注呼叫情况选项
+    <string-array name="merchant_call_situation">
+        <item>接通</item>
+        <item>无法接通</item>
+        <item>无应答</item>
+        <item>空号</item>
+    </string-array>
+
+
+    //=========新增订单个人信息
+    <string-array name="personal_info_sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+    <string-array name="personal_info_health_status">
+        <item>自理</item>
+        <item>半自理</item>
+        <item>不能自理</item>
+    </string-array>
+
+    <string-array name="personal_info_relation">
+        <item>本人</item>
+        <item>儿女</item>
+        <item>孙辈</item>
+        <item>亲戚</item>
+        <item>朋友</item>
+    </string-array>
+
+
 </resources>

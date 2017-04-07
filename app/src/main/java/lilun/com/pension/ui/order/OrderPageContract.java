@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.residential.main;
+package lilun.com.pension.ui.order;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import lilun.com.pension.module.bean.ProductOrder;
  *         create at 2017/3/3 8:58
  *         email : yk_developer@163.com
  */
-public interface MyOrderContract {
+public interface OrderPageContract {
     interface View extends IView<Presenter> {
         void showMyOrders(List<ProductOrder> orders,boolean isLoadMore);
 

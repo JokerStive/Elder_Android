@@ -1,17 +1,21 @@
 package lilun.com.pension.ui.agency.reservation;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.qqtheme.framework.picker.DateTimePicker;
+import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.widget.NormalTitleBar;
 
 /**
  * 新增预约信息列表V
@@ -45,9 +49,15 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     @Bind(R.id.tv_check_in_time)
     TextView tvCheckInTime;
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
 
-    @Bind(R.id.btn_confirm)
-    Button btnConfirm;
+
+    private int size = 17;
+    private int selectColor = App.context.getResources().getColor(R.color.red);
+    private String[] optionSex = App.context.getResources().getStringArray(R.array.personal_info_sex);
+    private String[] optionHealthStatus = App.context.getResources().getStringArray(R.array.personal_info_health_status);
+    private String[] optionRelation = App.context.getResources().getStringArray(R.array.personal_info_relation);
 
     public static AddServiceInfoFragment newInstance() {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
@@ -66,20 +76,80 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-
+        titleBar.setOnBackClickListener(this::pop);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+
+    @OnClick({R.id.tv_sex, R.id.tv_health_status, R.id.tv_relation, R.id.tv_birthday, R.id.btn_confirm})
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+            case R.id.tv_sex:
+                optionPicker(optionSex, tvSex.getText().toString(), tvSex);
+                break;
+
+            case R.id.tv_health_status:
+                optionPicker(optionHealthStatus, tvHealthStatus.getText().toString(), tvHealthStatus);
+                break;
+
+
+            case R.id.tv_relation:
+                optionPicker(optionRelation, tvRelation.getText().toString(), tvRelation);
+                break;
+
+            case R.id.tv_birthday:
+                chooseBirthday();
+                break;
+
+            case R.id.btn_confirm:
+                savePersonalInfo();
+                break;
+        }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    private void savePersonalInfo() {
+        Logger.d("保存用户资料");
     }
+
+    /**
+     * 生日选择器
+     */
+    private void chooseBirthday() {
+        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
+        setPickerConfig(picker);
+        picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
+            String time = year + "-" + month + "-" + day;
+            tvBirthday.setText(time);
+        });
+        picker.show();
+    }
+
+    /**
+     * 显示一个选择器
+     */
+    private void optionPicker(String[] options, String selectItem, TextView view) {
+        OptionPicker picker = new OptionPicker(_mActivity, options);
+        picker.setSelectedItem(selectItem);
+        setPickerConfig(picker);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(int index, String item) {
+                view.setText(item);
+            }
+        });
+        picker.show();
+    }
+
+
+    /**
+     * 选择器的配置
+     */
+    private void setPickerConfig(WheelPicker picker) {
+        picker.setTextSize(size);
+        picker.setCancelTextSize(size);
+        picker.setSubmitTextSize(size);
+        picker.setLineColor(selectColor);
+        picker.setTextColor(selectColor);
+    }
+
 }

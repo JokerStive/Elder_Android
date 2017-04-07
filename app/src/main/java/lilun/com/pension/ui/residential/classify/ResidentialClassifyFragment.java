@@ -19,7 +19,7 @@ import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.residential.list.ResidentialListFragment;
-import lilun.com.pension.ui.residential.main.OrderListFragment;
+import lilun.com.pension.ui.order.OrderListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 import lilun.com.pension.widget.recycler_view.AutoExtentionSpanSizeLookup;

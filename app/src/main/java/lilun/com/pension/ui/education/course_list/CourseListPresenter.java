@@ -2,10 +2,8 @@ package lilun.com.pension.ui.education.course_list;
 
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ConditionOption;
@@ -53,33 +51,33 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
     @Override
     public List<List<ConditionOption>> getConditionOptionsList() {
 
-        String where_price = "price";
-        String where_area = "level";
+//        String where_price = "price";
+//        String where_area = "level";
+//
+//
+//        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
+//        String[] level = App.context.getResources().getStringArray(R.array.education_level);
+//
+//        List<List<ConditionOption>> optionsList = new ArrayList<>();
+//
+//
+//        //价格可选项
+//        List<ConditionOption> priceOptions = new ArrayList<>();
+//        for (String price : prices) {
+//            ConditionOption conditionOption = new ConditionOption(where_price, price);
+//            priceOptions.add(conditionOption);
+//        }
+//        optionsList.add(priceOptions);
+//
+//
+//        List<ConditionOption> areaOptions = new ArrayList<>();
+//        for (String area : level) {
+//            ConditionOption conditionOption = new ConditionOption(where_area, area);
+//            areaOptions.add(conditionOption);
+//        }
+//        optionsList.add(areaOptions);
 
-
-        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
-        String[] level = App.context.getResources().getStringArray(R.array.education_level);
-
-        List<List<ConditionOption>> optionsList = new ArrayList<>();
-
-
-        //价格可选项
-        List<ConditionOption> priceOptions = new ArrayList<>();
-        for (String price : prices) {
-            ConditionOption conditionOption = new ConditionOption(where_price, price);
-            priceOptions.add(conditionOption);
-        }
-        optionsList.add(priceOptions);
-
-
-        List<ConditionOption> areaOptions = new ArrayList<>();
-        for (String area : level) {
-            ConditionOption conditionOption = new ConditionOption(where_area, area);
-            areaOptions.add(conditionOption);
-        }
-        optionsList.add(areaOptions);
-
-        return optionsList;
+        return null;
     }
 
 }

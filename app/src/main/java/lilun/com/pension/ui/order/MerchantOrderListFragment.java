@@ -1,10 +1,9 @@
-package lilun.com.pension.ui.residential.main;
+package lilun.com.pension.ui.order;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -20,9 +19,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pension.widget.SearchTitleBar;
 
 /**
  * 订单列表页面
@@ -31,29 +30,24 @@ import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
  *         create at 2017/3/6 17:08
  *         email : yk_developer@163.com
  */
-public class OrderListFragment extends BaseFragment {
+public class MerchantOrderListFragment extends BaseFragment {
 
     @Bind(R.id.indicator)
     MagicIndicator indicator;
 
     @Bind(R.id.vp_container)
     ViewPager mViewPager;
+    @Bind(R.id.searchBar)
+    SearchTitleBar searchBar;
 
-    @Bind(R.id.iv_back)
-    ImageView ivBack;
 
-    private String[] statusTitle = {"已预约", "已受理", "已完成", "已取消"};
-    private String[] status = {"reserved", "assigned", "done", "cancel"};
+    private String[] statusTitle = {"已预约", "已受理", "已延期", "已完成", "已取消"};
+    private String[] status = {"reserved", "assigned", "delay", "done", "cancel"};
 
     @Override
     protected void initPresenter() {
-        if (User.isCustomer()) {
-            statusTitle = getResources().getStringArray(R.array.personal_order_condition);
-            status = getResources().getStringArray(R.array.personal_order_condition_value);
-        } else {
-            statusTitle = getResources().getStringArray(R.array.merchant_order_condition);
-            status = getResources().getStringArray(R.array.merchant_order_condition_value);
-        }
+        statusTitle = getResources().getStringArray(R.array.merchant_order_condition);
+        status = getResources().getStringArray(R.array.merchant_order_condition_value);
     }
 
     @Override
@@ -63,7 +57,25 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ivBack.setOnClickListener(v -> pop());
+        searchBar.isChangeLayout(false);
+        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
+            @Override
+            public void onBack() {
+                pop();
+            }
+
+            @Override
+            public void onSearch(String searchStr) {
+
+            }
+
+            @Override
+            public void onChangeLayout(SearchTitleBar.LayoutType layoutType) {
+
+            }
+        });
+
+
         initViewPager();
         initIndicator();
         ViewPagerHelper.bind(indicator, mViewPager);
@@ -75,7 +87,7 @@ public class OrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            MyOderFragment fragment = MyOderFragment.newInstance(status[i]);
+            MerchantOrderPageFragment fragment = MerchantOrderPageFragment.newInstance(status[i]);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {
@@ -98,8 +110,8 @@ public class OrderListFragment extends BaseFragment {
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
                 ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
-                titleView.setNormalColor(Color.WHITE);
-                titleView.setSelectedColor(Color.WHITE);
+                titleView.setNormalColor(Color.BLACK);
+                titleView.setSelectedColor(getResources().getColor(R.color.red));
                 titleView.setTextSize(17);
                 titleView.setText(statusTitle[index]);
                 titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
@@ -109,7 +121,7 @@ public class OrderListFragment extends BaseFragment {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setColors(Color.WHITE);
+                indicator.setColors(getResources().getColor(R.color.red));
                 indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 return indicator;
             }

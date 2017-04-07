@@ -282,7 +282,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 break;
 
             case R.id.question:
-                start(ReplyFragment.newInstance(Constants.organizationActivity, mActivityId, mActivityTitle, true));
+                start(ReplyFragment.newInstance(Constants.special_organization_agency, mActivityId, mActivityTitle, true));
                 break;
 
 

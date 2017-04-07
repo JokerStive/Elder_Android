@@ -90,7 +90,7 @@ public class User {
 
     public static List<OrganizationAccount> getBelongOrganization() {
         if (ACache.get().getAsObject(belongOrganizations) != null) {
-          return   (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
+            return (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
         }
         return null;
     }

@@ -51,7 +51,7 @@ public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
         }
 
 
-        helper.setText(R.id.tv_name, reply.getCreatorName())
+        helper.setText(R.id.tv_provider_name, reply.getCreatorName())
                 .setText(R.id.tv_mobile,"13202011223")
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {

@@ -33,9 +33,9 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
-        UIUtils.setBold(help.getView(R.id.tv_title));
+        UIUtils.setBold(help.getView(R.id.tv_provider_name));
 
-        help.setText(R.id.tv_title, activity.getTitle())
+        help.setText(R.id.tv_provider_name, activity.getTitle())
                 .setText(R.id.tv_environment, activity.getAddress())
                 .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {

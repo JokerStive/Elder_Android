@@ -37,7 +37,7 @@
         style="@style/tv_normal_ellipsize" />
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_provider_name"
         android:layout_centerInParent="true"
         tools:text="我是标题"
         style="@style/tv_normal_ellipsize" />

@@ -5,7 +5,6 @@ import java.util.List;
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.Account;
-import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.TokenInfo;
 import rx.Observable;
@@ -42,7 +41,7 @@ public interface LoginContract {
 
         void putAccountInfo(Account account);
 
-        void putBelongOrganizations(List<Organization> organizations);
+        void putBelongOrganizations(List<OrganizationAccount> organizations);
 
     }
 

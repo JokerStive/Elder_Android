@@ -8,6 +8,7 @@ import java.util.List;
 
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
+import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Information;
@@ -43,31 +44,33 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
     }
 
     @Override
-    public void needChangeDefOrganization(String accountId, String changeOrganizationId) {
+    public boolean needChangeDefOrganization(String changeOrganizationId) {
         List<OrganizationAccount> belongOrganization = User.getBelongOrganization();
         if (belongOrganization != null) {
             for (OrganizationAccount oa : belongOrganization) {
                 String organizationId = oa.getOrganizationId();
                 if (TextUtils.equals(organizationId, changeOrganizationId)) {
                     Logger.d("需要切换默认所属组织" + organizationId);
-                    changeDefBelongOrganization(accountId, changeOrganizationId);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     @Override
-    public void changeDefBelongOrganization(String accountId, String organizationId) {
+    public void changeDefBelongOrganization(String organizationId, int clickId) {
         Account account = new Account();
         account.setDefaultOrganizationId(organizationId);
         addSubscribe(NetHelper.getApi()
-                .putAccount(accountId, account)
+                .putAccount(User.getUserId(), account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>() {
+                .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
                     @Override
                     public void _next(Object o) {
-
+                        User.puttCurrentOrganizationId(organizationId);
+                        view.changeOrganizationSuccess(clickId);
                     }
                 }));
     }

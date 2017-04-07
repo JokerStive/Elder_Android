@@ -31,7 +31,7 @@ public class AidRootAdapter extends QuickAdapter<OrganizationAid> {
                 +"\""+aid.getTitle()+"\""+"的请求";
 
         helper.setText(R.id.tv_content,content)
-                .setText(R.id.tv_time, StringUtils.IOS2ToUTC(aid.getCreatedAt(),3));
+                .setText(R.id.tv_creator, StringUtils.IOS2ToUTC(aid.getCreatedAt(),3));
 
     }
 }

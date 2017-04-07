@@ -41,4 +41,9 @@ public class Event {
 
     //刷新消息推送栏
     public static  class RefreshPushMessage{}
+
+
+
+    //刷新商家订单列表
+    public static  class RefreshMerchantOrder{}
 }

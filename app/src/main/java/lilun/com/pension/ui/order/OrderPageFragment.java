@@ -1,4 +1,4 @@
-package lilun.com.pension.ui.residential.main;
+package lilun.com.pension.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ import lilun.com.pension.widget.NormalTitleBar;
  *         create at 2017/3/3 11:33
  *         email : yk_developer@163.com
  */
-public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> implements MyOrderContract.View {
+public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter> implements OrderPageContract.View {
 
 
 
@@ -49,8 +49,8 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
     private String mStatus;
 
 
-    public static MyOderFragment newInstance(String status) {
-        MyOderFragment fragment = new MyOderFragment();
+    public static OrderPageFragment newInstance(String status) {
+        OrderPageFragment fragment = new OrderPageFragment();
         Bundle args = new Bundle();
         args.putString("status", status);
         fragment.setArguments(args);
@@ -72,7 +72,7 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
 
     @Override
     protected void initPresenter() {
-        mPresenter = new MyOrderPresenter();
+        mPresenter = new OrderPagePresenter();
         mPresenter.bindView(this);
     }
 
@@ -133,8 +133,6 @@ public class MyOderFragment extends BaseFragment<MyOrderContract.Presenter> impl
                 intent.putExtra("orderId", order.getId());
                 startActivity(intent);
 
-//                start(OrderDetailFragment.newInstance(order.getId()),SINGLETOP);
-//                showHideFragment(OrderDetailFragment.newInstance(order.getId()));
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {
                 getMyOrder(personalOrderAdapter.getItemCount());

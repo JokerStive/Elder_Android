@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,12 +115,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     protected void initView(LayoutInflater inflater) {
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-//        drawer.setScrimColor(Color.TRANSPARENT);
 
         ivAvatar.setOnClickListener(this);
         ivActivities.setOnClickListener(this);
@@ -136,25 +137,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-//                View mContent = drawer.getChildAt(0);
-//                View mMenu = drawerView;
-//                float scale = 1 - slideOffset;
-//                float rightScale = 0.8f + scale * 0.2f;
-//                if (drawerView.getTag().equals("LEFT")) {
-
-//                    float leftScale = 1 - 0.3f * scale;
-
-//                    ViewHelper.setScaleX(mMenu, leftScale);
-//                    ViewHelper.setScaleY(mMenu, leftScale);
-//                    ViewHelper.setAlpha(mMenu, 0.6f + 0.4f * (1 - scale));
-//                    ViewHelper.setTranslationX(mContent,
-//                            mMenu.getMeasuredWidth() * (1 - scale));
-//                    ViewHelper.setPivotX(mContent, 0);
-//                    ViewHelper.setPivotY(mContent, mContent.getMeasuredHeight() / 2);
-//                    mContent.invalidate();
-//                    ViewHelper.setScaleX(mContent, rightScale);
-//                    ViewHelper.setScaleY(mContent, rightScale);
-//                }
             }
 
             @Override
@@ -337,6 +319,17 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             data.add(information);
         }
         setInformation(data);
+    }
+
+    @Override
+    public void changeOrganizationSuccess(int clickId) {
+        //需要切换默认所属组织之后
+        switch (clickId) {
+            case R.id.iv_agency:
+                Logger.d("切换组织成功" + User.getCurrentOrganizationId());
+                start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_agency))));
+                break;
+        }
     }
 
 

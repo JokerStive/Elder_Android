@@ -1,54 +1,69 @@
 package lilun.com.pension.module.bean;
 
+import java.util.List;
+
 /**
-*筛选条件
-*@author yk
-*create at 2017/3/28 9:48
-*email : yk_developer@163.com
-*/
+ * 筛选条件
+ *
+ * @author yk
+ *         create at 2017/3/28 9:48
+ *         email : yk_developer@163.com
+ */
 
 public class ConditionOption {
-    private String key;
-    private String conditionKey;
+    private String type;
+    private List<Option> val;
+    private String condition;
+    private String layoutCategory;
 
-    public ConditionOption(String key, String conditionKey, String conditionValue) {
-        this.key = key;
-        this.conditionKey = conditionKey;
-        this.conditionValue = conditionValue;
+    public String getLayoutCategory() {
+        return layoutCategory;
     }
 
-    public ConditionOption(String key, String conditionKey) {
-        this.key = key;
-        this.conditionKey = conditionKey;
-        this.conditionValue = conditionKey;
-    }
-
-    private String conditionValue;
-
-    public String getKey() {
-        return key;
-    }
-
-    public ConditionOption setKey(String key) {
-        this.key = key;
+    public ConditionOption setLayoutCategory(String layoutCategory) {
+        this.layoutCategory = layoutCategory;
         return this;
     }
 
-    public String getConditionKey() {
-        return conditionKey;
+    public ConditionOption(String key, String conditionKey, List<Option> conditionValue) {
+        this.type = key;
+        this.condition = conditionKey;
+        this.val = conditionValue;
     }
 
-    public ConditionOption setConditionKey(String conditionKey) {
-        this.conditionKey = conditionKey;
+//    public ConditionOption(String key, String conditionKey) {
+//        this.type = key;
+//        this.condition = conditionKey;
+//        this.val = new ArrayList<>();
+//        val.add(conditionKey);
+//    }
+
+    public String getType() {
+        return type;
+    }
+
+    public ConditionOption setType(String type) {
+        this.type = type;
         return this;
     }
 
-    public String getConditionValue() {
-        return conditionValue;
+    public String getCondition() {
+        return condition;
     }
 
-    public ConditionOption setConditionValue(String conditionValue) {
-        this.conditionValue = conditionValue;
+    public ConditionOption setCondition(String condition) {
+        this.condition = condition;
         return this;
     }
+
+    public List<Option> getVal() {
+        return val;
+    }
+
+    public ConditionOption setVal(List<Option> val) {
+        this.val = val;
+        return this;
+    }
+
+
 }

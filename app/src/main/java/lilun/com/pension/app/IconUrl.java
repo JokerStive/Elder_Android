@@ -22,17 +22,15 @@ public class IconUrl {
     public static String OrganizationInformations = "OrganizationInformations";
 
     public static String moduleIconUrl(String module, String moduleId, String iconName) {
-        return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/downloadImage/" + iconName + "?access_token=" + User.getToken();
+        return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/image/" + iconName + "?access_token=" + User.getToken();
     }
 
-    public static String moduleIconUrl(String module, String moduleId, String iconName,String Icon) {
-        return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
+    public static String moduleIconUrl(String module, String moduleId, String iconName, String Icon) {
+        return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
 
-
-
-//    public static String elderModule(String elderModuleId, String iconName) {
+    //    public static String elderModule(String elderModuleId, String iconName) {
 //        return Config.BASE_URL + "ElderModules/" + encodeURL(elderModuleId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
 //    }
 //

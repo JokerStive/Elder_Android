@@ -1,10 +1,7 @@
 package lilun.com.pension.ui.agency.list;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import lilun.com.pension.R;
-import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.Organization;
@@ -66,41 +63,42 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
     }
 
     @Override
-    public List<List<ConditionOption>> getConditionOptionsList() {
-        String where_roomType = "room_type";
-        String where_price = "price";
-        String where_area = "area";
-
-        String[] rooTypes = App.context.getResources().getStringArray(R.array.product_roomType_option);
-        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
-        String[] areas = App.context.getResources().getStringArray(R.array.product_area_option);
-
-        List<List<ConditionOption>> optionsList = new ArrayList<>();
-
-        //房型可选项
-        List<ConditionOption> rooTypeOptions = new ArrayList<>();
-        for (String roomType : rooTypes) {
-            ConditionOption conditionOption = new ConditionOption(where_roomType, roomType);
-            rooTypeOptions.add(conditionOption);
-        }
-        optionsList.add(rooTypeOptions);
-
-        //价格可选项
-        List<ConditionOption> priceOptions = new ArrayList<>();
-        for (String price : prices) {
-            ConditionOption conditionOption = new ConditionOption(where_price, price);
-            priceOptions.add(conditionOption);
-        }
-        optionsList.add(priceOptions);
-
-        //面积可选项
-        List<ConditionOption> areaOptions = new ArrayList<>();
-        for (String area : areas) {
-            ConditionOption conditionOption = new ConditionOption(where_area, area);
-            areaOptions.add(conditionOption);
-        }
-        optionsList.add(areaOptions);
-
-        return optionsList;
+    public List<ConditionOption> getConditionOptionsList() {
+//        String where_roomType = "room_type";
+//        String where_price = "price";
+//        String where_area = "area";
+//
+//        String[] rooTypes = App.context.getResources().getStringArray(R.array.product_roomType_option);
+//        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
+//        String[] areas = App.context.getResources().getStringArray(R.array.product_area_option);
+//
+//        List<List<ConditionOption>> optionsList = new ArrayList<>();
+//
+//        //房型可选项
+//        List<ConditionOption> rooTypeOptions = new ArrayList<>();
+//        for (String roomType : rooTypes) {
+//            ConditionOption conditionOption = new ConditionOption(where_roomType, roomType);
+//            rooTypeOptions.add(conditionOption);
+//        }
+//        optionsList.add(rooTypeOptions);
+//
+//        //价格可选项
+//        List<ConditionOption> priceOptions = new ArrayList<>();
+//        for (String price : prices) {
+//            ConditionOption conditionOption = new ConditionOption(where_price, price);
+//            priceOptions.add(conditionOption);
+//        }
+//        optionsList.add(priceOptions);
+//
+//        //面积可选项
+//        List<ConditionOption> areaOptions = new ArrayList<>();
+//        for (String area : areas) {
+//            ConditionOption conditionOption = new ConditionOption(where_area, area);
+//            areaOptions.add(conditionOption);
+//        }
+//        optionsList.add(areaOptions);
+//
+//        return optionsList;
+        return null;
     }
 }

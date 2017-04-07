@@ -161,8 +161,9 @@
                     <EditText
                         style="@style/et_normal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_margin="6dp"
+                        android:gravity="top"
                         android:hint="请填写详细的健康状况"
 
                         />
@@ -274,13 +275,15 @@
                 android:layout_marginTop="16dp"
                 android:drawableLeft="@drawable/pension_agency_icon"
                 android:drawablePadding="10dp"
-                android:text="@string/check_in_time" />
+                android:text="@string/check_in_time"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/home_bg"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/tv_small_ellipsize"

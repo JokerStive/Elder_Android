@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
@@ -24,7 +25,8 @@ import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.agency.list.AgencyOrganizationListFragment;
 import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
-import lilun.com.pension.ui.residential.main.OrderListFragment;
+import lilun.com.pension.ui.order.MerchantOrderListFragment;
+import lilun.com.pension.ui.order.OrderListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
@@ -89,19 +91,23 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
             @Override
             public void onPositionClick() {
-
+//                start();
             }
 
             @Override
             public void onRightClick() {
-                //TODO 查看所有订单
-                start(new OrderListFragment());
+                //TODO 商家和个人查看所有订单
+                if (User.isCustomer()) {
+                    start(new OrderListFragment());
+                } else {
+                    Logger.d("商家模式进入");
+                    start(new MerchantOrderListFragment());
+                }
             }
         });
 
         rvAgency.addItemDecoration(new ElderModuleClassifyDecoration());
         rvServer.addItemDecoration(new ElderModuleClassifyDecoration());
-
 
 
     }
@@ -132,7 +138,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(organizations)));
         AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
         adapter.setOnItemClickListener((organization -> {
-            start(AgencyOrganizationListFragment.newInstance(organization.getName(),organization.getId()));
+            start(AgencyOrganizationListFragment.newInstance(organization.getName(), organization.getId()));
 
         }));
         rvAgency.setAdapter(adapter);
@@ -146,12 +152,11 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvServer.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((productCategory -> {
-           start(AgencyServiceListFragment.newInstance(productCategory.getName(),productCategory.getId(),0));
+            start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
 
         }));
         rvServer.setAdapter(adapter);
     }
-
 
 
     @Override

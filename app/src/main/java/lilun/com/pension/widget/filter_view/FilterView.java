@@ -100,18 +100,17 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
 
     }
 
-    public void setTitlesAndDatas(List<String> tabTitles, List<List<ConditionOption>> optionsList, View contentView) {
+    public void setTitlesAndDatas(List<String> tabTitles, List<ConditionOption> optionsList, View contentView) {
         List<View> pops = new ArrayList<>();
         for (int i = 0; i < optionsList.size(); i++) {
             RecyclerView recyclerView = new RecyclerView(App.context);
             recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
             NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
             final int finalI = i;
-            adapter.setOnItemClickListener((position, option) -> {
-
-                setTabText(position == 0 ? tabTitles.get(finalI) : option.getConditionValue(), position == 0);
+            adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
+                setTabText(position == 0 ? tabTitles.get(finalI) : title, position == 0);
                 if (listener != null) {
-                    listener.onOptionClick(option);
+                    listener.onOptionClick(whereKey,whereValue);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -122,7 +121,7 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     }
 
     public interface OnOptionClickListener {
-        void onOptionClick(ConditionOption option);
+        void onOptionClick(String whereKey,String  whereValue);
     }
 
     public void setOnOptionClickListener(OnOptionClickListener listener) {

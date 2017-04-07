@@ -10,23 +10,18 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.EduCourseAdapter;
-import lilun.com.pension.module.adapter.NormalFilterAdapter;
-import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
-import lilun.com.pension.widget.filter_view.AreaFilter;
 import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
@@ -157,31 +152,31 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     }
 
     private void initFilter() {
-        List<View> pops = new ArrayList<>();
-
-        //除了区域以外的条件弹窗
-        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();
-        for (int i = 0; i < optionsList.size(); i++) {
-            RecyclerView recyclerView = new RecyclerView(App.context);
-            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
-            final int finalI = i + 1;
-            adapter.setOnItemClickListener((position, option) -> {
-                filterView.setTabText(position == 0 ? Arrays.asList(filterTitles).get(finalI) : option.getConditionValue(), position == 0);
-                //TODO 条件的map加入条件
-            });
-            recyclerView.setAdapter(adapter);
-            pops.add(recyclerView);
-        }
-
-
-        //TODO 区域
-
-        AreaFilter areaFilter = new AreaFilter(mContent);
-        pops.add(0, areaFilter);
-
-
-        filterView.setTitlesAndPops(Arrays.asList(filterTitles), pops, mSwipeLayout);
+//        List<View> pops = new ArrayList<>();
+//
+//        //除了区域以外的条件弹窗
+//        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();
+//        for (int i = 0; i < optionsList.size(); i++) {
+//            RecyclerView recyclerView = new RecyclerView(App.context);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+//            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
+//            final int finalI = i + 1;
+//            adapter.setOnItemClickListener((position, option) -> {
+//                filterView.setTabText(position == 0 ? Arrays.asList(filterTitles).get(finalI) : option.getVal(), position == 0);
+//                //TODO 条件的map加入条件
+//            });
+//            recyclerView.setAdapter(adapter);
+//            pops.add(recyclerView);
+//        }
+//
+//
+//        //TODO 区域
+//
+//        AreaFilter areaFilter = new AreaFilter(mContent);
+//        pops.add(0, areaFilter);
+//
+//
+//        filterView.setTitlesAndPops(Arrays.asList(filterTitles), pops, mSwipeLayout);
     }
 
     private void getDataList(String schoolId, int skip) {

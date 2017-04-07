@@ -16,14 +16,15 @@ import lilun.com.pension.module.bean.Information;
 public interface HomeContract {
     interface View extends IView<Presenter> {
         void showInformation(List<Information> informations);
+        void changeOrganizationSuccess(int clickId);
     }
 
     interface Presenter extends IPresenter<View> {
 
         void getInformation();
 
-        void needChangeDefOrganization(String accountId,String changeOrganizationId);
+        boolean needChangeDefOrganization(String changeOrganizationId);
 
-        void changeDefBelongOrganization(String accountId, String organizationId);
+        void changeDefBelongOrganization(String organizationId,int clickId);
     }
 }

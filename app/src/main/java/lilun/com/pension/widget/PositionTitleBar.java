@@ -47,7 +47,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
         ivPosition = (ImageView) view.findViewById(R.id.iv_position);
         tvPosition = (TextView) view.findViewById(R.id.tv_position);
-        tvTitle = (TextView) view.findViewById(R.id.tv_title);
+        tvTitle = (TextView) view.findViewById(R.id.tv_provider_name);
         tvRight = (Button) view.findViewById(R.id.tv_right);
 
         setTitle(title);

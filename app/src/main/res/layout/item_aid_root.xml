@@ -16,7 +16,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_time"
+        android:id="@+id/tv_creator"
         style="@style/tv_small_ellipsize"
         tools:text="03/18"
         android:textColor="@color/gray"

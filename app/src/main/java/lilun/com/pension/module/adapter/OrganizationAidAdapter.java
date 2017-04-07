@@ -38,7 +38,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
     protected void convert(BaseViewHolder help, OrganizationAid aid) {
 
         //标题加粗
-        TextView tvTitle = help.getView(R.id.tv_title);
+        TextView tvTitle = help.getView(R.id.tv_provider_name);
 //        UIUtils.setBold(tvTitle);
         tvTitle.setText(aid.getTitle());
 

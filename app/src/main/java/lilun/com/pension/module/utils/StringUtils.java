@@ -136,7 +136,7 @@ public class StringUtils {
      */
     public static String addFilterWithDef(String filter, int skip) {
         String head;
-        if (TextUtils.isEmpty(filter)) {
+        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
             head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = head;
         } else {

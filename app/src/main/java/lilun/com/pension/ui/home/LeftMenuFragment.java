@@ -13,6 +13,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.welcome.WelcomeActivity;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
@@ -47,7 +48,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.iv_avatar)
     ImageView ivAvatar;
 
-    @Bind(R.id.tv_name)
+    @Bind(R.id.tv_provider_name)
     TextView tvName;
 
     @Override
@@ -93,6 +94,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 .positiveText(R.string.confirm)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
+                    ACache.get().clear();
                     PreUtils.clear();
                     startActivity(new Intent(_mActivity, WelcomeActivity.class));
                 })

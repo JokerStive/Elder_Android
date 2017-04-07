@@ -30,8 +30,8 @@ public class RankAdapter extends QuickAdapter<Rank> {
     protected void convert(BaseViewHolder helper, Rank rank) {
 
 
-        helper.setText(R.id.tv_name, rank.getCreatorName())
-                .setText(R.id.tv_time, StringUtils.timeFormat(rank.getCreatedAt()))
+        helper.setText(R.id.tv_provider_name, rank.getCreatorName())
+                .setText(R.id.tv_creator, StringUtils.timeFormat(rank.getCreatedAt()))
                 .setText(R.id.tv_content, StringUtils.filterNull(rank.getDescription()));
 
 
