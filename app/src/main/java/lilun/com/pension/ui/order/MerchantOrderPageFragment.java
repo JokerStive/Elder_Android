@@ -128,9 +128,10 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
         String filter;
-        if (User.isCustomer()) {
-            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
-        } else if (!TextUtils.isEmpty(productId)) {
+//        if (User.isCustomer()) {
+//            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+//        } else
+        if (!TextUtils.isEmpty(productId)) {
             filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         } else {
             filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";

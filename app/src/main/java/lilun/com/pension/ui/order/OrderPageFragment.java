@@ -106,7 +106,8 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-        mPresenter.getMyOrders(mStatus, skip);
+       String  filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+        mPresenter.getMyOrders(filter, skip);
 
     }
 

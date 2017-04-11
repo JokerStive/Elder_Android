@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.agency.reservation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +22,13 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ServiceUserInfoAdapter;
 import lilun.com.pension.module.bean.Contact;
+import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
+import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -95,10 +99,10 @@ public class ServiceUserInfoFragment extends BaseFragment {
                 });
     }
 
-    private void showUserInfo(List<Contact> userInfos) {
-        ServiceUserInfoAdapter adapter = new ServiceUserInfoAdapter(userInfos);
+    private void showUserInfo(List<Contact> contacts) {
+        ServiceUserInfoAdapter adapter = new ServiceUserInfoAdapter(contacts);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-
+            reservation(productId, contacts.get(i).getId(), null);
         });
         adapter.setOnItemClickListener(new ServiceUserInfoAdapter.OnItemClickListener() {
             @Override
@@ -128,5 +132,28 @@ public class ServiceUserInfoFragment extends BaseFragment {
         rvInfo.addItemDecoration(new NormalItemDecoration(10));
     }
 
+
+    /**
+     * 预约服务
+     */
+    private void reservation(String productId, String contactId, String data) {
+        new NormalDialog().createNormal(_mActivity, getString(R.string.reservation_desc), () -> {
+            NetHelper.getApi()
+                    .createOrder(productId, contactId, data)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<ProductOrder>() {
+                        @Override
+                        public void _next(ProductOrder order) {
+                            Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+                            intent.putExtra("orderId", order.getId());
+                            startActivity(intent);
+                            setFragmentResult(0, null);
+                            pop();
+                        }
+                    });
+        });
+
+    }
 
 }

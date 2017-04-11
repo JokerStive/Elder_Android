@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.agency.detail;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,9 +30,7 @@ import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.agency.reservation.ServiceUserInfoFragment;
 import lilun.com.pension.ui.order.MerchantOrderListFragment;
-import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.ui.residential.rank.RankListFragment;
-import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -178,15 +175,19 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                         @Override
                         public void _next(List<ProductOrder> orders) {
                             if (orders.size() != 0) {
-                                tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
-                                tvReservation.setTextColor(Color.WHITE);
-                                tvReservation.setText("已预约");
+                                setHadReservation();
                             }
                         }
                     });
         }
 
 
+    }
+
+    private void setHadReservation() {
+        tvReservation.setBackgroundResource(R.drawable.shape_circle_red);
+        tvReservation.setTextColor(Color.WHITE);
+        tvReservation.setText("已预约");
     }
 
     @Override
@@ -198,7 +199,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
             case R.id.tv_reservation:
                 if (tvReservation.getText().equals(getString(R.string.reservation))) {
-                    start(ServiceUserInfoFragment.newInstance(mProduct.getCategoryId(), mProduct.getId()));
+                    ServiceUserInfoFragment fragment = ServiceUserInfoFragment.newInstance(mProduct.getCategoryId(), mProduct.getId());
+                    startForResult(fragment, 0);
                 }
                 break;
 
@@ -222,33 +224,15 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    /**
-     * 预约服务
-     */
-    private void reservation() {
-        if (tvReservation.getText().equals(getString(R.string.cancel))) {
-
-        } else if (tvReservation.getText().equals(getString(R.string.reservation))) {
-            new NormalDialog().createNormal(_mActivity, getString(R.string.reservation_desc), () -> {
-                NetHelper.getApi()
-                        .createOrder(mProduct.getId())
-                        .compose(RxUtils.handleResult())
-                        .compose(RxUtils.applySchedule())
-                        .subscribe(new RxSubscriber<ProductOrder>() {
-                            @Override
-                            public void _next(ProductOrder order) {
-                                Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
-                                intent.putExtra("orderId", order.getId());
-                                startActivity(intent);
-                                pop();
-//                                startWithPop(OrderDetailFragment.newInstance(productOrder.getId()));
-                            }
-                        });
-            });
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == 0) {
+            setHadReservation();
         }
     }
 
-//    private void setReservation() {
+    //    private void setReservation() {
 //        tvReservation.setText(R.string.cancel);
 //        tvReservation.setTextColor(getResources().getColor(R.color.white));
 //        tvReservation.setBackgroundResource(R.drawable.shape_circle_red);

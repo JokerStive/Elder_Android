@@ -4,54 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/white"
-    android:gravity="center_vertical"
-    android:clickable="true">
+    android:clickable="true"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/back"
-        android:padding="20dp"
-        android:layout_centerVertical="true"
-        />
+        android:padding="20dp" />
 
 
-    <ImageView
-        android:id="@+id/iv_position"
-        android:layout_toEndOf="@id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/position_black"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:layout_centerVertical="true"
-        />
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_position"-->
+    <!---->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/position_black"-->
+    <!--android:paddingStart="5dp"-->
+    <!--android:paddingEnd="5dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--/>-->
 
     <TextView
         android:id="@+id/tv_position"
-        android:layout_toEndOf="@id/iv_position"
-        android:layout_marginStart="2dp"
+        style="@style/tv_normal_ellipsize"
         android:layout_centerVertical="true"
-        android:text="枫叶小区"
-        style="@style/tv_normal_ellipsize" />
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/iv_back"
+        android:drawablePadding="3dp"
+        android:drawableLeft="@drawable/position_black"
+        android:maxWidth="100dp"
+        android:text="枫叶小区枫叶小区枫叶小区" />
 
     <TextView
         android:id="@+id/tv_product_name"
+        style="@style/tv_normal_ellipsize"
         android:layout_centerInParent="true"
-        tools:text="我是标题"
-        style="@style/tv_normal_ellipsize" />
+        tools:text="我是标题" />
 
 
     <Button
-        android:focusable="false"
         android:id="@+id/tv_right"
-        android:text="我要干啥"
-        android:background="@null"
         style="@style/tv_normal_ellipsize"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:background="@null"
+        android:focusable="false"
         android:padding="10dp"
-        />
+        android:text="我要干啥" />
 
 </RelativeLayout>

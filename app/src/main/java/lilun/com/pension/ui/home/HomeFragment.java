@@ -29,6 +29,7 @@ import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
+import lilun.com.pension.ui.change_organization.ChangeOrganizationFragment;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
@@ -77,8 +78,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Bind(R.id.iv_avatar)
     ImageView ivAvatar;
 
-    @Bind(R.id.iv_position)
-    ImageView ivPosition;
+//    @Bind(R.id.iv_position)
+//    ImageView ivPosition;
 
     @Bind(R.id.iv_message)
     ImageView ivMessage;
@@ -130,6 +131,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         ivHelpEach.setOnClickListener(this);
         ivResidentialService.setOnClickListener(this);
         ivMessage.setOnClickListener(this);
+        tvPosition.setOnClickListener(this);
     }
 
     @Override
@@ -207,8 +209,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 startResidentialService();
                 break;
 
+            //信息中心
             case R.id.iv_message:
                 start(InformationCenterFragment.newInstance());
+                break;
+
+            // 切换社区
+            case R.id.tv_position:
+                start(ChangeOrganizationFragment.newInstance());
                 break;
         }
 

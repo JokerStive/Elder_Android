@@ -25,6 +25,6 @@ public interface HomeContract {
 
         boolean needChangeDefOrganization(String changeOrganizationId);
 
-        void changeDefBelongOrganization(String organizationId,int clickId);
+        void changeDefBelongOrganization(String organizationId, int clickId);
     }
 }

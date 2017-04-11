@@ -29,6 +29,8 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -230,8 +232,9 @@ public interface ApiService {
     /**
      * 预约订单
      */
+    @FormUrlEncoded
     @POST("OrganizationProducts/{id}/createOrder")
-    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId);
+    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId,@Field("registerDate") String registerDate);
 
 
     /**

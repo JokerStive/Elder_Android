@@ -201,9 +201,12 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
             Observable<OrganizationAid> observable = aidObservable(null);
             List<String> data = getPhotoData();
             if (data != null) {
+//                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+//                builder.a
                 Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(data);
                 if (requestBodies != null) {
                     observable = iconObservable(requestBodies).flatMap(this::aidObservable);
+//                    observable = aidObservable(requestBodies);
                 }
             }
 
@@ -246,6 +249,13 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .newAidIcons(requestBodies)
                 .compose(RxUtils.handleResult());
     }
+
+//    private Observable<OrganizationAid> aidObservable(Map<String, RequestBody> requestBodies) {
+//        OrganizationAid aid = getOrganizationAid();
+//        return NetHelper.getApi()
+//                .newOrganizationAid(aid, requestBodies)
+//                .compose(RxUtils.handleResult());
+//    }
 
     private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
         OrganizationAid aid = getOrganizationAid();
