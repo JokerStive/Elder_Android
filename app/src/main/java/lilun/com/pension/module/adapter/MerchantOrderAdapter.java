@@ -10,6 +10,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 
 /**
  * 用户预约登记信息adapter
@@ -31,19 +32,20 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
 
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
-        helper.setText(R.id.tv_provider_name, order.getName())
+        helper.setText(R.id.tv_product_name, order.getName())
                 .setText(R.id.tv_health_status, order.getStatus())
                 .setText(R.id.tv_creator, "下单人:"+order.getCreatorName())
                 .setText(R.id.tv_time, "下单时间:"+StringUtils.IOS2ToUTC(order.getCreatedAt(), 0))
                 .setOnClickListener(R.id.tv_memo, v -> {
                     if (listener != null) {
-                        listener.onMemo();
+                        listener.onMemo(order);
                     }
                 })
                 .setOnClickListener(R.id.tv_call, v -> {
                     if (listener != null && !TextUtils.isEmpty(order.getMobile())) {
-                        String mobile = order.getMobile();
-                        listener.onCall(mobile);
+                        listener.onCall(order);
+                    }else {
+                        ToastHelper.get().showWareShort("顾客电话为空");
                     }
                 });
     }
@@ -53,8 +55,8 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
     }
 
     public interface OnItemClickListener {
-        void onCall(String  phone);
+        void onCall(ProductOrder  order);
 
-        void onMemo();
+        void onMemo(ProductOrder  order);
     }
 }

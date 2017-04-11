@@ -45,6 +45,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_product_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/home_bg"
@@ -56,17 +57,17 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_provider_name"
+                        android:id="@+id/tv_product_name"
                         style="@style/tv_small_ellipsize"
                         android:layout_width="wrap_content"
                         android:maxWidth="200dp"
-                        tools:text="佩珍服务佩珍服务佩珍服务佩珍服务" />
+                        android:maxLines="1"
+                        tools:text="佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务" />
 
                     <TextView
                         android:id="@+id/tv_health_status"
                         style="@style/tv_small"
                         android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
                         android:textColor="@color/red"
                         tools:text="带受理" />
 
@@ -128,11 +129,13 @@
                 android:drawablePadding="10dp"
                 android:text="备注" />
 
-            <include
-                layout="@layout/item_order_memo"
+
+            <FrameLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/fl_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+                 />
 
 
             <TextView

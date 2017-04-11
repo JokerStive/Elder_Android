@@ -110,6 +110,7 @@
 
     <!--新增预约信息-->
     <string name="occupant_info">入住者信息登记</string>
+    <string name="add_contact">新增预约信息</string>
     <string name="reservation_info">预约者信息登记</string>
     <string name="name">姓名</string>
     <string name="birthday">出生日期</string>
@@ -177,7 +178,7 @@
     <!--备注-->
     <string name="order_call_situation">外呼情况</string>
     <string name="write_call_situation">预约情况填写</string>
-    <string name="status_complete">完成</string>
+    <string name="status_shouli">受理</string>
     <string name="status_delay">延期</string>
 
     ====================================================

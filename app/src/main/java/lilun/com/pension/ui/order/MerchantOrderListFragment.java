@@ -2,6 +2,7 @@ package lilun.com.pension.ui.order;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 
@@ -21,6 +22,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.SearchTitleBar;
 
 /**
@@ -39,10 +41,26 @@ public class MerchantOrderListFragment extends BaseFragment {
     ViewPager mViewPager;
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
 
 
     private String[] statusTitle = {"已预约", "已受理", "已延期", "已完成", "已取消"};
     private String[] status = {"reserved", "assigned", "delay", "done", "cancel"};
+    private String productId;
+
+    public static MerchantOrderListFragment newInstance(String productId) {
+        MerchantOrderListFragment fragment = new MerchantOrderListFragment();
+        Bundle args = new Bundle();
+        args.putString("productId", productId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        productId = arguments.getString("productId");
+    }
 
     @Override
     protected void initPresenter() {
@@ -57,6 +75,7 @@ public class MerchantOrderListFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        titleBar.setOnBackClickListener(this::pop);
         searchBar.isChangeLayout(false);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
@@ -87,7 +106,7 @@ public class MerchantOrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            MerchantOrderPageFragment fragment = MerchantOrderPageFragment.newInstance(status[i]);
+            MerchantOrderPageFragment fragment = MerchantOrderPageFragment.newInstance(status[i],productId);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {
@@ -129,6 +148,5 @@ public class MerchantOrderListFragment extends BaseFragment {
         indicator.setNavigator(navigator);
 
     }
-
 
 }

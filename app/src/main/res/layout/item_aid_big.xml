@@ -23,7 +23,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_provider_name"
+        android:id="@+id/tv_product_name"
         style="@style/tv_small_ellipsize"
         android:layout_width="300dp"
         android:layout_marginTop="8dp"

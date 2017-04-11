@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.agency.reservation;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,16 +8,20 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ServiceUserInfoAdapter;
-import lilun.com.pension.module.bean.ServiceUserInformation;
+import lilun.com.pension.module.bean.Contact;
+import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -37,39 +42,64 @@ public class ServiceUserInfoFragment extends BaseFragment {
 
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
+    private String productCategoryId;
+    private String productId;
 
     @OnClick({R.id.btn_add_info})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_info:
-                start(AddServiceInfoFragment.newInstance());
+                start(AddServiceInfoFragment.newInstance(productCategoryId, productId, null));
                 break;
         }
     }
 
-    public static ServiceUserInfoFragment newInstance() {
+    @Subscribe
+    public void refreshData(Event.RefreshContract event) {
+        getContract();
+    }
+
+    public static ServiceUserInfoFragment newInstance(String productCategoryId, String productId) {
         ServiceUserInfoFragment fragment = new ServiceUserInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("productCategoryId", productCategoryId);
+        bundle.putString("productId", productId);
+        fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        productCategoryId = arguments.getString("productCategoryId");
+        productId = arguments.getString("productId");
+        Preconditions.checkNull(productCategoryId);
+        Preconditions.checkNull(productId);
     }
 
     @Override
     protected void initPresenter() {
         //TODO 获取个人健康信息列表
+        getContract();
+    }
+
+    private void getContract() {
         String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
-        NetHelper.getApi().getServiceUserInfos(filter)
+        NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ServiceUserInformation>>() {
+                .subscribe(new RxSubscriber<List<Contact>>(_mActivity) {
                     @Override
-                    public void _next(List<ServiceUserInformation> userInfos) {
-                        showUserInfo(userInfos);
+                    public void _next(List<Contact> contacts) {
+                        showUserInfo(contacts);
                     }
                 });
     }
 
-    private void showUserInfo(List<ServiceUserInformation> userInfos) {
+    private void showUserInfo(List<Contact> userInfos) {
         ServiceUserInfoAdapter adapter = new ServiceUserInfoAdapter(userInfos);
-        adapter.setOnRecyclerViewItemClickListener((view, i) -> Logger.d("预约" + i));
+        adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+
+        });
         adapter.setOnItemClickListener(new ServiceUserInfoAdapter.OnItemClickListener() {
             @Override
             public void onDelete() {
@@ -77,7 +107,8 @@ public class ServiceUserInfoFragment extends BaseFragment {
             }
 
             @Override
-            public void onEdit() {
+            public void onEdit(Contact contact) {
+                start(AddServiceInfoFragment.newInstance(productCategoryId, productId, contact));
                 Logger.d("编辑个人信息");
             }
         });

@@ -8,6 +8,7 @@ import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.ActivityDetail;
 import lilun.com.pension.module.bean.AidDetail;
+import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
@@ -23,7 +24,6 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
-import lilun.com.pension.module.bean.ServiceUserInformation;
 import lilun.com.pension.module.bean.TokenInfo;
 import okhttp3.RequestBody;
 import retrofit2.Response;
@@ -199,7 +199,7 @@ public interface ApiService {
 
 
     /**
-     * 用户登录
+     * 新增一个aid
      */
     @POST("OrganizationAids")
     Observable<Response<OrganizationAid>> newOrganizationAid(@Body OrganizationAid organizationAid);
@@ -210,6 +210,14 @@ public interface ApiService {
      */
     @POST("OrganizationReplies")
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
+
+
+
+    /**
+     * 新增一个个人资料
+     */
+    @POST("Contacts")
+    Observable<Response<Contact>> newContact(@Body Contact contacts);
 
 
     /**
@@ -230,7 +238,7 @@ public interface ApiService {
      * 上传AID多张图片
      */
     @Multipart
-    @POST("OrganizationAids/uploadpicture")
+    @POST("OrganizationAids/upload/image")
     Observable<Response<List<IconModule>>> newAidIcons(@PartMap Map<String, RequestBody> params);
 
 
@@ -373,6 +381,12 @@ public interface ApiService {
     @PUT("OrganizationReplies/{id}")
     Observable<Response<Object>> putReply(@Path("id") String replyId, @Body OrganizationReply reply);
 
+    /**
+     * 更新个人资料
+     */
+    @PUT("Contacts/{id}")
+    Observable<Response<Object>> putContact(@Path("id") String contactId, @Body Contact contact);
+
 
     /**
      * 修改订单
@@ -385,7 +399,7 @@ public interface ApiService {
     /**
      * 获取预约登记信息
      */
-    @GET("ServiceUserInformations")
-    Observable<Response<List<ServiceUserInformation>>> getServiceUserInfos(@Query("filter") String filter);
+    @GET("Contacts")
+    Observable<Response<List<Contact>>> getContacts(@Query("filter") String filter);
 
 }

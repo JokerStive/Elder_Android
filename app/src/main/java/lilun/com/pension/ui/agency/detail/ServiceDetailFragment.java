@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +30,7 @@ import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.agency.reservation.ServiceUserInfoFragment;
+import lilun.com.pension.ui.order.MerchantOrderListFragment;
 import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.ui.residential.rank.RankListFragment;
 import lilun.com.pension.widget.NormalDialog;
@@ -73,7 +72,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
-    @Bind(R.id.tv_provider_name)
+    @Bind(R.id.tv_product_name)
     TextView tvProviderName;
 
     @Bind(R.id.tv_enter_provider)
@@ -120,6 +119,9 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Override
     protected void initView(LayoutInflater inflater) {
 
+        if (!User.isCustomer()) {
+            tvReservation.setVisibility(View.GONE);
+        }
 
         //加粗
         UIUtils.setBold(tvTitle);
@@ -129,6 +131,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
         String agencyId = StringUtils.removeSpecialSuffix(mProduct.getOrganizationId());
         String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
+
         //显示
         tvTitle.setText(mProduct.getTitle());
         tvProvider.setText(String.format(getString(R.string.format_provider), agencyName));
@@ -195,20 +198,27 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
             case R.id.tv_reservation:
                 if (tvReservation.getText().equals(getString(R.string.reservation))) {
-                    start(ServiceUserInfoFragment.newInstance());
+                    start(ServiceUserInfoFragment.newInstance(mProduct.getCategoryId(), mProduct.getId()));
                 }
                 break;
 
             case R.id.tv_enter_provider:
-                String organizationId = mProduct.getOrganizationId();
-                Logger.d("提供商的id==" + StringUtils.removeSpecialSuffix(organizationId));
-                start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
+                next();
                 break;
 
             case R.id.ll_reply:
                 //TODO 进入评价列表页面
                 start(RankListFragment.newInstance(Constants.organizationProduct, mProduct.getId(), mProduct.getTitle()));
                 break;
+        }
+    }
+
+    private void next() {
+        if (User.isCustomer()) {
+            String organizationId = mProduct.getOrganizationId();
+            start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
+        } else {
+            start(MerchantOrderListFragment.newInstance(mProduct.getId()));
         }
     }
 

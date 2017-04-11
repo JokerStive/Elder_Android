@@ -36,7 +36,7 @@ public class NestedReplyAdapter extends QuickAdapter<NestedReply> {
         OrganizationReply question = nestedReply.getQuestion();
         OrganizationReply answer = nestedReply.getAnswer();
         if (question!=null){
-            helper.setText(R.id.tv_provider_name, question.getCreatorName())
+            helper.setText(R.id.tv_product_name, question.getCreatorName())
                     .setText(R.id.tv_creator, StringUtils.timeFormat(question.getCreatedAt()))
                     .setText(R.id.tv_content, StringUtils.filterNull(question.getContent()));
 

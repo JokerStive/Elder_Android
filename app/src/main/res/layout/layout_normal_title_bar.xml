@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:id="@+id/tv_provider_name"
+        android:id="@+id/tv_product_name"
         android:layout_centerInParent="true"
         tools:text="我是标题"
         style="@style/tv_normal_ellipsize" />

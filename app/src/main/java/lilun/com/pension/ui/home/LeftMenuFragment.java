@@ -48,7 +48,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.iv_avatar)
     ImageView ivAvatar;
 
-    @Bind(R.id.tv_provider_name)
+    @Bind(R.id.tv_product_name)
     TextView tvName;
 
     @Override

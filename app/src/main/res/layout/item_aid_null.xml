@@ -23,7 +23,7 @@
             tools:text="张三" />
 
         <TextView
-            android:id="@+id/tv_provider_name"
+            android:id="@+id/tv_product_name"
             style="@style/tv_small_ellipsize"
             android:maxWidth="300dp"
             android:maxLines="1"

@@ -21,6 +21,7 @@ public class User {
     public static final String userId = "userId";
     public static final String name = "name";
     public static final String isCustomer = "isCustomer";
+    public static final String defaultContactId = "defaultContactId ";
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
@@ -93,6 +94,14 @@ public class User {
             return (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
         }
         return null;
+    }
+
+    public static void putContactId(String defaultContactId) {
+        PreUtils.putString(defaultContactId, defaultContactId);
+    }
+
+    public static String getContactId() {
+        return PreUtils.getString(defaultContactId, "");
     }
 
 }

@@ -39,7 +39,7 @@
         />
     
     <TextView
-        android:id="@+id/tv_provider_name"
+        android:id="@+id/tv_product_name"
         tools:text="怎么创建一个账号"
         android:layout_below="@id/tv_reservation"
         android:layout_marginTop="19dp"
@@ -50,8 +50,8 @@
         android:id="@+id/tv_desc"
         tools:text="2017.3.6"
         android:textSize="14sp"
-        android:layout_below="@id/tv_provider_name"
-        android:layout_alignLeft="@id/tv_provider_name"
+        android:layout_below="@id/tv_product_name"
+        android:layout_alignLeft="@id/tv_product_name"
         android:layout_marginTop="17dp"
         style="@style/tv_normal_ellipsize" />
 
@@ -60,7 +60,7 @@
         tools:text="提问人:尼玛"
         android:textSize="14sp"
         android:layout_below="@id/tv_desc"
-        android:layout_alignLeft="@id/tv_provider_name"
+        android:layout_alignLeft="@id/tv_product_name"
         android:layout_marginTop="7dp"
         style="@style/tv_normal_ellipsize" />
 
@@ -68,7 +68,7 @@
         tools:text="回答"
         android:layout_below="@id/tv_mobile"
         android:layout_marginTop="37dp"
-        android:layout_alignLeft="@id/tv_provider_name"
+        android:layout_alignLeft="@id/tv_product_name"
         style="@style/tv_normal_ellipsize"
         android:layout_marginBottom="16dp"
         />

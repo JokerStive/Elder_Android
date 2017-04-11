@@ -31,6 +31,7 @@ import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
+import lilun.com.pension.widget.InputRangeView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.filter_view.AreaFilter;
@@ -67,7 +68,11 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private SearchTitleBar.LayoutType layoutType;
     private List<OrganizationProduct> products;
     private Map<String, Object> conditionMap;
-    private Map<String, String> whereConditionMap;
+    private Map<String, Object> whereMap;
+    private Map<String, Object> betweenMap;
+    private Map<String, Object> likeMap;
+    private String between = "between";
+    private String like = "like";
 
 
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
@@ -82,7 +87,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
 
     @OnClick({R.id.fab_add_service})
-    public void click(View view) {
+    public void onClick(View view) {
         //TODO 新增一个服务
     }
 
@@ -100,7 +105,9 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         mPresenter = new AgencyListPresenter();
         mPresenter.bindView(this);
         conditionMap = new HashMap<>();
-        whereConditionMap = new HashMap<>();
+        whereMap = new HashMap<>();
+        betweenMap = new HashMap<>();
+        likeMap = new HashMap<>();
     }
 
     @Override
@@ -122,7 +129,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
             @Override
             public void onSearch(String searchStr) {
-                whereConditionMap.put("name", "{\"like\":\"" + searchStr + "\"}");
+                likeMap.put(like, searchStr);
                 getData(0);
             }
 
@@ -154,6 +161,8 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         List<View> pops = new ArrayList<>();
         List<String> filterTitles = new ArrayList<>();
         filterTitles.add("区域");
+        filterTitles.add("价格");
+        filterTitles.add("面积");
         //除了区域以外的条件弹窗
         List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
         if (conditionOptionsList != null) {
@@ -172,6 +181,21 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             }
         }
 
+        InputRangeView rangeView = new InputRangeView(mContent);
+        rangeView.setOnConfirmListener((min, max) -> {
+            filterView.setTabText(min + "-" + max, false);
+            betweenMap.put(between, new Integer[]{min, max});
+            getData(0);
+        });
+        rangeView.setUnit("元");
+        pops.add(rangeView);
+
+        InputRangeView rangeSizeView = new InputRangeView(mContent);
+        rangeSizeView.setUnit("平米");
+        rangeSizeView.setOnConfirmListener((min, max) -> {
+            filterView.setTabText(min + "-" + max, false);
+        });
+        pops.add(rangeSizeView);
 
         //TODO 区域
         AreaFilter areaFilter = new AreaFilter(mContent);
@@ -226,24 +250,27 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private void getProductsByCategoryId(int skip) {
         // TODO 有商家判断
         if (User.isCustomer()) {
-            whereConditionMap.put("categoryId", mCategoryId);
-//            filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\"}}";
+            whereMap.put("categoryId", mCategoryId);
         } else {
-            whereConditionMap.put("categoryId", mCategoryId);
-            whereConditionMap.put("creatorId", User.getUserId());
-//            filter = "{\"where\":{\"categoryId\":\"" + mCategoryId + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+            whereMap.put("categoryId", mCategoryId);
+            whereMap.put("creatorId", User.getUserId());
         }
         String filter = getFilterWithCondition();
         mPresenter.getProductAgency(filter, skip);
     }
 
     private void getProductsByOrganizationId(int skip) {
-        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.product(mCategoryId) + "\"}}";
+        whereMap.put("organizationId", OrganizationChildrenConfig.product(mCategoryId));
+        String filter = getFilterWithCondition();
         mPresenter.getProductAgency(filter, skip);
     }
 
     private String getFilterWithCondition() {
-        conditionMap.put("where", whereConditionMap);
+//        conditionMap.put("where", whereMap);
+//        if (betweenMap.size()!=0){
+//
+//        }
+//        whereMap.put("")
         String filter;
         Gson gson = new Gson();
         filter = gson.toJson(conditionMap);

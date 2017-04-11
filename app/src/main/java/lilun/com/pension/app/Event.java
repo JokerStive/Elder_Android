@@ -46,4 +46,8 @@ public class Event {
 
     //刷新商家订单列表
     public static  class RefreshMerchantOrder{}
+
+
+    //刷新个人资料
+    public static  class RefreshContract{}
 }

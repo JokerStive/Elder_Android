@@ -2,11 +2,8 @@ package lilun.com.pension.ui.order;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -21,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.SearchTitleBar;
 
 /**
@@ -43,6 +40,8 @@ public class OrderListFragment extends BaseFragment {
     ViewPager mViewPager;
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
 
 
     private String[] statusTitle = {"已预约", "已受理", "已完成", "已取消"};
@@ -61,6 +60,7 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        titleBar.setOnBackClickListener(this::pop);
         searchBar.isChangeLayout(false);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
@@ -135,17 +135,4 @@ public class OrderListFragment extends BaseFragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }
