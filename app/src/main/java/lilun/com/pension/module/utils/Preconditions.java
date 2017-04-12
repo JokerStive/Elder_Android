@@ -2,6 +2,9 @@ package lilun.com.pension.module.utils;
 
 import android.support.annotation.Nullable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public final class Preconditions {
 
@@ -24,6 +27,18 @@ public final class Preconditions {
             throw new NullPointerException(String.valueOf(errorMessage));
         } else {
             return reference;
+        }
+    }
+
+    public static boolean isNumeric(String str) {
+        String regEx = "^-?[0-9]+$";
+        Pattern pat = Pattern.compile(regEx);
+        Matcher mat = pat.matcher(str);
+        if (mat.find()) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/et_min"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@drawable/rect_coner_black"
+        android:gravity="center_vertical"
+        android:inputType="number"
+        tools:text="2000" />
+
+    <View
+        style="@style/line_gray"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="0.5"
+        android:background="@color/black" />
+
+    <EditText
+        android:id="@+id/et_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:background="@drawable/rect_coner_black"
+        android:inputType="number"
+        tools:text="2000" />
+
+    <TextView
+        android:id="@+id/tv_unit"
+        style="@style/tv_small"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        tools:text="元" />
+
+
+    <TextView
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/shape_rect_red"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+</LinearLayout>

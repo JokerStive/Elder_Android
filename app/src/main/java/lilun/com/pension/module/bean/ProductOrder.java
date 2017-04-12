@@ -15,11 +15,15 @@ public class ProductOrder extends BaseBean {
      * name : string
      * status : string
      * mobile : string
+     * address : string
      * description : string
-     * orderId : string
+     * callStatus : string
+     * remark : string
+     * registerDate : 2017-04-10T00:54:50.526Z
+     * productId : string
      * assigneeId : string
      * canceledById : string
-     * productId : string
+     * rankId : string
      * createdAt : $now
      * updatedAt : $now
      * creatorId : string
@@ -32,28 +36,31 @@ public class ProductOrder extends BaseBean {
     private String name;
     private String status;
     private String mobile;
+    private String address;
     private String description;
-    private String orderId;
+    private String callStatus;
+    private String remark;
+    private String registerDate;
+    private String productId;
     private String assigneeId;
     private String canceledById;
-    private String productId;
+    private String rankId;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
     private String creatorName;
+    private String updatorId;
+    private String updatorName;
+    private Account Assignee;
 
     public Account getAssignee() {
-        return assignee;
+        return Assignee;
     }
 
     public ProductOrder setAssignee(Account assignee) {
-        this.assignee = assignee;
+        Assignee = assignee;
         return this;
     }
-
-    private String updatorId;
-    private String updatorName;
-    private Account assignee;
 
     public OrganizationProduct getProduct() {
         return product;
@@ -98,6 +105,14 @@ public class ProductOrder extends BaseBean {
         this.mobile = mobile;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -106,12 +121,36 @@ public class ProductOrder extends BaseBean {
         this.description = description;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getCallStatus() {
+        return callStatus;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setCallStatus(String callStatus) {
+        this.callStatus = callStatus;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(String registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getAssigneeId() {
@@ -130,12 +169,12 @@ public class ProductOrder extends BaseBean {
         this.canceledById = canceledById;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getRankId() {
+        return rankId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setRankId(String rankId) {
+        this.rankId = rankId;
     }
 
     public String getCreatedAt() {

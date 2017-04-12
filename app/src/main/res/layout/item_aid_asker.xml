@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_provider_name"
+                android:id="@+id/tv_product_name"
                 style="@style/tv_small_ellipsize"
                 tools:text="尼玛" />
 

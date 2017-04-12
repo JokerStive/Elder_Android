@@ -5,6 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -21,7 +25,9 @@ import lilun.com.pension.module.adapter.ProductCategoryAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
+import lilun.com.pension.module.bean.Setting;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.ui.agency.list.AgencyOrganizationListFragment;
 import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
@@ -53,6 +59,8 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
+    @Bind(R.id.tv_agency_title)
+    TextView tvAgencyTitle;
 
     private ArrayList<Information> announcements;
 
@@ -127,7 +135,12 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
-        mPresenter.getClassifiesByAgency();
+        if (User.isCustomer()) {
+            mPresenter.getClassifiesByAgency();
+        } else {
+            tvAgencyTitle.setVisibility(View.GONE);
+            rvAgency.setVisibility(View.GONE);
+        }
         mPresenter.getClassifiesByService();
         mSwipeLayout.setEnabled(false);
     }
@@ -152,6 +165,12 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvServer.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((productCategory -> {
+            //存储category的可配置项
+            String categoryId = productCategory.getId();
+            if (!ACache.get().isExit(categoryId)) {
+                List<Setting> settings = productCategory.getSetting();
+                ACache.get().put(categoryId, (Serializable) settings);
+            }
             start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
 
         }));
@@ -176,4 +195,17 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         return count;
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

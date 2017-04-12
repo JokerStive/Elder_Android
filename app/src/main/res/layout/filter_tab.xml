@@ -6,7 +6,7 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/tv_provider_name"
+        android:id="@+id/tv_product_name"
         style="@style/tv_small_ellipsize"
         android:maxLines="1"
         android:drawablePadding="5dp"

@@ -30,7 +30,6 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     private TextView tvTitle;
     private Button tvRight;
     private ImageView ivBack;
-    private ImageView ivPosition;
     private TitleBarClickCallBack listener;
 
     public PositionTitleBar(Context context, AttributeSet attrs) {
@@ -45,9 +44,8 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_position_title_bar, this);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
-        ivPosition = (ImageView) view.findViewById(R.id.iv_position);
         tvPosition = (TextView) view.findViewById(R.id.tv_position);
-        tvTitle = (TextView) view.findViewById(R.id.tv_provider_name);
+        tvTitle = (TextView) view.findViewById(R.id.tv_product_name);
         tvRight = (Button) view.findViewById(R.id.tv_right);
 
         setTitle(title);
@@ -56,7 +54,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
 
         ivBack.setOnClickListener(this);
-        ivPosition.setOnClickListener(this);
+        tvPosition.setOnClickListener(this);
         tvRight.setOnClickListener(this);
 
     }
@@ -76,7 +74,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     }
 
     public void setNoPosition(boolean positionVisible) {
-        ivPosition.setVisibility(positionVisible ? VISIBLE : GONE);
+        tvPosition.setVisibility(positionVisible ? VISIBLE : GONE);
     }
 
     @Override
@@ -114,13 +112,13 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
      */
     public void showOnlyTitle() {
         tvPosition.setVisibility(GONE);
-        ivPosition.setVisibility(GONE);
+        tvPosition.setVisibility(GONE);
         tvRight.setVisibility(GONE);
     }
 
 
     public void showAll() {
-        ivPosition.setVisibility(VISIBLE);
+        tvPosition.setVisibility(VISIBLE);
         tvPosition.setVisibility(VISIBLE);
         tvRight.setVisibility(VISIBLE);
     }

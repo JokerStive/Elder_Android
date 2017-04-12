@@ -43,7 +43,15 @@ public class Event {
     public static  class RefreshPushMessage{}
 
 
+    //切换的当前组织
+    public static  class ChangedOrganization{}
+
+
 
     //刷新商家订单列表
     public static  class RefreshMerchantOrder{}
+
+
+    //刷新个人资料
+    public static  class RefreshContract{}
 }

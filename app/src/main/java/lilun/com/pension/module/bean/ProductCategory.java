@@ -27,6 +27,16 @@ public class ProductCategory extends BaseBean{
     private String description;
     private String parentId;
     private List<IconModule> icon;
+    private List<Setting> setting;
+
+    public List<Setting> getSetting() {
+        return setting;
+    }
+
+    public ProductCategory setSetting(List<Setting> setting) {
+        this.setting = setting;
+        return this;
+    }
 
     public String getId() {
         return id;

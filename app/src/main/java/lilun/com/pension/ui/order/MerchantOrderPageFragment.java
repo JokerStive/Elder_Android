@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.MerchantOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
@@ -49,12 +51,23 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
 
     private MerchantOrderAdapter adapter;
     private String mStatus;
+    private String productId;
+    private ProductOrder clickOrder;
 
 
     public static MerchantOrderPageFragment newInstance(String status) {
         MerchantOrderPageFragment fragment = new MerchantOrderPageFragment();
         Bundle args = new Bundle();
         args.putString("status", status);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static MerchantOrderPageFragment newInstance(String status, String productId) {
+        MerchantOrderPageFragment fragment = new MerchantOrderPageFragment();
+        Bundle args = new Bundle();
+        args.putString("status", status);
+        args.putString("productId", productId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +82,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mStatus = arguments.getString("status");
+        productId = arguments.getString("productId");
         Preconditions.checkNull(mStatus);
     }
 
@@ -113,7 +127,16 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-        mPresenter.getMyOrders(mStatus, skip);
+        String filter;
+//        if (User.isCustomer()) {
+//            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+//        } else
+        if (!TextUtils.isEmpty(productId)) {
+            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+        } else {
+            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+        }
+        mPresenter.getMyOrders(filter, skip);
 
     }
 
@@ -132,24 +155,25 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
             adapter = new MerchantOrderAdapter(orders);
             adapter.setEmptyView();
             adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-                Intent intent = new Intent(_mActivity, MerchantOrderDetailActivity.class);
-                intent.putExtra("orderId", orders.get(i).getId());
-                startActivity(intent);
+                clickOrder  = orders.get(i);
+                openDetail();
             });
             adapter.setOnLoadMoreListener(() -> {
                 getMyOrder(adapter.getItemCount());
             });
 
             adapter.setOnItemClickListener(new MerchantOrderAdapter.OnItemClickListener() {
+
                 @Override
-                public void onCall(String phone) {
-                    connectCustom(phone);
+                public void onCall(ProductOrder order) {
+                    clickOrder = order;
+                    connectCustom(clickOrder.getMobile());
                 }
 
                 @Override
-                public void onMemo() {
-                    Intent intent = new Intent(_mActivity, MemoActivity.class);
-                    startActivity(intent);
+                public void onMemo(ProductOrder order) {
+                    clickOrder = order;
+                    openMemo();
                 }
             });
             mRecyclerView.setAdapter(adapter);
@@ -158,6 +182,22 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
         } else {
             adapter.replaceAll(orders);
         }
+    }
+
+    private void openDetail() {
+        Intent intent = new Intent(_mActivity, MerchantOrderDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order",clickOrder);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    private void openMemo() {
+        Intent intent = new Intent(_mActivity, MemoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order",clickOrder);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void connectCustom(String phone) {
@@ -181,16 +221,8 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     private class EndCallListener extends PhoneStateListener {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
-//            if(TelephonyManager.CALL_STATE_RINGING == state) {
-//                Log.i(LOG_TAG, "RINGING, number: " + incomingNumber);
-//            }
-//            if(TelephonyManager.CALL_STATE_OFFHOOK == state) {
-//                //wait for phone to go offhook (probably set a boolean flag) so you know your app initiated the call.
-//                Log.i(LOG_TAG, "OFFHOOK");
-//            }
             if (TelephonyManager.CALL_STATE_IDLE == state) {
-                Intent intent = new Intent(_mActivity, MemoActivity.class);
-                startActivity(intent);
+                openMemo();
             }
         }
     }

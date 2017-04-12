@@ -2,7 +2,6 @@ package lilun.com.pension.ui.order;
 
 import java.util.List;
 
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.RxUtils;
@@ -19,13 +18,7 @@ import lilun.com.pension.net.RxSubscriber;
  */
 public class OrderPagePresenter extends RxPresenter<OrderPageContract.View> implements OrderPageContract.Presenter {
     @Override
-    public void getMyOrders(String status, int skip) {
-        String filter;
-        if (User.isCustomer()) {
-            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + status + "\"}}";
-        } else {
-            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + status + "\"}}";
-        }
+    public void getMyOrders(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
                 .getOrders(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())

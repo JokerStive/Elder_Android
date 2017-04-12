@@ -81,6 +81,7 @@ public class LoginModule implements LoginContract.Module {
         User.puttCurrentOrganizationId(organizationId);
         User.putIsCustomer(account.isCustomer());
         User.putName(account.getUsername());
+        User.putContactId(account.getDefaultContactId());
     }
 
 

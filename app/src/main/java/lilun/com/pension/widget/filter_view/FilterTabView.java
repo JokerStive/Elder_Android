@@ -53,7 +53,7 @@ public class FilterTabView extends LinearLayout {
 
     private void init() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.filter_tab, this);
-        tvTitle = (TextView) view.findViewById(R.id.tv_provider_name);
+        tvTitle = (TextView) view.findViewById(R.id.tv_product_name);
         setTitle(title);
 
         LayoutParams lp = new LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);

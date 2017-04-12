@@ -7,6 +7,11 @@
     <string name="not_complete">功能暂未开放,敬请期待</string>
 
 
+    <!--切换社区-->
+    <string name="change_organization">切换社区</string>
+    <string name="change_organization_search">请输入您要查询的</string>
+
+
     <!--一键求助-->
     <string name="first_help_desc">请指定第一救助人，我们将会对指定的第一救助人发出额外短信通知</string>
     <string name="family">家人</string>
@@ -110,6 +115,7 @@
 
     <!--新增预约信息-->
     <string name="occupant_info">入住者信息登记</string>
+    <string name="add_contact">新增预约信息</string>
     <string name="reservation_info">预约者信息登记</string>
     <string name="name">姓名</string>
     <string name="birthday">出生日期</string>
@@ -177,7 +183,7 @@
     <!--备注-->
     <string name="order_call_situation">外呼情况</string>
     <string name="write_call_situation">预约情况填写</string>
-    <string name="status_complete">完成</string>
+    <string name="status_shouli">受理</string>
     <string name="status_delay">延期</string>
 
     ====================================================

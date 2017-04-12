@@ -26,6 +26,17 @@ public class Account implements Serializable {
     private List<IconModule> image;
     private String visibility;
 
+    public String getDefaultContactId() {
+        return defaultContactId;
+    }
+
+    public Account setDefaultContactId(String defaultContactId) {
+        this.defaultContactId = defaultContactId;
+        return this;
+    }
+
+    private String defaultContactId ;
+
     public boolean isCustomer() {
         return isCustomer;
     }

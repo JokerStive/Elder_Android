@@ -5,11 +5,10 @@ import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.utils.Preconditions;
 
 /**
-*
-*@author yk
-*create at 2017/3/7 10:35
-*email : yk_developer@163.com
-*/
+ * @author yk
+ *         create at 2017/3/7 10:35
+ *         email : yk_developer@163.com
+ */
 public class OrderDetailActivity extends BaseActivity {
 
     private String mOrderId;
@@ -33,7 +32,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        loadRootFragment(R.id.ll_container,OrderDetailFragment.newInstance(mOrderId));
+        loadRootFragment(R.id.ll_container, OrderDetailFragment.newInstance(mOrderId));
     }
 
     @Override

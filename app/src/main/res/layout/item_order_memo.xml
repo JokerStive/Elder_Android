@@ -65,6 +65,7 @@
         android:orientation="horizontal">
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/rb_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,11 +76,12 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:text="@string/status_complete"
+            android:text="@string/status_shouli"
             android:textColor="@color/selector_filter_bar_text"
             android:textSize="14sp" />
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/rb_delay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,6 +98,7 @@
             android:textSize="14sp" />
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/rb_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
