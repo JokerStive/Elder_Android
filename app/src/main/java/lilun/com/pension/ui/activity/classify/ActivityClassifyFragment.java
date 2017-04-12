@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -51,18 +52,22 @@ import lilun.com.pension.widget.SearchTitleBar;
  */
 public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContract.Presenter> implements ActivityClassifyContract.View {
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.rg_classify)
+    RecyclerView mClassifyRecycler;
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
     private ArrayList<Information> announcements;
     private ArrayList<ActivityCategory> activityCategories;
-    private RecyclerView mClassifyRecycler;
+
     private OrganizationActivityAdapter mContentAdapter;
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
 
@@ -87,7 +92,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_second_module;
+        return R.layout.activity_activity_classify;
     }
 
     @Override
@@ -98,6 +103,8 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     @Override
     protected void initView(LayoutInflater inflater) {
+
+        _mActivity.setSupportActionBar(toolbar);
         titleBar.setTitle(getString(R.string.community_activity));
         titleBar.setTvRightText(getString(R.string.add_activity));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
@@ -127,8 +134,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         }
 
 
-        //类别
-        mClassifyRecycler = new RecyclerView(_mActivity);
+
         mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
 
@@ -152,7 +158,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL);
-        mContentAdapter.addHeaderView(mClassifyRecycler);
+//        mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
             start(ActivityDetailFragment.newInstance(activityItem.getId()));
         });

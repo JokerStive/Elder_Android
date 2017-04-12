@@ -53,6 +53,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:design:25.2.0'
     //rajava and retrofit
     compile 'io.reactivex:rxjava:x.y.z'
     compile 'io.reactivex:rxandroid:1.1.0'
@@ -87,9 +88,9 @@ dependencies {
     //数据库，用来处理推送消息的crud
     compile 'org.litepal.android:core:1.5.0'
     compile files('libs/fastjson-1.2.9.jar')
-
     //MQTT sub-pub
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
 }
 

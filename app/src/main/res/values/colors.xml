@@ -41,6 +41,10 @@
 
     <color name="login">#EF7A71</color>
 
+    <color name="activity_titlebg">#f9f9f9</color>
+    <color name="activity_black">#333333</color>
+    <color name="activity_line">#efefef</color>
+
 
 
 </resources>
