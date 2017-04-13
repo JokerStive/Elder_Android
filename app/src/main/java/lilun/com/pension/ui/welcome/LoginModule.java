@@ -16,7 +16,6 @@ import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import rx.Observable;
 
@@ -34,10 +33,7 @@ public class LoginModule implements LoginContract.Module {
     public Observable<TokenInfo> login(String username, String password) {
         return NetHelper.getApi()
                 .login(getAccount(username, password))
-                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-
-                ;
+                .compose(RxUtils.handleResult());
     }
 
     @Override
@@ -45,10 +41,7 @@ public class LoginModule implements LoginContract.Module {
         putToken(tokenInfo.getId());
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
-                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-
-                ;
+                .compose(RxUtils.handleResult());
     }
 
     @Override
@@ -69,19 +62,24 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public void putAccountInfo(Account account) {
         User.putUserId(account.getId());
-        OrganizationAccount oa = account.getOa();
-        String organizationId1 = oa.getOrganizationId();
-        if (TextUtils.isEmpty(organizationId1)) {
-            ToastHelper.get().showWareShort("脏数据,账号没有所属组织");
-            return;
+        OrganizationAccount organizationAccount = account.getOa();
+        if (organizationAccount != null) {
+            String organizationId = organizationAccount.getOrganizationId();
+            if (!TextUtils.isEmpty(organizationId)) {
+                String defOrganizationid = StringUtils.removeSpecialSuffix(organizationId);
+                Logger.d("账户默认所属组织 = " + defOrganizationid);
+                User.putBelongsOrganizationId(defOrganizationid);
+                User.puttCurrentOrganizationId(defOrganizationid);
+                User.putIsCustomer(account.isCustomer());
+                User.putName(account.getUsername());
+                User.putContactId(account.getDefaultContactId());
+                User.putBelongOrganizationAccountId(organizationAccount.getId());
+                User.putMobile(account.getMobile());
+            }
+        } else {
+//            ToastHelper.get().showWareShort("脏数据,账号没有所属组织");
         }
-        String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
-        Logger.d("账户默认所属组织 = " + organizationId);
-        User.putBelongsOrganizationId(organizationId);
-        User.puttCurrentOrganizationId(organizationId);
-        User.putIsCustomer(account.isCustomer());
-        User.putName(account.getUsername());
-        User.putContactId(account.getDefaultContactId());
+
     }
 
 
@@ -89,7 +87,12 @@ public class LoginModule implements LoginContract.Module {
     public void putBelongOrganizations(List<OrganizationAccount> organizations) {
         ACache.get().put(User.belongOrganizations, (Serializable) organizations);
         for (OrganizationAccount oa : organizations) {
-            if (oa.getOrganizationId().contains(Constants.special_organization_root)) {
+            String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
+            if (organizationId.equals(Constants.organization_root)) {
+                User.putRootOrganizationAccountId(organizationId);
+            }
+
+            if (organizationId.contains(Constants.special_organization_root)) {
                 User.putIsCustomer(false);
                 return;
             }

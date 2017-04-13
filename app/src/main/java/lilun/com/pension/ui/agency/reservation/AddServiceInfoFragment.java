@@ -1,9 +1,11 @@
 package lilun.com.pension.ui.agency.reservation;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.Setting;
@@ -58,20 +61,22 @@ public class AddServiceInfoFragment extends BaseFragment {
     @Bind(R.id.tv_relation)
     TextView tvRelation;
 
-    @Bind(R.id.et_reservation_name)
-    EditText etReservationName;
 
     @Bind(R.id.et_health_desc)
     EditText etHealthDesc;
+
+    @Bind(R.id.et_memo)
+    EditText etMemo;
 
 
     @Bind(R.id.et_reservation_phone)
     EditText etReservationPhone;
 
-    @Bind(R.id.tv_check_in_time)
-    TextView tvCheckInTime;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
+
+    @Bind(R.id.btn_confirm)
+    Button btnConfirm;
 
 
     private int size = 17;
@@ -80,28 +85,43 @@ public class AddServiceInfoFragment extends BaseFragment {
     private String[] optionHealthStatus = App.context.getResources().getStringArray(R.array.personal_info_health_status);
     private String[] optionRelation = App.context.getResources().getStringArray(R.array.personal_info_relation);
     private String productCategoryId;
-    private String productId;
+    //    private String productId;
     private Contact mContact;
     private List<Setting> expandKeys;
+    private boolean canEdit;
+    private String contactId;
+    private String productId;
 
-    public static AddServiceInfoFragment newInstance(String productCategoryId, String productId, Contact contact) {
+    public static AddServiceInfoFragment newInstance(String productCategoryId, Contact contact, Boolean canEdit) {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
         Bundle bundle = new Bundle();
+        bundle.putBoolean("canEdit", canEdit);
         bundle.putString("productCategoryId", productCategoryId);
-        bundle.putString("productId", productId);
         bundle.putSerializable("mContact", contact);
         fragment.setArguments(bundle);
         return fragment;
     }
 
+//    public static AddServiceInfoFragment newInstance(String productCategoryId,String contactId, Boolean canEdit) {
+//        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("canEdit", canEdit);
+//        bundle.putString("productCategoryId",productCategoryId);
+//        bundle.putString("contactId", contactId);
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
+
+
     @Override
     protected void getTransferData(Bundle arguments) {
         productCategoryId = arguments.getString("productCategoryId");
-        productId = arguments.getString("productId");
+        contactId = arguments.getString("contactId");
+        canEdit = arguments.getBoolean("canEdit", true);
         mContact = (Contact) arguments.getSerializable("mContact");
         expandKeys = (List<Setting>) ACache.get().getAsObject(productCategoryId);
         Preconditions.checkNull(productCategoryId);
-        Preconditions.checkNull(productId);
+//        Preconditions.checkNull(productId);
     }
 
     @Override
@@ -118,7 +138,26 @@ public class AddServiceInfoFragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
 
+        etOccupantName.setEnabled(canEdit);
+        etHealthDesc.setEnabled(canEdit);
+        etReservationPhone.setEnabled(canEdit);
+        etMemo.setEnabled(canEdit);
+        btnConfirm.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+
         setInitData();
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        if (!TextUtils.isEmpty(contactId)) {
+
+        }
+    }
+
+
+    public void setProductd(String productId) {
+        this.productId = productId;
     }
 
     private void setInitData() {
@@ -129,7 +168,8 @@ public class AddServiceInfoFragment extends BaseFragment {
 
             tvRelation.setText(mContact.getRelation());
 
-            etReservationName.setText(mContact.getCreatorName());
+//            etReservationName.setText(mContact.getCreatorName());
+
 
             etReservationPhone.setText(mContact.getMobile());
 
@@ -146,6 +186,10 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     @OnClick({R.id.tv_sex, R.id.tv_health_status, R.id.tv_relation, R.id.tv_birthday, R.id.btn_confirm})
     public void onClick(View view) {
+        if (!canEdit) {
+            return;
+        }
+
         switch (view.getId()) {
 
             case R.id.tv_sex:
@@ -186,10 +230,10 @@ public class AddServiceInfoFragment extends BaseFragment {
         }
 
         CharSequence birthday = tvBirthday.getText();
-        if (TextUtils.isEmpty(birthday)) {
-            ToastHelper.get().showWareShort("请选择生日");
-            return;
-        }
+//        if (TextUtils.isEmpty(birthday)) {
+//            ToastHelper.get().showWareShort("请选择生日");
+//            return;
+//        }
 
         CharSequence healthStatus = tvHealthStatus.getText();
         if (TextUtils.isEmpty(healthStatus)) {
@@ -205,7 +249,7 @@ public class AddServiceInfoFragment extends BaseFragment {
             return;
         }
 
-        String reservationName = etReservationName.getText().toString();
+//        String reservationName = etReservationName.getText().toString();
 
         String reservationPhone = etReservationPhone.getText().toString();
         if (TextUtils.isEmpty(reservationPhone)) {
@@ -217,7 +261,8 @@ public class AddServiceInfoFragment extends BaseFragment {
         contact.setName(name);
         contact.setGender(sex.equals(optionSex[0]) ? 0 : 1);
         contact.setRelation(relation.toString());
-        contact.setCreatorName(reservationName);
+        contact.setCategoryId(productCategoryId);
+//        contact.setCreatorName(reservationName);
         contact.setMobile(reservationPhone);
         if (expandKeys != null) {
             Map<String, String> expand = new HashMap<>();
@@ -253,7 +298,6 @@ public class AddServiceInfoFragment extends BaseFragment {
                     public void _next(Object o) {
                         EventBus.getDefault().post(new Event.RefreshContract());
                         pop();
-//                        ToastHelper.get().showWareShort("新增个人资料成功");
                     }
                 });
     }
@@ -268,7 +312,11 @@ public class AddServiceInfoFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<Contact>(_mActivity) {
                     @Override
                     public void _next(Contact contact) {
-                        EventBus.getDefault().post(new Event.RefreshContract());
+                        if (!TextUtils.isEmpty(productId)) {
+                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
+                        } else {
+                            EventBus.getDefault().post(new Event.RefreshContract());
+                        }
                         pop();
 //                        ToastHelper.get().showWareShort("新增个人资料成功");
                     }
@@ -301,9 +349,10 @@ public class AddServiceInfoFragment extends BaseFragment {
             public void onOptionPicked(int index, String item) {
                 if (view.getId() == R.id.tv_relation) {
                     if (TextUtils.equals(item, optionRelation[0])) {
-                        etReservationName.setText(etOccupantName.getText());
+                        //TODO 设置电话
+                        etReservationPhone.setText(User.getMobile());
                     } else {
-                        etReservationName.setText("");
+//                        etReservationName.setText("");
                         etReservationPhone.setText("");
                     }
                 }

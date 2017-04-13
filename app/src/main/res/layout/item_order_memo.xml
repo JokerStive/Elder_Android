@@ -7,6 +7,8 @@
     android:paddingBottom="8dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:paddingTop="8dp">
 
     <RelativeLayout
@@ -66,7 +68,7 @@
 
         <RadioButton
             android:visibility="gone"
-            android:id="@+id/rb_complete"
+            android:id="@+id/rb_assigned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_memo"
@@ -99,7 +101,42 @@
 
         <RadioButton
             android:visibility="gone"
+            android:id="@+id/rb_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:background="@drawable/selector_memo"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="完成"
+            android:textColor="@color/selector_filter_bar_text"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:visibility="gone"
             android:id="@+id/rb_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:background="@drawable/selector_memo"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="@string/cancel"
+            android:textColor="@color/selector_filter_bar_text"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:checked="true"
+            android:visibility="gone"
+            android:id="@+id/rb_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp"

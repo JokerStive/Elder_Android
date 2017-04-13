@@ -15,6 +15,7 @@ import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.bean.MerchantMemo;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.OrganizationActivity;
@@ -25,6 +26,7 @@ import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
 import lilun.com.pension.module.bean.TokenInfo;
+import lilun.com.pension.module.bean.Tourism;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -111,6 +113,14 @@ public interface ApiService {
 
     @GET("OrganizationProducts")
     Observable<Response<List<OrganizationProduct>>> getProducts(@Query("filter") String filter);
+
+
+    /**
+     * 获取旅游
+     */
+
+    @GET("OrganizationProducts")
+    Observable<Response<List<Tourism>>> getTourism(@Query("filter") String filter);
 
 
     /**
@@ -394,8 +404,22 @@ public interface ApiService {
     /**
      * 修改订单
      */
+    @FormUrlEncoded
     @PUT("ProductOrders/{id}")
-    Observable<Response<Object>> putOrder(@Path("id") String productId, @Body ProductOrder order);
+    Observable<Response<Object>> putOrderStatus(@Path("id") String productId, @Field("status") String ststus);
+
+    /**
+     * 修改订单
+     */
+    @PUT("ProductOrders/{id}")
+    Observable<Response<Object>> putMerchantMemoOrder(@Path("id") String orderId, @Body MerchantMemo memo);
+
+
+    /**
+     * 修改默认资料
+     */
+    @PUT("Contacts/{id}")
+    Observable<Response<Object>> putDefContact(@Path("id") String contactId);
 
 //    ====================养老机构
 

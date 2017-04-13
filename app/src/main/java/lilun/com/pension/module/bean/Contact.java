@@ -7,26 +7,7 @@ import lilun.com.pension.base.BaseBean;
 /**
  * Created by Admin on 2017/4/10.
  */
-public class Contact  extends BaseBean{
-
-    /**
-     * id : string
-     * name : string
-     * address : string
-     * mobile : string
-     * zip : 0
-     * relation : string
-     * gender : 0
-     * extend : {}
-     * userId : string
-     * accountId : string
-     * createdAt : $now
-     * updatedAt : $now
-     * creatorId : string
-     * creatorName : string
-     * updatorId : string
-     * updatorName : string
-     */
+public class Contact extends BaseBean {
 
     private String id;
     private String name;
@@ -34,9 +15,21 @@ public class Contact  extends BaseBean{
     private String mobile;
     private int zip;
     private String relation;
-    private int gender;
-    private Map<String, String> extend;
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public Contact setDefault(boolean aDefault) {
+        isDefault = aDefault;
+        return this;
+    }
+
+    private boolean isDefault;
+    private Integer gender;
+    private Integer index;
     private String userId;
+    private String categoryId;
     private String accountId;
     private String createdAt;
     private String updatedAt;
@@ -44,6 +37,7 @@ public class Contact  extends BaseBean{
     private String creatorName;
     private String updatorId;
     private String updatorName;
+    private Map<String, String> extend;
 
     public String getId() {
         return id;
@@ -109,12 +103,29 @@ public class Contact  extends BaseBean{
         this.extend = extend;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public Contact setIndex(Integer index) {
+        this.index = index;
+        return this;
+    }
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getAccountId() {
@@ -173,5 +184,6 @@ public class Contact  extends BaseBean{
         this.updatorName = updatorName;
     }
 
-
+    public static class ExtendBean {
+    }
 }

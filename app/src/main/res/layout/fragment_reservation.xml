@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    android:orientation="vertical">
+
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/confirm_order" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titleBar"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            style="@style/tv_small"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="15dp"
+            android:drawableLeft="@drawable/pension_agency_icon"
+            android:drawablePadding="5dp"
+            android:text="@string/def_contract" />
+
+        <RelativeLayout
+            android:id="@+id/rl_check_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/home_bg"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/tv_small_ellipsize"
+                tools:text="张三 ( 男 )" />
+
+            <TextView
+                android:id="@+id/tv_health_status"
+                style="@style/tv_small_ellipsize"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                tools:text="半自理" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/tv_small_ellipsize"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="8dp"
+                tools:text="3.18" />
+
+            <TextView
+                android:id="@+id/tv_health_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_phone"
+                android:layout_marginTop="8dp"
+                android:maxLines="3"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
+                android:layout_toLeftOf="@+id/imageView"
+                android:layout_toStartOf="@+id/imageView" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/next"
+                android:id="@+id/imageView" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            style="@style/tv_small"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="17dp"
+            android:drawableLeft="@drawable/pension_agency_icon"
+            android:drawablePadding="5dp"
+            android:text="@string/reservation_time" />
+
+
+        <RelativeLayout
+            android:id="@+id/rl_reservation_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/home_bg"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/tv_small_ellipsize"
+                android:layout_centerVertical="true"
+                android:text="@string/reservation_time" />
+
+            <TextView
+                android:id="@+id/tv_reservation_time"
+                style="@style/tv_small_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/next"
+                android:gravity="right"
+                android:hint="点击选择预约日期" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_rect_red"
+        android:text="确定"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+</RelativeLayout>

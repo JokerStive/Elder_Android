@@ -33,6 +33,7 @@ import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.order.MerchantOrderListFragment;
 import lilun.com.pension.ui.order.OrderListFragment;
+import lilun.com.pension.ui.tourism.root.TourismRootFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 
@@ -91,15 +92,11 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTvRightText(getString(R.string.all_orders));
+        titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
                 pop();
-            }
-
-            @Override
-            public void onPositionClick() {
-//                start();
             }
 
             @Override
@@ -164,16 +161,24 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         completeRefresh();
         rvServer.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
-        adapter.setOnItemClickListener((productCategory -> {
-            //存储category的可配置项
-            String categoryId = productCategory.getId();
-            if (!ACache.get().isExit(categoryId)) {
-                List<Setting> settings = productCategory.getSetting();
-                ACache.get().put(categoryId, (Serializable) settings);
+        adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            ProductCategory productCategory = adapter.getData().get(i);
+            if (i != adapter.getData().size() - 1) {
+                String categoryId = productCategory.getId();
+                if (!ACache.get().isExit(categoryId)) {
+                    List<Setting> settings = productCategory.getSetting();
+                    ACache.get().put(categoryId, (Serializable) settings);
+                }
+                start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
+            } else {
+                start(TourismRootFragment.newInstance(productCategory.getId()));
             }
-            start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
-
-        }));
+        });
+//        adapter.setOnItemClickListener((productCategory -> {
+//            //存储category的可配置项
+//
+//
+//        }));
         rvServer.setAdapter(adapter);
     }
 

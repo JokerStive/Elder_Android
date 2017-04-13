@@ -1,9 +1,9 @@
 package lilun.com.pension.ui.order.detail;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,17 +13,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.ui.agency.merchant.MemoFragment;
+import lilun.com.pension.ui.agency.reservation.AddServiceInfoFragment;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -107,7 +108,8 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
     private void setInitView() {
         OrganizationProduct product = mOrder.getProduct();
         tvProviderName.setText(product.getName());
-        tvHealthStatus.setText(mOrder.getStatus());
+        tvProviderName.setTextColor(Color.BLUE);
+        tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
         tvName.setText(product.getContext());
         rbBar.setRating(product.getScore());
         tvPrice.setText("价格:" + product.getPrice());
@@ -129,6 +131,10 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
 
             //跳转用户资料界面
             case R.id.tv_user_info:
+                Contact contact = mOrder.getContact();
+                if (contact != null) {
+                    start(AddServiceInfoFragment.newInstance(mOrder.getProduct().getCategoryId(), contact, false));
+                }
                 break;
 
             //产品详情界面
@@ -143,17 +149,4 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

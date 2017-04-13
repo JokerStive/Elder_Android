@@ -20,8 +20,11 @@ public class User {
     public static final String token = "token";
     public static final String userId = "userId";
     public static final String name = "name";
+    public static final String mobile = "mobile";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
+    public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
+    public static final String belongOrganizationAccountId = "belongOrganizationAccountId";
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
@@ -96,12 +99,45 @@ public class User {
         return null;
     }
 
+
+    //默认资料
     public static void putContactId(String defaultContactId) {
         PreUtils.putString(defaultContactId, defaultContactId);
     }
 
     public static String getContactId() {
         return PreUtils.getString(defaultContactId, "");
+    }
+
+
+    //地球村OrganizationAccount  的id
+    public static void putRootOrganizationAccountId(String rootId) {
+        PreUtils.putString(rootOrganizationAccountId, rootId);
+    }
+
+    public static String getRootOrganizationAccountId() {
+        return PreUtils.getString(rootOrganizationAccountId, "");
+    }
+
+
+    //默认所属组织OrganizationAccount  的id
+    public static void putBelongOrganizationAccountId(String rootId) {
+        PreUtils.putString(belongOrganizationAccountId, rootId);
+    }
+
+    public static String getBelongOrganizationAccountId() {
+        return PreUtils.getString(belongOrganizationAccountId, "");
+    }
+
+
+
+    //电话
+    public static void putMobile(String phone) {
+        PreUtils.putString(mobile, phone);
+    }
+
+    public static String getMobile() {
+        return PreUtils.getString(mobile, "");
     }
 
 }

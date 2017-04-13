@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="17dp"
+    android:paddingTop="17dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/hiking"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/walking_tours"
+            android:gravity="center_horizontal"
+            android:tag="@string/hiking"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/hiking" />
+
+        <TextView
+            android:id="@+id/by_car"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/drive"
+            android:gravity="center_horizontal"
+            android:tag="@string/by_car"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/by_car" />
+
+        <TextView
+            android:id="@+id/parents"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/parents"
+            android:gravity="center_horizontal"
+            android:tag="@string/parents"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/parents" />
+
+        <TextView
+            android:id="@+id/honey_moon"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/honeymoon"
+            android:gravity="center_horizontal"
+            android:tag="@string/honey_moon"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/honey_moon" />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/near"
+            android:textColor="#666666"
+            style="@style/tv_small"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/rim"
+            android:gravity="center_horizontal"
+            android:tag="@string/near"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/near" />
+
+        <TextView
+            android:id="@+id/domestic"
+            android:textColor="#666666"
+            style="@style/tv_small"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/domestic_travel"
+            android:gravity="center_horizontal"
+            android:tag="@string/domestic"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/domestic" />
+
+        <TextView
+            android:id="@+id/multinational"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/the_outbound_tourism"
+            android:gravity="center_horizontal"
+            android:tag="@string/multinational"
+            android:textSize="@dimen/sp_14"
+            android:text="@string/multinational" />
+
+        <TextView
+            android:id="@+id/parenting"
+            style="@style/tv_small"
+            android:textColor="#666666"
+            android:layout_weight="1"
+            android:drawablePadding="7dp"
+            android:drawableTop="@drawable/offspring"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/sp_14"
+            android:tag="@string/parenting"
+            android:text="@string/parenting" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -33,9 +33,9 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
         helper.setText(R.id.tv_product_name, order.getName())
-                .setText(R.id.tv_health_status, order.getStatus())
-                .setText(R.id.tv_creator, "下单人:"+order.getCreatorName())
-                .setText(R.id.tv_time, "下单时间:"+StringUtils.IOS2ToUTC(order.getCreatedAt(), 0))
+                .setText(R.id.tv_health_status, StringUtils.getOrderStatusValue(order.getStatus()))
+                .setText(R.id.tv_creator, "下单人:" + order.getCreatorName())
+                .setText(R.id.tv_time, "下单时间："+StringUtils.IOS2ToUTC(order.getRegisterDate(),4))
                 .setOnClickListener(R.id.tv_memo, v -> {
                     if (listener != null) {
                         listener.onMemo(order);
@@ -44,19 +44,21 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
                 .setOnClickListener(R.id.tv_call, v -> {
                     if (listener != null && !TextUtils.isEmpty(order.getMobile())) {
                         listener.onCall(order);
-                    }else {
+                    } else {
                         ToastHelper.get().showWareShort("顾客电话为空");
                     }
                 });
     }
+
+
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
     public interface OnItemClickListener {
-        void onCall(ProductOrder  order);
+        void onCall(ProductOrder order);
 
-        void onMemo(ProductOrder  order);
+        void onMemo(ProductOrder order);
     }
 }

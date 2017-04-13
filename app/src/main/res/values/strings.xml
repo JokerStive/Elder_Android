@@ -113,6 +113,11 @@
     <string name="roomType">房型</string>
     <string name="format_bedsCount">床位数：</string>
 
+    <!--确认订单-->
+    <string name="confirm_order">确认订单</string>
+    <string name="def_contract">个人信息</string>
+    <string name="reservation_time">预约日期</string>
+
     <!--新增预约信息-->
     <string name="occupant_info">入住者信息登记</string>
     <string name="add_contact">新增预约信息</string>
@@ -226,4 +231,30 @@
     <string name="system_information">系统消息</string>
     <string name="personal_information">个人消息</string>
     <string name="save">保存</string>
+
+
+
+    ===============================旅游
+    <string name="tourism">旅游</string>
+    <string name="popular_destination">热门目的地</string>
+    <string name="popular_journey">热门旅游</string>
+
+    <string name="hiking">徒步游</string>
+    <string name="by_car">自驾游</string>
+    <string name="parents">爸妈游</string>
+    <string name="honey_moon">蜜月游</string>
+    <string name="domestic">国内游</string>
+    <string name="near">周边游</string>
+    <string name="multinational">国际游</string>
+    <string name="parenting">亲子游</string>
+
+    <string name="destination">出发到达</string>
+    <string name="traffic_detail">交通详情</string>
+    <string name="accommodation_standard">住宿标准</string>
+    <string name="journey_attractions">旅游景点</string>
+    <string name="gather_location">集合地点</string>
+    <string name="fee_info">费用信息</string>
+    <string name="route_feature">路线特色</string>
+    <string name="book_notice">预定须知</string>
+
 </resources>

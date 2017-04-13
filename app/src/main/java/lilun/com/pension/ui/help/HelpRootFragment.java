@@ -99,6 +99,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.neighbor_help));
         titleBar.setTvRightText("关于我的");
+        titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -106,16 +107,8 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
             }
 
             @Override
-            public void onPositionClick() {
-
-            }
-
-            @Override
             public void onRightClick() {
-                    start(HelpFragment.newInstance(true));
-////                sta|);
-////                start(SearchPop.newInstance(""));
-//                new SearchPop(getContext(), "哈哈");
+                start(HelpFragment.newInstance(true));
             }
 
         });
