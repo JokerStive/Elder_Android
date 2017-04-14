@@ -157,7 +157,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void setAdapter() {
-        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL);
+        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL, false);
 //        mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
             start(ActivityDetailFragment.newInstance(activityItem.getId()));

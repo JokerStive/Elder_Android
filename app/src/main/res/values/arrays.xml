@@ -136,5 +136,21 @@
         <item>朋友</item>
     </string-array>
 
+    <string-array name="register_title_list">
+        <item>您的姓名？</item>
+        <item>还有，您的电话？</item>
+        <item>请输入6位验证码</item>
+        <item>创建一个密码</item>
+        <item>选择居住社区</item>
+        <item>上传头像</item>
+    </string-array>
+    <string-array name="register_title_desp_list">
+        <item></item>
+        <item></item>
+        <item>我们向您发送了一个验证码，请输入该验证码</item>
+        <item>创建一个不少于6位数的密码</item>
+        <item>选择居住社区是一个很重要的操作(居住小区可以不填)</item>
+        <item>请选择一个照片作为自己的头像(最好用本人头像)</item>
+    </string-array>
 
 </resources>

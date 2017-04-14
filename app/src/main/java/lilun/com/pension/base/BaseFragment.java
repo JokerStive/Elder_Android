@@ -30,6 +30,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     private Subscription subscribe;
 
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

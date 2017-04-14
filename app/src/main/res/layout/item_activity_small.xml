@@ -1,87 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
-    android:orientation="vertical"
-    android:padding="7dp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_text"
-        android:layout_centerVertical="true"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="18dp"
-        android:layout_toLeftOf="@+id/rl_container"
-        android:layout_toStartOf="@+id/rl_container"
-        android:orientation="vertical"
-        android:padding="7dp">
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10">
 
+        <ImageView
+            android:id="@+id/iv_classify"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:src="@drawable/icon_def" />
 
         <TextView
-            android:id="@+id/tv_product_name"
-            style="@style/tv_small_ellipsize"
-            android:layout_width="300dp"
-            android:layout_marginTop="8dp"
-            android:maxLines="1"
-            tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
+            android:id="@+id/tv_creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@id/iv_classify"
+            android:text="毕老师"
+            android:textColor="@color/activity_black"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_creator"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@id/iv_classify"
+            android:text="03-12"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/tv_activity_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/activity_status"
+            android:drawableLeft="@drawable/ongoing"
+            android:drawablePadding="@dimen/dp_10"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_4"
+            android:text="@string/ongoing"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/activity_titlebg"
+        android:paddingLeft="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="87dp"
+            android:layout_height="87dp"
+            android:layout_centerVertical="true"
+            tools:src="@drawable/selector_agency" />
 
         <LinearLayout
+            android:id="@+id/ll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp">
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:layout_toRightOf="@id/iv_icon"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_10">
 
 
             <TextView
-                android:id="@+id/tv_isJoin"
-                style="@style/tv_normal_ellipsize"
-                android:textColor="@color/red"
-                android:textSize="12dp"
-                tools:text="未参与" />
+                android:id="@+id/tv_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="2"
+                android:textColor="@color/activity_black"
+                android:textSize="14dp"
+                tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
-            <TextView
-                android:id="@+id/tv_time_joinCount"
-                style="@style/tv_small_ellipsize"
-                android:layout_marginLeft="3dp"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/dp_14"
-                tools:text="/ 03.18 / 参与人数(8/10)" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
 
 
+                <TextView
+                    android:id="@+id/tv_isJoin"
+                    style="@style/tv_normal_ellipsize"
+                    android:textColor="@color/gray2"
+                    android:textSize="12dp"
+                    tools:text="@string/has_partin" />
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/iv_partin_flag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:drawableLeft="@drawable/participated" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_time_joinCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/gray2"
+                    android:textSize="@dimen/dp_14"
+                    tools:text="@string/targart_partin" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_environment"
-            style="@style/tv_small_ellipsize"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/dp_14"
-            tools:text="重庆市半区去啊啊" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_container"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
-        android:layout_width="87dp"
-        android:layout_height="87dp">
-    <ImageView
-        android:id="@+id/iv_icon"
-        android:layout_width="87dp"
-        android:layout_height="87dp"
-        android:layout_centerVertical="true"
-        tools:src="@drawable/selector_agency" />
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/activity_check"
-            />
-
     </RelativeLayout>
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_activity_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:text="@string/activity_time_"
+        android:textColor="@color/gray2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/cyclical"
+            android:text="@string/cyclical" />
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_rect_grey"
+            android:padding="8dp"
+            android:text="@string/detail" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -21,6 +21,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.OrganizationReply;
+import lilun.com.pension.module.bean.Phone;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
@@ -404,5 +405,13 @@ public interface ApiService {
      */
     @GET("Contacts")
     Observable<Response<List<Contact>>> getContacts(@Query("filter") String filter);
+
+    /**
+     * 获取获取电话号码验证码
+     */
+    @GET("Accounts/getIDCode")
+    Observable<Response<Object>> getIDCode(@Query("mobile") String phone);
+
+
 
 }

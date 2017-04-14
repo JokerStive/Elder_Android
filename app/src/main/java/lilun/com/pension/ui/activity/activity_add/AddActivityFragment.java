@@ -1,13 +1,10 @@
 package lilun.com.pension.ui.activity.activity_add;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +26,6 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseTakePhotoFragment;
-import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.TakePhotoResult;
@@ -38,7 +34,6 @@ import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.widget.CommonButton;
-import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.InputView;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.TakePhotoLayout;
@@ -57,8 +52,13 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
 
-    @Bind(R.id.rv_activity_classify)
-    RecyclerView rvActivityClassify;
+//    @Bind(R.id.rv_activity_classify)
+//    RecyclerView rvActivityClassify;
+
+    @Bind(R.id.rl_choice_type)
+    RelativeLayout rlChoiceType;
+    @Bind(R.id.tv_choice_type)
+    TextView tvChoiceType;
 
     @Bind(R.id.input_title)
     InputView inputTitle;
@@ -67,38 +67,36 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     InputView inputAddress;
 
 
+    @Bind(R.id.input_cyclial_gap)
+    InputView inputCyclialGap;
+
     @Bind(R.id.input_require)
     InputView inputRequire;
 
     @Bind(R.id.input_maxPartner)
     InputView inputMaxPartner;
 
-    @Bind(R.id.input_location)
-    InputView inputLocation;
+//    @Bind(R.id.input_location)
+//    InputView inputLocation;
 
     @Bind(R.id.btn_add_activity)
     CommonButton btnAddActivity;
 
     @Bind(R.id.take_photo)
-
     TakePhotoLayout takePhotoLayout;
+
     @Bind(R.id.rg_repeat_type)
     RadioGroup rgRepeatType;
 
-    @Bind(R.id.input_repeat_type)
-    InputView inputRepeatType;
-
-    @Bind(R.id.tv_end_time)
-    TextView tvEndTime;
-
+    @Bind(R.id.rl_start_time)
+    RelativeLayout rlStartTime;
     @Bind(R.id.rl_end_time)
     RelativeLayout rlEndTime;
 
-    @Bind(R.id.et_start_time)
-    EditText etStartTime;
-
     @Bind(R.id.tv_start_time)
     TextView tvStartTime;
+    @Bind(R.id.tv_end_time)
+    TextView tvEndTime;
 
     private ArrayList<ActivityCategory> activityCategories;
     private String mCategoryId;
@@ -152,31 +150,44 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
         //周期活动控制
         rgRepeatType.check(R.id.rbtn_repeat);
+        inputCyclialGap.setVisibility(View.VISIBLE);
+        rlStartTime.setVisibility(View.GONE);
+        rlEndTime.setVisibility(View.GONE);
         rgRepeatType.setOnCheckedChangeListener((group, checkedId) -> {
             //选择周期活动
-            rlEndTime.setVisibility(checkedId == R.id.rbtn_repeat ? View.GONE : View.VISIBLE);
-            inputRepeatType.setVisibility(checkedId != R.id.rbtn_repeat ? View.GONE : View.VISIBLE);
-            etStartTime.setVisibility(checkedId == R.id.rbtn_repeat ? View.VISIBLE : View.GONE);
-            tvStartTime.setVisibility(checkedId != R.id.rbtn_repeat ? View.VISIBLE : View.GONE);
+            inputCyclialGap.setVisibility(checkedId == R.id.rbtn_once ? View.GONE : View.VISIBLE);
+            rlStartTime.setVisibility(checkedId == R.id.rbtn_once ? View.VISIBLE : View.GONE);
+            rlEndTime.setVisibility(checkedId == R.id.rbtn_once ? View.VISIBLE : View.GONE);
+
+//            if (checkedId == R.id.rbtn_repeat) {
+//                inputCyclialGap.setVisibility(View.VISIBLE);
+//                rlStartTime.setVisibility(View.GONE);
+//                rlEndTime.setVisibility(View.GONE);
+//            } else {
+//                inputCyclialGap.setVisibility(View.GONE);
+//                rlStartTime.setVisibility(View.VISIBLE);
+//                rlEndTime.setVisibility(View.VISIBLE);
+//            }
+
         });
 
         tvStartTime.setOnClickListener(this);
         btnAddActivity.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
-        inputRepeatType.setOnClickListener(this);
+        rlChoiceType.setOnClickListener(this);
     }
 
 
     private void showActivityCategories() {
-        rvActivityClassify.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
-        rvActivityClassify.addItemDecoration(new ElderModuleClassifyDecoration());
-        ActivityCategoryAdapter adapter = new ActivityCategoryAdapter(this, activityCategories);
-        adapter.setIsRadioModule(true);
-        adapter.setOnItemClickListener((activityCategory -> {
-            mCategoryId = activityCategory.getId();
-        }));
-
-        rvActivityClassify.setAdapter(adapter);
+//        rvActivityClassify.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
+//        rvActivityClassify.addItemDecoration(new ElderModuleClassifyDecoration());
+//        ActivityCategoryAdapter adapter = new ActivityCategoryAdapter(this, activityCategories);
+//        adapter.setIsRadioModule(true);
+//        adapter.setOnItemClickListener((activityCategory -> {
+//            mCategoryId = activityCategory.getId();
+//        }));
+//
+//        rvActivityClassify.setAdapter(adapter);
     }
 
 
@@ -191,20 +202,20 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
         String address = inputAddress.getInput();
 
-        String time;
-        if (etStartTime.getVisibility() == View.VISIBLE) {
-            time = etStartTime.getText().toString();
-        } else {
-            time = tvStartTime.getText().toString();
-        }
+        String time = tvStartTime.getText().toString();
+//        if (etStartTime.getVisibility() == View.VISIBLE) {
+//            time = etStartTime.getText().toString();
+//        } else {
+//            time = tvStartTime.getText().toString();
+//        }
 
         String maxPartner = inputMaxPartner.getInput();
 
         String require = inputRequire.getInput();
 
-        String location = inputLocation.getInput();
-
-        String repeatedType = inputRepeatType.getInput();
+//        String location = inputLocation.getInput();
+//
+//        String repeatedType = inputRepeatType.getInput();
 
 
 //        TODO 输入检查
@@ -228,6 +239,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             return;
         }
 
+
         String max = StringUtils.get_StringNum(maxPartner);
         Integer maxPart = null;
         if (!TextUtils.isEmpty(max)) {
@@ -243,7 +255,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         activity.setAddress(address);
         activity.setStartTime(time);
         activity.setDruation(intDuration);
-        activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
+        // activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
         activity.setOrganizationId(OrganizationChildrenConfig.activity());
         activity.setDescription(require);
         activity.setMaxPartner(maxPart);
@@ -277,10 +289,10 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
                 addActivity();
                 break;
 
-            case R.id.input_repeat_type:
-                //定期类型
-                chooseRepeatedType();
-                break;
+//            case R.id.input_repeat_type:
+//                //定期类型
+//                chooseRepeatedType();
+//                break;
 
             case R.id.tv_start_time:
                 // 选择活动开始时间
@@ -292,6 +304,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
                 chooseTime = 1;
                 chooseTime();
                 break;
+            case R.id.rl_choice_type:
+                chooseActivityType();
+                break;
 
         }
     }
@@ -302,11 +317,12 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;
             if (chooseTime == 0) {
-                if (etStartTime.getVisibility() == View.VISIBLE) {
-                    etStartTime.setText(time);
-                } else {
-                    tvStartTime.setText(time);
-                }
+//                if (etStartTime.getVisibility() == View.VISIBLE) {
+//                    etStartTime.setText(time);
+//                } else {
+//
+//                }
+                tvStartTime.setText(time);
             } else {
                 tvEndTime.setText(time);
             }
@@ -334,20 +350,35 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 //    }
 
 
-    /**
-     * 选择求助信息的优先级
-     */
-    private void chooseRepeatedType() {
-        if (repeatedTypeArray == null) {
-            repeatedTypeArray = getResources().getStringArray(R.array.activity_repeatedType);
-        }
+//    /**
+//     * 选择求助信息的优先级
+//     */
+//    private void chooseRepeatedType() {
+//        if (repeatedTypeArray == null) {
+//            repeatedTypeArray = getResources().getStringArray(R.array.activity_repeatedType);
+//        }
+//        MaterialDialog d = new MaterialDialog.Builder(_mActivity)
+//                .items(repeatedTypeArray)
+//
+//                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
+//                    inputRepeatType.setInput(repeatedTypeArray[which]);
+//                    return true;
+//                })
+//                .positiveText(R.string.choose)
+//                .show();
+//
+//    }
+    private void chooseActivityType() {
+        ArrayList<String> list = new ArrayList<>();
+        for (ActivityCategory tmp : activityCategories)
+            list.add(tmp.getName());
         MaterialDialog d = new MaterialDialog.Builder(_mActivity)
-                .items(repeatedTypeArray)
+                .title("-选择类型-")
+                .items(list)
                 .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-                    inputRepeatType.setInput(repeatedTypeArray[which]);
+                    tvChoiceType.setText(list.get(which));
                     return true;
                 })
-                .positiveText(R.string.choose)
                 .show();
 
     }

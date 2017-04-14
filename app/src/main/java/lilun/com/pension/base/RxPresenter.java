@@ -28,7 +28,6 @@ public class RxPresenter<T> implements IPresenter<T> {
     @Override
     public void bindView(T view) {
         this.view = view;
-
     }
 
     @Override

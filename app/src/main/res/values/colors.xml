@@ -44,7 +44,9 @@
     <color name="activity_titlebg">#f9f9f9</color>
     <color name="activity_black">#333333</color>
     <color name="activity_line">#efefef</color>
-
+    <color name="gray2">#666666</color>
+    <color name="yellowish">#F7631A</color>
+    <color name="yellolight_bg">#FEFCEC</color>
 
 
 </resources>

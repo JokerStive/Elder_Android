@@ -5,20 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <lilun.com.pension.widget.NormalTitleBar
-        android:id="@+id/titleBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="新建活动" />
-
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleBar"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -26,101 +18,177 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_activity_classify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2.24"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-            <RadioGroup
-                android:id="@+id/rg_repeat_type"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rbtn_repeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="周期活动" />
-
-
-                <RadioButton
-                    android:id="@+id/rbtn_once"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:text="单次活动" />
-
-
-            </RadioGroup>
-
-
-            <lilun.com.pension.widget.InputView
-                android:id="@+id/input_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="17dp"
-                app:et_max_length="15"
-                app:input_title="@string/activity_title" />
-
-            <lilun.com.pension.widget.InputView
-                android:id="@+id/input_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="17dp"
-                app:et_max_length="15"
-                app:input_title="@string/activity_address" />
-
             <RelativeLayout
-                android:id="@+id/rl_bg"
+                android:id="@+id/rl_choice_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_10">
 
                 <TextView
-                    android:id="@+id/tv_input_title"
-                    style="@style/tv_normal_ellipsize"
-                    android:layout_centerVertical="true"
-                    android:text="@string/activity_time"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/tv_size_small" />
+                    android:id="@+id/tv_choice_type_str"
+                    style="@style/tv_input_desp"
+                    android:text="@string/choice_type" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_container"
+
+                <TextView
+                    android:id="@+id/tv_choice_type"
+                    style="@style/tv_input_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="22dp"
-                    android:layout_toRightOf="@id/tv_input_title">
+                    android:layout_toRightOf="@id/tv_choice_type_str"
+                    android:hint="@string/choice_type"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:textColor="@color/gray2" />
 
-                    <EditText
-
-                        android:id="@+id/et_start_time"
-                        style="@style/et_normal"
-                        android:background="@null"
-                        android:maxLength="20"
-                        android:maxLines="1"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/tv_size_small" />
-
-                    <TextView
-                        android:id="@+id/tv_start_time"
-                        style="@style/et_normal"
-                        android:layout_centerVertical="true"
-                        android:background="@null"
-                        android:maxLength="20"
-                        android:maxLines="1"
-                        android:textSize="@dimen/tv_size_small"
-                        android:visibility="gone" />
-                </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_10"
+                    android:src="@drawable/arraw_right" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_below="@id/rl_container"
+                    android:layout_below="@id/tv_choice_type_str"
+                    android:layout_marginTop="8dp" />
+            </RelativeLayout>
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_title"
+                style="@style/tv_input_desp"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="17dp"
+                app:et_max_length="200"
+                app:et_max_lines="4"
+                app:et_text_color="@color/gray2"
+                app:input_title="@string/activity_title"
+                app:input_hint="@string/activity_title_hint"
+                app:title_text_color="@color/activity_black" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_address"
+                style="@style/tv_input_desp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="17dp"
+                app:et_max_length="200"
+                app:et_max_lines="4"
+                app:et_text_color="@color/gray2"
+                app:input_title="@string/activity_address"
+                app:input_hint="@string/activity_address_hint"
+                app:title_text_color="@color/activity_black" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_require"
+                style="@style/tv_input_desp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="17dp"
+                app:et_text_color="@color/gray2"
+                app:input_hint="@string/activity_content_require"
+                app:input_title="@string/activity_content"
+                app:title_text_color="@color/activity_black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/activity_titlebg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10">
+
+                <TextView
+                    style="@style/tv_input_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/activity_repeat"
+                    android:textColor="@color/activity_black" />
+
+                <RadioGroup
+                    android:id="@+id/rg_repeat_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbtn_repeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:checked="true"
+                        android:text="周期活动"
+                        android:textColor="@color/gray2" />
+
+
+                    <RadioButton
+                        android:id="@+id/rbtn_once"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:text="单次活动"
+                        android:textColor="@color/gray2" />
+
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_below="@id/rl_container"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="8dp" />
+
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_cyclial_gap"
+                style="@style/tv_input_desp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="17dp"
+                app:et_max_length="15"
+                app:et_text_color="@color/gray2"
+                app:input_hint="@string/cyclical_gap_hint"
+                app:input_title="@string/activity_cyclical"
+                app:title_text_color="@color/activity_black" />
+
+            <RelativeLayout
+                android:id="@+id/rl_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_10">
+
+                <TextView
+                    android:id="@+id/tv_start_time_str"
+                    style="@style/tv_input_desp"
+                    android:layout_centerVertical="true"
+                    android:text="@string/activity_time"
+                    android:textSize="@dimen/tv_size_small" />
+
+
+                <TextView
+                    android:id="@+id/tv_start_time"
+                    style="@style/et_normal"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_start_time_str"
+                    android:background="@null"
+                    android:maxLength="20"
+                    android:layout_marginLeft="22dp"
+                    android:hint="@string/start_time_hint"
+                    android:maxLines="1"
+                    android:textSize="@dimen/tv_size_small" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_start_time_str"
                     android:layout_marginTop="8dp" />
 
 
@@ -130,26 +198,30 @@
                 android:id="@+id/rl_end_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_marginTop="17dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_10">
 
                 <TextView
                     android:id="@+id/tv_priority_title"
-                    style="@style/tv_normal_ellipsize"
+
+                    style="@style/tv_input_desp"
                     android:layout_centerVertical="true"
                     android:text="@string/activity_end_time"
-                    android:textColor="@color/gray"
+
                     android:textSize="@dimen/tv_size_small" />
 
 
                 <TextView
-                    android:layout_marginLeft="22dp"
-                    android:layout_toRightOf="@id/tv_priority_title"
-                    android:layout_centerVertical="true"
                     android:id="@+id/tv_end_time"
+                    style="@style/tv_small_ellipsize"
                     android:layout_width="match_parent"
-                    android:textColor="@color/gray"
-                    style="@style/tv_small_ellipsize" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="22dp"
+                    android:hint="@string/end_time_hint"
+                    android:layout_toRightOf="@id/tv_priority_title"
+                    android:textColor="@color/gray" />
 
 
                 <View
@@ -158,42 +230,37 @@
                     android:layout_marginTop="8dp" />
             </RelativeLayout>
 
-            <lilun.com.pension.widget.InputView
-                android:id="@+id/input_repeat_type"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="17dp"
-                app:allow_input="false"
-                app:input_title="@string/activity_repeat_type" />
-
-
-            <lilun.com.pension.widget.InputView
-                android:id="@+id/input_require"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="17dp"
-                app:input_title="@string/activity_require" />
-
+                android:background="@color/yellolight_bg"
+                android:drawableLeft="@drawable/prompt"
+                android:drawablePadding="@dimen/dp_4"
+                android:paddingBottom="@dimen/dp_4"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_4"
+                android:text="@string/partin_info"
+                android:textColor="@color/yellowish" />
+            <View
+                style="@style/line_gray"
+                android:layout_marginLeft="@dimen/dp_10"/>
             <lilun.com.pension.widget.InputView
                 android:id="@+id/input_maxPartner"
+                style="@style/tv_input_desp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="17dp"
-                app:input_title="@string/activity_maxPartner" />
-
-            <lilun.com.pension.widget.InputView
-                android:id="@+id/input_location"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="17dp"
-                app:input_title="@string/activity_location" />
-
+                app:et_text_color="@color/gray2"
+                app:input_title="@string/activity_maxPartner"
+                app:input_hint="@string/activity_maxPartner_hint"
+                app:title_text_color="@color/activity_black" />
 
             <TextView
-                style="@style/tv_small_ellipsize"
+                style="@style/tv_input_desp"
                 android:layout_marginTop="17dp"
-                android:text="@string/add_photo"
-                android:textColor="@color/gray" />
+                android:paddingLeft="@dimen/dp_10"
+                android:text="@string/add_photo" />
 
 
             <lilun.com.pension.widget.TakePhotoLayout
@@ -201,7 +268,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:paddingLeft="@dimen/dp_10" />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -214,4 +282,14 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/selector_activity"
         android:text="新建活动" />
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/activity_titlebg"
+        app:title="新建活动" />
 </RelativeLayout>

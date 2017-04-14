@@ -23,5 +23,6 @@ public class NormalItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         outRect.bottom = space;
+
     }
 }

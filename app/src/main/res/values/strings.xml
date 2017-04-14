@@ -137,10 +137,12 @@
     <!--新建活动-->
     <string name="activity_title">活动主题</string>
     <string name="activity_time">开始时间</string>
-    <string name="activity_end_time">预期结束活动</string>
+    <string name="activity_end_time">结束时间</string>
     <string name="activity_repeat_type">周期活动类型</string>
+    <string name="activity_repeat">周期类型</string>
     <string name="activity_require">加入要求</string>
-    <string name="activity_maxPartner">邀约人数</string>
+    <string name="activity_content">活动描述</string>
+    <string name="activity_maxPartner">邀请人数</string>
     <string name="activity_location">邀约区域</string>
 
     <!--活动详情-->
@@ -151,16 +153,13 @@
     <string name="join">参加</string>
     <string name="quit">退出</string>
 
-   ===================================================================
+    ===================================================================
 
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
     <string name="price_format">%1$d元</string>
     <string name="new_service">发布服务</string>
     <string name="all_orders">所有订单</string>
-
-
-
 
 
     <!--我的订单-->
@@ -207,7 +206,6 @@
     <string name="cancle">取消</string>
 
 
-
     <!--评价-->
     <string name="say_some">说点什么吧</string>
     <string name="course_plan">教学计划</string>
@@ -226,4 +224,25 @@
     <string name="system_information">系统消息</string>
     <string name="personal_information">个人消息</string>
     <string name="save">保存</string>
+    <string name="ongoing">进行中</string>
+    <string name="has_partin">已参加:%1$s人</string>
+    <string name="targart_partin">参与人数:%1$s</string>
+    <string name="single">单次</string>
+    <string name="cyclical">周期</string>
+    <string name="detail">查看详情</string>
+    <string name="choice_type">选择类型</string>
+    <string name="activity_cyclical">活动周期</string>
+    <string name="cyclical_gap_hint">（例：每周一下午14:30）</string>
+    <string name="activity_content_require">请输入活动详情与参与要求</string>
+    <string name="partin_info">温馨提示：邀请人数不填，则为不限人数</string>
+    <string name="has_joined">已加入</string>
+    <string name="unjoined">未加入</string>
+    <string name="activity_title_hint">请输入活动主题</string>
+    <string name="activity_address_hint">请输入活动地点</string>
+    <string name="start_time_hint">请选择开始时间</string>
+    <string name="end_time_hint">请选择结束时间</string>
+    <string name="activity_maxPartner_hint">请输入邀请人数</string>
+    <string name="register_step1_title">你的姓名？</string>
+    <string name="user_name">姓名</string>
+    <string name="register_code">验证码</string>
 </resources>

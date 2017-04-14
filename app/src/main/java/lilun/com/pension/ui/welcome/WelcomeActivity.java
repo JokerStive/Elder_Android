@@ -10,6 +10,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.ui.home.HomeActivity;
+import lilun.com.pension.ui.register.RegisterActivity;
 
 /**
  * 欢迎页面
@@ -59,6 +60,8 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.btn_register:
+                startActivity(new Intent(this,RegisterActivity.class));
+                finish();
                 break;
         }
     }

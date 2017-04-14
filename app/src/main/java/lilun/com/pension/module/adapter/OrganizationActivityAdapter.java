@@ -1,6 +1,8 @@
 package lilun.com.pension.module.adapter;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -11,8 +13,6 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
-import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -24,19 +24,33 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
-    private String isjoined = "未参加";
     private OnItemClickListener listener;
+    private boolean showIsBig = true;
+    private boolean allowshowIcon = true;
 
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
         super(layoutRes, data);
+        showIsBig = layoutRes == R.layout.item_activity_big;
     }
+
+    /**
+     *
+     * @param data
+     * @param layoutRes
+     * @param layoutType
+     * @param allowshowIcon  是否允许显示参加图标
+     */
+    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType, boolean allowshowIcon) {
+        super(layoutRes, data);
+        showIsBig = layoutRes == R.layout.item_activity_big;
+        this.allowshowIcon = allowshowIcon;
+    }
+
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
-        UIUtils.setBold(help.getView(R.id.tv_product_name));
-
+        Context context = help.getConvertView().getContext().getApplicationContext();
         help.setText(R.id.tv_product_name, activity.getTitle())
-                .setText(R.id.tv_environment, activity.getAddress())
                 .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {
                         listener.onItemClick(activity);
@@ -44,32 +58,42 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                 });
 
 
-        List<String> partners = activity.getPartners();
-        String timeAndJoinCount = "/ " + StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4);
-        if (partners != null) {
-            timeAndJoinCount = timeAndJoinCount + " / " + "参与人数(" + partners.size() + "/" + activity.getMaxPartner() + ")";
-        }else {
-            timeAndJoinCount = timeAndJoinCount + " / " + "参与人数(0 /" + activity.getMaxPartner() + ")";
-        }
-
-        //时间和参与的人
-        help.setText(R.id.tv_time_joinCount,timeAndJoinCount);
-
-        //是否参加
+        List<String> partners = activity.getPartnerList();
+        String partinNumber = "0";
         if (partners != null && partners.size() != 0) {
-            for (String partnerId : partners) {
-                if (TextUtils.equals(partnerId, User.getUserId())) {
-                    isjoined = "已参加";
-                }
-            }
+            partinNumber = partners.size() + "";
         }
-        help.setText(R.id.tv_isJoin, isjoined);
+        help.setText(R.id.tv_isJoin, context.getString(R.string.has_partin, partinNumber + ""));
+
+        if (allowshowIcon) {
+            //是否参加
+            if (partners != null && partners.size() != 0) {
+                for (String partnerId : partners) {
+                    if (TextUtils.equals(partnerId, User.getUserId())) {
+                        help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
+                        if (showIsBig) {
+                            help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
+                        }
+                        break;
+                    }
+                }
+            } else {
+                if (showIsBig) {
+                    help.setText(R.id.iv_partin_flag, context.getString(R.string.unjoined));
+                } else
+                    help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
+            }
+        } else help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
+
+        help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin, activity.getMaxPartner() + "人"));
 
 
         String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), fileName),
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationActivities, activity.getId(), fileName),
                 R.drawable.icon_def, help.getView(R.id.iv_icon));
 
+        String time = activity.getStartTime();
+        help.setText(R.id.tv_activity_time, context.getString(R.string.activity_time_, time));
 
     }
 

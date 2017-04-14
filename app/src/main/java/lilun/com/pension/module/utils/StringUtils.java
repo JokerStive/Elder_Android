@@ -212,13 +212,24 @@ public class StringUtils {
     }
 
     /**
-     * 验证手机号码
+     * 验证手机号码+座机号码
      *
      * @param mobiles
      * @return
      */
     public static boolean isMobileNo(String mobiles) {
         Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
+    }
+    /**
+     * 验证手机号码
+     *
+     * @param mobiles
+     * @return
+     */
+    public static boolean isMobileNumber(String mobiles) {
+        Pattern p = Pattern.compile("^(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }

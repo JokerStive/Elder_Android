@@ -37,6 +37,7 @@ public class InputView extends RelativeLayout {
         String inputTitle = attr.getString(R.styleable.InputView_input_title);
         String inputHint = attr.getString(R.styleable.InputView_input_hint);
 
+
         allowInput = attr.getBoolean(R.styleable.InputView_allow_input, true);
 
         int etTextColor = attr.getColor(R.styleable.InputView_et_text_color, -1);
@@ -44,11 +45,15 @@ public class InputView extends RelativeLayout {
 
         int maxLength = attr.getInt(R.styleable.InputView_et_max_length, -1);
 //        int lineColor = attr.getColor(R.styleable.InputView_line_color, -1);
+        int maxLines = attr.getInteger(R.styleable.InputView_et_max_lines,1);
         if (inputTitle != null) {
             tvInputTitle.setText(inputTitle);
         }
         if (inputHint != null) {
             etInput.setHint(inputHint);
+        }
+        if(maxLines != 1){
+            etInput.setMaxLines(maxLines);
         }
 
 

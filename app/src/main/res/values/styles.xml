@@ -68,6 +68,22 @@
         <item name="android:textSize">@dimen/tv_size</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <!--16sp tv 输入说明-->
+    <style name="tv_input_desp">
+        <item name="android:focusable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/tv_size_small</item>
+        <item name="android:textColor">@color/activity_black</item>
+    </style>
+    <!--16sp tv 输入内容-->
+    <style name="tv_input_content" >
+        <item name="android:focusable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/tv_size_small</item>
+        <item name="android:textColor">@color/activity_black</item>
+    </style>
 
     <!--20sp tv -->
     <style name="tv_normal">

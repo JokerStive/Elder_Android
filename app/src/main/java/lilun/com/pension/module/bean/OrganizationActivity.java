@@ -23,7 +23,7 @@ public class OrganizationActivity extends BaseBean {
      * druation : 0
      * repeatedType : string
      * repeatedCount : 0
-     * partners : ["string"]
+     * partnerList : ["string"]
      * maxPartner : 0
      * id : string
      * masterId : string
@@ -74,7 +74,7 @@ public class OrganizationActivity extends BaseBean {
     private String updatorName;
     private String organizationId;
     private ArrayList<IconModule> icon;
-    private List<String> partners;
+    private List<String> partnerList;
     private Account contact;
 
     public String getTitle() {
@@ -237,12 +237,12 @@ public class OrganizationActivity extends BaseBean {
         this.icon = icon;
     }
 
-    public List<String> getPartners() {
-        return partners;
+    public List<String> getPartnerList() {
+        return partnerList;
     }
 
-    public void setPartners(List<String> partners) {
-        this.partners = partners;
+    public void setPartnerList(List<String> partnerList) {
+        this.partnerList = partnerList;
     }
 
     public Account getContact() {
@@ -279,7 +279,7 @@ public class OrganizationActivity extends BaseBean {
         edus.setUpdatorName(updatorName);
         edus.setOrganizationId(organizationId);
         edus.setPicture(icon);
-        edus.setPartners(partners);
+        edus.setPartners(partnerList);
         edus.setContact(contact);
         return edus;
     }
