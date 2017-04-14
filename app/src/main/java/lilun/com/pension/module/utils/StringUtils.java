@@ -192,9 +192,12 @@ public class StringUtils {
      * 过滤特殊字符后缀  /#staff ,/#department....
      */
     public static String removeSpecialSuffix(String id) {
-        String substring = id.substring(0, id.lastIndexOf("/"));
-        if (TextUtils.isEmpty(substring)) {
-            substring = User.defOrganizationId;
+        String substring = "";
+        if (!TextUtils.isEmpty(id)) {
+            substring = id.substring(0, id.lastIndexOf("/"));
+            if (TextUtils.isEmpty(substring)) {
+                substring = User.defOrganizationId;
+            }
         }
         return substring;
     }
