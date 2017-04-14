@@ -1,5 +1,7 @@
 package lilun.com.pension.module.adapter;
 
+import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 import lilun.com.pension.R;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Contact;
-import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 用户预约登记信息adapter
@@ -21,6 +22,7 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
 
     public ServiceUserInfoAdapter(List<Contact> data) {
         super(R.layout.item_reservation_info, data);
+        data.get(0).setDefault(true);
     }
 
     public ServiceUserInfoAdapter(int layoutResId, List<Contact> data) {
@@ -29,10 +31,12 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
 
     @Override
     protected void convert(BaseViewHolder helper, Contact info) {
+        TextView tvSetDef = helper.getView(R.id.tv_set_def);
+        tvSetDef.setSelected(info.isDefault());
         helper.setText(R.id.tv_name, info.getName())
                 .setText(R.id.tv_health_status, info.getExtend().get("healthyStatus"))
                 .setText(R.id.tv_health_desc, info.getExtend().get("healthyDescription"))
-                .setText(R.id.tv_time, StringUtils.IOS2ToUTC(info.getCreatedAt(), 4))
+                .setText(R.id.tv_phone, info.getMobile())
                 .setOnClickListener(R.id.tv_edit, v -> {
                     if (listener != null) {
                         listener.onEdit(info);
@@ -42,8 +46,25 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
                     if (listener != null) {
                         listener.onDelete();
                     }
-                });
+                })
+
+                .setOnClickListener(R.id.tv_set_def, v -> {
+                    if (listener != null && !info.isDefault()) {
+                        listener.onSetDefault(info.getId());
+                    }
+                })
+
+        ;
     }
+
+
+    public void setDefault(String contactId) {
+        for (Contact contact : getData()) {
+            contact.setDefault(contactId.endsWith(contact.getId()));
+        }
+        notifyDataChanged();
+    }
+
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -53,5 +74,7 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
         void onDelete();
 
         void onEdit(Contact contact);
+
+        void onSetDefault(String contactId);
     }
 }

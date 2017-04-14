@@ -15,7 +15,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -81,7 +80,7 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
      * 切回自己原来属于的社区
      */
     private void changeToBelong() {
-        mPresenter.changeDefBelongOrganization(User.getBelongsOrganizationId());
+        mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
     }
 
     @Override
@@ -89,7 +88,7 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
         super.onLazyInitView(savedInstanceState);
 
         swipeLayout.setRefreshing(true);
-        mPresenter.changeDefBelongOrganization(Constants.organization_root);
+        mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
     }
 
 

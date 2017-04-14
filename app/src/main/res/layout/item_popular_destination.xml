@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_destination"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:paddingTop="9dp"
+    android:paddingBottom="9dp"
+    android:layout_width="match_parent"
+    style="@style/tv_small_x"
+    tools:text="厦门">
+
+</TextView>

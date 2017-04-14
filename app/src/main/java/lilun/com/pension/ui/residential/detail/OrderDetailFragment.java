@@ -171,21 +171,23 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
                 llOperate.setVisibility(View.VISIBLE);
                 tvOperate.setText(R.string.rank);
             }
-        } else {
-            if (!order.getStatus().equals(status_cancel) && !order.getStatus().equals(status_done)) {
-                llOperate.setVisibility(View.VISIBLE);
-                if (order.getStatus().equals(status_reserved)) {
-                    tvCancel.setVisibility(View.VISIBLE);
-                    tvOperate.setText(getStatusOperate(status_assigned));
-                    tvCancel.setText(getStatusOperate(status_cancel));
-//                    mNextStatus = status_assigned;
-                } else if (order.getStatus().equals(status_assigned)) {
-                    tvCancel.setVisibility(View.GONE);
-                    tvOperate.setText(getStatusOperate(status_done));
-//                    mNextStatus = status_done;
-                }
-            }
         }
+
+//        else {
+//            if (!order.getStatus().equals(status_cancel) && !order.getStatus().equals(status_done)) {
+//                llOperate.setVisibility(View.VISIBLE);
+//                if (order.getStatus().equals(status_reserved)) {
+//                    tvCancel.setVisibility(View.VISIBLE);
+//                    tvOperate.setText(getStatusOperate(status_assigned));
+//                    tvCancel.setText(getStatusOperate(status_cancel));
+////                    mNextStatus = status_assigned;
+//                } else if (order.getStatus().equals(status_assigned)) {
+//                    tvCancel.setVisibility(View.GONE);
+//                    tvOperate.setText(getStatusOperate(status_done));
+////                    mNextStatus = status_done;
+//                }
+//            }
+//        }
 
         //show product
         OrganizationProduct product = order.getProduct();
@@ -203,7 +205,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvProviderName.setText(StringUtils.filterNull(agencyName));
             tvProductPhone.setText(account.getMobile());
         } else {
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
             tvProviderName.setText(mOrder.getCreatorName());
             tvProductPhone.setText(mOrder.getMobile());
         }

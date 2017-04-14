@@ -5,12 +5,13 @@ import java.util.List;
 import lilun.com.pension.base.BaseBean;
 
 /**
-*从产品模型
-*@author yk
-*create at 2017/2/21 10:06
-*email : yk_developer@163.com
-*/
-public class OrganizationProduct  extends BaseBean{
+ * 从产品模型
+ *
+ * @author yk
+ *         create at 2017/2/21 10:06
+ *         email : yk_developer@163.com
+ */
+public class OrganizationProduct extends BaseBean {
 
     /**
      * name : string
@@ -50,6 +51,7 @@ public class OrganizationProduct  extends BaseBean{
     private List<IconModule> images;
     private String categoryId;
     private List<String> areas;
+
 
     public String getName() {
         return name;

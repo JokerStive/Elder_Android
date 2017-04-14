@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.User;
+import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.ui.change_organization.ChangeOrganizationFragment;
 
 /**
  * 标题栏
@@ -31,6 +33,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     private Button tvRight;
     private ImageView ivBack;
     private TitleBarClickCallBack listener;
+    private BaseFragment fragment;
 
     public PositionTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,8 +72,6 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
     public void setTvRightText(String doWhat) {
         tvRight.setText(doWhat);
-
-
     }
 
     public void setNoPosition(boolean positionVisible) {
@@ -87,6 +88,9 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
                 break;
 
             case R.id.iv_position:
+                if (fragment != null) {
+                    fragment.start(ChangeOrganizationFragment.newInstance());
+                }
                 if (listener != null) {
                     listener.onPositionClick();
                 }
@@ -99,6 +103,10 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
                 }
                 break;
         }
+    }
+
+    public void setFragment(BaseFragment fragment) {
+        this.fragment = fragment;
     }
 
 

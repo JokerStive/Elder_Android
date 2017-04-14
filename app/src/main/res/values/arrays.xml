@@ -153,4 +153,20 @@
         <item>请选择一个照片作为自己的头像(最好用本人头像)</item>
     </string-array>
 
+    ====================旅游
+
+    <string-array name="popular_journey_destination">
+        <item>北京</item>
+        <item>三亚</item>
+        <item>香港</item>
+        <item>上海</item>
+        <item>厦门</item>
+        <item>成都</item>
+        <item>青岛</item>
+        <item>台北</item>
+        <item>西安</item>
+        <item>大理</item>
+        <item>丽江</item>
+        <item>稻城</item>
+    </string-array>
 </resources>

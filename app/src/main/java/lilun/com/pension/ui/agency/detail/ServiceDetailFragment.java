@@ -19,6 +19,7 @@ import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductOrder;
@@ -28,7 +29,8 @@ import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.ui.agency.reservation.ServiceUserInfoFragment;
+import lilun.com.pension.ui.agency.reservation.AddServiceInfoFragment;
+import lilun.com.pension.ui.agency.reservation.ReservationFragment;
 import lilun.com.pension.ui.order.MerchantOrderListFragment;
 import lilun.com.pension.ui.residential.rank.RankListFragment;
 import lilun.com.pension.widget.slider.BannerPager;
@@ -85,6 +87,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     private OrganizationProduct mProduct;
     private String mId;
+    private int requestCode = 85;
 
 
     public static ServiceDetailFragment newInstance(OrganizationProduct product) {
@@ -199,8 +202,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
             case R.id.tv_reservation:
                 if (tvReservation.getText().equals(getString(R.string.reservation))) {
-                    ServiceUserInfoFragment fragment = ServiceUserInfoFragment.newInstance(mProduct.getCategoryId(), mProduct.getId());
-                    startForResult(fragment, 0);
+                    reservation();
                 }
                 break;
 
@@ -215,6 +217,33 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         }
     }
 
+
+    /**
+     * 预约
+     */
+    private void reservation() {
+        String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"index\":\"0\"}}";
+        NetHelper.getApi().getContacts(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Contact>>(_mActivity) {
+                    @Override
+                    public void _next(List<Contact> contacts) {
+                        if (contacts.size()>0){
+                            Contact contact = contacts.get(0);
+                            ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getCategoryId(), mProduct.getId(),contact);
+                            startForResult(fragment, requestCode);
+                        }else {
+                            //添加个人资料界面
+                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId(), null, true);
+                            fragment.setProductd(mProduct.getId());
+                            start(fragment);
+                        }
+                    }
+                });
+
+    }
+
     private void next() {
         if (User.isCustomer()) {
             String organizationId = mProduct.getOrganizationId();
@@ -225,9 +254,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
-        super.onFragmentResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == 0) {
+    protected void onFragmentResult(int reqCode, int resultCode, Bundle data) {
+        if (reqCode == requestCode && resultCode == 85) {
             setHadReservation();
         }
     }

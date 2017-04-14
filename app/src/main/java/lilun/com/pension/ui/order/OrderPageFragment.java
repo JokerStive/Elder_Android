@@ -15,12 +15,14 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PersonalOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.ui.help.RankFragment;
 import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -32,8 +34,6 @@ import lilun.com.pension.widget.NormalTitleBar;
  *         email : yk_developer@163.com
  */
 public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter> implements OrderPageContract.View {
-
-
 
 
     @Bind(R.id.recycler_view)
@@ -106,7 +106,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-       String  filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+        String filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         mPresenter.getMyOrders(filter, skip);
 
     }
@@ -129,11 +129,18 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         if (personalOrderAdapter == null) {
             personalOrderAdapter = new PersonalOrderAdapter(orders);
             personalOrderAdapter.setEmptyView();
-            personalOrderAdapter.setOnItemClickListener(order -> {
-                Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
-                intent.putExtra("orderId", order.getId());
-                startActivity(intent);
+            personalOrderAdapter.setOnItemClickListener(new PersonalOrderAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(ProductOrder order) {
+                    Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+                    intent.putExtra("orderId", order.getId());
+                    startActivity(intent);
+                }
 
+                @Override
+                public void onRank(String productId) {
+                    start(RankFragment.newInstance(Constants.organizationProduct, productId));
+                }
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {
                 getMyOrder(personalOrderAdapter.getItemCount());

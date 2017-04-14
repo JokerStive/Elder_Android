@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/tv_small"
+    android:background="@drawable/shape_tourism_tag"
+    android:gravity="center_vertical"
+    android:padding="3dp"
+    android:text="境外游"
+    android:textColor="@color/red"
+    android:textSize="12sp" >
+
+</TextView>

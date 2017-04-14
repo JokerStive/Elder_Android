@@ -33,10 +33,8 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
 
     @Override
     public void changeOrderStatus(String orderId,String status) {
-        ProductOrder order = new ProductOrder();
-        order.setStatus(status);
         addSubscribe(NetHelper.getApi()
-                .putOrder(orderId, order)
+                .putOrderStatus(orderId, status)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {

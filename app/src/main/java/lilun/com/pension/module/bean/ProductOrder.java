@@ -51,14 +51,24 @@ public class ProductOrder extends BaseBean {
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private Account Assignee;
+    private Account assignee;
+    private Contact contact;
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public ProductOrder setContact(Contact contact) {
+        this.contact = contact;
+        return this;
+    }
 
     public Account getAssignee() {
-        return Assignee;
+        return assignee;
     }
 
     public ProductOrder setAssignee(Account assignee) {
-        Assignee = assignee;
+        assignee = assignee;
         return this;
     }
 

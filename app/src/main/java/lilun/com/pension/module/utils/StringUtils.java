@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.IconModule;
@@ -55,30 +57,30 @@ public class StringUtils {
      * @return
      */
     public static String IOS2ToUTC(String isoTime1, int mode) {
-        String ret = "Error";
-        try {
-            String[] ss = isoTime1.split("\\.");
-            String isoTime = ss[0] + "+08:00";
-            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
-            DateTime dateTime = parser2.parseDateTime(isoTime);
-            SimpleDateFormat format = null;
-            if (mode == 0) {
-                format = new SimpleDateFormat("yyyy.MM.dd");
+        String ret = "";
+        if (!TextUtils.isEmpty(isoTime1)) {
+            try {
+                String[] ss = isoTime1.split("\\.");
+                String isoTime = ss[0] + "+08:00";
+                DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+                DateTime dateTime = parser2.parseDateTime(isoTime);
+                SimpleDateFormat format = null;
+                if (mode == 0) {
+                    format = new SimpleDateFormat("yyyy.MM.dd");
+                } else if (mode == 1) {
+                    format = new SimpleDateFormat("HH:mm");
+                } else if (mode == 3) {
+                    format = new SimpleDateFormat("MM/dd HH:mm");
+                } else if (mode == 4) {
+                    format = new SimpleDateFormat("MM.dd");
+                } else
+                    format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else if (mode == 1) {
-                format = new SimpleDateFormat("HH:mm");
-            } else if (mode == 3){
-                format = new SimpleDateFormat("MM/dd HH:mm");
-            }else if (mode == 4){
-                format = new SimpleDateFormat("MM.dd");
-            }
-
-            else
-                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
         return ret;
     }
 
@@ -164,9 +166,9 @@ public class StringUtils {
      * 从module的icon字段获取第一张icon的名称
      */
     public static String getFirstIconNameFromIcon(List<IconModule> iconModules) {
-        if (iconModules!=null && iconModules.size()!=0){
+        if (iconModules != null && iconModules.size() != 0) {
             return iconModules.get(0).getFileName();
-        }else {
+        } else {
             return null;
         }
     }
@@ -203,11 +205,13 @@ public class StringUtils {
      */
     public static String get_StringNum(String str) {
         String result = "";
-        if (!TextUtils.isEmpty(str)){
-            for(int i=0;i<str.length();i++){
-                if(str.charAt(i)>=48 && str.charAt(i)<=57){
-                    result+=str.charAt(i);
-        }}}
+        if (!TextUtils.isEmpty(str)) {
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) >= 48 && str.charAt(i) <= 57) {
+                    result += str.charAt(i);
+                }
+            }
+        }
         return result;
     }
 
@@ -232,6 +236,21 @@ public class StringUtils {
         Pattern p = Pattern.compile("^(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
+    }
+
+
+    /**
+     * 根据订单状态得到现实的值
+     */
+    public static String getOrderStatusValue(String status) {
+        String[] orderStatues = App.context.getResources().getStringArray(R.array.merchant_order_condition_value);
+        String[] orderStatusValue = App.context.getResources().getStringArray(R.array.merchant_order_condition);
+        for (int i = 0; i < orderStatues.length; i++) {
+            if (status.equals(orderStatues[i])) {
+                return orderStatusValue[i];
+            }
+        }
+        return null;
     }
 
 }

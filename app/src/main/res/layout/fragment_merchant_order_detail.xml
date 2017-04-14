@@ -60,7 +60,7 @@
                         android:id="@+id/tv_product_name"
                         style="@style/tv_small_ellipsize"
                         android:layout_width="wrap_content"
-                        android:maxWidth="200dp"
+                        android:maxWidth="20dp"
                         android:maxLines="1"
                         tools:text="佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务" />
 

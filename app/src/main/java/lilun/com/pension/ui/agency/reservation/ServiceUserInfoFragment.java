@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.agency.reservation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +21,10 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ServiceUserInfoAdapter;
 import lilun.com.pension.module.bean.Contact;
-import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
-import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
-import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -48,12 +44,13 @@ public class ServiceUserInfoFragment extends BaseFragment {
     NormalTitleBar titleBar;
     private String productCategoryId;
     private String productId;
+    private ServiceUserInfoAdapter adapter;
 
     @OnClick({R.id.btn_add_info})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_info:
-                start(AddServiceInfoFragment.newInstance(productCategoryId, productId, null));
+                start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
                 break;
         }
     }
@@ -100,9 +97,14 @@ public class ServiceUserInfoFragment extends BaseFragment {
     }
 
     private void showUserInfo(List<Contact> contacts) {
-        ServiceUserInfoAdapter adapter = new ServiceUserInfoAdapter(contacts);
+        adapter = new ServiceUserInfoAdapter(contacts);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-            reservation(productId, contacts.get(i).getId(), null);
+//            reservation(productId, contacts.get(i).getId(), null);
+            //TODO 设置默认
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("contact", adapter.getData().get(i));
+            setFragmentResult(0, bundle);
+            pop();
         });
         adapter.setOnItemClickListener(new ServiceUserInfoAdapter.OnItemClickListener() {
             @Override
@@ -112,12 +114,18 @@ public class ServiceUserInfoFragment extends BaseFragment {
 
             @Override
             public void onEdit(Contact contact) {
-                start(AddServiceInfoFragment.newInstance(productCategoryId, productId, contact));
+                start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
                 Logger.d("编辑个人信息");
+            }
+
+            @Override
+            public void onSetDefault(String contactId) {
+                setDefault(contactId);
             }
         });
         rvInfo.setAdapter(adapter);
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -132,27 +140,19 @@ public class ServiceUserInfoFragment extends BaseFragment {
         rvInfo.addItemDecoration(new NormalItemDecoration(10));
     }
 
-
     /**
-     * 预约服务
+     * 设置为默认
      */
-    private void reservation(String productId, String contactId, String data) {
-        new NormalDialog().createNormal(_mActivity, getString(R.string.reservation_desc), () -> {
-            NetHelper.getApi()
-                    .createOrder(productId, contactId, data)
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<ProductOrder>() {
-                        @Override
-                        public void _next(ProductOrder order) {
-                            Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
-                            intent.putExtra("orderId", order.getId());
-                            startActivity(intent);
-                            setFragmentResult(0, null);
-                            pop();
-                        }
-                    });
-        });
+    private void setDefault(String contactId) {
+        NetHelper.getApi().putDefContact(contactId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(_mActivity) {
+                    @Override
+                    public void _next(Object object) {
+                        adapter.setDefault(contactId);
+                    }
+                });
 
     }
 

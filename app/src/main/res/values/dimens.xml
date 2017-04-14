@@ -9,7 +9,7 @@
     <dimen name="tv_size_big">20sp</dimen>
     <dimen name="tv_size">20sp</dimen>
     <dimen name="tv_size_small">17sp</dimen>
-    <dimen name="tv_size_small_x">12sp</dimen>
+    <dimen name="tv_size_small_x">14sp</dimen>
 
 
     <dimen name="push_bar_height">170dp</dimen>

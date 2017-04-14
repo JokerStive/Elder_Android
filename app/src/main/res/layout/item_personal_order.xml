@@ -6,19 +6,44 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <TextView
+            android:id="@+id/tv_provider_name"
+            style="@style/tv_small"
+            tools:text="什么组织" />
+
+
+        <TextView
+            android:id="@+id/tv_order_status"
+            style="@style/tv_small"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/red"
+            tools:text="完成" />
+
+
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/iv_product_icon"
         android:layout_width="86dp"
         android:layout_height="86dp"
-        android:layout_marginTop="17dp"
+        android:layout_below="@id/rl"
+        android:layout_marginTop="10dp"
         tools:src="@drawable/shape_rect_red" />
 
     <TextView
         android:id="@+id/tv_product_name"
         style="@style/tv_small_ellipsize"
+        android:layout_alignTop="@id/iv_product_icon"
         android:layout_marginLeft="14dp"
-        android:layout_marginTop="17dp"
         android:layout_toRightOf="@+id/iv_product_icon"
         tools:text="卖猪肉" />
 
@@ -43,9 +68,42 @@
         android:numStars="5"
         tools:rating="4" />
 
+
+    <RelativeLayout
+        android:id="@+id/rl_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_product_icon"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_reservation_time"
+            style="@style/tv_small"
+            tools:text="预约时间：2012.3.0" />
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_rank"
+            style="@style/tv_small"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/red"
+            android:background="@drawable/rect_coner_red"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/rank" />
+
+
+    </RelativeLayout>
+
     <View
         style="@style/line_gray"
-        android:layout_below="@id/iv_product_icon"
-        android:layout_marginTop="17dp" />
+        android:layout_below="@id/rl_1"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

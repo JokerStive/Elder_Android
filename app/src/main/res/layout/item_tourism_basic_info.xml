@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#6a6a6a"
+            android:text="@string/destination"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_destination"
+            android:layout_marginLeft="15dp"
+            tools:text="出发到达 重庆-海口、万宁、乐东、三亚、澄迈、邻水、 海南"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#6a6a6a"
+            android:text="@string/traffic_detail"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_traffic_detail"
+            android:layout_marginLeft="15dp"
+            tools:text="交通详情 飞机往返"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#6a6a6a"
+            android:text="@string/accommodation_standard"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_accommodation_standard"
+            android:layout_marginLeft="15dp"
+            tools:text="住宿标准 一晚豪华型住宿；4晚高档型住宿"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#6a6a6a"
+            android:text="@string/journey_attractions"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_journey_attractions"
+            android:layout_marginLeft="15dp"
+            tools:text="旅游景点 全程游览8个景点"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textColor="#6a6a6a"
+            android:text="@string/gather_location"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_gather_location"
+            android:layout_marginLeft="15dp"
+            tools:text="门边拐拐处"
+            style="@style/tv_small"
+            android:textSize="@dimen/sp_14" />
+
+    </LinearLayout>
+
+
+</merge>

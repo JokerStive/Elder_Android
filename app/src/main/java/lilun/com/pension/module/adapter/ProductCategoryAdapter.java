@@ -24,7 +24,7 @@ import lilun.com.pension.module.utils.StringUtils;
 public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
     private BaseFragment fragment;
     private int color;
-    private OnItemClickListener listener;
+//    private OnItemClickListener listener;
 
     public ProductCategoryAdapter(BaseFragment fragment, List<ProductCategory> data,int color) {
         super(R.layout.item_elder_module, data);
@@ -35,12 +35,12 @@ public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
     @Override
     protected void convert(BaseViewHolder helper, ProductCategory productCategory) {
         helper.setText(R.id.tv_module_name, productCategory.getName())
-                .setBackgroundColor(R.id.ll_module_background, color)
-                .setOnClickListener(R.id.ll_module_background, v -> {
-                    if (listener != null) {
-                        listener.onItemClick(productCategory);
-                    }
-                });
+                .setBackgroundColor(R.id.ll_module_background, color);
+//                .setOnClickListener(R.id.ll_module_background, v -> {
+//                    if (listener != null) {
+//                        listener.onItemClick(productCategory);
+//                    }
+//                });
 
 
         if (productCategory.getIcon()!=null) {
@@ -50,13 +50,13 @@ public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(ProductCategory productCategory);
-    }
+//    public void setOnItemClickListener(OnItemClickListener listener) {
+//        this.listener = listener;
+//    }
+//
+//    public interface OnItemClickListener {
+//        void onItemClick(ProductCategory productCategory);
+//    }
 
 
 
