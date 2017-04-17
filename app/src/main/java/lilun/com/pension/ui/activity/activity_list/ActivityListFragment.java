@@ -178,7 +178,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 //        timeOptions.add(timeOption0);
 //
 //
-//        List<View> popViews = new ArrayList<>();
+//        List<ViewStep2> popViews = new ArrayList<>();
 //        RecyclerView kindOptionView = new RecyclerView(App.context);
 //        kindOptionView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
 //        NormalFilterAdapter kindOptionAdapter = new NormalFilterAdapter(kindOptions);

@@ -154,8 +154,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     @Override
     public void showJoinCourse() {
 //        isJoin = true;
-//        btJoinIn.setVisibility(View.GONE);
-//        btCancel.setVisibility(View.VISIBLE);
+//        btJoinIn.setVisibility(ViewStep2.GONE);
+//        btCancel.setVisibility(ViewStep2.VISIBLE);
 //
 //        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
 //        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
@@ -165,8 +165,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     @Override
     public void showQuitCourse() {
 //        isJoin = false;
-//        btJoinIn.setVisibility(View.VISIBLE);
-//        btCancel.setVisibility(View.GONE);
+//        btJoinIn.setVisibility(ViewStep2.VISIBLE);
+//        btCancel.setVisibility(ViewStep2.GONE);
 //        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
 //        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
 //        retNeedRef = !retNeedRef;
@@ -209,23 +209,23 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             tvCoulleageName.setText(orders.getSchool().getName());
         }
 //        if (StringUtils.IOS2DateTime(mCourse.getStartSingnDate()).isAfterNow()) {
-//            btOtherStatus.setVisibility(View.VISIBLE);
-//            btJoinIn.setVisibility(View.GONE);
-//            btCancel.setVisibility(View.GONE);
+//            btOtherStatus.setVisibility(ViewStep2.VISIBLE);
+//            btJoinIn.setVisibility(ViewStep2.GONE);
+//            btCancel.setVisibility(ViewStep2.GONE);
 //            btOtherStatus.setText("报名未开始");
 //        } else if (StringUtils.IOS2DateTime(mCourse.getEndSingnDate()).isBeforeNow()) {
-//            btOtherStatus.setVisibility(View.VISIBLE);
-//            btJoinIn.setVisibility(View.GONE);
-//            btCancel.setVisibility(View.GONE);
+//            btOtherStatus.setVisibility(ViewStep2.VISIBLE);
+//            btJoinIn.setVisibility(ViewStep2.GONE);
+//            btCancel.setVisibility(ViewStep2.GONE);
 //            btOtherStatus.setText("报名已结束");
 //        } else {
-//            btOtherStatus.setVisibility(View.GONE);
+//            btOtherStatus.setVisibility(ViewStep2.GONE);
 //            if (isJoin) {
-//                btJoinIn.setVisibility(View.GONE);
-//                btCancel.setVisibility(View.VISIBLE);
+//                btJoinIn.setVisibility(ViewStep2.GONE);
+//                btCancel.setVisibility(ViewStep2.VISIBLE);
 //            } else {
-//                btJoinIn.setVisibility(View.VISIBLE);
-//                btCancel.setVisibility(View.GONE);
+//                btJoinIn.setVisibility(ViewStep2.VISIBLE);
+//                btCancel.setVisibility(ViewStep2.GONE);
 //            }
 //        }
     }

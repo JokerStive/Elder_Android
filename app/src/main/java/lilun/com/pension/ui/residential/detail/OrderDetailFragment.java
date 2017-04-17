@@ -175,14 +175,14 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
 //        else {
 //            if (!order.getStatus().equals(status_cancel) && !order.getStatus().equals(status_done)) {
-//                llOperate.setVisibility(View.VISIBLE);
+//                llOperate.setVisibility(ViewStep2.VISIBLE);
 //                if (order.getStatus().equals(status_reserved)) {
-//                    tvCancel.setVisibility(View.VISIBLE);
+//                    tvCancel.setVisibility(ViewStep2.VISIBLE);
 //                    tvOperate.setText(getStatusOperate(status_assigned));
 //                    tvCancel.setText(getStatusOperate(status_cancel));
 ////                    mNextStatus = status_assigned;
 //                } else if (order.getStatus().equals(status_assigned)) {
-//                    tvCancel.setVisibility(View.GONE);
+//                    tvCancel.setVisibility(ViewStep2.GONE);
 //                    tvOperate.setText(getStatusOperate(status_done));
 ////                    mNextStatus = status_done;
 //                }

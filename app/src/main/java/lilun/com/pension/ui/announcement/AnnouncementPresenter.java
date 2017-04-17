@@ -15,9 +15,9 @@ import rx.Observable;
 public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View> implements AnnouncementContract.Presenter {
 
 
-//    private AnnouncementContract.View mView;
+//    private AnnouncementContract.ViewStep2 mView;
 
-//    public AnnouncementPresenter(AnnouncementContract.View view) {
+//    public AnnouncementPresenter(AnnouncementContract.ViewStep2 view) {
 //        this.mView = Preconditions.checkNotNull(view);
 //        mView.bindPresenter(this);
 //    }

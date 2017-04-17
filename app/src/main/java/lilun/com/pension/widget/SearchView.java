@@ -27,7 +27,7 @@ public class SearchView extends View {
     // 画笔
     private Paint mPaint;
 
-    // View 宽高
+    // ViewStep2 宽高
     private int mViewWidth;
     private int mViewHeight;
 

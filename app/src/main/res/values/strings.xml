@@ -279,5 +279,12 @@
     <string name="fee_info">费用信息</string>
     <string name="route_feature">路线特色</string>
     <string name="book_notice">预定须知</string>
+    <string name="belong_area">所在地区</string>
+    <string name="belong_stress">所在街道</string>
+    <string name="belong_stress_hint">请点击选择一个街道</string>
+    <string name="belong_area_hint">请点击选择一个地区</string>
+    <string name="belong_communite">居住小区</string>
+    <string name="belong_communite_hint">请填写你的详细居住地址</string>
+    <string name="common_address">/地球村/中国/</string>
 
 </resources>

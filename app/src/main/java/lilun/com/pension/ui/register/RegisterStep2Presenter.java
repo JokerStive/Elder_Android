@@ -1,9 +1,6 @@
 package lilun.com.pension.ui.register;
 
-import android.util.Log;
-
 import lilun.com.pension.base.RxPresenter;
-import lilun.com.pension.module.bean.Phone;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -12,7 +9,7 @@ import lilun.com.pension.net.RxSubscriber;
  * Created by zp on 2017/4/13.
  */
 
-public class RegisterPresenter extends RxPresenter<RegisterContract.View> implements RegisterContract.Presenter {
+public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewStep2> implements RegisterContract.PresenterStep2 {
 
 
     @Override
@@ -25,7 +22,13 @@ public class RegisterPresenter extends RxPresenter<RegisterContract.View> implem
                     @Override
                     public void _next(Object s) {
 
-                        view.successOfIDCode("s");
+                        view.successOfIDCode();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                     //   e.getMessage()
                     }
                 }));
     }

@@ -8,6 +8,7 @@ import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.ActivityDetail;
 import lilun.com.pension.module.bean.AidDetail;
+import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
@@ -22,7 +23,6 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.OrganizationReply;
-import lilun.com.pension.module.bean.Phone;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
@@ -38,6 +38,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -225,7 +226,6 @@ public interface ApiService {
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
 
 
-
     /**
      * 新增一个个人资料
      */
@@ -245,7 +245,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("OrganizationProducts/{id}/createOrder")
-    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId,@Field("registerDate") String registerDate);
+    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId, @Field("registerDate") String registerDate);
 
 
     /**
@@ -436,6 +436,30 @@ public interface ApiService {
     @GET("Accounts/getIDCode")
     Observable<Response<Object>> getIDCode(@Query("mobile") String phone);
 
+    /**
+     * 检测验证码
+     */
+    @POST("Accounts/checkIDCode")
+    Observable<Response<Boolean>> checkIDCode(@Query("mobile") String phone, @Query("aIDCode") String aIDCode);
 
 
+    @GET("Accounts/getChildLocation")
+    Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName);
+
+    /**
+     * @param organizationId 组织id :/地球村/中国/重庆/重庆市/南岸区/铜元局街道
+     * @param IDCode         验证码
+     * @param address        居住地址： 重庆市南岸区铜元局街道盘龙花园。。。
+     * @return
+     */
+    @POST("Accounts/register/OrgID/{organizationId}/IDCode/{IDCode}/address/{address}")
+    Observable<Response<Account>> commitRegister(@Path("organizationId") String organizationId, @Path("IDCode") String IDCode, @Path("address") String address, @Body Account account);
+
+
+    /**
+     * 上传/更新用户头像
+     */
+    @Multipart
+    @PUT("Accounts/{id}/update/image/{imageName}")
+    Observable<Response<Object>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
 }

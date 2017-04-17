@@ -130,7 +130,7 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
     }
 
     private void initFilter() {
-//        List<View> pops = new ArrayList<>();
+//        List<ViewStep2> pops = new ArrayList<>();
 //
 //        //除了区域以外的条件弹窗
 //        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();

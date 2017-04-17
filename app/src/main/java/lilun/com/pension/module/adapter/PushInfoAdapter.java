@@ -77,8 +77,8 @@ public class PushInfoAdapter extends QuickAdapter<PushMessage> {
 //
 //    @Override
 //    public void onBindViewHolder(MyViewHolder holder, int position) {
-//        holder.btnDelete.setOnTouchListener(new View.OnTouchListener() {
-//            public boolean onTouch(View v, MotionEvent event) {
+//        holder.btnDelete.setOnTouchListener(new ViewStep2.OnTouchListener() {
+//            public boolean onTouch(ViewStep2 v, MotionEvent event) {
 //                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
 //                   listener.onDeleteClick(holder);
 //                }
@@ -97,7 +97,7 @@ public class PushInfoAdapter extends QuickAdapter<PushMessage> {
 //
 //        public Button btnDelete;
 //
-//        public MyViewHolder(View itemView) {
+//        public MyViewHolder(ViewStep2 itemView) {
 //            super(itemView);
 //            btnDelete = (Button) itemView.findViewById(R.id.delete);
 //

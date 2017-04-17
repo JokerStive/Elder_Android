@@ -160,13 +160,13 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             rlEndTime.setVisibility(checkedId == R.id.rbtn_once ? View.VISIBLE : View.GONE);
 
 //            if (checkedId == R.id.rbtn_repeat) {
-//                inputCyclialGap.setVisibility(View.VISIBLE);
-//                rlStartTime.setVisibility(View.GONE);
-//                rlEndTime.setVisibility(View.GONE);
+//                inputCyclialGap.setVisibility(ViewStep2.VISIBLE);
+//                rlStartTime.setVisibility(ViewStep2.GONE);
+//                rlEndTime.setVisibility(ViewStep2.GONE);
 //            } else {
-//                inputCyclialGap.setVisibility(View.GONE);
-//                rlStartTime.setVisibility(View.VISIBLE);
-//                rlEndTime.setVisibility(View.VISIBLE);
+//                inputCyclialGap.setVisibility(ViewStep2.GONE);
+//                rlStartTime.setVisibility(ViewStep2.VISIBLE);
+//                rlEndTime.setVisibility(ViewStep2.VISIBLE);
 //            }
 
         });
@@ -203,7 +203,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         String address = inputAddress.getInput();
 
         String time = tvStartTime.getText().toString();
-//        if (etStartTime.getVisibility() == View.VISIBLE) {
+//        if (etStartTime.getVisibility() == ViewStep2.VISIBLE) {
 //            time = etStartTime.getText().toString();
 //        } else {
 //            time = tvStartTime.getText().toString();
@@ -317,7 +317,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;
             if (chooseTime == 0) {
-//                if (etStartTime.getVisibility() == View.VISIBLE) {
+//                if (etStartTime.getVisibility() == ViewStep2.VISIBLE) {
 //                    etStartTime.setText(time);
 //                } else {
 //

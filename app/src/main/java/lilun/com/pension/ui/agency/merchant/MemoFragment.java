@@ -157,7 +157,7 @@ public class MemoFragment extends BaseFragment {
         //受理
         else if (TextUtils.equals(status, statusList[1])) {
             rgStatus.setVisibility(View.GONE);
-//            rbDone.setVisibility(View.VISIBLE);
+//            rbDone.setVisibility(ViewStep2.VISIBLE);
         }
 
         //延时

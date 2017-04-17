@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10">
+
+
+        <LinearLayout
+            android:id="@+id/ll_belong_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp_10">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/belong_area"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_belong_area"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableRight="@drawable/arraw_right"
+                android:hint="@string/belong_area_hint"
+                android:paddingTop="@dimen/dp_10"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <View style="@style/line_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_belong_stress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_belong_area"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp_10">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/belong_stress"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_belong_stress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableRight="@drawable/arraw_right"
+                android:hint="@string/belong_stress_hint"
+                android:maxLines="1"
+                android:paddingTop="@dimen/dp_10"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <View style="@style/line_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_belong_communite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_belong_stress"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp_10">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/belong_communite"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_belong_communite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rect_grey_corners"
+                android:gravity="top"
+                android:hint="@string/belong_communite_hint"
+                android:minLines="4"
+                android:paddingTop="@dimen/dp_10"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <View style="@style/line_gray" />
+
+            <RelativeLayout
+                android:id="@+id/rl_go_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/fragment_container"
+                android:layout_margin="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_22">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_go_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/arraw_right" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
