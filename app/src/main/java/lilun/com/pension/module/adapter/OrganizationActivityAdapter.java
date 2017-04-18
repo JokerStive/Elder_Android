@@ -13,7 +13,8 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
-import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.filter_view.FilterLayoutView;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -28,19 +29,18 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
     private boolean showIsBig = true;
     private boolean allowshowIcon = true;
 
-    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
+    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, FilterLayoutView.LayoutType layoutType) {
         super(layoutRes, data);
         showIsBig = layoutRes == R.layout.item_activity_big;
     }
 
     /**
-     *
      * @param data
      * @param layoutRes
      * @param layoutType
-     * @param allowshowIcon  是否允许显示参加图标
+     * @param allowshowIcon 是否允许显示参加图标
      */
-    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType, boolean allowshowIcon) {
+    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, FilterLayoutView.LayoutType layoutType, boolean allowshowIcon) {
         super(layoutRes, data);
         showIsBig = layoutRes == R.layout.item_activity_big;
         this.allowshowIcon = allowshowIcon;
@@ -51,6 +51,8 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
         Context context = help.getConvertView().getContext().getApplicationContext();
         help.setText(R.id.tv_product_name, activity.getTitle())
+                .setText(R.id.tv_creator, activity.getCreatorName())
+                .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4))
                 .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {
                         listener.onItemClick(activity);
@@ -89,11 +91,26 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
 
         String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationActivities, activity.getId(), fileName),
+        //活动图片加载
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName),
                 R.drawable.icon_def, help.getView(R.id.iv_icon));
+        //创建者头像加载
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(IconUrl.Accounts, activity.getCreatorId()),
+                R.drawable.icon_def, help.getView(R.id.iv_ivatar));
 
         String time = activity.getStartTime();
-        help.setText(R.id.tv_activity_time, context.getString(R.string.activity_time_, time));
+        String activityTime = "";
+        if (activity.getRepeatedDesc() != null) {
+            activityTime = activity.getRepeatedDesc();
+            help.setText(R.id.iv_is_repeat, context.getApplicationContext().getString(R.string.cyclical));
+        } else {
+            if (activity.getStartTime() != null)
+                activityTime += StringUtils.IOS2ToUTC(activity.getStartTime(), 3);
+            if (activity.getEndTime() != null)
+                activityTime = activityTime + "~" + StringUtils.IOS2ToUTC(activity.getEndTime(), 3);
+            help.setText(R.id.iv_is_repeat, context.getApplicationContext().getString(R.string.single));
+        }
+        help.setText(R.id.tv_activity_time, context.getString(R.string.activity_time_, activityTime));
 
     }
 

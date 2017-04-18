@@ -37,7 +37,12 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rg_classify"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4"
+                    android:background="@color/activity_line" />
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
@@ -99,5 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

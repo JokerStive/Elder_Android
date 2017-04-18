@@ -29,7 +29,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
     private boolean isRadioMode = false;
 
     public ActivityCategoryAdapter(BaseFragment fragment, List<ActivityCategory> data) {
-        super(R.layout.item_elder_module, data);
+        super(R.layout.item_activity_module, data);
         this.fragment = fragment;
         initData();
     }
@@ -54,7 +54,6 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
             helper.getView(R.id.ll_module_background).setSelected(mSelectedPosition == helper.getAdapterPosition());
         }
         helper.setText(R.id.tv_module_name, activityCategory.getName())
-                .setBackgroundRes(R.id.ll_module_background, R.drawable.selector_activity)
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(activityCategory);
@@ -65,7 +64,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
 
         if (activityCategory.getIcon() != null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities, activityCategory.getId(), firstIconName,"");
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivityCategories, activityCategory.getId(), firstIconName,"");
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
         }
     }

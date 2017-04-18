@@ -102,7 +102,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     private String mCategoryId;
     private String[] repeatedTypeArray;
     private int chooseTime = 0;
-
+    MaterialDialog typeDalog;
+    int typeIndex = 0;
+    boolean isrepeat = true;
 
     public static AddActivityFragment newInstance(ArrayList<ActivityCategory> activityCategories) {
         AddActivityFragment fragment = new AddActivityFragment();
@@ -118,6 +120,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         super.getTransferData(arguments);
         activityCategories = (ArrayList<ActivityCategory>) arguments.getSerializable("activityCategories");
         Preconditions.checkNull(activityCategories);
+
     }
 
     @Override
@@ -159,15 +162,11 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             rlStartTime.setVisibility(checkedId == R.id.rbtn_once ? View.VISIBLE : View.GONE);
             rlEndTime.setVisibility(checkedId == R.id.rbtn_once ? View.VISIBLE : View.GONE);
 
-//            if (checkedId == R.id.rbtn_repeat) {
-//                inputCyclialGap.setVisibility(ViewStep2.VISIBLE);
-//                rlStartTime.setVisibility(ViewStep2.GONE);
-//                rlEndTime.setVisibility(ViewStep2.GONE);
-//            } else {
-//                inputCyclialGap.setVisibility(ViewStep2.GONE);
-//                rlStartTime.setVisibility(ViewStep2.VISIBLE);
-//                rlEndTime.setVisibility(ViewStep2.VISIBLE);
-//            }
+            if (checkedId == R.id.rbtn_repeat) {
+                isrepeat = true;
+            } else {
+                isrepeat = false;
+            }
 
         });
 
@@ -202,12 +201,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
         String address = inputAddress.getInput();
 
-        String time = tvStartTime.getText().toString();
-//        if (etStartTime.getVisibility() == ViewStep2.VISIBLE) {
-//            time = etStartTime.getText().toString();
-//        } else {
-//            time = tvStartTime.getText().toString();
-//        }
+        String startTime = tvStartTime.getText().toString();
+        String endTime = tvEndTime.getText().toString();
+
 
         String maxPartner = inputMaxPartner.getInput();
 
@@ -229,16 +225,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             return;
         }
 
-        if (TextUtils.isEmpty(time)) {
-            showNotEmpty(R.string.activity_time);
-            return;
-        }
-
-        if (TextUtils.isEmpty(time)) {
-            showNotEmpty(R.string.activity_time);
-            return;
-        }
-
 
         String max = StringUtils.get_StringNum(maxPartner);
         Integer maxPart = null;
@@ -253,7 +239,28 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         activity.setCategoryId(mCategoryId);
         activity.setTitle(title);
         activity.setAddress(address);
-        activity.setStartTime(time);
+        if (isrepeat) {
+            if (TextUtils.isEmpty(inputCyclialGap.getInput())) {
+                showNotEmpty(R.string.activity_repeat);
+                return;
+            }
+            activity.setRepeatedDesc(inputCyclialGap.getInput().trim());
+        } else {
+
+            if (TextUtils.isEmpty(startTime)) {
+                showNotEmpty(R.string.activity_time);
+                return;
+            }
+
+            if (TextUtils.isEmpty(endTime)) {
+                showNotEmpty(R.string.activity_end_time);
+                return;
+            }
+            String startTimeISO = StringUtils.localToGTM(startTime + ":00");
+            activity.setStartTime(startTimeISO);
+            String endTimeISO = StringUtils.localToGTM(endTime + ":00");
+            activity.setEndTime(endTimeISO);
+        }
         activity.setDruation(intDuration);
         // activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
         activity.setOrganizationId(OrganizationChildrenConfig.activity());
@@ -372,14 +379,16 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         ArrayList<String> list = new ArrayList<>();
         for (ActivityCategory tmp : activityCategories)
             list.add(tmp.getName());
-        MaterialDialog d = new MaterialDialog.Builder(_mActivity)
+        new MaterialDialog.Builder(_mActivity)
                 .title("-选择类型-")
                 .items(list)
-                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
+                .itemsCallbackSingleChoice(typeIndex, (dialog, view, which, text) -> {
                     tvChoiceType.setText(list.get(which));
+                    mCategoryId = activityCategories.get(which).getId();
+                    typeIndex = which;
                     return true;
-                })
-                .show();
+                }).show();
+
 
     }
 

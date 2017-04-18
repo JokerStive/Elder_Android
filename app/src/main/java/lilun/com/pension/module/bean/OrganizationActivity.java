@@ -48,8 +48,21 @@ public class OrganizationActivity extends BaseBean {
     private LocationBean location;
     private int priority;
     private String startTime;
+
+
+    private String endTime;
     private int druation;
     private String repeatedType;
+
+    public String getRepeatedDesc() {
+        return repeatedDesc;
+    }
+
+    public void setRepeatedDesc(String repeatedDesc) {
+        this.repeatedDesc = repeatedDesc;
+    }
+
+    private String repeatedDesc;
     private String description ;
     private int repeatedCount;
     private Integer maxPartner;
@@ -76,6 +89,7 @@ public class OrganizationActivity extends BaseBean {
     private ArrayList<IconModule> icon;
     private List<String> partnerList;
     private Account contact;
+
 
     public String getTitle() {
         return title;
@@ -116,6 +130,14 @@ public class OrganizationActivity extends BaseBean {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
 
     public int getDruation() {
         return druation;

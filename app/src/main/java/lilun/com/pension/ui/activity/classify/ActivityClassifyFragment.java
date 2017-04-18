@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
@@ -37,6 +38,7 @@ import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
 import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.widget.filter_view.FilterLayoutView;
 
 /**
  * 社区活动宿主activity
@@ -157,7 +159,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void setAdapter() {
-        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, SearchTitleBar.LayoutType.SMALL, false);
+        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
 //        mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
             start(ActivityDetailFragment.newInstance(activityItem.getId()));
@@ -188,7 +190,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void getAboutMe(int skip) {
         //TODO 获取关于我的活动
-        String filter = "";
+        String filter = "{\"where\":{\"partnerList\":\"" + User.getUserId() +"\"}}";
         mPresenter.getAboutMe(filter, skip);
     }
 
