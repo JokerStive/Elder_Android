@@ -362,7 +362,7 @@ public interface ApiService {
      * 上传活动多张图片
      */
     @Multipart
-    @POST("OrganizationActivities/uploadicon")
+    @POST("OrganizationActivities/upload/icon")
     Observable<Response<ArrayList<IconModule>>> newActivityIcons(@PartMap Map<String, RequestBody> params);
 
 
@@ -433,13 +433,13 @@ public interface ApiService {
     /**
      * 获取获取电话号码验证码
      */
-    @GET("Accounts/getIDCode")
+    @GET("Accounts/IDCode")
     Observable<Response<Object>> getIDCode(@Query("mobile") String phone);
 
     /**
      * 检测验证码
      */
-    @POST("Accounts/checkIDCode")
+    @POST("Accounts/IDCode")
     Observable<Response<Boolean>> checkIDCode(@Query("mobile") String phone, @Query("aIDCode") String aIDCode);
 
 

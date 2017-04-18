@@ -6,12 +6,31 @@
     android:background="@color/white">
 
 
+    <lilun.com.pension.widget.CommonButton
+        android:id="@+id/btn_add_activity"
+        style="@style/btn_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_activity"
+        android:text="新建活动" />
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/activity_titlebg"
+        app:title="新建活动" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleBar"
-        android:layout_marginBottom="10dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_below="@+id/titleBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -273,23 +292,4 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-
-    <lilun.com.pension.widget.CommonButton
-        android:id="@+id/btn_add_activity"
-        style="@style/btn_normal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_activity"
-        android:text="新建活动" />
-
-    <lilun.com.pension.widget.NormalTitleBar
-        android:id="@+id/titleBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/activity_titlebg"
-        app:title="新建活动" />
 </RelativeLayout>

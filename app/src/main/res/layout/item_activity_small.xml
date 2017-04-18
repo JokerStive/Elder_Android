@@ -14,8 +14,8 @@
         android:paddingLeft="@dimen/dp_10"
         android:paddingTop="@dimen/dp_10">
 
-        <ImageView
-            android:id="@+id/iv_classify"
+        <lilun.com.pension.widget.CircleImageView
+            android:id="@+id/iv_ivatar"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:src="@drawable/icon_def" />
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/iv_classify"
+            android:layout_toRightOf="@id/iv_ivatar"
             android:text="毕老师"
             android:textColor="@color/activity_black"
             android:textSize="14dp" />
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_creator"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/iv_classify"
+            android:layout_toRightOf="@id/iv_ivatar"
             android:text="03-12"
             android:textColor="@color/gray" />
 
@@ -148,6 +148,7 @@
         android:paddingLeft="@dimen/dp_10">
 
         <TextView
+            android:id="@+id/iv_is_repeat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

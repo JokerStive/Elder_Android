@@ -242,6 +242,7 @@
     <string name="choice_type">选择类型</string>
     <string name="activity_cyclical">活动周期</string>
     <string name="cyclical_gap_hint">（例：每周一下午14:30）</string>
+
     <string name="activity_content_require">请输入活动详情与参与要求</string>
     <string name="partin_info">温馨提示：邀请人数不填，则为不限人数</string>
     <string name="has_joined">已加入</string>

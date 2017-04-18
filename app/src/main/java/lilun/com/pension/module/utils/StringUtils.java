@@ -12,6 +12,8 @@ import org.joda.time.format.ISODateTimeFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,12 +86,39 @@ public class StringUtils {
         return ret;
     }
 
+    /***
+     * 转mongoDB 时间
+     *
+     * @param str 2015-03-23 12:12:12
+     * @return
+     */
+    public static String localToGTM(String str) {
+        String ret = "";
+
+        SimpleDateFormat format;
+        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        Date result_date;
+        long result_time = 0;
+
+        try {
+            format.setTimeZone(TimeZone.getDefault());
+            result_date = format.parse(str);
+            result_time = result_date.getTime();
+            format.setTimeZone(TimeZone.getTimeZone("GMT08:00"));
+            ret = format.format(result_time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
     public static DateTime IOS2DateTime(String isoTime1) {
         DateTime dateTime = null;
         try {
             String[] ss = isoTime1.split("\\.");
             String isoTime = ss[0] + "+08:00";
             DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+
             dateTime = parser2.parseDateTime(isoTime);
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,6 +258,7 @@ public class StringUtils {
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
+
     /**
      * 验证手机号码
      *

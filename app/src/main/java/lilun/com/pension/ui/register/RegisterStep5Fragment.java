@@ -89,7 +89,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     public void successOfCommitRegister(Account backAccount) {
-        //    account = backAccount;
+        account = backAccount;
         goStep6();
     }
 

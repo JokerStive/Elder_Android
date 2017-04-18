@@ -169,4 +169,20 @@
         <item>丽江</item>
         <item>稻城</item>
     </string-array>
+
+    <string-array name="activity_filter_status">
+        <item>报名状态</item>
+        <item>活动状态</item>
+    </string-array>
+    <string-array name="activity_join_status">
+        <item>全部</item>
+        <item>已报名</item>
+        <item>未报名</item>
+    </string-array>
+    <string-array name="activity_status">
+        <item>全部</item>
+        <item>未开始</item>
+        <item>进行中</item>
+        <item>已结束</item>
+    </string-array>
 </resources>

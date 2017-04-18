@@ -25,6 +25,10 @@ public class IconUrl {
         return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/image/" + iconName + "?access_token=" + User.getToken();
     }
 
+    public static String moduleIconUrlOfActivity(String module, String moduleId, String iconName) {
+        return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/icon/" + iconName + "?access_token=" + User.getToken();
+    }
+
     public static String moduleIconUrl(String module, String moduleId, String iconName, String Icon) {
         return Config.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/icon/" + iconName + "?access_token=" + User.getToken();
     }
@@ -72,10 +76,11 @@ public class IconUrl {
 //        return Config.BASE_URL + "Organizations/" + encodeURL(organizationId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
 //    }
 //
-//    public static String account(String accountId, String iconName) {
-//        return Config.BASE_URL + "Accounts/" + encodeURL(accountId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
+    public static String account(String account, String accountId) {
+        return Config.BASE_URL + account + "/" + encodeURL(accountId) + "/download/image/{imageName}?access_token=" + User.getToken();
+    }
+
+    //
 //    public static String information(String informationId, String iconName) {
 //        return Config.BASE_URL + "OrganizationInformations/" + encodeURL(informationId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
 //    }
