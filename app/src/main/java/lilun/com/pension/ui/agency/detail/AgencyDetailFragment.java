@@ -183,11 +183,11 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
             List<String> urls = new ArrayList<>();
             if (mAgency.getIcon() != null) {
                 for (IconModule iconModule : mAgency.getIcon()) {
-                    String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), iconModule.getFileName());
+                    String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), iconModule.getFileName(),"icon");
                     urls.add(url);
                 }
             } else {
-                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), null);
+                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), null,"icon");
                 urls.add(url);
             }
             banner.setData(urls);

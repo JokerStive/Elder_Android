@@ -23,9 +23,10 @@ public class Config {
 
     public static final String agency_product_categoryId = "服务/养老机构";
 
-    public static final String residential_service_categoryId = "服务/居家服务";
+    public static final String residential_product_categoryId = "服务/居家服务";
 
     public static final String tourism_product_categoryId = "服务/养老机构/养老旅游";
+
 
 
 }

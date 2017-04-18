@@ -64,7 +64,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
     }
 
     @Override
-    public List<ConditionOption> getConditionOptionsList() {
+    public List<ConditionOption> getConditionOptionsList(String kind,String status,String priority) {
         List<ConditionOption> conditionOptionList = new ArrayList<>();
 
         List<Option> kindOptions = new ArrayList<>();
@@ -74,7 +74,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
         kindOptions.add(optionNull);
         kindOptions.add(optionAsk);
         kindOptions.add(optionHelp);
-        ConditionOption conditionOptionKind = new ConditionOption("kind", "类型", kindOptions);
+        ConditionOption conditionOptionKind = new ConditionOption(kind, "类型", kindOptions);
 
 
         List<Option> statusOptions = new ArrayList<>();
@@ -88,7 +88,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
         statusOptions.add(statusOption1);
         statusOptions.add(statusOption2);
         statusOptions.add(statusOption3);
-        ConditionOption conditionOptionStatus = new ConditionOption("status", "状态", statusOptions);
+        ConditionOption conditionOptionStatus = new ConditionOption(status, "状态", statusOptions);
 
 
         List<Option> priorityOptions = new ArrayList<>();
@@ -102,7 +102,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
         priorityOptions.add(priorityOption1);
         priorityOptions.add(priorityOption2);
         priorityOptions.add(priorityOption10);
-        ConditionOption conditionOptionPriority= new ConditionOption("priority", "优先级", priorityOptions);
+        ConditionOption conditionOptionPriority= new ConditionOption(priority, "优先级", priorityOptions);
 
         conditionOptionList.add(conditionOptionKind);
         conditionOptionList.add(conditionOptionStatus);

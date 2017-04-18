@@ -1,7 +1,5 @@
 package lilun.com.pension.ui.home;
 
-import android.text.TextUtils;
-
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -12,7 +10,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Information;
-import lilun.com.pension.module.bean.OrganizationAccount;
+import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.net.NetHelper;
@@ -44,22 +42,31 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
     }
 
     @Override
-    public boolean needChangeDefOrganization(String changeOrganizationId) {
-        List<OrganizationAccount> belongOrganization = User.getBelongOrganization();
-        if (belongOrganization != null) {
-            for (OrganizationAccount oa : belongOrganization) {
-                String organizationId = oa.getOrganizationId();
-                if (TextUtils.equals(organizationId, changeOrganizationId)) {
-                    Logger.d("需要切换默认所属组织" + organizationId);
-                    return true;
-                }
-            }
+    public void needChangeToDefOrganization() {
+        boolean currentOrganizationHadChanged = PreUtils.getBoolean("currentOrganizationHadChanged", false);
+
+        if (!currentOrganizationHadChanged && !User.getCurrentOrganizationId().equals(User.getBelongsOrganizationId())) {
+            Logger.d("异常，需要切换成自己本来的所属组织");
+            Logger.d("当前正确的组织账号iD = " + User.getCurrentOrganizationAccountId());
+            changeBelongOrganization(User.getCurrentOrganizationAccountId(), -1);
+        } else {
+
         }
-        return false;
+//        List<OrganizationAccount> belongOrganization = User.getBelongOrganization();
+//        if (belongOrganization != null) {
+//            for (OrganizationAccount oa : belongOrganization) {
+//                String organizationId = oa.getOrganizationId();
+//                if (TextUtils.equals(organizationId, changeOrganizationId)) {
+//                    Logger.d("需要切换默认所属组织" + organizationId);
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
     }
 
     @Override
-    public void changeDefBelongOrganization(String organizationId, int clickId) {
+    public void changeBelongOrganization(String organizationId, int clickId) {
         Account account = new Account();
         account.setDefaultOrganizationId(organizationId);
         addSubscribe(NetHelper.getApi()
@@ -69,7 +76,7 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                 .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        User.puttCurrentOrganizationId(organizationId);
+                        User.putBelongsOrganizationId(User.getCurrentOrganizationId());
                         view.changeOrganizationSuccess(clickId);
                     }
                 }));

@@ -41,7 +41,37 @@ public class ProductFilter {
         private TitleBean title;
         private String areasList;
         private PriceBean price;
-        private int score;
+        private String categoryId;
+        private Integer score;
+        private String creatorId;
+        private String organizationId;
+
+        public String getCategoryId() {
+            return categoryId;
+        }
+
+        public WhereBean setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+            return this;
+        }
+
+        public String getCreatorId() {
+            return creatorId;
+        }
+
+        public WhereBean setCreatorId(String creatorId) {
+            this.creatorId = creatorId;
+            return this;
+        }
+
+        public String getOrganizationId() {
+            return organizationId;
+        }
+
+        public WhereBean setOrganizationId(String organizationId) {
+            this.organizationId = organizationId;
+            return this;
+        }
 
         public TitleBean getTitle() {
             return title;
@@ -67,11 +97,11 @@ public class ProductFilter {
             this.price = price;
         }
 
-        public int getScore() {
+        public Integer getScore() {
             return score;
         }
 
-        public void setScore(int score) {
+        public void setScore(Integer score) {
             this.score = score;
         }
 

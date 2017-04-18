@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
@@ -142,6 +143,11 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
         tvProviderName.setText(agencyName);
 
+        //居家服务屏蔽预约
+        if (mProduct.getCategoryId().contains(Config.residential_product_categoryId)) {
+            tvReservation.setVisibility(View.GONE);
+        }
+
 
         //事件
         ivBack.setOnClickListener(this);
@@ -232,7 +238,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
                         if (contacts.size() > 0) {
                             Contact contact = contacts.get(0);
                             ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getCategoryId(), mProduct.getId(), contact);
-                            startForResult(fragment,  ReservationFragment.requestCode);
+                            startForResult(fragment, ReservationFragment.requestCode);
                         } else {
                             //添加个人资料界面
                             AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId(), null, true);

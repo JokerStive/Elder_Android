@@ -1,12 +1,10 @@
 package lilun.com.pension.ui.change_organization;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,9 +15,10 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
-import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.adapter.ChangeOrganizationAdapter;
 import lilun.com.pension.module.bean.Organization;
+import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -31,7 +30,7 @@ import lilun.com.pension.widget.NormalTitleBar;
  *         email : yk_developer@163.com
  */
 
-public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationContract.Presenter> implements ChangeOrganizationContract.View {
+public class ChangeOrganizationFragment extends BaseActivity<ChangeOrganizationContract.Presenter> implements ChangeOrganizationContract.View {
 
     @Bind(R.id.tv_current_organization)
     TextView tvCurrentOrganization;
@@ -63,16 +62,20 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
     }
 
     @Override
-    protected void initView(LayoutInflater inflater) {
+    protected void initView() {
         String name = User.getCurrentOrganizationName();
         tvCurrentOrganization.setText("当前社区:" + name);
 
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(10));
 
 
         titleBar.setOnBackClickListener(() -> changeToBelong());
+
+
+        swipeLayout.setRefreshing(true);
+        mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
     }
 
 
@@ -83,13 +86,7 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
         mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
     }
 
-    @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
 
-        swipeLayout.setRefreshing(true);
-        mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
-    }
 
 
     @Override
@@ -101,6 +98,7 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
                 Organization organization = adapter.getData().get(i);
                 User.puttCurrentOrganizationId(organization.getId());
                 EventBus.getDefault().post(new Event.ChangedOrganization());
+                PreUtils.putBoolean("currentOrganizationHadChanged",true);
                 pop();
             });
             recyclerView.setAdapter(adapter);
@@ -125,7 +123,8 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
 
     @Override
     public void changedBelong() {
-        pop();
+
+       finish();
     }
 
     @Override
@@ -136,9 +135,13 @@ public class ChangeOrganizationFragment extends BaseFragment<ChangeOrganizationC
     }
 
 
-    @Override
-    public boolean onBackPressedSupport() {
-        changeToBelong();
-        return true;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            changeToBelong();
+            return true;
+        }
+        return false;
     }
+
+
 }

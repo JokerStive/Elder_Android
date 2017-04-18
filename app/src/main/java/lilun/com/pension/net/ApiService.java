@@ -63,6 +63,14 @@ public interface ApiService {
     @GET("Accounts/me")
     Observable<Response<Object>> getMe();
 
+
+    /**
+     * 获取位置
+     */
+
+//    @GET("Accounts/getChildLocation")
+//    Observable<Response<List<String>>> getChildLocation(@Query("locationName") String locationName);
+
     /**
      * 获取所属组织列表
      */

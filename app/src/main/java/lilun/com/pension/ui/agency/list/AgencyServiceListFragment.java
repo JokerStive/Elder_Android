@@ -9,19 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Config;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -35,6 +33,7 @@ import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.FilterInputRangeView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
+import lilun.com.pension.widget.filter_view.AreaFilter;
 import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
@@ -64,15 +63,13 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private String mTitle;
     private AgencyServiceAdapter mAgencyServiceAdapter;
     // 0 获取服务从categoryId  1 获取服务从organizationId
+
+
     private int mType;
     private SearchTitleBar.LayoutType layoutType;
     private List<OrganizationProduct> products;
-    private Map<String, Object> conditionMap;
-    private Map<String, Object> whereMap;
-    private Map<String, Object> betweenMap;
-    private Map<String, Object> likeMap;
-    private String between = "between";
-    private String like = "like";
+    //    private String[] filterTitle = new String[]{"区域", "价格", "星级"};
+    private ProductFilter productFilter = new ProductFilter();
 
 
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
@@ -104,10 +101,6 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     protected void initPresenter() {
         mPresenter = new AgencyListPresenter();
         mPresenter.bindView(this);
-        conditionMap = new HashMap<>();
-        whereMap = new HashMap<>();
-        betweenMap = new HashMap<>();
-        likeMap = new HashMap<>();
     }
 
     @Override
@@ -129,8 +122,13 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
             @Override
             public void onSearch(String searchStr) {
-                likeMap.put(like, searchStr);
-                getData(0);
+                ProductFilter.WhereBean.TitleBean titleBean = productFilter.getWhere().getTitle();
+                if (titleBean == null) {
+                    titleBean = new ProductFilter.WhereBean.TitleBean();
+                }
+                titleBean.setLike(searchStr);
+                productFilter.getWhere().setTitle(titleBean);
+                refreshProductWithFilter();
             }
 
             @Override
@@ -147,24 +145,29 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getData(0);
+                        refreshProductWithFilter();
                     }
                 }
         );
 
 
+        initFilterView();
         initFilter();
 
     }
 
-    private void initFilter() {
+
+    private void refreshProductWithFilter() {
+        getProducts(0);
+    }
+
+
+    private void initFilterView() {
         List<View> pops = new ArrayList<>();
         List<String> filterTitles = new ArrayList<>();
-//        filterTitles.add("区域");
-        filterTitles.add("价格");
-        filterTitles.add("面积");
+
         //除了区域以外的条件弹窗
-        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList("score");
         if (conditionOptionsList != null) {
             for (int i = 0; i < conditionOptionsList.size(); i++) {
                 ConditionOption conditionOption = conditionOptionsList.get(i);
@@ -172,35 +175,58 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
                 RecyclerView recyclerView = new RecyclerView(App.context);
                 recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
                 NormalFilterAdapter adapter = new NormalFilterAdapter(conditionOption);
-                final int finalI = i + 1;
                 adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
-                    filterView.setTabText(position == 0 ? filterTitles.get(finalI) : title, position == 0);
+                    filterView.setTabText(position == 0 ? "星级" : title, position == 0);
+                    productFilter.where.setScore(null);
+                    if (whereKey.equals("score") && whereValue != null) {
+                        productFilter.where.setScore(Integer.parseInt(whereValue));
+                    }
+                    refreshProductWithFilter();
                 });
                 recyclerView.setAdapter(adapter);
                 pops.add(recyclerView);
             }
         }
 
-        FilterInputRangeView rangeView = new FilterInputRangeView(mContent);
-        rangeView.setOnConfirmListener((range,show,isDef) -> {
-            filterView.setTabText(show,false);
-//            betweenMap.put(between, new Integer[]{min, max});
-            getData(0);
+        //价格筛选
+        filterTitles.add("价格");
+        FilterInputRangeView priceRangeView = new FilterInputRangeView(mContent, "价格");
+        priceRangeView.setOnConfirmListener((range, show, isDef) -> {
+            productFilter.where.setPrice(null);
+            if (range != null) {
+                ProductFilter.WhereBean.PriceBean price = new ProductFilter.WhereBean.PriceBean();
+                price.setBetween(range);
+                productFilter.where.setPrice(price);
+            }
+            filterView.setTabText(show, isDef);
+            refreshProductWithFilter();
         });
-        rangeView.setUnit("元");
-        pops.add(rangeView);
+        priceRangeView.setUnit("元");
+        pops.add(priceRangeView);
 
-        FilterInputRangeView rangeSizeView = new FilterInputRangeView(mContent);
-        rangeSizeView.setUnit("平米");
-        rangeSizeView.setOnConfirmListener((range,show,isDef) -> {
-            filterView.setTabText(show,isDef);
-        });
-        pops.add(rangeSizeView);
 
         //TODO 区域
-//        AreaFilter areaFilter = new AreaFilter(mContent);
-//        pops.add(0, areaFilter);
+        filterTitles.add(0, "区域");
+        AreaFilter areaFilter = new AreaFilter(mContent, 3, "区域");
+        areaFilter.setOnItemClickListener((id, name, isDef) -> {
+            Logger.d("选中的区域-- " + id);
+            filterView.setTabText(name, isDef);
+            productFilter.where.setAreasList(id);
+            refreshProductWithFilter();
+        });
+        pops.add(0, areaFilter);
         filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
+    }
+
+    private void initFilter() {
+        if (mType != 0) {
+            productFilter.where.setOrganizationId(OrganizationChildrenConfig.product(mCategoryId));
+        } else {
+            productFilter.where.setCategoryId(mCategoryId);
+            if (!User.isCustomer()) {
+                productFilter.where.setCreatorId(User.getUserId());
+            }
+        }
     }
 
 
@@ -208,9 +234,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
         if (mAgencyServiceAdapter != null) {
             mAgencyServiceAdapter.setOnItemClickListener((product) -> {
-                if (product.getCategoryId().contains(Config.agency_product_categoryId)){
-                    start(ServiceDetailFragment.newInstance(product), SINGLETASK);
-                }
+                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
             });
             mAgencyServiceAdapter.setEmptyView();
         }
@@ -227,6 +251,13 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         }
         if (layoutId != 0) {
             adapter = new AgencyServiceAdapter(products, layoutId);
+            final AgencyServiceAdapter finalAdapter = adapter;
+            adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    getProducts(finalAdapter.getItemCount());
+                }
+            });
         }
         return adapter;
     }
@@ -234,50 +265,16 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            mSwipeLayout.setRefreshing(true);
-            getData(0);
-        }
-    }
-
-    private void getData(int skip) {
-        if (mType == 0) {
-            getProductsByCategoryId(skip);
-        } else {
-            getProductsByOrganizationId(skip);
-        }
+        refreshProductWithFilter();
     }
 
 
-    private void getProductsByCategoryId(int skip) {
-        // TODO 有商家判断
-        if (User.isCustomer()) {
-            whereMap.put("categoryId", mCategoryId);
-        } else {
-            whereMap.put("categoryId", mCategoryId);
-            whereMap.put("creatorId", User.getUserId());
-        }
-        String filter = getFilterWithCondition();
-        mPresenter.getProductAgency(filter, skip);
-    }
-
-    private void getProductsByOrganizationId(int skip) {
-        whereMap.put("organizationId", OrganizationChildrenConfig.product(mCategoryId));
-        String filter = getFilterWithCondition();
-        mPresenter.getProductAgency(filter, skip);
-    }
-
-    private String getFilterWithCondition() {
-//        conditionMap.put("where", whereMap);
-//        if (betweenMap.size()!=0){
-//
-//        }
-//        whereMap.put("")
-        String filter;
+    private void getProducts(int skip) {
+        mSwipeLayout.setRefreshing(true);
         Gson gson = new Gson();
-        filter = gson.toJson(conditionMap);
-        Logger.d("agency service filter = " + filter);
-        return filter;
+        String filter = gson.toJson(productFilter);
+        Logger.d("product--filter = " + filter);
+        mPresenter.getProductAgency(filter, skip);
     }
 
     @Override

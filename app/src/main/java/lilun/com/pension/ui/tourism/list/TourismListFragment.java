@@ -78,7 +78,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
             }
             title.setLike(searchStr);
             tourismFilter.where.setTitle(title);
-            getTourismWithFilter();
+            refreshTourismWithFilter();
         }
 
         @Override
@@ -167,7 +167,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
                 tourismFilter.where.setPrice(price);
             }
             filterView.setTabText(show, isDef);
-            getTourismWithFilter();
+            refreshTourismWithFilter();
         });
         views.add(rangePriceView);
 
@@ -180,7 +180,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
                 tourismFilter.where.setDeparture(departure);
             }
             filterView.setTabText(departure, isDef);
-            getTourismWithFilter();
+            refreshTourismWithFilter();
         });
         views.add(departureView);
 
@@ -194,7 +194,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
                     tourismFilter.where.setDestination(destination);
                 }
                 filterView.setTabText(destination, isDef);
-                getTourismWithFilter();
+                refreshTourismWithFilter();
             });
             views.add(destinationView);
         }
@@ -210,7 +210,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
     }
 
 
-    private void getTourismWithFilter() {
+    private void refreshTourismWithFilter() {
         getJourneys(0);
     }
 

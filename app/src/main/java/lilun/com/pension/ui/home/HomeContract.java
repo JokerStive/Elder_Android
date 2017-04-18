@@ -23,8 +23,8 @@ public interface HomeContract {
 
         void getInformation();
 
-        boolean needChangeDefOrganization(String changeOrganizationId);
+        void needChangeToDefOrganization();
 
-        void changeDefBelongOrganization(String organizationId, int clickId);
+        void changeBelongOrganization(String organizationId, int clickId);
     }
 }

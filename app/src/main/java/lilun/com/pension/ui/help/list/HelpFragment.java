@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.google.gson.Gson;
@@ -13,9 +14,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
@@ -53,20 +52,15 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     FilterView filterView;
 
 
-    private String condition_title = "title";
-    private String condition_kind = "kind";
-    private String condition_priority = "priority";
-    private String condition_near = "near";
+    private String filter_kind = "kind";
+    private String filter_priority = "priority";
+    private String filter_status = "status";
     private boolean isMain;
 
-    private Map<String, String> whereConditionMap;
-    private Map<String, Object> conditionMap;
-    //    private String[] conditionKind;
-//    private String[] conditionPriority;
-//    private String[] conditionTitles = new String[]{"类别", "状态", "优先级"};
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
 
 
+    private HelpFilter helpFilter = new HelpFilter();
     private OrganizationAidAdapter mAidAdapter;
     private List<OrganizationAid> helps;
 
@@ -87,7 +81,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     @Subscribe
     public void refreshData(Event.RefreshHelpData event) {
-        getHelps(0);
+        refreshHelpWithFilter();
     }
 
 
@@ -122,9 +116,16 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
             @Override
             public void onSearch(String searchStr) {
-                whereConditionMap.put(condition_title, "{\"like\":\"" + searchStr + "\"}");
-                getHelps(0);
+                HelpFilter.WhereBean.TitleBean titleBean = helpFilter.getWhere().getTitle();
+                if (titleBean == null) {
+                    titleBean = new HelpFilter.WhereBean.TitleBean();
+                }
+                titleBean.setLike(searchStr);
+                helpFilter.getWhere().setTitle(titleBean);
+                refreshHelpWithFilter();
             }
+
+
         });
 
 
@@ -138,28 +139,33 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
                 }
         );
 
-        initConditionMap();
 
+    }
+
+
+    private void refreshHelpWithFilter() {
+        getHelps(0);
     }
 
     private void initConditionOption() {
         List<String> conditionTitles = new ArrayList<>();
-        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList(filter_kind, filter_status, filter_priority);
         if (conditionOptionsList != null) {
             for (ConditionOption conditionOption : conditionOptionsList) {
                 conditionTitles.add(conditionOption.getCondition());
             }
             filterView.setTitlesAndDatas(conditionTitles, conditionOptionsList, mSwipeLayout);
             filterView.setOnOptionClickListener((whereKey, whereValue) -> {
-                whereConditionMap.put(whereKey, whereValue);
-                getHelps(0);
+                if (TextUtils.equals(whereKey, filter_kind)) {
+                    helpFilter.getWhere().setKind(whereValue);
+                } else if (TextUtils.equals(whereKey, filter_priority)) {
+                    helpFilter.getWhere().setPriority(whereValue);
+                } else if (TextUtils.equals(whereKey, filter_status)) {
+                    helpFilter.getWhere().setStatus(whereValue);
+                }
+                refreshHelpWithFilter();
             });
         }
-    }
-
-    private void initConditionMap() {
-        conditionMap = new HashMap<>();
-        whereConditionMap = new HashMap<>();
     }
 
 
@@ -172,20 +178,14 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     private void getHelps(int skip) {
         mSwipeLayout.setRefreshing(true);
-        String filter = getFilterWithCondition();
+        Gson gson = new Gson();
+        String filter = gson.toJson(helpFilter);
+        Logger.d("互助 --filter = " + filter);
         if (isMain) {
             mPresenter.getAboutMe(filter, skip);
         } else {
             mPresenter.getHelps(filter, skip);
         }
-    }
-
-    private String getFilterWithCondition() {
-        conditionMap.put("where", whereConditionMap);
-        Gson gson = new Gson();
-        String filter = gson.toJson(conditionMap);
-        Logger.d("filter = " + filter);
-        return filter;
     }
 
 
@@ -229,6 +229,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             layoutId = R.layout.item_aid_null;
         }
         adapter = new OrganizationAidAdapter(helps, layoutId, layoutType);
+        adapter.setOnLoadMoreListener(() -> getHelps(adapter.getItemCount()));
         return adapter;
     }
 

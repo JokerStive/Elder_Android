@@ -38,10 +38,10 @@ public class FilterInputRangeView extends LinearLayout {
     private List<Integer> range = new ArrayList<>();
     private TextView tvClear;
 
-    public FilterInputRangeView(Context context) {
-        super(context);
-        init(context);
-    }
+//    public FilterInputRangeView(Context context) {
+//        super(context);
+//        init(context);
+//    }
 
 
     public FilterInputRangeView(Context context, String title) {
