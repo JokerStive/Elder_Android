@@ -2,86 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:background="@color/white"
-    android:orientation="horizontal"
-    android:padding="10dp"
-   >
+    android:padding="10dp">
 
     <EditText
-        android:textSize="14sp"
-        android:id="@+id/et_min"
+        android:id="@+id/et_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:padding="5dp"
+        android:layout_weight="6"
         android:background="@drawable/shape_rect_gray_corner_5"
         android:gravity="center_vertical"
-        android:inputType="number"
-        tools:text="2000" />
-
-    <View
-        style="@style/line_gray"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="0.2"
-        android:background="@color/black" />
-
-    <EditText
-        android:textSize="14sp"
-        android:id="@+id/et_max"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
         android:padding="5dp"
-        android:background="@drawable/shape_rect_gray_corner_5"
-        android:inputType="number"
+        android:textSize="14sp"
         tools:text="2000" />
 
-    <TextView
-        android:id="@+id/tv_unit"
-        style="@style/tv_small"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        tools:text="元" />
-
 
     <TextView
-        android:textSize="14sp"
         android:id="@+id/btn_clear"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
+        android:layout_weight="2"
         android:background="@drawable/shape_rect_blue_corner_5"
         android:focusable="false"
         android:gravity="center"
         android:padding="5dp"
         android:text="重置"
         android:textColor="@color/white"
-       />
+        android:textSize="14sp" />
 
 
     <TextView
-        android:textSize="14sp"
         android:id="@+id/btn_confirm"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
+        android:layout_weight="2"
         android:background="@drawable/shape_rect_red_corner_5"
         android:focusable="false"
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/confirm"
         android:textColor="@color/white"
-        />
-
-
+        android:textSize="14sp" />
 </LinearLayout>

@@ -44,7 +44,7 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
 
     @Override
     public void getClassifiesByService() {
-        String filter = "{\"where\":{\"parentId\":\"" + Config.agency_classify_service_parentId + "\"},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"parentId\":\"" + Config.agency_product_categoryId + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getProductCategories(filter)
                 .compose(RxUtils.handleResult())

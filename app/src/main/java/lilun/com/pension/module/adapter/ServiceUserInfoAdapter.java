@@ -5,8 +5,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Contact;
 
@@ -33,9 +35,17 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
     protected void convert(BaseViewHolder helper, Contact info) {
         TextView tvSetDef = helper.getView(R.id.tv_set_def);
         tvSetDef.setSelected(info.isDefault());
+
+        Map<String, String> extend = info.getExtend();
+
+        if (extend != null && info.getCategoryId().equals(Config.agency_product_categoryId)) {
+            helper.setText(R.id.tv_health_status, info.getExtend().get("healthyStatus"))
+                    .setText(R.id.tv_health_desc, info.getExtend().get("healthyDescription"));
+        } else {
+            helper.setText(R.id.tv_health_desc, info.getAddress());
+        }
+
         helper.setText(R.id.tv_name, info.getName())
-                .setText(R.id.tv_health_status, info.getExtend().get("healthyStatus"))
-                .setText(R.id.tv_health_desc, info.getExtend().get("healthyDescription"))
                 .setText(R.id.tv_phone, info.getMobile())
                 .setOnClickListener(R.id.tv_edit, v -> {
                     if (listener != null) {

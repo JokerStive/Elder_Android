@@ -6,12 +6,13 @@ import java.util.List;
 import lilun.com.pension.base.BaseBean;
 
 /**
-*旅游模型
-*@author yk
-*create at 2017/4/13 16:44
-*email : yk_developer@163.com
-*/
-public class Tourism  extends BaseBean{
+ * 旅游模型
+ *
+ * @author yk
+ *         create at 2017/4/13 16:44
+ *         email : yk_developer@163.com
+ */
+public class Tourism extends BaseBean {
 
 
     private String id;
@@ -34,6 +35,7 @@ public class Tourism  extends BaseBean{
     private List<IconModule> images;
     private String categoryId;
     private List<String> areasList;
+
 
     public String getId() {
         return id;
@@ -172,7 +174,6 @@ public class Tourism  extends BaseBean{
     }
 
 
-
     public List<IconModule> getImages() {
         return images;
     }
@@ -197,7 +198,7 @@ public class Tourism  extends BaseBean{
         this.areasList = areasList;
     }
 
-    public static class ExtendBean implements Serializable{
+    public static class ExtendBean implements Serializable {
         private static final long serialVersionUID = 1L;
         /**
          * route : 重庆-海口、万宁、乐东、三亚、澄迈、邻水、 海南
@@ -206,7 +207,7 @@ public class Tourism  extends BaseBean{
          * attractions : 全程游览8个景点
          * gather : 门边拐拐处
          * feature : 海景酒店+5A景区+超值赠送
-         * satasfaction : 100%满意
+         * satisfaction : 100%满意
          * departure : 重庆出发
          * duration : 6天5晚
          * fee : 费用说明
@@ -221,13 +222,23 @@ public class Tourism  extends BaseBean{
         private String attractions;
         private String gather;
         private String feature;
-        private String satasfaction;
+        private String satisfaction;
         private String departure;
         private String duration;
         private String fee;
         private String distance;
         private String notice;
         private List<String> tag;
+        private List<String> destinations;
+
+        public List<String> getDestinations() {
+            return destinations;
+        }
+
+        public ExtendBean setDestinations(List<String> destinations) {
+            this.destinations = destinations;
+            return this;
+        }
 
         public String getRoute() {
             return route;
@@ -277,12 +288,12 @@ public class Tourism  extends BaseBean{
             this.feature = feature;
         }
 
-        public String getSatasfaction() {
-            return satasfaction;
+        public String getSatisfaction() {
+            return satisfaction;
         }
 
-        public void setSatasfaction(String satasfaction) {
-            this.satasfaction = satasfaction;
+        public void setSatisfaction(String satisfaction) {
+            this.satisfaction = satisfaction;
         }
 
         public String getDeparture() {

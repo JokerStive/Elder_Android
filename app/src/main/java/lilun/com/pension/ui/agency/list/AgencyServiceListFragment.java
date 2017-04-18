@@ -21,6 +21,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -31,10 +32,9 @@ import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
-import lilun.com.pension.widget.InputRangeView;
+import lilun.com.pension.widget.FilterInputRangeView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
-import lilun.com.pension.widget.filter_view.AreaFilter;
 import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
@@ -160,7 +160,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private void initFilter() {
         List<View> pops = new ArrayList<>();
         List<String> filterTitles = new ArrayList<>();
-        filterTitles.add("区域");
+//        filterTitles.add("区域");
         filterTitles.add("价格");
         filterTitles.add("面积");
         //除了区域以外的条件弹窗
@@ -181,25 +181,25 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             }
         }
 
-        InputRangeView rangeView = new InputRangeView(mContent);
-        rangeView.setOnConfirmListener((min, max) -> {
-            filterView.setTabText(min + "-" + max, false);
-            betweenMap.put(between, new Integer[]{min, max});
+        FilterInputRangeView rangeView = new FilterInputRangeView(mContent);
+        rangeView.setOnConfirmListener((range,show,isDef) -> {
+            filterView.setTabText(show,false);
+//            betweenMap.put(between, new Integer[]{min, max});
             getData(0);
         });
         rangeView.setUnit("元");
         pops.add(rangeView);
 
-        InputRangeView rangeSizeView = new InputRangeView(mContent);
+        FilterInputRangeView rangeSizeView = new FilterInputRangeView(mContent);
         rangeSizeView.setUnit("平米");
-        rangeSizeView.setOnConfirmListener((min, max) -> {
-            filterView.setTabText(min + "-" + max, false);
+        rangeSizeView.setOnConfirmListener((range,show,isDef) -> {
+            filterView.setTabText(show,isDef);
         });
         pops.add(rangeSizeView);
 
         //TODO 区域
-        AreaFilter areaFilter = new AreaFilter(mContent);
-        pops.add(0, areaFilter);
+//        AreaFilter areaFilter = new AreaFilter(mContent);
+//        pops.add(0, areaFilter);
         filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
     }
 
@@ -208,7 +208,9 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
         if (mAgencyServiceAdapter != null) {
             mAgencyServiceAdapter.setOnItemClickListener((product) -> {
-                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
+                if (product.getCategoryId().contains(Config.agency_product_categoryId)){
+                    start(ServiceDetailFragment.newInstance(product), SINGLETASK);
+                }
             });
             mAgencyServiceAdapter.setEmptyView();
         }

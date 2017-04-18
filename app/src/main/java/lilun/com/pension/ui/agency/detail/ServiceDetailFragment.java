@@ -222,18 +222,18 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
      * 预约
      */
     private void reservation() {
-        String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"index\":\"0\"}}";
+        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Contact>>(_mActivity) {
                     @Override
                     public void _next(List<Contact> contacts) {
-                        if (contacts.size()>0){
+                        if (contacts.size() > 0) {
                             Contact contact = contacts.get(0);
-                            ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getCategoryId(), mProduct.getId(),contact);
-                            startForResult(fragment, requestCode);
-                        }else {
+                            ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getCategoryId(), mProduct.getId(), contact);
+                            startForResult(fragment,  ReservationFragment.requestCode);
+                        } else {
                             //添加个人资料界面
                             AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId(), null, true);
                             fragment.setProductd(mProduct.getId());
@@ -255,7 +255,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void onFragmentResult(int reqCode, int resultCode, Bundle data) {
-        if (reqCode == requestCode && resultCode == 85) {
+        if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
             setHadReservation();
         }
     }

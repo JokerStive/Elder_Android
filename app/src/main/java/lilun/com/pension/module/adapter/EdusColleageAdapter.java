@@ -13,7 +13,6 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.utils.BitmapUtils;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 大学adapter
@@ -34,7 +33,7 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
 
     @Override
     protected void convert(BaseViewHolder help, ElderEdusColleage edu) {
-        help.setText(R.id.tv_title, edu.getName())
+        help.setText(R.id.tv_product_name, edu.getName())
                 .setText(R.id.tv_address, edu.getAddress())
 
                 .setOnClickListener(R.id.ll_bg, v -> {

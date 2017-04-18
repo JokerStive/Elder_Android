@@ -19,6 +19,7 @@ import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
@@ -72,8 +73,8 @@ public class ReservationFragment extends BaseFragment {
     private int selectColor = App.context.getResources().getColor(R.color.red);
     private String reservationTime;
     private Contact contact;
-    private int requestCode = 0x12;
-    private int resultCode = 0x123;
+    public static int requestCode = 0x12;
+    public static int resultCode = 0x123;
 
 
     public static ReservationFragment newInstance(String productCategoryId, String productId, Contact contact) {
@@ -144,7 +145,7 @@ public class ReservationFragment extends BaseFragment {
 
 
     private void getDefContact() {
-        String filter = "{\"limit\":\"1\",\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + productCategoryId + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -166,8 +167,13 @@ public class ReservationFragment extends BaseFragment {
         contactId = contact.getId();
         tvName.setText(contact.getName());
         tvPhone.setText(contact.getMobile());
-        tvHealthStatus.setText(contact.getExtend().get("healthyStatus"));
-        tvHealthDesc.setText(contact.getExtend().get("healthyDescription"));
+
+        if (productCategoryId.equals(Config.agency_product_categoryId)) {
+            tvHealthStatus.setText(contact.getExtend().get("healthyStatus"));
+            tvHealthDesc.setText(contact.getExtend().get("healthyDescription"));
+        } else {
+            tvHealthDesc.setText(contact.getAddress());
+        }
     }
 
     /**
@@ -190,7 +196,7 @@ public class ReservationFragment extends BaseFragment {
                             Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
                             intent.putExtra("orderId", order.getId());
                             startActivity(intent);
-                            setFragmentResult(85, null);
+                            setFragmentResult(resultCode, null);
                             pop();
                         }
                     });

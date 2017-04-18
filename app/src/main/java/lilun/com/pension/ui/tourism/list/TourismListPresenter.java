@@ -42,4 +42,5 @@ public class TourismListPresenter extends RxPresenter<TourismListContract.View> 
     @Override
     public void getJourneyTags() {
     }
+
 }

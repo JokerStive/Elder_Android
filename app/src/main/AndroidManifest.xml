@@ -31,7 +31,9 @@
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:launchMode="singleTask"
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,10 +45,10 @@
 
         <!-- 登录 -->
         <activity
+            android:launchMode="singleTask"
             android:name=".ui.welcome.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ui.register.RegisterActivity"
-            android:screenOrientation="portrait"/>
+            />
+
 
 
         <!-- 订单详情-->
@@ -73,7 +75,7 @@
             android:screenOrientation="portrait" />
 
         //mqtt service
-        <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service android:name="org.eclipse.paho.android.service.MqttService"/>
 
         =================================PUSHY======================
 

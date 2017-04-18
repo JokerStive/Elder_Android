@@ -5,10 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -18,6 +22,8 @@ import lilun.com.pension.module.adapter.TourismSmallAdapter;
 import lilun.com.pension.module.bean.Tourism;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.tourism.detail.TourismDetailFragment;
+import lilun.com.pension.widget.FilterInputRangeView;
+import lilun.com.pension.widget.FilterInputView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.filter_view.FilterView;
@@ -45,11 +51,14 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
     private String mTag;
     private String categoryId;
     private TourismSmallAdapter adapter;
+    TourismFilter tourismFilter = new TourismFilter();
+    private String destination;
 
-    public static TourismListFragment newInstance(String categoryId, String tag) {
+    public static TourismListFragment newInstance(String categoryId, String tag, String destination) {
         TourismListFragment fragment = new TourismListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("tag", tag);
+        bundle.putString("destination", destination);
         bundle.putString("categoryId", categoryId);
         fragment.setArguments(bundle);
         return fragment;
@@ -63,7 +72,13 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
 
         @Override
         public void onSearch(String searchStr) {
-
+            TourismFilter.WhereBean.TitleBean title = tourismFilter.where.getTitle();
+            if (title == null) {
+                title = new TourismFilter.WhereBean.TitleBean();
+            }
+            title.setLike(searchStr);
+            tourismFilter.where.setTitle(title);
+            getTourismWithFilter();
         }
 
         @Override
@@ -77,8 +92,8 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mTag = arguments.getString("tag");
+        destination = arguments.getString("destination");
         categoryId = arguments.getString("categoryId");
-        Preconditions.checkNull(mTag);
         Preconditions.checkNull(categoryId);
         Logger.d("tag = " + mTag);
     }
@@ -96,6 +111,9 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        initFilter();
+
+
         searchBar.setFragment(this);
         searchBar.isChangeLayout(false);
         searchBar.setOnItemClickListener(listener);
@@ -112,6 +130,78 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
         });
     }
 
+    private void initFilter() {
+        //产品类别过滤
+        tourismFilter.where.setCategoryId(categoryId);
+
+        //目的地过滤
+        if (!TextUtils.isEmpty(destination)) {
+            tourismFilter.where.setDestination(destination);
+        }
+
+        //tag过滤
+        if (!TextUtils.isEmpty(mTag)) {
+            tourismFilter.where.setTag(mTag);
+        }
+
+        List<String> titles = new ArrayList<>();
+        titles.add("价格");
+        titles.add("出发地");
+        if (TextUtils.isEmpty(destination)) {
+            titles.add("目的地");
+        }
+
+        List<View> views = new ArrayList<>();
+
+        //价格
+        FilterInputRangeView rangePriceView = new FilterInputRangeView(getContext(), "价格");
+        rangePriceView.setUnit("元");
+        rangePriceView.setOnConfirmListener((range, show, isDef) -> {
+            tourismFilter.where.setPrice(null);
+            TourismFilter.WhereBean.PriceBean price = tourismFilter.where.getPrice();
+            if (price == null) {
+                price = new TourismFilter.WhereBean.PriceBean();
+            }
+            if (!isDef) {
+                price.setBetween(range);
+                tourismFilter.where.setPrice(price);
+            }
+            filterView.setTabText(show, isDef);
+            getTourismWithFilter();
+        });
+        views.add(rangePriceView);
+
+        //出发地
+        FilterInputView departureView = new FilterInputView(getContext(), "出发地");
+        departureView.setHint("请输入出发地");
+        departureView.setOnConfirmListener((departure, isDef) -> {
+            tourismFilter.where.setDeparture(null);
+            if (!isDef) {
+                tourismFilter.where.setDeparture(departure);
+            }
+            filterView.setTabText(departure, isDef);
+            getTourismWithFilter();
+        });
+        views.add(departureView);
+
+        //目的地
+        if (TextUtils.isEmpty(destination)) {
+            FilterInputView destinationView = new FilterInputView(getContext(), "目的地");
+            destinationView.setHint("请输入目的地");
+            destinationView.setOnConfirmListener((destination, isDef) -> {
+                tourismFilter.where.setDestination(null);
+                if (!isDef) {
+                    tourismFilter.where.setDestination(destination);
+                }
+                filterView.setTabText(destination, isDef);
+                getTourismWithFilter();
+            });
+            views.add(destinationView);
+        }
+
+        filterView.setTitlesAndPops(titles, views, swipeLayout);
+    }
+
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -120,13 +210,18 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
     }
 
 
+    private void getTourismWithFilter() {
+        getJourneys(0);
+    }
 
     /**
      * 获取旅游
      */
     private void getJourneys(int skip) {
         swipeLayout.setRefreshing(true);
-        String filter = "{\"where\":{\"categoryId\":\"" + categoryId + "\"}}";
+        Gson gson = new Gson();
+        String filter = gson.toJson(tourismFilter);
+        Logger.d("filter = " + filter);
         mPresenter.getJourneys(filter, skip);
     }
 

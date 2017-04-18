@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -25,6 +26,7 @@ import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.tourism.info.AddTourismInfoFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -50,7 +52,11 @@ public class ServiceUserInfoFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_info:
-                start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
+                if (productCategoryId.equals(Config.tourism_product_categoryId)) {
+                    start(AddTourismInfoFragment.newInstance(productCategoryId, null));
+                } else {
+                    start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
+                }
                 break;
         }
     }
@@ -114,7 +120,11 @@ public class ServiceUserInfoFragment extends BaseFragment {
 
             @Override
             public void onEdit(Contact contact) {
-                start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
+                if (productCategoryId.equals(Config.tourism_product_categoryId)) {
+                    start(AddTourismInfoFragment.newInstance(productCategoryId, contact));
+                } else {
+                    start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
+                }
                 Logger.d("编辑个人信息");
             }
 

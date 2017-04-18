@@ -17,6 +17,7 @@ import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by yk on 2017/1/5.
@@ -27,7 +28,8 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     protected Context mContent;
     protected View mRootView;
     protected T mPresenter;
-    private Subscription subscribe;
+    protected Subscription subscribe;
+    protected CompositeSubscription subscription = new CompositeSubscription();
 
 
 
@@ -161,6 +163,11 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
         if (subscribe != null && subscribe.isUnsubscribed()) {
             subscribe.unsubscribe();
+        }
+
+        if (subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+            subscription.clear();
         }
 
         EventBus.getDefault().unregister(this);
