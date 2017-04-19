@@ -79,6 +79,8 @@ public class FilterInputRangeView extends LinearLayout {
         tvConfirm.setOnClickListener(v -> {
             String min = etMin.getText().toString();
             String max = etMax.getText().toString();
+            intMax=null;
+            intMin=null;
             if (!TextUtils.isEmpty(min) && Preconditions.isNumeric(min)) {
                 intMin = Integer.parseInt(min);
             }

@@ -21,6 +21,8 @@ public class Config {
 
     public static final int uploadPhotoMaxSize = 2048000;
 
+    public static final int list_decoration = 5;
+
     public static final String agency_product_categoryId = "服务/养老机构";
 
     public static final String residential_product_categoryId = "服务/居家服务";

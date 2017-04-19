@@ -73,8 +73,8 @@ public class ReservationFragment extends BaseFragment {
     private int selectColor = App.context.getResources().getColor(R.color.red);
     private String reservationTime;
     private Contact contact;
-    public static int requestCode = 0x12;
-    public static int resultCode = 0x123;
+    public static int requestCode = 123;
+    public static int resultCode = 321;
 
 
     public static ReservationFragment newInstance(String productCategoryId, String productId, Contact contact) {
@@ -109,7 +109,7 @@ public class ReservationFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setOnBackClickListener(this::pop);
+        titleBar.setOnBackClickListener(() -> _mActivity.finish());
     }
 
     @Override
@@ -196,8 +196,8 @@ public class ReservationFragment extends BaseFragment {
                             Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
                             intent.putExtra("orderId", order.getId());
                             startActivity(intent);
-                            setFragmentResult(resultCode, null);
-                            pop();
+                            _mActivity.setResult(resultCode, null);
+                            _mActivity.finish();
                         }
                     });
         });

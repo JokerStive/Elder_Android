@@ -68,7 +68,7 @@ public class TourismFilter {
         public String departure;
         public String categoryId;
 
-        @SerializedName("extend.destinations")
+        @SerializedName("extend.destination")
         private String destination;
 
 

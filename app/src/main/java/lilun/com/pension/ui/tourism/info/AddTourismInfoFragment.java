@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.tourism.info;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.agency.reservation.ReservationActivity;
 import lilun.com.pension.ui.agency.reservation.ReservationFragment;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -132,7 +134,8 @@ public class AddTourismInfoFragment extends BaseFragment {
                     @Override
                     public void _next(Contact contact) {
                         if (!TextUtils.isEmpty(productId)) {
-                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
+                            statReservation(contact);
+//                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
                         } else {
                             EventBus.getDefault().post(new Event.RefreshContract());
                         }
@@ -141,6 +144,17 @@ public class AddTourismInfoFragment extends BaseFragment {
                 }));
     }
 
+
+
+    private void statReservation(Contact contact) {
+        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("contact",contact);
+        bundle.putString("productCategoryId",productCategoryId);
+        bundle.putString("productId",productId);
+        intent.putExtras(bundle);
+        startActivityForResult(intent,ReservationFragment.requestCode);
+    }
 
     /**
      * 更新个人资料

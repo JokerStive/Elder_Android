@@ -30,10 +30,9 @@
         <!--欢迎界面,注册登录入口-->
         <activity
             android:name=".ui.welcome.WelcomeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:launchMode="singleTask"
-           >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,10 +44,8 @@
 
         <!-- 登录 -->
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.welcome.LoginActivity"
-            />
-
+            android:launchMode="singleTask" />
 
 
         <!-- 订单详情-->
@@ -79,11 +76,20 @@
         <activity
             android:name=".ui.change_organization.ChangeOrganizationFragment"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"  />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
+        <!-- 确认订单-->
+        <activity
+            android:name=".ui.agency.reservation.ReservationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
         //mqtt service
-        <service android:name="org.eclipse.paho.android.service.MqttService"/>
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
 
         =================================PUSHY======================
 

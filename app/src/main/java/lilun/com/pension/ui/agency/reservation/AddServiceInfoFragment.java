@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.agency.reservation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -173,11 +174,13 @@ public class AddServiceInfoFragment extends BaseFragment {
 
             etReservationPhone.setText(mContact.getMobile());
 
-            if (expandKeys != null) {
+            if (expandKeys != null && expandKeys.size() >= 3) {
                 Map<String, String> extend = mContact.getExtend();
-                tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
-                tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
-                etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
+                if (extend!=null){
+                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
+                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
+                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
+                }
             }
 
         }
@@ -313,7 +316,8 @@ public class AddServiceInfoFragment extends BaseFragment {
                     @Override
                     public void _next(Contact contact) {
                         if (!TextUtils.isEmpty(productId)) {
-                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
+                            statReservation(contact);
+//                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
                         } else {
                             EventBus.getDefault().post(new Event.RefreshContract());
                         }
@@ -323,6 +327,16 @@ public class AddServiceInfoFragment extends BaseFragment {
                 });
     }
 
+
+    private void statReservation(Contact contact) {
+        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("contact",contact);
+        bundle.putString("productCategoryId",productCategoryId);
+        bundle.putString("productId",productId);
+        intent.putExtras(bundle);
+        startActivityForResult(intent,ReservationFragment.requestCode);
+    }
 
     /**
      * 生日选择器

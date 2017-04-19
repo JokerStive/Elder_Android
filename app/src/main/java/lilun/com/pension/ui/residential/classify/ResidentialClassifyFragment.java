@@ -108,17 +108,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         );
 
 
-        //设置数据
-//        setAdapter();
-
     }
-
-
-//    private void setAdapter() {
-//        mAdapter = new ProductorAdapter(this, products);
-//        mAdapter.addHeaderView(mClassifyRecycler);
-//        mClassifyRecycler.setAdapter(mAdapter);
-//    }
 
 
     @Override
@@ -136,9 +126,9 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     public void showClassifies(List<ProductCategory> productCategories) {
         completeRefresh();
         if (mClassifyAdapter == null) {
-            int spanCount = spanCountByData(productCategories);
-            GridLayoutManager manager = new GridLayoutManager(_mActivity, spanCount);
-            manager.setSpanSizeLookup(new AutoExtentionSpanSizeLookup(productCategories.size(), spanCount));
+//            int spanCount = spanCountByData(productCategories);
+            GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
+            manager.setSpanSizeLookup(new AutoExtentionSpanSizeLookup(productCategories.size(), 3));
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {

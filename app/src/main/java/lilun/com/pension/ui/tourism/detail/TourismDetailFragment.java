@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.tourism.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +25,13 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.IconModule;
+import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Tourism;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.agency.reservation.ReservationActivity;
 import lilun.com.pension.ui.agency.reservation.ReservationFragment;
 import lilun.com.pension.ui.tourism.info.AddTourismInfoFragment;
 import lilun.com.pension.widget.slider.BannerPager;
@@ -176,7 +181,29 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
         tvGatherLocation.setText(extend.getGather());
         tvFeature.setText(extend.getFeature());
 
+        canBook();
     }
+
+    private void canBook() {
+        //如果这个服务不是自己创建的，就要去判断是否能够预约
+        if (!User.creatorIsOwn(tourism.getCreatorId())) {
+            String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
+            NetHelper.getApi()
+                    .getOrdersOfProduct(tourism.getId(), filter)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                        @Override
+                        public void _next(List<ProductOrder> orders) {
+                            if (orders.size() != 0) {
+                                setHadReservation();
+                            }
+                        }
+                    });
+        }
+
+    }
+
 
     /**
      * 预约这个旅游
@@ -191,12 +218,12 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
                     public void _next(List<Contact> contacts) {
                         if (contacts.size() > 0) {
                             Contact contact = contacts.get(0);
-                            ReservationFragment fragment = ReservationFragment.newInstance(categoryId, tourism.getId(), contact);
-                            startForResult(fragment, ReservationFragment.requestCode);
+                            statReservation(contact);
+//                            ReservationFragment fragment = ReservationFragment.newInstance(categoryId, tourism.getId(), contact);
+//                            startForResult(fragment, ReservationFragment.requestCode);
                         } else {
                             //添加个人资料界面
                             AddTourismInfoFragment fragment = AddTourismInfoFragment.newInstance(categoryId, null);
-//                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId(), null, true);
                             fragment.setProductId(tourism.getId());
                             start(fragment);
                         }
@@ -206,9 +233,28 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
     }
 
 
+    private void statReservation(Contact contact) {
+        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("contact",contact);
+        bundle.putString("productCategoryId",categoryId);
+        bundle.putString("productId",tourism.getId());
+        intent.putExtras(bundle);
+        startActivityForResult(intent,ReservationFragment.requestCode);
+    }
+
+//    @Override
+//    protected void onFragmentResult(int reqCode, int resultCode, Bundle data) {
+//        if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
+//            setHadReservation();
+//        }
+//    }
+
+
     @Override
-    protected void onFragmentResult(int reqCode, int resultCode, Bundle data) {
-        if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Logger.d("requestCode =  "+requestCode+"----"+"resultCode = "+resultCode);
+        if (requestCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
             setHadReservation();
         }
     }

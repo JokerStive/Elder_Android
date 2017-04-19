@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.TourismSmallAdapter;
 import lilun.com.pension.module.bean.Tourism;
@@ -120,10 +121,10 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
 
 
         rvJourneyTags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        rvJourneyTags.addItemDecoration(new NormalItemDecoration(10));
+        rvJourneyTags.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
 
         rvJourney.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvJourney.addItemDecoration(new NormalItemDecoration(10));
+        rvJourney.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
 
         swipeLayout.setOnRefreshListener(() -> {
             getJourneys(0);

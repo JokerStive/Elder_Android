@@ -11,6 +11,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.Contact;
+import lilun.com.pension.module.utils.ToastHelper;
 
 /**
  * 用户预约登记信息adapter
@@ -24,7 +25,15 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
 
     public ServiceUserInfoAdapter(List<Contact> data) {
         super(R.layout.item_reservation_info, data);
-        data.get(0).setDefault(true);
+       init();
+    }
+
+    private void init() {
+        for(Contact contact:mData){
+            if (contact.getIndex()==1){
+                contact.setDefault(true);
+            }
+        }
     }
 
     public ServiceUserInfoAdapter(int layoutResId, List<Contact> data) {
@@ -54,7 +63,11 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
                 })
                 .setOnClickListener(R.id.tv_delete, v -> {
                     if (listener != null) {
-                        listener.onDelete();
+                        if (mData.size()>1){
+                            listener.onDelete(info);
+                        }else {
+                            ToastHelper.get().showWareShort("再删就没有了哟");
+                        }
                     }
                 })
 
@@ -81,7 +94,7 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
     }
 
     public interface OnItemClickListener {
-        void onDelete();
+        void onDelete(Contact contact);
 
         void onEdit(Contact contact);
 

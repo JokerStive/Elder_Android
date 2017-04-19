@@ -81,7 +81,7 @@
 
                 <TextView
                     android:id="@+id/tv_equipment"
-                    style="@style/tv_small_ellipsize"
+                    style="@style/tv_small"
                     android:layout_marginTop="15dp"
                     android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
