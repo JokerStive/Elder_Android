@@ -38,6 +38,9 @@ public class Event {
     //刷新我的活动。活动列表数据
     public static  class RefreshActivityData{}
 
+    //刷新活动回得列表
+    public static class RefreshActivityReply{}
+
 
     //刷新消息推送栏
     public static  class RefreshPushMessage{}

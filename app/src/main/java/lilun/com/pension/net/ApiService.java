@@ -17,6 +17,7 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.MerchantMemo;
+import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.OrganizationActivity;
@@ -26,6 +27,7 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Rank;
+import lilun.com.pension.module.bean.Register;
 import lilun.com.pension.module.bean.TokenInfo;
 import lilun.com.pension.module.bean.Tourism;
 import okhttp3.RequestBody;
@@ -339,7 +341,7 @@ public interface ApiService {
 
 
     /**
-     * 键入一个活动
+     * 加入一个活动
      */
     @POST("OrganizationActivities/{id}/join")
     Observable<Response<Object>> joinActivity(@Path("id") String activityId);
@@ -366,6 +368,27 @@ public interface ApiService {
     Observable<Response<ArrayList<IconModule>>> newActivityIcons(@PartMap Map<String, RequestBody> params);
 
 
+    /**
+     * 添加一个活动提问
+     * @param activityId
+     * @param question
+     * @return
+     */
+    @POST("OrganizationActivities/{id}/questions")
+    Observable<Response<OrganizationReply>> addQuestion(@Path("id") String activityId, @Body OrganizationReply question);
+
+    @GET("OrganizationActivities/{id}/replyList")
+    Observable<Response<List<NestedReply>>>  replyList(@Path("id") String activityId, @Query("ReplyFilter")String filter);
+
+    /**
+     * 添加一个活动提问回答
+     * @param activityId
+     * @param questionId
+     * @param question
+     * @return
+     */
+    @POST("OrganizationActivities/{id}/questions/{questionId}/answer")
+    Observable<Response<OrganizationReply>> addAnswer(@Path("id") String activityId, @Path("questionId") String questionId, @Body OrganizationReply question);
 //    ================================================================
 
     /**
@@ -453,7 +476,7 @@ public interface ApiService {
      * @return
      */
     @POST("Accounts/register/OrgID/{organizationId}/IDCode/{IDCode}/address/{address}")
-    Observable<Response<Account>> commitRegister(@Path("organizationId") String organizationId, @Path("IDCode") String IDCode, @Path("address") String address, @Body Account account);
+    Observable<Response<Register>> commitRegister(@Path("organizationId") String organizationId, @Path("IDCode") String IDCode, @Path("address") String address, @Body Account account);
 
 
     /**

@@ -7,6 +7,7 @@ import java.util.List;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
+import lilun.com.pension.module.bean.Register;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -37,11 +38,11 @@ public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewSte
                 .commitRegister(organizationId, IDCode, address,account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Account>() {
+                .subscribe(new RxSubscriber<Register>() {
                     @Override
-                    public void _next(Account backAccount) {
+                    public void _next(Register register) {
                         Log.d("zp", "提交返回");
-                        view.successOfCommitRegister(backAccount);
+                        view.successOfCommitRegister(register);
                     }
                 }));
     }

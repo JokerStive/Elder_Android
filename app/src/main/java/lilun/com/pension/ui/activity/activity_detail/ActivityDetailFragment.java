@@ -1,27 +1,32 @@
 package lilun.com.pension.ui.activity.activity_detail;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
@@ -31,14 +36,12 @@ import lilun.com.pension.module.bean.ActivityDetail;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.OrganizationActivity;
-import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.module.utils.UIUtils;
-import lilun.com.pension.ui.help.reply.ReplyFragment;
-import lilun.com.pension.widget.CircleImageView;
+import lilun.com.pension.ui.activity.activity_question.ActivityQuestionListFragment;
+import lilun.com.pension.widget.InputSendPopupWindow;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -47,80 +50,71 @@ import lilun.com.pension.widget.slider.BannerPager;
 
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter> implements ActivityDetailContact.View, View.OnClickListener {
 
+    @Bind(R.id.srl_swipe_layout)
+    SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.bp_activity_images)
+    BannerPager bpActivityImages;
+    @Bind(R.id.actv_activity_name)
+    AppCompatTextView actvActName;
+    @Bind(R.id.actv_activity_type)
+    AppCompatTextView actvActType;
+    @Bind(R.id.actv_activity_time)
+    AppCompatTextView actvActTime;
+    @Bind(R.id.ll_activity_start)
+    LinearLayout llactvActStart;
 
-    private SwipeRefreshLayout mSwipeLayout;
-    private TextView tvQuestTitle;
-    private LinearLayout llContent;
+    @Bind(R.id.actv_activity_address)
+    AppCompatTextView actvActAddress;
+    @Bind(R.id.actv_activity_repeat)
+    AppCompatTextView actvActRepeat;
+    @Bind(R.id.actv_activity_num_people)
+    AppCompatTextView actvActNumPeople;
+    @Bind(R.id.actv_activity_creator)
+    AppCompatTextView actvActCreator;
+    @Bind(R.id.actv_activity_content)
+    AppCompatTextView actvActContent;
+    @Bind(R.id.ll_evalute)
+    LinearLayout llEevalute;
+    @Bind(R.id.rv_activity_evalute)
+    RecyclerView rvActEvalute;
+    @Bind(R.id.ll_question_list)
+    LinearLayout llQuestionList;
+    @Bind(R.id.actv_question_list)
+    AppCompatTextView actvActQuestionNumber;
+    @Bind(R.id.rv_question_list)
+    RecyclerView rvQuestionList;
+    @Bind(R.id.tv_more_question)
+    TextView tvMoreQuestion;
 
-    private void findView() {
-        iconBanner = (BannerPager) mHeadView.findViewById(R.id.bp_actvity_icon);
-        ivBack = (ImageView) mHeadView.findViewById(R.id.iv_back);
-        tvActivityName = (TextView) mHeadView.findViewById(R.id.tv_activity_name);
-        tvActivityTime = (TextView) mHeadView.findViewById(R.id.tv_activity_time);
-        tvRequireTitle = (TextView) mHeadView.findViewById(R.id.tv_require_title);
-        tvOriginatorPerson = (TextView) mHeadView.findViewById(R.id.tv_originator_person);
-        tvParticipationRequest = (TextView) mHeadView.findViewById(R.id.tv_participation_request);
-        tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_environment_title);
-        tvActivityAddress = (TextView) mHeadView.findViewById(R.id.tv_activity_address);
-        tvQuestTitle = (TextView) mHeadView.findViewById(R.id.tv_activity_question_title);
-        cigConnectIcon = (CircleImageView) mHeadView.findViewById(R.id.cig_connect_icon);
+    @Bind(R.id.acbt_joined_number)
+    AppCompatButton acbtJoinedNumber;
+    @Bind(R.id.acbt_sign_up)
+    AppCompatButton acbtSignUp;
+    @Bind(R.id.acbt_sign_up_back)
+    AppCompatButton acbtSignUpBack;
+    @Bind(R.id.acbt_question)
+    AppCompatButton acbtQuestion;
+    @Bind(R.id.acbt_sign_up_list)
+    AppCompatButton acbtSignUpList;
 
-        question = (Button) mHeadView.findViewById(R.id.question);
-        joinIn = (Button) mHeadView.findViewById(R.id.join_in);
-        cancel = (Button) mHeadView.findViewById(R.id.cancel);
 
-        llContent = (LinearLayout) mHeadView.findViewById(R.id.ll_content);
-
-    }
-
+    boolean isMaster = false; //活动创建人
+    boolean isSignUp = false;
 
     String mActivityId;
 
-    String mActivityTitle;
-
-    BannerPager iconBanner;
-
-    ImageView ivBack;
-
-    Button question;
-
-    Button joinIn;
-
-    Button cancel;
-
-    TextView tvActivityName;
-
-    TextView tvActivityTime;
-
-    TextView tvOriginatorPerson;
-
-    CircleImageView cigConnectIcon;
-
-    TextView tvRequireTitle;
-
-    TextView tvParticipationRequest;
-
-    TextView tvAddressTitle;
-
-    TextView tvActivityAddress;
-
-    private RecyclerView rvReply;
-    private View mHeadView;
     private NestedReplyAdapter nestedReplyAdapter;
+    OrganizationActivity activity;
+    private InputSendPopupWindow inputSendPopupWindow;
 
-    public static ActivityDetailFragment newInstance(String activityId) {
+    public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
         Bundle args = new Bundle();
-        args.putString("activityId", activityId);
+        args.putSerializable("activity", activity);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    protected void getTransferData(Bundle arguments) {
-        mActivityId = arguments.getString("activityId");
-        Preconditions.checkNull(mActivityId);
-    }
 
     @Override
     protected void initPresenter() {
@@ -129,33 +123,32 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     }
 
     @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        activity = (OrganizationActivity) arguments.getSerializable("activity");
+        mActivityId = activity.getId();
+    }
+
+    @Override
     protected int getLayoutId() {
-        return R.layout.layout_recycler_view;
+        return R.layout.fragment_activity_detail;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
 
-        rvReply = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mSwipeLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipe_layout);
-        mHeadView = inflater.inflate(R.layout.fragment_activity_detail, null);
+        showDetail(activity);
+
         mSwipeLayout.setOnRefreshListener(this::getActivityDetail);
-        findView();
 
-        UIUtils.setBold(tvRequireTitle);
-        UIUtils.setBold(tvAddressTitle);
-        UIUtils.setBold(tvActivityName);
-        UIUtils.setBold(tvQuestTitle);
+        ArrayList<String> images = new ArrayList<>();
+        if (activity.getIcon() != null)
+            for (IconModule tmp : activity.getIcon())
+                images.add(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), tmp.getFileName()));
+        bpActivityImages.setData(images);
 
-
-        ivBack.setOnClickListener(this);
-        joinIn.setOnClickListener(this);
-        question.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-
-
-        rvReply.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-        rvReply.addItemDecoration(new NormalItemDecoration(17));
+        rvQuestionList.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+        rvQuestionList.addItemDecoration(new NormalItemDecoration(17));
         List<NestedReply> nestedReplies = new ArrayList<>();
         setReplyData(nestedReplies, false);
 
@@ -167,13 +160,36 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
      */
     private void setReplyData(List<NestedReply> nestedReplies, boolean isLoadMore) {
         if (nestedReplyAdapter == null) {
-            nestedReplyAdapter = new NestedReplyAdapter(this, nestedReplies);
-            nestedReplyAdapter.addHeaderView(mHeadView);
-            rvReply.setAdapter(nestedReplyAdapter);
+            nestedReplyAdapter = new NestedReplyAdapter(this, nestedReplies, isMaster, activity.getCreatorName(), new NestedReplyAdapter.AnswerListener() {
+                @Override
+                public void OnClickAnswer(NestedReply nestedReply, int position) {
+                    Log.d("zp", position + "");
+                    inputSendPopupWindow = new InputSendPopupWindow(getContext());
+                    inputSendPopupWindow.setOnSendListener(new InputSendPopupWindow.OnSendListener() {
+                        @Override
+                        public void send(String sendStr) {
+                            Log.d("zp", sendStr);
+                            mPresenter.addAnswer(activity.getId(), nestedReply.getQuestion().getId(), sendStr, position);
+                        }
+                    });
+                    //设置弹出窗体需要软键盘，
+                    inputSendPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+                    //再设置模式，和Activity的一样，覆盖。
+                    inputSendPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    inputSendPopupWindow.showAtLocation(rvQuestionList, Gravity.BOTTOM, 0, 0);
+                }
+            });
+            rvQuestionList.setAdapter(nestedReplyAdapter);
         } else if (isLoadMore) {
             nestedReplyAdapter.addAll(nestedReplies);
         } else {
-            nestedReplyAdapter.replaceAll(nestedReplies);
+            if (nestedReplies.size() >= 3) {
+                nestedReplyAdapter.replaceAll(nestedReplies.subList(0, 3));
+                tvMoreQuestion.setVisibility(View.VISIBLE);
+            } else {
+                nestedReplyAdapter.replaceAll(nestedReplies);
+                tvMoreQuestion.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -183,68 +199,119 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         getActivityDetail();
     }
 
+    /**
+     * 接收来 Event.RefreshActivityReply 事件
+     * 由 {@link ActivityQuestionListFragment}产生
+     *
+     * @param event
+     */
+    @Subscribe
+    public void refreshReplyData(Event.RefreshActivityReply event) {
+        mPresenter.replyList(mActivityId, "", 0);
+    }
+
     private void getActivityDetail() {
         mPresenter.getActivityDetail(mActivityId);
+    }
+
+    public void showDetail(OrganizationActivity activity) {
+        actvActName.setText(activity.getTitle());
+        String[] split = activity.getCategoryId().split("#activity-category.");
+        if (split.length > 0)
+            actvActType.setText(getString(R.string.activity_type_, split[1]));
+        if (!TextUtils.isEmpty(activity.getRepeatedDesc())) {
+            actvActTime.setText(getString(R.string.activity_time_, activity.getRepeatedDesc()));
+            llactvActStart.setVisibility(View.GONE);
+        } else {
+            actvActTime.setText(getString(R.string.activity_time_, StringUtils.IOS2ToUTC(activity.getStartTime())));
+            llactvActStart.setVisibility(View.VISIBLE);
+        }
+        actvActAddress.setText(getString(R.string.activity_address_, activity.getAddress()));
+        String repeat = TextUtils.isEmpty(activity.getRepeatedDesc()) ?
+                getString(R.string.single) : getString(R.string.cyclical);
+        actvActRepeat.setText(getString(R.string.activity_repeat_, repeat));
+        String numPeople = activity.getMaxPartner() == 0 ? "不限" : activity.getMaxPartner() + "人";
+        actvActNumPeople.setText(getString(R.string.targart_partin_, numPeople));
+        actvActCreator.setText(getString(R.string.activit_creator_, activity.getCreatorName()));
+        actvActContent.setText(activity.getDescription());
+        String signUpNumber;
+        if (activity.getPartnerList() == null)
+            signUpNumber = "0";
+        else {
+            signUpNumber = activity.getPartnerList().size() + "";
+            isSignUp = activity.getPartnerList().contains(User.getUserId());
+        }
+        acbtJoinedNumber.setText(getString(R.string.has_sign_up, signUpNumber));
+
+        isMaster = User.getUserId().equals(activity.getMasterId());
+        llQuestionList.setVisibility(View.GONE);
+        showButton(isMaster, isSignUp);
+    }
+
+    /**
+     * 1.判断是否是创建者， 创建人只显示参与者列表；
+     * 2.不是创建人，  判断是否报名
+     * 3.未报名 - 显示 报名、提问
+     * 4.已报名 - 显示 退出、参与者列表
+     *
+     * @param isCreator
+     * @param isCreator
+     */
+    public void showButton(boolean isCreator, boolean isSignUp) {
+        if (isCreator) {
+            acbtSignUp.setVisibility(View.GONE);
+            acbtSignUpBack.setVisibility(View.GONE);
+            acbtQuestion.setVisibility(View.GONE);
+            acbtSignUpList.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (!isSignUp) {
+            acbtSignUp.setVisibility(View.VISIBLE);
+            acbtQuestion.setVisibility(View.VISIBLE);
+            acbtSignUpBack.setVisibility(View.GONE);
+            acbtSignUpList.setVisibility(View.GONE);
+            return;
+        }
+
+        acbtSignUp.setVisibility(View.GONE);
+        acbtQuestion.setVisibility(View.GONE);
+        acbtSignUpBack.setVisibility(View.VISIBLE);
+        acbtSignUpList.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * 显示回复信息
+     *
+     * @param replyList
+     */
+    @Override
+    public void showReplyList(List<NestedReply> replyList) {
+        if (replyList == null) return;
+        if (replyList.size() == 0) return;
+
+        llQuestionList.setVisibility(View.VISIBLE);
+        actvActQuestionNumber.setText(getString(R.string.activity_question_list_, replyList.size() + ""));
+        setReplyData(replyList, false);
+    }
+
+    @Override
+    public void showAnswer(OrganizationReply answer, int position) {
+        inputSendPopupWindow.clearInput();
+        inputSendPopupWindow.dismiss();
+        nestedReplyAdapter.getItem(position).setAnswer(answer);
+        nestedReplyAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showActivityDetail(ActivityDetail activityDetail) {
         completeRefresh();
-        OrganizationActivity activity = activityDetail.getActivity();
+        activity = activityDetail.getActivity();
         if (activity == null) {
             return;
         }
-
-        //如果是自己创建的不能提问不能报名
-        if (User.creatorIsOwn(activity.getCreatorId())) {
-            cancel.setVisibility(View.VISIBLE);
-            joinIn.setVisibility(View.GONE);
-            question.setVisibility(View.GONE);
-        } else {
-            cancel.setVisibility(View.GONE);
-            joinIn.setVisibility(View.VISIBLE);
-            question.setVisibility(View.VISIBLE);
-        }
-
-
-        //显示活动图片
-        List<String> urls = new ArrayList<>();
-        if (activity.getIcon() != null) {
-            for (IconModule iconModule : activity.getIcon()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), iconModule.getFileName());
-                urls.add(url);
-            }
-        } else {
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationActivities,activity.getId(), null);
-            urls.add(url);
-        }
-        iconBanner.setData(urls);
-
-        ///显示活动创建头像
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,activity.getCreatorId(), null), R.drawable.avatar, cigConnectIcon);
-
-        mActivityTitle = activity.getTitle();
-        tvActivityName.setText(activity.getTitle() + getRepeatedType(activity.getRepeatedType()));
-        tvActivityTime.setText(getString(R.string.activity_time_, StringUtils.IOS2ToUTC(activity.getStartTime())));
-        tvOriginatorPerson.setText(getString(R.string.originator_person_, StringUtils.filterNull(activity.getCreatorName())));
-        tvParticipationRequest.setText(StringUtils.filterNull(activity.getDescription()));
-        tvActivityAddress.setText(StringUtils.filterNull(activity.getAddress()));
-
-        //是否还能参加
-        if (activityDetail.isIsRegisterActivity()) {
-            joinIn.setText(getString(R.string.quit));
-            joinIn.setTextColor(Color.WHITE);
-            joinIn.setBackgroundResource(R.drawable.shape_circle_red);
-        }
-
-        List<NestedReply> replyList = activityDetail.getReplyList();
-        if (replyList != null && replyList.size() != 0) {
-            tvQuestTitle.setVisibility(View.VISIBLE);
-            setReplyData(replyList, false);
-        }
-
-        llContent.setVisibility(View.VISIBLE);
-
+        showDetail(activity);
+        showReplyList(activityDetail.getReplyList());
     }
 
     @Override
@@ -257,44 +324,46 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Override
     public void refreshActivityData() {
         EventBus.getDefault().post(new Event.RefreshActivityData());
-        pop();
-    }
 
-    String getRepeatedType(String type) {
-        String ret = "";
-        if ("daily".equals(type)) {
-            ret = "(每天)";
-        } else if ("weekly".equals(type)) {
-            ret = "(每周)";
-        } else if ("monthly".equals(type)) {
-            ret = "(每月)";
-        } else if ("yearly".equals(type)) {
-            ret = "(每年)";
-        }
-        return ret;
     }
 
     @Override
+    public void sucJoinActivity() {
+        refreshActivityData();
+        activity.getPartnerList().add(User.getUserId());
+        showDetail(activity);
+    }
+
+    @Override
+    public void sucQuitActivity() {
+        refreshActivityData();
+        activity.getPartnerList().remove(User.getUserId());
+        showDetail(activity);
+    }
+
+
+    @OnClick({R.id.acbt_sign_up, R.id.acbt_sign_up_back, R.id.acbt_question, R.id.acbt_sign_up_list, R.id.tv_more_question})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
-                pop();
-                break;
 
-            case R.id.question:
-                start(ReplyFragment.newInstance(Constants.special_organization_agency, mActivityId, mActivityTitle, true));
-                break;
-
-
-            case R.id.join_in:
+            case R.id.acbt_sign_up:
                 joinActivity();
                 break;
 
-            case R.id.cancel:
-                cancelActivity();
+
+            case R.id.acbt_sign_up_back:
+                quitActivity();
+                break;
+            case R.id.tv_more_question:
+            case R.id.acbt_question:
+                addQuestion();
+                break;
+            case R.id.acbt_sign_up_list:
+
                 break;
         }
     }
+
 
     private void cancelActivity() {
         new NormalDialog().createNormal(_mActivity, R.string.confirm_cancel_activity, () -> {
@@ -303,15 +372,19 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     }
 
     private void joinActivity() {
-        if (TextUtils.equals(getString(R.string.join), joinIn.getText().toString())) {
-            new NormalDialog().createNormal(_mActivity, R.string.confirm_join_activity, () -> {
-                mPresenter.joinActivity(mActivityId);
-            });
-        } else if (TextUtils.equals(getString(R.string.quit), joinIn.getText().toString())) {
-            new NormalDialog().createNormal(_mActivity, R.string.confirm_quite_activity, () -> {
-                mPresenter.quitActivity(mActivityId);
-            });
-        }
+        new NormalDialog().createNormal(_mActivity, R.string.confirm_join_activity, () -> {
+            mPresenter.joinActivity(mActivityId);
+        });
+    }
+
+    private void quitActivity() {
+        new NormalDialog().createNormal(_mActivity, R.string.confirm_quite_activity, () -> {
+            mPresenter.quitActivity(mActivityId);
+        });
+    }
+
+    private void addQuestion() {
+        start(ActivityQuestionListFragment.newInstance(activity));
     }
 
 

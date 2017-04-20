@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
@@ -37,7 +38,6 @@ import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
-import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.filter_view.FilterLayoutView;
 
 /**
@@ -136,7 +136,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         }
 
 
-
         mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
 
@@ -162,7 +161,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
 //        mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
-            start(ActivityDetailFragment.newInstance(activityItem.getId()));
+            start(ActivityDetailFragment.newInstance(activityItem));
         });
         mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);
@@ -189,8 +188,12 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void getAboutMe(int skip) {
-        //TODO 获取关于我的活动
-        String filter = "{\"where\":{\"partnerList\":\"" + User.getUserId() +"\"}}";
+        //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
+
+
+        String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}," +
+                "\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}," +
+                "{\"partnerList\":\"" + User.getUserId() + "\"}]}}";
         mPresenter.getAboutMe(filter, skip);
     }
 

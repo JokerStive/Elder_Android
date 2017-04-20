@@ -19,9 +19,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
+import lilun.com.pension.module.bean.Register;
+import lilun.com.pension.ui.welcome.LoginModule;
 
 /**
  * Created by zp on 2017/4/13.
@@ -88,8 +91,11 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
 
     @Override
-    public void successOfCommitRegister(Account backAccount) {
-        account = backAccount;
+    public void successOfCommitRegister(Register register) {
+        account = register.getUser();
+        LoginModule loginModule = new LoginModule();
+        loginModule.putToken(register.getId());
+        loginModule.putAccountInfo(account);
         goStep6();
     }
 
@@ -195,8 +201,6 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
         ((RegisterActivity) _mActivity).setTitle();
         Bundle bundle = new Bundle();
         bundle.putSerializable("account", account);
-        bundle.putString("IDCode", IDCode);
-        bundle.putString("detailAddress", detailAddress);
         fragmentStep6.setArguments(bundle);
         _mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentStep6)
                 .setCustomAnimations(R.anim.pop_container_in, R.anim.pop_container_out)

@@ -23,6 +23,7 @@ import lilun.com.pension.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContract.View> implements ActivityClassifyContract.Presenter {
+
     @Override
     public void getClassifies() {
         List<ActivityCategory> activityCategories = (List<ActivityCategory>) ACache.get().getAsObject("activityClassify");
@@ -54,7 +55,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
     @Override
     public void getAboutMe(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationActivities(OrganizationChildrenConfig.activity(), StringUtils.addFilterWithDef(filter, skip))
+                .getOrganizationActivities(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<OrganizationActivity>>() {

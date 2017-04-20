@@ -145,6 +145,7 @@
     <string name="activity_end_time">结束时间</string>
     <string name="activity_repeat_type">周期活动类型</string>
     <string name="activity_repeat">周期类型</string>
+    <string name="activity_repeat_">定期活动：%1$s</string>
     <string name="activity_require">加入要求</string>
     <string name="activity_content">活动描述</string>
     <string name="activity_maxPartner">邀请人数</string>
@@ -154,6 +155,7 @@
     <string name="confirm_join_activity">确定参加这个活动吗？</string>
     <string name="confirm_cancel_activity">确定取消这个活动吗？</string>
     <string name="confirm_quite_activity">确定退出这个活动吗？</string>
+    <string name="confirm_no_ivatar">您未上传头像，确定不上传么？</string>
     <string name="joined">已参加</string>
     <string name="join">参加</string>
     <string name="quit">退出</string>
@@ -226,6 +228,7 @@
     <string name="originator_person_">发起人：%1$s</string>
     <string name="participation_request">参与要求</string>
     <string name="activity_address">活动地址</string>
+    <string name="activity_address_">活动地址：%1$s</string>
     <string name="course">课程</string>
 
     <!--消息中心-->
@@ -234,8 +237,12 @@
     <string name="personal_information">个人消息</string>
     <string name="save">保存</string>
     <string name="ongoing">进行中</string>
+    <string name="finished">已结束</string>
     <string name="has_partin">已参加:%1$s人</string>
-    <string name="targart_partin">参与人数:%1$s</string>
+    <string name="has_sign_up">已报名:%1$s人</string>
+    <string name="sign_up">报名</string>
+    <string name="sign_up_back">已报名</string>
+    <string name="targart_partin_">参与人数：%1$s</string>
     <string name="single">单次</string>
     <string name="cyclical">周期</string>
     <string name="detail">查看详情</string>
@@ -287,5 +294,17 @@
     <string name="belong_communite">居住小区</string>
     <string name="belong_communite_hint">请填写你的详细居住地址</string>
     <string name="common_address">/地球村/中国/</string>
+    <string name="sign_up_list">参与者列表</string>
+    <string name="more_question">查看更多提问</string>
+    <string name="activity_detail">活动详情</string>
+    <string name="activity_type_">活动类型:%1$s</string>
+    <string name="activity_start_">开始时间：</string>
+    <string name="activit_creator_">发起人：%1$s</string>
+    <string name="activity_desp">活动描述</string>
+    <string name="activity_evaluate">综合评价</string>
+    <string name="activity_question_list_">提问列表(%1$s)</string>
+    <string name="question_hint">请输入您的提问内容</string>
+    <string name="send">发送</string>
+    <string name="answer_hint">请输入您的回复内容</string>
 
 </resources>

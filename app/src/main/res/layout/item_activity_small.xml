@@ -123,7 +123,7 @@
                     android:layout_marginLeft="3dp"
                     android:textColor="@color/gray2"
                     android:textSize="@dimen/dp_14"
-                    tools:text="@string/targart_partin" />
+                    tools:text="@string/targart_partin_" />
 
 
             </LinearLayout>

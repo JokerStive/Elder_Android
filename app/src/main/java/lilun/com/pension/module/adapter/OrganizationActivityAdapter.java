@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import lilun.com.pension.R;
@@ -58,6 +60,19 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                         listener.onItemClick(activity);
                     }
                 });
+        help.getView(R.id.tv_activity_status).setVisibility(View.VISIBLE);
+        //不是周期活动
+        if (TextUtils.isEmpty(activity.getRepeatedDesc())) {
+            DateTime start = StringUtils.IOS2DateTime(activity.getStartTime());
+            DateTime end = StringUtils.IOS2DateTime(activity.getEndTime());
+            if (start != null && start.isAfterNow())  //未进行
+                help.getView(R.id.tv_activity_status).setVisibility(View.GONE);
+            else if (start != null && start.isBeforeNow() && (end != null && end.isAfterNow())) {
+                help.setText(R.id.tv_activity_status, context.getString(R.string.ongoing));
+            } else if (end != null && end.isBeforeNow()) {
+                help.setText(R.id.tv_activity_status, context.getString(R.string.finished));
+            }
+        }
 
 
         List<String> partners = activity.getPartnerList();
@@ -87,7 +102,12 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
             }
         } else help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
 
-        help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin, activity.getMaxPartner() + "人"));
+        String numPeople;
+        if ("null".equals(String.valueOf(activity.getMaxPartner())) || "0".equals(String.valueOf(activity.getMaxPartner())))
+            numPeople = "不限";
+        else
+            numPeople = activity.getMaxPartner() + "";
+        help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin_, numPeople + "人"));
 
 
         String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;

@@ -30,4 +30,12 @@ public class NestedReply extends BaseBean {
         this.answer = answer;
         return this;
     }
+
+    public NestedReply() {
+    }
+
+    public NestedReply(OrganizationReply question, OrganizationReply answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 }

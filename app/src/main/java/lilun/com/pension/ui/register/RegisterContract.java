@@ -6,6 +6,7 @@ import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
+import lilun.com.pension.module.bean.Register;
 
 /**
  * Created by zp on 2017/4/13.
@@ -39,7 +40,7 @@ public interface RegisterContract {
      * 第5步获取 地区的 VP
      */
     interface ViewStep5 extends IView<PresenterStep5> {
-        void successOfCommitRegister(Account backAccount);
+        void successOfCommitRegister(Register register);
 
         void successOfChildLocation(List<Area> areas);
     }

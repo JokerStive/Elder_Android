@@ -39,6 +39,13 @@ public class OrganizationReply extends BaseBean {
     private String updatorId;
     private String updatorName;
 
+    public OrganizationReply() {
+    }
+
+    public OrganizationReply(String content) {
+        this.content = content;
+    }
+
     public String getId() {
         return id;
     }

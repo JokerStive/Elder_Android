@@ -77,7 +77,7 @@
         <item name="android:textColor">@color/activity_black</item>
     </style>
     <!--16sp tv 输入内容-->
-    <style name="tv_input_content" >
+    <style name="tv_input_content">
         <item name="android:focusable">false</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -200,7 +200,24 @@
 
     </style>
 
+    <!--活动详情使用的-->
+    <style name="acitivyt_detail_normal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
 
+    <style name="acitivyt_detail_normal_black" parent="acitivyt_detail_normal">
+        <item name="android:textColor">@color/activity_black</item>
+    </style>
+
+    <style name="acitivyt_detail_normal_grey" parent="acitivyt_detail_normal">
+        <item name="android:textColor">@color/gray2</item>
+    </style>
 
 
 </resources>

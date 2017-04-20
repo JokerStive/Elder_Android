@@ -140,7 +140,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         mActivityAdapter = getAdapterFromLayoutType(activities);
         if (mActivityAdapter != null) {
             mActivityAdapter.setOnItemClickListener((activityItem) -> {
-                start(ActivityDetailFragment.newInstance(activityItem.getId()));
+                start(ActivityDetailFragment.newInstance(activityItem));
             });
             mActivityAdapter.setEmptyView();
         }

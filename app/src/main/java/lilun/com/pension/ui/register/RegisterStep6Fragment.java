@@ -1,7 +1,9 @@
 package lilun.com.pension.ui.register;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,9 @@ import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.ui.home.HomeActivity;
 import lilun.com.pension.widget.CircleImageView;
+import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.TakePhotoDialogFragment;
 import rx.Observable;
 
@@ -59,13 +63,20 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
                 fragment.show(fragmentManager, null);
             }
         } else if (v.getId() == R.id.fab_go_next) {
-            String imageName = "";
-            if (account.getImage() != null && account.getImage().size() > 0) {
-                imageName = account.getImage().get(0).getFileName();
-            }
+            //不选择头像
+            if (TextUtils.isEmpty(path)) {
+                new NormalDialog().createNormal(_mActivity, R.string.confirm_no_ivatar, () -> {
+                    successOfUpdateImage();
+                });
+            } else {
+                String imageName = "";
+                if (account.getImage() != null && account.getImage().size() > 0) {
+                    imageName = account.getImage().get(0).getFileName();
+                }
 
-            mPresenter.updateImage(account.getId(), imageName, path);
-            //  mPresenter.updateImage(getAccountId(), getImageName(), path);
+                //   mPresenter.updateImage(account.getId(), imageName, path);
+                mPresenter.updateImage(User.getUserId(), imageName, path);
+            }
         } else if (v.getId() == R.id.bt_token) {
             PreUtils.putString(User.token, etToken.getText().toString().trim());
             Log.d("zp", User.getToken());
@@ -108,7 +119,8 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
 
     @Override
     public void successOfUpdateImage() {
-
+        startActivity(new Intent(getContext(), HomeActivity.class));
+        _mActivity.finish();
     }
 
     @Override

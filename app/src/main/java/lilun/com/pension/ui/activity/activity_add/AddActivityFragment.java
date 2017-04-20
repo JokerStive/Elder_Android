@@ -230,10 +230,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         Integer maxPart = null;
         if (!TextUtils.isEmpty(max)) {
             maxPart = Integer.parseInt(maxPartner);
-            if (maxPart > 10) {
-                ToastHelper.get().showWareShort("最大人数不能超过10个");
-            }
-        }
+        } else maxPart = 0;
 
         OrganizationActivity activity = new OrganizationActivity();
         activity.setCategoryId(mCategoryId);
