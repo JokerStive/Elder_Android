@@ -155,7 +155,7 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
                 if (s.toString().trim().length() == 0) {
                     acbtSend.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_rect_write_corner));
                 }
-                acbtSend.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_rect_red_corner));
+                acbtSend.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_rect_red_corner_5));
             }
         });
     }

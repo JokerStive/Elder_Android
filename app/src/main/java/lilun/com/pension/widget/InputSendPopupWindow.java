@@ -68,7 +68,7 @@ public class InputSendPopupWindow extends PopupWindow {
                 if (s.toString().trim().length() == 0) {
                     send.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.shape_rect_write_corner));
                 }
-                send.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.shape_rect_red_corner));
+                send.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable.shape_rect_red_corner_5));
             }
         });
 
