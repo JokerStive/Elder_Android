@@ -53,15 +53,6 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     private List<Information> products = new ArrayList<>();
     private HealthServiceAdapter mAdapter;
     private String parentId;
-//    private ArrayList<Information> announcements;
-
-//    public static HealthClassifyFragment newInstance(List<Information> announcements) {
-//        HealthClassifyFragment fragment = new HealthClassifyFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable("announcements", (Serializable) announcements);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     public static HealthClassifyFragment newInstance(String parentId) {
         HealthClassifyFragment fragment = new HealthClassifyFragment();
