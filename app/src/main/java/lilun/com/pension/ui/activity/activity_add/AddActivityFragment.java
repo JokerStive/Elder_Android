@@ -253,9 +253,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
                 showNotEmpty(R.string.activity_end_time);
                 return;
             }
-            String startTimeISO = StringUtils.localToGTM(startTime + ":00");
+            String startTimeISO = startTime + ":00";
             activity.setStartTime(startTimeISO);
-            String endTimeISO = StringUtils.localToGTM(endTime + ":00");
+            String endTimeISO = endTime + ":00";
             activity.setEndTime(endTimeISO);
         }
         activity.setDruation(intDuration);
@@ -270,7 +270,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         }
 
 
-        mPresenter.addActivity(activity, getPhotoData());
+        mPresenter.addActivity(_mActivity, activity, getPhotoData());
 
 
     }

@@ -298,13 +298,22 @@
     <string name="more_question">查看更多提问</string>
     <string name="activity_detail">活动详情</string>
     <string name="activity_type_">活动类型:%1$s</string>
-    <string name="activity_start_">开始时间：</string>
+    <string name="activity_start_">开始时间：%1$s</string>
     <string name="activit_creator_">发起人：%1$s</string>
     <string name="activity_desp">活动描述</string>
     <string name="activity_evaluate">综合评价</string>
+    <string name="want_evaluate">我要评价</string>
+    <string name="my_evaluate">我的评价</string>
     <string name="activity_question_list_">提问列表(%1$s)</string>
     <string name="question_hint">请输入您的提问内容</string>
     <string name="send">发送</string>
     <string name="answer_hint">请输入您的回复内容</string>
+    <string name="close_activity">解散报名</string>
+    <string name="day">天</string>
+    <string name="hour">时</string>
+    <string name="minutes">分</string>
+    <string name="seconds">秒</string>
+    <string name="finished_sign_up">报名已截止</string>
+    <string name="commit_evalue">您对本活动评价为%1$s星，确认提交么?</string>
 
 </resources>

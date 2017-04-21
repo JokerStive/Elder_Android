@@ -12,6 +12,7 @@ import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import me.yokeyword.fragmentation.SupportActivity;
 import okhttp3.RequestBody;
 import rx.Observable;
 
@@ -24,7 +25,7 @@ import rx.Observable;
  */
 public class AddActivityPresenter extends RxPresenter<AddActivityConstract.View> implements AddActivityConstract.Presenter {
     @Override
-    public void addActivity(OrganizationActivity activity, ArrayList<String> photoData) {
+    public void addActivity(SupportActivity _mActivity, OrganizationActivity activity, ArrayList<String> photoData) {
         Observable<OrganizationActivity> observable = activityObservable(activity, null);
         if (photoData != null) {
             Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(photoData);
@@ -34,7 +35,7 @@ public class AddActivityPresenter extends RxPresenter<AddActivityConstract.View>
         }
         addSubscribe(observable
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationActivity>() {
+                .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
                     @Override
                     public void _next(OrganizationActivity activity1) {
                         view.addActivitySuccess();

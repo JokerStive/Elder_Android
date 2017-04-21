@@ -75,7 +75,7 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
                 }
 
                 //   mPresenter.updateImage(account.getId(), imageName, path);
-                mPresenter.updateImage(User.getUserId(), imageName, path);
+                mPresenter.updateImage(_mActivity, User.getUserId(), imageName, path);
             }
         } else if (v.getId() == R.id.bt_token) {
             PreUtils.putString(User.token, etToken.getText().toString().trim());

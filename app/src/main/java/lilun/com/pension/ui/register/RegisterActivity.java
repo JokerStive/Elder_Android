@@ -84,5 +84,11 @@ public class RegisterActivity extends BaseActivity {
         tvTitleDesp.setText(titleDespList.get(index));
     }
 
+    public void setTitle(String phone) {
+        int index = getSupportFragmentManager().getBackStackEntryCount();
+        tvTitle.setText(titleList.get(index));
+        tvTitleDesp.setText(titleDespList.get(index).replace("phone", phone));
+    }
+
 
 }

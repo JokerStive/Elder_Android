@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
         app:title="@string/activity_detail" />
@@ -30,19 +31,61 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/max_photo_height" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_name"
-                    style="@style/acitivyt_detail_normal"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="社区组织公益活动"
-                    android:textColor="@color/activity_black"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_type"
-                    style="@style/acitivyt_detail_normal_grey"
-                    android:text="@string/activity_type_" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_activity_name"
+                            style="@style/acitivyt_detail_normal"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="社区组织公益活动"
+                            android:textColor="@color/activity_black"
+                            android:textSize="18sp" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_activity_type"
+                            style="@style/acitivyt_detail_normal_grey"
+                            android:layout_below="@id/actv_activity_name"
+                            android:text="@string/activity_type_" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_avg_evaluate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@drawable/shape_rect_grey_corners"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_4">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            style="@style/acitivyt_detail_normal_black"
+                            android:text="@string/activity_evaluate"
+                            android:textSize="18sp" />
+
+                        <RatingBar
+                            android:id="@+id/rb_avg_evaluate"
+                            style="@style/ratingBarr_small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:rating="4"
+                            android:stepSize="1" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/actv_activity_time"
@@ -54,12 +97,19 @@
                     android:id="@+id/ll_activity_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left|center"
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/actv_start"
                         style="@style/acitivyt_detail_normal_black"
                         android:drawableLeft="@drawable/activity_start"
                         android:text="@string/activity_start_" />
+
+                    <lilun.com.pension.widget.CountDownView
+                        android:id="@+id/cdv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatTextView
@@ -126,24 +176,38 @@
                     android:id="@+id/ll_evalute"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:gravity="left|center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10">
+
+                    <lilun.com.pension.widget.CircleImageView
+                        android:id="@+id/civ_account_avatar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_def" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        style="@style/acitivyt_detail_normal"
+                        android:id="@+id/actv_my_evaluate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="@string/activity_evaluate"
+                        android:paddingLeft="@dimen/dp_4"
+                        android:text="@string/want_evaluate"
                         android:textColor="@color/activity_black"
                         android:textSize="18sp" />
 
-                    <View
-                        style="@style/line_gray"
-                        android:layout_marginLeft="@dimen/dp_10" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_activity_evalute"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                    <RatingBar
+                        android:id="@+id/rb_bar"
+                        style="@style/ratingBarr_big"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:minHeight="10dp"
+                        android:numStars="5"
+                        android:rating="4"
+                        android:stepSize="1" />
                 </LinearLayout>
 
                 <View

@@ -4,6 +4,7 @@ import java.util.List;
 
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ActivityDetail;
+import lilun.com.pension.module.bean.ActivityEvaluate;
 import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.RxUtils;
@@ -92,6 +93,7 @@ public class ActivityDetailPresenter extends RxPresenter<ActivityDetailContact.V
                     }
                 }));
     }
+
     @Override
     public void addAnswer(String activityId, String quesetionId, String answer, int index) {
         addSubscribe(NetHelper.getApi()
@@ -101,8 +103,41 @@ public class ActivityDetailPresenter extends RxPresenter<ActivityDetailContact.V
                 .subscribe(new RxSubscriber<OrganizationReply>() {
                     @Override
                     public void _next(OrganizationReply organizationReply) {
-                        view.showAnswer(organizationReply,index);
+                        view.showAnswer(organizationReply, index);
                     }
                 }));
+    }
+
+    @Override
+    public void getActivityRank(String activityId) {
+        addSubscribe(NetHelper.getApi()
+                .getActivityRank(activityId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<ActivityEvaluate>() {
+                    @Override
+                    public void _next(ActivityEvaluate evaluate) {
+                        view.showActivityRank(evaluate);
+                    }
+                }));
+    }
+
+    @Override
+    public void postActivityRank(String activityId, int rating) {
+        addSubscribe(NetHelper.getApi()
+                .postActivityRank(activityId, rating + "")
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<ActivityEvaluate>() {
+                    @Override
+                    public void _next(ActivityEvaluate evaluate) {
+                        view.showActivityRank(evaluate);
+                    }
+                }));
+    }
+
+    @Override
+    public void getAvgRank(String activityId) {
+
     }
 }

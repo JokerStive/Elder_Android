@@ -11,6 +11,7 @@ import lilun.com.pension.module.bean.Register;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * Created by zp on 2017/4/14.
@@ -19,12 +20,12 @@ import lilun.com.pension.net.RxSubscriber;
 public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewStep5>
         implements RegisterContract.PresenterStep5 {
     @Override
-    public void getChildLocation(String locationName) {
+    public void getChildLocation(SupportActivity _mActivity, String locationName) {
         addSubscribe(NetHelper.getApi()
                 .getChildLocation(locationName)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Area>>() {
+                .subscribe(new RxSubscriber<List<Area>>(_mActivity) {
                     @Override
                     public void _next(List<Area> areas) {
                         view.successOfChildLocation(areas);
@@ -33,12 +34,12 @@ public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewSte
     }
 
     @Override
-    public void commitRegister(String organizationId, String IDCode, String address, Account account) {
+    public void commitRegister(SupportActivity _mActivity, String organizationId, String IDCode, String address, Account account) {
         addSubscribe(NetHelper.getApi()
                 .commitRegister(organizationId, IDCode, address,account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Register>() {
+                .subscribe(new RxSubscriber<Register>(_mActivity) {
                     @Override
                     public void _next(Register register) {
                         Log.d("zp", "提交返回");

@@ -41,8 +41,8 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
         }
         account.setMobile(phone);
         account.setUsername(phone);
-       // goStep3();
-        mPresenter.getIDCode(phone);
+        // goStep3();
+        mPresenter.getIDCode(_mActivity, phone);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
     }
 
     private void goStep3() {
-        ((RegisterActivity) _mActivity).setTitle();
+        ((RegisterActivity) _mActivity).setTitle(account.getMobile());
         Bundle bundle = new Bundle();
         bundle.putSerializable("account", account);
         fragmentStep3.setArguments(bundle);

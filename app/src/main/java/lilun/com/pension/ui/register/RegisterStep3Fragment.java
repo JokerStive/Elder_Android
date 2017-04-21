@@ -36,7 +36,7 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     public void onClick() {
         IDCode = acetRegisterCode.getText().toString().trim();
         if (checkRegisterCode(IDCode)) {
-            mPresenter.checkIDCode(account.getMobile(), IDCode);
+            mPresenter.checkIDCode(_mActivity, account.getMobile(), IDCode);
         }
     }
 

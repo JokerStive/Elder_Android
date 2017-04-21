@@ -29,6 +29,11 @@ import lilun.com.pension.module.bean.IconModule;
  */
 public class StringUtils {
 
+    /**
+     * 转换为东八区时间
+     * @param isoTime1
+     * @return
+     */
     public static String timeFormat(String isoTime1) {
         String[] ss = isoTime1.split("\\.");
         String isoTime = ss[0] + "+08:00";
@@ -38,6 +43,11 @@ public class StringUtils {
         return format.format(new Date(dateTime.getMillis() + 28800 * 1000));
     }
 
+    /**
+     * 转换为东八区时间
+     * @param isoTime1
+     * @return
+     */
     public static String IOS2ToUTC(String isoTime1) {
         String ret = "Error";
         try {
@@ -54,6 +64,26 @@ public class StringUtils {
     }
 
     /**
+     * 转换为东八区时间
+     * @param isoTime1
+     * @return
+     */
+    public static Date IOS2ToUTCDate(String isoTime1) {
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] + "+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            DateTime dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return new Date(dateTime.getMillis() + 28800 * 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 转换为东八区时间
      * @param isoTime1
      * @param mode     0 - 返回年月日   1- 返回时分  -2 返回所有 -3 返回月/日 时:分  -4 返回月/日
      * @return
@@ -87,7 +117,7 @@ public class StringUtils {
     }
 
     /***
-     * 转mongoDB 时间
+     * 东八区时间 转换为 0区时间  转mongoDB 时间
      *
      * @param str 2015-03-23 12:12:12
      * @return

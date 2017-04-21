@@ -7,6 +7,7 @@ import java.util.Map;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.ActivityDetail;
+import lilun.com.pension.module.bean.ActivityEvaluate;
 import lilun.com.pension.module.bean.AidDetail;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.Contact;
@@ -37,6 +38,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -352,12 +354,12 @@ public interface ApiService {
      */
     @DELETE("OrganizationActivities/{id}/quit")
     Observable<Response<Object>> quitActivity(@Path("id") String activityId);
-
-    /**
-     * 删除一个活动
-     */
-    @DELETE("OrganizationActivities/{id}")
-    Observable<Response<Object>> cancelActivity(@Path("id") String activityId);
+//
+//    /**
+//     * 删除一个活动
+//     */
+//    @DELETE("OrganizationActivities/{id}")
+//    Observable<Response<Object>> cancelActivity(@Path("id") String activityId);
 
 
     /**
@@ -370,6 +372,7 @@ public interface ApiService {
 
     /**
      * 添加一个活动提问
+     *
      * @param activityId
      * @param question
      * @return
@@ -378,10 +381,11 @@ public interface ApiService {
     Observable<Response<OrganizationReply>> addQuestion(@Path("id") String activityId, @Body OrganizationReply question);
 
     @GET("OrganizationActivities/{id}/replyList")
-    Observable<Response<List<NestedReply>>>  replyList(@Path("id") String activityId, @Query("ReplyFilter")String filter);
+    Observable<Response<List<NestedReply>>> replyList(@Path("id") String activityId, @Query("ReplyFilter") String filter);
 
     /**
      * 添加一个活动提问回答
+     *
      * @param activityId
      * @param questionId
      * @param question
@@ -389,6 +393,62 @@ public interface ApiService {
      */
     @POST("OrganizationActivities/{id}/questions/{questionId}/answer")
     Observable<Response<OrganizationReply>> addAnswer(@Path("id") String activityId, @Path("questionId") String questionId, @Body OrganizationReply question);
+
+    /**
+     * 参与活动的列表
+     *
+     * @param activityId
+     * @return
+     */
+    @GET("OrganizationActivities/{id}/partners")
+    Observable<Response<List<Account>>> queryPartners(@Path("id") String activityId, @Query("filter") String filter);
+
+    /**
+     * 踢出某一个参与者
+     *
+     * @param activityId
+     * @param userId
+     * @return
+     */
+    @DELETE("OrganizationActivities/{id}/partners/rel/{fk}")
+    Observable<Response<Account>> deleteOfPartners(@Path("id") String activityId, @Path("fk") String userId);
+
+    /**
+     * 关闭（解散）活动
+     *
+     * @param activityId
+     * @return
+     */
+    @PUT("OrganizationActivities/{id}/cancelActivity")
+    Observable<Response<Object>> cancelActivity(@Path("id") String activityId);
+
+    /**
+     * 获取活动评价星级
+     *
+     * @param activityId
+     * @return
+     */
+    @GET("OrganizationActivities/{id}/Rank")
+    Observable<Response<ActivityEvaluate>> getActivityRank(@Path("id") String activityId);
+
+    /**
+     * 提交我的评价星级
+     *
+     * @param activityId
+     * @return
+     */
+
+    @POST("OrganizationActivities/{id}/Rank")
+    Observable<Response<ActivityEvaluate>> postActivityRank(@Path("id") String activityId, @Header("rank") String rank);
+
+    /**
+     * 平均评价
+     *
+     * @param activityId
+     * @return
+     */
+    @GET("OrganizationActivities/{id}/AVGRank")
+    Observable<Response<Object>> getAvgRank(@Path("id") String activityId);
 //    ================================================================
 
     /**
@@ -463,7 +523,7 @@ public interface ApiService {
      * 检测验证码
      */
     @POST("Accounts/IDCode")
-    Observable<Response<Boolean>> checkIDCode(@Query("mobile") String phone, @Query("aIDCode") String aIDCode);
+    Observable<Response<Boolean>> checkIDCode(@Query("mobile") String phone, @Query("IDCode") String aIDCode);
 
 
     @GET("Accounts/getChildLocation")

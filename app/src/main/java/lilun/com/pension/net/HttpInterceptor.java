@@ -32,7 +32,7 @@ public class HttpInterceptor implements Interceptor {
             request = request.newBuilder().addHeader("Authorization", token).build();
         }
 
-         response = chain.proceed(request);
+        response = chain.proceed(request);
         int code = response.code();
         //401并且不是登陆
         if (code == 401 && !TextUtils.isEmpty(User.getToken())) {

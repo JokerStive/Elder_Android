@@ -19,7 +19,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
@@ -55,15 +54,15 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
     public void onClick(View view) {
         if (view.getId() == R.id.tv_belong_area) {
             mListWindow.clear();
-            mPresenter.getChildLocation("");
+            mPresenter.getChildLocation(_mActivity,"");
         } else if (view.getId() == R.id.tv_belong_stress) {
-            mPresenter.getChildLocation(choiceArea.getId().replace(getString(R.string.common_address), ""));
+            mPresenter.getChildLocation(_mActivity, choiceArea.getId().replace(getString(R.string.common_address), ""));
         } else if (view.getId() == R.id.fab_go_next) {
             belongOrganizationId = getBelongOrganizationId();
             detailAddress = belongOrganizationId.replace(getString(R.string.common_address), "") + getDetailAddress();
             detailAddress.replace("/", "");
             account.setDefaultOrganizationId(belongOrganizationId);
-            mPresenter.commitRegister(belongOrganizationId, IDCode, detailAddress, account);
+            mPresenter.commitRegister(_mActivity,belongOrganizationId, IDCode, detailAddress, account);
         }
     }
 
@@ -113,7 +112,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Area area = (Area) mListWindow.get(0).getListView().getAdapter().getItem(position);
-                    mPresenter.getChildLocation(area.getId().replace(getString(R.string.common_address), ""));
+                    mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""));
                 }
             });
             mListWindow.get(0).show();
@@ -124,7 +123,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Area area = (Area) mListWindow.get(1).getListView().getAdapter().getItem(position);
-                    mPresenter.getChildLocation(area.getId().replace(getString(R.string.common_address), ""));
+                    mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""));
                 }
             });
             mListWindow.get(1).show();

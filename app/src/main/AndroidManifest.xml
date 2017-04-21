@@ -44,9 +44,11 @@
         <!-- 登录 -->
         <activity
             android:name=".ui.welcome.LoginActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.register.RegisterActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:screenOrientation="portrait" />
 
 
         <!-- 订单详情-->

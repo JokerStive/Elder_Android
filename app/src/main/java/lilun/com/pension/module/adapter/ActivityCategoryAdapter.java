@@ -1,7 +1,9 @@
 package lilun.com.pension.module.adapter;
 
 import android.content.res.Resources;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -13,7 +15,6 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -64,8 +65,12 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
 
         if (activityCategory.getIcon() != null) {
             String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivityCategories, activityCategory.getId(), firstIconName,"");
-            ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivityCategories, activityCategory.getId(), firstIconName, "");
+            //  ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
+            Glide.with(App.context).load(iconUrl).dontAnimate()
+                    .placeholder(R.drawable.icon_def)
+                    .error(R.drawable.icon_def)
+                    .into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }
 

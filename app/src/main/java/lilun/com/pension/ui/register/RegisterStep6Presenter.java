@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.utils.BitmapUtils;
-import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import me.yokeyword.fragmentation.SupportActivity;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -22,7 +22,7 @@ import okhttp3.RequestBody;
 public class RegisterStep6Presenter extends RxPresenter<RegisterContract.ViewStep6>
         implements RegisterContract.PresenterStep6 {
     @Override
-    public void updateImage(String id, String imageName, String path) {
+    public void updateImage(SupportActivity _mActivity, String id, String imageName, String path) {
         Log.d("zp", User.getToken()+"   \n" + id + "     \n" + imageName + "   \n" + path);
         if(TextUtils.isEmpty(imageName))
             imageName = "{imageName}";
@@ -34,7 +34,7 @@ public class RegisterStep6Presenter extends RxPresenter<RegisterContract.ViewSte
                 .updateImage(id, imageName, requestBody)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>() {
+                .subscribe(new RxSubscriber<Object>(_mActivity) {
                     @Override
                     public void _next(Object o) {
                         Log.d("zp", "上传图片返回");

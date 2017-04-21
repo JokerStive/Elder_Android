@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.OrganizationActivity;
+import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * 新建活动C
@@ -22,7 +23,7 @@ public interface AddActivityConstract {
 
 
     interface Presenter extends IPresenter<View> {
-        void addActivity(OrganizationActivity  activity,ArrayList<String> photoData);
+        void addActivity(SupportActivity _mActivity, OrganizationActivity activity, ArrayList<String> photoData);
         String getRepeatType(String[] repeatedTypeArray,String str);
     }
 

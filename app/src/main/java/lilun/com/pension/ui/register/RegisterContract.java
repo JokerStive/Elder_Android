@@ -7,6 +7,7 @@ import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.Register;
+import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * Created by zp on 2017/4/13.
@@ -22,7 +23,7 @@ public interface RegisterContract {
     }
 
     interface PresenterStep2 extends IPresenter<ViewStep2> {
-        void getIDCode(String phone);
+        void getIDCode(SupportActivity _mActivity, String phone);
     }
   /**
      * 第3步  检测  验证码的 VP
@@ -32,7 +33,7 @@ public interface RegisterContract {
     }
 
     interface PresenterStep3 extends IPresenter<ViewStep3> {
-        void checkIDCode(String phone, String aIDCode);
+        void checkIDCode(SupportActivity _mActivity, String phone, String aIDCode);
     }
 
 
@@ -46,9 +47,9 @@ public interface RegisterContract {
     }
 
     interface PresenterStep5 extends IPresenter<ViewStep5> {
-        void getChildLocation(String locationName);
+        void getChildLocation(SupportActivity _mActivity, String locationName);
 
-        void commitRegister(String organizationId, String IDCode, String address, Account account);
+        void commitRegister(SupportActivity _mActivity, String organizationId, String IDCode, String address, Account account);
     }
 
     /**
@@ -60,6 +61,6 @@ public interface RegisterContract {
     }
 
     interface PresenterStep6 extends IPresenter<ViewStep6> {
-        void updateImage(String id, String imageName, String path);
+        void updateImage(SupportActivity _mActivity, String id, String imageName, String path);
     }
 }
