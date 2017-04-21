@@ -78,7 +78,7 @@
 
         <!-- 切换组织-->
         <activity
-            android:name=".ui.change_organization.ChangeOrganizationFragment"
+            android:name=".ui.change_organization.ChangeOrganizationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 

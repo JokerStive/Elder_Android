@@ -15,7 +15,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
-import lilun.com.pension.ui.change_organization.ChangeOrganizationFragment;
+import lilun.com.pension.ui.change_organization.ChangeOrganizationActivity;
 
 /**
  * 标题栏
@@ -90,7 +90,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
             case R.id.iv_position:
                 if (fragment != null) {
-                    fragment.startActivity(new Intent(fragment.getActivity(),ChangeOrganizationFragment.class));
+                    fragment.startActivity(new Intent(fragment.getActivity(),ChangeOrganizationActivity.class));
                 }
                 if (listener != null) {
                     listener.onPositionClick();

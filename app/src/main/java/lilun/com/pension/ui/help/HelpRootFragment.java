@@ -9,28 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.adapter.AidRootAdapter;
-import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.adapter.CycleAidAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.help.list.HelpContract;
 import lilun.com.pension.ui.help.list.HelpFragment;
 import lilun.com.pension.ui.help.list.HelpPresenter;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
+import rx.Observable;
 
 /**
  * 邻里互助宿主activity
@@ -59,25 +58,42 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Bind(R.id.tv_find_help)
     TextView tvFindHelp;
 
-    private ArrayList<Information> informationList;
+//    private ArrayList<Information> informationList;
     //    private List<ElderModule> elderModules;
 //    private RecyclerView mClassifyRecycler;
-    private AidRootAdapter adapter;
+    private CycleAidAdapter adapter;
+    private int currentPosition=0;
+    private String parentId;
 //    private List<OrganizationAid> organizationAids = new ArrayList<>();
 
 
-    public static HelpRootFragment newInstance(List<Information> announcements) {
+//    public static HelpRootFragment newInstance(List<Information> announcements) {
+//        HelpRootFragment fragment = new HelpRootFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("informationList", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+    public static HelpRootFragment newInstance(String parentId) {
         HelpRootFragment fragment = new HelpRootFragment();
         Bundle args = new Bundle();
-        args.putSerializable("informationList", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        informationList = (ArrayList<Information>) arguments.getSerializable("informationList");
+        parentId = arguments.getString("parentId");
+        Preconditions.checkNull(parentId);
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
+
+//    @Override
+//    protected void getTransferData(Bundle arguments) {
+//        informationList = (ArrayList<Information>) arguments.getSerializable("informationList");
+//    }
 
     @Subscribe
     public void refreshData(Event.RefreshHelpData event) {
@@ -121,6 +137,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
         //刷新
+//        mRecyclerView.setScrollX();
         mSwipeLayout.setEnabled(false);
     }
 
@@ -135,15 +152,17 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         //初始化公告栏
-        if (informationList == null || informationList.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            AnnouncementFragment fragment = new AnnouncementFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("information", informationList);
-            fragment.setArguments(bundle);
-            replaceLoadRootFragment(R.id.fl_announcement_container, fragment, false);
-        }
+//        if (informationList == null || informationList.size() == 0) {
+//            Logger.d("公告数据为空");
+//        } else {
+//            AnnouncementFragment fragment = new AnnouncementFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("information", informationList);
+//            fragment.setArguments(bundle);
+//            replaceLoadRootFragment(R.id.fl_announcement_container, fragment, false);
+//        }
+
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
     }
 
     private void refreshData() {
@@ -157,18 +176,24 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     }
 
 
+    public void initTimer(){
+        subscription.add(Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
+                .compose(RxUtils.applySchedule())
+                .subscribe(aLong -> {
+                    mRecyclerView.smoothScrollToPosition(currentPosition++);
+                }));
+    }
+
     @Override
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
         completeRefresh();
         if (adapter == null) {
-            adapter = new AidRootAdapter(helps);
+            adapter = new CycleAidAdapter(helps);
             mRecyclerView.setAdapter(adapter);
-        } else if (isLoadMore) {
-            adapter.addAll(helps);
-        } else {
-            adapter.replaceAll(helps);
+            if (helps.size()>=CycleAidAdapter.data_limit){
+                initTimer();
+            }
         }
-
     }
 
     @Override

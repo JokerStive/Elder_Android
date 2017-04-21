@@ -30,6 +30,7 @@ import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.welcome.LoginActivity;
 import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
+import lilun.com.pension.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -47,6 +48,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private PushInfoAdapter pushInfoAdapter;
     private MyCallBack callback;
     protected CompositeSubscription subscription = new CompositeSubscription();
+    private RxProgressDialog dialog;
     //    private List<PushMessage> pushMessages;
 
     @Override
@@ -207,5 +209,17 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         }
 
         EventBus.getDefault().unregister(this);
+    }
+
+
+    protected void showDialog() {
+        if (dialog == null) {
+            dialog = new RxProgressDialog(this);
+        }
+        dialog.show();
+    }
+
+    protected void dismissDialog() {
+        dialog.dismiss();
     }
 }

@@ -10,9 +10,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +25,7 @@ import java.util.UUID;
 import lilun.com.pension.app.App;
 import lilun.com.pension.module.bean.IconModule;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -90,16 +96,41 @@ public class BitmapUtils {
     /**
      * 创建文件的requestBody
      */
-    public static Map<String,RequestBody> createRequestBodies(List<String> iconPaths) {
-        Map<String,RequestBody> map = new HashMap<>();
+    public static Map<String, RequestBody> createRequestBodies(List<String> iconPaths) {
+        Map<String, RequestBody> map = new HashMap<>();
         for (int i = 0; i < iconPaths.size(); i++) {
-            byte[] pathString = BitmapUtils.bitmapToBytes(iconPaths.get(i));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
-            map.put("file\"; filename=\"info" + i + ".png", requestBody);
+            File file = new File(iconPaths.get(i));
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            map.put("file=\"; filename=\"", requestBody);
         }
         return map;
     }
 
+    public static MultipartBody filesToMultipartBody(JSONObject json, List<String> iconPaths) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        Iterator<String> keys = json.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            try {
+                Object object = json.get(key);
+                if (object != null) {
+                    builder.addFormDataPart(key, object.toString());
+                }
+            } catch (JSONException e) {
+            }
+        }
+        if (iconPaths != null) {
+            for (String filePath : iconPaths) {
+                byte[] pathString = BitmapUtils.bitmapToBytes(filePath);
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), pathString);
+                builder.addFormDataPart("", filePath, requestBody);
+            }
+        }
+
+
+        builder.setType(MultipartBody.FORM);
+        return builder.build();
+    }
 
 
     /**

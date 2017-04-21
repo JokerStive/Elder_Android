@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.health.classify;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,8 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -25,6 +26,12 @@ public class HealthClassifyPresenter extends RxPresenter<HealthClassifyContract.
 
     @Override
     public void getClassifies() {
+        List<ElderModule> elderModules = (List<ElderModule>) ACache.get().getAsObject("healthClassify");
+        if (elderModules != null && elderModules.size() != 0) {
+            view.showClassifies(elderModules);
+            return;
+        }
+
         String health_service = App.context.getString(R.string.health_service);
         String filter = "{\"where\":{\"parent\":\"" + health_service + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
@@ -34,6 +41,7 @@ public class HealthClassifyPresenter extends RxPresenter<HealthClassifyContract.
                 .subscribe(new RxSubscriber<List<ElderModule>>() {
                     @Override
                     public void _next(List<ElderModule> elderModules) {
+                        ACache.get().put("healthClassify", (Serializable) elderModules);
                         view.showClassifies(elderModules);
                     }
 

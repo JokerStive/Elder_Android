@@ -30,6 +30,12 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         super(R.layout.item_personal_order, data);
     }
 
+
+//    @Override
+//    public int getItemCount() {
+//        return Integer.MAX_VALUE;
+//    }
+
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
         OrganizationProduct product = order.getProduct();

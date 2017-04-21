@@ -67,7 +67,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules,elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()));
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules,elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()),"icon");
             ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,helper.getView(R.id.iv_module_icon));
         }
     }

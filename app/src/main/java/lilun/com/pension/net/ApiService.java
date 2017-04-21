@@ -31,6 +31,7 @@ import lilun.com.pension.module.bean.Rank;
 import lilun.com.pension.module.bean.Register;
 import lilun.com.pension.module.bean.TokenInfo;
 import lilun.com.pension.module.bean.Tourism;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -117,8 +118,8 @@ public interface ApiService {
      * 获取求助数据
      */
 
-    @GET("Organizations/{id}/children")
-    Observable<Response<List<OrganizationAid>>> getOrganizationAids(@Path("id") String organizationId, @Query("filter") String filter);
+    @GET("OrganizationAids/Aids")
+    Observable<Response<List<OrganizationAid>>> getOrganizationAids(@Query("filter") String filter);
 
 
     /**
@@ -263,9 +264,13 @@ public interface ApiService {
     /**
      * 上传AID多张图片
      */
-    @Multipart
+//    @Multipart
+//    @POST("OrganizationAids/upload/image")
+//    Observable<Response<List<IconModule>>> newAidIcons(@PartMap Map<String, RequestBody> params);
+//    @Multipart
     @POST("OrganizationAids/upload/image")
-    Observable<Response<List<IconModule>>> newAidIcons(@PartMap Map<String, RequestBody> params);
+    Observable<Response<Object>> newAidIcons(@Body MultipartBody body);
+
 
 
     //==============================养老教育

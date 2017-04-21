@@ -6,15 +6,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
-import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
@@ -44,20 +41,31 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     SwipeRefreshLayout mSwipeLayout;
 
 
-    private ArrayList<Information> announcements;
+//    private ArrayList<Information> announcements;
     private ProductCategoryAdapter mClassifyAdapter;
+    private String parentId;
+    //
+//    public static ResidentialClassifyFragment newInstance(List<Information> announcements) {
+//        ResidentialClassifyFragment fragment = new ResidentialClassifyFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("announcements", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public static ResidentialClassifyFragment newInstance(List<Information> announcements) {
+
+    public static ResidentialClassifyFragment newInstance(String parentId) {
         ResidentialClassifyFragment fragment = new ResidentialClassifyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
+        parentId = arguments.getString("parentId");
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -96,7 +104,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         });
 
 
-        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
 
         mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
         //刷新

@@ -10,11 +10,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +24,9 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pension.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pension.module.bean.ActivityCategory;
-import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.activity.activity_add.AddActivityFragment;
 import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
@@ -67,20 +64,29 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    private ArrayList<Information> announcements;
+    //    private ArrayList<Information> announcements;
     private ArrayList<ActivityCategory> activityCategories;
 
     private OrganizationActivityAdapter mContentAdapter;
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
+    private String parentId;
 
 
-    public static ActivityClassifyFragment newInstance(List<Information> announcements) {
+    public static ActivityClassifyFragment newInstance(String parentId) {
         ActivityClassifyFragment fragment = new ActivityClassifyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
+//
+//    public static ActivityClassifyFragment newInstance(List<Information> announcements) {
+//        ActivityClassifyFragment fragment = new ActivityClassifyFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("announcements", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Subscribe
     public void refreshData(Event.RefreshActivityData event) {
@@ -89,7 +95,9 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
+        parentId = arguments.getString("parentId");
+        Preconditions.checkNull(parentId);
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -128,12 +136,8 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             }
         });
 
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-        }
+
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
 
 
         mClassifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

@@ -14,20 +14,21 @@ import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseTakePhotoFragment;
-import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.utils.BitmapUtils;
+import lilun.com.pension.module.utils.GsonUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
@@ -36,7 +37,7 @@ import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.widget.InputView;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.TakePhotoLayout;
-import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
 import rx.Observable;
 import rx.Subscription;
 
@@ -78,6 +79,11 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     RelativeLayout rlChoiceKind;
     @Bind(R.id.tv_priority)
     TextView tvPriority;
+
+    @Bind(R.id.tv_choice_type)
+    TextView tvChooseType;
+
+
     @Bind(R.id.rl_choice_priority)
     RelativeLayout rlChoicePriority;
 //    @Bind(R.id.input_kind)
@@ -124,17 +130,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         rlChoicePriority.setOnClickListener(this);
 
 
-//        rgClassify.check(R.id.rb_ask);
-//        rgClassify.setOnCheckedChangeListener((group, checkedId) -> {
-//            switch (checkedId) {
-//                case R.id.rb_ask:
-//                    mKind = 0;
-//                    break;
-//                case R.id.rb_help:
-//                    mKind = 1;
-//                    break;
-//            }
-//        });
     }
 
     @Override
@@ -182,7 +177,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .items(helpPriority)
                 .title("-选择求助优先级-")
                 .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
-                    tvPriority.setText(helpPriority[which]);
+                    tvChooseType.setText(helpPriority[which]);
                     return true;
                 })
                 .show();
@@ -197,8 +192,8 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         String priority = tvPriority.getText().toString();
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
-        String price = inputPrice.getInput();
-        String memo = inputMemo.getInput();
+//        String price = inputPrice.getInput();
+//        String memo = inputMemo.getInput();
 
         if (!TextUtils.isEmpty(priority) && helpPriority != null) {
             if (priority.equals(helpPriority[0])) {
@@ -229,35 +224,43 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 }
             }
 
-            //如果有图片，需要先上传图片
-            Observable<OrganizationAid> observable = aidObservable(null);
+            OrganizationAid aid = getOrganizationAid();
             List<String> data = getPhotoData();
-            if (data != null) {
-//                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-//                builder.a
-                Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(data);
-                if (requestBodies != null) {
-                    observable = iconObservable(requestBodies).flatMap(this::aidObservable);
-//                    observable = aidObservable(requestBodies);
-                }
+            try {
+                JSONObject aidJsonObject = GsonUtils.objectToJSONObject(aid);
+                MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, data);
+                NetHelper.getApi()
+                        .newAidIcons(multipartBody)
+                        .compose(RxUtils.handleResult())
+                        .compose(RxUtils.applySchedule())
+                        .subscribe(new RxSubscriber<Object>(_mActivity) {
+                            @Override
+                            public void _next(Object o) {
+                                Logger.d("求助发布成功");
+                                pop();
+                                EventBus.getDefault().post(new Event.RefreshHelpData());
+                            }
+                        });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            start(observable);
         }
     }
 
-    private void start(Observable<OrganizationAid> observable) {
-        subscription = observable.compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
-                    @Override
-                    public void _next(OrganizationAid aid) {
-                        Logger.d("求助发布成功");
-                        pop();
-                        EventBus.getDefault().post(new Event.RefreshHelpData());
-                    }
-                });
-
-    }
+//    private void start(Observable<OrganizationAid> observable) {
+//        subscription = observable.compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
+//                    @Override
+//                    public void _next(OrganizationAid aid) {
+//                        Logger.d("求助发布成功");
+//                        pop();
+//                        EventBus.getDefault().post(new Event.RefreshHelpData());
+//                    }
+//                });
+//
+//    }
 
     @NonNull
     private OrganizationAid getOrganizationAid() {
@@ -276,11 +279,11 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     }
 
 
-    private Observable<List<IconModule>> iconObservable(Map<String, RequestBody> requestBodies) {
-        return NetHelper.getApi()
-                .newAidIcons(requestBodies)
-                .compose(RxUtils.handleResult());
-    }
+//    private Observable<List<IconModule>> iconObservable(MultipartBody requestBodies) {
+//        return NetHelper.getApi()
+//                .newAidIcons(requestBodies)
+//                .compose(RxUtils.handleResult());
+//    }
 
 //    private Observable<OrganizationAid> aidObservable(Map<String, RequestBody> requestBodies) {
 //        OrganizationAid aid = getOrganizationAid();
@@ -289,13 +292,13 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 //                .compose(RxUtils.handleResult());
 //    }
 
-    private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
-        OrganizationAid aid = getOrganizationAid();
-        aid.setImage(iconModules);
-        return NetHelper.getApi()
-                .newOrganizationAid(aid)
-                .compose(RxUtils.handleResult());
-    }
+//    private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
+//        OrganizationAid aid = getOrganizationAid();
+//        aid.setImage(iconModules);
+//        return NetHelper.getApi()
+//                .newOrganizationAid(aid)
+//                .compose(RxUtils.handleResult());
+//    }
 
 
     @Override
@@ -303,7 +306,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         super.onDestroy();
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
-
         }
     }
 

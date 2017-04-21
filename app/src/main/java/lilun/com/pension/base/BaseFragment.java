@@ -153,6 +153,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         ButterKnife.unbind(mRootView);
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();

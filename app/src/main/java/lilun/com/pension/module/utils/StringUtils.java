@@ -8,6 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,6 +65,43 @@ public class StringUtils {
         }
         return ret;
     }
+
+
+    public static String objectToJsonObjectString(Object object) {
+        String result = null;
+        Object json = null;
+        JSONObject jsonObject;
+        if (object!=null){
+            if (object instanceof String || object instanceof Integer || object instanceof Float || object instanceof Double){
+               result =  object.toString();
+            }else {
+                try {
+                    json = new JSONTokener(object.toString()).nextValue();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (json instanceof JSONObject) {
+                    jsonObject = (JSONObject) json;
+                    result = jsonObject.toString();
+                }
+            }
+        }
+//        try {
+//            json = new JSONTokener(object.toString()).nextValue();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        if (json instanceof JSONObject) {
+//            jsonObject = (JSONObject) json;
+//        } else if (json!=null){
+//            result = json.toString();
+//        }
+//        if (jsonObject != null) {
+//            result = jsonObject.toString();
+//        }
+        return result;
+    }
+
 
     /**
      * 转换为东八区时间

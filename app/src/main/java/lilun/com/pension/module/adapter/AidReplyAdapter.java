@@ -68,7 +68,7 @@ public class AidReplyAdapter extends QuickAdapter<OrganizationReply> {
 //        Glide.with(fragment).load(IconUrl.account(reply.getId(),null))
 //                .error(R.drawable.avatar)
 //                .into((ImageView) helper.getView(R.id.iv_avatar));
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,reply.getCreatorId(),null),R.drawable.icon_def,helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,reply.getCreatorId(),null),R.drawable.icon_def,helper.getView(R.id.iv_icon));
     }
 
 

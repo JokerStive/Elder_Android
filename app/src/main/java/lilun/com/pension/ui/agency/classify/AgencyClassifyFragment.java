@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.orhanobut.logger.Logger;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -23,7 +22,6 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pension.module.adapter.ProductCategoryAdapter;
-import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.bean.Setting;
@@ -63,20 +61,31 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     PositionTitleBar titleBar;
     @Bind(R.id.tv_agency_title)
     TextView tvAgencyTitle;
+    private String parentId;
 
-    private ArrayList<Information> announcements;
+//    private ArrayList<Information> announcements;
+//
+//    public static AgencyClassifyFragment newInstance(List<Information> announcements) {
+//        AgencyClassifyFragment fragment = new AgencyClassifyFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("announcements", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public static AgencyClassifyFragment newInstance(List<Information> announcements) {
+
+    public static AgencyClassifyFragment newInstance(String parentId) {
         AgencyClassifyFragment fragment = new AgencyClassifyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
+        parentId = arguments.getString("parentId");
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -121,13 +130,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     @Override
     protected void initEvent() {
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-        }
-
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
         refreshData();
     }
 

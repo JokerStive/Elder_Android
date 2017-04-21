@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.orhanobut.logger.Logger;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +21,12 @@ import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
-import lilun.com.pension.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pension.ui.education.colleage_list.EducationListFragment;
+import lilun.com.pension.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
@@ -60,20 +56,32 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private List<ElderEdus> products = new ArrayList<>();
     private OrganizationEdusAdapter mAdapter;
-    private ArrayList<Information> announcements;
+    //    private ArrayList<Information> announcements;
+    private String parentId;
 
-    public static EducationClassifyFragment newInstance(List<Information> announcements) {
+//    public static EducationClassifyFragment newInstance(List<Information> announcements) {
+//        EducationClassifyFragment fragment = new EducationClassifyFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("announcements", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+
+    public static EducationClassifyFragment newInstance(String parentId) {
         EducationClassifyFragment fragment = new EducationClassifyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
+        parentId = arguments.getString("parentId");
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
+
 
     @Override
     protected void initPresenter() {
@@ -109,12 +117,8 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         });
 
 
-        //初始化公告栏
-        if (announcements == null || announcements.size() == 0) {
-            Logger.d("公告数据为空");
-        } else {
-            replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
-        }
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
+
 
         //类别
         mClassifyRecycler = new RecyclerView(_mActivity);
@@ -138,17 +142,17 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
         //设置数据
         setAdapter();
-      //  getServices(0);
+        //  getServices(0);
     }
 
 
     private void setAdapter() {
         mAdapter = new OrganizationEdusAdapter(this, products);
         mAdapter.addHeaderView(mClassifyRecycler);
-        mAdapter.setOnItemClickListener((item)->{
-            if(item.getType() == OrganizationActivity.TYPE){
+        mAdapter.setOnItemClickListener((item) -> {
+            if (item.getType() == OrganizationActivity.TYPE) {
 
-            }else if(item.getType() == EdusColleageCourse.TYPE){
+            } else if (item.getType() == EdusColleageCourse.TYPE) {
                 start(CourseDetailFragment.newInstance(item.toEdusColleageCourse()));
             }
         });

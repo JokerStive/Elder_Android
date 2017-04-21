@@ -2,89 +2,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:fillViewport="false">
+    android:fillViewport="false"
+    android:orientation="vertical">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_activities"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            >
+            android:layout_weight="1"
+            android:background="@drawable/community_activities" />
 
-            <ImageView
-                android:id="@+id/iv_activities"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/community_activities" />
-
-            <ImageView
-                android:id="@+id/iv_help_each"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/home_module_margin"
-                android:layout_weight="2.1"
-                android:background="@drawable/neighbourhood_help" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_help_each"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            >
+            android:layout_marginStart="@dimen/home_module_margin"
+            android:layout_weight="2.1"
+            android:background="@drawable/neighbourhood_help" />
 
-            <ImageView
-                android:id="@+id/iv_agency"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/pension_agency" />
+    </LinearLayout>
 
-            <ImageView
-                android:layout_gravity="center_vertical"
-                android:id="@+id/iv_help"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/for_help" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
-
-            <ImageView
-                android:id="@+id/iv_education"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/the_elderly_education" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_agency"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            >
+            android:layout_weight="1"
+            android:background="@drawable/pension_agency" />
 
-            <ImageView
-                android:id="@+id/iv_health_service"
-                android:layout_width="0dp"
-                android:layout_weight="2.1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/the_health_service" />
+        <ImageView
+            android:id="@+id/iv_help"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/for_help" />
 
-            <ImageView
-                android:id="@+id/iv_residential_service"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/residential_services" />
 
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_education"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/the_elderly_education" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_health_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/government" />
+
+        <ImageView
+            android:id="@+id/iv_government"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/health" />
+
+        <ImageView
+            android:id="@+id/iv_residential_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/residential_services" />
+    </LinearLayout>
 
 
 </LinearLayout>

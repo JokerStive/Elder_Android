@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <lilun.com.pension.widget.CircleImageView
-            android:id="@+id/iv_avatar"
+            android:id="@+id/iv_icon"
             android:layout_width="78dp"
             android:layout_height="78dp"
             android:layout_gravity="center"

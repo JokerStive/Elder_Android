@@ -113,7 +113,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         mHeadView = inflater.inflate(R.layout.head_help_detail, null);
 
         //不管是问还是帮都具有的
-        ivAvatar = (ImageView) mHeadView.findViewById(R.id.iv_avatar);
+        ivAvatar = (ImageView) mHeadView.findViewById(R.id.iv_icon);
         mHeadView.findViewById(R.id.iv_back).setOnClickListener(this);
 
         //banner

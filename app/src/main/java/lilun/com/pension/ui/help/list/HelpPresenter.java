@@ -3,7 +3,6 @@ package lilun.com.pension.ui.help.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.Option;
@@ -46,7 +45,8 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
     @Override
     public void getHelps(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationAids(OrganizationChildrenConfig.aid(), StringUtils.addFilterWithDef(filter, skip))
+//                .getOrganizationAids(OrganizationChildrenConfig.aid(), StringUtils.addFilterWithDef(filter, skip))
+                .getOrganizationAids(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<OrganizationAid>>() {

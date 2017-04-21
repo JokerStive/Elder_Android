@@ -62,7 +62,7 @@ public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
                         }
                     }
                 });
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,reply.getCreatorId(), null),R.drawable.icon_def, helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,reply.getCreatorId(), null),R.drawable.icon_def, helper.getView(R.id.iv_icon));
     }
 
 

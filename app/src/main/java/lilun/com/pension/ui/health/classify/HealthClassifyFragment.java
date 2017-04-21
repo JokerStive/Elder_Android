@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.health.list.HealthListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
@@ -52,19 +52,30 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     private List<Information> products = new ArrayList<>();
     private HealthServiceAdapter mAdapter;
-    private ArrayList<Information> announcements;
+    private String parentId;
+//    private ArrayList<Information> announcements;
 
-    public static HealthClassifyFragment newInstance(List<Information> announcements) {
+//    public static HealthClassifyFragment newInstance(List<Information> announcements) {
+//        HealthClassifyFragment fragment = new HealthClassifyFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("announcements", (Serializable) announcements);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+
+    public static HealthClassifyFragment newInstance(String parentId) {
         HealthClassifyFragment fragment = new HealthClassifyFragment();
         Bundle args = new Bundle();
-        args.putSerializable("announcements", (Serializable) announcements);
+        args.putString("parentId", parentId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
+        parentId = arguments.getString("parentId");
+        Preconditions.checkNull(parentId);
+//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -101,7 +112,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
         });
 
 
-        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(announcements), false);
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
 
 
         //类别

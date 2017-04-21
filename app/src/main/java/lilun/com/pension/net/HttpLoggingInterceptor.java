@@ -229,9 +229,12 @@ public final class HttpLoggingInterceptor implements Interceptor {
                 logger.log("<-- END HTTP (encoded body omitted)");
             } else {
                 BufferedSource source = responseBody.source();
-                if (source==null){
+
                     source.request(Long.MAX_VALUE); // Buffer the entire body.
-                    Buffer buffer = source.buffer();
+                    Buffer buffer = source.buffer(
+
+
+                    );
                     Charset charset = UTF8;
                     MediaType contentType = responseBody.contentType();
                     if (contentType != null) {
@@ -245,7 +248,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
                     logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
 
-                }
+
 
             }
         }

@@ -66,14 +66,14 @@ public class LoginModule implements LoginContract.Module {
         if (organizationAccount != null) {
             String organizationId = organizationAccount.getOrganizationId();
             if (!TextUtils.isEmpty(organizationId)) {
-                String defOrganizationid = StringUtils.removeSpecialSuffix(organizationId);
-                Logger.d("账户默认所属组织 = " + defOrganizationid);
+                String defOrganizationId = StringUtils.removeSpecialSuffix(organizationId);
+                Logger.d("账户默认所属组织 = " + defOrganizationId);
 
                 //默认组织id
-                User.putBelongsOrganizationId(defOrganizationid);
+                User.putBelongsOrganizationId(defOrganizationId);
 
                 //当前组织id
-                User.puttCurrentOrganizationId(defOrganizationid);
+                User.puttCurrentOrganizationId(defOrganizationId);
 
                 //创建者是否是自己
                 User.putIsCustomer(account.isCustomer());

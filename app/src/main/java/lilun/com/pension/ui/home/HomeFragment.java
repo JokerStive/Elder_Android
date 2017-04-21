@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.OrganizationChildrenConfig;
@@ -29,7 +29,6 @@ import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
-import lilun.com.pension.ui.change_organization.ChangeOrganizationFragment;
 import lilun.com.pension.ui.education.classify.EducationClassifyFragment;
 import lilun.com.pension.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pension.ui.help.HelpRootFragment;
@@ -76,7 +75,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Bind(R.id.tv_position)
     TextView tvPosition;
 
-    @Bind(R.id.iv_avatar)
+    @Bind(R.id.iv_icon)
     ImageView ivAvatar;
 
 //    @Bind(R.id.iv_position)
@@ -174,12 +173,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter.needChangeToDefOrganization();
     }
 
-    @Override
+    @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
+            R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government
+
+    })
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_avatar:
+            case R.id.iv_icon:
                 //TODO 侧滑菜单
-//               drawer.stol
                 switchDrawer();
                 break;
             case R.id.iv_activities:
@@ -199,7 +200,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             case R.id.iv_help:
                 //TODO 一键求助
-//                startActivity(new Intent(_mActivity, ChatActivity.class));
                 startHelp();
                 break;
 
@@ -207,6 +207,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 //TODO 老年教育
                 startPensionEducation();
                 break;
+
+            case R.id.iv_government:
+                //TODO 政务
+                startGovernment();
+                break;
+
 
             case R.id.iv_health_service:
                 //TODO 健康服务
@@ -225,7 +231,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             // 切换社区
             case R.id.tv_position:
-                startActivity(new Intent(_mActivity, ChangeOrganizationFragment.class));
+//                startActivity(new Intent(_mActivity, ChangeOrganizationActivity.class));
                 break;
         }
 
@@ -244,7 +250,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 邻居互助
      */
     private void startNeighborHelp() {
-        start(HelpRootFragment.newInstance(getClassifyAnnouncements(getString(R.string.neighbor_help))));
+//        start(HelpRootFragment.newInstance(getClassifyAnnouncements(getString(R.string.neighbor_help))));
+        start(HelpRootFragment.newInstance(getString(R.string.neighbor_help)));
 
     }
 
@@ -275,29 +282,36 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 老年教育
      */
     private void startPensionEducation() {
-        start(EducationClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_education))));
+        start(EducationClassifyFragment.newInstance(getString(R.string.pension_education)));
     }
 
+
+    /**
+     * 政务
+     */
+    private void startGovernment() {
+        start(HealthClassifyFragment.newInstance(getString(R.string.health_service)));
+    }
 
     /**
      * 健康服务
      */
     private void startHealthService() {
-        start(HealthClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.health_service))));
+        start(HealthClassifyFragment.newInstance(getString(R.string.health_service)));
     }
 
     /**
      * 社区活动
      */
     private void startCommunityActivity() {
-        start(ActivityClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.community_activity))));
+        start(ActivityClassifyFragment.newInstance(getString(R.string.community_activity)));
     }
 
     /**
      * 养老机构
      */
     private void startPensionAgency() {
-        start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_agency))));
+        start(AgencyClassifyFragment.newInstance(getString(R.string.pension_agency)));
     }
 
 
@@ -305,8 +319,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 居家服务
      */
     private void startResidentialService() {
-//        ToastHelper.get().showWareShort(getString(R.string.not_complete));
-        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
+        start(ResidentialClassifyFragment.newInstance(getString(R.string.residential_service)));
     }
 
     /**
@@ -344,7 +357,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         switch (clickId) {
             case R.id.iv_agency:
                 Logger.d("切换组织成功" + User.getCurrentOrganizationId());
-                start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_agency))));
+//                start(AgencyClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.pension_agency))));
                 break;
         }
     }

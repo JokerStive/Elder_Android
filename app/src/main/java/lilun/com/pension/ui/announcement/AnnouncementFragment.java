@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.announcement;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 
@@ -12,6 +13,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.Preconditions;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -28,7 +30,9 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
 
     private int currentPosition = 0;
-    private List<Information> informationList;
+    //    private List<Information> informationList;
+    private String parentId;
+    private List<Information> announces;
 
     public static AnnouncementFragment newInstance(List<Information> information) {
         AnnouncementFragment fragment = new AnnouncementFragment();
@@ -39,6 +43,22 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     }
 
 
+    public static AnnouncementFragment newInstance(String parentId) {
+        AnnouncementFragment fragment = new AnnouncementFragment();
+        Bundle args = new Bundle();
+        args.putString("parentId", parentId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        parentId = arguments.getString("parentId");
+        Preconditions.checkNull(parentId);
+    }
+
     @Override
     protected void initPresenter() {
         mPresenter = new AnnouncementPresenter();
@@ -46,18 +66,13 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.bindView(this);
-    }
 
     @Override
     protected void initData() {
-        informationList = (List<Information>) getArguments().getSerializable("information");
-        if (informationList == null) {
-            throw new NullPointerException();
-        }
+//        informationList = (List<Information>) getArguments().getSerializable("information");
+//        if (informationList == null) {
+//            throw new NullPointerException();
+//        }
 
     }
 
@@ -72,44 +87,30 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         viewPager = (ViewPager) mRootView.findViewById(R.id.vp_container);
         indicator = (CircleIndicator) mRootView.findViewById(R.id.indicator);
 
-        initIndicator();
-        initViewPager();
+//        initIndicator();
+//        initViewPager();
     }
-
-
-
-
-    private void initIndicator() {
-//        CommonNavigator
-    }
-
-    private void initViewPager() {
-        List<BaseFragment> listFragments = new ArrayList<>();
-        for (Information announcement : informationList) {
-            AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
-            listFragments.add(fragment);
-        }
-        viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
-        indicator.setViewPager(viewPager);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                currentPosition = position;
-            }
-        });
-
-    }
-
 
     @Override
-    protected void initEvent() {
-//        mPresenter.initTimer();
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        mPresenter.getAnnounce(parentId);
     }
+
+//    private void initIndicator() {
+////        CommonNavigator
+//    }
+
+//    private void initViewPager() {
+//
+//
+//    }
 
 
     @Override
     public void setVpCurrentPosition() {
-        if (currentPosition++ == informationList.size()) {
+
+        if (currentPosition++ == announces.size()) {
             viewPager.setCurrentItem(0, false);
         } else {
             viewPager.setCurrentItem(currentPosition, true);
@@ -117,8 +118,38 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void showAnnounce(List<Information> announces) {
+        this.announces = announces;
+        if (announces!=null){
+            List<BaseFragment> listFragments = new ArrayList<>();
+            for (Information announcement : announces) {
+                AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
+                listFragments.add(fragment);
+            }
+            viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
+            indicator.setViewPager(viewPager);
+            viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    currentPosition = position;
+                }
+            });
+        }
+
+        mPresenter.initTimer();
+    }
+
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
         mPresenter.unBindView();
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        mPresenter.bindView(this);
+
     }
 }
