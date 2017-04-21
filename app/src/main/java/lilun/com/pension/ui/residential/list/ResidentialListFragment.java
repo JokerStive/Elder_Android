@@ -11,6 +11,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyServiceAdapter;
@@ -103,7 +104,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {

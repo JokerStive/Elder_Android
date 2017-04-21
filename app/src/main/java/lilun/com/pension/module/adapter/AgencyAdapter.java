@@ -47,7 +47,7 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
             }
         });
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations,organization.getId(), StringUtils.getFirstIconNameFromIcon(organization.getIcon())), R.drawable.icon_def, help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations,organization.getId(), StringUtils.getFirstIconNameFromIcon(organization.getIcon()),"icon"), R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 
 

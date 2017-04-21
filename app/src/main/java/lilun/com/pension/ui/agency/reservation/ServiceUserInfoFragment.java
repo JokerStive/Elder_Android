@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -25,6 +26,7 @@ import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.tourism.info.AddTourismInfoFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -50,7 +52,11 @@ public class ServiceUserInfoFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_info:
-                start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
+                if (productCategoryId.equals(Config.tourism_product_categoryId)) {
+                    start(AddTourismInfoFragment.newInstance(productCategoryId, null));
+                } else {
+                    start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
+                }
                 break;
         }
     }
@@ -84,7 +90,7 @@ public class ServiceUserInfoFragment extends BaseFragment {
     }
 
     private void getContract() {
-        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"categoryId\":\"" + productCategoryId + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -99,7 +105,6 @@ public class ServiceUserInfoFragment extends BaseFragment {
     private void showUserInfo(List<Contact> contacts) {
         adapter = new ServiceUserInfoAdapter(contacts);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-//            reservation(productId, contacts.get(i).getId(), null);
             //TODO 设置默认
             Bundle bundle = new Bundle();
             bundle.putSerializable("contact", adapter.getData().get(i));
@@ -108,13 +113,18 @@ public class ServiceUserInfoFragment extends BaseFragment {
         });
         adapter.setOnItemClickListener(new ServiceUserInfoAdapter.OnItemClickListener() {
             @Override
-            public void onDelete() {
+            public void onDelete(Contact contact) {
                 Logger.d("删除个人信息");
+                deleteContact(contact);
             }
 
             @Override
             public void onEdit(Contact contact) {
-                start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
+                if (productCategoryId.equals(Config.tourism_product_categoryId)) {
+                    start(AddTourismInfoFragment.newInstance(productCategoryId, contact));
+                } else {
+                    start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
+                }
                 Logger.d("编辑个人信息");
             }
 
@@ -151,9 +161,36 @@ public class ServiceUserInfoFragment extends BaseFragment {
                     @Override
                     public void _next(Object object) {
                         adapter.setDefault(contactId);
+                        Contact data = null;
+                        for (Contact contact : adapter.getData()) {
+                            if (contact.getId().equals(contactId)) {
+                                data = contact;
+                            }
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("contact", data);
+                        setFragmentResult(0, bundle);
+                        pop();
                     }
                 });
 
     }
+
+
+    /**
+     * 删除contact
+     */
+    private void deleteContact(Contact contact) {
+        NetHelper.getApi().deleteContact(contact.getId())
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(_mActivity) {
+                    @Override
+                    public void _next(Object object) {
+                        adapter.remove(contact);
+                    }
+                });
+    }
+
 
 }

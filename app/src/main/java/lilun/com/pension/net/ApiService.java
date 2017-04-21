@@ -67,6 +67,14 @@ public interface ApiService {
     @GET("Accounts/me")
     Observable<Response<Object>> getMe();
 
+
+    /**
+     * 获取位置
+     */
+
+//    @GET("Accounts/getChildLocation")
+//    Observable<Response<List<String>>> getChildLocation(@Query("locationName") String locationName);
+
     /**
      * 获取所属组织列表
      */
@@ -464,6 +472,13 @@ public interface ApiService {
     Observable<Response<Object>> deleteAid(@Path("id") String aidId);
 
 
+    /**
+     * 删除一个aid
+     */
+    @DELETE("Contacts/{id}")
+    Observable<Response<Object>> deleteContact(@Path("id") String contactId);
+
+
 //    =========================================PUT
 
     /**
@@ -502,8 +517,11 @@ public interface ApiService {
     /**
      * 修改默认资料
      */
-    @PUT("Contacts/{id}")
+    @PUT("Contacts/{id}/changeDefault")
     Observable<Response<Object>> putDefContact(@Path("id") String contactId);
+
+
+
 
 //    ====================养老机构
 

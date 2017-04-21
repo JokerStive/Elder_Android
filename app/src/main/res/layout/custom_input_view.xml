@@ -10,7 +10,7 @@
         android:id="@+id/tv_input_title"
         style="@style/tv_normal_ellipsize"
         android:layout_centerVertical="true"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="@dimen/tv_size_small"
         tools:text="优先级" />
 
@@ -27,7 +27,6 @@
             android:id="@+id/et_input"
             style="@style/et_normal"
             android:background="@null"
-
             android:maxLength="20"
             android:maxLines="1"
             android:textCursorDrawable="@null"

@@ -22,7 +22,7 @@ public interface HelpContract {
     interface Presenter extends IPresenter<View> {
         void getAboutMe(String filter, int skip);
         void getHelps(String filter, int skip);
-        List<ConditionOption> getConditionOptionsList();
+        List<ConditionOption> getConditionOptionsList(String kind,String status,String priority);
     }
 
 }

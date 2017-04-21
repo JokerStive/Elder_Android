@@ -8,13 +8,19 @@
     android:padding="14dp"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/iv_icon"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/icon_def" />
+        android:layout_height="197dp"
+        android:background="@color/icon_def">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
 
 
     <LinearLayout

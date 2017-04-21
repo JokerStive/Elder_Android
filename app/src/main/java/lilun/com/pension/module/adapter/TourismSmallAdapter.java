@@ -36,14 +36,15 @@ public class TourismSmallAdapter extends QuickAdapter<Tourism> {
 
         Tourism.ExtendBean extend = tourism.getExtend();
         holder.setText(R.id.tv_duration_traffic, extend.getDuration() + " / " + extend.getTraffic())
-                .setText(R.id.tv_satisfaction, extend.getSatasfaction());
+                .setText(R.id.tv_satisfaction, extend.getSatisfaction());
 
         LinearLayout tagContainer = holder.getView(R.id.ll_tag_container);
+        tagContainer.removeAllViews();
         List<String> tags = extend.getTag();
         for (String tag : tags) {
             TextView tagView = (TextView) LayoutInflater.from(App.context).inflate(R.layout.tourism_tag_red, null);
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            p.rightMargin = UIUtils.dp2px(App.context,5);
+            p.rightMargin = UIUtils.dp2px(App.context, 5);
             tagView.setLayoutParams(p);
             tagView.setText(tag);
             tagContainer.addView(tagView);

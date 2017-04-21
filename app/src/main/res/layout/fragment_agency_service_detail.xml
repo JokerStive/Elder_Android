@@ -81,7 +81,7 @@
 
                 <TextView
                     android:id="@+id/tv_equipment"
-                    style="@style/tv_small_ellipsize"
+                    style="@style/tv_small"
                     android:layout_marginTop="15dp"
                     android:lineSpacingMultiplier="1.2"
                     tools:text="这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊这是一个很好的服务啊" />
@@ -145,7 +145,7 @@
                     android:layout_marginBottom="25dp"
                     android:layout_marginTop="16dp"
                     android:layout_weight="2"
-                    android:background="@drawable/shape_rect_red_corner"
+                    android:background="@drawable/shape_rect_red_corner_5"
                     android:gravity="center"
                     android:padding="15dp"
                     android:text="@string/enter_provider"

@@ -32,6 +32,7 @@ import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by yk on 2017/1/5.
@@ -45,6 +46,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private FrameLayout mFrameLayout;
     private PushInfoAdapter pushInfoAdapter;
     private MyCallBack callback;
+    protected CompositeSubscription subscription = new CompositeSubscription();
     //    private List<PushMessage> pushMessages;
 
     @Override

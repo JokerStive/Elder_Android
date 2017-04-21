@@ -13,20 +13,19 @@
         android:layout_marginStart="20dp"
         android:orientation="vertical">
 
-        <ImageView
+        <lilun.com.pension.widget.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="78dp"
             android:layout_height="78dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-             />
+            android:layout_marginTop="30dp" />
 
         <TextView
             android:id="@+id/tv_product_name"
-            android:textSize="20dp"
             style="@style/tv_normal_ellipsize"
             android:layout_gravity="center"
             android:layout_marginTop="11dp"
+            android:textSize="20dp"
             tools:text="游珂" />
 
         <TextView
@@ -61,7 +60,6 @@
             android:drawableStart="@drawable/account_info"
             android:text="@string/account_info" />
 
-       
 
         <TextView
             android:id="@+id/tv_account_safe"
@@ -76,12 +74,12 @@
     <TextView
         android:id="@+id/tv_logout"
         style="@style/tv_normal_ellipsize"
-        android:textSize="20dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="28dp"
         android:layout_marginStart="20dp"
         android:drawablePadding="11dp"
         android:drawableStart="@drawable/logout"
-        android:text="@string/logout" />
+        android:text="@string/logout"
+        android:textSize="20dp" />
 
 </RelativeLayout>

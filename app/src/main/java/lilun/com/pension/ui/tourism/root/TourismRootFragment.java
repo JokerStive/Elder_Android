@@ -47,7 +47,8 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     @Bind(R.id.rv_popular_journey)
     RecyclerView rvPopularJourney;
 
-    private String clickTag;
+    //    private String tag;
+//    private String destination;
     private String categoryId;
     private TourismBigAdapter adapter;
 
@@ -93,7 +94,7 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     @OnClick({R.id.hiking, R.id.by_car, R.id.honey_moon, R.id.parents, R.id.near, R.id.domestic, R.id.multinational, R.id.parenting})
     public void onClick(View view) {
         String tag = (String) view.getTag();
-        openTourismList(tag);
+        start(TourismListFragment.newInstance(categoryId, tag, null));
     }
 
 
@@ -110,8 +111,8 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     public void showPopularDestination(List<String> destinations) {
         PopularDestinationAdapter destinationAdapter = new PopularDestinationAdapter(destinations);
         destinationAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
-            String tag = destinationAdapter.getData().get(i);
-            openTourismList(tag);
+            String destination = destinationAdapter.getData().get(i);
+            start(TourismListFragment.newInstance(categoryId, null, destination));
         });
         rvDestination.setAdapter(destinationAdapter);
     }
@@ -149,10 +150,6 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     private void getJourneys(int skip) {
         String filter = "{\"where\":{\"extend.tag\":\"热门\",\"categoryId\":\"" + categoryId + "\"}}";
         mPresenter.getPopularJourneys(filter, skip);
-    }
-
-    private void openTourismList(String clickTag) {
-        start(TourismListFragment.newInstance(categoryId,clickTag));
     }
 
 

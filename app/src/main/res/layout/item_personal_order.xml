@@ -4,7 +4,9 @@
     android:id="@+id/rl_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@drawable/home_bg"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/rl"
@@ -74,36 +76,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_product_icon"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_centerVertical="true"
             android:id="@+id/tv_reservation_time"
             style="@style/tv_small"
+            android:layout_centerVertical="true"
             tools:text="预约时间：2012.3.0" />
 
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_rank"
             style="@style/tv_small"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:textColor="@color/red"
             android:background="@drawable/rect_coner_red"
+            android:paddingBottom="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="@string/rank" />
+            android:text="@string/rank"
+            android:textColor="@color/red"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
 
-    <View
-        style="@style/line_gray"
-        android:layout_below="@id/rl_1"
-        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

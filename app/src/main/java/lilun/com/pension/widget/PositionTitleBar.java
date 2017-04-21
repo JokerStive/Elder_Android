@@ -1,6 +1,7 @@
 package lilun.com.pension.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -89,7 +90,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
             case R.id.iv_position:
                 if (fragment != null) {
-                    fragment.start(ChangeOrganizationFragment.newInstance());
+                    fragment.startActivity(new Intent(fragment.getActivity(),ChangeOrganizationFragment.class));
                 }
                 if (listener != null) {
                     listener.onPositionClick();

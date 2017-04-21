@@ -20,7 +20,6 @@ public class AutoExtentionSpanSizeLookup extends GridLayoutManager.SpanSizeLooku
         this.dataSize = dataSize;
         this.spanCount = spanCount;
         remainder = dataSize%spanCount;
-
     }
 
     @Override

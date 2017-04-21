@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
@@ -24,6 +25,7 @@ import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.help.RankFragment;
 import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
+import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
 /**
@@ -86,6 +88,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         titleBar.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {

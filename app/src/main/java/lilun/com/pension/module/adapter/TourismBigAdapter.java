@@ -48,7 +48,7 @@ public class TourismBigAdapter extends QuickAdapter<Tourism> {
 
         holder.setText(R.id.tv_tag_duration, tagDuration);
 
-        holder.setText(R.id.tv_departure_satisfaction, extend.getDeparture() + " " + extend.getSatasfaction());
+        holder.setText(R.id.tv_departure_satisfaction, extend.getDeparture() + " " + extend.getSatisfaction());
 
 
     }

@@ -5,9 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import lilun.com.pension.module.adapter.ProductCategoryAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.ProductCategory;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
+import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.order.OrderListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
@@ -110,17 +108,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         );
 
 
-        //设置数据
-//        setAdapter();
-
     }
-
-
-//    private void setAdapter() {
-//        mAdapter = new ProductorAdapter(this, products);
-//        mAdapter.addHeaderView(mClassifyRecycler);
-//        mClassifyRecycler.setAdapter(mAdapter);
-//    }
 
 
     @Override
@@ -138,16 +126,14 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     public void showClassifies(List<ProductCategory> productCategories) {
         completeRefresh();
         if (mClassifyAdapter == null) {
-            int spanCount = spanCountByData(productCategories);
-            GridLayoutManager manager = new GridLayoutManager(_mActivity, spanCount);
-            manager.setSpanSizeLookup(new AutoExtentionSpanSizeLookup(productCategories.size(), spanCount));
+//            int spanCount = spanCountByData(productCategories);
+            GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
+            manager.setSpanSizeLookup(new AutoExtentionSpanSizeLookup(productCategories.size(), 3));
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
-            mClassifyAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-
-                }
+            mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+                ProductCategory category = mClassifyAdapter.getData().get(i);
+                start(AgencyServiceListFragment.newInstance(category.getName(), category.getId(), 0));
             });
             mClassifyRecycler.setAdapter(mClassifyAdapter);
         } else {

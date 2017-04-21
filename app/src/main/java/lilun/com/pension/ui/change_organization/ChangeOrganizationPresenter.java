@@ -6,8 +6,9 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
-import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Organization;
@@ -53,15 +54,18 @@ public class ChangeOrganizationPresenter extends RxPresenter<ChangeOrganizationC
                 .putAccount(User.getUserId(), account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
+                .subscribe(new RxSubscriber<Object>((BaseActivity)view) {
                     @Override
                     public void _next(Object o) {
 //                        User.puttCurrentOrganizationId(organizationId);
                         if (organizationId.equals(User.getRootOrganizationAccountId())) {
                             Logger.d("切换到地球村成功" + organizationId);
                             view.changedRoot();
+                            User.putBelongsOrganizationId(Constants.organization_root);
                         } else if (TextUtils.equals(organizationId, User.getBelongOrganizationAccountId())) {
                             Logger.d("切换回默认所属组织成功" + organizationId);
+                            User.putBelongsOrganizationId(User.getCurrentOrganizationId());
+
                             view.changedBelong();
                         }
                     }

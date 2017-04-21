@@ -8,17 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyAdapter;
 import lilun.com.pension.module.adapter.NormalFilterAdapter;
@@ -27,9 +27,9 @@ import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.agency.detail.AgencyDetailFragment;
+import lilun.com.pension.widget.FilterInputRangeView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
-import lilun.com.pension.widget.filter_view.AreaFilter;
 import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
@@ -55,9 +55,8 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     private AgencyAdapter mAgencyAdapter;
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
     private List<Organization> organizations;
-    private Map<String, Object> conditionMap;
-    private Map<String, String> whereConditionMap;
 
+    private AgencyOrganizationFilter organizationFilter = new AgencyOrganizationFilter();
 
     public static AgencyOrganizationListFragment newInstance(String title, String categoryId) {
         AgencyOrganizationListFragment fragment = new AgencyOrganizationListFragment();
@@ -81,8 +80,6 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     protected void initPresenter() {
         mPresenter = new AgencyListPresenter();
         mPresenter.bindView(this);
-        conditionMap = new HashMap<>();
-        whereConditionMap = new HashMap<>();
     }
 
     @Override
@@ -92,6 +89,7 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        searchBar.setFragment(this);
         searchBar.setNoNullLayout();
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
@@ -101,8 +99,13 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
             @Override
             public void onSearch(String searchStr) {
-                whereConditionMap.put("name", "{like," + searchStr + "}");
-                getData(0);
+                AgencyOrganizationFilter.WhereBean.NameBean name = organizationFilter.where.getName();
+                if (name == null) {
+                    name = new AgencyOrganizationFilter.WhereBean.NameBean();
+                }
+                name.setLike(searchStr);
+                organizationFilter.where.setName(name);
+                refreshOrganizationWithFilter();
             }
 
             @Override
@@ -116,7 +119,7 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
 
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
 
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
@@ -131,12 +134,17 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
     }
 
+    private void refreshOrganizationWithFilter() {
+        mSwipeLayout.setRefreshing(true);
+        getData(0);
+    }
+
     private void initFilter() {
         List<View> pops = new ArrayList<>();
         List<String> filterTitles = new ArrayList<>();
-        filterTitles.add("区域");
+
         //除了区域以外的条件弹窗
-        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList();
+        List<ConditionOption> conditionOptionsList = mPresenter.getConditionOptionsList("ranking");
         if (conditionOptionsList != null) {
             for (int i = 0; i < conditionOptionsList.size(); i++) {
                 ConditionOption conditionOption = conditionOptionsList.get(i);
@@ -144,19 +152,50 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
                 RecyclerView recyclerView = new RecyclerView(App.context);
                 recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
                 NormalFilterAdapter adapter = new NormalFilterAdapter(conditionOption);
-                final int finalI = i + 1;
                 adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
-                    filterView.setTabText(position == 0 ? filterTitles.get(finalI) : title, position == 0);
+                    filterView.setTabText(position == 0 ? "星级" : title, position == 0);
+                    organizationFilter.where.setRanking(null);
+                    if (whereKey.equals("ranking") && whereValue != null) {
+                        organizationFilter.where.setRanking(Integer.parseInt(whereValue));
+                    }
+                    refreshOrganizationWithFilter();
                 });
                 recyclerView.setAdapter(adapter);
                 pops.add(recyclerView);
             }
         }
 
+        //价格筛选
+        filterTitles.add("价格");
+        FilterInputRangeView priceRangeView = new FilterInputRangeView(mContent, "价格");
+        priceRangeView.setOnConfirmListener((range, show, isDef) -> {
+            organizationFilter.where.setMax(null);
+            organizationFilter.where.setMin(null);
+            if (range != null) {
+                AgencyOrganizationFilter.WhereBean.MinBean minBean = new AgencyOrganizationFilter.WhereBean.MinBean();
+                AgencyOrganizationFilter.WhereBean.MaxBean maxBean = new AgencyOrganizationFilter.WhereBean.MaxBean();
+                minBean.setGte(range.get(0));
+                maxBean.setLte(range.get(1));
+                organizationFilter.where.setMin(minBean);
+                organizationFilter.where.setMax(maxBean);
+            }
+
+            filterView.setTabText(show, isDef);
+            refreshOrganizationWithFilter();
+        });
+        priceRangeView.setUnit("元");
+        pops.add(priceRangeView);
+
 
         //TODO 区域
-        AreaFilter areaFilter = new AreaFilter(mContent);
-        pops.add(0, areaFilter);
+//        filterTitles.add(0, "区域");
+//        AreaFilter areaFilter = new AreaFilter(mContent, 3, "区域");
+//        areaFilter.setOnItemClickListener((id, name, isDef) -> {
+//            Logger.d("选中的区域-- " + id);
+//            filterView.setTabText(name, isDef);
+//            productFilter.where.setAreasList(id);
+//        });
+//        pops.add(0, areaFilter);
         filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
     }
 
@@ -182,6 +221,13 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
         }
         if (layoutId != 0) {
             adapter = new AgencyAdapter(organizations, layoutId, layoutType);
+            final AgencyAdapter finalAdapter = adapter;
+            adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    getData(finalAdapter.getItemCount());
+                }
+            });
         }
         return adapter;
     }
@@ -190,23 +236,16 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            mSwipeLayout.setRefreshing(true);
-            getData(0);
+
+            refreshOrganizationWithFilter();
         }
     }
 
     private void getData(int skip) {
-        String filter = getFilterWithCondition();
-        mPresenter.getOrganizationAgency(mCategoryId, filter, skip);
-    }
-
-
-    private String getFilterWithCondition() {
-        conditionMap.put("where", whereConditionMap);
         Gson gson = new Gson();
-        String filter = gson.toJson(conditionMap);
-        Logger.d("agency organization filter = " + filter);
-        return filter;
+        String filter = gson.toJson(organizationFilter);
+        Logger.d("养老机构 filter --" + filter);
+        mPresenter.getOrganizationAgency(mCategoryId, filter, skip);
     }
 
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:background="@drawable/shape_rect_gray_corner_5"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:textSize="14sp"
+        tools:text="2000" />
+
+
+    <TextView
+        android:id="@+id/btn_clear"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="2"
+        android:background="@drawable/shape_rect_blue_corner_5"
+        android:focusable="false"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="重置"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="2"
+        android:background="@drawable/shape_rect_red_corner_5"
+        android:focusable="false"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+</LinearLayout>

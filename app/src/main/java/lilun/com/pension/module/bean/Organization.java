@@ -1,5 +1,6 @@
 package lilun.com.pension.module.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lilun.com.pension.base.BaseBean;
@@ -90,7 +91,7 @@ public class Organization extends BaseBean {
         this.icon = icon;
     }
 
-    public static class DescriptionBean {
+    public static class DescriptionBean implements Serializable{
         private static final long serialVersionUID = 1L;
         private String description;
         private String adress;
@@ -173,7 +174,8 @@ public class Organization extends BaseBean {
             this.chargingStandard = chargingStandard;
         }
 
-        public static class ChargingStandardBean {
+        public static class ChargingStandardBean implements Serializable {
+            private static final long serialVersionUID = 1L;
             private String min;
             private String max;
 

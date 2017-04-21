@@ -39,6 +39,14 @@
         <item>面积</item>
     </string-array>
 
+    <string-array name="product_score_option">
+        <item>一星</item>
+        <item>二星</item>
+        <item>三星</item>
+        <item>四星</item>
+        <item>五星</item>
+    </string-array>
+
     <string-array name="product_roomType_option">
         <item>不限</item>
         <item>单人间</item>

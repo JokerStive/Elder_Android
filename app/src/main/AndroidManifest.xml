@@ -49,6 +49,7 @@
         <activity
             android:name=".ui.register.RegisterActivity"
             android:screenOrientation="portrait" />
+            android:launchMode="singleTask" />
 
 
         <!-- 订单详情-->
@@ -73,6 +74,22 @@
         <activity
             android:name=".ui.chat.ChatActivity"
             android:screenOrientation="portrait" />
+
+
+        <!-- 切换组织-->
+        <activity
+            android:name=".ui.change_organization.ChangeOrganizationFragment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
+        <!-- 确认订单-->
+        <activity
+            android:name=".ui.agency.reservation.ReservationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
 
         //mqtt service
         <service android:name="org.eclipse.paho.android.service.MqttService" />

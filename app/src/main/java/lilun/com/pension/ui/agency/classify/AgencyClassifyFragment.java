@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.AgencyClassifyAdapter;
@@ -163,15 +164,15 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             ProductCategory productCategory = adapter.getData().get(i);
-            if (i != adapter.getData().size() - 1) {
+            if (productCategory.getId().equals(Config.tourism_product_categoryId)) {
+                start(TourismRootFragment.newInstance(productCategory.getId()));
+            } else {
                 String categoryId = productCategory.getId();
                 if (!ACache.get().isExit(categoryId)) {
                     List<Setting> settings = productCategory.getSetting();
                     ACache.get().put(categoryId, (Serializable) settings);
                 }
                 start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
-            } else {
-                start(TourismRootFragment.newInstance(productCategory.getId()));
             }
         });
 //        adapter.setOnItemClickListener((productCategory -> {

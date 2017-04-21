@@ -25,6 +25,7 @@ public class User {
     public static final String defaultContactId = "defaultContactId ";
     public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
     public static final String belongOrganizationAccountId = "belongOrganizationAccountId";
+    public static final String currentOrganizationAccountId = "currentOrganizationAccountId";
     public static final String defOrganizationId = "/";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
@@ -87,11 +88,20 @@ public class User {
     }
 
 
+
+
+    /**
+    *创建者是否是自己
+    */
     public static boolean creatorIsOwn(String creatorId) {
         return getUserId().equals(creatorId);
     }
 
 
+
+    /**
+    *获取用户的组织账号
+    */
     public static List<OrganizationAccount> getBelongOrganization() {
         if (ACache.get().getAsObject(belongOrganizations) != null) {
             return (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
@@ -108,6 +118,7 @@ public class User {
     public static String getContactId() {
         return PreUtils.getString(defaultContactId, "");
     }
+
 
 
     //地球村OrganizationAccount  的id
@@ -127,6 +138,17 @@ public class User {
 
     public static String getBelongOrganizationAccountId() {
         return PreUtils.getString(belongOrganizationAccountId, "");
+    }
+
+
+
+    //当前所属组织OrganizationAccount  的id
+    public static void putCurrentOrganizationAccountId(String rootId) {
+        PreUtils.putString(currentOrganizationAccountId, rootId);
+    }
+
+    public static String getCurrentOrganizationAccountId() {
+        return PreUtils.getString(currentOrganizationAccountId, "");
     }
 
 

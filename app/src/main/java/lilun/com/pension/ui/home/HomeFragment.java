@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -25,7 +26,6 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.PreUtils;
-import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pension.ui.announcement.AnnouncementItemFragment;
@@ -36,6 +36,7 @@ import lilun.com.pension.ui.help.HelpRootFragment;
 import lilun.com.pension.ui.home.help.AlarmDialogFragment;
 import lilun.com.pension.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pension.ui.personal_center.InformationCenterFragment;
+import lilun.com.pension.ui.residential.classify.ResidentialClassifyFragment;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -166,6 +167,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
+        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
+        mPresenter.needChangeToDefOrganization();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_avatar:
@@ -216,7 +225,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
             // 切换社区
             case R.id.tv_position:
-                start(ChangeOrganizationFragment.newInstance());
+                startActivity(new Intent(_mActivity, ChangeOrganizationFragment.class));
                 break;
         }
 
@@ -296,8 +305,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
      * 居家服务
      */
     private void startResidentialService() {
-        ToastHelper.get().showWareShort(getString(R.string.not_complete));
-//        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
+//        ToastHelper.get().showWareShort(getString(R.string.not_complete));
+        start(ResidentialClassifyFragment.newInstance(getClassifyAnnouncements(getString(R.string.residential_service))));
     }
 
     /**

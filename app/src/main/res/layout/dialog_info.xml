@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/shape_rect_red_corner"
+        android:background="@drawable/shape_rect_red_corner_5"
         android:padding="100dp" />
 
 

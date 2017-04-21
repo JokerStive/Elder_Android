@@ -160,7 +160,7 @@
             android:layout_marginBottom="@dimen/dp_4"
             android:layout_marginRight="@dimen/dp_22"
             android:layout_marginTop="@dimen/dp_4"
-            android:background="@drawable/shape_rect_red_corner"
+            android:background="@drawable/shape_rect_red_corner_5"
             android:gravity="center"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_22"

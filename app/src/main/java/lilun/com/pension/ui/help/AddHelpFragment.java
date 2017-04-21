@@ -5,7 +5,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -55,9 +55,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     NormalTitleBar titleBar;
 
 
-    @Bind(R.id.tv_priority)
-    TextView tvPriority;
-
     @Bind(R.id.input_topic)
     InputView inputTopic;
 
@@ -75,15 +72,26 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
     @Bind(R.id.take_photo)
     TakePhotoLayout takePhotoLayout;
+    @Bind(R.id.tv_kind)
+    TextView tvKind;
+    @Bind(R.id.rl_choice_kind)
+    RelativeLayout rlChoiceKind;
+    @Bind(R.id.tv_priority)
+    TextView tvPriority;
+    @Bind(R.id.rl_choice_priority)
+    RelativeLayout rlChoicePriority;
+//    @Bind(R.id.input_kind)
+//    InputView inputKind;
 
-    @Bind(R.id.rg_classify)
-    RadioGroup rgClassify;
+//    @Bind(R.id.rg_classify)
+//    RadioGroup rgClassify;
 
 
-    private Integer mKind = 0;
+    private Integer mKind;
     private int mPriority = 0;
     private Subscription subscription;
     private String[] helpPriority;
+    private String[] helpKind = new String[]{"问邻居", "邻居帮"};
 
     public static AddHelpFragment newInstance() {
         return new AddHelpFragment();
@@ -112,31 +120,55 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         titleBar.setOnBackClickListener(this::pop);
         btnCreate.setOnClickListener(this);
         tvPriority.setOnClickListener(this);
+        rlChoiceKind.setOnClickListener(this);
+        rlChoicePriority.setOnClickListener(this);
 
 
-        rgClassify.check(R.id.rb_ask);
-        rgClassify.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rb_ask:
-                    mKind = 0;
-                    break;
-                case R.id.rb_help:
-                    mKind = 1;
-                    break;
-            }
-        });
+//        rgClassify.check(R.id.rb_ask);
+//        rgClassify.setOnCheckedChangeListener((group, checkedId) -> {
+//            switch (checkedId) {
+//                case R.id.rb_ask:
+//                    mKind = 0;
+//                    break;
+//                case R.id.rb_help:
+//                    mKind = 1;
+//                    break;
+//            }
+//        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_priority:
+            case R.id.rl_choice_priority:
                 choosePriority();
+                break;
+
+            case R.id.rl_choice_kind:
+                chooseKind();
                 break;
             case R.id.tv_create:
                 createHelp();
                 break;
         }
+    }
+
+
+    /**
+     * 选择求助信息的优先级
+     */
+    private void chooseKind() {
+        new MaterialDialog.Builder(_mActivity)
+                .items(helpKind)
+                .title("-选择求助类型-")
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    inputAddress.setVisibility(which == 0 ? View.GONE : View.VISIBLE);
+                    tvKind.setText(text);
+                    mKind = which;
+                    return true;
+                })
+                .show();
+
     }
 
     /**
@@ -148,11 +180,11 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         }
         new MaterialDialog.Builder(_mActivity)
                 .items(helpPriority)
-                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
+                .title("-选择求助优先级-")
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
                     tvPriority.setText(helpPriority[which]);
                     return true;
                 })
-                .positiveText(R.string.choose)
                 .show();
 
     }

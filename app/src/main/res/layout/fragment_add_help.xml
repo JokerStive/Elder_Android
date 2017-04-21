@@ -37,9 +37,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            >
 
             <RadioGroup
+                android:visibility="gone"
                 android:id="@+id/rg_classify"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -69,6 +71,44 @@
 
             </RadioGroup>
 
+            <RelativeLayout
+                android:id="@+id/rl_choice_kind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:id="@+id/tv_choice_type_str"
+                    style="@style/tv_input_desp"
+                    android:text="@string/kind" />
+
+
+                <TextView
+                    android:id="@+id/tv_kind"
+                    style="@style/tv_input_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="22dp"
+                    android:layout_toRightOf="@id/tv_choice_type_str"
+                    android:hint="@string/choice_type"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:textColor="@color/gray2" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_10"
+                    android:src="@drawable/arraw_right" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_choice_type_str"
+                    android:layout_marginTop="8dp" />
+            </RelativeLayout>
+
 
             <lilun.com.pension.widget.InputView
                 android:id="@+id/input_topic"
@@ -86,33 +126,40 @@
                 app:input_title="@string/address" />
 
             <RelativeLayout
+                android:id="@+id/rl_choice_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/tv_priority_title"
-                    style="@style/tv_normal_ellipsize"
-                    android:layout_centerVertical="true"
-                    android:text="@string/priority"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/tv_size_small" />
-
+                android:background="@color/white"
+                >
 
                 <TextView
                     android:id="@+id/tv_priority"
-                    style="@style/tv_small_ellipsize"
-                    android:layout_width="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="22dp"
-                    android:layout_toRightOf="@id/tv_priority_title"
-                    android:textColor="@color/gray" />
+                    style="@style/tv_input_desp"
+                    android:text="@string/priority" />
 
+
+                <TextView
+                    android:id="@+id/tv_choice_type"
+                    style="@style/tv_input_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="22dp"
+                    android:layout_toRightOf="@id/tv_priority"
+                    android:hint="@string/choose_priority"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:textColor="@color/gray2" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_10"
+                    android:src="@drawable/arraw_right" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_below="@id/tv_priority_title"
+                    android:layout_below="@id/tv_priority"
                     android:layout_marginTop="8dp" />
             </RelativeLayout>
 
@@ -134,7 +181,7 @@
                 style="@style/tv_small_ellipsize"
                 android:layout_marginTop="19dp"
                 android:text="@string/add_photo"
-                android:textColor="@color/gray" />
+                 />
 
 
             <lilun.com.pension.widget.TakePhotoLayout

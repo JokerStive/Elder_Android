@@ -39,16 +39,9 @@
             android:id="@+id/ll_tag_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginTop="3dp">
 
-            <TextView
-                style="@style/tv_small"
-                android:background="@drawable/shape_tourism_tag"
-                android:gravity="center_vertical"
-                android:padding="3dp"
-                android:text="境外游"
-                android:textColor="@color/red"
-                android:textSize="12sp" />
 
         </LinearLayout>
 
