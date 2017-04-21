@@ -38,8 +38,11 @@ public class RxUtils {
                     error_code = error.getStatusCode();
                     error_message = error.getMessage();
                 }
+                tResponse.errorBody().close();
                 return Observable.error(new ApiException(error_code, error_message, error));
             }
+
+//            T body = tResponse.body();
         });
     }
 
