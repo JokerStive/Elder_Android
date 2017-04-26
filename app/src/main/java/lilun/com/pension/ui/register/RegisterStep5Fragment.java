@@ -24,6 +24,7 @@ import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.Register;
 import lilun.com.pension.ui.welcome.LoginModule;
+import lilun.com.pension.widget.NormalDialog;
 
 /**
  * Created by zp on 2017/4/13.
@@ -54,7 +55,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
     public void onClick(View view) {
         if (view.getId() == R.id.tv_belong_area) {
             mListWindow.clear();
-            mPresenter.getChildLocation(_mActivity,"");
+            mPresenter.getChildLocation(_mActivity, "");
         } else if (view.getId() == R.id.tv_belong_stress) {
             mPresenter.getChildLocation(_mActivity, choiceArea.getId().replace(getString(R.string.common_address), ""));
         } else if (view.getId() == R.id.fab_go_next) {
@@ -62,7 +63,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
             detailAddress = belongOrganizationId.replace(getString(R.string.common_address), "") + getDetailAddress();
             detailAddress.replace("/", "");
             account.setDefaultOrganizationId(belongOrganizationId);
-            mPresenter.commitRegister(_mActivity,belongOrganizationId, IDCode, detailAddress, account);
+            mPresenter.commitRegister(_mActivity, belongOrganizationId, IDCode, detailAddress, account);
         }
     }
 
@@ -91,11 +92,16 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     public void successOfCommitRegister(Register register) {
-        account = register.getUser();
+        Account retAccount = register.getUser();
+        retAccount.setPassword(account.getPassword());
+        account = retAccount;
         LoginModule loginModule = new LoginModule();
         loginModule.putToken(register.getId());
         loginModule.putAccountInfo(account);
-        goStep6();
+        new NormalDialog().createNormal(_mActivity, R.string.register_success, () -> {
+            goStep6();
+        });
+
     }
 
     @Override

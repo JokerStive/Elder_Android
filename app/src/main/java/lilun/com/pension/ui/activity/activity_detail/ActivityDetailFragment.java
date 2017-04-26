@@ -2,6 +2,7 @@ package lilun.com.pension.ui.activity.activity_detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
@@ -41,6 +43,7 @@ import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.ui.activity.activity_question.ActivityQuestionListFragment;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.CountDownView;
@@ -59,8 +62,14 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
+    @Bind(R.id.iv_back)
+    ImageView ivBack;
+    @Bind(R.id.tv_title_name)
+    TextView tvTitleName;
     @Bind(R.id.srl_swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
+    @Bind(R.id.nsv_scrollview)
+    NestedScrollView nsvScrollView;
     @Bind(R.id.bp_activity_images)
     BannerPager bpActivityImages;
     @Bind(R.id.actv_activity_name)
@@ -158,6 +167,9 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        titleBar.setAlpha(0);
+        ivBack.setAlpha(1);
+        tvTitleName.setAlpha(1);
         titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
             @Override
             public void onBackClick() {
@@ -167,7 +179,28 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         showDetail(activity);
 
         mSwipeLayout.setOnRefreshListener(this::getActivityDetail);
+        nsvScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                float value = UIUtils.dp2px(_mActivity, 80);
+                int delY = scrollY - oldScrollY;
+                Log.d("zp ", scrollY + "  " + oldScrollY + "  " + value);
+                if (scrollY > value) scrollY = (int) value;
+                if (delY < 0) {  //下滑
+                    titleBar.setAlpha(1 - (value - scrollY) / value);
+                } else {
+                    titleBar.setAlpha(scrollY / value);
+                }
+                if(scrollY == 0){
+                    ivBack.setAlpha(1);
+                    tvTitleName.setAlpha(1);
+                } else{
+                    ivBack.setAlpha(0);
+                    tvTitleName.setAlpha(0);
+                }
 
+            }
+        });
         ArrayList<String> images = new ArrayList<>();
         if (activity.getIcon() != null)
             for (IconModule tmp : activity.getIcon())

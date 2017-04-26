@@ -350,9 +350,10 @@ public interface ApiService {
 
     /**
      * 新建一个活动
+     * 包含图片
      */
     @POST("OrganizationActivities")
-    Observable<Response<OrganizationActivity>> newActivity(@Body OrganizationActivity activity);
+    Observable<Response<OrganizationActivity>> newActivity(@Body MultipartBody body);
 
 
     /**
@@ -376,11 +377,10 @@ public interface ApiService {
 
 
     /**
-     * 上传活动多张图片
+     * 上传活动及其多张图片
      */
-    @Multipart
     @POST("OrganizationActivities/upload/icon")
-    Observable<Response<ArrayList<IconModule>>> newActivityIcons(@PartMap Map<String, RequestBody> params);
+    Observable<Response<ArrayList<IconModule>>> newActivityIcons(@Body MultipartBody params);
 
 
     /**

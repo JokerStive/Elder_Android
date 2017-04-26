@@ -67,8 +67,8 @@
                 android:id="@+id/tv_show_password"
                 style="@style/tv_normal_ellipsize"
                 android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/password_not_show"
                 android:layout_marginTop="23dp"
-                android:text="@string/show"
                 android:textSize="14sp" />
         </RelativeLayout>
 

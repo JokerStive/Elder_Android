@@ -316,5 +316,8 @@
     <string name="seconds">秒</string>
     <string name="finished_sign_up">报名已截止</string>
     <string name="commit_evalue">您对本活动评价为%1$s星，确认提交么?</string>
+    <string name="count_down_seconds">%1$s秒后可重新获取</string>
+    <string name="reget">重新获取验证码</string>
+    <string name="register_success">账号已注册成功，欢迎使用</string>
 
 </resources>

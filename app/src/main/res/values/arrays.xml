@@ -181,6 +181,7 @@
     <string-array name="activity_filter_status">
         <item>报名状态</item>
         <item>活动状态</item>
+        <item>时间状态</item>
     </string-array>
     <string-array name="activity_join_status">
         <item>全部</item>
@@ -192,5 +193,13 @@
         <item>未开始</item>
         <item>进行中</item>
         <item>已结束</item>
+    </string-array>
+    <string-array name="timing_status">
+        <item>升序</item>
+        <item>降序</item>
+    </string-array>
+    <string-array name="order_status">
+        <item>ASC</item>
+        <item>DESC</item>
     </string-array>
 </resources>

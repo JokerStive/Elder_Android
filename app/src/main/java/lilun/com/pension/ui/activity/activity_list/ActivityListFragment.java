@@ -61,11 +61,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
 
-    private FilterLayoutView.LayoutType layoutType = FilterLayoutView.LayoutType.BIG;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
     private List<OrganizationActivity> activities;
     private String searchStr = "";
     private String join_status = "";
     private String activity_status = "";
+    private String timing_status = "";
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -102,7 +103,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     protected void initView(LayoutInflater inflater) {
         searchBar.setNoNullLayout();
         searchBar.setFragment(this);
-        searchBar.isChangeLayout(false);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
@@ -116,8 +116,11 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             }
 
             @Override
-            public void onChangeLayout(SearchTitleBar.LayoutType layoutType) {
-
+            public void onChangeLayout(SearchTitleBar.LayoutType type) {
+                layoutType = type;
+                if (activities != null && activities.size() != 0) {
+                    setRecyclerAdapter(activities);
+                }
             }
         });
 
@@ -151,9 +154,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private OrganizationActivityAdapter getAdapterFromLayoutType(List<OrganizationActivity> activities) {
         OrganizationActivityAdapter adapter = null;
         int layoutId = 0;
-        if (layoutType == FilterLayoutView.LayoutType.BIG) {
+        if (layoutType == SearchTitleBar.LayoutType.BIG) {
             layoutId = R.layout.item_activity_big;
-        } else if (layoutType == FilterLayoutView.LayoutType.SMALL) {
+        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
             layoutId = R.layout.item_activity_small;
         }
 
@@ -181,6 +184,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         actStatusOptions.add(new Option("2", App.context.getResources().getStringArray(R.array.activity_status)[3]));
         conditionOptionsList.add(new ConditionOption(
                 App.context.getResources().getStringArray(R.array.activity_filter_status)[1], "1", actStatusOptions));
+
+        List<Option> acttimingStatusOptions = new ArrayList<>();
+        acttimingStatusOptions.add(new Option("", App.context.getResources().getStringArray(R.array.timing_status)[0]));
+        acttimingStatusOptions.add(new Option("0", App.context.getResources().getStringArray(R.array.timing_status)[1]));
+        conditionOptionsList.add(new ConditionOption(
+                App.context.getResources().getStringArray(R.array.activity_filter_status)[2], "2", acttimingStatusOptions));
         if (conditionOptionsList != null) {
 
             filterView.setTitlesAndDatas(filterTitles, conditionOptionsList, mSwipeLayout);
@@ -192,10 +201,10 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
                     if ("0".equals(whereValue)) {
                         //已报名的
-                        join_status = ",\"partnerList\":\"" + User.getUserId() + "\"";
+                        join_status = ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"},{\"partnerList\":\"" + User.getUserId() + "\"}]";
                     } else if ("1".equals(whereValue)) {
                         //未报名的
-                        join_status = ",\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}";
+                        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
                     } else {
                         //全部
                         join_status = "";
@@ -203,7 +212,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[1])) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String localtime = format.format(new Date());
-                    String gtmDate = StringUtils.localToGTM(localtime);
+                    String gtmDate = StringUtils.localToGTM(localtime);   //因为后台服务器存放时间是0时区时间，所以要转换
                     if (whereValue != null) {
                         switch (whereValue) {
                             case "0":
@@ -223,19 +232,18 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                                 break;
                         }
                     }
+                } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
+                    if ("0".equals(whereValue)) {  //降序
+                        //已报名的
+                        timing_status = ",\"order\":\"createdAt " + App.context.getResources().getStringArray(R.array.order_status)[1] + "\"";
+                    } else {  //升序
+                        //未报名的
+                        timing_status = ",\"order\":\"createdAt " + App.context.getResources().getStringArray(R.array.order_status)[0] + "\"";
+                    }
                 }
                 getActivityList(0);
 
 
-            });
-            filterView.setOnLayoutlistener(new FilterLayoutView.OnLayoutClickListener() {
-                @Override
-                public void onChangeLayout(FilterLayoutView.LayoutType type) {
-                    layoutType = type;
-                    if (activities != null && activities.size() != 0) {
-                        setRecyclerAdapter(activities);
-                    }
-                }
             });
         }
     }
@@ -251,7 +259,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void getActivityList(int skip) {
         // TODO 关联organizationId
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 

@@ -1,232 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <lilun.com.pension.widget.NormalTitleBar
-        android:id="@+id/title_bar"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        app:title="@string/activity_detail" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srl_swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_swipe_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nsv_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <lilun.com.pension.widget.slider.BannerPager
-                    android:id="@+id/bp_activity_images"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/max_photo_height" />
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/actv_activity_name"
-                            style="@style/acitivyt_detail_normal"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:text="社区组织公益活动"
-                            android:textColor="@color/activity_black"
-                            android:textSize="18sp" />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/actv_activity_type"
-                            style="@style/acitivyt_detail_normal_grey"
-                            android:layout_below="@id/actv_activity_name"
-                            android:text="@string/activity_type_" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_avg_evaluate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_10"
-                        android:background="@drawable/shape_rect_grey_corners"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dp_4">
-
-                        <TextView
-                            android:id="@+id/textView"
-                            style="@style/acitivyt_detail_normal_black"
-                            android:text="@string/activity_evaluate"
-                            android:textSize="18sp" />
-
-                        <RatingBar
-                            android:id="@+id/rb_avg_evaluate"
-                            style="@style/ratingBarr_small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="8dp"
-                            android:isIndicator="true"
-                            android:numStars="5"
-                            android:rating="4"
-                            android:stepSize="1" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_time"
-                    style="@style/acitivyt_detail_normal_black"
-                    android:drawableLeft="@drawable/activity_time"
-                    android:text="@string/activity_time_" />
-
-                <LinearLayout
-                    android:id="@+id/ll_activity_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left|center"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/actv_start"
-                        style="@style/acitivyt_detail_normal_black"
-                        android:drawableLeft="@drawable/activity_start"
-                        android:text="@string/activity_start_" />
-
-                    <lilun.com.pension.widget.CountDownView
-                        android:id="@+id/cdv_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_address"
-                    style="@style/acitivyt_detail_normal_black"
-                    android:drawableLeft="@drawable/activity_address"
-                    android:text="@string/activity_address_" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/actv_activity_repeat"
-                        style="@style/acitivyt_detail_normal_black"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/activity_repeat"
-                        android:text="@string/activity_repeat_" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/actv_activity_num_people"
-                        style="@style/acitivyt_detail_normal_grey"
-                        android:layout_marginRight="@dimen/dp_22"
-                        android:text="@string/targart_partin_" />
-
-
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_creator"
-                    style="@style/acitivyt_detail_normal_black"
-                    android:drawableLeft="@drawable/activity_creator"
-                    android:text="@string/activit_creator_" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/activity_line" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    style="@style/acitivyt_detail_normal"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/activity_desp"
-                    android:textColor="@color/activity_black"
-                    android:textSize="18sp" />
-
-                <View
-                    style="@style/line_gray"
-                    android:layout_marginLeft="@dimen/dp_10" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/actv_activity_content"
-                    style="@style/acitivyt_detail_normal_black"
-                    android:text="描述内容" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/activity_line" />
-
-                <LinearLayout
-                    android:id="@+id/ll_evalute"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left|center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_10">
-
-                    <lilun.com.pension.widget.CircleImageView
-                        android:id="@+id/civ_account_avatar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/icon_def" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/actv_my_evaluate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:paddingLeft="@dimen/dp_4"
-                        android:text="@string/want_evaluate"
-                        android:textColor="@color/activity_black"
-                        android:textSize="18sp" />
-
-                    <RatingBar
-                        android:id="@+id/rb_bar"
-                        style="@style/ratingBarr_big"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
-                        android:minHeight="10dp"
-                        android:numStars="5"
-                        android:rating="4"
-                        android:stepSize="1" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/activity_line" />
-
-                <LinearLayout
-                    android:id="@+id/ll_question_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <lilun.com.pension.widget.slider.BannerPager
+                        android:id="@+id/bp_activity_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/max_photo_height" />
+
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/actv_question_list"
+                        android:id="@+id/actv_activity_name"
+                        style="@style/acitivyt_detail_normal"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="社区组织公益活动"
+                        android:textColor="@color/activity_black"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_activity_type"
+                            style="@style/acitivyt_detail_normal_grey"
+                            android:layout_width="0dp"
+                            android:layout_below="@id/actv_activity_name"
+                            android:layout_weight="1"
+                            android:gravity="left|center"
+                            android:text="@string/activity_type_" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_avg_evaluate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp_4">
+
+                            <TextView
+                                android:id="@+id/textView"
+                                style="@style/acitivyt_detail_normal_black"
+                                android:text="@string/activity_evaluate"
+                                android:textSize="18sp" />
+
+                            <RatingBar
+                                android:id="@+id/rb_avg_evaluate"
+                                style="@style/ratingBarr_small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="@dimen/dp_10"
+                                android:isIndicator="true"
+                                android:numStars="5"
+                                android:rating="4"
+                                android:stepSize="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/actv_activity_time"
+                        style="@style/acitivyt_detail_normal_black"
+                        android:drawableLeft="@drawable/activity_time"
+                        android:text="@string/activity_time_" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_activity_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_start"
+                            style="@style/acitivyt_detail_normal_black"
+                            android:drawableLeft="@drawable/activity_start"
+                            android:text="@string/activity_start_" />
+
+                        <lilun.com.pension.widget.CountDownView
+                            android:id="@+id/cdv_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/actv_activity_address"
+                        style="@style/acitivyt_detail_normal_black"
+                        android:drawableLeft="@drawable/activity_address"
+                        android:text="@string/activity_address_" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_activity_repeat"
+                            style="@style/acitivyt_detail_normal_black"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/activity_repeat"
+                            android:text="@string/activity_repeat_" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_activity_num_people"
+                            style="@style/acitivyt_detail_normal_grey"
+                            android:layout_marginRight="@dimen/dp_22"
+                            android:text="@string/targart_partin_" />
+
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/actv_activity_creator"
+                        style="@style/acitivyt_detail_normal_black"
+                        android:drawableLeft="@drawable/activity_creator"
+                        android:text="@string/activit_creator_" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/activity_line" />
+
+                    <android.support.v7.widget.AppCompatTextView
                         style="@style/acitivyt_detail_normal"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="@string/activity_question_list_"
+                        android:text="@string/activity_desp"
                         android:textColor="@color/activity_black"
                         android:textSize="18sp" />
 
@@ -234,88 +161,184 @@
                         style="@style/line_gray"
                         android:layout_marginLeft="@dimen/dp_10" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_question_list"
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/actv_activity_content"
+                        style="@style/acitivyt_detail_normal_black"
+                        android:text="描述内容" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/activity_line" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_evalute"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
+                        android:gravity="left|center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
 
-                    <TextView
-                        android:id="@+id/tv_more_question"
-                        style="@style/acitivyt_detail_normal_grey"
+                        <lilun.com.pension.widget.CircleImageView
+                            android:id="@+id/civ_account_avatar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/icon_def" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_my_evaluate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:paddingLeft="@dimen/dp_4"
+                            android:text="@string/want_evaluate"
+                            android:textColor="@color/activity_black"
+                            android:textSize="18sp" />
+
+                        <RatingBar
+                            android:id="@+id/rb_bar"
+                            style="@style/ratingBarr_big"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:minHeight="10dp"
+                            android:numStars="5"
+                            android:rating="4"
+                            android:stepSize="1" />
+                    </LinearLayout>
+
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_marginLeft="45dp"
-                        android:gravity="center"
-                        android:text="@string/more_question"
-                        android:textSize="16sp" />
+                        android:layout_height="4dp"
+                        android:background="@color/activity_line" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_question_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_question_list"
+                            style="@style/acitivyt_detail_normal"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/activity_question_list_"
+                            android:textColor="@color/activity_black"
+                            android:textSize="18sp" />
+
+                        <View
+                            style="@style/line_gray"
+                            android:layout_marginLeft="@dimen/dp_10" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_question_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                        <TextView
+                            android:id="@+id/tv_more_question"
+                            style="@style/acitivyt_detail_normal_grey"
+                            android:layout_width="match_parent"
+                            android:layout_marginLeft="45dp"
+                            android:gravity="center"
+                            android:text="@string/more_question"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
 
 
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_joined_number"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/shape_rect_red"
+                android:text="@string/has_sign_up"
+                android:textColor="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_write_strock"
+                android:drawablePadding="@dimen/dp_4"
+                android:drawableTop="@drawable/sign_up"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/join" />
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_sign_up_back"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_write_strock"
+                android:drawablePadding="@dimen/dp_4"
+                android:drawableTop="@drawable/sign_up"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/sign_up_back" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_joined_number"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="@drawable/shape_rect_red"
-            android:text="@string/has_sign_up"
-            android:textColor="@color/white" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_question"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_write_strock"
+                android:drawablePadding="@dimen/dp_4"
+                android:drawableTop="@drawable/sign_up_list"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/question" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_sign_up"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/shape_rect_write_strock"
-            android:drawablePadding="@dimen/dp_4"
-            android:drawableTop="@drawable/sign_up"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="@string/join" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_sign_up_back"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/shape_rect_write_strock"
-            android:drawablePadding="@dimen/dp_4"
-            android:drawableTop="@drawable/sign_up"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="@string/sign_up_back" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_question"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/shape_rect_write_strock"
-            android:drawablePadding="@dimen/dp_4"
-            android:drawableTop="@drawable/sign_up_list"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="@string/question" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_sign_up_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/shape_rect_write_strock"
-            android:drawablePadding="@dimen/dp_4"
-            android:drawableTop="@drawable/sign_up_list"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="@string/sign_up_list" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_sign_up_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect_write_strock"
+                android:drawablePadding="@dimen/dp_4"
+                android:drawableTop="@drawable/sign_up_list"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/sign_up_list" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:title="@string/activity_detail" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/back_with_circle" />
+
+    <TextView
+        android:id="@+id/tv_title_name"
+        style="@style/tv_normal_ellipsize"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:gravity="center"
+        android:text="@string/activity_detail"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

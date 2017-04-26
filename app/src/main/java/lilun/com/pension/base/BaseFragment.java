@@ -184,7 +184,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
+       // Log.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
     }
 
 

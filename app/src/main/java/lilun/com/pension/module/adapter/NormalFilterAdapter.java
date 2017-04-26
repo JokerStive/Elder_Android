@@ -17,8 +17,8 @@ import lilun.com.pension.module.bean.Option;
  */
 public class NormalFilterAdapter extends QuickAdapter<Option> {
 
-//    private  String title;
-    private  String whereKey;
+    //    private  String title;
+    private String whereKey;
     private OnItemClickListener listener;
     private int mSelectedPosition = 0;
 
@@ -34,17 +34,17 @@ public class NormalFilterAdapter extends QuickAdapter<Option> {
         helper.setText(R.id.tv_option, option.getOptionValue())
                 .setOnClickListener(R.id.ll_item, v -> {
                     if (listener != null) {
-                        listener.onItemClick(helper.getAdapterPosition(),option.getOptionValue(), whereKey,option.getOptionKey());
-                        if (helper.getAdapterPosition() != 0) {
-                            mSelectedPosition = helper.getAdapterPosition();
-                            notifyDataChanged();
-                        }
+                        listener.onItemClick(helper.getAdapterPosition(), option.getOptionValue(), whereKey, option.getOptionKey());
+                        // if (helper.getAdapterPosition() != 0) {  修复显示位置与选择位置不匹配问题
+                        mSelectedPosition = helper.getAdapterPosition();
+                        notifyDataChanged();
+                        //  }
                     }
                 });
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int adapterPosition,String title, String whereKey,String  whereValue);
+        void onItemClick(int adapterPosition, String title, String whereKey, String whereValue);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

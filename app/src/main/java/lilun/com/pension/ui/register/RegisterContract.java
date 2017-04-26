@@ -30,10 +30,12 @@ public interface RegisterContract {
      */
     interface ViewStep3 extends IView<PresenterStep3> {
         void successOfCheckIDCode();
+      void successOfIDCode();
     }
 
     interface PresenterStep3 extends IPresenter<ViewStep3> {
         void checkIDCode(SupportActivity _mActivity, String phone, String aIDCode);
+        void getIDCode(SupportActivity _mActivity, String phone);
     }
 
 

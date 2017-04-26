@@ -16,6 +16,7 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.widget.SearchTitleBar;
 import lilun.com.pension.widget.filter_view.FilterLayoutView;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -31,7 +32,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
     private boolean showIsBig = true;
     private boolean allowshowIcon = true;
 
-    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, FilterLayoutView.LayoutType layoutType) {
+    public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
         super(layoutRes, data);
         showIsBig = layoutRes == R.layout.item_activity_big;
     }
@@ -84,7 +85,12 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
         if (allowshowIcon) {
             //是否参加
-            if (partners != null && partners.size() != 0) {
+            if (User.getUserId().equals(activity.getMasterId())) {  //是 创建者
+                help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
+                if (showIsBig) {
+                    help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
+                }
+            } else if (partners != null && partners.size() != 0) {  //是参与者
                 for (String partnerId : partners) {
                     if (TextUtils.equals(partnerId, User.getUserId())) {
                         help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
@@ -100,17 +106,20 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                 } else
                     help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
             }
+
+
         } else help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
 
         String numPeople;
         if ("null".equals(String.valueOf(activity.getMaxPartner())) || "0".equals(String.valueOf(activity.getMaxPartner())))
             numPeople = "不限";
         else
-            numPeople = activity.getMaxPartner() + "";
-        help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin_, numPeople + "人"));
+            numPeople = activity.getMaxPartner() + "人";
+        help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin_, numPeople));
 
 
-        String fileName = activity.getIcon() != null ? activity.getIcon().get(0).getFileName() : null;
+        String fileName = (activity.getIcon() != null && activity.getIcon().size() > 0) ?
+                activity.getIcon().get(0).getFileName() : null;
         //活动图片加载
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName),
                 R.drawable.icon_def, help.getView(R.id.iv_icon));

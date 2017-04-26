@@ -15,6 +15,8 @@ import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,14 +31,19 @@ import lilun.com.pension.base.BaseTakePhotoFragment;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.TakePhotoResult;
+import lilun.com.pension.module.utils.BitmapUtils;
+import lilun.com.pension.module.utils.GsonUtils;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.widget.CommonButton;
 import lilun.com.pension.widget.InputView;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.TakePhotoLayout;
+import okhttp3.MultipartBody;
 import rx.Observable;
 
 /**
@@ -270,7 +277,25 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         }
 
 
-        mPresenter.addActivity(_mActivity, activity, getPhotoData());
+        try {
+            JSONObject aidJsonObject = GsonUtils.objectToJSONObject(activity);
+            MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, getPhotoData());
+            NetHelper.getApi()
+                    .newActivityIcons(multipartBody)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Object>(_mActivity) {
+                        @Override
+                        public void _next(Object o) {
+                            pop();
+                            EventBus.getDefault().post(new Event.RefreshActivityData());
+                        }
+                    });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+      //  mPresenter.addActivity(_mActivity, activity, getPhotoData());
 
 
     }

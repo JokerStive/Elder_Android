@@ -55,6 +55,15 @@ public class BannerPager extends RelativeLayout {
 
     public void setData(List<String> urls) {
         List<ImageView> items = new ArrayList<>();
+        if(urls.size() == 0){
+            ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
+            Glide.with(getContext()).load(R.drawable.icon_def).dontAnimate()
+                    .error(R.drawable.icon_def)
+                    .placeholder(R.drawable.icon_def)
+                    .fitCenter()
+                    .into(item);
+            items.add(item);
+        }
         for (int i = 0; i < urls.size(); i++) {
             ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
             Glide.with(getContext()).load(urls.get(i)).dontAnimate()

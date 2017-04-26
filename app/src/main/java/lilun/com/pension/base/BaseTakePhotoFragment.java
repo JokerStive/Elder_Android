@@ -60,14 +60,14 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter>  extends BaseF
     public TakePhoto getTakePhoto() {
         if (takePhoto == null) {
             takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
-            LubanOptions option = new LubanOptions.Builder()
-                    .setMaxHeight(Config.uploadPhotoMaxHeight)
-                    .setMaxWidth(Config.uploadPhotoMaxWidth)
-                    .setMaxSize(Config.uploadPhotoMaxSize)
-                    .create();
-            CompressConfig config = CompressConfig.ofLuban(option);
-            takePhoto.onEnableCompress(config, true);
         }
+        LubanOptions option = new LubanOptions.Builder()
+                .setMaxHeight(Config.uploadPhotoMaxHeight)
+                .setMaxWidth(Config.uploadPhotoMaxWidth)
+                .setMaxSize(Config.uploadPhotoMaxSize)
+                .create();
+        CompressConfig config = CompressConfig.ofLuban(option);
+        takePhoto.onEnableCompress(config, true);
         return takePhoto;
     }
 

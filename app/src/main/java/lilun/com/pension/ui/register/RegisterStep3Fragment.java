@@ -2,10 +2,15 @@ package lilun.com.pension.ui.register;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -13,6 +18,10 @@ import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.utils.ToastHelper;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * 验证码 验证
@@ -22,21 +31,36 @@ import lilun.com.pension.module.utils.ToastHelper;
 public class RegisterStep3Fragment extends BaseFragment<RegisterContract.PresenterStep3>
         implements RegisterContract.ViewStep3 {
 
-    RegisterStep4Fragment fragmentStep4 = new RegisterStep4Fragment();
+    private final int REGET_TIME = 60;
+    CompositeSubscription cntDownRx;
+
     Account account;
     String IDCode;
     @Bind(R.id.ll_input)
     LinearLayout llRegisterName;
     @Bind(R.id.tv_input_title)
     TextView tvInputTitle;
+    @Bind(R.id.actv_show_count_down)
+    AppCompatTextView actvShowCntDown;
     @Bind(R.id.acet_input)
     AppCompatEditText acetRegisterCode;
 
-    @OnClick(R.id.fab_go_next)
-    public void onClick() {
-        IDCode = acetRegisterCode.getText().toString().trim();
-        if (checkRegisterCode(IDCode)) {
-            mPresenter.checkIDCode(_mActivity, account.getMobile(), IDCode);
+    @OnClick({R.id.fab_go_next, R.id.actv_show_count_down})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fab_go_next:
+                IDCode = acetRegisterCode.getText().toString().trim();
+                if (checkRegisterCode(IDCode)) {
+                    mPresenter.checkIDCode(_mActivity, account.getMobile(), IDCode);
+                }
+                break;
+            case R.id.actv_show_count_down:
+                if (actvShowCntDown.getText().toString().trim().equals(getString(R.string.reget))) {
+                    mPresenter.getIDCode(_mActivity, account.getMobile());
+                    return;
+                }
+
+                break;
         }
     }
 
@@ -60,6 +84,8 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     protected void initView(LayoutInflater inflater) {
         tvInputTitle.setText(R.string.register_code);
         acetRegisterCode.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        actvShowCntDown.setVisibility(View.VISIBLE);
+        startCnt();
     }
 
 
@@ -76,6 +102,7 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
         Bundle bundle = new Bundle();
         bundle.putSerializable("account", account);
         bundle.putString("IDCode", IDCode);
+        RegisterStep4Fragment fragmentStep4 = new RegisterStep4Fragment();
         fragmentStep4.setArguments(bundle);
         _mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentStep4)
                 .setCustomAnimations(R.anim.pop_container_in, R.anim.pop_container_out)
@@ -86,5 +113,52 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     @Override
     public void successOfCheckIDCode() {
         goStep4();
+    }
+
+    @Override
+    public void successOfIDCode() {
+        startCnt();
+    }
+
+    public void startCnt() {
+        if (cntDownRx == null)
+            cntDownRx = new CompositeSubscription();
+        cntDownRx.add(Observable.timer(0, 1, TimeUnit.SECONDS)
+                .map(new Func1<Long, Long>() {
+                    @Override
+                    public Long call(Long aLong) {
+                        return REGET_TIME - aLong;
+                    }
+                })
+                .take(REGET_TIME + 1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    Log.d("zp", res + "");
+
+                    if (res == 0) {
+                        stop();
+
+                        actvShowCntDown.setText(getString(R.string.reget));
+                        actvShowCntDown.setBackgroundResource(R.drawable.shape_rect_red_corner_5);
+
+                    } else {
+                        actvShowCntDown.setText(getString(R.string.count_down_seconds, res + ""));
+                        actvShowCntDown.setBackgroundResource(R.drawable.shape_rect_gray_corner_5);
+                    }
+                }));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stop();
+    }
+
+    public void stop() {
+        if (cntDownRx != null && !cntDownRx.isUnsubscribed()) {
+            cntDownRx.unsubscribe();
+
+            cntDownRx = null;
+        }
     }
 }

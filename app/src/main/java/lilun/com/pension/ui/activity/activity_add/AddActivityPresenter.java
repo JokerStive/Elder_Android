@@ -26,36 +26,36 @@ import rx.Observable;
 public class AddActivityPresenter extends RxPresenter<AddActivityConstract.View> implements AddActivityConstract.Presenter {
     @Override
     public void addActivity(SupportActivity _mActivity, OrganizationActivity activity, ArrayList<String> photoData) {
-        Observable<OrganizationActivity> observable = activityObservable(activity, null);
-        if (photoData != null) {
-            Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(photoData);
-            if (requestBodies != null) {
-                observable = iconObservable(requestBodies).flatMap(iconModules -> activityObservable(activity, iconModules));
-            }
-        }
-        addSubscribe(observable
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
-                    @Override
-                    public void _next(OrganizationActivity activity1) {
-                        view.addActivitySuccess();
-                    }
-                }));
+//        Observable<OrganizationActivity> observable = activityObservable(activity, null);
+//        if (photoData != null) {
+//            Map<String, RequestBody> requestBodies = BitmapUtils.createRequestBodies(photoData);
+//            if (requestBodies != null) {
+//                observable = iconObservable(requestBodies).flatMap(iconModules -> activityObservable(activity, iconModules));
+//            }
+//        }
+//        addSubscribe(observable
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
+//                    @Override
+//                    public void _next(OrganizationActivity activity1) {
+//                        view.addActivitySuccess();
+//                    }
+//                }));
     }
 
 
-    private Observable<ArrayList<IconModule>> iconObservable(Map<String, RequestBody> requestBodies) {
-        return NetHelper.getApi()
-                .newActivityIcons(requestBodies)
-                .compose(RxUtils.handleResult());
-    }
+//    private Observable<ArrayList<IconModule>> iconObservable(Map<String, RequestBody> requestBodies) {
+//        return NetHelper.getApi()
+//                .newActivityIcons(requestBodies)
+//                .compose(RxUtils.handleResult());
+//    }
 
-    private Observable<OrganizationActivity> activityObservable(OrganizationActivity activity, ArrayList<IconModule> iconModules) {
-        activity.setIcon(iconModules);
-        return NetHelper.getApi()
-                .newActivity(activity)
-                .compose(RxUtils.handleResult());
-    }
+//    private Observable<OrganizationActivity> activityObservable(OrganizationActivity activity, ArrayList<IconModule> iconModules) {
+//        activity.setIcon(iconModules);
+//        return NetHelper.getApi()
+//                .newActivity(activity)
+//                .compose(RxUtils.handleResult());
+//    }
 
 
     @Override

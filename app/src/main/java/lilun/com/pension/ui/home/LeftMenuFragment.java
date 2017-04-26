@@ -97,6 +97,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                     ACache.get().clear();
                     PreUtils.clear();
                     startActivity(new Intent(_mActivity, WelcomeActivity.class));
+                    _mActivity.finish();
                 })
                 .onNegative((dialog1, which1) -> dialog1.dismiss())
                 .show();

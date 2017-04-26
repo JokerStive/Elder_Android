@@ -27,13 +27,14 @@ import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
-import lilun.com.pension.ui.home.HomeActivity;
+import lilun.com.pension.ui.welcome.LoginActivity;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.TakePhotoDialogFragment;
 import rx.Observable;
 
 /**
+ * 注册成功后 到登录界面
  * Created by zp on 2017/4/13.
  */
 
@@ -119,7 +120,10 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
 
     @Override
     public void successOfUpdateImage() {
-        startActivity(new Intent(getContext(), HomeActivity.class));
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.putExtra("autologin",true);
+        intent.putExtra("account",account);
+        startActivity(intent);
         _mActivity.finish();
     }
 
@@ -156,4 +160,5 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
     protected ArrayList<String> getPhotoData() {
         return super.getPhotoData();
     }
+
 }

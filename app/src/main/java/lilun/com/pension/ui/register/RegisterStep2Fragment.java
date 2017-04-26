@@ -22,7 +22,7 @@ import lilun.com.pension.module.utils.ToastHelper;
 
 public class RegisterStep2Fragment extends BaseFragment<RegisterContract.PresenterStep2>
         implements RegisterContract.ViewStep2 {
-    RegisterStep3Fragment fragmentStep3 = new RegisterStep3Fragment();
+
     Account account;
     @Bind(R.id.ll_input)
     LinearLayout llRegisterName;
@@ -71,6 +71,7 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
         ((RegisterActivity) _mActivity).setTitle(account.getMobile());
         Bundle bundle = new Bundle();
         bundle.putSerializable("account", account);
+        RegisterStep3Fragment fragmentStep3 = new RegisterStep3Fragment();
         fragmentStep3.setArguments(bundle);
         _mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentStep3)
                 .setCustomAnimations(R.anim.pop_container_in, R.anim.pop_container_out)

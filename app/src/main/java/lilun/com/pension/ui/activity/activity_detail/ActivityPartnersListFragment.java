@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -21,6 +22,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PartnersAdapter;
 import lilun.com.pension.module.bean.Account;
@@ -53,6 +55,8 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
 
     @Bind(R.id.null_data)
     ImageView nullData;
+    @Bind(R.id.ll_question)
+    LinearLayout llCancelActivity;
 
     @OnClick(R.id.acbt_cancel_activity)
     public void onClick() {
@@ -106,6 +110,10 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                 pop();
             }
         });
+        if (User.getUserId().equals(activity.getMasterId()))
+            llCancelActivity.setVisibility(View.VISIBLE);
+        else
+            llCancelActivity.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(1));
@@ -143,6 +151,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
             partnersAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(View view, int i) {
+                    if (!User.getUserId().equals(activity.getMasterId())) return false;
                     final String userId = partnersAdapter.getData().get(i).getId();
                     Log.d("zp", "长按" + i);
                     if (buttonPopupWindow == null) {

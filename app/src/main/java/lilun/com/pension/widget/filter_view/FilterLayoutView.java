@@ -175,7 +175,7 @@ public class FilterLayoutView extends LinearLayout implements View.OnTouchListen
             int padding = UIUtils.dp2px(context, 10);
             imageView = new ImageView(context);
             LinearLayoutCompat.LayoutParams layoutParams1 = new LinearLayoutCompat.LayoutParams(54, 54);
-            layoutParams1.setMargins(padding,0,padding,0);
+            layoutParams1.setMargins(padding, 0, padding, 0);
             imageView.setLayoutParams(layoutParams1);
 
             imageView.setOnClickListener(new OnClickListener() {
@@ -240,8 +240,8 @@ public class FilterLayoutView extends LinearLayout implements View.OnTouchListen
                     childAt.setVisibility(VISIBLE);
                     maxWidth = childAt.getRight();
                     maxHeight = childAt.getBottom();
-                    Log.d("yk", "当前可见的view的宽高 = " + maxWidth + "--" + maxHeight);
-//                    Log.d("yk", "pops 中位置为" + i + "的布局被显示");
+                    //   Log.d("yk", "当前可见的view的宽高 = " + maxWidth + "--" + maxHeight);
+                    Log.d("yk", "pops 中位置为" + i + "的布局被显示");
 
                     tabView.setTabStatus(true);
                     tabView.setColor(true);
@@ -251,7 +251,7 @@ public class FilterLayoutView extends LinearLayout implements View.OnTouchListen
 
 
             } else {
-//                Log.d("yk", "pops 中位置为" + i + "的布局被隐藏");
+                Log.d("yk", "pops 中位置为" + i + "的布局被隐藏");
                 tabView.setTabStatus(false);
                 tabView.setColor(false);
                 View childAt = popViews.getChildAt(i);

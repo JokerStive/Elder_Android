@@ -33,10 +33,13 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     public void onclick(View view) {
-        if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 6) {
+
+        } else if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
             finish();
         } else {
             pop();
+            setPopTitle();
         }
     }
 
@@ -72,14 +75,28 @@ public class RegisterActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 6) {
+                return false;
+            }
             if (getSupportFragmentManager().getBackStackEntryCount() == 1)
                 finish();
+            else {
+                onBackPressed();
+                setPopTitle();
+                return false;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
 
     public void setTitle() {
         int index = getSupportFragmentManager().getBackStackEntryCount();
+        tvTitle.setText(titleList.get(index));
+        tvTitleDesp.setText(titleDespList.get(index));
+    }
+
+    public void setPopTitle() {
+        int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
         tvTitle.setText(titleList.get(index));
         tvTitleDesp.setText(titleDespList.get(index));
     }
