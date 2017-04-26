@@ -5,6 +5,15 @@ apply plugin: 'android-apt'
 apply plugin: 'com.antfortune.freeline'
 
 android {
+
+    signingConfigs {
+        release {
+            keyAlias 'lilang'
+            keyPassword '62489608'
+            storeFile file('../lilang_key')
+            storePassword '62489608'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
