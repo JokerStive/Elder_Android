@@ -1,5 +1,8 @@
 package lilun.com.pension.ui.register;
 
+import com.vanzh.library.BaseBean;
+import com.vanzh.library.DataInterface;
+
 import java.util.List;
 
 import lilun.com.pension.base.IPresenter;
@@ -45,11 +48,11 @@ public interface RegisterContract {
     interface ViewStep5 extends IView<PresenterStep5> {
         void successOfCommitRegister(Register register);
 
-        void successOfChildLocation(List<Area> areas);
+        void successOfChildLocation(List<Area> areas, DataInterface.Response<BaseBean> response, int level, int recyclerIndex);
     }
 
     interface PresenterStep5 extends IPresenter<ViewStep5> {
-        void getChildLocation(SupportActivity _mActivity, String locationName);
+        void getChildLocation(SupportActivity _mActivity, String locationName, DataInterface.Response<BaseBean> response, int i, int level);
 
         void commitRegister(SupportActivity _mActivity, String organizationId, String IDCode, String address, Account account);
     }

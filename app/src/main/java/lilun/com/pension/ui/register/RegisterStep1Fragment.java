@@ -33,6 +33,7 @@ public class RegisterStep1Fragment extends BaseFragment {
     public void onClick() {
         if (checkRegisterName(acetRegisterName.getText().toString().trim()) == true) {
             account.setName((acetRegisterName.getText().toString().trim()));
+            account.setUsername((acetRegisterName.getText().toString().trim()));
             goStep2();
         }
     }
@@ -55,7 +56,7 @@ public class RegisterStep1Fragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        tvInputTitle.setText(getString(R.string.name));
+        tvInputTitle.setText(getString(R.string.nickname));
     }
 
 
@@ -71,6 +72,7 @@ public class RegisterStep1Fragment extends BaseFragment {
         ((RegisterActivity) _mActivity).setTitle();
         Bundle bundle = new Bundle();
         bundle.putSerializable("account",account);
+        ((RegisterActivity) _mActivity).account = account;
         fragmentStep2.setArguments(bundle);
         _mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragmentStep2)
                 .setCustomAnimations(R.anim.pop_container_in, R.anim.pop_container_out)

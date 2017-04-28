@@ -51,7 +51,7 @@ public class NestedReplyAdapter extends QuickAdapter<NestedReply> {
         OrganizationReply answer = nestedReply.getAnswer();
         if (question != null) {
             helper.setText(R.id.tv_name, question.getCreatorName())
-                    .setText(R.id.tv_creator, StringUtils.timeFormat(question.getCreatedAt()))
+                    .setText(R.id.tv_creator, StringUtils.up2thisTime(question.getCreatedAt()))
                     .setText(R.id.tv_content, StringUtils.filterNull(question.getContent()));
 
             ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, question.getCreatorId(), null), R.drawable.icon_def, helper.getView(R.id.iv_avatar));

@@ -2,6 +2,9 @@ package lilun.com.pension.ui.register;
 
 import android.util.Log;
 
+import com.vanzh.library.BaseBean;
+import com.vanzh.library.DataInterface;
+
 import java.util.List;
 
 import lilun.com.pension.base.RxPresenter;
@@ -20,15 +23,15 @@ import me.yokeyword.fragmentation.SupportActivity;
 public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewStep5>
         implements RegisterContract.PresenterStep5 {
     @Override
-    public void getChildLocation(SupportActivity _mActivity, String locationName) {
+    public void getChildLocation(SupportActivity _mActivity, String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex) {
         addSubscribe(NetHelper.getApi()
                 .getChildLocation(locationName)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Area>>(_mActivity) {
+                .subscribe(new RxSubscriber<List<Area>>() {
                     @Override
                     public void _next(List<Area> areas) {
-                        view.successOfChildLocation(areas);
+                        view.successOfChildLocation(areas, response, level, recyclerIndex);
                     }
                 }));
     }
@@ -36,7 +39,7 @@ public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewSte
     @Override
     public void commitRegister(SupportActivity _mActivity, String organizationId, String IDCode, String address, Account account) {
         addSubscribe(NetHelper.getApi()
-                .commitRegister(organizationId, IDCode, address,account)
+                .commitRegister(organizationId, IDCode, address, account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Register>(_mActivity) {

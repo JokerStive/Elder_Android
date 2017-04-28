@@ -145,7 +145,7 @@
     </string-array>
 
     <string-array name="register_title_list">
-        <item>您的姓名？</item>
+        <item>您的昵称？</item>
         <item>还有，您的电话？</item>
         <item>请输入6位验证码</item>
         <item>创建一个密码</item>
@@ -181,7 +181,7 @@
     <string-array name="activity_filter_status">
         <item>报名状态</item>
         <item>活动状态</item>
-        <item>时间状态</item>
+        <item>发布时间</item>
     </string-array>
     <string-array name="activity_join_status">
         <item>全部</item>
@@ -195,11 +195,8 @@
         <item>已结束</item>
     </string-array>
     <string-array name="timing_status">
-        <item>升序</item>
-        <item>降序</item>
+        <item>由新到旧</item>
+        <item>由旧到新</item>
     </string-array>
-    <string-array name="order_status">
-        <item>ASC</item>
-        <item>DESC</item>
-    </string-array>
+
 </resources>

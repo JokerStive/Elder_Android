@@ -40,7 +40,6 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
             return;
         }
         account.setMobile(phone);
-        account.setUsername(phone);
         // goStep3();
         mPresenter.getIDCode(_mActivity, phone);
     }
@@ -69,6 +68,7 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
 
     private void goStep3() {
         ((RegisterActivity) _mActivity).setTitle(account.getMobile());
+        ((RegisterActivity) _mActivity).account = account;
         Bundle bundle = new Bundle();
         bundle.putSerializable("account", account);
         RegisterStep3Fragment fragmentStep3 = new RegisterStep3Fragment();

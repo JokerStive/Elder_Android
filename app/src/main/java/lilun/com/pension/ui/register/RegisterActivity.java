@@ -24,7 +24,7 @@ public class RegisterActivity extends BaseActivity {
     ArrayList<String> titleDespList = new ArrayList<>();
     Account account = new Account();
     RegisterStep1Fragment fragmentStep1 = new RegisterStep1Fragment();
-    RegisterStep6Fragment fragmentStep6 = new RegisterStep6Fragment();
+    RegisterStep5Fragment fragmentStep5 = new RegisterStep5Fragment();
 
     @Bind(R.id.title)
     TextView tvTitle;
@@ -39,7 +39,11 @@ public class RegisterActivity extends BaseActivity {
             finish();
         } else {
             pop();
-            setPopTitle();
+            if (getSupportFragmentManager().getBackStackEntryCount() == 3)
+                setPopTitle(account.getMobile());
+            else
+                setPopTitle();
+
         }
     }
 
@@ -82,7 +86,10 @@ public class RegisterActivity extends BaseActivity {
                 finish();
             else {
                 onBackPressed();
-                setPopTitle();
+                if (getSupportFragmentManager().getBackStackEntryCount() == 3)
+                    setPopTitle(account.getMobile());
+                else
+                    setPopTitle();
                 return false;
             }
         }
@@ -99,6 +106,12 @@ public class RegisterActivity extends BaseActivity {
         int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
         tvTitle.setText(titleList.get(index));
         tvTitleDesp.setText(titleDespList.get(index));
+    }
+
+    public void setPopTitle(String phone) {
+        int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
+        tvTitle.setText(titleList.get(index));
+        tvTitleDesp.setText(titleDespList.get(index).replace("phone", phone));
     }
 
     public void setTitle(String phone) {

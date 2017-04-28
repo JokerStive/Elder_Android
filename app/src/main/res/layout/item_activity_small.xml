@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/dp_10"
         android:paddingLeft="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10">
+        android:paddingTop="@dimen/dp_10"
+        android:visibility="gone">
 
         <lilun.com.pension.widget.CircleImageView
             android:id="@+id/iv_ivatar"
@@ -145,7 +146,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_10">
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10">
 
         <TextView
             android:id="@+id/iv_is_repeat"
@@ -156,13 +158,13 @@
             android:text="@string/cyclical" />
 
         <TextView
-            android:id="@+id/tv_detail"
+            android:id="@+id/tv_creator_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/shape_rect_grey"
+
+            android:textColor="@color/md_material_blue_600"
             android:padding="8dp"
-            android:text="@string/detail" />
+            android:text="3分钟前" />
 
     </LinearLayout>
 </LinearLayout>

@@ -54,29 +54,14 @@ public class OrganizationActivity extends BaseBean {
     private int druation;
     private String repeatedType;
 
-    public String getRepeatedDesc() {
-        return repeatedDesc;
-    }
-
-    public void setRepeatedDesc(String repeatedDesc) {
-        this.repeatedDesc = repeatedDesc;
-    }
 
     private String repeatedDesc;
-    private String description ;
+    private String description;
     private int repeatedCount;
     private Integer maxPartner;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public OrganizationActivity setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
     private String id;
+    private String status;
     private String masterId;
     private String categoryId;
     private String createdAt;
@@ -90,6 +75,30 @@ public class OrganizationActivity extends BaseBean {
     private List<String> partnerList;
     private Account contact;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public OrganizationActivity setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getRepeatedDesc() {
+        return repeatedDesc;
+    }
+
+    public void setRepeatedDesc(String repeatedDesc) {
+        this.repeatedDesc = repeatedDesc;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getTitle() {
         return title;
@@ -130,6 +139,7 @@ public class OrganizationActivity extends BaseBean {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+
     public String getEndTime() {
         return endTime;
     }

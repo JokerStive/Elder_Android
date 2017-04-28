@@ -264,58 +264,41 @@
                 android:id="@+id/acbt_joined_number"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@drawable/shape_rect_red"
                 android:text="@string/has_sign_up"
                 android:textColor="@color/white" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/acbt_sign_up"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_rect_write_strock"
-                android:drawablePadding="@dimen/dp_4"
-                android:drawableTop="@drawable/sign_up"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="@string/join" />
+                android:layout_weight="1">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/acbt_sign_up_back"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_rect_write_strock"
-                android:drawablePadding="@dimen/dp_4"
-                android:drawableTop="@drawable/sign_up"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="@string/sign_up_back" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/acbt_sign_up"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_write_strock"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:drawableTop="@drawable/sign_up"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/join" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/acbt_question"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_rect_write_strock"
-                android:drawablePadding="@dimen/dp_4"
-                android:drawableTop="@drawable/sign_up_list"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="@string/question" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/acbt_sign_up_list"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_rect_write_strock"
-                android:drawablePadding="@dimen/dp_4"
-                android:drawableTop="@drawable/sign_up_list"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="@string/sign_up_list" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/acbt_question_and_partner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_write_strock"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:drawableTop="@drawable/question"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/question" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -330,7 +313,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:src="@drawable/back_with_circle" />
+        android:src="@drawable/back_with_circle2" />
 
     <TextView
         android:id="@+id/tv_title_name"

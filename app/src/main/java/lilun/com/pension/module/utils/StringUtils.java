@@ -34,6 +34,7 @@ public class StringUtils {
 
     /**
      * 转换为东八区时间
+     *
      * @param isoTime1
      * @return
      */
@@ -48,6 +49,7 @@ public class StringUtils {
 
     /**
      * 转换为东八区时间
+     *
      * @param isoTime1
      * @return
      */
@@ -71,10 +73,10 @@ public class StringUtils {
         String result = null;
         Object json = null;
         JSONObject jsonObject;
-        if (object!=null){
-            if (object instanceof String || object instanceof Integer || object instanceof Float || object instanceof Double){
-               result =  object.toString();
-            }else {
+        if (object != null) {
+            if (object instanceof String || object instanceof Integer || object instanceof Float || object instanceof Double) {
+                result = object.toString();
+            } else {
                 try {
                     json = new JSONTokener(object.toString()).nextValue();
                 } catch (JSONException e) {
@@ -105,6 +107,7 @@ public class StringUtils {
 
     /**
      * 转换为东八区时间
+     *
      * @param isoTime1
      * @return
      */
@@ -124,6 +127,7 @@ public class StringUtils {
 
     /**
      * 转换为东八区时间
+     *
      * @param isoTime1
      * @param mode     0 - 返回年月日   1- 返回时分  -2 返回所有 -3 返回月/日 时:分  -4 返回月/日
      * @return
@@ -182,14 +186,19 @@ public class StringUtils {
         return ret;
     }
 
-    public static DateTime IOS2DateTime(String isoTime1) {
-        DateTime dateTime = null;
+    /**
+     * 将 0区时间 转为东八区时间 本地时间，
+     *
+     * @param isoTime1 0区时间
+     * @return 返回 Date
+     */
+    public static Date IOS2DateTime(String isoTime1) {
+        Date dateTime = null;
         try {
-            String[] ss = isoTime1.split("\\.");
-            String isoTime = ss[0] + "+08:00";
-            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            String localTime = IOS2ToUTC(isoTime1, 5);
 
-            dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            dateTime = parser.parse(localTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -354,6 +363,24 @@ public class StringUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * 计算发布时间
+     *
+     * @param strTime
+     * @return
+     */
+    public static String up2thisTime(String strTime) {
+        long ms = new Date().getTime() - IOS2ToUTCDate(strTime).getTime();
+        long days, hours, mins;
+        days = ms / (1000 * 60 * 60 * 24);
+        hours = ms / (1000 * 60 * 60);
+        mins = ms / (1000 * 60);
+        if (days != 0) return days + "天前";
+        if (hours != 0) return hours + "小时前";
+        if (mins >= 5) return mins + "分钟前";
+        return "刚刚";
     }
 
 }

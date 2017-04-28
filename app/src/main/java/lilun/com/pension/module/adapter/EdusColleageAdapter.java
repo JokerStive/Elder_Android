@@ -33,7 +33,7 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
 
     @Override
     protected void convert(BaseViewHolder help, ElderEdusColleage edu) {
-        help.setText(R.id.tv_product_name, edu.getName())
+        help.setText(R.id.tv_title, edu.getName())
                 .setText(R.id.tv_address, edu.getAddress())
 
                 .setOnClickListener(R.id.ll_bg, v -> {

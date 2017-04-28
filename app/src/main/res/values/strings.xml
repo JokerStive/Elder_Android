@@ -319,5 +319,7 @@
     <string name="count_down_seconds">%1$s秒后可重新获取</string>
     <string name="reget">重新获取验证码</string>
     <string name="register_success">账号已注册成功，欢迎使用</string>
+    <string name="nickname">昵称</string>
+    <string name="activity_has_cancel">活动已解散</string>
 
 </resources>

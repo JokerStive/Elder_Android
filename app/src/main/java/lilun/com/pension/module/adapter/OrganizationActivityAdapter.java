@@ -6,8 +6,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import org.joda.time.DateTime;
-
+import java.util.Date;
 import java.util.List;
 
 import lilun.com.pension.R;
@@ -29,12 +28,11 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  */
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
     private OnItemClickListener listener;
-    private boolean showIsBig = true;
+
     private boolean allowshowIcon = true;
 
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
         super(layoutRes, data);
-        showIsBig = layoutRes == R.layout.item_activity_big;
     }
 
     /**
@@ -45,7 +43,6 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
      */
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, FilterLayoutView.LayoutType layoutType, boolean allowshowIcon) {
         super(layoutRes, data);
-        showIsBig = layoutRes == R.layout.item_activity_big;
         this.allowshowIcon = allowshowIcon;
     }
 
@@ -64,13 +61,14 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         help.getView(R.id.tv_activity_status).setVisibility(View.VISIBLE);
         //不是周期活动
         if (TextUtils.isEmpty(activity.getRepeatedDesc())) {
-            DateTime start = StringUtils.IOS2DateTime(activity.getStartTime());
-            DateTime end = StringUtils.IOS2DateTime(activity.getEndTime());
-            if (start != null && start.isAfterNow())  //未进行
+            Date start = StringUtils.IOS2DateTime(activity.getStartTime());
+            Date end = StringUtils.IOS2DateTime(activity.getEndTime());
+
+            if (start != null && start.after(new Date()))  //未进行
                 help.getView(R.id.tv_activity_status).setVisibility(View.GONE);
-            else if (start != null && start.isBeforeNow() && (end != null && end.isAfterNow())) {
+            else if (start != null && start.before(new Date()) && (end != null && end.after(new Date()))) {
                 help.setText(R.id.tv_activity_status, context.getString(R.string.ongoing));
-            } else if (end != null && end.isBeforeNow()) {
+            } else if (end != null && end.before(new Date())) {
                 help.setText(R.id.tv_activity_status, context.getString(R.string.finished));
             }
         }
@@ -85,26 +83,22 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
         if (allowshowIcon) {
             //是否参加
-            if (User.getUserId().equals(activity.getMasterId())) {  //是 创建者
-                help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
-                if (showIsBig) {
-                    help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
-                }
-            } else if (partners != null && partners.size() != 0) {  //是参与者
+//            if (User.getUserId().equals(activity.getMasterId())) {  //是 创建者
+//                help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
+//                if (showIsBig) {
+//                    help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
+//                }
+//            } else
+            if (partners != null && partners.size() != 0) {  //是参与者
                 for (String partnerId : partners) {
                     if (TextUtils.equals(partnerId, User.getUserId())) {
                         help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
-                        if (showIsBig) {
-                            help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
-                        }
                         break;
                     }
                 }
             } else {
-                if (showIsBig) {
-                    help.setText(R.id.iv_partin_flag, context.getString(R.string.unjoined));
-                } else
-                    help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
+
+                help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
             }
 
 
@@ -120,12 +114,14 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
         String fileName = (activity.getIcon() != null && activity.getIcon().size() > 0) ?
                 activity.getIcon().get(0).getFileName() : null;
-        //活动图片加载
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName),
-                R.drawable.icon_def, help.getView(R.id.iv_icon));
-        //创建者头像加载
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(IconUrl.Accounts, activity.getCreatorId()),
-                R.drawable.icon_def, help.getView(R.id.iv_ivatar));
+        if (TextUtils.isEmpty(fileName))
+            help.getView(R.id.iv_icon).setVisibility(View.GONE);
+        else {
+            help.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
+            //活动图片加载
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName),
+                    R.drawable.icon_def, help.getView(R.id.iv_icon));
+        }
 
         String time = activity.getStartTime();
         String activityTime = "";
@@ -140,6 +136,8 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
             help.setText(R.id.iv_is_repeat, context.getApplicationContext().getString(R.string.single));
         }
         help.setText(R.id.tv_activity_time, context.getString(R.string.activity_time_, activityTime));
+
+        help.setText(R.id.tv_creator_time, StringUtils.up2thisTime(activity.getCreatedAt()));
 
     }
 

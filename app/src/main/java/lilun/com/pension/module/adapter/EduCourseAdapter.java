@@ -32,7 +32,7 @@ public class EduCourseAdapter extends QuickAdapter<EdusColleageCourse> {
     @Override
     protected void convert(BaseViewHolder help, EdusColleageCourse course) {
         String signDateStr = StringUtils.IOS2ToUTC(course.getStartSingnDate(), 0) + " ~ " + StringUtils.IOS2ToUTC(course.getEndSingnDate(), 0);
-        help.setText(R.id.tv_product_name, course.getName())
+        help.setText(R.id.tv_title, course.getName())
                 .setText(R.id.tv_address, mContext.getString(R.string.course_sign_date_, signDateStr))
                 .setOnClickListener(R.id.ll_bg, v -> {
                     if (listener != null) {

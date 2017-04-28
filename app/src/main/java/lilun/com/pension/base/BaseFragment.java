@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -30,7 +31,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     protected T mPresenter;
     protected Subscription subscribe;
     protected CompositeSubscription subscription = new CompositeSubscription();
-
 
 
     @Override
@@ -184,7 +184,16 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-       // Log.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
+        // Log.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
+    }
+
+    public void showDialog(String str) {
+        new NormalDialog().createNormal(_mActivity, str, new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                return;
+            }
+        });
     }
 
 

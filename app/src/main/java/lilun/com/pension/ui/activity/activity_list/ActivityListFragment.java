@@ -29,7 +29,6 @@ import lilun.com.pension.module.bean.ConditionOption;
 import lilun.com.pension.module.bean.Option;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
@@ -66,7 +65,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private String searchStr = "";
     private String join_status = "";
     private String activity_status = "";
-    private String timing_status = "";
+    private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
+    private String timing_status = timeOrder[0];
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -201,10 +201,10 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
                     if ("0".equals(whereValue)) {
                         //已报名的
-                        join_status = ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"},{\"partnerList\":\"" + User.getUserId() + "\"}]";
+                        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":\"" + User.getUserId() + "\"}]";
                     } else if ("1".equals(whereValue)) {
                         //未报名的
-                        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+                        join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
                     } else {
                         //全部
                         join_status = "";
@@ -212,7 +212,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[1])) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String localtime = format.format(new Date());
-                    String gtmDate = StringUtils.localToGTM(localtime);   //因为后台服务器存放时间是0时区时间，所以要转换
+                    String gtmDate = localtime;
                     if (whereValue != null) {
                         switch (whereValue) {
                             case "0":
@@ -220,7 +220,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                                 activity_status = ",\"startTime\":{\"gt\":\"" + gtmDate + "\"}";
                                 break;
                             case "1":
-                                activity_status = ",\"startTime\":{\"gte\":\"" + gtmDate + "\"},\"endTime\":{\"lte\":\"" + gtmDate + "\"}";
+                                activity_status = ",\"startTime\":{\"lte\":\"" + gtmDate + "\"},\"endTime\":{\"gte\":\"" + gtmDate + "\"}";
                                 break;
 
                             case "2":
@@ -235,10 +235,10 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
                     if ("0".equals(whereValue)) {  //降序
                         //已报名的
-                        timing_status = ",\"order\":\"createdAt " + App.context.getResources().getStringArray(R.array.order_status)[1] + "\"";
+                        timing_status = timeOrder[1];
                     } else {  //升序
                         //未报名的
-                        timing_status = ",\"order\":\"createdAt " + App.context.getResources().getStringArray(R.array.order_status)[0] + "\"";
+                        timing_status = timeOrder[0];
                     }
                 }
                 getActivityList(0);

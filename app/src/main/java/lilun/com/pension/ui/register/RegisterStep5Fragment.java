@@ -1,17 +1,16 @@
 package lilun.com.pension.ui.register;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
+
+import com.vanzh.library.BaseBean;
+import com.vanzh.library.BottomDialog;
+import com.vanzh.library.DataInterface;
+import com.vanzh.library.OnAddressSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +30,16 @@ import lilun.com.pension.widget.NormalDialog;
  */
 
 public class RegisterStep5Fragment extends BaseFragment<RegisterContract.PresenterStep5>
-        implements RegisterContract.ViewStep5 {
+        implements RegisterContract.ViewStep5, DataInterface<BaseBean>, OnAddressSelectedListener {
+    final int RECYCLERLEVEL = 3;
     RegisterStep6Fragment fragmentStep6 = new RegisterStep6Fragment();
     Account account;
     String IDCode;
     String belongOrganizationId;
     String detailAddress;
-    List<ListPopupWindow> mListWindow = new ArrayList<>();
-    Area choiceArea, choiceStress;
+    BottomDialog dialog;
+
+    BaseBean area, distrect;
     @Bind(R.id.ll_belong_stress)
     LinearLayout llBelongStress;
     @Bind(R.id.ll_belong_area)
@@ -54,10 +55,13 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
     @OnClick({R.id.tv_belong_area, R.id.tv_belong_stress, R.id.fab_go_next})
     public void onClick(View view) {
         if (view.getId() == R.id.tv_belong_area) {
-            mListWindow.clear();
-            mPresenter.getChildLocation(_mActivity, "");
+            dialog = new BottomDialog(this, -1);
+            dialog.setOnAddressSelectedListener(this);
+            dialog.show();
         } else if (view.getId() == R.id.tv_belong_stress) {
-            mPresenter.getChildLocation(_mActivity, choiceArea.getId().replace(getString(R.string.common_address), ""));
+            dialog = new BottomDialog(this, RECYCLERLEVEL);
+            dialog.setOnAddressSelectedListener(this);
+            dialog.show();
         } else if (view.getId() == R.id.fab_go_next) {
             belongOrganizationId = getBelongOrganizationId();
             detailAddress = belongOrganizationId.replace(getString(R.string.common_address), "") + getDetailAddress();
@@ -101,105 +105,57 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
         new NormalDialog().createNormal(_mActivity, R.string.register_success, () -> {
             goStep6();
         });
-
     }
 
     @Override
-    public void successOfChildLocation(List<Area> areas) {
-
-        ListPopupWindow tmp = new ListPopupWindow(getContext());
-        tmp.setAdapter(new ListAdapter(getContext(), android.R.layout.simple_list_item_1, areas));
-        // tmp.setWidth(UIUtils.dp2px(getContext(), 200));
-        tmp.setModal(true);
-        mListWindow.add(tmp);
-        if (mListWindow.size() == 1) {
-            mListWindow.get(0).setAnchorView(llBelongArea);
-            mListWindow.get(0).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Area area = (Area) mListWindow.get(0).getListView().getAdapter().getItem(position);
-                    mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""));
-                }
-            });
-            mListWindow.get(0).show();
-        } else if (mListWindow.size() == 2) {
-            mListWindow.get(0).dismiss();
-            mListWindow.get(1).setAnchorView(llBelongArea);
-            mListWindow.get(1).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Area area = (Area) mListWindow.get(1).getListView().getAdapter().getItem(position);
-                    mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""));
-                }
-            });
-            mListWindow.get(1).show();
-        } else if (mListWindow.size() == 3) {
-            mListWindow.get(1).dismiss();
-            mListWindow.get(2).setAnchorView(llBelongArea);
-            mListWindow.get(2).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Area area = (Area) mListWindow.get(2).getListView().getAdapter().getItem(position);
-                    tvBelongArea.setText(area.getName());
-                    llBelongStress.setVisibility(View.VISIBLE);
-                    choiceArea = area;
-                    mListWindow.get(2).dismiss();
-                }
-            });
-            mListWindow.get(2).show();
-        } else if (mListWindow.size() == 4) {
-            mListWindow.get(3).setAnchorView(llBelongStress);
-            mListWindow.get(3).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Area area = (Area) mListWindow.get(3).getListView().getAdapter().getItem(position);
-                    tvBelongSteress.setText(area.getName());
-                    choiceStress = area;
-                    mListWindow.get(3).dismiss();
-                }
-            });
-            mListWindow.get(3).show();
+    public void successOfChildLocation(List<Area> areas, Response<BaseBean> response, int level, int recyclerIndex) {
+        ArrayList<BaseBean> data = new ArrayList<>();
+        for (int i = 0; i < areas.size(); i++) {
+            data.add(new BaseBean(areas.get(i).getId(), areas.get(i).getName()));
         }
+        if (level == recyclerIndex || level == RECYCLERLEVEL) {
+            response.send(level, null);
+            return;
+        }
+
+        response.send(level, data);
     }
 
     public String getBelongOrganizationId() {
-        return choiceStress == null ? "" : choiceStress.getId();
+        return distrect == null ? "" : distrect.getId();
     }
 
     public String getDetailAddress() {
         return etBelongCommunite.getText().toString().trim();
     }
 
-    class ListAdapter extends ArrayAdapter<Area> {
-        int resource;
-        TextView text;
 
-        public ListAdapter(Context context, int resource, List<Area> objects) {
-            super(context, resource, objects);
-            this.resource = resource;
+    @Override
+    public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
+        if (recyclerIndex != RECYCLERLEVEL) {
+            area = baseBeen[baseBeen.length - 1];
+            tvBelongArea.setText(area.getName());
+            llBelongStress.setVisibility(View.VISIBLE);
+            tvBelongSteress.setText("");
+            distrect = null;
+        } else {
+            distrect = baseBeen[baseBeen.length - 1];
+            tvBelongSteress.setText(distrect.getName());
         }
+        dialog.dismiss();
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view;
+    }
 
-            if (convertView == null) {
-                view = LayoutInflater.from(getContext()).inflate(resource, parent, false);
-                text = (TextView) view.findViewById(android.R.id.text1);
-            } else {
-                view = convertView;
-            }
-
-            final Area item = getItem(position);
-
-            text.setText(item.getName());
-
-
-            return view;
+    @Override
+    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex) {
+        if (baseBean == null) {
+            if (recyclerIndex == -1)
+                mPresenter.getChildLocation(_mActivity, "", response, level, recyclerIndex);
+            else
+                mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+        } else {
+            mPresenter.getChildLocation(_mActivity, baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
         }
-
-
     }
 
     private void goStep6() {
