@@ -13,6 +13,9 @@ import lilun.com.pension.base.BaseBean;
  *         email : yk_developer@163.com
  */
 public class OrganizationActivity extends BaseBean {
+    public static int FINISHED = 2;  //已结束
+    public static int STARTED = 1;  //已开始
+    public static int UNSTARTED = 0; //未开始
 
     /**
      * title : string

@@ -129,7 +129,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     boolean isMaster = false; //活动创建人
     boolean isSignUp = false;
-
+    int hasStart = OrganizationActivity.UNSTARTED;  // 0 - 未开始   1-已开始   2-已结束
+    boolean hasfull = false;  //已满
     String mActivityId;
 
     private NestedReplyAdapter nestedReplyAdapter;
@@ -286,7 +287,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     }
 
     public void showDetail(OrganizationActivity activity) {
-        boolean hasStart = false;
+
         int signUpNumber;
 
         if (activity.getPartnerList() == null)
@@ -333,10 +334,10 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                         }
                     }
                 });
-                hasStart = true;
+                hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
                 actvStart.setText(getString(R.string.activity_start_, getString(R.string.finished_sign_up)));
-                hasStart = true;
+                hasStart = OrganizationActivity.STARTED;
             } else {
                 actvStart.setText(getString(R.string.activity_start_, ""));
                 cdvTime.setVisibility(View.VISIBLE);
@@ -353,14 +354,14 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         actvActNumPeople.setText(getString(R.string.targart_partin_, numPeople));
         actvActCreator.setText(getString(R.string.activit_creator_, activity.getCreatorName()));
         actvActContent.setText(activity.getDescription());
-        String hasfull = "";
+
         if (signUpNumber == activity.getMaxPartner() && signUpNumber != 0) {
-            hasfull = "(已满)";
+            hasfull = true;
         }
-        acbtJoinedNumber.setText(getString(R.string.has_sign_up, signUpNumber + "") + hasfull);
+        acbtJoinedNumber.setText(getString(R.string.has_sign_up, signUpNumber + ""));
 
         isMaster = User.getUserId().equals(activity.getMasterId());
-        showButton(isMaster, isSignUp, hasStart);
+        showButton(isMaster, isSignUp);
     }
 
     /**
@@ -371,24 +372,22 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
      *
      * @param isCreator
      * @param isSignUp
-     * @param hasStart
      */
-    public void showButton(boolean isCreator, boolean isSignUp, boolean hasStart) {
+    public void showButton(boolean isCreator, boolean isSignUp) {
         if (isCreator) {
             acbtSignUp.setVisibility(View.GONE);
-            return;
+        } else {
+            acbtSignUp.setVisibility(View.VISIBLE);
+            //未报名
+            if (!isSignUp) {
+                acbtSignUp.setText(getString(R.string.sign_up));
+                acbtQuestionPartner.setText(R.string.question);
+                Drawable drawable = getResources().getDrawable(R.drawable.question);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                acbtQuestionPartner.setCompoundDrawables(null, drawable, null, null);
+                return;
+            }
         }
-        acbtSignUp.setVisibility(View.VISIBLE);
-        //未报名
-        if (!isSignUp) {
-            acbtSignUp.setText(getString(R.string.sign_up));
-            acbtQuestionPartner.setText(R.string.question);
-            Drawable drawable = getResources().getDrawable(R.drawable.question);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            acbtQuestionPartner.setCompoundDrawables(null, drawable, null, null);
-            return;
-        }
-
         acbtSignUp.setText(getString(R.string.sign_up_back));
         acbtQuestionPartner.setText(R.string.sign_up_list);
         Drawable drawable = getResources().getDrawable(R.drawable.sign_up_list);
@@ -513,6 +512,14 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
 
         if (getString(R.string.question).equals(acbtQuestionPartner.getText().toString().trim())) {
+            if (hasStart == OrganizationActivity.FINISHED) {
+                showDialog(getString(R.string.activity_has_finished));
+                return;
+            }
+            if (hasStart == OrganizationActivity.STARTED) {
+                showDialog(getString(R.string.activity_has_started));
+                return;
+            }
             addQuestion();
         } else if (getString(R.string.sign_up_list).equals(acbtQuestionPartner.getText().toString().trim())) {
             goPartnersList();
@@ -523,8 +530,27 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
      * 处理参与按钮及其提示语
      */
     private void dealSignUp() {
-        joinActivity();
-        quitActivity();
+        if ("cancle".equals(activity.getStatus())) {
+            showDialog(getString(R.string.activity_has_cancel));
+            return;
+        }
+        if (getString(R.string.sign_up).equals(acbtSignUp.getText().toString().trim())) {
+            if (hasStart == OrganizationActivity.FINISHED) {
+                showDialog(getString(R.string.activity_has_finished));
+                return;
+            }
+            if (hasStart == OrganizationActivity.STARTED) {
+                showDialog(getString(R.string.activity_has_started));
+                return;
+            }
+            if (hasfull) {
+                showDialog(getString(R.string.activity_has_people_full));
+                return;
+            }
+            joinActivity();
+        } else if (getString(R.string.sign_up_back).equals(acbtSignUp.getText().toString().trim())) {
+            quitActivity();
+        }
     }
 
     private void goPartnersList() {

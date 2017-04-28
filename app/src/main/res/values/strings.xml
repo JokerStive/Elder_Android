@@ -321,5 +321,8 @@
     <string name="register_success">账号已注册成功，欢迎使用</string>
     <string name="nickname">昵称</string>
     <string name="activity_has_cancel">活动已解散</string>
+    <string name="activity_has_finished">活动已结束</string>
+    <string name="activity_has_started">活动已开始</string>
+    <string name="activity_has_people_full">活动参加人数已满</string>
 
 </resources>
