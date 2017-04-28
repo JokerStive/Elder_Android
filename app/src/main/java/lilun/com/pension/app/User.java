@@ -20,6 +20,8 @@ public class User {
     public static final String token = "token";
     public static final String userId = "userId";
     public static final String name = "name";
+    public static final String username = "username";
+    public static final String password = "password";
     public static final String mobile = "mobile";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
@@ -31,51 +33,58 @@ public class User {
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
 
-    public static String getUserId() {
-        return PreUtils.getString(userId, "");
 
+    public static String getUserId() {return PreUtils.getString(userId, "");}
+    public static void putUserId(String userId) {
+        PreUtils.putString(User.userId, userId);
     }
+
+
+
+
+    public static String getUserName() {return PreUtils.getString(username, "");}
+    public static void putUserName(String un) {PreUtils.putString(username, un);}
+
+
+
+
+    public static String getPassword() {return PreUtils.getString(password, "");}
+    public static void putPassword(String pass) {PreUtils.putString(password, pass);}
+
+
 
     public static String getToken() {
         return PreUtils.getString(token, "");
     }
 
+
+
+
     public static String getName() {
         return PreUtils.getString(name, "");
     }
-
     public static void putName(String nam) {
         PreUtils.putString(name, nam);
     }
 
 
-    public static void putUserId(String userId) {
-        PreUtils.putString(User.userId, userId);
-    }
 
-    public static void putIsCustomer(boolean isCustomer) {
-        PreUtils.putBoolean(User.isCustomer, isCustomer);
-    }
 
+    public static void putIsCustomer(boolean isCustomer) {PreUtils.putBoolean(User.isCustomer, isCustomer);}
     public static boolean isCustomer() {
         return PreUtils.getBoolean(User.isCustomer, true);
     }
 
-    public static String getCurrentOrganizationId() {
-        return PreUtils.getString(currentOrganizationId, defOrganizationId);
-    }
 
-    public static void puttCurrentOrganizationId(String id) {
-        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
-    }
 
-    public static String getBelongsOrganizationId() {
-        return PreUtils.getString(belongsOrganizationId, defOrganizationId);
-    }
+    public static String getCurrentOrganizationId() {return PreUtils.getString(currentOrganizationId, defOrganizationId);}
+    public static void putCurrentOrganizationId(String id) {PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);}
 
-    public static void putBelongsOrganizationId(String id) {
-        PreUtils.putString(belongsOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
-    }
+
+
+
+    public static String getBelongsOrganizationId() {return PreUtils.getString(belongsOrganizationId, defOrganizationId);}
+    public static void putBelongsOrganizationId(String id) { PreUtils.putString(belongsOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);}
 
 
     public static String getCurrentOrganizationName() {
@@ -95,6 +104,21 @@ public class User {
     */
     public static boolean creatorIsOwn(String creatorId) {
         return getUserId().equals(creatorId);
+    }
+
+
+    /**
+     *获取当前组织是否已经切换
+     */
+    public static boolean currentOrganizationHasChanged() {
+        return  PreUtils.getBoolean("currentOrganizationHadChanged", false);
+    }
+
+    /**
+     *存当前组织是否已经切换
+     */
+    public static boolean putCurrentOrganizationHasChanged(boolean changed) {
+        return  PreUtils.putBoolean("currentOrganizationHadChanged", changed);
     }
 
 

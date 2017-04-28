@@ -2,8 +2,6 @@ package lilun.com.pension.ui.welcome;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.inputmethod.EditorInfo;
@@ -47,11 +45,6 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         return R.layout.fragment_login;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-    }
 
     @Override
     protected void initData() {

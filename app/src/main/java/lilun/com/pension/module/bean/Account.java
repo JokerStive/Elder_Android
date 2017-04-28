@@ -47,7 +47,7 @@ public class Account implements Serializable {
     }
 
     private String password;
-    private boolean isCustomer = true;
+    private Boolean isCustomer;
     private List<String> roles;
     private List<String> _perms;
 

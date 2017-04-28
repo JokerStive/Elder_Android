@@ -11,7 +11,11 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lilun.com.pension.R;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
 
 /**
@@ -26,6 +30,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
     private Context content;
     private LinearLayout crumbContainer;
     private onCrumbClickListener listener;
+    private List<String> ids = new ArrayList<>();
 
     public BreadCrumbsView(Context context) {
         super(context);
@@ -41,6 +46,8 @@ public class BreadCrumbsView extends HorizontalScrollView {
     }
 
     private void init() {
+
+
         setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setBackgroundColor(Color.WHITE);
 
@@ -48,7 +55,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
         crumbContainer = new LinearLayout(content);
         crumbContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         crumbContainer.setOrientation(LinearLayout.HORIZONTAL);
-        crumbContainer.setBackgroundColor(getResources().getColor(R.color.gray));
+        crumbContainer.setBackgroundColor(getResources().getColor(R.color.white));
 
         addView(crumbContainer);
     }
@@ -57,32 +64,34 @@ public class BreadCrumbsView extends HorizontalScrollView {
     /**
      * 添加面包屑
      */
-    public void addBreadCrumb(String title, String id) {
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(id)) {
+    public void addBreadCrumb(String id) {
+        if (TextUtils.isEmpty(id)) {
             return;
         }
+
+        ids.add(id);
 
         int crumbCount = crumbContainer.getChildCount();
         int margin = UIUtils.dp2px(content, 10);
 
         TextView crumbView = new TextView(content);
         crumbView.setTextColor(Color.WHITE);
-        crumbView.setTextSize(17);
+        crumbView.setTextSize(14);
         crumbView.setGravity(Gravity.CENTER);
         crumbView.setBackgroundColor(Color.WHITE);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (crumbCount == 0) {
             crumbView.setBackgroundResource(R.drawable.crumbs_first);
-            params.setMargins(0, margin, margin, margin);
+            params.setMargins(0, margin, 0, margin);
         } else {
             crumbView.setBackgroundResource(R.drawable.crumbs);
-            params.setMargins(0, margin, margin, margin);
+            params.setMargins(UIUtils.dp2px(content, 5), margin, 0, margin);
         }
         crumbView.setLayoutParams(params);
 
 
-        crumbView.setText(title);
+        crumbView.setText(StringUtils.getOrganizationNameFromId(id));
         crumbView.setTag(id);
 
         crumbView.setOnClickListener(v -> {
@@ -91,6 +100,10 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
         crumbContainer.addView(crumbView);
 
+    }
+
+    public List<String> getIds() {
+        return ids;
     }
 
     /**
@@ -108,7 +121,9 @@ public class BreadCrumbsView extends HorizontalScrollView {
             }
             if (isClear) {
 //                crumbCount--;
+                ids.remove(i);
                 crumbContainer.removeView(childAt);
+                i--;
             }
         }
 

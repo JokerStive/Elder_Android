@@ -1,5 +1,6 @@
 package lilun.com.pension.app;
 
+import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 
 /**
@@ -57,6 +58,7 @@ public class Event {
 
     //刷新消息推送栏
     public static class RefreshPushMessage {
+
     }
 
 
@@ -72,5 +74,16 @@ public class Event {
 
     //刷新个人资料
     public static class RefreshContract {
+    }
+
+
+
+    //刷新紧急消息条数
+    public static class RefreshUrgentInfo {
+        public RefreshUrgentInfo(OrganizationAid aid) {
+            this.aid = aid;
+        }
+
+        public OrganizationAid aid;
     }
 }

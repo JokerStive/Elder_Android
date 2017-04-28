@@ -189,6 +189,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      * 新建一个求助信息
      */
     private void createHelp() {
+
         String priority = tvPriority.getText().toString();
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
@@ -230,7 +231,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 JSONObject aidJsonObject = GsonUtils.objectToJSONObject(aid);
                 MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, data);
                 NetHelper.getApi()
-                        .newAidIcons(multipartBody)
+                        .newAidAndIcons(multipartBody)
                         .compose(RxUtils.handleResult())
                         .compose(RxUtils.applySchedule())
                         .subscribe(new RxSubscriber<Object>(_mActivity) {
@@ -281,7 +282,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
 //    private Observable<List<IconModule>> iconObservable(MultipartBody requestBodies) {
 //        return NetHelper.getApi()
-//                .newAidIcons(requestBodies)
+//                .newAidAndIcons(requestBodies)
 //                .compose(RxUtils.handleResult());
 //    }
 

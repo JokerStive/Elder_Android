@@ -1,8 +1,13 @@
 package lilun.com.pension.ui.announcement;
 
+import android.text.TextUtils;
+
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Information;
@@ -45,8 +50,13 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
 
     @Override
     public void getAnnounce(String parentId) {
-//        /#information/公告;
-        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":{\"like\":\"" + parentId + "\"}}}";
+        String filter;
+        if (TextUtils.isEmpty(parentId)) {
+            filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "\"}}";
+        } else {
+            filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "/" + parentId + "\"}}";
+        }
+        Logger.d("公告filter =" + filter);
         addSubscribe(NetHelper.getApi()
                 .getInformations(StringUtils.addFilterWithDef(filter, 0))
                 .compose(RxUtils.handleResult())

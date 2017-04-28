@@ -107,6 +107,8 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
             backgroundRes = R.drawable.selector_health_service;
         } else if (parent.equals(resources.getString(R.string.residential_service))) {
             backgroundRes = R.drawable.selector_residential_service;
+        }else if (parent.equals(resources.getString(R.string.government))) {
+            backgroundRes = R.drawable.selector_goverment;
         }
 
         return backgroundRes;

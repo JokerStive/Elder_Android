@@ -113,7 +113,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     @Override
     protected void initView(LayoutInflater inflater) {
-
         _mActivity.setSupportActionBar(toolbar);
         titleBar.setTitle(getString(R.string.community_activity));
         titleBar.setTvRightText(getString(R.string.add_activity));
@@ -146,7 +145,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         //我参与的活动列表
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
-
 
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
@@ -193,8 +191,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void getAboutMe(int skip) {
         //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
-
-
         String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}," +
                 "\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}," +
                 "{\"partnerList\":\"" + User.getUserId() + "\"}]}}";

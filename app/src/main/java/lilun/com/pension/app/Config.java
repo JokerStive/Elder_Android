@@ -7,8 +7,10 @@ package lilun.com.pension.app;
 public class Config {
     public static final String TAG_LOGGER = "yk";
     //    public static final String BASE_URL = "http://192.168.3.105:3000/api/";
-   // public static final String BASE_URL = "http://192.168.3.14:3001/api/";
-    public static final String BASE_URL = "http://192.168.3.146:3000/api/";
+    public static final String BASE_URL = "http://192.168.3.14:3001/api/";
+//    public static final String BASE_URL = "http://192.168.3.146:3000/api/";
+
+    public static final String MQTT_URL = "tcp://192.168.3.14:1883";
 //    public static final String BASE_URL = "http://112.74.97.254:3000/api/";
 
     public static final String help = "help";
@@ -32,4 +34,5 @@ public class Config {
     public static final String tourism_product_categoryId = "服务/养老机构/养老旅游";
 
 
+    public static String announce_root = "/公告";
 }

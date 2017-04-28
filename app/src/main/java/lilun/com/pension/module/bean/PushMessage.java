@@ -9,24 +9,34 @@ import org.litepal.crud.DataSupport;
 *email : yk_developer@163.com
 */
 public class PushMessage  extends DataSupport{
-    private String king;
-    private String content;
+    private String model;
+    private String verb;
+    private String data;
 
-    public String getKing() {
-        return king;
+    public String getModel() {
+        return model;
     }
 
-    public PushMessage setKing(String king) {
-        this.king = king;
+    public PushMessage setModel(String model) {
+        this.model = model;
         return this;
     }
 
-    public String getContent() {
-        return content;
+    public String getVerb() {
+        return verb;
     }
 
-    public PushMessage setContent(String content) {
-        this.content = content;
+    public PushMessage setVerb(String verb) {
+        this.verb = verb;
+        return this;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public PushMessage setData(String data) {
+        this.data = data;
         return this;
     }
 }

@@ -17,6 +17,7 @@
     <string name="family">家人</string>
     <string name="neigh">隔壁邻居</string>
     <string name="security">物业保安</string>
+    <string name="urgent_help">紧急求助</string>
 
     <string name="first_help_phone_desc">请输入%1$s的电话号码</string>
     <string name="phone_number">电话号码</string>
@@ -88,7 +89,7 @@
 
     <!--健康服务-->
     <string name="health_service">健康服务</string>
-    <string name="smart_health">健康服务</string>
+    <string name="government">阳光政务</string>
     <string name="pharmacy">便民药房</string>
     <string name="accompany_service">陪同服务</string>
     <string name="health_chair">健康讲堂</string>

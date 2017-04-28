@@ -38,6 +38,15 @@ public class HelpProtocolDialogFragment extends DialogFragment implements View.O
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        int screenWith = ScreenUtils.getScreenWith(App.context);
+//        int screenHeight  = ScreenUtils.getScreenHeight(App.context);
+//        Window window = getDialog().getWindow();
+//        window .setLayout(UIUtils.dp2px(App.context,287), screenHeight/4*3);
+//        window.setGravity(Gravity.CENTER);
+    }
 
     @Override
     public void onClick(View v) {

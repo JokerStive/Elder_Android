@@ -53,14 +53,36 @@
 
     <View style="@style/line_gray" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_system"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_personal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/fl_system"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <fragment
+                android:id="@+id/fragment_system_info"
+                android:name="lilun.com.pension.ui.push_info.SystemInfoFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:visibility="invisible"
+            android:id="@+id/fl_personal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/fragment_personal_info"
+                android:name="lilun.com.pension.ui.push_info.PersonalInfoFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>

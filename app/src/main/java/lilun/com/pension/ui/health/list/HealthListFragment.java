@@ -5,7 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 
 import java.io.Serializable;
@@ -106,14 +105,16 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
     @Override
     public void showDataList(List<Information> list, boolean isLoadMore) {
         skip += list.size();
-        if (skip == 0)
-            nullData.setVisibility(View.VISIBLE);
-        else
-            nullData.setVisibility(View.GONE);
+//        if (skip == 0)
+//            nullData.setVisibility(View.VISIBLE);
+//        else
+//            nullData.setVisibility(View.GONE);
 
         if (mAdapter == null) {
             mAdapter = new HealthServiceAdapter(this, list);
+            mAdapter.setEmptyView();
             mRecyclerView.setAdapter(mAdapter);
+
         } else if (isLoadMore) {
             mAdapter.addAll(list);
         } else

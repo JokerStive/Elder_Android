@@ -1,5 +1,7 @@
 package lilun.com.pension.ui.help.list;
 
+import android.text.TextUtils;
+
 /**
  * 互助列表的过滤条件
  *
@@ -8,85 +10,54 @@ package lilun.com.pension.ui.help.list;
  *         email : yk_developer@163.com
  */
 public class HelpFilter {
+//    private String priorityKey = "";
+//    private String statusKey = "";
 
-    public HelpFilter() {
-        where = new WhereBean();
+    @Override
+    public String toString() {
+        return "{\"where\":{\"kind\":" + kind + priority + status + "," + "\"title\":{\"like\":\"" + title + "\"}}}";
     }
 
-    /**
-     * where : {"title":{"like":""},"kind":"","priority":"","status":""}
-     */
+    private String title = "";
+    private String kind = "{\"neq\":\"2\"}";
+    private String priority = "";
+    private String status = "";
 
-
-    private WhereBean where;
-
-    public WhereBean getWhere() {
-        return where;
+    public String getTitle() {
+        return title;
     }
 
-    public void setWhere(WhereBean where) {
-        this.where = where;
+    public HelpFilter setTitle(String title) {
+        this.title = title;
+        return this;
     }
 
-    public static class WhereBean {
-        /**
-         * title : {"like":""}
-         * kind :
-         * priority :
-         * status :
-         */
+    public String getKind() {
 
-        private TitleBean title;
-        private String kind;
-        private String priority;
-        private String status;
+        return kind;
+    }
 
-        public TitleBean getTitle() {
-            return title;
-        }
+    public HelpFilter setKind(String kind) {
+        this.kind = TextUtils.isEmpty(kind) ? "{\"neq\":2}" : kind;
+        return this;
+    }
 
-        public void setTitle(TitleBean title) {
-            this.title = title;
-        }
+    public String getPriority() {
+        return priority;
+    }
 
-        public String getKind() {
-            return kind;
-        }
+    public HelpFilter setPriority(String priority) {
+//        priorityKey = TextUtils.isEmpty(priority) ? "" : "priority";
+        this.priority = TextUtils.isEmpty(priority) ? "" : ",\"priority\":\"" + priority + "\"";
+        return this;
+    }
 
-        public void setKind(String kind) {
-            this.kind = kind;
-        }
+    public String getStatus() {
+        return status;
+    }
 
-        public String getPriority() {
-            return priority;
-        }
-
-        public void setPriority(String priority) {
-            this.priority = priority;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public static class TitleBean {
-            /**
-             * like :
-             */
-
-            private String like;
-
-            public String getLike() {
-                return like;
-            }
-
-            public void setLike(String like) {
-                this.like = like;
-            }
-        }
+    public HelpFilter setStatus(String status) {
+        this.status = TextUtils.isEmpty(status) ? "" : ",\"status\":\"" + status + "\"";
+        return this;
     }
 }

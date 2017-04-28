@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -28,7 +29,7 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
 
     @Override
     public void getInformation() {
-        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":{\"like\":\"/#information/公告\"}}}";
+        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "\"}}";
         addSubscribe(NetHelper.getApi()
                 .getInformations(StringUtils.addFilterWithDef(filter, 0))
                 .compose(RxUtils.handleResult())
@@ -44,7 +45,6 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
     @Override
     public void needChangeToDefOrganization() {
         boolean currentOrganizationHadChanged = PreUtils.getBoolean("currentOrganizationHadChanged", false);
-
         if (!currentOrganizationHadChanged && !User.getCurrentOrganizationId().equals(User.getBelongsOrganizationId())) {
             Logger.d("异常，需要切换成自己本来的所属组织");
             Logger.d("当前正确的组织账号iD = " + User.getCurrentOrganizationAccountId());
@@ -76,7 +76,7 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                 .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        User.putBelongsOrganizationId(User.getCurrentOrganizationId());
+//                        User.putBelongsOrganizationId(User.getCurrentOrganizationId());
                         view.changeOrganizationSuccess(clickId);
                     }
                 }));

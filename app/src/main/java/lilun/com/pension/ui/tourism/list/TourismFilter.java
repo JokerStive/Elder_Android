@@ -41,6 +41,15 @@ public class TourismFilter {
 
         }
 
+        public int getVisible() {
+            return visible;
+        }
+
+        public WhereBean setVisible(int visible) {
+            this.visible = visible;
+            return this;
+        }
+
         /**
          * title : {"like":"来看看"}
          * price : {"between":[100,200]}
@@ -52,6 +61,7 @@ public class TourismFilter {
 
 
 
+        public int visible=0;
         public TitleBean title;
         public PriceBean price;
 

@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.change_organization;
 
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.User;
@@ -71,7 +69,9 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
         frameLayouts.add(flNear);
         frameLayouts.add(flRoot);
 
-        mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
+        if (!User.currentOrganizationHasChanged()) {
+            mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
+        }
     }
 
 
@@ -79,7 +79,11 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                if (!User.currentOrganizationHasChanged()){
+                    changeToBelong();
+                }else {
+                    finish();
+                }
                 break;
 
             case R.id.tv_near:
@@ -132,7 +136,9 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
 
     @Override
     public void changedBelong() {
-        finish();
+        RootOrganizationFragment fragment = findFragment(RootOrganizationFragment.class);
+        fragment.changedBelong();
+//        finish();
     }
 
     @Override
@@ -142,18 +148,12 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && !User.currentOrganizationHasChanged()) {
             changeToBelong();
             return true;
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

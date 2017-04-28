@@ -1,5 +1,7 @@
 package lilun.com.pension.ui.help.list;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
 
     @Override
     public void getAboutMe(String filter, int skip) {
+        Logger.d("求助filter = "+filter);
         addSubscribe(NetHelper.getApi()
                 .getMyAids(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
@@ -44,6 +47,7 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
 
     @Override
     public void getHelps(String filter, int skip) {
+        Logger.d("求助filter = "+filter);
         addSubscribe(NetHelper.getApi()
 //                .getOrganizationAids(OrganizationChildrenConfig.aid(), StringUtils.addFilterWithDef(filter, skip))
                 .getOrganizationAids(StringUtils.addFilterWithDef(filter, skip))

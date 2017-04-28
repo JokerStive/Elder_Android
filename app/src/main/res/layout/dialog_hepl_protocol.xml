@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
+    android:padding="30dp"
     >
 
 
     <TextView
         style="@style/tv_line_space"
-        android:paddingStart="39dp"
-        android:paddingEnd="39dp"
-        android:layout_marginTop="23dp"
         android:text="@string/help_protocol" />
 
 
@@ -21,8 +19,6 @@
         android:layout_marginTop="30dp"
         style="@style/btn_red_deep"
         android:gravity="center"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
         android:text="@string/agree"
         />
 
@@ -31,8 +27,6 @@
         android:id="@+id/btn_refuse_protocol"
         style="@style/btn_red_deep"
         android:text="@string/refuse"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="10dp"
         />

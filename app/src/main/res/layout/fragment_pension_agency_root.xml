@@ -13,17 +13,9 @@
         android:layout_height="wrap_content"
         app:title="@string/pension_agency" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/fl_announcement_container"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/icon_def" />
-
-    </RelativeLayout>
+    <include
+        layout="@layout/announce_container"/>
 
 
     <android.support.v4.widget.SwipeRefreshLayout

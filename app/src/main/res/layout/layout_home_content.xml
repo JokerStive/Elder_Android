@@ -65,14 +65,14 @@
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:id="@+id/iv_health_service"
+            android:id="@+id/iv_government"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/government" />
 
         <ImageView
-            android:id="@+id/iv_government"
+            android:id="@+id/iv_health_service"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

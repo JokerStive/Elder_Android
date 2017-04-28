@@ -1,8 +1,8 @@
-package lilun.com.pension.ui.personal_center;
+package lilun.com.pension.ui.push_info;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,14 +30,18 @@ public class InformationCenterFragment extends BaseFragment implements View.OnCl
 
     @Bind(R.id.tv_personal)
     TextView tvPersonal;
+    @Bind(R.id.fl_system)
+    FrameLayout flSystem;
+    @Bind(R.id.fl_personal)
+    FrameLayout flPersonal;
 
-    @Bind(R.id.rv_system)
-    RecyclerView rvSystem;
-
-    @Bind(R.id.rv_personal)
-    RecyclerView rvPersonal;
+    //    @Bind(R.id.rv_system)
+//    RecyclerView rvSystem;
+//
+//    @Bind(R.id.rv_personal)
+//    RecyclerView rvPersonal;
     private List<TextView> textViews;
-    private List<RecyclerView> recyclerViews;
+    private List<View> views;
 
     public static InformationCenterFragment newInstance() {
         InformationCenterFragment fragment = new InformationCenterFragment();
@@ -70,9 +74,9 @@ public class InformationCenterFragment extends BaseFragment implements View.OnCl
         textViews.add(tvSystem);
         textViews.add(tvPersonal);
 
-        recyclerViews = new ArrayList<>();
-        recyclerViews.add(rvSystem);
-        recyclerViews.add(rvPersonal);
+        views = new ArrayList<>();
+        views.add(flSystem);
+        views.add(flPersonal);
 
 
     }
@@ -98,10 +102,12 @@ public class InformationCenterFragment extends BaseFragment implements View.OnCl
                 textView.setSelected(!selected);
             }
 
-            for (RecyclerView recyclerView : recyclerViews) {
-                int visibility = recyclerView.getVisibility();
-                recyclerView.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+            for (View view : views) {
+                int visibility = view.getVisibility();
+                view.setVisibility(visibility == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
             }
         }
     }
+
+
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/iv_express_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_express_desc"
+                style="@style/tv_small"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="有人需要您的帮助"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/express_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/express_delete" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_express_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl"
+        android:background="@color/white" />
+
+    <!--<com.baidu.mapapi.map.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/rv_express_info"
+        android:background="@drawable/shape_rect_white"
+         />-->
+
+    <FrameLayout
+        android:layout_below="@id/rv_express_info"
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        />
+
+    <Button
+        android:id="@+id/btn_all"
+        style="@style/btn_normal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/fl_container"
+        android:background="@drawable/shape_rect_red"
+        android:text="查看全部"
+        android:textSize="17sp" />
+
+</RelativeLayout>

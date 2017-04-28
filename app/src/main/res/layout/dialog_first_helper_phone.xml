@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/white"
+    android:padding="30dp"
     android:orientation="vertical">
 
 
@@ -11,8 +12,6 @@
     <TextView
         android:id="@+id/tv_desc"
         style="@style/tv_line_space"
-        android:paddingStart="39dp"
-        android:paddingEnd="39dp"
         android:layout_marginTop="23dp"
         android:text="@string/first_help_phone_desc"
          />
@@ -20,8 +19,8 @@
     <TextView
         android:id="@+id/tv_family"
         style="@style/tv_normal_ellipsize"
-        android:layout_marginTop="57dp"
-        android:paddingStart="39dp"
+        android:layout_marginTop="30dp"
+        android:textSize="17sp"
         android:text="@string/phone_number"
         />
 
@@ -33,13 +32,10 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:textSize="@dimen/tv_size_big_x"
-            android:paddingStart="39dp"
             tools:text="112122222"
             />
 
         <View
-            android:layout_marginStart="39dp"
-            android:layout_marginEnd="39dp"
             android:layout_marginTop="5dp"
             android:background="@color/black"
             android:layout_width="match_parent"
@@ -49,10 +45,7 @@
     <Button
         android:id="@+id/btn_confirm_phone"
         android:text="@string/confirm"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginTop="226dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginTop="120dp"
         style="@style/btn_red_deep"
         />
 

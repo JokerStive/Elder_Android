@@ -3,7 +3,10 @@ package lilun.com.pension.ui.announcement;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     private int currentPosition = 0;
     //    private List<Information> informationList;
-    private String parentId;
+    private String parentId ;
     private List<Information> announces;
 
     public static AnnouncementFragment newInstance(List<Information> information) {
@@ -55,8 +58,12 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        parentId = arguments.getString("parentId");
-        Preconditions.checkNull(parentId);
+        String parentId = arguments.getString("parentId");
+        if (!TextUtils.isEmpty(parentId)) {
+            this.parentId = parentId;
+        }
+        Logger.d("公告的parentId---" + parentId);
+        Preconditions.checkNull(this.parentId);
     }
 
     @Override
@@ -120,13 +127,14 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     @Override
     public void showAnnounce(List<Information> announces) {
         this.announces = announces;
-        if (announces!=null){
+        Logger.d(parentId + "的公告条数为" + announces.size());
+
             List<BaseFragment> listFragments = new ArrayList<>();
             for (Information announcement : announces) {
                 AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
                 listFragments.add(fragment);
             }
-            viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
+            viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity().getSupportFragmentManager(), listFragments));
             indicator.setViewPager(viewPager);
             viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override
@@ -134,22 +142,22 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
                     currentPosition = position;
                 }
             });
-        }
 
-        mPresenter.initTimer();
+
+//        mPresenter.initTimer();
     }
 
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        mPresenter.unBindView();
+//        mPresenter.unBindView();
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        mPresenter.bindView(this);
+//        mPresenter.bindView(this);
 
     }
 }

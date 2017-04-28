@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+    <TextView
+        android:id="@+id/tv_urgent"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_urgent_help"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/urgent_help"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+    <TextView
+        android:id="@+id/tv_activity"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_activity"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/community_activity"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_neighbor"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_neighbor"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/neighbor_help"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_agency"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_agency"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/pension_agency"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_education"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_education"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/pension_education"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_policy"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_policy"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="阳光政务"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_health"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_heath"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/health_service"
+        />
+    <View
+        style="@style/line_gray"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_family"
+        style="@style/tv_normal"
+        android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_falimy"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/residential_service"
+        />
+    <View
+        style="@style/line_gray"/>
+    </LinearLayout>
+</ScrollView>

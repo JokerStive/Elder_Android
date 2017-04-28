@@ -13,6 +13,11 @@
         <item name="contentInsetStart">0dp</item><!-- 设置该属性解决空白部分-->
     </style>
 
+    <style name="Theme.FloatActivity" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
     <style name="alert_dialog" parent="android:Theme.Dialog">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">false</item>
@@ -100,7 +105,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:lineSpacingMultiplier">1.5</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/tv_size</item>
+        <item name="android:textSize">@dimen/tv_size_small</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

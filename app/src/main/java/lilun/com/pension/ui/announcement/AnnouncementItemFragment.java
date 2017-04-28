@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.orhanobut.logger.Logger;
 
@@ -16,6 +17,8 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.ScreenUtils;
+import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -62,6 +65,9 @@ public class AnnouncementItemFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         ivIcon = (ImageView) mRootView.findViewById(R.id.iv_advantage);
+
+        int screenWith = ScreenUtils.getScreenWith(mContent);
+        ivIcon.setLayoutParams(new LinearLayout.LayoutParams(screenWith, UIUtils.dp2px(mContent,150)));
 
     }
 

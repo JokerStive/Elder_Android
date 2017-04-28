@@ -9,12 +9,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.utils.ACache;
-import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.ui.welcome.WelcomeActivity;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -27,20 +27,20 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  */
 public class LeftMenuFragment extends BaseFragment implements View.OnClickListener {
 
-    @Bind(R.id.tv_account_data)
-    TextView tvAccountData;
-
-    @Bind(R.id.tv_account_setting)
-    TextView tvAccountSetting;
-
-    @Bind(R.id.tv_account_share)
-    TextView tvAccountShare;
-
-    @Bind(R.id.tv_account_info)
-    TextView tvAccountInfo;
-
-    @Bind(R.id.tv_account_safe)
-    TextView tvAccountSafe;
+//    @Bind(R.id.tv_account_data)
+//    TextView tvAccountData;
+//
+//    @Bind(R.id.tv_account_setting)
+//    TextView tvAccountSetting;
+//
+//    @Bind(R.id.tv_account_share)
+//    TextView tvAccountShare;
+//
+//    @Bind(R.id.tv_account_info)
+//    TextView tvAccountInfo;
+//
+//    @Bind(R.id.tv_account_safe)
+//    TextView tvAccountSafe;
 
     @Bind(R.id.tv_logout)
     TextView tvLogout;
@@ -66,20 +66,24 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
 
-        tvAccountData.setOnClickListener(this);
-        tvAccountSetting.setOnClickListener(this);
-        tvAccountShare.setOnClickListener(this);
-        tvAccountInfo.setOnClickListener(this);
-        tvAccountSafe.setOnClickListener(this);
-        tvLogout.setOnClickListener(this);
+//        tvAccountData.setOnClickListener(this);
+//        tvAccountSetting.setOnClickListener(this);
+//        tvAccountShare.setOnClickListener(this);
+//        tvAccountInfo.setOnClickListener(this);
+//        tvAccountSafe.setOnClickListener(this);
+//        tvLogout.setOnClickListener(this);
     }
 
 
-    @Override
+    @OnClick({R.id.tv_logout,R.id.tv_account_info})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
                 logout();
+                break;
+
+            case R.id.tv_account_info:
+//                start(InformationCenterFragment.newInstance());
                 break;
         }
     }
@@ -89,13 +93,12 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
      */
     private void logout() {
         new MaterialDialog.Builder(_mActivity)
-//                .title(R.string.logout_confirm)
                 .content(R.string.logout_confirm)
                 .positiveText(R.string.confirm)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
-                    ACache.get().clear();
-                    PreUtils.clear();
+                    App.clear();
+                    _mActivity.finish();
                     startActivity(new Intent(_mActivity, WelcomeActivity.class));
                     _mActivity.finish();
                 })

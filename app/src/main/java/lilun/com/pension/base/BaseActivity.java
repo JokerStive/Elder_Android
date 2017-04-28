@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,11 +23,14 @@ import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
+import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.MyCallBack;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.SystemUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.lbs.UrgentInfoActivity;
 import lilun.com.pension.ui.welcome.LoginActivity;
 import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
@@ -49,7 +53,8 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private MyCallBack callback;
     protected CompositeSubscription subscription = new CompositeSubscription();
     private RxProgressDialog dialog;
-    //    private List<PushMessage> pushMessages;
+    private int pushInfoCunt=0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,8 +67,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         mFrameLayout.addView(LayoutInflater.from(this).inflate(getLayoutId(), null));
 
 
-        EventBus.getDefault().register(this);
-
         getTransferData();
 
         initData();
@@ -74,10 +77,10 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
         initView();
 
+
         initEvent();
 
-        initRecyclerView();
-
+        EventBus.getDefault().register(this);
     }
 
 
@@ -105,6 +108,12 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshPushMessage(Event.RefreshPushMessage event) {
         showPushMessage(getPushMessageFromDatabase());
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshPushMessage(PushMessage pushMessage) {
+        showExpressHelpPop(pushMessage);
     }
 
 
@@ -167,7 +176,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
                     rvPushInfo.setVisibility(View.GONE);
                 }
 
-                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
+//                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
             }
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
@@ -183,6 +192,38 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     public List<PushMessage> getPushMessageFromDatabase() {
         List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
         return allMessage;
+    }
+
+    /**
+     * 显示紧急求助弹窗
+     *
+     * @param pushMessage
+     */
+    public void showExpressHelpPop(PushMessage pushMessage) {
+        Gson gson = new Gson();
+        OrganizationAid aid = gson.fromJson(pushMessage.getData(), OrganizationAid.class);
+        if (aid.getKind() == 2) {
+            if (pushInfoCunt==0 && !SystemUtils.isTopActivity(UrgentInfoActivity.class.getName())) {
+                pushInfoCunt++;
+                Intent intent = new Intent(this, UrgentInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("aid", aid);
+                intent.putExtras(bundle);
+                startActivityForResult(intent,123);
+            }
+            EventBus.getDefault().post(new Event.RefreshUrgentInfo(aid));
+            List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
+            Logger.d("缓存的推送消息的数量---" + allMessage.size());
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==123 && resultCode==0){
+            pushInfoCunt=0;
+        }
     }
 
     @Override
@@ -222,4 +263,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     protected void dismissDialog() {
         dialog.dismiss();
     }
+
+
 }

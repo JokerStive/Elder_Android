@@ -1,7 +1,7 @@
 package lilun.com.pension.module.bean;
 
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
+import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 *create at 2017/2/13 10:49
 *email : yk_developer@163.com
 */
-public class OrganizationAid extends MultiItemEntity implements Serializable{
+public class OrganizationAid extends DataSupport implements Serializable{
     private static final long serialVersionUID = 1L;
 
 
@@ -52,15 +52,15 @@ public class OrganizationAid extends MultiItemEntity implements Serializable{
     private String answerId;
     private String rankId;
     private String createdAt;
-    private String updatedAt;
-    private String creatorId;
-    private String creatorName;
-    private String updatorId;
-    private String updatorName;
+    public String updatedAt;
+    public String creatorId;
+    public String creatorName;
+    public String updatorId;
+    public String updatorName;
     private String organizationId;
-    private int visible;
-    private List<String> tags;
-    private List<IconModule> image;
+    public int visible;
+    public List<String> tags;
+    public List<IconModule> image;
 
     public List<IconModule> getImage() {
         return image;

@@ -23,6 +23,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86_64'
@@ -35,12 +36,12 @@ android {
         ]
     }
 
-//    sourceSets {
-//        main {
-//
-//            jniLibs.srcDirs = ['src/main/jni']
-//        }
-//    }
+    sourceSets {
+        main {
+
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
 
     buildTypes {
@@ -60,6 +61,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    //    compile files('libs/baidumapapi_map_v4_3_0.jar')
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:design:25.2.0'
@@ -100,9 +102,10 @@ dependencies {
     //MQTT sub-pub
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    compile files('libs/baidumapapi_base_v4_3_0.jar')
+    compile files('libs/baidumapapi_map_v4_3_0.jar')
 
     //区域选择控件
     compile 'com.github.vanzh:AreaSelector:1.0.1'
-
 }
 

@@ -54,8 +54,8 @@ public class PushInfoAdapter extends QuickAdapter<PushMessage> {
 
     @Override
     protected void convert(BaseViewHolder helper, PushMessage item) {
-        helper.setText(R.id.tv_kind,item.getKing())
-                .setText(R.id.tv_content,item.getContent());
+//        helper.setText(R.id.tv_kind,item.getKing())
+//                .setText(R.id.tv_content,item.getContent());
         helper.setOnClickListener(R.id.delete, v -> {
             if (listener != null) {
                 //传viewHolder,实现点击删除拖拽

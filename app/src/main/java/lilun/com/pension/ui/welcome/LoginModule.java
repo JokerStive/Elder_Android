@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.Account;
@@ -37,8 +38,11 @@ public class LoginModule implements LoginContract.Module {
     }
 
     @Override
-    public Observable<Account> getAccountInfo(TokenInfo tokenInfo) {
+    public Observable<Account> getAccountInfo(TokenInfo tokenInfo, String username, String password) {
         putToken(tokenInfo.getId());
+        User.putUserName(username);
+        User.putPassword(password);
+        App.mqttConnectAndSub();
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
                 .compose(RxUtils.handleResult());
@@ -71,9 +75,9 @@ public class LoginModule implements LoginContract.Module {
 
                 //默认组织id
                 User.putBelongsOrganizationId(defOrganizationId);
-
+                Logger.d("默认组织id" + organizationAccount.getId());
                 //当前组织id
-                User.puttCurrentOrganizationId(defOrganizationId);
+                User.putCurrentOrganizationId(defOrganizationId);
 
                 //创建者是否是自己
                 User.putIsCustomer(account.isCustomer());
@@ -86,6 +90,7 @@ public class LoginModule implements LoginContract.Module {
 
                 //默认组织账号id
                 User.putBelongOrganizationAccountId(organizationAccount.getId());
+                Logger.d("默认组织账号id" + organizationAccount.getId());
 
                 //当前组织账号id
                 User.putCurrentOrganizationAccountId(organizationAccount.getId());
@@ -106,7 +111,7 @@ public class LoginModule implements LoginContract.Module {
         for (OrganizationAccount oa : organizations) {
             String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
             if (organizationId.equals(Constants.organization_root)) {
-                User.putRootOrganizationAccountId(organizationId);
+                User.putRootOrganizationAccountId(oa.getId());
             }
 
             if (organizationId.contains(Constants.special_organization_root)) {

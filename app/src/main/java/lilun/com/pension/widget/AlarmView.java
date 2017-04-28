@@ -63,7 +63,9 @@ public class AlarmView extends RelativeLayout {
                     currentTime = (int) (time - aLong);
                     tvCount.setText(currentTime + "");
                     if (currentTime == 0) {
-                        stopTiming();
+                        if (listener!=null){
+                            listener.onStopTiming();
+                        }
                     }
                 });
     }
@@ -77,9 +79,6 @@ public class AlarmView extends RelativeLayout {
             subscribe.unsubscribe();
         }
 
-        if (listener != null) {
-            listener.onStopTiming();
-        }
 
         countDown.stopAnimator();
     }

@@ -9,19 +9,15 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
-import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ChangeOrganizationAdapter;
 import lilun.com.pension.module.bean.Organization;
-import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.widget.NormalItemDecoration;
 
 /**
@@ -69,11 +65,6 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
         if (adapter == null) {
             adapter = new ChangeOrganizationAdapter(organizations);
             adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-                Organization organization = adapter.getData().get(i);
-                User.puttCurrentOrganizationId(organization.getId());
-                EventBus.getDefault().post(new Event.ChangedOrganization());
-                PreUtils.putBoolean("currentOrganizationHadChanged", true);
-                pop();
             });
             recyclerView.setAdapter(adapter);
         } else if (isLoadMore) {

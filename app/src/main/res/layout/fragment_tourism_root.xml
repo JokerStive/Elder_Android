@@ -23,11 +23,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/fl_announcement_container"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/info_bar_height"
-                android:background="@drawable/icon_def" />
+
+            <include
+                layout="@layout/announce_container"/>
 
             <include layout="@layout/item_tourism_classify" />
 

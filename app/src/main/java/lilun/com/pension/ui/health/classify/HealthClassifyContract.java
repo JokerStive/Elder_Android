@@ -5,9 +5,7 @@ import java.util.List;
 import lilun.com.pension.base.IPresenter;
 import lilun.com.pension.base.IView;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.bean.Information;
-import lilun.com.pension.module.bean.OrganizationProduct;
 
 /**
 *健康服务契约类
@@ -23,7 +21,7 @@ public interface HealthClassifyContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getClassifies();
+        void getClassifies(String parentId);
         void getAboutMe(String filter, int skip);
     }
 

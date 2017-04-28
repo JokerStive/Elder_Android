@@ -9,6 +9,7 @@ import java.util.List;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseActivity;
+import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Organization;
@@ -48,24 +49,31 @@ public class ChangeOrganizationPresenter extends RxPresenter<ChangeOrganizationC
 
     @Override
     public void changeDefBelongOrganization(String organizationId) {
+        BaseActivity activity = null;
+        if (view instanceof BaseActivity) {
+            activity = (BaseActivity) view;
+        } else if (view instanceof BaseFragment) {
+            activity = (BaseActivity) ((BaseFragment) view).getActivity();
+        }
         Account account = new Account();
         account.setDefaultOrganizationId(organizationId);
         addSubscribe(NetHelper.getApi()
                 .putAccount(User.getUserId(), account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>((BaseActivity)view) {
+                .subscribe(new RxSubscriber<Object>(activity) {
                     @Override
                     public void _next(Object o) {
-//                        User.puttCurrentOrganizationId(organizationId);
+//                        User.putCurrentOrganizationId(organizationId);
                         if (organizationId.equals(User.getRootOrganizationAccountId())) {
-                            Logger.d("切换到地球村成功" + organizationId);
                             view.changedRoot();
-                            User.putBelongsOrganizationId(Constants.organization_root);
-                            Logger.d("当前默认组织"+User.getBelongsOrganizationId());
+                            User.putCurrentOrganizationId(Constants.organization_root);
+                            Logger.d("切换到地球村成功" + User.getCurrentOrganizationId());
+//                            User.putBelongsOrganizationId(Constants.organization_root);
+//                            Logger.d("当前默认组织"+User.getBelongsOrganizationId());
                         } else if (TextUtils.equals(organizationId, User.getBelongOrganizationAccountId())) {
-                            Logger.d("切换回默认所属组织成功" + organizationId);
-                            User.putBelongsOrganizationId(User.getCurrentOrganizationId());
+                            User.putCurrentOrganizationId(User.getBelongsOrganizationId());
+                            Logger.d("切换回默认所属组织成功" + User.getCurrentOrganizationId());
                             view.changedBelong();
                         }
                     }

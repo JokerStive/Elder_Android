@@ -33,7 +33,7 @@ public interface LoginContract {
     interface Module {
         Observable<TokenInfo> login(String username, String password);
 
-        Observable<Account> getAccountInfo(TokenInfo accountId);
+        Observable<Account> getAccountInfo(TokenInfo accountId,String username, String password);
 
         Observable<List<OrganizationAccount>> getBelongOrganizations(Account account);
 

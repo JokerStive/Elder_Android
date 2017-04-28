@@ -13,7 +13,7 @@ public class ScreenUtils {
 
     public static  int  getScreenWith(Context context){
         WindowManager ss = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        return UIUtils.px2dp(context,ss.getDefaultDisplay().getWidth());
+        return ss.getDefaultDisplay().getWidth();
     }
 
     public static  int  getScreenHeight(Context context){

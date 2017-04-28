@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import lilun.com.pension.R;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
@@ -43,6 +47,23 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
         rightText = array.getString(R.styleable.PositionTitleBar_rightText);
         array.recycle();
         init(context);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void changedOrganization(Event.ChangedOrganization event) {
+        tvPosition.setText(User.getCurrentOrganizationName());
     }
 
     private void init(Context context) {
@@ -88,9 +109,9 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
                 }
                 break;
 
-            case R.id.iv_position:
+            case R.id.tv_position:
                 if (fragment != null) {
-                    fragment.startActivity(new Intent(fragment.getActivity(),ChangeOrganizationActivity.class));
+                    fragment.startActivity(new Intent(fragment.getActivity(), ChangeOrganizationActivity.class));
                 }
                 if (listener != null) {
                     listener.onPositionClick();

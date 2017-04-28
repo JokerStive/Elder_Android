@@ -46,11 +46,13 @@ public final class HttpLoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
-        /** No logs. */
+        /**
+         * No logs.
+         */
         NONE,
         /**
          * Logs request and response lines.
-         *
+         * <p>
          * <p>Example:
          * <pre>{@code
          * --> POST /greeting HTTP/1.1 (3-byte body)
@@ -61,7 +63,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         BASIC,
         /**
          * Logs request and response lines and their respective headers.
-         *
+         * <p>
          * <p>Example:
          * <pre>{@code
          * --> POST /greeting HTTP/1.1
@@ -79,7 +81,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         HEADERS,
         /**
          * Logs request and response lines and their respective headers and bodies (if present).
-         *
+         * <p>
          * <p>Example:
          * <pre>{@code
          * --> POST /greeting HTTP/1.1
@@ -104,10 +106,13 @@ public final class HttpLoggingInterceptor implements Interceptor {
     public interface Logger {
         void log(String message);
 
-        /** A {@link Logger} defaults output appropriate for the current platform. */
+        /**
+         * A {@link Logger} defaults output appropriate for the current platform.
+         */
         Logger DEFAULT = new Logger() {
-            @Override public void log(String message) {
-                Platform.get().log(10,message,null);
+            @Override
+            public void log(String message) {
+                Platform.get().log(10, message, null);
             }
         };
     }
@@ -124,7 +129,9 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
     private volatile Level level = Level.NONE;
 
-    /** Change the level at which this interceptor logs. */
+    /**
+     * Change the level at which this interceptor logs.
+     */
     public HttpLoggingInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
@@ -135,7 +142,8 @@ public final class HttpLoggingInterceptor implements Interceptor {
         return level;
     }
 
-    @Override public Response intercept(Chain chain) throws IOException {
+    @Override
+    public Response intercept(Chain chain) throws IOException {
         Level level = this.level;
         Request request = chain.request();
         if (level == Level.NONE) {
@@ -230,24 +238,23 @@ public final class HttpLoggingInterceptor implements Interceptor {
             } else {
                 BufferedSource source = responseBody.source();
 
-                    source.request(Long.MAX_VALUE); // Buffer the entire body.
-                    Buffer buffer = source.buffer(
+                source.request(Long.MAX_VALUE); // Buffer the entire body.
+                Buffer buffer = source.buffer(
 
 
-                    );
-                    Charset charset = UTF8;
-                    MediaType contentType = responseBody.contentType();
-                    if (contentType != null) {
-                        charset = contentType.charset(UTF8);
-                    }
+                );
+                Charset charset = UTF8;
+                MediaType contentType = responseBody.contentType();
+                if (contentType != null) {
+                    charset = contentType.charset(UTF8);
+                }
 
-                    if (contentLength != 0) {
-                        logger.log("");
-                        logger.log(buffer.clone().readString(charset));
-                    }
+                if (contentLength != 0) {
+                    logger.log("");
+                    logger.log(buffer.clone().readString(charset));
+                }
 
-                    logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
-
+                logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
 
 
             }

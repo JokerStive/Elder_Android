@@ -2,7 +2,6 @@ package lilun.com.pension.net;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.ActivityCategory;
@@ -44,7 +43,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -266,10 +264,10 @@ public interface ApiService {
      */
 //    @Multipart
 //    @POST("OrganizationAids/upload/image")
-//    Observable<Response<List<IconModule>>> newAidIcons(@PartMap Map<String, RequestBody> params);
+//    Observable<Response<List<IconModule>>> newAidAndIcons(@PartMap Map<String, RequestBody> params);
 //    @Multipart
     @POST("OrganizationAids/upload/image")
-    Observable<Response<Object>> newAidIcons(@Body MultipartBody body);
+    Observable<Response<Object>> newAidAndIcons(@Body MultipartBody body);
 
 
 

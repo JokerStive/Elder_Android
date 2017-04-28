@@ -84,7 +84,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(getString(R.string.health_service));
+        titleBar.setTitle(parentId);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -118,12 +118,13 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
 
         //刷新
-        mSwipeLayout.setOnRefreshListener(() -> {
-                    if (mPresenter != null) {
-                        getServices(0);
-                    }
-                }
-        );
+        mSwipeLayout.setEnabled(false);
+//        mSwipeLayout.setOnRefreshListener(() -> {
+//                    if (mPresenter != null) {
+////                        getServices(0);
+//                    }
+//                }
+//        );
 
 
         //设置数据
@@ -151,7 +152,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     }
 
     private void getClassifies() {
-        mPresenter.getClassifies();
+        mPresenter.getClassifies(parentId);
     }
 
     private void getServices(int skip) {

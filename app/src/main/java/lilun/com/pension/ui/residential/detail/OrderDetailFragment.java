@@ -61,13 +61,13 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     @Bind(R.id.iv_provider_avatar)
     ImageView ivProviderAvatar;
 
-    @Bind(R.id.tv_product_name)
+    @Bind(R.id.tv_provider_name)
     TextView tvProviderName;
 
     @Bind(R.id.iv_product_icon)
     ImageView ivProductIcon;
 
-    @Bind(R.id.tv_provider_name)
+    @Bind(R.id.tv_product_name)
     TextView tvProductName;
 
     @Bind(R.id.tv_product_price)

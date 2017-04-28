@@ -257,6 +257,22 @@ public class StringUtils {
         return filter;
     }
 
+    /**
+     * 获取列表数据时候，一定要添加的头部、0filter信息
+     */
+    public static String addFilterWithDefVisible(String filter, int skip) {
+        String head;
+        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
+            head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\",\"visible\":\"0\"}";
+            filter = head;
+        } else {
+            head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\",\"visible\":\"0\"}";
+            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
+        }
+//        Logger.d("拼接够的filter--" + filter);
+        return filter;
+    }
+
 
     /**
      * 根据组织id获取名字

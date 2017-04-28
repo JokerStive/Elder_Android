@@ -37,8 +37,10 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         }
         username = username.replace(" ", "");
         password = password.replace(" ", "");
+        final String finalUsername = username;
+        final String finalPassword = password;
         addSubscribe(mModule.login(username, password)
-                .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo))
+                .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo, finalUsername, finalPassword))
                 .flatMap(account -> mModule.getBelongOrganizations(account))
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity)mView) {

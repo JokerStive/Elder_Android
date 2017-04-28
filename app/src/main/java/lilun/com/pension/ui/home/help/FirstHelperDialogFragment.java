@@ -31,6 +31,7 @@ public class FirstHelperDialogFragment extends DialogFragment implements View.On
     }
 
     private void initView(View view) {
+
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 

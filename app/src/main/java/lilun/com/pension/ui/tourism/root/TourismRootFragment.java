@@ -20,6 +20,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PopularDestinationAdapter;
 import lilun.com.pension.module.adapter.TourismBigAdapter;
 import lilun.com.pension.module.bean.Tourism;
+import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.tourism.detail.TourismDetailFragment;
 import lilun.com.pension.ui.tourism.list.TourismListFragment;
 import lilun.com.pension.widget.DividerGridItemDecoration;
@@ -88,6 +89,9 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
 
         rvPopularJourney.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvPopularJourney.addItemDecoration(new NormalItemDecoration(10));
+
+
+        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance("旅游"), false);
     }
 
 
@@ -148,7 +152,7 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
      * 获取旅游
      */
     private void getJourneys(int skip) {
-        String filter = "{\"where\":{\"extend.tag\":\"热门\",\"categoryId\":\"" + categoryId + "\"}}";
+        String filter = "{\"where\":{\"extend.tag\":\"热门\",\"visible\":\"0\",\"categoryId\":\"" + categoryId + "\"}}";
         mPresenter.getPopularJourneys(filter, skip);
     }
 

@@ -39,6 +39,17 @@ public class ProductFilter {
          */
 
         private TitleBean title;
+        private int visible=0  ;
+
+        public int getVisible() {
+            return visible;
+        }
+
+        public WhereBean setVisible(int visible) {
+            this.visible = visible;
+            return this;
+        }
+
         private String areasList;
         private PriceBean price;
         private String categoryId;

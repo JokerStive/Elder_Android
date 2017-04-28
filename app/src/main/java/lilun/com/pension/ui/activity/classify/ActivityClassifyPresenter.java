@@ -5,7 +5,6 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;

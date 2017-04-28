@@ -8,9 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -117,12 +114,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
             @Override
             public void onSearch(String searchStr) {
-                HelpFilter.WhereBean.TitleBean titleBean = helpFilter.getWhere().getTitle();
-                if (titleBean == null) {
-                    titleBean = new HelpFilter.WhereBean.TitleBean();
-                }
-                titleBean.setLike(searchStr);
-                helpFilter.getWhere().setTitle(titleBean);
+                helpFilter.setTitle(searchStr);
                 refreshHelpWithFilter();
             }
 
@@ -158,11 +150,11 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             filterView.setTitlesAndDatas(conditionTitles, conditionOptionsList, mSwipeLayout);
             filterView.setOnOptionClickListener((whereKey, whereValue) -> {
                 if (TextUtils.equals(whereKey, filter_kind)) {
-                    helpFilter.getWhere().setKind(whereValue);
+                    helpFilter.setKind(whereValue);
                 } else if (TextUtils.equals(whereKey, filter_priority)) {
-                    helpFilter.getWhere().setPriority(whereValue);
+                    helpFilter.setPriority(whereValue);
                 } else if (TextUtils.equals(whereKey, filter_status)) {
-                    helpFilter.getWhere().setStatus(whereValue);
+                    helpFilter.setStatus(whereValue);
                 }
                 refreshHelpWithFilter();
             });
@@ -179,9 +171,9 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     private void getHelps(int skip) {
         mSwipeLayout.setRefreshing(true);
-        Gson gson = new Gson();
-        String filter = gson.toJson(helpFilter);
-        Logger.d("互助 --filter = " + filter);
+//        Gson gson = new Gson();
+        String filter = helpFilter.toString();
+//        Logger.d("互助 --filter = " + filter);
         if (isMain) {
             mPresenter.getAboutMe(filter, skip);
         } else {
@@ -195,9 +187,9 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         this.helps = helps;
         completeRefresh();
         if (helps != null) {
-            for (OrganizationAid aid : helps) {
-                aid.setItemType(aid.getKind());
-            }
+//            for (OrganizationAid aid : helps) {
+//                aid.setItemType(aid.getKind());
+//            }
             if (mAidAdapter == null) {
                 setRecyclerAdapter(helps);
             } else if (isLoadMore) {
@@ -216,6 +208,8 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             });
             mAidAdapter.setEmptyView();
         }
+
+
         mRecyclerView.setAdapter(mAidAdapter);
     }
 

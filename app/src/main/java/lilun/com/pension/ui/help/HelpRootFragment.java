@@ -9,27 +9,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.CycleAidAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.help.list.HelpContract;
 import lilun.com.pension.ui.help.list.HelpFragment;
 import lilun.com.pension.ui.help.list.HelpPresenter;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
-import rx.Observable;
 
 /**
  * 邻里互助宿主activity
@@ -58,11 +61,11 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Bind(R.id.tv_find_help)
     TextView tvFindHelp;
 
-//    private ArrayList<Information> informationList;
+    //    private ArrayList<Information> informationList;
     //    private List<ElderModule> elderModules;
 //    private RecyclerView mClassifyRecycler;
     private CycleAidAdapter adapter;
-    private int currentPosition=0;
+    private int currentPosition = 0;
     private String parentId;
 //    private List<OrganizationAid> organizationAids = new ArrayList<>();
 
@@ -83,17 +86,22 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         return fragment;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshPushMessage(PushMessage pushMessage) {
+        Gson gson = new Gson();
+        OrganizationAid aid = gson.fromJson(pushMessage.getData(), OrganizationAid.class);
+        if (aid.getKind() != 2 && adapter != null) {
+            adapter.add(aid);
+            mRecyclerView.smoothScrollToPosition(adapter.getItemCount());
+        }
+    }
+
     @Override
     protected void getTransferData(Bundle arguments) {
         parentId = arguments.getString("parentId");
         Preconditions.checkNull(parentId);
-//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
-
-//    @Override
-//    protected void getTransferData(Bundle arguments) {
-//        informationList = (ArrayList<Information>) arguments.getSerializable("informationList");
-//    }
 
     @Subscribe
     public void refreshData(Event.RefreshHelpData event) {
@@ -151,16 +159,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        //初始化公告栏
-//        if (informationList == null || informationList.size() == 0) {
-//            Logger.d("公告数据为空");
-//        } else {
-//            AnnouncementFragment fragment = new AnnouncementFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("information", informationList);
-//            fragment.setArguments(bundle);
-//            replaceLoadRootFragment(R.id.fl_announcement_container, fragment, false);
-//        }
 
         replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
     }
@@ -172,17 +170,10 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
     private void getHelps(int skip) {
-        mPresenter.getHelps("", skip);
+        String filter = "{\"where\":{\"visible\":\"0\",\"kind\":{\"neq\":\"2\"}}}";
+        mPresenter.getHelps(filter, skip);
     }
 
-
-    public void initTimer(){
-        subscription.add(Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
-                .compose(RxUtils.applySchedule())
-                .subscribe(aLong -> {
-                    mRecyclerView.smoothScrollToPosition(currentPosition++);
-                }));
-    }
 
     @Override
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
@@ -190,9 +181,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         if (adapter == null) {
             adapter = new CycleAidAdapter(helps);
             mRecyclerView.setAdapter(adapter);
-            if (helps.size()>=CycleAidAdapter.data_limit){
-                initTimer();
-            }
         }
     }
 
@@ -208,7 +196,12 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_need_help:
-                start(AddHelpFragment.newInstance());
+                if (User.currentOrganizationHasChanged()) {
+                    ToastHelper.get().showShort("当前区域不是自己默认的");
+                    return;
+                } else {
+                    start(AddHelpFragment.newInstance());
+                }
                 break;
             case R.id.tv_find_help:
                 start(HelpFragment.newInstance(false));

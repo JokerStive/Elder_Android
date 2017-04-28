@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
 
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <lilun.com.pension.widget.BreadCrumbsView
         android:background="@color/white"
         android:id="@+id/crumb_view"
@@ -24,4 +31,14 @@
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_confirm"
+        style="@style/btn_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_rect_red"
+        android:text="@string/confirm" />
+</RelativeLayout>

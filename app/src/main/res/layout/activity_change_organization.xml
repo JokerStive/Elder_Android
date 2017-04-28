@@ -19,11 +19,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="@drawable/back"
-            android:padding="20dp" />
+            android:background="@drawable/delete"
+            android:layout_marginLeft="10dp"
+             />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="163dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
@@ -31,21 +32,35 @@
             android:orientation="horizontal">
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/tv_near"
                 style="@style/tv_normal_ellipsize"
                 android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="附近"
-                android:textColor="@color/selector_filter_bar_text" />
+                android:textSize="14sp"
+                android:background="@drawable/selector_change_near_bg"
+                android:textColor="@color/selector_change_organization_text" />
 
             <TextView
+                android:gravity="center"
+                android:textSize="14sp"
                 android:id="@+id/tv_root"
                 style="@style/tv_normal_ellipsize"
                 android:padding="5dp"
                 android:text="地球村"
-                android:textColor="@color/selector_filter_bar_text" />
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_change_root_bg"
+                android:textColor="@color/selector_change_organization_text" />
         </LinearLayout>
 
     </RelativeLayout>
+
+    <View style="@style/line_gray"
+        android:layout_marginTop="10dp"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
