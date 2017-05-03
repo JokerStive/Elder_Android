@@ -188,7 +188,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     }
 
     public void showDialog(String str) {
-        new NormalDialog().createNormal(_mActivity, str, new NormalDialog.OnPositiveListener() {
+        new NormalDialog().createShowMessage(_mActivity, str, new NormalDialog.OnPositiveListener() {
             @Override
             public void onPositiveClick() {
                 return;

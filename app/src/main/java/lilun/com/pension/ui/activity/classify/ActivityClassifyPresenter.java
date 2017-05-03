@@ -54,7 +54,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
     @Override
     public void getAboutMe(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationActivities(StringUtils.addFilterWithDef(filter, skip))
+                .getMyActivities(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<OrganizationActivity>>() {

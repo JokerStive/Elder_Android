@@ -83,7 +83,8 @@ public class LoginModule implements LoginContract.Module {
                 User.putIsCustomer(account.isCustomer());
 
                 //用户名
-                User.putName(account.getUsername());
+                User.putName(account.getName());
+                User.putUserName(account.getUsername());
 
                 //个人资料
                 User.putContactId(account.getDefaultContactId());

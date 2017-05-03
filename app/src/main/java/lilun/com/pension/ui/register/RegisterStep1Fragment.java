@@ -33,7 +33,6 @@ public class RegisterStep1Fragment extends BaseFragment {
     public void onClick() {
         if (checkRegisterName(acetRegisterName.getText().toString().trim()) == true) {
             account.setName((acetRegisterName.getText().toString().trim()));
-            account.setUsername((acetRegisterName.getText().toString().trim()));
             goStep2();
         }
     }

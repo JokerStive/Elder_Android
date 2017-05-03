@@ -40,6 +40,7 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
             return;
         }
         account.setMobile(phone);
+        account.setUsername(phone);
         // goStep3();
         mPresenter.getIDCode(_mActivity, phone);
     }

@@ -345,7 +345,8 @@ public interface ApiService {
     @GET("OrganizationActivities")
     Observable<Response<List<OrganizationActivity>>> getOrganizationActivities(@Query("filter") String filter);
 
-
+    @GET("OrganizationActivities/myActivities")
+    Observable<Response<List<OrganizationActivity>>> getMyActivities(@Query("filter") String filter);
     /**
      * 新建一个活动
      * 包含图片
@@ -413,6 +414,7 @@ public interface ApiService {
      */
     @GET("OrganizationActivities/{id}/partners")
     Observable<Response<List<Account>>> queryPartners(@Path("id") String activityId, @Query("filter") String filter);
+
 
     /**
      * 踢出某一个参与者

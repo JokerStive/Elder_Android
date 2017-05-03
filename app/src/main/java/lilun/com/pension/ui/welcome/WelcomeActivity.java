@@ -2,6 +2,7 @@ package lilun.com.pension.ui.welcome;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import lilun.com.pension.ui.register.RegisterActivity;
  *         email : yk_developer@163.com
  */
 public class WelcomeActivity extends BaseActivity implements View.OnClickListener {
-
+    public static BaseActivity welcomeActivity = null;
 
     @Bind(R.id.btn_login)
     TextView btnLogin;
@@ -30,6 +31,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void getTransferData() {
         if (!TextUtils.isEmpty(User.getUserId())) {
+
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
@@ -56,13 +58,19 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                startActivity(new Intent(this,LoginActivity.class));
-                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                //  finish();
                 break;
             case R.id.btn_register:
-                startActivity(new Intent(this,RegisterActivity.class));
-                finish();
+                startActivity(new Intent(this, RegisterActivity.class));
+                // finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        return super.onKeyDown(keyCode, event);
     }
 }

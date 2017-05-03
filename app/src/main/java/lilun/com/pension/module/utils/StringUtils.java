@@ -204,6 +204,17 @@ public class StringUtils {
         }
         return dateTime;
     }
+    public static Date string2Date(String strTime) {
+        Date dateTime = null;
+        try {
+
+            SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            dateTime = parser.parse(strTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateTime;
+    }
 
 
     public static String checkNotEmpty(String s) {

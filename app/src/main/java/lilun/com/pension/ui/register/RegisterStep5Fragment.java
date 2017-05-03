@@ -102,7 +102,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
         LoginModule loginModule = new LoginModule();
         loginModule.putToken(register.getId());
         loginModule.putAccountInfo(account);
-        new NormalDialog().createNormal(_mActivity, R.string.register_success, () -> {
+        new NormalDialog().createShowMessage(_mActivity, getString(R.string.register_success), () -> {
             goStep6();
         });
     }

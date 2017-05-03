@@ -28,6 +28,7 @@ import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.ui.welcome.LoginActivity;
+import lilun.com.pension.ui.welcome.WelcomeActivity;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.TakePhotoDialogFragment;
@@ -121,10 +122,14 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
     @Override
     public void successOfUpdateImage() {
         Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.putExtra("autologin",true);
-        intent.putExtra("account",account);
+        intent.putExtra("autologin", true);
+        intent.putExtra("account", account);
         startActivity(intent);
         _mActivity.finish();
+        if (WelcomeActivity.welcomeActivity != null) {
+            WelcomeActivity.welcomeActivity.finish();
+            WelcomeActivity.welcomeActivity = null;
+        }
     }
 
     @Override

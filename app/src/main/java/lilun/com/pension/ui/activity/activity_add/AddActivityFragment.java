@@ -231,6 +231,10 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             showNotEmpty(R.string.activity_address);
             return;
         }
+        if(TextUtils.isEmpty(require)){
+            showNotEmpty(R.string.activity_desp);
+            return;
+        }
 
 
         String max = StringUtils.get_StringNum(maxPartner);
@@ -264,6 +268,10 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             activity.setStartTime(startTimeISO);
             String endTimeISO = endTime + ":00";
             activity.setEndTime(endTimeISO);
+            if (StringUtils.string2Date(startTimeISO).getTime() - StringUtils.string2Date(endTimeISO).getTime() >= 0) {
+                ToastHelper.get(getContext()).showWareShort("结束时间应大于开始时间");
+                return;
+            }
         }
         activity.setDruation(intDuration);
         // activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
@@ -295,7 +303,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         } catch (JSONException e) {
             e.printStackTrace();
         }
-      //  mPresenter.addActivity(_mActivity, activity, getPhotoData());
+        //  mPresenter.addActivity(_mActivity, activity, getPhotoData());
 
 
     }

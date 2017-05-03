@@ -96,6 +96,10 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     public void loginSuccess() {
         startActivity(new Intent(this, HomeActivity.class));
         finish();
+        if (WelcomeActivity.welcomeActivity != null) {
+            WelcomeActivity.welcomeActivity.finish();
+            WelcomeActivity.welcomeActivity = null;
+        }
     }
 
 

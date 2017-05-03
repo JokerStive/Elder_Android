@@ -314,7 +314,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             cdvTime.setVisibility(View.GONE);
             if (activity.getEndTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getEndTime()))) {
                 //活动结束
-                actvStart.setText(getString(R.string.activity_start_, getString(R.string.finished)));
+                actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
                 if (isSignUp) {
                     llAvgEvaluate.setVisibility(View.VISIBLE);
                     llEevalute.setVisibility(View.VISIBLE);
@@ -336,7 +336,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 });
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
-                actvStart.setText(getString(R.string.activity_start_, getString(R.string.finished_sign_up)));
+                actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
                 hasStart = OrganizationActivity.STARTED;
             } else {
                 actvStart.setText(getString(R.string.activity_start_, ""));
