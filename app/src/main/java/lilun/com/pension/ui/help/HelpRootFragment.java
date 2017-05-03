@@ -170,7 +170,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
     private void getHelps(int skip) {
-        String filter = "{\"where\":{\"visible\":\"0\",\"kind\":{\"neq\":\"2\"}}}";
+        String filter = "{\"where\":{\"visible\":0,\"kind\":{\"neq\":\"2\"}}}";
         mPresenter.getHelps(filter, skip);
     }
 

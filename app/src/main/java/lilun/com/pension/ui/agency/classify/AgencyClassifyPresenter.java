@@ -56,7 +56,6 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
 
     @Override
     public void getClassifiesByService() {
-
         List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("agencyProductClassify");
         if (productCategories != null && productCategories.size() != 0) {
             Logger.i("agency product classify has cache");

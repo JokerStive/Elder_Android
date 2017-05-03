@@ -30,7 +30,7 @@ public class TourismSmallAdapter extends QuickAdapter<Tourism> {
 
     @Override
     protected void convert(BaseViewHolder holder, Tourism tourism) {
-        holder.setText(R.id.tv_context, tourism.getContext())
+        holder.setText(R.id.tv_context, tourism.getName())
                 .setText(R.id.tv_price, tourism.getPrice() + "");
 
 

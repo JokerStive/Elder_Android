@@ -43,7 +43,8 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
             }
         });
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImages())), R.drawable.icon_def, help.getView(R.id.iv_icon));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImages()));
+        ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 
 

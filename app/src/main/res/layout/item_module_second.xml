@@ -4,7 +4,8 @@
     android:id="@+id/ll_module_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/home_bg"
+    android:padding="@dimen/dp_14"
     android:orientation="vertical">
 
     <RelativeLayout

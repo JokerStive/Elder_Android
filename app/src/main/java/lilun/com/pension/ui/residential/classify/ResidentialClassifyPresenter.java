@@ -23,7 +23,7 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
 
     @Override
     public void getClassifies() {
-        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("productClassify");
+        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("familyProductClassify");
         if (productCategories != null && productCategories.size() != 0) {
             view.showClassifies(productCategories);
             return;
@@ -36,7 +36,7 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
                 .subscribe(new RxSubscriber<List<ProductCategory>>() {
                     @Override
                     public void _next(List<ProductCategory> productCategories) {
-                        ACache.get().put("productClassify", (Serializable) productCategories);
+                        ACache.get().put("familyProductClassify", (Serializable) productCategories);
                         view.showClassifies(productCategories);
                     }
 

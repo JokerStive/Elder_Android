@@ -49,12 +49,14 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
     private PersonalOrderAdapter personalOrderAdapter;
     private String mStatus;
+    private String productCategoryId;
 
 
-    public static OrderPageFragment newInstance(String status) {
+    public static OrderPageFragment newInstance(String productCategoryId, String status) {
         OrderPageFragment fragment = new OrderPageFragment();
         Bundle args = new Bundle();
         args.putString("status", status);
+        args.putString("productCategoryId", productCategoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +66,9 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mStatus = arguments.getString("status");
+        productCategoryId = arguments.getString("productCategoryId");
         Preconditions.checkNull(mStatus);
+        Preconditions.checkNull(productCategoryId);
     }
 
     @Subscribe
@@ -109,7 +113,8 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-        String filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+//        String filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\",\"categoryId\":{\"like\":\"" + productCategoryId + "\"}}";
+        String filter = "  {\"include\":[\"product\",\"assignee\"],\"where\":{\"and\":[{\"creatorId\":\""+User.getUserId()+"\"},{\"status\":\""+mStatus+"\"},{\"categoryId\":{\"like\":\""+productCategoryId+"\"}}]},\"limit\":\"20\",\"skip\":\"0\"}";
         mPresenter.getMyOrders(filter, skip);
 
     }

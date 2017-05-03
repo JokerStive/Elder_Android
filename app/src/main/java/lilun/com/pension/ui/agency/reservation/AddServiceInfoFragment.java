@@ -176,7 +176,7 @@ public class AddServiceInfoFragment extends BaseFragment {
 
             if (expandKeys != null && expandKeys.size() >= 3) {
                 Map<String, String> extend = mContact.getExtend();
-                if (extend!=null){
+                if (extend != null) {
                     tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
                     tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
                     etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
@@ -329,13 +329,13 @@ public class AddServiceInfoFragment extends BaseFragment {
 
 
     private void statReservation(Contact contact) {
-        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Intent intent = new Intent(_mActivity, ReservationActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("contact",contact);
-        bundle.putString("productCategoryId",productCategoryId);
-        bundle.putString("productId",productId);
+        bundle.putSerializable("contact", contact);
+        bundle.putString("productCategoryId", productCategoryId);
+        bundle.putString("productId", productId);
         intent.putExtras(bundle);
-        startActivityForResult(intent,ReservationFragment.requestCode);
+        startActivityForResult(intent, ReservationFragment.requestCode);
     }
 
     /**
@@ -343,6 +343,7 @@ public class AddServiceInfoFragment extends BaseFragment {
      */
     private void chooseBirthday() {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
+        picker.setDateRangeStart(1900, 1,1);
         setPickerConfig(picker);
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
             String time = year + "-" + month + "-" + day;
@@ -366,7 +367,6 @@ public class AddServiceInfoFragment extends BaseFragment {
                         //TODO 设置电话
                         etReservationPhone.setText(User.getMobile());
                     } else {
-//                        etReservationName.setText("");
                         etReservationPhone.setText("");
                     }
                 }

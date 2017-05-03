@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -15,7 +14,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
@@ -85,7 +83,6 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     protected void getTransferData(Bundle arguments) {
         parentId = arguments.getString("parentId");
-//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
     @Override
@@ -113,7 +110,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             public void onRightClick() {
                 //TODO 商家和个人查看所有订单
                 if (User.isCustomer()) {
-                    start(new OrderListFragment());
+                    start(OrderListFragment.newInstance(Config.agency_product_categoryId));
                 } else {
                     Logger.d("商家模式进入");
                     start(new MerchantOrderListFragment());
@@ -204,17 +201,5 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         return count;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

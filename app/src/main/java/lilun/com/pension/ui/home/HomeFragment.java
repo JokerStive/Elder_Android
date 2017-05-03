@@ -120,8 +120,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
 
-//        replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(""), false);
-//
     }
 
     @Override
@@ -226,7 +224,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     }
 
-    private void switchDrawer() {
+    public void switchDrawer() {
         if (!drawer.isDrawerOpen(Gravity.LEFT)) {
             drawer.openDrawer(Gravity.LEFT);
         } else {

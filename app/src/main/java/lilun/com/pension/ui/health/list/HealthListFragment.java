@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.ElderModule;
@@ -55,7 +53,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
     public static HealthListFragment newInstance(ElderModule classify) {
         HealthListFragment fragment = new HealthListFragment();
         Bundle args = new Bundle();
-        args.putSerializable("HealtheaProduct", (Serializable) classify);
+        args.putSerializable("HealtheaProduct", classify);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,7 +93,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
     private void refreshData() {
         skip = 0;
-        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\"," +
+        String filter = "{\"where\":{\"visible\":0," +
                 "\"isCat\":\"false\"," +
                 "\"parentId\":{\"like\":\"/#information/" + mClassify.getServiceConfig().getCategory() + "\"}}}";
         mPresenter.getDataList(filter, skip);
@@ -105,10 +103,6 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
     @Override
     public void showDataList(List<Information> list, boolean isLoadMore) {
         skip += list.size();
-//        if (skip == 0)
-//            nullData.setVisibility(View.VISIBLE);
-//        else
-//            nullData.setVisibility(View.GONE);
 
         if (mAdapter == null) {
             mAdapter = new HealthServiceAdapter(this, list);
@@ -127,34 +121,6 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         }
     }
 
-
-    private void initPushBar() {
-//        rvPushInfo = (RecyclerView) mRootView.findViewById(R.id.rv_push_info);
-//        pushInfoAdapter = new PushInfoAdapter(_mActivity, data, R.layout.item_push_info);
-//        pushInfoAdapter.setOnPushClickListener(new PushInfoAdapter.onPushClickListener() {
-//            @Override
-//            public void onDeleteClick(PushInfoAdapter.MyViewHolder item) {
-//                pushInfoAdapter.remove(item);
-//            }
-//
-//            @Override
-//            public void agree() {
-//            }
-//
-//            @Override
-//            public void onExpandClick() {
-//                rvPushInfo.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-//            }
-//        });
-//
-//        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-//        rvPushInfo.setAdapter(pushInfoAdapter);
-//        CardConfig.initConfig(_mActivity);
-//        CardConfig.MAX_SHOW_COUNT = 3;
-//        ItemTouchHelper.Callback callback = new MyCallBack(rvPushInfo, pushInfoAdapter, data);
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(rvPushInfo);
-    }
 
     public List<HealtheaProduct> getData() {
         List<HealtheaProduct> data = new ArrayList<>();

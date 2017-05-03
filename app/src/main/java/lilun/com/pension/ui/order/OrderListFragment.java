@@ -2,6 +2,7 @@ package lilun.com.pension.ui.order;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 
@@ -21,6 +22,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.SearchTitleBar;
 
@@ -46,6 +48,22 @@ public class OrderListFragment extends BaseFragment {
 
     private String[] statusTitle = {"已预约", "已受理", "已完成", "已取消"};
     private String[] status = {"reserved", "assigned", "done", "cancel"};
+    private String productCategoryId;
+
+    public static OrderListFragment newInstance(String productCategoryId) {
+        OrderListFragment fragment = new OrderListFragment();
+        Bundle args = new Bundle();
+        args.putString("productCategoryId", productCategoryId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        productCategoryId = arguments.getString("productCategoryId");
+        Preconditions.checkNull(productCategoryId);
+    }
 
     @Override
     protected void initPresenter() {
@@ -91,7 +109,7 @@ public class OrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            OrderPageFragment fragment = OrderPageFragment.newInstance(status[i]);
+            OrderPageFragment fragment = OrderPageFragment.newInstance(productCategoryId,status[i]);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {

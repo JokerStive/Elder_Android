@@ -48,7 +48,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
             helper.setText(R.id.tv_product_name, product.getName())
                     .setText(R.id.tv_provider_name,agencyName)
-                    .setText(R.id.tv_reservation_time,"预约时间:"+StringUtils.IOS2ToUTC(order.getRegisterDate(),0))
+                    .setText(R.id.tv_reservation_time,"预约时间:"+StringUtils.IOS2ToUTC(order.getRegisterDate(),0)+"  "+StringUtils.IOS2ToUTC(order.getRegisterDate(),1))
                     .setText(R.id.tv_product_price, String.format(App.context.getResources().getString(R.string.format_price), product.getPrice()))
                     .setVisible(R.id.tv_rank,order.getStatus().equals("done"))
                     .setOnClickListener(R.id.rl_item,v ->{

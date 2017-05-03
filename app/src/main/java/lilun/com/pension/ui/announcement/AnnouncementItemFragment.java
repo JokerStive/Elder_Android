@@ -45,7 +45,7 @@ public class AnnouncementItemFragment extends BaseFragment {
         information = (Information) arguments.getSerializable("information");
         Preconditions.checkNull(information);
         List<IconModule> picture = information.getImage();
-        if (picture!=null && picture.size()>0){
+        if (picture != null && picture.size() > 0) {
             mFileName = picture.get(0).getFileName();
         }
 
@@ -67,14 +67,14 @@ public class AnnouncementItemFragment extends BaseFragment {
         ivIcon = (ImageView) mRootView.findViewById(R.id.iv_advantage);
 
         int screenWith = ScreenUtils.getScreenWith(mContent);
-        ivIcon.setLayoutParams(new LinearLayout.LayoutParams(screenWith, UIUtils.dp2px(mContent,150)));
+        ivIcon.setLayoutParams(new LinearLayout.LayoutParams(screenWith, UIUtils.dp2px(mContent, 150)));
 
     }
 
     @Override
     protected void initEvent() {
         ivIcon.setOnClickListener(v -> {
-            Logger.d("公告的title----"+information.getTitle());
+            Logger.d("公告的title----" + information.getTitle());
         });
         loadImage();
     }
@@ -86,13 +86,13 @@ public class AnnouncementItemFragment extends BaseFragment {
     }
 
     private void loadImage() {
-        if (TextUtils.isEmpty(mFileName) ){
+        if (TextUtils.isEmpty(mFileName)) {
             //TODO 占位图
         } else {
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,this.information.getId(), mFileName);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, this.information.getId(), mFileName);
 //            Logger.d("公告的地址----"+url   );
 //            Logger.d("公告的title----"+information.getTitle());
-            ImageLoaderUtil.instance().loadImage(url,R.drawable.icon_def,ivIcon);
+            ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
         }
     }
 }

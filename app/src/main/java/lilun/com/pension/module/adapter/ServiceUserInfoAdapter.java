@@ -47,7 +47,7 @@ public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
 
         Map<String, String> extend = info.getExtend();
 
-        if (extend != null && info.getCategoryId().equals(Config.agency_product_categoryId)) {
+        if (extend != null && info.getCategoryId().contains(Config.agency_product_categoryId)) {
             helper.setText(R.id.tv_health_status, info.getExtend().get("healthyStatus"))
                     .setText(R.id.tv_health_desc, info.getExtend().get("healthyDescription"));
         } else {

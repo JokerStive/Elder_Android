@@ -39,7 +39,7 @@
     <string name="account_safe">账户安全</string>
 
     <string name="logout">退出</string>
-    <string name="logout_confirm">确定退出登录?</string>
+    <string name="logout_confirm">退出登陆将会顶空所有数据并重置所有操作，确定退出?</string>
 
     ==========================================================================
     <!--邻居互助-->

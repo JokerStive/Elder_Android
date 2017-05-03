@@ -53,6 +53,16 @@ public class ProductOrder extends BaseBean {
     private String updatorName;
     private Account assignee;
     private Contact contact;
+    private String categoryId;
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public ProductOrder setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
 
     public Contact getContact() {
         return contact;

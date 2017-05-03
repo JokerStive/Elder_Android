@@ -168,7 +168,7 @@ public class ReservationFragment extends BaseFragment {
         tvName.setText(contact.getName());
         tvPhone.setText(contact.getMobile());
 
-        if (productCategoryId.equals(Config.agency_product_categoryId)) {
+        if (productCategoryId.contains(Config.agency_product_categoryId)) {
             tvHealthStatus.setText(contact.getExtend().get("healthyStatus"));
             tvHealthDesc.setText(contact.getExtend().get("healthyDescription"));
         } else {

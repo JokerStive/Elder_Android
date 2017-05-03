@@ -84,7 +84,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.residential_service));
-        titleBar.setTvRightText(getString(R.string.all_orders));
+//        titleBar.setTvRightText(getString(R.string.all_orders));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -99,7 +99,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             @Override
             public void onRightClick() {
                 //TODO 查看所有订单
-                start(new OrderListFragment());
+                start(OrderListFragment.newInstance(parentId));
             }
         });
 

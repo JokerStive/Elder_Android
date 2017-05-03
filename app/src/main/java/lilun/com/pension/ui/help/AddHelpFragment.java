@@ -193,20 +193,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         String priority = tvPriority.getText().toString();
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
-//        String price = inputPrice.getInput();
-//        String memo = inputMemo.getInput();
-
-        if (!TextUtils.isEmpty(priority) && helpPriority != null) {
-            if (priority.equals(helpPriority[0])) {
-                mPriority = 0;
-            } else if (priority.equals(helpPriority[1])) {
-                mPriority = 1;
-            } else if (priority.equals(helpPriority[2])) {
-                mPriority = 2;
-            } else if (priority.equals(helpPriority[3])) {
-                mPriority = 10;
-            }
-        }
 
         //必须选择求助类型
         if (mKind == null) {
@@ -223,6 +209,21 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                     ToastHelper.get().showWareShort("请输入地址");
                     return;
                 }
+            }
+
+
+            if (!TextUtils.isEmpty(priority) && helpPriority != null) {
+                if (priority.equals(helpPriority[0])) {
+                    mPriority = 0;
+                } else if (priority.equals(helpPriority[1])) {
+                    mPriority = 1;
+                } else if (priority.equals(helpPriority[2])) {
+                    mPriority = 2;
+                } else if (priority.equals(helpPriority[3])) {
+                    mPriority = 10;
+                }
+            } else {
+                ToastHelper.get().showWareShort("请选择求助类型");
             }
 
             OrganizationAid aid = getOrganizationAid();
@@ -250,18 +251,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         }
     }
 
-//    private void start(Observable<OrganizationAid> observable) {
-//        subscription = observable.compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
-//                    @Override
-//                    public void _next(OrganizationAid aid) {
-//                        Logger.d("求助发布成功");
-//                        pop();
-//                        EventBus.getDefault().post(new Event.RefreshHelpData());
-//                    }
-//                });
-//
-//    }
 
     @NonNull
     private OrganizationAid getOrganizationAid() {
@@ -280,26 +269,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     }
 
 
-//    private Observable<List<IconModule>> iconObservable(MultipartBody requestBodies) {
-//        return NetHelper.getApi()
-//                .newAidAndIcons(requestBodies)
-//                .compose(RxUtils.handleResult());
-//    }
-
-//    private Observable<OrganizationAid> aidObservable(Map<String, RequestBody> requestBodies) {
-//        OrganizationAid aid = getOrganizationAid();
-//        return NetHelper.getApi()
-//                .newOrganizationAid(aid, requestBodies)
-//                .compose(RxUtils.handleResult());
-//    }
-
-//    private Observable<OrganizationAid> aidObservable(List<IconModule> iconModules) {
-//        OrganizationAid aid = getOrganizationAid();
-//        aid.setImage(iconModules);
-//        return NetHelper.getApi()
-//                .newOrganizationAid(aid)
-//                .compose(RxUtils.handleResult());
-//    }
 
 
     @Override

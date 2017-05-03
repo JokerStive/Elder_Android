@@ -15,6 +15,10 @@ import lilun.com.pension.app.App;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.bean.Account;
+import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.net.NetHelper;
+import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.welcome.WelcomeActivity;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
@@ -26,21 +30,6 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class LeftMenuFragment extends BaseFragment implements View.OnClickListener {
-
-//    @Bind(R.id.tv_account_data)
-//    TextView tvAccountData;
-//
-//    @Bind(R.id.tv_account_setting)
-//    TextView tvAccountSetting;
-//
-//    @Bind(R.id.tv_account_share)
-//    TextView tvAccountShare;
-//
-//    @Bind(R.id.tv_account_info)
-//    TextView tvAccountInfo;
-//
-//    @Bind(R.id.tv_account_safe)
-//    TextView tvAccountSafe;
 
     @Bind(R.id.tv_logout)
     TextView tvLogout;
@@ -65,17 +54,10 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     protected void initView(LayoutInflater inflater) {
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
-
-//        tvAccountData.setOnClickListener(this);
-//        tvAccountSetting.setOnClickListener(this);
-//        tvAccountShare.setOnClickListener(this);
-//        tvAccountInfo.setOnClickListener(this);
-//        tvAccountSafe.setOnClickListener(this);
-//        tvLogout.setOnClickListener(this);
     }
 
 
-    @OnClick({R.id.tv_logout,R.id.tv_account_info})
+    @OnClick({R.id.tv_logout, R.id.tv_account_info})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
@@ -97,14 +79,40 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 .positiveText(R.string.confirm)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
-                    App.clear();
-                    _mActivity.finish();
-                    startActivity(new Intent(_mActivity, WelcomeActivity.class));
-                    _mActivity.finish();
+                    changeOrganization();
                 })
                 .onNegative((dialog1, which1) -> dialog1.dismiss())
                 .show();
 
+    }
+
+    private void changeOrganization() {
+        if (!User.getCurrentOrganizationId().equals(User.getBelongsOrganizationId())) {
+            Account account = new Account();
+            account.setDefaultOrganizationId(User.getBelongOrganizationAccountId());
+            NetHelper.getApi()
+                    .putAccount(User.getUserId(), account)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Object>(_mActivity) {
+                        @Override
+                        public void _next(Object o) {
+                            backLogin();
+                        }
+                    });
+        } else {
+            backLogin();
+        }
+    }
+
+    private void backLogin() {
+        App.clear();
+        startActivity(new Intent(_mActivity, WelcomeActivity.class));
+        _mActivity.finish();
+        HomeFragment fragment = findFragment(HomeFragment.class);
+        if (fragment!=null){
+            fragment.switchDrawer();
+        }
     }
 
 

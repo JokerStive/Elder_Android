@@ -15,6 +15,7 @@
 
     <style name="Theme.FloatActivity" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
