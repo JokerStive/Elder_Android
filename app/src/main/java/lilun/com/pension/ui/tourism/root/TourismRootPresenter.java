@@ -24,7 +24,7 @@ public class TourismRootPresenter extends RxPresenter<TourismRootContract.View> 
     @Override
     public void getPopularJourneys(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getTourism(StringUtils.addFilterWithDef(filter, skip))
+                .getTourisms(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Tourism>>(((BaseFragment) view).getActivity()) {

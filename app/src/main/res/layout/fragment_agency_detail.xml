@@ -43,7 +43,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tv_product_name"
+                android:id="@+id/tv_sophisticated"
                 style="@style/tv_normal_ellipsize"
                 android:layout_below="@id/tv_reservation"
                 android:layout_marginTop="17dp"
@@ -52,7 +52,7 @@
             <TextView
                 android:id="@+id/tv_desc"
                 style="@style/tv_small_ellipsize"
-                android:layout_below="@id/tv_product_name"
+                android:layout_below="@id/tv_sophisticated"
                 android:layout_marginTop="15dp"
                 tools:text="盈利组织" />
 

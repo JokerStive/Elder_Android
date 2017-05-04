@@ -39,7 +39,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_normal_title_bar, this);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
-        tvTitle = (TextView) view.findViewById(R.id.tv_product_name);
+        tvTitle = (TextView) view.findViewById(R.id.tv_sophisticated);
         tvDoWhat= (TextView) view.findViewById(R.id.tv_doWhat);
 
         setTitle(title);

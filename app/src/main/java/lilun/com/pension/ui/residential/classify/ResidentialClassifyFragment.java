@@ -19,7 +19,7 @@ import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.ui.order.OrderListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
-import lilun.com.pension.widget.recycler_view.AutoExtentionSpanSizeLookup;
+import lilun.com.pension.widget.recycler_view.AutoExtendSpanSizeLookup;
 
 /**
  * 居家服务分类V
@@ -136,7 +136,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         if (mClassifyAdapter == null) {
 //            int spanCount = spanCountByData(productCategories);
             GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
-            manager.setSpanSizeLookup(new AutoExtentionSpanSizeLookup(productCategories.size(), 3));
+            manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 3));
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {

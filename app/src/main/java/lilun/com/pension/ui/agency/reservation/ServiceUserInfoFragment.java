@@ -53,9 +53,9 @@ public class ServiceUserInfoFragment extends BaseFragment {
         switch (v.getId()) {
             case R.id.btn_add_info:
                 if (productCategoryId.equals(Config.tourism_product_categoryId)) {
-                    start(AddTourismInfoFragment.newInstance(productCategoryId, null));
+                    start(AddTourismInfoFragment.newInstance(productCategoryId));
                 } else {
-                    start(AddServiceInfoFragment.newInstance(productCategoryId, null, true));
+                    start(AddServiceInfoFragment.newInstance(productCategoryId));
                 }
                 break;
         }
@@ -121,9 +121,9 @@ public class ServiceUserInfoFragment extends BaseFragment {
             @Override
             public void onEdit(Contact contact) {
                 if (productCategoryId.equals(Config.tourism_product_categoryId)) {
-                    start(AddTourismInfoFragment.newInstance(productCategoryId, contact));
+                    start(AddTourismInfoFragment.newInstance(contact.getId(),true));
                 } else {
-                    start(AddServiceInfoFragment.newInstance(productCategoryId, contact, true));
+                    start(AddServiceInfoFragment.newInstance(contact.getId(),true));
                 }
                 Logger.d("编辑个人信息");
             }

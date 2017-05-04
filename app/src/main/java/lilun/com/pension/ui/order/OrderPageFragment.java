@@ -3,6 +3,7 @@ package lilun.com.pension.ui.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,14 +17,12 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PersonalOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.ui.help.RankFragment;
 import lilun.com.pension.ui.residential.detail.OrderDetailActivity;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
@@ -114,7 +113,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
 //        String filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\",\"categoryId\":{\"like\":\"" + productCategoryId + "\"}}";
-        String filter = "  {\"include\":[\"product\",\"assignee\"],\"where\":{\"and\":[{\"creatorId\":\""+User.getUserId()+"\"},{\"status\":\""+mStatus+"\"},{\"categoryId\":{\"like\":\""+productCategoryId+"\"}}]},\"limit\":\"20\",\"skip\":\"0\"}";
+        String filter = "  {\"include\":[\"product\",\"assignee\"],\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"},{\"categoryId\":{\"like\":\"" + productCategoryId + "\"}}]},\"limit\":\"20\",\"skip\":\"0\"}";
         mPresenter.getMyOrders(filter, skip);
 
     }
@@ -147,7 +146,10 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
                 @Override
                 public void onRank(String productId) {
-                    start(RankFragment.newInstance(Constants.organizationProduct, productId));
+                    Fragment parentFragment = getParentFragment();
+                    if (parentFragment instanceof OrderListFragment){
+                        ( (OrderListFragment)parentFragment).startRank(productId);
+                    }
                 }
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {

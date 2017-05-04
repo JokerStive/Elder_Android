@@ -75,7 +75,7 @@ public class MQTTManager {
         }
 
         if (client == null) {
-            client = new MqttAndroidClient(App.context, Config.MQTT_URL, "ExampleAndroidClient");
+            client = new MqttAndroidClient(App.context, Config.MQTT_URL, "PensionAndroidClient");
         }
 
         client.setCallback(mCallback);
@@ -119,7 +119,6 @@ public class MQTTManager {
 
     public void subscribe(String topic, int qos) {
         try {
-
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -140,7 +139,6 @@ public class MQTTManager {
 
     public void subscribe(String[] topic, int[] qos) {
         try {
-
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {

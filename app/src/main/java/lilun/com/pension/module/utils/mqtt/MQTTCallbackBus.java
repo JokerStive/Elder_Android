@@ -23,7 +23,7 @@ public class MQTTCallbackBus implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        Logger.d("mqtt断开连接");
+//        Logger.d("mqtt断开连接",cause.getMessage());
     }
 
     @Override
@@ -61,10 +61,10 @@ public class MQTTCallbackBus implements MqttCallback {
 
     private void dealMessage(String messageData) {
         PushMessage pushMessage = getPushMessageFromData(messageData);
-        if (pushMessage!=null){
+        if (pushMessage != null) {
             pushMessage.save();
 
-            if (pushMessage.getModel().equals(Constants.organizationAid)){
+            if (pushMessage.getModel().equals(Constants.organizationAid)) {
 
                 EventBus.getDefault().post(pushMessage);
             }

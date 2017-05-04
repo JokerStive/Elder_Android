@@ -51,12 +51,12 @@ public class SystemUtils {
             String packageName = topActivity.getPackageName();
             String className = topActivity.getClassName();
             String packageNa = App.context.getPackageName();
-            Logger.d("topActivity包名--" + packageName +"获取的包名--"+packageNa+ "====" + "类名--" + className);
+            Logger.d("topActivity包名--" + packageName + "获取的包名--" + packageNa + "====" + "类名--" + className);
             if (TextUtils.equals(packageName, packageNa) && TextUtils.equals(className, activityName)) {
                 return true;
             }
         }
-
         return false;
     }
+
 }

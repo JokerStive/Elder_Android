@@ -46,7 +46,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
 
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
-            helper.setText(R.id.tv_product_name, product.getName())
+            helper.setText(R.id.tv_sophisticated, product.getName())
                     .setText(R.id.tv_provider_name,agencyName)
                     .setText(R.id.tv_reservation_time,"预约时间:"+StringUtils.IOS2ToUTC(order.getRegisterDate(),0)+"  "+StringUtils.IOS2ToUTC(order.getRegisterDate(),1))
                     .setText(R.id.tv_product_price, String.format(App.context.getResources().getString(R.string.format_price), product.getPrice()))

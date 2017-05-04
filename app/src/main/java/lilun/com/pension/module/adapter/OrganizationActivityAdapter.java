@@ -50,7 +50,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
         Context context = help.getConvertView().getContext().getApplicationContext();
-        help.setText(R.id.tv_product_name, activity.getTitle())
+        help.setText(R.id.tv_sophisticated, activity.getTitle())
                 .setText(R.id.tv_creator, activity.getCreatorName())
                 .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4))
                 .setOnClickListener(R.id.ll_bg, v -> {

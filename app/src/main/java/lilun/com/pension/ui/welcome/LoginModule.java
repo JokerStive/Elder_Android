@@ -40,6 +40,9 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public Observable<Account> getAccountInfo(TokenInfo tokenInfo, String username, String password) {
         putToken(tokenInfo.getId());
+//        long time = new Date().getTime();
+//        long tokenEffectiveDuration = time + tokenInfo.getTtl();
+//        PreUtils.putLong(User.tokenEffectiveDuration, tokenEffectiveDuration);
         User.putUserName(username);
         User.putPassword(password);
         App.mqttConnectAndSub();
@@ -61,6 +64,7 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public void putToken(String token) {
         PreUtils.putString(User.token, token);
+
     }
 
     @Override

@@ -31,7 +31,6 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.Setting;
 import lilun.com.pension.module.utils.ACache;
-import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
@@ -93,12 +92,20 @@ public class AddServiceInfoFragment extends BaseFragment {
     private String contactId;
     private String productId;
 
-    public static AddServiceInfoFragment newInstance(String productCategoryId, Contact contact, Boolean canEdit) {
+    public static AddServiceInfoFragment newInstance(String productCategoryId) {
+        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("productCategoryId", productCategoryId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    public static AddServiceInfoFragment newInstance(String contactId, boolean canEdit) {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("canEdit", canEdit);
-        bundle.putString("productCategoryId", productCategoryId);
-        bundle.putSerializable("mContact", contact);
+        bundle.putString("contactId", contactId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -119,9 +126,11 @@ public class AddServiceInfoFragment extends BaseFragment {
         productCategoryId = arguments.getString("productCategoryId");
         contactId = arguments.getString("contactId");
         canEdit = arguments.getBoolean("canEdit", true);
-        mContact = (Contact) arguments.getSerializable("mContact");
-        expandKeys = (List<Setting>) ACache.get().getAsObject(productCategoryId);
-        Preconditions.checkNull(productCategoryId);
+//        mContact = (Contact) arguments.getSerializable("mContact");
+        if (!TextUtils.isEmpty(productCategoryId)) {
+            expandKeys = (List<Setting>) ACache.get().getAsObject(productCategoryId);
+        }
+//        Preconditions.checkNull(productCategoryId);
 //        Preconditions.checkNull(productId);
     }
 
@@ -152,7 +161,17 @@ public class AddServiceInfoFragment extends BaseFragment {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         if (!TextUtils.isEmpty(contactId)) {
-
+            subscription.add(NetHelper.getApi().getContact(contactId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Contact>(_mActivity) {
+                        @Override
+                        public void _next(Contact contact) {
+                            expandKeys = (List<Setting>) ACache.get().getAsObject(contact.getCategoryId());
+                            mContact = contact;
+                            setInitData();
+                        }
+                    }));
         }
     }
 
@@ -343,7 +362,7 @@ public class AddServiceInfoFragment extends BaseFragment {
      */
     private void chooseBirthday() {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
-        picker.setDateRangeStart(1900, 1,1);
+        picker.setDateRangeStart(1900, 1, 1);
         setPickerConfig(picker);
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
             String time = year + "-" + month + "-" + day;
