@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.activity.activity_detail;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -21,6 +20,10 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -37,15 +40,20 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.NestedReplyAdapter;
+import lilun.com.pension.module.adapter.PartnersIconAdapter;
 import lilun.com.pension.module.bean.ActivityDetail;
 import lilun.com.pension.module.bean.ActivityEvaluate;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationReply;
+import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.module.utils.mqtt.MQTTManager;
+import lilun.com.pension.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pension.ui.activity.activity_question.ActivityQuestionListFragment;
+import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.CountDownView;
 import lilun.com.pension.widget.InputSendPopupWindow;
@@ -95,6 +103,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     AppCompatTextView actvActNumPeople;
     @Bind(R.id.actv_activity_creator)
     AppCompatTextView actvActCreator;
+
+    @Bind(R.id.rv_partner_list)
+    RecyclerView rvPartnerList;
+    @Bind(R.id.actv_people_number)
+    AppCompatTextView actvJoinedNumber;
+
     @Bind(R.id.actv_activity_content)
     AppCompatTextView actvActContent;
     @Bind(R.id.ll_avg_evaluate)
@@ -118,13 +132,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Bind(R.id.tv_more_question)
     TextView tvMoreQuestion;
 
-    @Bind(R.id.acbt_joined_number)
-    AppCompatButton acbtJoinedNumber;
+
     @Bind(R.id.acbt_sign_up)
     AppCompatButton acbtSignUp;
 
-    @Bind(R.id.acbt_question_and_partner)
-    AppCompatButton acbtQuestionPartner;
+    @Bind(R.id.acbt_question_and_chat)
+    AppCompatButton acbtQuestionChat;
 
 
     boolean isMaster = false; //活动创建人
@@ -132,10 +145,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     int hasStart = OrganizationActivity.UNSTARTED;  // 0 - 未开始   1-已开始   2-已结束
     boolean hasfull = false;  //已满
     String mActivityId;
-
+    PartnersIconAdapter partnersIconAdapter;
     private NestedReplyAdapter nestedReplyAdapter;
     OrganizationActivity activity;
     private InputSendPopupWindow inputSendPopupWindow;
+    private String topic;
+    private int ops = 2;
 
     public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
@@ -157,6 +172,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         super.getTransferData(arguments);
         activity = (OrganizationActivity) arguments.getSerializable("activity");
         mActivityId = activity.getId();
+        topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
     }
 
     @Override
@@ -175,7 +191,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 pop();
             }
         });
-        showDetail(activity);
+
         llQuestionList.setVisibility(View.GONE);
         mSwipeLayout.setOnRefreshListener(this::getActivityDetail);
         nsvScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -210,7 +226,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         rvQuestionList.addItemDecoration(new NormalItemDecoration(17));
         List<NestedReply> nestedReplies = new ArrayList<>();
         setReplyData(nestedReplies, false);
-
+        partnersIconAdapter = new PartnersIconAdapter(activity.getPartnerList());
+        rvPartnerList.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.HORIZONTAL, false));
+        rvPartnerList.addItemDecoration(new NormalItemDecoration(4));
+        rvPartnerList.setAdapter(partnersIconAdapter);
+        partnersIconAdapter.notifyDataSetChanged();
+        showDetail(activity);
     }
 
 
@@ -301,7 +322,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         String[] split = activity.getCategoryId().split("#activity-category.");
         if (split.length > 0) actvActType.setText(getString(R.string.activity_type_, split[1]));
         llEevalute.setVisibility(View.GONE);
-        llAvgEvaluate.setVisibility(View.GONE);
+
         if (!TextUtils.isEmpty(activity.getRepeatedDesc())) {
             actvActTime.setText(getString(R.string.activity_time_, activity.getRepeatedDesc()));
             llactvActStart.setVisibility(View.GONE);
@@ -358,14 +379,16 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         if (signUpNumber == activity.getMaxPartner() && signUpNumber != 0) {
             hasfull = true;
         }
-        acbtJoinedNumber.setText(getString(R.string.has_sign_up, signUpNumber + ""));
+        actvJoinedNumber.setText(getString(R.string.people_number_, signUpNumber + ""));
 
         isMaster = User.getUserId().equals(activity.getMasterId());
         showButton(isMaster, isSignUp);
+        if (partnersIconAdapter != null)
+            partnersIconAdapter.replaceAll(activity.getPartnerList());
     }
 
     /**
-     * 1.判断是否是创建者， 创建人只显示参与者列表；
+     * 1.判断是否是创建者， 创建人只显示解散活动 聊天室；
      * 2.不是创建人，  判断是否报名
      * 3.未报名 - 显示 报名、提问
      * 4.已报名 - 显示 退出、参与者列表
@@ -374,25 +397,21 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
      * @param isSignUp
      */
     public void showButton(boolean isCreator, boolean isSignUp) {
+
         if (isCreator) {
-            acbtSignUp.setVisibility(View.GONE);
+            acbtSignUp.setText(getString(R.string.close_activity));
+            acbtQuestionChat.setText(R.string.chat);
         } else {
-            acbtSignUp.setVisibility(View.VISIBLE);
             //未报名
             if (!isSignUp) {
                 acbtSignUp.setText(getString(R.string.sign_up));
-                acbtQuestionPartner.setText(R.string.question);
-                Drawable drawable = getResources().getDrawable(R.drawable.question);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                acbtQuestionPartner.setCompoundDrawables(null, drawable, null, null);
+                acbtQuestionChat.setText(R.string.question);
                 return;
             }
+            acbtSignUp.setText(getString(R.string.sign_up_back));
+            acbtQuestionChat.setText(R.string.chat);
         }
-        acbtSignUp.setText(getString(R.string.sign_up_back));
-        acbtQuestionPartner.setText(R.string.sign_up_list);
-        Drawable drawable = getResources().getDrawable(R.drawable.sign_up_list);
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        acbtQuestionPartner.setCompoundDrawables(null, drawable, null, null);
+
     }
 
 
@@ -429,6 +448,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         }
         showDetail(activity);
         showReplyList(activityDetail.getReplyList());
+
+
     }
 
     @Override
@@ -446,6 +467,31 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Override
     public void sucJoinActivity() {
+        if (MQTTManager.getInstance().isConnected()) {
+
+            Logger.i("活动订阅中:" + topic);
+            MQTTManager.getInstance().subscribe(topic, ops, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    showDialog("活动订阅成功");
+
+                    Date date = new Date();
+                    date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
+
+                    PushMessage pushMessage = new PushMessage().setVerb("chat")
+                            .setMessage(User.getName() + "加入了本活动")
+                            .setTime(StringUtils.date2String(date));
+                    MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Logger.i("活动订阅失败");
+                }
+
+
+            });
+        }
         refreshActivityData();
         activity.getPartnerList().add(User.getUserId());
         showDetail(activity);
@@ -456,11 +502,24 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         refreshActivityData();
         activity.getPartnerList().remove(User.getUserId());
         showDetail(activity);
-    }
+        Date date = new Date();
+        date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
 
-    @Override
-    public void showAvgRank() {
+        PushMessage pushMessage = new PushMessage().setVerb("chat")
+                .setMessage(User.getName() + "退出了本活动")
+                .setTime(StringUtils.date2String(date));
+        MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
+        MQTTManager.getInstance().unsubscribe(topic, null, new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                showDialog("取消订阅成功");
+            }
 
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                showDialog("取消订阅失败");
+            }
+        });
     }
 
     @Override
@@ -477,22 +536,27 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         rbAvgEvaluate.setRating(evaluate.getAvgRank());
     }
 
-    @Override
-    public void successActivityRank() {
 
+    @Override
+    public void successCancelActivity() {
+        refreshActivityData();
+        popTo(ActivityClassifyFragment.class, false);
     }
 
-    @OnClick({R.id.acbt_sign_up, R.id.acbt_question_and_partner, R.id.tv_more_question})
+    @OnClick({R.id.acbt_sign_up, R.id.acbt_question_and_chat, R.id.tv_more_question, R.id.actv_people_number})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.acbt_sign_up:
                 dealSignUp();
                 break;
-            case R.id.acbt_question_and_partner:
-                dealQuestionPartner();
+            case R.id.acbt_question_and_chat:
+                dealQuestionChat();
                 break;
             case R.id.tv_more_question:
                 addQuestion();
+                break;
+            case R.id.actv_people_number:
+                goPartnersList();
                 break;
         }
     }
@@ -500,7 +564,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     /**
      * 处理提问 及 参与 者列表
      */
-    private void dealQuestionPartner() {
+    private void dealQuestionChat() {
         if ("cancle".equals(activity.getStatus())) {
             showDialog(getString(R.string.activity_has_cancel));
             return;
@@ -511,7 +575,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         }
 
 
-        if (getString(R.string.question).equals(acbtQuestionPartner.getText().toString().trim())) {
+        if (getString(R.string.question).equals(acbtQuestionChat.getText().toString().trim())) {
             if (hasStart == OrganizationActivity.FINISHED) {
                 showDialog(getString(R.string.activity_has_finished));
                 return;
@@ -521,8 +585,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 return;
             }
             addQuestion();
-        } else if (getString(R.string.sign_up_list).equals(acbtQuestionPartner.getText().toString().trim())) {
-            goPartnersList();
+        } else if (getString(R.string.chat).equals(acbtQuestionChat.getText().toString().trim())) {
+            goChat();
         }
     }
 
@@ -530,10 +594,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
      * 处理参与按钮及其提示语
      */
     private void dealSignUp() {
-        if ("cancle".equals(activity.getStatus())) {
-            showDialog(getString(R.string.activity_has_cancel));
-            return;
-        }
+
         if (getString(R.string.sign_up).equals(acbtSignUp.getText().toString().trim())) {
             if (hasStart == OrganizationActivity.FINISHED) {
                 showDialog(getString(R.string.activity_has_finished));
@@ -550,7 +611,17 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             joinActivity();
         } else if (getString(R.string.sign_up_back).equals(acbtSignUp.getText().toString().trim())) {
             quitActivity();
+        } else if (getString(R.string.close_activity).equals(acbtSignUp.getText().toString().trim())) {
+            cancelActivity();
         }
+    }
+
+
+    private void goChat() {
+        if (findFragment(ActivityChatFragment.class) == null)
+            start(ActivityChatFragment.newInstance(activity));
+        else
+            popTo(ActivityChatFragment.class, false);
     }
 
     private void goPartnersList() {
@@ -567,6 +638,15 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private void quitActivity() {
         new NormalDialog().createNormal(_mActivity, R.string.confirm_quite_activity, () -> {
             mPresenter.quitActivity(mActivityId);
+        });
+    }
+
+    private void cancelActivity() {
+        new NormalDialog().createNormal(_mActivity, getString(R.string.confirm_cancel_activity), new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                mPresenter.cancelActivity(activity.getId());
+            }
         });
     }
 

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical">
 
 
@@ -16,6 +15,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="#f4f4f4"
         android:gravity="center">
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -40,26 +40,4 @@
             android:src="@drawable/null_data"
             android:visibility="gone" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_question"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:paddingLeft="6dp">
-
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/acbt_cancel_activity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dp_4"
-            android:background="@color/white"
-            android:text="@string/close_activity"
-            android:textColor="@color/red"
-            android:textSize="@dimen/sp_14" />
-
-    </LinearLayout>
-
-
 </LinearLayout>

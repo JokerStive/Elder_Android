@@ -92,21 +92,12 @@
                     android:id="@+id/tv_isJoin"
                     style="@style/tv_normal_ellipsize"
                     android:textColor="@color/gray2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:textSize="14dp"
                     tools:text="@string/has_partin" />
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/iv_partin_flag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/participated" />
-                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_time_joinCount"

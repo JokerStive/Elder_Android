@@ -67,8 +67,8 @@ public class ActivityDetailPresenter extends RxPresenter<ActivityDetailContact.V
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>() {
                     @Override
-                    public void _next(Object object) {
-                        view.refreshActivityData();
+                    public void _next(Object o) {
+                        view.successCancelActivity();
                     }
                 }));
     }

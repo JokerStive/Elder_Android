@@ -2,6 +2,7 @@ package lilun.com.pension.app;
 
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
+import lilun.com.pension.module.bean.PushMessage;
 
 /**
  * eventBus发送事件统一管理
@@ -59,6 +60,22 @@ public class Event {
     //刷新消息推送栏
     public static class RefreshPushMessage {
 
+    }
+    //刷新消息推送栏
+    public static class RefreshPushMessageChat {
+
+    }
+    //添加一个新的聊天消息
+    public static class RefreshChatAddOne {
+        PushMessage pushMessage;
+
+        public RefreshChatAddOne(PushMessage pushMessage) {
+            this.pushMessage = pushMessage;
+        }
+
+        public PushMessage getPushMessage() {
+            return pushMessage;
+        }
     }
 
 

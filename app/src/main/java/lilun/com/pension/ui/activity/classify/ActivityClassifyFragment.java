@@ -29,7 +29,7 @@ import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.activity.activity_add.AddActivityFragment;
-import lilun.com.pension.ui.activity.activity_detail.ActivityDetailFragment;
+import lilun.com.pension.ui.activity.activity_detail.ActivityChatFragment;
 import lilun.com.pension.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
@@ -131,6 +131,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             public void onRightClick() {
                 if (activityCategories != null) {
                     start(AddActivityFragment.newInstance(activityCategories));
+
                 }
             }
         });
@@ -161,9 +162,9 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
-//        mContentAdapter.addHeaderView(mClassifyRecycler);
         mContentAdapter.setOnItemClickListener((activityItem) -> {
-            start(ActivityDetailFragment.newInstance(activityItem));
+            start(ActivityChatFragment.newInstance(activityItem));
+
         });
         mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);

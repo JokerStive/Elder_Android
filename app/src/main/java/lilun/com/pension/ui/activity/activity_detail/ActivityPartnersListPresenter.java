@@ -50,17 +50,5 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
                 }));
     }
 
-    @Override
-    public void cancelActivity(String activityId) {
-        addSubscribe(NetHelper.getApi()
-                .cancelActivity(activityId)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>() {
-                    @Override
-                    public void _next(Object o) {
-                        view.successCancelActivity();
-                    }
-                }));
-    }
+
 }

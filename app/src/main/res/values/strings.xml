@@ -242,8 +242,8 @@
     <string name="finished">已结束</string>
     <string name="has_partin">已参加:%1$s人</string>
     <string name="has_sign_up">已报名:%1$s人</string>
-    <string name="sign_up">报名</string>
-    <string name="sign_up_back">已报名</string>
+    <string name="sign_up">加入活动</string>
+    <string name="sign_up_back">退出活动</string>
     <string name="targart_partin_">参与人数：%1$s</string>
     <string name="single">单次</string>
     <string name="cyclical">周期</string>
@@ -310,7 +310,8 @@
     <string name="question_hint">请输入您的提问内容</string>
     <string name="send">发送</string>
     <string name="answer_hint">请输入您的回复内容</string>
-    <string name="close_activity">解散报名</string>
+    <string name="say_something_hint">说点什么...</string>
+    <string name="close_activity">解散活动</string>
     <string name="day">天</string>
     <string name="hour">时</string>
     <string name="minutes">分</string>
@@ -325,5 +326,7 @@
     <string name="activity_has_finished">活动已结束</string>
     <string name="activity_has_started">活动已开始</string>
     <string name="activity_has_people_full">活动参加人数已满</string>
+    <string name="people_number_">%1$s名成员</string>
+    <string name="chat">聊天室</string>
 
 </resources>

@@ -379,7 +379,7 @@ public interface ApiService {
      * 上传活动及其多张图片
      */
     @POST("OrganizationActivities/upload/icon")
-    Observable<Response<ArrayList<IconModule>>> newActivityIcons(@Body MultipartBody params);
+    Observable<Response<OrganizationActivity>> newActivityIcons(@Body MultipartBody params);
 
 
     /**

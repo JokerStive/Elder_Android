@@ -67,8 +67,7 @@
                             <TextView
                                 android:id="@+id/textView"
                                 style="@style/acitivyt_detail_normal_black"
-                                android:text="@string/activity_evaluate"
-                                android:textSize="18sp" />
+                                android:text="@string/activity_evaluate" />
 
                             <RatingBar
                                 android:id="@+id/rb_avg_evaluate"
@@ -143,6 +142,59 @@
                         style="@style/acitivyt_detail_normal_black"
                         android:drawableLeft="@drawable/activity_creator"
                         android:text="@string/activit_creator_" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/activity_line" />
+
+                    <LinearLayout
+                        style="@style/acitivyt_detail_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/actv_people_list_str"
+                            style="@style/acitivyt_detail_normal_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:text="活动成员列表" />
+
+                        <View style="@style/line_gray" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:minHeight="30dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dp_10"
+                                android:src="@drawable/sign_up" />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rv_partner_list"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/actv_people_number"
+                                style="@style/acitivyt_detail_normal_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:drawableRight="@drawable/arraw_right"
+                                android:gravity="center"
+                                android:paddingRight="@dimen/dp_10"
+                                android:text="@string/people_number_" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -256,49 +308,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/acbt_joined_number"
+                android:id="@+id/acbt_sign_up"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_rect_red"
-                android:text="@string/has_sign_up"
+                android:background="@drawable/selector_rect_corner_yellow"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/join"
+                android:textColor="@color/red2" />
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_question_and_chat"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_margin="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_rect_corner_red"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/question"
                 android:textColor="@color/white" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/acbt_sign_up"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rect_write_strock"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:drawableTop="@drawable/sign_up"
-                    android:gravity="center"
-                    android:padding="@dimen/dp_10"
-                    android:text="@string/join" />
-
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/acbt_question_and_partner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rect_write_strock"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:drawableTop="@drawable/question"
-                    android:gravity="center"
-                    android:padding="@dimen/dp_10"
-                    android:text="@string/question" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

@@ -36,6 +36,7 @@ import lilun.com.pension.widget.filter_view.FilterLayoutView;
 
 /**
  * 分类活动V
+ * 获取的数据为：未参加的且不是我创建的且不是已完结的
  *
  * @author yk
  *         create at 2017/2/7 16:04
@@ -64,9 +65,11 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private List<OrganizationActivity> activities;
     private String searchStr = "";
     private String join_status = "";
+    private String status = ",\"status\":\"checking\"";
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
     private String timing_status = timeOrder[0];
+
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -198,40 +201,14 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
                 //我的状态
                 if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[0])) {
-
-                    if ("0".equals(whereValue)) {
-                        //已报名的
-                        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":\"" + User.getUserId() + "\"}]";
-                    } else if ("1".equals(whereValue)) {
-                        //未报名的
-                        join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
-                    } else {
-                        //全部
-                        join_status = "";
-                    }
+                    join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
                 } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[1])) {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String localtime = format.format(new Date());
                     String gtmDate = localtime;
-                    if (whereValue != null) {
-                        switch (whereValue) {
-                            case "0":
-                                //未开始
-                                activity_status = ",\"startTime\":{\"gt\":\"" + gtmDate + "\"}";
-                                break;
-                            case "1":
-                                activity_status = ",\"startTime\":{\"lte\":\"" + gtmDate + "\"},\"endTime\":{\"gte\":\"" + gtmDate + "\"}";
-                                break;
+                    //已结束   现在时间>结束时间
+                    activity_status = ",\"endTime\":{\"lt\":\"" + gtmDate + "\"}";
 
-                            case "2":
-                                //已结束   现在时间>结束时间
-                                activity_status = ",\"endTime\":{\"lt\":\"" + gtmDate + "\"}";
-                                break;
-                            default:
-                                activity_status = "";
-                                break;
-                        }
-                    }
                 } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
                     if ("0".equals(whereValue)) {  //降序
                         //已报名的
@@ -246,6 +223,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
             });
         }
+
     }
 
 
@@ -259,7 +237,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void getActivityList(int skip) {
         // TODO 关联organizationId
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + "}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 

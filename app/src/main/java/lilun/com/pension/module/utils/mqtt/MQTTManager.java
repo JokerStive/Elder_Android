@@ -7,6 +7,8 @@ import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -15,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
+import lilun.com.pension.module.utils.DeviceUtils;
 
 
 /**
@@ -59,6 +62,11 @@ public class MQTTManager {
         }
     }
 
+    public boolean isConnected() {
+
+        return client != null && client.isConnected();
+    }
+
     public void createConnect(String userName, String password, String[] topics, int[] qos) {
         if (client != null && client.isConnected()) {
             Logger.i("mqtt 已经链接不需要再次链接");
@@ -75,7 +83,9 @@ public class MQTTManager {
         }
 
         if (client == null) {
-            client = new MqttAndroidClient(App.context, Config.MQTT_URL, "ExampleAndroidClient");
+            String deviceId = new DeviceUtils(App.context).getUniqueID();
+            client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
+            Logger.i("设备Id:" + deviceId);
         }
 
         client.setCallback(mCallback);
@@ -106,7 +116,8 @@ public class MQTTManager {
                 MqttMessage message = new MqttMessage();
                 message.setQos(qos);
                 message.setPayload(publishMessage.getBytes());
-                client.publish(publishTopic, message);
+                IMqttDeliveryToken token = client.publish(publishTopic, message);
+                Logger.i("发送数据:" + token.getMessage());
                 if (!client.isConnected()) {
                 }
             } catch (MqttException e) {
@@ -132,6 +143,25 @@ public class MQTTManager {
                     Logger.i("订阅失败" + exception.getMessage());
                 }
             });
+
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void subscribe(String topic, int qos, IMqttActionListener listener) {
+        try {
+
+            client.subscribe(topic, qos, null, listener);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unsubscribe(String topic, Object usertext, IMqttActionListener listener) {
+        try {
+
+            client.unsubscribe(topic, usertext, listener);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -166,6 +196,7 @@ public class MQTTManager {
     public void disConnect() throws MqttException {
         if (client != null && client.isConnected()) {
             client.disconnect();
+            client = null;
         }
     }
 }

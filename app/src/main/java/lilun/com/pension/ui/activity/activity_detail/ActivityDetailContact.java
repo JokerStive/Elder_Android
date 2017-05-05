@@ -30,11 +30,9 @@ public interface ActivityDetailContact {
 
         void showAnswer(OrganizationReply organizationReply, int position);
 
-        void showAvgRank();
-
         void showActivityRank(ActivityEvaluate evaluate);
 
-        void successActivityRank();
+        void successCancelActivity();
 
     }
 
@@ -45,7 +43,6 @@ public interface ActivityDetailContact {
 
         void quitActivity(String activityId);
 
-        void cancelActivity(String activityId);
 
         void replyList(String activityId, String filter, int skip);
 
@@ -56,6 +53,8 @@ public interface ActivityDetailContact {
         void postActivityRank(String activityId, int rating);
 
         void getAvgRank(String activityId);
+
+        void cancelActivity(String activityId);
     }
 
     /**
@@ -69,7 +68,7 @@ public interface ActivityDetailContact {
 
         void successDeletePartners();
 
-        void successCancelActivity();
+
     }
 
     interface PPartner extends IPresenter<VPartner> {
@@ -77,6 +76,6 @@ public interface ActivityDetailContact {
 
         void deletePartners(String activityId, String userId);
 
-        void cancelActivity(String activityId);
+
     }
 }

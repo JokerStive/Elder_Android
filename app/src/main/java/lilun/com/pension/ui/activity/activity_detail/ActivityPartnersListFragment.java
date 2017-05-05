@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,7 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
@@ -29,7 +27,6 @@ import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.widget.ButtonPopupWindow;
-import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -55,19 +52,6 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
 
     @Bind(R.id.null_data)
     ImageView nullData;
-    @Bind(R.id.ll_question)
-    LinearLayout llCancelActivity;
-
-    @OnClick(R.id.acbt_cancel_activity)
-    public void onClick() {
-        new NormalDialog().createNormal(_mActivity, getString(R.string.confirm_cancel_activity), new NormalDialog.OnPositiveListener() {
-            @Override
-            public void onPositiveClick() {
-                mPresenter.cancelActivity(activity.getId());
-            }
-        });
-
-    }
 
     public static ActivityPartnersListFragment newInstance(OrganizationActivity activity) {
         ActivityPartnersListFragment fragment = new ActivityPartnersListFragment();
@@ -110,10 +94,6 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                 pop();
             }
         });
-        if (User.getUserId().equals(activity.getMasterId()))
-            llCancelActivity.setVisibility(View.VISIBLE);
-        else
-            llCancelActivity.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(1));
@@ -188,13 +168,5 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
          */
         EventBus.getDefault().post(new Event.RefreshActivityDetail());
     }
-
-    @Override
-    public void successCancelActivity() {
-        EventBus.getDefault().post(new Event.RefreshActivityDetail());
-        pop();
-        pop();
-    }
-
 
 }

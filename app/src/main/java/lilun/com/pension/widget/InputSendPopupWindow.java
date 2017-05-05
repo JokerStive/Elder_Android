@@ -76,7 +76,7 @@ public class InputSendPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(input.getText().toString().trim())) {
-                    ToastHelper.get(mContext).showWareShort("您未输入回回复内容");
+                    ToastHelper.get(mContext).showWareShort("您未输入内容");
                     return;
                 }
 

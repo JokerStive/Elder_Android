@@ -81,29 +81,6 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         }
         help.setText(R.id.tv_isJoin, context.getString(R.string.has_partin, partinNumber + ""));
 
-        if (allowshowIcon) {
-            //是否参加
-//            if (User.getUserId().equals(activity.getMasterId())) {  //是 创建者
-//                help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
-//                if (showIsBig) {
-//                    help.setText(R.id.iv_partin_flag, context.getString(R.string.has_joined));
-//                }
-//            } else
-            if (partners != null && partners.size() != 0) {  //是参与者
-                for (String partnerId : partners) {
-                    if (TextUtils.equals(partnerId, User.getUserId())) {
-                        help.getView(R.id.iv_partin_flag).setVisibility(View.VISIBLE);
-                        break;
-                    }
-                }
-            } else {
-
-                help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
-            }
-
-
-        } else help.getView(R.id.iv_partin_flag).setVisibility(View.GONE);
-
         String numPeople;
         if ("null".equals(String.valueOf(activity.getMaxPartner())) || "0".equals(String.valueOf(activity.getMaxPartner())))
             numPeople = "不限";

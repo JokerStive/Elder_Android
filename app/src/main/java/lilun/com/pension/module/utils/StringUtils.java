@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -137,6 +138,7 @@ public class StringUtils {
         if (!TextUtils.isEmpty(isoTime1)) {
             try {
                 String[] ss = isoTime1.split("\\.");
+
                 String isoTime = ss[0] + "+08:00";
                 DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
                 DateTime dateTime = parser2.parseDateTime(isoTime);
@@ -204,6 +206,7 @@ public class StringUtils {
         }
         return dateTime;
     }
+
     public static Date string2Date(String strTime) {
         Date dateTime = null;
         try {
@@ -214,6 +217,11 @@ public class StringUtils {
             e.printStackTrace();
         }
         return dateTime;
+    }
+
+    public static String date2String(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(date);
     }
 
 
@@ -410,4 +418,45 @@ public class StringUtils {
         return "刚刚";
     }
 
+    /**
+     * 计算时间
+     *
+     * @param strTime
+     * @return
+     */
+    public static String thatTime(String strTime) {
+        long ms = new Date().getTime() - string2Date(strTime).getTime();
+        long days, hours, mins;
+        days = ms / (1000 * 60 * 60 * 24);
+        hours = ms / (1000 * 60 * 60);
+        mins = ms / (1000 * 60);
+        if (days == 0) return new SimpleDateFormat("HH:mm").format(string2Date(strTime));
+        if (days == 1) return "昨天" + new SimpleDateFormat("HH:mm").format(string2Date(strTime));
+
+        return new SimpleDateFormat("MM-dd HH:mm").format(string2Date(strTime));
+    }
+
+    /**
+     * url转义
+     */
+    public static String encodeURL(String target) {
+        try {
+            String str = new String(target.getBytes(), "UTF-8");
+            str = URLEncoder.encode(str, "UTF-8");
+            return str;
+        } catch (Exception ignored) {
+
+        }
+        return "";
+    }
+
+    /**
+     * 对组织id进行转义
+     *
+     * @return
+     */
+    public static String encodeURLOfOrg(String orgId) {
+
+        return encodeURL(orgId).replace("%2F", "/");
+    }
 }

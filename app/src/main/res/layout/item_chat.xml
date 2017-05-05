@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_send_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="昨天 16:24"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_notify_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_send_time"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="昨天 16:24"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+
+        android:id="@+id/rl_their_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_notify_message">
+
+        <lilun.com.pension.widget.CircleImageView
+            android:id="@+id/civ_their_ivatar"
+            android:layout_width="@dimen/ivatar_icon_width_height"
+            android:layout_height="@dimen/ivatar_icon_width_height"
+            android:src="@drawable/icon_falimy" />
+
+        <TextView
+            android:id="@+id/tv_their_name"
+            style="@style/acitivyt_detail_normal_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/civ_their_ivatar"
+            android:text="刘刘" />
+
+        <TextView
+            android:id="@+id/tv_their_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_their_name"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/civ_their_ivatar"
+            android:background="@drawable/their_message_bg"
+            android:padding="@dimen/dp_10"
+            android:text="this is a message" />
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:id="@+id/rl_my_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_notify_message">
+
+        <lilun.com.pension.widget.CircleImageView
+            android:id="@+id/civ_my_ivatar"
+            android:layout_width="@dimen/ivatar_icon_width_height"
+            android:layout_height="@dimen/ivatar_icon_width_height"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_falimy" />
+
+        <TextView
+            android:id="@+id/tv_my_name"
+            style="@style/acitivyt_detail_normal_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/civ_my_ivatar"
+            android:gravity="right"
+            android:text="刘刘" />
+
+        <TextView
+            android:id="@+id/tv_my_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_my_name"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/civ_my_ivatar"
+            android:background="@drawable/my_message_bg"
+            android:padding="@dimen/dp_10"
+            android:text="this is a message" />
+    </RelativeLayout>
+
+</RelativeLayout>

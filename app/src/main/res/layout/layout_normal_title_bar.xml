@@ -4,36 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/white"
-    android:gravity="center_vertical"
-    android:clickable="true">
+    android:clickable="true"
+    android:gravity="center_vertical">
 
     <lilun.com.pension.widget.CommonImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/back"
         android:layout_centerVertical="true"
-        android:padding="20dp"
-        />
+        android:background="@drawable/back"
+        android:padding="20dp" />
 
+    <TextView
+        android:id="@+id/tv_left_string"
+        style="@style/tv_normal_ellipsize"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_back" />
 
 
     <TextView
         android:id="@+id/tv_product_name"
+        style="@style/tv_normal_ellipsize"
         android:layout_centerInParent="true"
-        tools:text="我是标题"
-        style="@style/tv_normal_ellipsize" />
+        tools:text="我是标题" />
 
 
     <TextView
-        android:focusable="false"
         android:id="@+id/tv_doWhat"
+        style="@style/tv_normal_ellipsize"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:focusable="false"
         android:padding="10dp"
-        tools:text="我是标题"
-        style="@style/tv_normal_ellipsize" />
-
+        tools:text="我是标题" />
 
 
 </RelativeLayout>

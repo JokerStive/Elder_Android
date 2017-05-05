@@ -14,6 +14,8 @@ import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,8 @@ import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.module.utils.mqtt.MQTTManager;
+import lilun.com.pension.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.widget.CommonButton;
@@ -292,11 +296,13 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
                     .newActivityIcons(multipartBody)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<Object>(_mActivity) {
+                    .subscribe(new RxSubscriber<OrganizationActivity>() {
                         @Override
-                        public void _next(Object o) {
+                        public void _next(OrganizationActivity activity) {
                             pop();
                             EventBus.getDefault().post(new Event.RefreshActivityData());
+                            String  topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+                            MQTTManager.getInstance().subscribe(topic, 2);
                         }
                     });
 
