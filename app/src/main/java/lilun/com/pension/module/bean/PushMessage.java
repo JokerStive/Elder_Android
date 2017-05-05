@@ -100,7 +100,7 @@ public class PushMessage extends DataSupport {
         }
         if (null != verb) {
             ret = ret.substring(0, ret.length() - 1);
-            ret += ret.length() != 1 ? ",\"verb\":\"" + verb + "\"}" : "\"model\":\"" + verb + "\"}";
+            ret += ret.length() != 1 ? ",\"verb\":\"" + verb + "\"}" : "\"verb\":\"" + verb + "\"}";
         }
         if (null != data) {
             ret = ret.substring(0, ret.length() - 1);
