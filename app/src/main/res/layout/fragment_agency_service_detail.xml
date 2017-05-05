@@ -129,7 +129,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_product_name"
+                    android:id="@+id/tv_sophisticated"
                     style="@style/tv_normal_ellipsize"
                     android:layout_width="0dp"
                     android:layout_gravity="center_vertical"

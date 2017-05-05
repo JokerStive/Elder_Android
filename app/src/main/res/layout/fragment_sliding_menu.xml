@@ -21,7 +21,7 @@
             android:layout_marginTop="30dp" />
 
         <TextView
-            android:id="@+id/tv_product_name"
+            android:id="@+id/tv_sophisticated"
             style="@style/tv_normal_ellipsize"
             android:layout_gravity="center"
             android:layout_marginTop="11dp"

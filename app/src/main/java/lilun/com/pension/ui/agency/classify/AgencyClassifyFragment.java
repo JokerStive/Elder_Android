@@ -3,6 +3,7 @@ package lilun.com.pension.ui.agency.classify;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import lilun.com.pension.ui.order.OrderListFragment;
 import lilun.com.pension.ui.tourism.root.TourismRootFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.PositionTitleBar;
+import lilun.com.pension.widget.recycler_view.AutoExtendSpanSizeLookup;
 
 /**
  * 养老机构V
@@ -160,27 +162,32 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     public void showClassifiesByService(List<ProductCategory> productCategories) {
         completeRefresh();
-        rvServer.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(productCategories)));
+        cacheExpendKeys(productCategories);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
+
+        rvServer.setLayoutManager(gridLayoutManager);
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+
             ProductCategory productCategory = adapter.getData().get(i);
             if (productCategory.getId().equals(Config.tourism_product_categoryId)) {
                 start(TourismRootFragment.newInstance(productCategory.getId()));
             } else {
-                String categoryId = productCategory.getId();
-                if (!ACache.get().isExit(categoryId)) {
-                    List<Setting> settings = productCategory.getSetting();
-                    ACache.get().put(categoryId, (Serializable) settings);
-                }
                 start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
             }
         });
-//        adapter.setOnItemClickListener((productCategory -> {
-//            //存储category的可配置项
-//
-//
-//        }));
         rvServer.setAdapter(adapter);
+        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
+    }
+
+    private void cacheExpendKeys(List<ProductCategory> productCategories) {
+        for (ProductCategory productCategory : productCategories) {
+            String categoryId = productCategory.getId();
+            if (!ACache.get().isExit(categoryId)) {
+                List<Setting> settings = productCategory.getSetting();
+                ACache.get().put(categoryId, (Serializable) settings);
+            }
+        }
     }
 
 

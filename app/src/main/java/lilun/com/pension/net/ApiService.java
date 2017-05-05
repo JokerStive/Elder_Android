@@ -129,11 +129,19 @@ public interface ApiService {
 
 
     /**
-     * 获取旅游
+     * 获取旅游列表
      */
 
     @GET("OrganizationProducts")
-    Observable<Response<List<Tourism>>> getTourism(@Query("filter") String filter);
+    Observable<Response<List<Tourism>>> getTourisms(@Query("filter") String filter);
+
+
+    /**
+     * 获取旅游
+     */
+
+    @GET("OrganizationProducts/{id}")
+    Observable<Response<Tourism>> getTourism(@Path("id") String tourismId);
 
 
     /**
@@ -270,7 +278,6 @@ public interface ApiService {
     Observable<Response<Object>> newAidAndIcons(@Body MultipartBody body);
 
 
-
     //==============================养老教育
 
     /**
@@ -347,6 +354,7 @@ public interface ApiService {
 
     @GET("OrganizationActivities/myActivities")
     Observable<Response<List<OrganizationActivity>>> getMyActivities(@Query("filter") String filter);
+
     /**
      * 新建一个活动
      * 包含图片
@@ -526,15 +534,20 @@ public interface ApiService {
     Observable<Response<Object>> putDefContact(@Path("id") String contactId);
 
 
-
-
 //    ====================养老机构
+
+    /**
+     * 获取预约登记信息列表
+     */
+    @GET("Contacts")
+    Observable<Response<List<Contact>>> getContacts(@Query("filter") String filter);
+
 
     /**
      * 获取预约登记信息
      */
-    @GET("Contacts")
-    Observable<Response<List<Contact>>> getContacts(@Query("filter") String filter);
+    @GET("Contacts/{id}")
+    Observable<Response<Contact>> getContact(@Path("id") String contactId);
 
     /**
      * 获取获取电话号码验证码

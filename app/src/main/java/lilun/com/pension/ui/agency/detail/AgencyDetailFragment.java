@@ -45,7 +45,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     @Bind(R.id.tv_reservation)
     TextView tvReservation;
 
-    @Bind(R.id.tv_product_name)
+    @Bind(R.id.tv_sophisticated)
     TextView tvTitle;
 
     @Bind(R.id.tv_desc)

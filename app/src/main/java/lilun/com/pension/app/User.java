@@ -18,6 +18,7 @@ import lilun.com.pension.module.utils.StringUtils;
  */
 public class User {
     public static final String token = "token";
+//    public static final String tokenEffectiveDuration = "tokenEffectiveDuration";
     public static final String userId = "userId";
     public static final String name = "name";
     public static final String username = "username";
@@ -97,6 +98,19 @@ public class User {
     }
 
 
+
+
+    /**
+     *检查token是否过期
+     */
+//    public static boolean isTokenEffective() {
+//        long currentTime = new Date().getTime();
+//        long tokenEffectiveDuration = PreUtils.getLong(User.tokenEffectiveDuration, 0);
+//        if (tokenEffectiveDuration==0){
+//            throw new RuntimeException("数据异常");
+//        }
+//        return getUserId().equals(creatorId);
+//    }
 
 
     /**

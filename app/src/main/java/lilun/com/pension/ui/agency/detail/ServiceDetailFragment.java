@@ -76,7 +76,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
-    @Bind(R.id.tv_product_name)
+    @Bind(R.id.tv_sophisticated)
     TextView tvProviderName;
 
     @Bind(R.id.tv_enter_provider)
@@ -244,7 +244,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 //                            startForResult(fragment, ReservationFragment.requestCode);
                         } else {
                             //添加个人资料界面
-                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId(), null, true);
+                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId());
                             fragment.setProductd(mProduct.getId());
                             start(fragment);
                         }

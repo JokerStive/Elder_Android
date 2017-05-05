@@ -20,7 +20,7 @@ public class TourismListPresenter extends RxPresenter<TourismListContract.View> 
     @Override
     public void getJourneys(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getTourism(StringUtils.addFilterWithDef(filter, skip))
+                .getTourisms(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Tourism>>() {

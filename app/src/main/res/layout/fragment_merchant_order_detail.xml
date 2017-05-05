@@ -52,17 +52,20 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_product_name"
+                        android:id="@+id/tv_sophisticated"
                         style="@style/tv_small_ellipsize"
-                        android:layout_width="wrap_content"
-                        android:maxWidth="20dp"
+                        android:layout_width="match_parent"
                         android:maxLines="1"
-                        tools:text="佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务" />
+                        android:layout_marginRight="10dp"
+                        tools:text="佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务"
+                        android:layout_toLeftOf="@+id/tv_health_status"
+                        android:layout_toStartOf="@+id/tv_health_status" />
 
                     <TextView
                         android:id="@+id/tv_health_status"
@@ -72,13 +75,8 @@
                         tools:text="带受理" />
 
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <ImageView
+                        android:layout_below="@id/tv_sophisticated"
                         android:id="@+id/iv_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"

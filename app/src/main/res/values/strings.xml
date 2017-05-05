@@ -7,6 +7,7 @@
     <string name="not_complete">功能暂未开放,敬请期待</string>
 
 
+
     <!--切换社区-->
     <string name="change_organization">切换社区</string>
     <string name="change_organization_search">请输入您要查询的</string>
@@ -42,6 +43,10 @@
     <string name="logout_confirm">退出登陆将会顶空所有数据并重置所有操作，确定退出?</string>
 
     ==========================================================================
+    <!--警告信息-->
+    <string name="mobile_format_wrong">联系电话格式有误</string>
+
+
     <!--邻居互助-->
     <string name="neighbor_help">邻里互助</string>
     <string name="need_help">我要求助</string>

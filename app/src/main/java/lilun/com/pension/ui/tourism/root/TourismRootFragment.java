@@ -48,8 +48,6 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     @Bind(R.id.rv_popular_journey)
     RecyclerView rvPopularJourney;
 
-    //    private String tag;
-//    private String destination;
     private String categoryId;
     private TourismBigAdapter adapter;
 

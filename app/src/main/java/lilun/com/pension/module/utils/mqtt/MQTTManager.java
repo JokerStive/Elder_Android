@@ -130,7 +130,6 @@ public class MQTTManager {
 
     public void subscribe(String topic, int qos) {
         try {
-
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -170,7 +169,6 @@ public class MQTTManager {
 
     public void subscribe(String[] topic, int[] qos) {
         try {
-
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {

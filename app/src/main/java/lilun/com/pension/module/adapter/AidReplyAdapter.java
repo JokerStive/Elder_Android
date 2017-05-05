@@ -55,7 +55,7 @@ public class AidReplyAdapter extends QuickAdapter<OrganizationReply> {
 
 
 
-        helper.setText(R.id.tv_product_name, reply.getCreatorName())
+        helper.setText(R.id.tv_sophisticated, reply.getCreatorName())
                 .setText(R.id.tv_creator, StringUtils.timeFormat(reply.getCreatedAt()))
                 .setText(R.id.tv_content, StringUtils.filterNull(reply.getContent()))
                 .setOnClickListener(R.id.tv_agree, v -> {

@@ -2,8 +2,10 @@ package lilun.com.pension.ui.tourism.info;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,8 +16,8 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
-import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -37,12 +39,23 @@ public class AddTourismInfoFragment extends BaseFragment {
     private String productCategoryId;
     private Contact mContact;
     private String productId;
+    private String contactId;
+    private boolean canEdit;
 
-    public static AddTourismInfoFragment newInstance(String productCategoryId, Contact contact) {
+    public static AddTourismInfoFragment newInstance(String productCategoryId) {
         AddTourismInfoFragment fragment = new AddTourismInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("productCategoryId", productCategoryId);
-        bundle.putSerializable("mContact", contact);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    public static AddTourismInfoFragment newInstance(String contactId,boolean canEdit) {
+        AddTourismInfoFragment fragment = new AddTourismInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("canEdit", canEdit);
+        bundle.putString("contactId", contactId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -51,8 +64,8 @@ public class AddTourismInfoFragment extends BaseFragment {
     @Override
     protected void getTransferData(Bundle arguments) {
         productCategoryId = arguments.getString("productCategoryId");
-        mContact = (Contact) arguments.getSerializable("mContact");
-        Preconditions.checkNull(productCategoryId);
+        contactId = arguments.getString("contactId");
+        canEdit = arguments.getBoolean("canEdit", true);
     }
 
     public void setProductId(String productId) {
@@ -75,7 +88,29 @@ public class AddTourismInfoFragment extends BaseFragment {
         titleBar.setOnBackClickListener(this::pop);
         btnConfirm.setOnClickListener(v -> savePersonalInfo());
 
+        etName.setEnabled(canEdit);
+        etPhone.setEnabled(canEdit);
+        etAddress.setEnabled(canEdit);
+        btnConfirm.setVisibility(canEdit? View.VISIBLE:View.GONE);
+
         setInitData();
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        if (!TextUtils.isEmpty(contactId)) {
+            subscription.add(NetHelper.getApi().getContact(contactId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Contact>(_mActivity) {
+                        @Override
+                        public void _next(Contact contact) {
+                            mContact=contact;
+                            setInitData();
+                        }
+                    }));
+        }
     }
 
     private void setInitData() {
@@ -98,6 +133,9 @@ public class AddTourismInfoFragment extends BaseFragment {
         String phone = etPhone.getText().toString();
         if (TextUtils.isEmpty(phone)) {
             ToastHelper.get().showWareShort("请输入联系电话");
+            if (!StringUtils.isMobileNo(phone)){
+                ToastHelper.get().showWareShort(getString(R.string.mobile_format_wrong));
+            }
             return;
         }
 

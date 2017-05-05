@@ -42,7 +42,7 @@
         tools:src="@drawable/shape_rect_red" />
 
     <TextView
-        android:id="@+id/tv_product_name"
+        android:id="@+id/tv_sophisticated"
         style="@style/tv_small_ellipsize"
         android:layout_alignTop="@id/iv_product_icon"
         android:layout_marginLeft="14dp"
@@ -52,8 +52,8 @@
     <TextView
         android:id="@+id/tv_product_price"
         style="@style/tv_small_ellipsize"
-        android:layout_alignLeft="@id/tv_product_name"
-        android:layout_below="@id/tv_product_name"
+        android:layout_alignLeft="@id/tv_sophisticated"
+        android:layout_below="@id/tv_sophisticated"
         android:layout_marginTop="10dp"
         tools:text="14块" />
 

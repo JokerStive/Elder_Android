@@ -2,10 +2,12 @@ package lilun.com.pension.ui.tourism.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +29,6 @@ import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.bean.Tourism;
-import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -71,14 +72,23 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
     TextView tvPrice;
     @Bind(R.id.tv_feature)
     TextView tvFeature;
-    private Tourism tourism;
+    private Tourism mTourism;
     private String[] titles = new String[]{"费用信息", "路线特色", "预定须知"};
-    private String categoryId;
+    private String tourismId;
 
     public static TourismDetailFragment newInstance(Tourism tourism) {
         TourismDetailFragment fragment = new TourismDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("tourism", tourism);
+        bundle.putSerializable("mTourism", tourism);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    public static TourismDetailFragment newInstance(String tourismId) {
+        TourismDetailFragment fragment = new TourismDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("tourismId", tourismId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -86,10 +96,9 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        tourism = (Tourism) arguments.getSerializable("tourism");
-        Preconditions.checkNull(tourism);
-        categoryId = tourism.getCategoryId();
-        Preconditions.checkNull(categoryId);
+        mTourism = (Tourism) arguments.getSerializable("mTourism");
+        tourismId = arguments.getString("tourismId");
+//        categoryId = mTourism.getCategoryId();
     }
 
     @Override
@@ -104,14 +113,38 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
 
     @Override
     protected void initView(LayoutInflater inflater) {
-
-        setTabLayout();
-
-        setInitData();
-
-        setBanner();
+        showDetail();
     }
 
+    private void showDetail() {
+        if (mTourism != null) {
+            setTabLayout();
+
+            setInitData();
+
+            setBanner();
+        }
+    }
+
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        if (!TextUtils.isEmpty(tourismId)) {
+            subscription.add(NetHelper.getApi()
+                    .getTourism(tourismId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Tourism>(_mActivity) {
+                        @Override
+                        public void _next(Tourism tourism) {
+                            mTourism = tourism;
+                            showDetail();
+                        }
+
+                    }));
+        }
+    }
 
     @OnClick({R.id.iv_back, R.id.btn_book})
     public void onClick(View view) {
@@ -131,13 +164,13 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
     private void setBanner() {
         //展示product图片
         List<String> urls = new ArrayList<>();
-        if (tourism.getImages() != null) {
-            for (IconModule iconModule : tourism.getImages()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, tourism.getId(), iconModule.getFileName());
+        if (mTourism.getImages() != null) {
+            for (IconModule iconModule : mTourism.getImages()) {
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mTourism.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, tourism.getId(), null);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mTourism.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);
@@ -151,7 +184,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
         }
         tlTitle.addOnTabSelectedListener(this);
 
-        Tourism.ExtendBean extend = tourism.getExtend();
+        Tourism.ExtendBean extend = mTourism.getExtend();
         String fee = extend.getFee();
         String distance = extend.getDistance();
         String notice = extend.getNotice();
@@ -170,10 +203,10 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
     }
 
     private void setInitData() {
-        tvContext.setText(tourism.getContext());
-        tvPrice.setText(tourism.getPrice() + "");
+        tvContext.setText(mTourism.getContext());
+        tvPrice.setText(mTourism.getPrice() + "");
 
-        Tourism.ExtendBean extend = tourism.getExtend();
+        Tourism.ExtendBean extend = mTourism.getExtend();
         tvDestination.setText(extend.getRoute());
         tvTrafficDetail.setText(extend.getTraffic());
         tvAccommodationStandard.setText(extend.getAccommodation());
@@ -186,10 +219,10 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
 
     private void canBook() {
         //如果这个服务不是自己创建的，就要去判断是否能够预约
-        if (!User.creatorIsOwn(tourism.getCreatorId())) {
+        if (!User.creatorIsOwn(mTourism.getCreatorId())) {
             String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
             NetHelper.getApi()
-                    .getOrdersOfProduct(tourism.getId(), filter)
+                    .getOrdersOfProduct(mTourism.getId(), filter)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
                     .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
@@ -209,7 +242,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
      * 预约这个旅游
      */
     private void bookTourism() {
-        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + categoryId + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + mTourism.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         subscription.add(NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -219,12 +252,12 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
                         if (contacts.size() > 0) {
                             Contact contact = contacts.get(0);
                             statReservation(contact);
-//                            ReservationFragment fragment = ReservationFragment.newInstance(categoryId, tourism.getId(), contact);
+//                            ReservationFragment fragment = ReservationFragment.newInstance(categoryId, mTourism.getId(), contact);
 //                            startForResult(fragment, ReservationFragment.requestCode);
                         } else {
                             //添加个人资料界面
-                            AddTourismInfoFragment fragment = AddTourismInfoFragment.newInstance(categoryId, null);
-                            fragment.setProductId(tourism.getId());
+                            AddTourismInfoFragment fragment = AddTourismInfoFragment.newInstance(mTourism.getCategoryId());
+                            fragment.setProductId(mTourism.getId());
                             start(fragment);
                         }
                     }
@@ -234,13 +267,13 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
 
 
     private void statReservation(Contact contact) {
-        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Intent intent = new Intent(_mActivity, ReservationActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("contact",contact);
-        bundle.putString("productCategoryId",categoryId);
-        bundle.putString("productId",tourism.getId());
+        bundle.putSerializable("contact", contact);
+        bundle.putString("productCategoryId", mTourism.getCategoryId());
+        bundle.putString("productId", mTourism.getId());
         intent.putExtras(bundle);
-        startActivityForResult(intent,ReservationFragment.requestCode);
+        startActivityForResult(intent, ReservationFragment.requestCode);
     }
 
 //    @Override
@@ -253,7 +286,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Logger.d("requestCode =  "+requestCode+"----"+"resultCode = "+resultCode);
+        Logger.d("requestCode =  " + requestCode + "----" + "resultCode = " + resultCode);
         if (requestCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
             setHadReservation();
         }
