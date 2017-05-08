@@ -35,7 +35,7 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
         helper.setText(R.id.tv_sophisticated, order.getName())
                 .setText(R.id.tv_health_status, StringUtils.getOrderStatusValue(order.getStatus()))
                 .setText(R.id.tv_creator, "预约人:" + order.getCreatorName())
-                .setText(R.id.tv_time, "预约时间："+StringUtils.IOS2ToUTC(order.getRegisterDate(),4))
+                .setText(R.id.tv_time, "预约时间："+StringUtils.IOS2ToUTC(order.getRegisterDate(),0))
                 .setOnClickListener(R.id.tv_memo, v -> {
                     if (listener != null) {
                         listener.onMemo(order);

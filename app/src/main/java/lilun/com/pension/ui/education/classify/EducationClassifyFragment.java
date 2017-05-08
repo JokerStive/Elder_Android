@@ -106,7 +106,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
             }
 
             @Override
-            public void onPositionClick() {
+            public void onPositionChanged() {
 
             }
 

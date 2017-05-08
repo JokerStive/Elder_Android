@@ -68,8 +68,10 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     private ImageView ivAvatar;
     private BannerPager banner;
     private String mAidId;
+    private LinearLayout llContent;
+    private TextView tvContent;
 
-    public static AskDetailFragment newInstance(String aidId,boolean creatorIsOwn) {
+    public static AskDetailFragment newInstance(String aidId, boolean creatorIsOwn) {
         AskDetailFragment fragment = new AskDetailFragment();
         Bundle args = new Bundle();
         args.putString("adiId", aidId);
@@ -80,19 +82,20 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
     @Subscribe
     public void refreshReplies(Event.RefreshHelpReply event) {
-        if (mReplyAdapter != null && event != null) {
-            mReplyAdapter.add(event.reply);
-            if (tvJonerTitle.getVisibility() == View.GONE) {
-                tvJonerTitle.setVisibility(View.VISIBLE);
-            }
-
-        }
+        mPresenter.getHelpDetail(_mActivity,mAidId);
+//        if (mReplyAdapter != null && event != null) {
+//            mReplyAdapter.add(event.reply);
+//            if (tvJonerTitle.getVisibility() == View.GONE) {
+//                tvJonerTitle.setVisibility(View.VISIBLE);
+//            }
+//
+//        }
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
         mAidId = arguments.getString("adiId");
-        mCreatorIsOwn = arguments.getBoolean("creatorIsOwn",false);
+        mCreatorIsOwn = arguments.getBoolean("creatorIsOwn", false);
         Preconditions.checkNull(mAidId);
     }
 
@@ -131,6 +134,12 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
+        //内容
+        llContent = (LinearLayout) mHeadView.findViewById(R.id.ll_content);
+        TextView tvContentTitle = (TextView) mHeadView.findViewById(R.id.tv_content_title);
+        UIUtils.setBold(tvContentTitle);
+        tvContent = (TextView) mHeadView.findViewById(R.id.tv_content);
+
         //回答者列表
         tvJonerTitle = (TextView) mHeadView.findViewById(R.id.tv_joiner_title);
         tvJonerTitle.setText(getString(R.string.answer));
@@ -141,9 +150,13 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         llTypeControl.setVisibility(View.GONE);
 
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
-
         setJoinerAdapter();
+
+
+        //如果说商家，屏蔽忙帮
+        if (!User.isCustomer()) {
+//            setChangeStatus(false,null);
+        }
 
     }
 
@@ -182,19 +195,16 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     @Override
     public void showHelpDetail(AidDetail detail) {
         mAid = detail.getAid();
-//        mCreatorIsOwn = User.creatorIsOwn(mAid.getCreatorId());
 
         //显示aid图片
         List<String> urls = new ArrayList<>();
         if (mAid.getImage() != null) {
             for (IconModule iconModule : mAid.getImage()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids,mAid.getId(), iconModule.getFileName());
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), iconModule.getFileName());
                 urls.add(url);
             }
-        }
-
-        else {
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids,mAid.getId(), null);
+        } else {
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), null);
             urls.add(url);
         }
         banner.setData(urls);
@@ -212,20 +222,37 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
             tvPrice.setText(String.format(getString(R.string.format_subsidy), mAid.getPrice()));
         }
 
-        //显示发起人
+        //显示发起人和头像
         tvCreator.setText(String.format(getString(R.string.format_creator), mAid.getCreatorName()));
+        String url = IconUrl.moduleIconUrl(IconUrl.Accounts, mAid.getCreatorId(), null);
+        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivAvatar);
 
+
+        //显示内容
+        String memo = mAid.getMemo();
+        if (TextUtils.isEmpty(memo)){
+            llContent.setVisibility(View.GONE);
+        }else {
+            tvContent.setText(memo);
+        }
 
         //是自己创建的
         if (mCreatorIsOwn) {
             if (detail.isCancelable()) {
                 setChangeStatus(true, getString(R.string.cancel));
             }
-        }
-        //不是自己创建的
-        else {
+        } else {
+            //不是自己创建的，这个问题没有被采纳，并且自己没有回答过
             if (TextUtils.isEmpty(mAid.getAnswerId())) {
-                setChangeStatus(true, getString(R.string.answer));
+                boolean hasJoin = false;
+                if (detail.getReplyList() != null) {
+                    for (OrganizationReply reply : detail.getReplyList()) {
+                        if (reply.getCreatorId().equals(User.getUserId())) {
+                            hasJoin = true;
+                        }
+                    }
+                }
+                setChangeStatus(!hasJoin,hasJoin?null:"回答");
             }
         }
 
@@ -248,7 +275,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
     }
 
     @Override
-    public void refreshData() {
+    public void refreshData(int operate) {
         EventBus.getDefault().post(new Event.RefreshHelpData());
         pop();
     }
@@ -276,7 +303,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
 
         } else if (status.equals(getString(R.string.answer))) {
-            start(ReplyFragment.newInstance("OrganizationAid",mAid.getId(),mAid.getTitle(),true));
+            start(ReplyFragment.newInstance("OrganizationAid", mAid.getId(), mAid.getTitle(), true));
         }
     }
 }

@@ -86,12 +86,10 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
         Option statusOption0 = new Option("0", "新建");
         Option statusOption1 = new Option("1", "已回复");
         Option statusOption2 = new Option("2", "已解决");
-        Option statusOption3 = new Option("3", "已取消");
         statusOptions.add(statusOptionNull);
         statusOptions.add(statusOption0);
         statusOptions.add(statusOption1);
         statusOptions.add(statusOption2);
-        statusOptions.add(statusOption3);
         ConditionOption conditionOptionStatus = new ConditionOption(status, "状态", statusOptions);
 
 

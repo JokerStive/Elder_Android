@@ -92,7 +92,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             }
 
             @Override
-            public void onPositionClick() {
+            public void onPositionChanged() {
 
             }
 

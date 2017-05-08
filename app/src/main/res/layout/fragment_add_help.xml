@@ -140,7 +140,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_choice_type"
+                    android:id="@+id/tv_priority_value"
                     style="@style/tv_input_content"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="22dp"

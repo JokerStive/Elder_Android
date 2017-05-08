@@ -92,7 +92,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
             }
 
             @Override
-            public void onPositionClick() {
+            public void onPositionChanged() {
 
             }
 

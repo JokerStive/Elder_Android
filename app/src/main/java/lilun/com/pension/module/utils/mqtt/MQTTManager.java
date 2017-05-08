@@ -134,7 +134,6 @@ public class MQTTManager {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("订阅成功");
-//                    EventBus.getDefault().post(new Event.SubSuccess());
                 }
 
                 @Override
@@ -170,6 +169,7 @@ public class MQTTManager {
     public void subscribe(String[] topic, int[] qos) {
         try {
             client.subscribe(topic, qos, null, new IMqttActionListener() {
+
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("订阅成功");

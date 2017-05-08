@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,7 +56,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
     private OrganizationAid mAid;
-    private TextView tvChangeStatus;
+    private TextView tvHelp;
     private TextView tvTitle;
     private TextView tvTime;
     private TextView tvCreator;
@@ -72,6 +73,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private BannerPager banner;
     private String mReplyId;
     private String mAidId;
+    private LinearLayout llContent;
+    private TextView tvContent;
 
     public static HelpDetailFragment newInstance(String aidId) {
         HelpDetailFragment fragment = new HelpDetailFragment();
@@ -120,8 +123,8 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         banner = (BannerPager) mHeadView.findViewById(R.id.iv_icon);
 
 
-        tvChangeStatus = (TextView) mHeadView.findViewById(R.id.tv_reservation);
-        tvChangeStatus.setOnClickListener(this);
+        tvHelp = (TextView) mHeadView.findViewById(R.id.tv_reservation);
+        tvHelp.setOnClickListener(this);
 
         //标题加粗
         tvTitle = (TextView) mHeadView.findViewById(R.id.tv_item_title);
@@ -132,6 +135,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
         tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
+
+
+        //内容
+        llContent = (LinearLayout) mHeadView.findViewById(R.id.ll_content);
+        TextView tvContentTitle = (TextView) mHeadView.findViewById(R.id.tv_content_title);
+        UIUtils.setBold(tvContentTitle);
+        tvContent = (TextView) mHeadView.findViewById(R.id.tv_content);
 
         //参与者或者回答者列表的title
         tvJoinerTitle = (TextView) mHeadView.findViewById(R.id.tv_joiner_title);
@@ -144,10 +154,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         TextView tvAddressTitle = (TextView) mHeadView.findViewById(R.id.tv_environment_title);
         setBold(tvAddressTitle);
 
-
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivAvatar);
-
         setJoinerAdapter();
+
+
+        //如果说商家，屏蔽忙帮
+        if (!User.isCustomer()) {
+//            setChangeStatus(false,null);
+        }
 
     }
 
@@ -193,9 +206,9 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
      * 根据状态，设置按钮的显示与否
      */
     private void setChangeStatus(boolean isShow, String string) {
-        tvChangeStatus.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        tvHelp.setVisibility(isShow ? View.VISIBLE : View.GONE);
         if (!TextUtils.isEmpty(string)) {
-            tvChangeStatus.setText(string);
+            tvHelp.setText(string);
         }
     }
 
@@ -233,11 +246,22 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //显示发起人
         tvCreator.setText(String.format(getString(R.string.format_creator), mAid.getCreatorName()));
+        String url = IconUrl.moduleIconUrl(IconUrl.Accounts, mAid.getCreatorId(), null);
+        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivAvatar);
 
 
         //设置地址和电话
         tvAddress.setText(mAid.getAddress());
         tvPhone.setText(String.format("联系电话：%1$s", "13206011223"));
+
+
+        //显示内容
+        String memo = mAid.getMemo();
+        if (TextUtils.isEmpty(memo)) {
+            llContent.setVisibility(View.GONE);
+        } else {
+            tvContent.setText(memo);
+        }
 
         //是自己创建的
         if (mCreatorIsOwn) {
@@ -299,9 +323,20 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     }
 
     @Override
-    public void refreshData() {
+    public void refreshData(int operate) {
+        //0 创建回复  1 删除回复  2.删除aid
         EventBus.getDefault().post(new Event.RefreshHelpData());
-        pop();
+        switch (operate) {
+            case 0:
+                setChangeStatus(true, getString(R.string.cancel));
+                break;
+            case 1:
+                setChangeStatus(true, getString(R.string.help));
+                break;
+            case 2:
+                pop();
+                break;
+        }
     }
 
 
@@ -319,7 +354,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
 
     private void doNext() {
-        String status = tvChangeStatus.getText().toString();
+        String status = tvHelp.getText().toString();
         if (status.equals(getString(R.string.cancel))) {
             if (mCreatorIsOwn) {
                 new NormalDialog().createNormal(_mActivity, R.string.confirm_delete_help, () -> {

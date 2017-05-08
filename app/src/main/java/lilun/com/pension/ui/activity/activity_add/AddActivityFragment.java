@@ -68,7 +68,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
     @Bind(R.id.rl_choice_type)
     RelativeLayout rlChoiceType;
-    @Bind(R.id.tv_choice_type)
+    @Bind(R.id.tv_priority_value)
     TextView tvChoiceType;
 
     @Bind(R.id.input_title)

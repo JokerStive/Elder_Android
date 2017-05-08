@@ -52,4 +52,21 @@ public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements R
 
                 }));
     }
+
+
+
+    @Override
+    public void newAidReply(OrganizationReply reply) {
+        addSubscribe(NetHelper.getApi()
+                .newAidReply(reply.getWhatId(),reply)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                    @Override
+                    public void _next(Object O) {
+                        view.newReplySuccess(reply);
+                    }
+
+                }));
+    }
 }
