@@ -8,7 +8,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import lilun.com.pension.R;
-import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.utils.UIUtils;
 
@@ -69,5 +68,15 @@ public class BottonPopupWindow extends PopupWindow {
 
     public void setOnCancelListener(View.OnClickListener cancelListener) {
         cancel.setOnClickListener(cancelListener);
+    }
+
+    /**
+     * 是否显示出删除的按钮
+     * @param show
+     */
+    public void isShowDelete(boolean show) {
+        if (show)
+            delete.setVisibility(View.VISIBLE);
+        else delete.setVisibility(View.GONE);
     }
 }

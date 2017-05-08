@@ -28,6 +28,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.PartnersAdapter;
 import lilun.com.pension.module.bean.Account;
@@ -161,6 +162,8 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
             @Override
             public void onRightClick() {
                 if (titleBar.getRightWitchShow() == NormalTitleBar.ICON) {
+
+                    bottonPopupWindow.isShowDelete(User.getUserId().equals(activity.getMasterId()));
                     bottonPopupWindow.showAtLocation(titleBar, Gravity.BOTTOM, 0, 0);
 
                 } else if (titleBar.getRightWitchShow() == NormalTitleBar.TEXT) {
