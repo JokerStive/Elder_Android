@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -23,11 +22,12 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.CycleAidAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
-import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.help.help_detail.AskDetailFragment;
+import lilun.com.pension.ui.help.help_detail.HelpDetailFragment;
 import lilun.com.pension.ui.help.list.HelpContract;
 import lilun.com.pension.ui.help.list.HelpFragment;
 import lilun.com.pension.ui.help.list.HelpPresenter;
@@ -60,23 +60,8 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     TextView tvNeedHelp;
     @Bind(R.id.tv_find_help)
     TextView tvFindHelp;
-
-    //    private ArrayList<Information> informationList;
-    //    private List<ElderModule> elderModules;
-//    private RecyclerView mClassifyRecycler;
     private CycleAidAdapter adapter;
-    private int currentPosition = 0;
     private String parentId;
-//    private List<OrganizationAid> organizationAids = new ArrayList<>();
-
-
-//    public static HelpRootFragment newInstance(List<Information> announcements) {
-//        HelpRootFragment fragment = new HelpRootFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable("informationList", (Serializable) announcements);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     public static HelpRootFragment newInstance(String parentId) {
         HelpRootFragment fragment = new HelpRootFragment();
@@ -87,16 +72,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshPushMessage(PushMessage pushMessage) {
-        Gson gson = new Gson();
-        OrganizationAid aid = gson.fromJson(pushMessage.getData(), OrganizationAid.class);
-        if (aid.getKind() != 2 && adapter != null) {
-            adapter.add(aid);
-            mRecyclerView.smoothScrollToPosition(adapter.getItemCount());
-        }
-    }
-
     @Override
     protected void getTransferData(Bundle arguments) {
         parentId = arguments.getString("parentId");
@@ -105,8 +80,10 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
     @Subscribe
     public void refreshData(Event.RefreshHelpData event) {
-        getHelps(0);
+        Logger.d("需要刷新help root 页面的湖数据");
+        refreshData();
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -135,6 +112,10 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
                 start(HelpFragment.newInstance(true));
             }
 
+            @Override
+            public void onPositionChanged() {
+                refreshData();
+            }
         });
 
         tvFindHelp.setOnClickListener(this);
@@ -142,11 +123,8 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+        mSwipeLayout.setOnRefreshListener(this::refreshData);
 
-
-        //刷新
-//        mRecyclerView.setScrollX();
-        mSwipeLayout.setEnabled(false);
     }
 
 
@@ -170,7 +148,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
     private void getHelps(int skip) {
-        String filter = "{\"where\":{\"visible\":0,\"kind\":{\"neq\":\"2\"}}}";
+        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"visible\":0,\"kind\":{\"neq\":\"2\"}}}";
         mPresenter.getHelps(filter, skip);
     }
 
@@ -181,6 +159,12 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         if (adapter == null) {
             adapter = new CycleAidAdapter(helps);
             mRecyclerView.setAdapter(adapter);
+            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+                OrganizationAid aid = helps.get(i);
+                start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
+            });
+        } else {
+            adapter.replaceAll(helps);
         }
     }
 
@@ -196,8 +180,8 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_need_help:
-                if (User.currentOrganizationHasChanged()) {
-                    ToastHelper.get().showShort("当前区域不是自己默认的");
+                if (!User.canOperate()) {
+                    ToastHelper.get().showShort("当前组织下，不能这样做");
                     return;
                 } else {
                     start(AddHelpFragment.newInstance());

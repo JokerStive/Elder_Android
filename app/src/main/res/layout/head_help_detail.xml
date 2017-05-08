@@ -114,13 +114,41 @@
             android:gravity="center_vertical"
             tools:text="茶韵新城规范" />
 
+    </LinearLayout>
 
+
+    <LinearLayout
+        android:padding="10dp"
+        android:id="@+id/ll_content"
+        android:layout_below="@id/ll_type_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+    <View
+        style="@style/line_gray"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_content_title"
+        style="@style/tv_normal_ellipsize"
+        android:layout_marginTop="16dp"
+        android:text="内容" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/tv_small_ellipsize"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        tools:text="茶韵新城规范" />
     </LinearLayout>
 
     <View
         android:id="@+id/line"
         style="@style/line_gray"
-        android:layout_below="@id/ll_type_help"
+        android:layout_below="@id/ll_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="16dp" />

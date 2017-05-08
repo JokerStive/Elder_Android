@@ -22,6 +22,8 @@ public class AutoExtendSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
         remainder = dataSize%spanCount;
     }
 
+
+
     @Override
     public int getSpanSize(int position) {
         LogUtils.d("余数 = "+remainder+"---"+"当前position = "+position);

@@ -114,6 +114,28 @@ public class User {
 
 
     /**
+     *根据当前组织判断是否可以增删改
+     */
+    public static  boolean canOperate(){
+        String currentOrganizationId = getCurrentOrganizationId();
+        if (ACache.get().isExit(belongOrganizations)){
+            List<OrganizationAccount> belongOrganizationAccount = (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
+            for (OrganizationAccount organizationAccount:belongOrganizationAccount){
+                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
+                if (organizationId.equals(Constants.organization_root)){
+                    continue;
+                }
+                if (TextUtils.equals(currentOrganizationId,organizationId)){
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+
+    /**
     *创建者是否是自己
     */
     public static boolean creatorIsOwn(String creatorId) {

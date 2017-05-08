@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
@@ -135,11 +133,15 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
     }
 
     private void createReply(String replyContent) {
-            OrganizationReply reply = new OrganizationReply();
-            reply.setWhatModel(whatModule);
-            reply.setWhatId(whatId);
-            reply.setContent(replyContent);
+        OrganizationReply reply = new OrganizationReply();
+        reply.setWhatModel(whatModule);
+        reply.setWhatId(whatId);
+        reply.setContent(replyContent);
+        if (whatModule.equals("OrganizationAid")) {
+            mPresenter.newAidReply(reply);
+        } else {
             mPresenter.newReply(reply);
+        }
     }
 
     private void getReplies(int skip) {
@@ -170,14 +172,15 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
     @Override
     public void newReplySuccess(OrganizationReply reply) {
         Logger.d("reply success");
-        if (mReplyAdapter != null) {
-            mReplyAdapter.add(reply);
-            EventBus.getDefault().post(new Event.RefreshHelpReply(reply));
-            EventBus.getDefault().post(new Event.RefreshHelpData());
-        } else {
+        inputView.clear();
+        getReplies(0);
+        EventBus.getDefault().post(new Event.RefreshHelpReply(reply));
+        EventBus.getDefault().post(new Event.RefreshHelpData());
 
-        }
     }
+
+
+
 
 
     @Override
@@ -187,17 +190,4 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

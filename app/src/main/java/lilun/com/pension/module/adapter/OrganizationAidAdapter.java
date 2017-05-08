@@ -28,7 +28,6 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
     private OnItemClickListener listener;
 
 
-
     public OrganizationAidAdapter(List<OrganizationAid> data, int itemRes, SearchTitleBar.LayoutType layoutType) {
         super(itemRes, data);
         this.layoutType = layoutType;
@@ -44,7 +43,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //是否有图片需要加载
         if (layoutType != SearchTitleBar.LayoutType.NULL) {
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationAids,aid.getId(), StringUtils.getFirstIconNameFromIcon(aid.getImage())), R.drawable.icon_def, help.getView(R.id.iv_icon));
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationAids, aid.getId(), StringUtils.getFirstIconNameFromIcon(aid.getImage())), R.drawable.icon_def, help.getView(R.id.iv_icon));
         }
 
 
@@ -60,13 +59,12 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //参与者和时间
         TextView time_joinerCount = help.getView(R.id.tv_time_joinCount);
-        time_joinerCount.setText("/" + StringUtils.IOS2ToUTC(aid.getCreatedAt(), 4) + "/" + "50人参与");
-
-//        else {
-//            help.setText(R.id.tv_time, StringUtils.IOS2ToUTC(aid.getCreatedAt(),3));
-//            help.setText(R.id.tv_joinCount,"参与人数50人");
-//
-//        }
+        int partnerCount = 0;
+        List<String> partnerList = aid.getPartnerList();
+        if (partnerList != null) {
+            partnerCount = partnerList.size();
+        }
+        time_joinerCount.setText("/" + StringUtils.IOS2ToUTC(aid.getCreatedAt(), 4) + "/" + partnerCount + "人参与");
 
         //是否显示地址
         TextView tvItemAddress = help.getView(R.id.tv_environment);

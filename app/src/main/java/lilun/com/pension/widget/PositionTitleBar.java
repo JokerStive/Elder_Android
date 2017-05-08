@@ -64,6 +64,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     @Subscribe
     public void changedOrganization(Event.ChangedOrganization event) {
         tvPosition.setText(User.getCurrentOrganizationName());
+        listener.onPositionChanged();
     }
 
     private void init(Context context) {
@@ -112,9 +113,6 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
             case R.id.tv_position:
                 if (fragment != null) {
                     fragment.startActivity(new Intent(fragment.getActivity(), ChangeOrganizationActivity.class));
-                }
-                if (listener != null) {
-                    listener.onPositionClick();
                 }
                 break;
 

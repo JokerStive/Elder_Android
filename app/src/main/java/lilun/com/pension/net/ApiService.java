@@ -164,7 +164,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationAids/{id}/getDetails")
-    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId);
+    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId,@Query("filter") String filter);
 
 
     /**
@@ -243,6 +243,13 @@ public interface ApiService {
      */
     @POST("OrganizationReplies")
     Observable<Response<OrganizationReply>> newOrganizationReply(@Body OrganizationReply reply);
+
+
+    /**
+     * 新增aid一个reply
+     */
+    @POST("OrganizationAids/{id}/answer")
+    Observable<Response<Object>> newAidReply(@Path("id") String aidId,@Body OrganizationReply reply);
 
 
     /**

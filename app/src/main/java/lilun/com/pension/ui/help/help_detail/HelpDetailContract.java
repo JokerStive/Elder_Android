@@ -16,7 +16,7 @@ public interface HelpDetailContract {
     interface View extends IView<Presenter> {
         void showHelpDetail(AidDetail detail);
         void acceptSuccess(String replyId);
-        void refreshData();
+        void refreshData(int operate);
     }
 
     interface Presenter extends IPresenter<View> {

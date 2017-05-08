@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseTakePhotoFragment;
@@ -39,7 +40,6 @@ import lilun.com.pension.widget.NormalTitleBar;
 import lilun.com.pension.widget.TakePhotoLayout;
 import okhttp3.MultipartBody;
 import rx.Observable;
-import rx.Subscription;
 
 /**
  * 新建求助V
@@ -80,23 +80,17 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     @Bind(R.id.tv_priority)
     TextView tvPriority;
 
-    @Bind(R.id.tv_choice_type)
-    TextView tvChooseType;
+    @Bind(R.id.tv_priority_value)
+    TextView tvPriorityValue;
 
 
     @Bind(R.id.rl_choice_priority)
     RelativeLayout rlChoicePriority;
-//    @Bind(R.id.input_kind)
-//    InputView inputKind;
-
-//    @Bind(R.id.rg_classify)
-//    RadioGroup rgClassify;
 
 
     private Integer mKind;
     private int mPriority = 0;
-    private Subscription subscription;
-    private String[] helpPriority;
+    private String[] helpPriority = App.context.getResources().getStringArray(R.array.help_priority);
     private String[] helpKind = new String[]{"问邻居", "邻居帮"};
 
     public static AddHelpFragment newInstance() {
@@ -130,6 +124,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         rlChoicePriority.setOnClickListener(this);
 
 
+        tvPriorityValue.setText(helpPriority[0]);
     }
 
     @Override
@@ -177,7 +172,8 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .items(helpPriority)
                 .title("-选择求助优先级-")
                 .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
-                    tvChooseType.setText(helpPriority[which]);
+                    tvPriorityValue.setText(helpPriority[which]);
+                    mPriority=which==helpPriority.length-1?10:which;
                     return true;
                 })
                 .show();
@@ -189,8 +185,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      * 新建一个求助信息
      */
     private void createHelp() {
-
-        String priority = tvPriority.getText().toString();
+//        String priority = tvPriorityValue.getText().toString();
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
 
@@ -202,7 +197,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
 
         if (StringUtils.checkNotEmptyWithMessage(title, "请输入求助主题")) {
-
             //如果是帮，必须填求助的地址
             if (mKind == 1) {
                 if (TextUtils.isEmpty(address)) {
@@ -212,19 +206,19 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
             }
 
 
-            if (!TextUtils.isEmpty(priority) && helpPriority != null) {
-                if (priority.equals(helpPriority[0])) {
-                    mPriority = 0;
-                } else if (priority.equals(helpPriority[1])) {
-                    mPriority = 1;
-                } else if (priority.equals(helpPriority[2])) {
-                    mPriority = 2;
-                } else if (priority.equals(helpPriority[3])) {
-                    mPriority = 10;
-                }
-            } else {
-                ToastHelper.get().showWareShort("请选择求助类型");
-            }
+//            if (!TextUtils.isEmpty(priority) && helpPriority != null) {
+//                if (priority.equals(helpPriority[0])) {
+//                    mPriority = 0;
+//                } else if (priority.equals(helpPriority[1])) {
+//                    mPriority = 1;
+//                } else if (priority.equals(helpPriority[2])) {
+//                    mPriority = 2;
+//                } else if (priority.equals(helpPriority[3])) {
+//                    mPriority = 10;
+//                }
+//            } else {
+//                ToastHelper.get().showWareShort("请选择求助类型");
+//            }
 
             OrganizationAid aid = getOrganizationAid();
             List<String> data = getPhotoData();
@@ -240,7 +234,8 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                             public void _next(Object o) {
                                 Logger.d("求助发布成功");
                                 pop();
-                                EventBus.getDefault().post(new Event.RefreshHelpData());
+                                Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
+                                EventBus.getDefault().post(refreshHelpData);
                             }
                         });
 
@@ -267,8 +262,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setOrganizationId(OrganizationChildrenConfig.aid());
         return organizationAid;
     }
-
-
 
 
     @Override

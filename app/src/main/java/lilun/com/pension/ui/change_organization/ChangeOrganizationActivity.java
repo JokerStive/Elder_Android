@@ -11,6 +11,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.bean.Organization;
@@ -69,8 +70,11 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
         frameLayouts.add(flNear);
         frameLayouts.add(flRoot);
 
-        if (!User.currentOrganizationHasChanged()) {
+        boolean equals = User.getBelongsOrganizationId().equals(Constants.organization_root);
+        if (!equals && !User.currentOrganizationHasChanged()) {
             mPresenter.changeDefBelongOrganization(User.getRootOrganizationAccountId());
+        } else {
+            changedRoot();
         }
     }
 
@@ -79,9 +83,9 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                if (!User.currentOrganizationHasChanged()){
+                if (!User.currentOrganizationHasChanged()) {
                     changeToBelong();
-                }else {
+                } else {
                     finish();
                 }
                 break;
@@ -117,7 +121,12 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
      * 切回自己原来属于的社区
      */
     private void changeToBelong() {
-        mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
+        boolean equals = User.getBelongsOrganizationId().equals(Constants.organization_root);
+        if (!equals) {
+            mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
+        } else {
+            changedBelong();
+        }
     }
 
 

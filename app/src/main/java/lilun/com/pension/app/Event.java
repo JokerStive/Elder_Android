@@ -23,6 +23,12 @@ public class Event {
 
     //刷新邻居互助分类、列表页面数据
     public static class RefreshHelpData {
+        public OrganizationAid aid;
+
+        public RefreshHelpData setAid(OrganizationAid aid) {
+            this.aid = aid;
+            return this;
+        }
     }
 
     //刷新互助详情页面

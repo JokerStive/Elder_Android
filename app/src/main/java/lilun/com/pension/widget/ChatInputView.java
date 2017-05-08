@@ -21,6 +21,7 @@ import lilun.com.pension.app.App;
  */
 public class ChatInputView extends LinearLayout {
     private OnConfirmClickListener listenet;
+    private EditText etInput;
 
     public ChatInputView(Context context) {
         super(context);
@@ -37,7 +38,8 @@ public class ChatInputView extends LinearLayout {
     private void init() {
         View view = LayoutInflater.from(App.context).inflate(R.layout.normal_buttom_input, this);
         TextView tvConfirm = (TextView) view.findViewById(R.id.tv_confirm);
-        EditText etInput = (EditText) view.findViewById(R.id.et_input);
+        etInput = (EditText) view.findViewById(R.id.et_input);
+        etInput.setSelection(etInput.getText().toString().length());
 
         tvConfirm.setOnClickListener(v -> {
             if (listenet != null && !TextUtils.isEmpty(etInput.getText().toString())) {
@@ -52,5 +54,10 @@ public class ChatInputView extends LinearLayout {
 
     public interface OnConfirmClickListener {
         void onConfirm(String input);
+    }
+
+    public void clear(){
+        etInput.setText("");
+        etInput.setSelection(0);
     }
 }

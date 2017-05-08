@@ -22,5 +22,6 @@ public class ReplyContract {
     interface Presenter extends IPresenter<View> {
         void getReplies(String whatModule,String aidId, int skip);
         void newReply(OrganizationReply reply);
+        void newAidReply(OrganizationReply reply);
     }
 }

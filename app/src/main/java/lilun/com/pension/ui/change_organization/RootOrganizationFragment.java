@@ -71,22 +71,15 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
-        if (User.currentOrganizationHasChanged() && ACache.get().isExit("chooseIds")) {
-            List<String> ids = (List<String>) ACache.get().getAsObject("chooseIds");
-            currentId = ids.get(ids.size() - 1);
-            Logger.d("当前组织id = " + currentId);
-            for (String organizationId : ids) {
-                crumbView.addBreadCrumb(organizationId);
-            }
 
-            getData(0);
-        }
 //        swipeLayout.setRefreshing(true);
     }
 
     private void changeCurrentOrganization() {
         String belongsOrganizationId = User.getBelongsOrganizationId();
-        if (TextUtils.equals(currentId, belongsOrganizationId)) {
+        boolean equals = belongsOrganizationId.equals(Constants.organization_root);
+        //如果本来的所属组织不是地丢村，并且当前选择的组织是本身的默认组织
+        if (!equals  && TextUtils.equals(currentId, belongsOrganizationId)) {
             if (User.currentOrganizationHasChanged()) {
                 mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
             } else {
@@ -135,12 +128,17 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
     @Override
     public void changedRoot() {
-        Logger.d("加载地球村数据");
-        crumbView.addBreadCrumb(Constants.organization_root);
+        if (User.currentOrganizationHasChanged() && ACache.get().isExit("chooseIds")) {
+            List<String> ids = (List<String>) ACache.get().getAsObject("chooseIds");
+            currentId = ids.get(ids.size() - 1);
+            Logger.d("当前组织id = " + currentId);
+            for (String organizationId : ids) {
+                crumbView.addBreadCrumb(organizationId);
+            }
+        } else {
+            crumbView.addBreadCrumb(Constants.organization_root);
+        }
         getData(0);
-//        else {
-//
-//        }
     }
 
     @Override

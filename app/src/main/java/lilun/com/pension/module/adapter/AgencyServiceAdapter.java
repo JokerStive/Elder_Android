@@ -25,7 +25,7 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
     private OnItemClickListener listener;
 
-    public AgencyServiceAdapter(List<OrganizationProduct> data,int itemRes) {
+    public AgencyServiceAdapter(List<OrganizationProduct> data, int itemRes) {
         super(itemRes, data);
     }
 

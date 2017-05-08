@@ -6,7 +6,7 @@ package lilun.com.pension.module.callback;
 public abstract class TitleBarClickCallBack {
     public abstract void onBackClick();
 
-    public void onPositionClick() {
+    public void onPositionChanged() {
 
     }
 

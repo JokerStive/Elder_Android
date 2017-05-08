@@ -123,7 +123,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             }
 
             @Override
-            public void onPositionClick() {
+            public void onPositionChanged() {
 
             }
 

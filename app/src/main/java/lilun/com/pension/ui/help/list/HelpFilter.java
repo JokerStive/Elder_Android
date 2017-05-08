@@ -15,7 +15,7 @@ public class HelpFilter {
 
     @Override
     public String toString() {
-        return "{\"where\":{\"kind\":" + kind + priority + status + "," + "\"title\":{\"like\":\"" + title + "\"}}}";
+        return "{\"order\":\"createdAt DESC\",\"where\":{\"kind\":" + kind + priority + status + "," + "\"title\":{\"like\":\"" + title + "\"}}}";
     }
 
     private String title = "";

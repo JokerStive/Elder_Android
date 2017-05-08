@@ -60,6 +60,17 @@ public class OrganizationAid extends DataSupport implements Serializable{
     private String organizationId;
     public int visible;
     public List<String> tags;
+    public List<String> partnerList;
+
+    public List<String> getPartnerList() {
+        return partnerList;
+    }
+
+    public OrganizationAid setPartnerList(List<String> partnerList) {
+        this.partnerList = partnerList;
+        return this;
+    }
+
     public List<IconModule> image;
 
     public List<IconModule> getImage() {
