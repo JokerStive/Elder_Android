@@ -2,6 +2,8 @@ package lilun.com.pension.module.bean;
 
 import org.litepal.crud.DataSupport;
 
+import lilun.com.pension.module.utils.StringUtils;
+
 /**
  * 极光推送过来的消息
  *
@@ -10,6 +12,10 @@ import org.litepal.crud.DataSupport;
  *         email : yk_developer@163.com
  */
 public class PushMessage extends DataSupport {
+    public static final String VERB_CHAR = "chat";
+    public static final String VERB_KICK = "kick";
+    public static final String VERB_QUIT = "quit";
+    public static final String VERB_JOIN = "join";
     private String model;
     private String verb;
     private String data;

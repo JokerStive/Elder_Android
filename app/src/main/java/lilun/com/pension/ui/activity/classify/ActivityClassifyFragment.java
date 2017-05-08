@@ -70,7 +70,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private OrganizationActivityAdapter mContentAdapter;
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
     private String parentId;
-
+    private String status = ",\"status\":\"checking\"";
 
     public static ActivityClassifyFragment newInstance(String parentId) {
         ActivityClassifyFragment fragment = new ActivityClassifyFragment();
@@ -192,9 +192,11 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void getAboutMe(int skip) {
         //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
-        String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}," +
-                "\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}," +
-                "{\"partnerList\":\"" + User.getUserId() + "\"}]}}";
+        String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}" +
+                status +
+                ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}" +
+                ",{\"partnerList\":\"" + User.getUserId() + "\"}]}" +
+                ",\"order\":\"createdAt DESC\"}";
         mPresenter.getAboutMe(filter, skip);
     }
 

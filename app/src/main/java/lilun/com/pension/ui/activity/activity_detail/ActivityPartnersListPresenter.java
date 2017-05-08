@@ -37,7 +37,7 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
     }
 
     @Override
-    public void deletePartners(String activityId, String userId) {
+    public void deletePartners(String activityId, String userId, String userName) {
         addSubscribe(NetHelper.getApi()
                 .deleteOfPartners(activityId, userId)
                 .compose(RxUtils.handleResult())
@@ -45,7 +45,7 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
                 .subscribe(new RxSubscriber<Account>() {
                     @Override
                     public void _next(Account account) {
-                        view.successDeletePartners();
+                        view.successDeletePartners(userId,userName);
                     }
                 }));
     }

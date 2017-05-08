@@ -226,4 +226,8 @@
     </style>
 
 
+    <style name="pop_botton">
+        <item name="android:windowEnterAnimation">@anim/pop_botton_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_botton_out</item>
+    </style>
 </resources>

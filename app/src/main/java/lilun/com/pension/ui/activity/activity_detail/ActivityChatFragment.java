@@ -22,7 +22,9 @@ import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
 import lilun.com.pension.module.utils.mqtt.MQTTTopicUtils;
+import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.widget.InputSendView;
+import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -120,11 +122,26 @@ public class ActivityChatFragment extends BaseFragment {
         mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void forcedquitChat(Event.ForcedQuitChat forcedQuitChat) {
+        ActivityDetailFragment detailFragment = findFragment(ActivityDetailFragment.class);
+        if (detailFragment == null) {
+            new NormalDialog().createShowMessage(_mActivity, forcedQuitChat.getShowMessage(), new NormalDialog.OnPositiveListener() {
+                @Override
+                public void onPositiveClick() {
+                    ActivityClassifyFragment fragment = findFragment(ActivityClassifyFragment.class);
+                    if (fragment != null)
+                        popTo(ActivityClassifyFragment.class, false);
+                }
+            }, false);
+        }
+    }
+
     public void sendData(String str) {
         Date date = new Date();
-        date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
+        // date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
         String from = "{\"id\": \"" + User.getUserId() + "\", \"name\": \"" + User.getName() + "\"}";
-        PushMessage pushMessage = new PushMessage().setVerb("chat")
+        PushMessage pushMessage = new PushMessage().setVerb(PushMessage.VERB_CHAR)
                 .setFrom(from)
                 .setMessage(str)
                 .setTime(StringUtils.date2String(date));

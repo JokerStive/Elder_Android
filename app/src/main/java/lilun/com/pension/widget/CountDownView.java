@@ -82,10 +82,6 @@ public class CountDownView extends LinearLayout {
                                 long min = ((res / (60 * 1000)) - day * 24 * 60 - hour * 60);
                                 long s = (res / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
 
-                                Log.d("zp",String.format("%02d",day) + "  "+
-                                        String.format("%02d",hour) +"  "+
-                                        String.format("%02d",min) + "  "+
-                                        String.format("%02d",s));
 
                                 tvDays.setText(String.format("%02d", day));
                                 tvHours.setText(String.format("%02d", hour));

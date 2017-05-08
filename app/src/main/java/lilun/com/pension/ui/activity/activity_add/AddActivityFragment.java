@@ -14,8 +14,6 @@ import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +56,7 @@ import rx.Observable;
  *         email : yk_developer@163.com
  */
 
-public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstract.Presenter> implements AddActivityConstract.View, View.OnClickListener {
+public class AddActivityFragment extends BaseTakePhotoFragment implements View.OnClickListener {
 
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
@@ -136,8 +134,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
 
     @Override
     protected void initPresenter() {
-        mPresenter = new AddActivityPresenter();
-        mPresenter.bindView(this);
+
     }
 
     @Override
@@ -150,8 +147,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
         //标题栏
         titleBar.setOnBackClickListener(this::pop);
 
-        //分类选择栏
-        showActivityCategories();
 
         //图片上传栏
         takePhotoLayout.setFragmentManager(_mActivity.getFragmentManager());
@@ -188,17 +183,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
     }
 
 
-    private void showActivityCategories() {
-//        rvActivityClassify.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
-//        rvActivityClassify.addItemDecoration(new ElderModuleClassifyDecoration());
-//        ActivityCategoryAdapter adapter = new ActivityCategoryAdapter(this, activityCategories);
-//        adapter.setIsRadioModule(true);
-//        adapter.setOnItemClickListener((activityCategory -> {
-//            mCategoryId = activityCategory.getId();
-//        }));
-//
-//        rvActivityClassify.setAdapter(adapter);
-    }
 
 
     private void addActivity() {
@@ -235,7 +219,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             showNotEmpty(R.string.activity_address);
             return;
         }
-        if(TextUtils.isEmpty(require)){
+        if (TextUtils.isEmpty(require)) {
             showNotEmpty(R.string.activity_desp);
             return;
         }
@@ -278,7 +262,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
             }
         }
         activity.setDruation(intDuration);
-        // activity.setRepeatedType(mPresenter.getRepeatType(repeatedTypeArray, repeatedType));
         activity.setOrganizationId(OrganizationChildrenConfig.activity());
         activity.setDescription(require);
         activity.setMaxPartner(maxPart);
@@ -296,34 +279,24 @@ public class AddActivityFragment extends BaseTakePhotoFragment<AddActivityConstr
                     .newActivityIcons(multipartBody)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<OrganizationActivity>() {
+                    .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
                         @Override
                         public void _next(OrganizationActivity activity) {
-                            pop();
-                            EventBus.getDefault().post(new Event.RefreshActivityData());
-                            String  topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+                            String topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
                             MQTTManager.getInstance().subscribe(topic, 2);
+                            EventBus.getDefault().post(new Event.RefreshActivityData());
+                            pop();
                         }
                     });
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //  mPresenter.addActivity(_mActivity, activity, getPhotoData());
-
-
     }
 
     private void showNotEmpty(int string) {
         ToastHelper.get().showWareShort("请输入" + getString(string));
     }
-
-    @Override
-    public void addActivitySuccess() {
-        EventBus.getDefault().post(new Event.RefreshActivityData());
-        pop();
-    }
-
 
     @Override
     public void onClick(View v) {

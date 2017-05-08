@@ -149,6 +149,7 @@
                         android:background="@color/activity_line" />
 
                     <LinearLayout
+                        android:id="@+id/ll_partners_list"
                         style="@style/acitivyt_detail_normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

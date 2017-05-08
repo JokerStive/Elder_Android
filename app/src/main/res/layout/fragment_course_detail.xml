@@ -111,6 +111,7 @@
             <TextView
                 android:id="@+id/tv_course_plan"
                 style="@style/tv_small_ellipsize"
+                android:singleLine="false"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="教学计划详情" />
 
@@ -129,6 +130,7 @@
             <TextView
                 android:id="@+id/tv_course_desp"
                 style="@style/tv_small_ellipsize"
+                android:singleLine="false"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="课程简介详情" />
 

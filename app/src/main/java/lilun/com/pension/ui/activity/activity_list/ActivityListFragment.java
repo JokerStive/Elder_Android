@@ -168,6 +168,15 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     }
 
     private void initConditionModules() {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String localtime = format.format(new Date());
+        String gtmDate = localtime;
+        //未开始    现在时间<开始时间
+        activity_status = ",\"startTime\":{\"gt\":\"" + gtmDate + "\"}";
+        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+
+
         List<View> pops = new ArrayList<>();
         List<String> filterTitles = new ArrayList<>();
         filterTitles.addAll(Arrays.asList(App.context.getResources().getStringArray(R.array.activity_filter_status)));
@@ -198,18 +207,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             filterView.setTitlesAndDatas(filterTitles, conditionOptionsList, mSwipeLayout);
             filterView.setOnOptionClickListener((whereKey, whereValue) -> {
                 Log.d("zp", whereKey + "  " + whereValue);
-
-                //我的状态
-                if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[0])) {
-                    join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
-                } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[1])) {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String localtime = format.format(new Date());
-                    String gtmDate = localtime;
-                    //已结束   现在时间>结束时间
-                    activity_status = ",\"endTime\":{\"lt\":\"" + gtmDate + "\"}";
-
-                } else if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
+               //我的状态
+                if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
                     if ("0".equals(whereValue)) {  //降序
                         //已报名的
                         timing_status = timeOrder[1];
@@ -219,8 +218,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                     }
                 }
                 getActivityList(0);
-
-
             });
         }
 

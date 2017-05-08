@@ -1,17 +1,21 @@
 package lilun.com.pension.module.utils.mqtt;
 
 
+import android.text.TextUtils;
+
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.PushMessage;
 
 /**
@@ -64,7 +68,7 @@ public class MQTTCallbackBus implements MqttCallback {
                 pushMessage.setFrom(from);
             }
             if (messageData.contains("\"to\"")) {
-                JSONObject dataJson = (JSONObject) jsonObject.get("to");
+                JSONArray dataJson = (JSONArray) jsonObject.get("to");
                 String to = dataJson.toString();
                 pushMessage.setTo(to);
             }
@@ -101,11 +105,56 @@ public class MQTTCallbackBus implements MqttCallback {
 
                 EventBus.getDefault().post(pushMessage);
             }
-            if ("chat".equals(pushMessage.getVerb())  ||
-                    "kiko".equals(pushMessage.getVerb()) || "quit".equals(pushMessage.getVerb())) {
-                EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage));
-            }
+            dealActivity(topic, pushMessage);
 
+        }
+    }
+
+
+    /**
+     * 集中处理丢活动相关Message
+     *
+     * @param topic
+     * @param pushMessage
+     */
+    public void dealActivity(String topic, PushMessage pushMessage) {
+        if (PushMessage.VERB_JOIN.equals(pushMessage.getVerb()) ||
+                PushMessage.VERB_CHAR.equals(pushMessage.getVerb()) ||
+                PushMessage.VERB_KICK.equals(pushMessage.getVerb()) ||
+                PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
+
+            if (PushMessage.VERB_KICK.equals(pushMessage.getVerb())) {
+                //主持人请出
+                //发送强制退出聊天
+                if (pushMessage.getTo().contains(User.getUserId())) {
+                    EventBus.getDefault().post(new Event.ForcedQuitChat("您被主持人请出了本活动"));
+                    //发送刷新我的活动
+                    EventBus.getDefault().post(new Event.RefreshActivityData());
+                    //取消订阅
+                    MQTTManager.getInstance().unsubscribe(topic, null, null);
+
+                }
+            } else if (PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
+
+                //被动强制退出
+                if (TextUtils.isEmpty(pushMessage.getFrom())) {
+                    EventBus.getDefault().post(new Event.ForcedQuitChat(pushMessage.getMessage()));
+                    //发送刷新我的活动
+                    EventBus.getDefault().post(new Event.RefreshActivityData());
+                } else {
+                    //是主动退出活动，
+                    //是主动退出是否自己
+                    if (pushMessage.getFrom().contains(User.getUserId())) {
+                        //发送刷新我的活动
+                        EventBus.getDefault().post(new Event.RefreshActivityData());
+                        //取消订阅
+                        MQTTManager.getInstance().unsubscribe(topic, null, null);
+                    }
+                    //其他人添加信息
+                }
+
+            }
+            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage));
         }
     }
 

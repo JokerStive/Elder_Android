@@ -23,11 +23,15 @@ import lilun.com.pension.R;
  */
 
 public class NormalTitleBar extends RelativeLayout implements View.OnClickListener {
-
+    public static int NONE = 3; //都不显示
+    public static int BOTH = 2;
+    public static int ICON = 0;
+    public static int TEXT = 1;
     private final int maxEms;
     private final int rightIcon;
     private final int leftIcon;
     private final String leftString;
+    private final String rightString;
     private String title;
     private TextView tvTitle;
     private TextView tvLeftString;
@@ -35,15 +39,25 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private OnBackClickListener listener;
     private TextView tvDoWhat;
     private OnRightClickListener listener1;
+    private Drawable mBackgrand;
+    private int rightWitchShow = 0;
+    private Context context;
 
     public NormalTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PositionTitleBar);
-        leftIcon = array.getResourceId(R.styleable.PositionTitleBar_leftIcon, 0);
-        leftString = array.getString(R.styleable.PositionTitleBar_leftString);
-        title = array.getString(R.styleable.PositionTitleBar_title);
-        maxEms = array.getInteger(R.styleable.PositionTitleBar_titleMaxEms, 0);
-        rightIcon = array.getResourceId(R.styleable.PositionTitleBar_rightIcon, 0);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NormalTitleBar);
+        leftIcon = array.getResourceId(R.styleable.NormalTitleBar_leftIcon, 0);
+        leftString = array.getString(R.styleable.NormalTitleBar_leftString);
+        title = array.getString(R.styleable.NormalTitleBar_title);
+        maxEms = array.getInteger(R.styleable.NormalTitleBar_titleMaxEms, 0);
+        rightIcon = array.getResourceId(R.styleable.NormalTitleBar_rightIcon, 0);
+        rightString = array.getString(R.styleable.NormalTitleBar_rightText);
+        rightWitchShow = array.getInt(R.styleable.NormalTitleBar_rightWitchShow, 2);
+        mBackgrand = getBackground();
+        if (mBackgrand == null) {
+            setBackgroundResource(R.color.white);
+        }
+        this.context = context;
         init(context);
         array.recycle();
     }
@@ -57,19 +71,12 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         if (leftIcon != 0) {
             ivBack.setImageResource(leftIcon);
         }
+
         if (!TextUtils.isEmpty(leftString)) {
             tvLeftString.setText(leftString);
         }
+        rightWitchShow();
 
-        if (rightIcon != 0) {
-            ViewGroup.LayoutParams layoutParams = tvDoWhat.getLayoutParams();
-            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            tvDoWhat.setLayoutParams(layoutParams);
-            Drawable drawable = context.getApplicationContext().getResources().getDrawable(rightIcon);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvDoWhat.setCompoundDrawables(drawable, null, null, null);
-            tvDoWhat.setCompoundDrawablePadding(4);
-        }
         if (maxEms != 0) {
             tvTitle.setMaxEms(maxEms);
             tvTitle.setSingleLine();
@@ -92,6 +99,37 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         tvDoWhat.setText(doWhat);
     }
 
+    public void setRightWitchShow(int rightWitchShow) {
+        this.rightWitchShow = rightWitchShow;
+        rightWitchShow();
+    }
+
+    public int getRightWitchShow() {
+        return rightWitchShow;
+    }
+
+    private void rightWitchShow() {
+        if (rightIcon != 0) {
+            ViewGroup.LayoutParams layoutParams = tvDoWhat.getLayoutParams();
+            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            tvDoWhat.setLayoutParams(layoutParams);
+            Drawable drawable = context.getApplicationContext().getResources().getDrawable(rightIcon);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvDoWhat.setCompoundDrawables(drawable, null, null, null);
+            tvDoWhat.setCompoundDrawablePadding(4);
+        }
+        if (!TextUtils.isEmpty(rightString)) {
+            tvDoWhat.setText(rightString);
+        }
+        if (rightWitchShow == ICON) {
+            tvDoWhat.setText("");
+        } else if (rightWitchShow == TEXT) {
+            tvDoWhat.setCompoundDrawables(null, null, null, null);
+        } else if(rightWitchShow == NONE){
+            tvDoWhat.setText("");
+            tvDoWhat.setCompoundDrawables(null, null, null, null);
+        }
+    }
 
     @Override
     public void onClick(View v) {

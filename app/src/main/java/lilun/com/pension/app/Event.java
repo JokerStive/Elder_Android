@@ -78,6 +78,18 @@ public class Event {
         }
     }
 
+    //强制退出活动
+    public static class ForcedQuitChat {
+        String showMessage;
+        public ForcedQuitChat(String message) {
+            showMessage = message;
+        }
+
+        public String getShowMessage() {
+            return showMessage;
+        }
+    }
+
 
     //切换的当前组织
     public static class ChangedOrganization {

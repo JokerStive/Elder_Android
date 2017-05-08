@@ -104,6 +104,7 @@
                 android:id="@+id/tv_colleage_descript"
                 style="@style/tv_small_ellipsize"
                 android:paddingLeft="@dimen/dp_10"
+                android:singleLine="false"
                 android:text="学校简介" />
 
             <View

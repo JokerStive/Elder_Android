@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.home;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 
 import com.orhanobut.logger.Logger;
 
@@ -10,6 +11,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
+import lilun.com.pension.ui.activity.activity_detail.ActivityPartnersListFragment;
 
 public class HomeActivity extends BaseActivity {
 
@@ -35,6 +37,15 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initEvent() {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (getTopFragment() instanceof ActivityPartnersListFragment) {
+            if (((ActivityPartnersListFragment) getTopFragment()).dealOnBack())
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

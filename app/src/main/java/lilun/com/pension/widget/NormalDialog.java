@@ -37,6 +37,14 @@ public class NormalDialog {
                 .onPositive((dialog1, which) -> listener.onPositiveClick())
                 .show();
     }
+    public void createShowMessage(Activity activity, String msg, OnPositiveListener listener, boolean cancelOnOutSide) {
+        new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+                .canceledOnTouchOutside(cancelOnOutSide)
+                .content(msg)
+                .positiveText(R.string.confirm)
+                .onPositive((dialog1, which) -> listener.onPositiveClick())
+                .show();
+    }
 
 
     public interface OnPositiveListener {

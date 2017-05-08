@@ -333,5 +333,10 @@
     <string name="activity_has_people_full">活动参加人数已满</string>
     <string name="people_number_">%1$s名成员</string>
     <string name="chat">聊天室</string>
+    <string name="master">主持人</string>
+    <string name="partner_list">成员列表</string>
+    <string name="search">搜索</string>
+    <string name="delete">删除</string>
+    <string name="delete_partners">删除活动成员</string>
 
 </resources>

@@ -431,8 +431,8 @@ public interface ApiService {
      * @param userId
      * @return
      */
-    @DELETE("OrganizationActivities/{id}/partners/rel/{fk}")
-    Observable<Response<Account>> deleteOfPartners(@Path("id") String activityId, @Path("fk") String userId);
+    @DELETE("OrganizationActivities/{id}/rel/partner")
+    Observable<Response<Account>> deleteOfPartners(@Path("id") String activityId, @Header("usersId") String userId);
 
     /**
      * 关闭（解散）活动

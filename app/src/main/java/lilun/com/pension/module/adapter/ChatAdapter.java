@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -36,12 +37,27 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
 
     @Override
     protected void convert(BaseViewHolder helper, PushMessage pushMessage) {
-        String id = null, name = null;
+        String id = "", name = "";
+        String[] kickId;
+        String[] kickName;
+        String kickMessage = "";
         try {
             if (!TextUtils.isEmpty(pushMessage.getFrom())) {
                 JSONObject jsonObject = new JSONObject(pushMessage.getFrom());
                 id = jsonObject.getString("id");
                 name = jsonObject.getString("name");
+            }
+            if (!TextUtils.isEmpty(pushMessage.getTo())) {
+                JSONArray jsonArray = new JSONArray(pushMessage.getTo());
+                kickName = new String[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    kickName[i] = jsonObject.getString("name");
+                    if (User.getUserId().equals(jsonObject.getString("id"))) {
+                        kickMessage += "您被主持人请出了活动\n";
+                    } else
+                        kickMessage += kickName[i] + "被主持人请出了活动\n";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,34 +79,48 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
         }
 
 
-        if ("chat".equals(pushMessage.getVerb())) {
+        if (PushMessage.VERB_CHAR.equals(pushMessage.getVerb())) {
             helper.getView(R.id.tv_notify_message).setVisibility(View.GONE);
-            if (id.equals(User.getUserId())) {
+            if (TextUtils.isEmpty(id)) {
+                helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
+                helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
+                helper.getView(R.id.tv_notify_message).setVisibility(View.VISIBLE);
+                helper.setText(R.id.tv_notify_message, pushMessage.getMessage());
+            } else if (id.equals(User.getUserId())) {
                 helper.getView(R.id.rl_my_message).setVisibility(View.VISIBLE);
                 helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
                 helper.setText(R.id.tv_my_name, name)
                         .setText(R.id.tv_my_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, "", "");
-                Glide.with(App.context).load(iconUrl).dontAnimate()
-                        .placeholder(R.drawable.icon_def)
-                        .error(R.drawable.icon_def)
-                        .into((ImageView) helper.getView(R.id.civ_my_ivatar));
+
             } else {
                 helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
                 helper.getView(R.id.rl_their_message).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_their_name, name)
                         .setText(R.id.tv_their_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, "", "");
-                Glide.with(App.context).load(iconUrl).dontAnimate()
-                        .placeholder(R.drawable.icon_def)
-                        .error(R.drawable.icon_def)
-                        .into((ImageView) helper.getView(R.id.civ_their_ivatar));
             }
         } else {
             helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
             helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
             helper.getView(R.id.tv_notify_message).setVisibility(View.VISIBLE);
-            helper.setText(R.id.tv_notify_message, pushMessage.getMessage());
+            if ( PushMessage.VERB_KICK.equals(pushMessage.getVerb())) {
+                helper.setText(R.id.tv_notify_message, kickMessage);
+            } else if (PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
+                if (User.getUserId().equals(id))
+                    helper.setText(R.id.tv_notify_message, kickMessage);
+                else
+                    helper.setText(R.id.tv_notify_message, pushMessage.getMessage());
+            } else if (PushMessage.VERB_JOIN.equals(pushMessage.getVerb())) {
+                if (User.getUserId().equals(id))
+                    helper.setText(R.id.tv_notify_message, "您已加入本活动");
+                else
+                    helper.setText(R.id.tv_notify_message, pushMessage.getMessage());
+            }
         }
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, "", "");
+        Glide.with(App.context).load(iconUrl).dontAnimate()
+                .placeholder(R.drawable.icon_def)
+                .error(R.drawable.icon_def)
+                .into((ImageView) helper.getView(R.id.civ_my_ivatar));
     }
+
 }

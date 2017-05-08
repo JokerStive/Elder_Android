@@ -26,6 +26,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,6 +105,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Bind(R.id.actv_activity_creator)
     AppCompatTextView actvActCreator;
 
+    @Bind(R.id.ll_partners_list)
+    LinearLayout llPartnerList;
     @Bind(R.id.rv_partner_list)
     RecyclerView rvPartnerList;
     @Bind(R.id.actv_people_number)
@@ -150,7 +153,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     OrganizationActivity activity;
     private InputSendPopupWindow inputSendPopupWindow;
     private String topic;
-    private int ops = 2;
+    private int qos = 2;
 
     public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
@@ -303,6 +306,18 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         mPresenter.getActivityDetail(mActivityId);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void forcedquitChat(Event.ForcedQuitChat forcedQuitChat) {
+        new NormalDialog().createShowMessage(_mActivity, forcedQuitChat.getShowMessage(), new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                ActivityClassifyFragment fragment = findFragment(ActivityClassifyFragment.class);
+                if (fragment != null)
+                    popTo(ActivityClassifyFragment.class, false);
+            }
+        }, false);
+    }
+
     private void getActivityDetail() {
         mPresenter.getActivityDetail(mActivityId);
     }
@@ -383,6 +398,10 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
         isMaster = User.getUserId().equals(activity.getMasterId());
         showButton(isMaster, isSignUp);
+        if (activity.getPartnerList() != null && activity.getPartnerList().size() > 0)
+            llPartnerList.setVisibility(View.VISIBLE);
+        else
+            llPartnerList.setVisibility(View.GONE);
         if (partnersIconAdapter != null)
             partnersIconAdapter.replaceAll(activity.getPartnerList());
     }
@@ -470,16 +489,17 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         if (MQTTManager.getInstance().isConnected()) {
 
             Logger.i("活动订阅中:" + topic);
-            MQTTManager.getInstance().subscribe(topic, ops, new IMqttActionListener() {
+            MQTTManager.getInstance().subscribe(topic, qos, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     showDialog("活动订阅成功");
 
                     Date date = new Date();
-                    date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
-
-                    PushMessage pushMessage = new PushMessage().setVerb("chat")
-                            .setMessage(User.getName() + "加入了本活动")
+                    //     date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
+                    String from = "{\"id\":\"" + User.getUserId() + "\",\"name\":\"" + User.getName() + "\"}";
+                    PushMessage pushMessage = new PushMessage().setVerb(PushMessage.VERB_JOIN)
+                            .setFrom(from)
+                            .setMessage("欢迎 " + User.getName() + " 加入本活动")
                             .setTime(StringUtils.date2String(date));
                     MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
                 }
@@ -503,12 +523,13 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         activity.getPartnerList().remove(User.getUserId());
         showDetail(activity);
         Date date = new Date();
-        date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
-
-        PushMessage pushMessage = new PushMessage().setVerb("chat")
-                .setMessage(User.getName() + "退出了本活动")
+        //  date.setTime(new Date().getTime() - 8 * 60 * 60 * 1000);
+        String from = "{\"id\":\"" + User.getUserId() + "\",\"name\":\"" + User.getName() + "\"}";
+        PushMessage pushMessage = new PushMessage().setVerb(PushMessage.VERB_QUIT)
+                .setFrom(from)
+                .setMessage(User.getName() + "已退出本活动")
                 .setTime(StringUtils.date2String(date));
-        MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
+        MQTTManager.getInstance().publish(topic, qos, pushMessage.getJsonStr());
         MQTTManager.getInstance().unsubscribe(topic, null, new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -540,6 +561,11 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Override
     public void successCancelActivity() {
         refreshActivityData();
+        PushMessage pushMessage = new PushMessage();
+        pushMessage.setVerb(PushMessage.VERB_QUIT)
+                .setMessage("主持人已解散活动")
+                .setTime(StringUtils.date2String(new Date()));
+        MQTTManager.getInstance().publish(topic,qos,pushMessage.getJsonStr());
         popTo(ActivityClassifyFragment.class, false);
     }
 
@@ -567,10 +593,6 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private void dealQuestionChat() {
         if ("cancle".equals(activity.getStatus())) {
             showDialog(getString(R.string.activity_has_cancel));
-            return;
-        }
-        if (isMaster) {
-            goPartnersList();
             return;
         }
 
@@ -653,6 +675,5 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private void addQuestion() {
         start(ActivityQuestionListFragment.newInstance(activity));
     }
-
 
 }

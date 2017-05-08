@@ -66,7 +66,7 @@ public interface ActivityDetailContact {
 
         void showPartners(List<Account> accounts);
 
-        void successDeletePartners();
+        void successDeletePartners(String userId, String userName);
 
 
     }
@@ -74,7 +74,7 @@ public interface ActivityDetailContact {
     interface PPartner extends IPresenter<VPartner> {
         void queryPartners(String activityId, String filter, int skip);
 
-        void deletePartners(String activityId, String userId);
+        void deletePartners(String activityId, String userId, String userName);
 
 
     }
