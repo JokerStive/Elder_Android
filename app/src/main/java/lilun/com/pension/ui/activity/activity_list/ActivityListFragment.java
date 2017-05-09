@@ -66,7 +66,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private String searchStr = "";
     private String join_status = "";
     private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
-    private String partner_number;
+    private String partner_number="";
     private String status = ",\"status\":\"checking\"";
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
