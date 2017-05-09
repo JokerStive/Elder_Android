@@ -118,7 +118,13 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
-            android:name=".ui.lbs.UrgentInfoActivity"
+            android:name=".ui.lbs.UrgentAidInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.FloatActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <activity
+            android:name=".ui.lbs.AnnounceInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.FloatActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />

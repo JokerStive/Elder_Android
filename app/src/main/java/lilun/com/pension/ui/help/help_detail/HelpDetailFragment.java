@@ -362,7 +362,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
                 });
             } else {
                 new NormalDialog().createNormal(_mActivity, R.string.confirm_cancel_help, () -> {
-                    mPresenter.cancelReply(mReplyId);
+                    mPresenter.deleteAidAnswer(mAidId,mReplyId);
                 });
             }
 

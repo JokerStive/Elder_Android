@@ -38,7 +38,7 @@ import lilun.com.pension.ui.push_info.CacheInfoListActivity;
  *         create at 2017/4/27 9:27
  *         email : yk_developer@163.com
  */
-public class UrgentInfoActivity extends Activity {
+public class UrgentAidInfoActivity extends Activity {
     @Bind(R.id.iv_express_icon)
     ImageView ivExpressIcon;
 
@@ -71,7 +71,7 @@ public class UrgentInfoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_express_help);
+        setContentView(R.layout.pop_aid);
         ButterKnife.bind(this);
 //        SDKInitializer.initialize(getApplicationContext());
         EventBus.getDefault().register(this);

@@ -40,7 +40,6 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
         reply.setWhatModel("OrganizationAid");
         reply.setWhatId(aidId);
         reply.setContent(replyContent);
-//        reply.setIsDraft(false);
         addSubscribe(NetHelper.getApi()
                 .newAidReply(reply.getWhatId(), reply)
                 .compose(RxUtils.handleResult())
@@ -89,11 +88,9 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     }
 
     @Override
-    public void cancelReply(String replyId) {
-        OrganizationReply reply = new OrganizationReply();
-        reply.setIsDraft(true);
+    public void deleteAidAnswer(String aidId,String replyId) {
         addSubscribe(NetHelper.getApi()
-                .putReply(replyId, reply)
+                .deleteAidAnswer(aidId, replyId)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {

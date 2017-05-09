@@ -31,7 +31,6 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void getTransferData() {
         if (!TextUtils.isEmpty(User.getUserId())) {
-
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         }

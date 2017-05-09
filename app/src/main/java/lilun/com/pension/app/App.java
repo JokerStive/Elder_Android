@@ -56,10 +56,9 @@ public class App extends Application {
      * mqtt连接订阅
      */
     public static void mqttConnectAndSub() {
-        String[] topics = new String[]{"OrganizationAid/.added"};
-        int[] ops = new int[]{2};
+        String[] topics = new String[]{"OrganizationAid/.added", "OrganizationInformation/.added"};
+        int[] ops = new int[]{2, 2};
         MQTTManager.getInstance().createConnect(User.getUserName(), User.getPassword(), topics, ops);
-
     }
 
 

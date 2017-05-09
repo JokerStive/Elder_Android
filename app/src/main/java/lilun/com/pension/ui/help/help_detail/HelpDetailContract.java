@@ -24,6 +24,6 @@ public interface HelpDetailContract {
         void createHelpReply(String aidId,String replyContent);
         void acceptOneReply(String aidId,String replyId,int kind);
         void deleteAid(String aidId);
-        void cancelReply(String replyId);
+        void deleteAidAnswer(String aidId,String replyId);
     }
 }

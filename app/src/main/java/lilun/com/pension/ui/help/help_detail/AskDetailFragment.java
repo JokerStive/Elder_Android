@@ -46,13 +46,17 @@ import lilun.com.pension.widget.slider.BannerPager;
  *         create at 2017/2/20 9:34
  *         email : yk_developer@163.com
  */
+
+
 public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter> implements HelpDetailContract.View, View.OnClickListener {
 
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
+
     private OrganizationAid mAid;
     private TextView tvChangeStatus;
     private TextView tvTitle;
@@ -82,14 +86,8 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
     @Subscribe
     public void refreshReplies(Event.RefreshHelpReply event) {
-        mPresenter.getHelpDetail(_mActivity,mAidId);
-//        if (mReplyAdapter != null && event != null) {
-//            mReplyAdapter.add(event.reply);
-//            if (tvJonerTitle.getVisibility() == View.GONE) {
-//                tvJonerTitle.setVisibility(View.VISIBLE);
-//            }
-//
-//        }
+//        mIsRefresh=true;
+        mPresenter.getHelpDetail(_mActivity, mAidId);
     }
 
     @Override
@@ -230,9 +228,9 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
         //显示内容
         String memo = mAid.getMemo();
-        if (TextUtils.isEmpty(memo)){
+        if (TextUtils.isEmpty(memo)) {
             llContent.setVisibility(View.GONE);
-        }else {
+        } else {
             tvContent.setText(memo);
         }
 
@@ -252,7 +250,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
                         }
                     }
                 }
-                setChangeStatus(!hasJoin,hasJoin?null:"回答");
+                setChangeStatus(!hasJoin, hasJoin ? null : "回答");
             }
         }
 
@@ -262,7 +260,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
             tvJonerTitle.setVisibility(View.GONE);
         } else {
             mReplyAdapter.setAnswerId(mAid.getAnswerId());
-            mReplyAdapter.addAll(replies);
+            mReplyAdapter.replaceAll(replies);
         }
 
     }

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
+import com.orhanobut.logger.Logger;
+
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     private HelpFilter helpFilter = new HelpFilter();
     private OrganizationAidAdapter mAidAdapter;
     private List<OrganizationAid> helps;
+//    private Integer mkind;
 
     public static HelpFragment newInstance(boolean isMain) {
         HelpFragment fragment = new HelpFragment();
@@ -150,6 +153,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             filterView.setTitlesAndDatas(conditionTitles, conditionOptionsList, mSwipeLayout);
             filterView.setOnOptionClickListener((whereKey, whereValue) -> {
                 if (TextUtils.equals(whereKey, filter_kind)) {
+//                    mkind=Integer.parseInt(whereKey);
                     helpFilter.setKind(whereValue);
                 } else if (TextUtils.equals(whereKey, filter_priority)) {
                     helpFilter.setPriority(whereValue);
@@ -171,9 +175,10 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
 
     private void getHelps(int skip) {
         mSwipeLayout.setRefreshing(true);
-//        Gson gson = new Gson();
+        helpFilter.setOrganizationId(isMain ? "" : User.getCurrentOrganizationId());
+
         String filter = helpFilter.toString();
-//        Logger.d("互助 --filter = " + filter);
+        Logger.d("求助列表 filter--"+filter);
         if (isMain) {
             mPresenter.getAboutMe(filter, skip);
         } else {
@@ -186,17 +191,15 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
         this.helps = helps;
         completeRefresh();
-        if (helps != null) {
-//            for (OrganizationAid aid : helps) {
-//                aid.setItemType(aid.getKind());
-//            }
-            if (mAidAdapter == null) {
-                setRecyclerAdapter(helps);
-            } else if (isLoadMore) {
-                mAidAdapter.addAll(helps);
-            } else {
-                mAidAdapter.replaceAll(helps);
-            }
+        if (helps == null) {
+            helps = new ArrayList<>();
+        }
+        if (mAidAdapter == null) {
+            setRecyclerAdapter(helps);
+        } else if (isLoadMore) {
+            mAidAdapter.addAll(helps);
+        } else {
+            mAidAdapter.replaceAll(helps);
         }
     }
 

@@ -24,4 +24,8 @@
         android:id="@+id/fourth"
         style="@style/tv_small" />
 
+    <View
+        android:layout_marginTop="5dp"
+        style="@style/line_gray"/>
+
 </LinearLayout>

@@ -115,10 +115,6 @@ public class Event {
 
     //刷新紧急消息条数
     public static class RefreshUrgentInfo {
-        public RefreshUrgentInfo(OrganizationAid aid) {
-            this.aid = aid;
-        }
 
-        public OrganizationAid aid;
     }
 }

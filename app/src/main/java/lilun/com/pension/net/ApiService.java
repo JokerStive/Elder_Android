@@ -1,6 +1,5 @@
 package lilun.com.pension.net;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.module.bean.Account;
@@ -14,7 +13,6 @@ import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.MerchantMemo;
 import lilun.com.pension.module.bean.NestedReply;
@@ -164,7 +162,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationAids/{id}/getDetails")
-    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId,@Query("filter") String filter);
+    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId,@Query("replyFilter") String filter);
 
 
     /**
@@ -508,10 +506,10 @@ public interface ApiService {
     Observable<Response<Object>> putAid(@Path("id") String aidId, @Body OrganizationAid aid);
 
     /**
-     * 更新一个reply
+     * 删除aid的回答
      */
-    @PUT("OrganizationReplies/{id}")
-    Observable<Response<Object>> putReply(@Path("id") String replyId, @Body OrganizationReply reply);
+    @DELETE("OrganizationAids/{aidId}/answer/{replyId}")
+    Observable<Response<Object>> deleteAidAnswer(@Path("aidId") String aidId, @Path("replyId") String replyId);
 
     /**
      * 更新个人资料

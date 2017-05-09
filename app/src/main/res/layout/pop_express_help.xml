@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red">
+        android:background="@color/agency">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -20,18 +21,41 @@
 
             <ImageView
                 android:id="@+id/iv_express_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/shape_rect_black"
+                />
 
             <TextView
-                android:id="@+id/tv_express_desc"
+                android:layout_toRightOf="@id/iv_express_icon"
+                android:id="@+id/tv_express_title"
                 style="@style/tv_small"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:text="有人需要您的帮助"
                 android:textColor="@color/white" />
 
-        </LinearLayout>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_alignLeft="@id/tv_express_title"
+                android:layout_below="@id/tv_express_title"
+                android:id="@+id/tv_express_come"
+                style="@style/tv_small"
+                android:layout_gravity="center_vertical"
+                android:text="来源：社区公告"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_alignLeft="@id/tv_express_title"
+                android:layout_below="@id/tv_express_come"
+                android:id="@+id/tv_express_time"
+                style="@style/tv_small"
+                android:layout_gravity="center_vertical"
+                android:text="2015-03-15"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/express_delete"
@@ -42,27 +66,11 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_express_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl"
-        android:background="@color/white" />
-
-    <!--<com.baidu.mapapi.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/rv_express_info"
-        android:background="@drawable/shape_rect_white"
-         />-->
-
-    <FrameLayout
-        android:layout_below="@id/rv_express_info"
-        android:id="@+id/fl_container"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        />
+    <TextView
+        android:padding="20dp"
+        android:text="啊哈哈荷花和我好的啊黑窝啊黑窝话费哦w"
+        android:id="@+id/content"
+        style="@style/tv_small" />
 
     <Button
         android:id="@+id/btn_all"
@@ -70,8 +78,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/fl_container"
-        android:background="@drawable/shape_rect_red"
+        android:background="@drawable/selector_agency"
         android:text="查看全部"
         android:textSize="17sp" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@ public class Constants {
     public static final String organizationAid = "OrganizationAid";
     public static final String organizationProduct = "OrganizationProduct";
     public static final String organizationActivity = "OrganizationActivity";
+    public static final String organizationInfo= "OrganizationInformation";
 
 
     public static final String special_organization_agency = "/社会组织/营利/养老";

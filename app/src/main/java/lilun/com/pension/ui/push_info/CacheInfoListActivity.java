@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import org.litepal.crud.DataSupport;
 
@@ -19,9 +20,11 @@ import lilun.com.pension.app.Constants;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.adapter.CacheInfoAdapter;
 import lilun.com.pension.module.bean.CacheInfo;
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -45,16 +48,6 @@ public class CacheInfoListActivity extends BaseActivity {
     private String model;
     private List<PushMessage> pushMessages;
     private CacheInfoAdapter cacheInfoAdapter;
-
-
-//    public static CacheInfoListActivity newInstance(String title, String model) {
-//        CacheInfoListActivity fragment = new CacheInfoListActivity();
-//        Bundle args = new Bundle();
-//        args.putString("title",title);
-//        args.putString("model",model);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
 
     @Override
@@ -102,12 +95,12 @@ public class CacheInfoListActivity extends BaseActivity {
 
     private void clearCacheInfo() {
         new MaterialDialog.Builder(this)
-                .content("确定清空"+title+"?")
+                .content("确定清空" + title + "?")
                 .positiveText(R.string.confirm)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
                     cacheInfoAdapter.clear();
-                    DataSupport.deleteAll(PushMessage.class,"model = ?", model);
+                    DataSupport.deleteAll(PushMessage.class, "model = ?", model);
                 })
                 .onNegative((dialog1, which1) -> dialog1.dismiss())
                 .show();
@@ -117,6 +110,7 @@ public class CacheInfoListActivity extends BaseActivity {
     private List<CacheInfo> getCacheInfos() {
         List<CacheInfo> cacheInfos = new ArrayList<>();
         if (pushMessages != null) {
+            Logger.d("数据库--" + model + "---缓存的条数--" + pushMessages.size());
             for (int i = 0; i < pushMessages.size(); i++) {
                 PushMessage pushMessage = pushMessages.get(i);
                 String data = pushMessage.getData();
@@ -135,7 +129,14 @@ public class CacheInfoListActivity extends BaseActivity {
         switch (model) {
             case Constants.organizationAid:
                 OrganizationAid aid = gson.fromJson(data, OrganizationAid.class);
-                cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getAddress(), aid.getCreatedAt(), aid.getMobile());
+                String createdAt = aid.getCreatedAt();
+
+                cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getAddress(), StringUtils.IOS2ToUTC(createdAt, 6), aid.getMobile());
+                break;
+
+            case Constants.organizationInfo:
+                Information Information = gson.fromJson(data, Information.class);
+                cacheInfo = new CacheInfo(Information.getCreatorName(), Information.getTitle(), StringUtils.IOS2ToUTC(Information.getCreatedAt(), 6), Information.getContext());
                 break;
 
         }

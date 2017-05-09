@@ -171,11 +171,35 @@
                 app:input_title="@string/price" />
 
             <lilun.com.pension.widget.InputView
+                android:visibility="gone"
                 android:id="@+id/input_memo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="19dp"
                 app:input_title="@string/memo" />
+
+            <TextView
+                style="@style/tv_small_ellipsize"
+                android:layout_marginTop="19dp"
+                android:text="@string/memo"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_reply">
+
+                <EditText
+                    android:maxLines="4"
+                    android:id="@+id/et_content"
+                    style="@style/et_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:gravity="top"
+                    android:textSize="17sp" />
+            </RelativeLayout>
 
             <TextView
                 style="@style/tv_small_ellipsize"

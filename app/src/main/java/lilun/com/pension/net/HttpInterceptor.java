@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
+import lilun.com.pension.module.utils.PreUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,6 +42,7 @@ public class HttpInterceptor implements Interceptor {
                 EventBus.getDefault().post(new Event.PermissionDenied());
             } else {
                 Logger.d("Accounts/me检查也是410，跳转登录界面");
+                PreUtils.putString(User.token,"");
                 EventBus.getDefault().post(new Event.TokenFailure());
             }
         }

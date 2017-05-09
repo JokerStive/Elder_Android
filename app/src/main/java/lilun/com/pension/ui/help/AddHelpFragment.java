@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,8 +66,8 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     @Bind(R.id.input_price)
     InputView inputPrice;
 
-    @Bind(R.id.input_memo)
-    InputView inputMemo;
+//    @Bind(R.id.input_memo)
+//    InputView inputMemo;
 
     @Bind(R.id.tv_create)
     TextView btnCreate;
@@ -86,6 +87,10 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
     @Bind(R.id.rl_choice_priority)
     RelativeLayout rlChoicePriority;
+
+
+    @Bind(R.id.et_content)
+    EditText etContent;
 
 
     private Integer mKind;
@@ -173,7 +178,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .title("-选择求助优先级-")
                 .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
                     tvPriorityValue.setText(helpPriority[which]);
-                    mPriority=which==helpPriority.length-1?10:which;
+                    mPriority = which == helpPriority.length - 1 ? 10 : which;
                     return true;
                 })
                 .show();
@@ -253,7 +258,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setTitle(inputTopic.getInput());
         organizationAid.setAddress(inputAddress.getInput());
         organizationAid.setPriority(mPriority);
-        organizationAid.setMemo(inputMemo.getInput());
+        organizationAid.setMemo(etContent.getText().toString());
         organizationAid.setKind(mKind);
         //如果提供了补贴
         if (!TextUtils.isEmpty(inputPrice.getInput())) {

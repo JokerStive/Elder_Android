@@ -10,18 +10,26 @@ import android.text.TextUtils;
  *         email : yk_developer@163.com
  */
 public class HelpFilter {
-//    private String priorityKey = "";
-//    private String statusKey = "";
 
     @Override
     public String toString() {
-        return "{\"order\":\"createdAt DESC\",\"where\":{\"kind\":" + kind + priority + status + "," + "\"title\":{\"like\":\"" + title + "\"}}}";
+        return "{\"order\":\"createdAt DESC\",\"where\":{\"title\":{\"like\":\"" + title + "\"}"+organizationId + kind + priority + status+"}}";
     }
 
     private String title = "";
-    private String kind = "{\"neq\":\"2\"}";
+    private String kind = "";
     private String priority = "";
     private String status = "";
+    private String organizationId = "";
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public HelpFilter setOrganizationId(String id) {
+        this.organizationId = TextUtils.isEmpty(id) ? "" : ",\"organizationId\":\"" + id + "\"";
+        return this;
+    }
 
     public String getTitle() {
         return title;
@@ -33,12 +41,11 @@ public class HelpFilter {
     }
 
     public String getKind() {
-
         return kind;
     }
 
     public HelpFilter setKind(String kind) {
-        this.kind = TextUtils.isEmpty(kind) ? "{\"neq\":2}" : kind;
+        this.kind = TextUtils.isEmpty(kind) ? "" : ",\"kind\":\"" + kind + "\"";
         return this;
     }
 
@@ -47,7 +54,6 @@ public class HelpFilter {
     }
 
     public HelpFilter setPriority(String priority) {
-//        priorityKey = TextUtils.isEmpty(priority) ? "" : "priority";
         this.priority = TextUtils.isEmpty(priority) ? "" : ",\"priority\":\"" + priority + "\"";
         return this;
     }

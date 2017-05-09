@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.PushMessage;
@@ -69,6 +68,9 @@ public class MQTTCallbackBus implements MqttCallback {
             }
             if (messageData.contains("\"to\"")) {
                 JSONArray dataJson = (JSONArray) jsonObject.get("to");
+
+
+
                 String to = dataJson.toString();
                 pushMessage.setTo(to);
             }
@@ -101,10 +103,12 @@ public class MQTTCallbackBus implements MqttCallback {
 
             pushMessage.save();
 
-            if (Constants.organizationAid.equals(pushMessage.getModel())) {
-
+            //求助推送
+            if (TextUtils.equals(topic,"OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
                 EventBus.getDefault().post(pushMessage);
             }
+
+
             dealActivity(topic, pushMessage);
 
         }
