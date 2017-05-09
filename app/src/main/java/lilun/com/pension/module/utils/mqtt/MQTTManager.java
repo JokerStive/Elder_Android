@@ -17,7 +17,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
 import lilun.com.pension.module.utils.DeviceUtils;
-import lilun.com.pension.module.utils.ToastHelper;
 
 
 /**
@@ -100,7 +99,7 @@ public class MQTTManager {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Logger.i("链接失败" + exception.getMessage());
-                    ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
+//                    ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
                 }
             });
         } catch (MqttException e) {
@@ -182,7 +181,7 @@ public class MQTTManager {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     for(String topic:topics){
                         Logger.i(topic+"---订阅失败");
-                        ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
+//                        ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
                     }
                 }
             });

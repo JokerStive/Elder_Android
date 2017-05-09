@@ -519,11 +519,11 @@ public interface ApiService {
 
 
     /**
-     * 修改订单
+     * 修改订单状态
      */
     @FormUrlEncoded
-    @PUT("ProductOrders/{id}")
-    Observable<Response<Object>> putOrderStatus(@Path("id") String productId, @Field("status") String ststus);
+    @PUT("ProductOrders/{id}/changeStatus")
+    Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") String ststus);
 
     /**
      * 修改订单
