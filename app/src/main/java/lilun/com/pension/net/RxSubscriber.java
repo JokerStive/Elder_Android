@@ -16,8 +16,8 @@ import rx.Subscriber;
 public abstract class RxSubscriber<T> extends Subscriber<T> {
 
     private Activity activity;
-    private boolean needProgressBar;
-    private RxProgressDialog dialog;
+    public boolean needProgressBar;
+    public RxProgressDialog dialog;
 
     public RxSubscriber() {
     }
@@ -59,6 +59,25 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
 
         if (e instanceof ApiException) {
             ToastHelper.get().showWareShort(((ApiException) e).getErrorMessage());
+        } else {
+            Logger.d(e.getMessage());
+        }
+        _error();
+    }
+
+    /**
+     * 根据状态码更改显示的内容
+     * @param e
+     * @param errorCode
+     * @param errorMessage
+     */
+    public void onError(Throwable e, int errorCode, String errorMessage) {
+        if (needProgressBar) {
+            dialog.cancel();
+        }
+        if (e instanceof ApiException) {
+            if (errorCode == ((ApiException) e).getErrorCode())
+                ToastHelper.get().showWareShort(errorMessage);
         } else {
             Logger.d(e.getMessage());
         }

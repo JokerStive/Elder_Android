@@ -2,6 +2,8 @@ package lilun.com.pension.ui.register;
 
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.net.ApiException;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -28,8 +30,7 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
 
                     @Override
                     public void onError(Throwable e) {
-                        super.onError(e);
-                     //   e.getMessage()
+                        super.onError(e, 604, "该手机号码被注册，请更换手机号码");
                     }
                 }));
     }

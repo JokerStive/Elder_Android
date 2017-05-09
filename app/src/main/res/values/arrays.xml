@@ -179,8 +179,7 @@
     </string-array>
 
     <string-array name="activity_filter_status">
-        <item>报名状态</item>
-        <item>活动状态</item>
+        <item>参与人数</item>
         <item>发布时间</item>
     </string-array>
     <string-array name="activity_join_status">
@@ -193,6 +192,10 @@
         <item>未开始</item>
         <item>进行中</item>
         <item>已结束</item>
+    </string-array>
+    <string-array name="partners_number">
+        <item>参与最多</item>
+        <item>参与最少</item>
     </string-array>
     <string-array name="timing_status">
         <item>由新到旧</item>

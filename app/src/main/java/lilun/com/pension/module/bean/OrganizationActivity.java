@@ -77,6 +77,7 @@ public class OrganizationActivity extends BaseBean {
     private ArrayList<IconModule> icon;
     private List<String> partnerList;
     private Account contact;
+    private int partnerCount;
 
     public String getDescription() {
         return description;
@@ -286,6 +287,14 @@ public class OrganizationActivity extends BaseBean {
 
     public void setContact(Account contact) {
         this.contact = contact;
+    }
+
+    public int getPartnerCount() {
+        return partnerCount;
+    }
+
+    public void setPartnerCount(int partnerCount) {
+        this.partnerCount = partnerCount;
     }
 
     public static int TYPE = 1;

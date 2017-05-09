@@ -65,6 +65,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private List<OrganizationActivity> activities;
     private String searchStr = "";
     private String join_status = "";
+    private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
+    private String partner_number;
     private String status = ",\"status\":\"checking\"";
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
@@ -183,39 +185,38 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         //除了区域以外的条件弹窗
         List<ConditionOption> conditionOptionsList = new ArrayList<>();
         List<Option> actJoinOptions = new ArrayList<>();
-        actJoinOptions.add(new Option("", App.context.getResources().getStringArray(R.array.activity_join_status)[0]));
-        actJoinOptions.add(new Option("0", App.context.getResources().getStringArray(R.array.activity_join_status)[1]));
-        actJoinOptions.add(new Option("1", App.context.getResources().getStringArray(R.array.activity_join_status)[2]));
+        actJoinOptions.add(new Option("0", App.context.getResources().getStringArray(R.array.partners_number)[0]));
+        actJoinOptions.add(new Option("1", App.context.getResources().getStringArray(R.array.partners_number)[1]));
         conditionOptionsList.add(new ConditionOption(
                 App.context.getResources().getStringArray(R.array.activity_filter_status)[0], "0", actJoinOptions));
 
-        List<Option> actStatusOptions = new ArrayList<>();
-        actStatusOptions.add(new Option("", App.context.getResources().getStringArray(R.array.activity_status)[0]));
-        actStatusOptions.add(new Option("0", App.context.getResources().getStringArray(R.array.activity_status)[1]));
-        actStatusOptions.add(new Option("1", App.context.getResources().getStringArray(R.array.activity_status)[2]));
-        actStatusOptions.add(new Option("2", App.context.getResources().getStringArray(R.array.activity_status)[3]));
-        conditionOptionsList.add(new ConditionOption(
-                App.context.getResources().getStringArray(R.array.activity_filter_status)[1], "1", actStatusOptions));
 
         List<Option> acttimingStatusOptions = new ArrayList<>();
         acttimingStatusOptions.add(new Option("", App.context.getResources().getStringArray(R.array.timing_status)[0]));
         acttimingStatusOptions.add(new Option("0", App.context.getResources().getStringArray(R.array.timing_status)[1]));
         conditionOptionsList.add(new ConditionOption(
-                App.context.getResources().getStringArray(R.array.activity_filter_status)[2], "2", acttimingStatusOptions));
+                App.context.getResources().getStringArray(R.array.activity_filter_status)[1], "1", acttimingStatusOptions));
         if (conditionOptionsList != null) {
 
             filterView.setTitlesAndDatas(filterTitles, conditionOptionsList, mSwipeLayout);
             filterView.setOnOptionClickListener((whereKey, whereValue) -> {
                 Log.d("zp", whereKey + "  " + whereValue);
-               //我的状态
-                if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[2])) {
+                //我的状态
+                if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[0])) {
                     if ("0".equals(whereValue)) {  //降序
-                        //已报名的
+                        partner_number = partnerNumber[1];
+                    } else {  //升序
+                        partner_number = partnerNumber[0];
+                    }
+                    timing_status = "";
+                }
+                if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[1])) {
+                    if ("0".equals(whereValue)) {  //降序
                         timing_status = timeOrder[1];
                     } else {  //升序
-                        //未报名的
                         timing_status = timeOrder[0];
                     }
+                    partner_number = "";
                 }
                 getActivityList(0);
             });
@@ -234,7 +235,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void getActivityList(int skip) {
         // TODO 关联organizationId
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + "}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 

@@ -49,6 +49,11 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         mModule.putBelongOrganizations(organizationAccounts);
                         mView.loginSuccess();
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e,401,"登录失败");
+                    }
                 }));
     }
 
