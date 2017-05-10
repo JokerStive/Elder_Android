@@ -5,6 +5,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.widget.TextView;
 
 import lilun.com.pension.R;
 import lilun.com.pension.base.BaseFragment;
@@ -26,6 +27,7 @@ public class AnnounceDetailFragment extends BaseFragment {
 
 
     private Information information;
+    private TextView tvH5;
 
     public static AnnouncementItemFragment newInstance(Information information) {
         AnnouncementItemFragment fragment = new AnnouncementItemFragment();
@@ -54,6 +56,11 @@ public class AnnounceDetailFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        tvH5 = (TextView) mRootView.findViewById(R.id.tv_h5);
+        showH5();
+    }
+
+    private void showH5() {
         String context = information.getContext();
         if (!TextUtils.isEmpty(context)) {
             Observable.create(new Observable.OnSubscribe<String>() {
@@ -63,13 +70,12 @@ public class AnnounceDetailFragment extends BaseFragment {
                     subscriber.onNext(spanned.toString());
                 }
             }).compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<String>() {
+                    .subscribe(new RxSubscriber<String>(_mActivity) {
                         @Override
-                        public void _next(String s) {
-
+                        public void _next(String h5) {
+                            tvH5.setText(h5);
                         }
                     });
         }
-//        Html.fromHtml()
     }
 }

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import org.litepal.LitePal;
 
+import lilun.com.pension.BuildConfig;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
@@ -34,7 +36,11 @@ public class App extends Application {
     private void init() {
 
         //日志
-        Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+        if (BuildConfig.LOG_DEBUG) {
+            Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+        } else {
+            Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
+        }
 
         //内存泄漏
 //        LeakCanary.install(this);
@@ -46,7 +52,7 @@ public class App extends Application {
         SQLiteDatabase db = LitePal.getDatabase();
 
 
-//        SDKInitializer.
+//       百度地图
         SDKInitializer.initialize(this);
 
     }
