@@ -1,5 +1,6 @@
 package lilun.com.pension.app;
 
+import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.PushMessage;
@@ -116,5 +117,14 @@ public class Event {
     //刷新紧急消息条数
     public static class RefreshUrgentInfo {
 
+    }
+
+    //刷新紧急消息条数
+    public static class AnnounceH5 {
+        public Information information;
+
+        public AnnounceH5(Information information) {
+            this.information = information;
+        }
     }
 }

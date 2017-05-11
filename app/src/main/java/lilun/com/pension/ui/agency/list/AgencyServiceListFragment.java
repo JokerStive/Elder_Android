@@ -2,7 +2,6 @@ package lilun.com.pension.ui.agency.list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
@@ -57,8 +55,6 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    @Bind(R.id.fab_add_service)
-    FloatingActionButton fabAddService;
 
     private String mCategoryId;
     private String mTitle;
@@ -84,10 +80,6 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     }
 
 
-    @OnClick({R.id.fab_add_service})
-    public void onClick(View view) {
-        //TODO 新增一个服务
-    }
 
     @Override
     protected void getTransferData(Bundle arguments) {

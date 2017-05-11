@@ -22,7 +22,9 @@ import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pension.ui.announcement.AnnouncementFragment;
+import lilun.com.pension.ui.health.detail.LoadH5Fragment;
 import lilun.com.pension.ui.health.list.HealthListFragment;
 import lilun.com.pension.widget.ElderModuleClassifyDecoration;
 import lilun.com.pension.widget.ElderModuleItemDecoration;
@@ -40,6 +42,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
     @Bind(R.id.title_bar)
     PositionTitleBar titleBar;
+
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -166,9 +169,18 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
         completeRefresh();
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((productCategory -> {
-
-            start(HealthListFragment.newInstance(productCategory));
+        adapter.setOnItemClickListener((elderModule -> {
+            String name = elderModule.getName();
+            if (name.equals("陪诊服务")) {
+                //跳转到居家服务
+                start(AgencyServiceListFragment.newInstance("陪诊服务", "/服务/居家服务/陪诊服务", 0));
+            } else if (name.equals("健康刊物")) {
+                //加载一个url
+                start(LoadH5Fragment.newInstance(name, "http://www.yydaobao.com/"));
+            } else {
+                //列表展示信息
+                start(HealthListFragment.newInstance(elderModule));
+            }
 
         }));
         mClassifyRecycler.setAdapter(adapter);

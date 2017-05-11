@@ -45,7 +45,7 @@ public class HelpFilter {
     }
 
     public HelpFilter setKind(String kind) {
-        this.kind = TextUtils.isEmpty(kind) ? "" : ",\"kind\":\"" + kind + "\"";
+        this.kind = TextUtils.isEmpty(kind) ? "" : ",\"kind\":" + kind + "";
         return this;
     }
 

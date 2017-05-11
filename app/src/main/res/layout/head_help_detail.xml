@@ -142,7 +142,6 @@
         style="@style/tv_small"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:maxLines="4"
         android:gravity="center_vertical"
         tools:text="茶韵新城规范" />
     </LinearLayout>

@@ -5,6 +5,7 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
@@ -25,7 +26,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
 
     @Override
     public void getClassifies() {
-        List<ActivityCategory> activityCategories = (List<ActivityCategory>) ACache.get().getAsObject("activityClassify");
+        List<ActivityCategory> activityCategories = (List<ActivityCategory>) ACache.get().getAsObject(User.getCurrentOrganizationId()+"activityClassify");
         if (activityCategories != null && activityCategories.size() != 0) {
             Logger.i("activity classify has cache");
             view.showClassifies(activityCategories);
@@ -39,7 +40,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
                 .subscribe(new RxSubscriber<List<ActivityCategory>>() {
                     @Override
                     public void _next(List<ActivityCategory> activityCategories) {
-                        ACache.get().put("activityClassify", (Serializable) activityCategories);
+                        ACache.get().put(User.getCurrentOrganizationId()+"activityClassify", (Serializable) activityCategories);
                         view.showClassifies(activityCategories);
                     }
 

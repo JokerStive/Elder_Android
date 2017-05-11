@@ -23,13 +23,11 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class HealthServiceAdapter extends QuickAdapter<Information> {
-    private BaseFragment fragment;
-    private OnItemClickListener listener;
+    //    private OnItemClickListener listener;
     ContextItem item = new ContextItem();
 
     public HealthServiceAdapter(BaseFragment fragment, List<Information> data) {
         super(R.layout.item_module_second, data);
-        this.fragment = fragment;
     }
 
     @Override
@@ -47,30 +45,13 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
         }
         help.setText(R.id.tv_item_title, info.getTitle())
                 .setText(R.id.tv_item_address, item.getAddress())
-                .setOnClickListener(R.id.ll_module_background, v -> {
-                    if (listener != null) {
-                        listener.onItemClick(info);
-                    }
-                });
+        ;
 
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
-//        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImages())), R.drawable.icon_def, help.getView(R.id.iv_icon));
-        ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,help.getView(R.id.iv_icon));
-//        Glide.with(fragment)
-//                .load(IconUrl.moduleIconUrl(IconUrl.OrganizationInformations,info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()))
-//                .placeholder(R.drawable.icon_def)
-//                .error(R.drawable.icon_def)
-//                .into((ImageView) help.getView(R.id.iv_icon));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
+        ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
 
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Information activity);
-    }
 
     class ContextItem {
         String address;

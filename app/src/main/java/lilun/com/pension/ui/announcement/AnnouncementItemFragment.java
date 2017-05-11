@@ -1,8 +1,8 @@
 package lilun.com.pension.ui.announcement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -15,6 +15,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ScreenUtils;
 import lilun.com.pension.module.utils.UIUtils;
@@ -68,18 +69,18 @@ public class AnnouncementItemFragment extends BaseFragment {
         int screenWith = ScreenUtils.getScreenWith(mContent);
         ivIcon.setLayoutParams(new LinearLayout.LayoutParams(screenWith, UIUtils.dp2px(mContent, 150)));
 
-    }
 
-    @Override
-    protected void initEvent() {
         ivIcon.setOnClickListener(v -> {
-            Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof AnnouncementFragment) {
-                ((AnnouncementFragment) parentFragment).startAnnounceDetail(information);
+            String context = information.getContext();
+            if (information.getContextType()==2) {
+                ACache.get().put(information.getId() + "h5", context);
+                Intent intent = new Intent(_mActivity, AnnounceDetailActivity.class);
+                intent.putExtra("infoId", information.getId());
+                getActivity().startActivity(intent);
             }
-
         });
         loadImage();
+
     }
 
     @Override

@@ -38,14 +38,6 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:visibility="gone"
-        android:id="@+id/fab_add_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:src="@drawable/login_next"
-        app:backgroundTint="@color/login" />
+
 
 </android.support.design.widget.CoordinatorLayout>

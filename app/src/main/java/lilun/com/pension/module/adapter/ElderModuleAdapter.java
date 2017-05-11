@@ -23,7 +23,6 @@ import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
-    private BaseFragment fragment;
     private int backgroundRes;
     private OnItemClickListener listener;
     private int mSelectedPosition = -1;
@@ -32,7 +31,6 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
     public ElderModuleAdapter(BaseFragment fragment, List<ElderModule> data) {
         super(R.layout.item_elder_module, data);
-        this.fragment = fragment;
         initData();
     }
 
@@ -53,7 +51,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
     @Override
     protected void convert(BaseViewHolder helper, ElderModule elderModule) {
-        if (isRadioMode){
+        if (isRadioMode) {
             helper.getView(R.id.ll_module_background).setSelected(mSelectedPosition == helper.getAdapterPosition());
         }
         helper.setText(R.id.tv_module_name, elderModule.getName())
@@ -67,8 +65,8 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules,elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()),"icon");
-            ImageLoaderUtil.instance().loadImage(iconUrl,R.drawable.icon_def,helper.getView(R.id.iv_module_icon));
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules, elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()), "icon");
+            ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
         }
     }
 
@@ -88,9 +86,6 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
     }
 
 
-    public int getBackgroundRes() {
-        return backgroundRes;
-    }
 
     private int getColor(String parent) {
         Resources resources = App.context.getResources();
@@ -107,7 +102,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
             backgroundRes = R.drawable.selector_health_service;
         } else if (parent.equals(resources.getString(R.string.residential_service))) {
             backgroundRes = R.drawable.selector_residential_service;
-        }else if (parent.equals(resources.getString(R.string.government))) {
+        } else if (parent.equals(resources.getString(R.string.government))) {
             backgroundRes = R.drawable.selector_goverment;
         }
 
