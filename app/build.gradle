@@ -22,18 +22,14 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.0"
+        //64k方法限制
         multiDexEnabled true
 
         ndk {
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86_64'
         }
 
-        manifestPlaceholders = [
-                JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "23ee8003f4ff20630c17f48e", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
-        ]
     }
 
     sourceSets {
@@ -45,8 +41,19 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            buildConfigField "boolean","LOG_DEBUG","false"
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            buildConfigField("boolean","LOG_DEBUG","true")
+            versionNameSuffix "debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
         }
     }
 
@@ -60,10 +67,10 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    //    compile files('libs/baidumapapi_map_v4_3_0.jar')
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:design:25.2.0'
+
     //rajava and retrofit
     compile 'io.reactivex:rxjava:x.y.z'
     compile 'io.reactivex:rxandroid:1.1.0'

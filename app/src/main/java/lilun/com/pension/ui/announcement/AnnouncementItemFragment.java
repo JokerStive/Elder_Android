@@ -2,12 +2,11 @@ package lilun.com.pension.ui.announcement;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -74,7 +73,11 @@ public class AnnouncementItemFragment extends BaseFragment {
     @Override
     protected void initEvent() {
         ivIcon.setOnClickListener(v -> {
-            Logger.d("公告的title----" + information.getTitle());
+            Fragment parentFragment = getParentFragment();
+            if (parentFragment instanceof AnnouncementFragment) {
+                ((AnnouncementFragment) parentFragment).startAnnounceDetail(information);
+            }
+
         });
         loadImage();
     }
@@ -90,8 +93,6 @@ public class AnnouncementItemFragment extends BaseFragment {
             //TODO 占位图
         } else {
             String url = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, this.information.getId(), mFileName);
-//            Logger.d("公告的地址----"+url   );
-//            Logger.d("公告的title----"+information.getTitle());
             ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
         }
     }
