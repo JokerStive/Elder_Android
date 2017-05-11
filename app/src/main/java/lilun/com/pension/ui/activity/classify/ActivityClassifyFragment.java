@@ -72,7 +72,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private OrganizationActivityAdapter mContentAdapter;
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
     private String parentId;
-    private String status = ",\"status\":\"checking\"";
+
 
     public static ActivityClassifyFragment newInstance(String parentId) {
         ActivityClassifyFragment fragment = new ActivityClassifyFragment();
@@ -196,11 +196,10 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String localtime = format.format(new Date());
         //未开始    现在时间<开始时间
-        String activity_status = ",\"startTime\":{\"gt\":\"" + localtime + "\"}";
+        String activity_status = "\"endTime\":{\"gt\":\"" + localtime + "\"}";
         //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
         String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}" +
-                status +
-                activity_status +
+                ",\"or\":[{\"endTime\":{\"$exists\":false}},{" + activity_status+"}]"+
                 ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}" +
                 ",{\"partnerList\":\"" + User.getUserId() + "\"}]}" +
                 ",\"order\":\"createdAt DESC\"}";

@@ -67,7 +67,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private String join_status = "";
     private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
     private String partner_number = "";
-    private String status = "";
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
     private String timing_status = timeOrder[0];
@@ -236,10 +235,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         String localtime = format.format(new Date());
         //未开始    现在时间<开始时间
         activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
-        status = ",\"status\":\"checking\"";
         join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
 
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status +
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\""  + join_status +
                 ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status+"}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }

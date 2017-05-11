@@ -27,9 +27,10 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
 
                     @Override
                     public void onError(Throwable e) {
-                        int[] errorCode = {500, 600, 604};
-                        String[] errorMessage = {"该号码已锁定，请1小时后尝试",
+                        int[] errorCode = {600, 601, 604};
+                        String[] errorMessage = {
                                 "1分钟只能发送一条短信",
+                                "短信发送太多，请1小时后尝试",
                                 "该手机号码被注册，请更换手机号码"};
                         super.onError(e, errorCode, errorMessage);
                     }
