@@ -32,7 +32,7 @@ public interface RegisterContract {
      * 第3步  检测  验证码的 VP
      */
     interface ViewStep3 extends IView<PresenterStep3> {
-        void successOfCheckIDCode();
+        void successOfCheckIDCode(Boolean bool);
       void successOfIDCode();
     }
 

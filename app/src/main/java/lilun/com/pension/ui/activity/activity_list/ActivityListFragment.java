@@ -66,8 +66,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private String searchStr = "";
     private String join_status = "";
     private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
-    private String partner_number="";
-    private String status = ",\"status\":\"checking\"";
+    private String partner_number = "";
+    private String status = "";
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
     private String timing_status = timeOrder[0];
@@ -171,12 +171,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void initConditionModules() {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String localtime = format.format(new Date());
-        String gtmDate = localtime;
-        //未开始    现在时间<开始时间
-        activity_status = ",\"startTime\":{\"gt\":\"" + gtmDate + "\"}";
-        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+
+
 
 
         List<View> pops = new ArrayList<>();
@@ -235,7 +231,16 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void getActivityList(int skip) {
         // TODO 关联organizationId
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status + activity_status + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
+        //{"where":{"categoryId":"/地球村/中国/重庆/重庆市/南岸区/铜元局街道/A小区/#activity-category.旅游","status":"checking","and":[{"masterId":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}},{"partnerList":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}}],"or":[{"repeatedDesc":{"like": ""}},{"startTime":{"gt":"2017-05-09 15:54:22"}}],"title":{"like":""}},"order":"createdAt DESC","limit":"20","skip":"0"}
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String localtime = format.format(new Date());
+        //未开始    现在时间<开始时间
+        activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
+        status = ",\"status\":\"checking\"";
+        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + status + join_status +
+                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status+"}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 

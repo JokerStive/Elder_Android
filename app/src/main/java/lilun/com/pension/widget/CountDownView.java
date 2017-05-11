@@ -2,7 +2,6 @@ package lilun.com.pension.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,6 +11,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -27,18 +27,25 @@ public class CountDownView extends LinearLayout {
 
     private Date targetTime;
     CompositeSubscription cntDownRx;
+    private LinearLayout llCountDown;
+    private TextView tvText;
+    Context mContent;
 
     public CountDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContent  = context;
         initUI(context);
     }
 
     private void initUI(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_count_down, this);
+        llCountDown = (LinearLayout) view.findViewById(R.id.ll_count_down);
         tvDays = (TextView) view.findViewById(R.id.tv_count_down_days);
         tvHours = (TextView) view.findViewById(R.id.tv_count_down_hours);
         tvMinutes = (TextView) view.findViewById(R.id.tv_count_down_minutes);
         tvSenconds = (TextView) view.findViewById(R.id.tv_count_down_seconds);
+        tvText = (TextView) view.findViewById(R.id.tv_text);
+        llCountDown.setVisibility(GONE);
     }
 
     public CountDownView setTime(Date targetTime) {
@@ -60,7 +67,8 @@ public class CountDownView extends LinearLayout {
         Date now = new Date();
         long time = targetTime.getTime() - now.getTime();
         if (time <= 0) return;
-
+        llCountDown.setVisibility(VISIBLE);
+        tvText.setVisibility(GONE);
 
         try {
             final long finalTotalSecs = time;
@@ -87,8 +95,9 @@ public class CountDownView extends LinearLayout {
                                 tvHours.setText(String.format("%02d", hour));
                                 tvMinutes.setText(String.format("%02d", min));
                                 tvSenconds.setText(String.format("%02d", s));
-                                if(res/1000 ==0){
+                                if (res / 1000 == 0) {
                                     stop();
+                                    tvText.setText(mContent.getString(R.string.activity_has_started));
                                 }
                             })
             );
@@ -100,6 +109,13 @@ public class CountDownView extends LinearLayout {
     public void stop() {
         if (cntDownRx != null && !cntDownRx.isUnsubscribed()) {
             cntDownRx.unsubscribe();
+            llCountDown.setVisibility(GONE);
+            tvText.setVisibility(VISIBLE);
         }
     }
+
+    public void setText(String text) {
+        tvText.setText(text);
+    }
+
 }

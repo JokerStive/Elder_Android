@@ -79,7 +79,7 @@
                                 android:layout_marginRight="@dimen/dp_10"
                                 android:isIndicator="true"
                                 android:numStars="5"
-                                android:rating="4"
+                                android:rating="5"
                                 android:stepSize="1" />
                         </LinearLayout>
                     </LinearLayout>
@@ -102,7 +102,7 @@
                             android:id="@+id/actv_start"
                             style="@style/acitivyt_detail_normal_black"
                             android:drawableLeft="@drawable/activity_start"
-                            android:text="@string/activity_start_" />
+                            android:text="@string/activity_start" />
 
                         <lilun.com.pension.widget.CountDownView
                             android:id="@+id/cdv_time"
@@ -298,7 +298,9 @@
                             android:layout_width="match_parent"
                             android:layout_marginLeft="45dp"
                             android:gravity="center"
+                            android:padding="@dimen/dp_14"
                             android:text="@string/more_question"
+                            android:textColor="#999999"
                             android:textSize="16sp" />
                     </LinearLayout>
 

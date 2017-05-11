@@ -35,6 +35,7 @@ import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.widget.InputSendPopupWindow;
+import lilun.com.pension.widget.InputSendView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
 
@@ -176,7 +177,6 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
     @Override
     public void showAnswer(OrganizationReply answer, int position) {
         Log.d("zp", "加入Answer数据");
-        inputSendPopupWindow.clearInput();
         inputSendPopupWindow.dismiss();
         nestedReplyAdapter.getItem(position).setAnswer(answer);
         nestedReplyAdapter.notifyDataSetChanged();
@@ -215,7 +215,7 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
                 public void OnClickAnswer(NestedReply nestedReply, int position) {
                     Log.d("zp", position + "");
                     inputSendPopupWindow = new InputSendPopupWindow(getContext());
-                    inputSendPopupWindow.setOnSendListener(new InputSendPopupWindow.OnSendListener() {
+                    inputSendPopupWindow.setOnSendListener(new InputSendView.OnSendListener() {
                         @Override
                         public void send(String sendStr) {
                             Log.d("zp", sendStr);

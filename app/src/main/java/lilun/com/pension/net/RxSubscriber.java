@@ -65,19 +65,28 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         _error();
     }
 
+    public void onError() {
+        if (needProgressBar) {
+            dialog.cancel();
+        }
+    }
+
     /**
      * 根据状态码更改显示的内容
+     *
      * @param e
      * @param errorCode
      * @param errorMessage
      */
-    public void onError(Throwable e, int errorCode, String errorMessage) {
+    public void onError(Throwable e, int[] errorCode, String[] errorMessage) {
         if (needProgressBar) {
             dialog.cancel();
         }
         if (e instanceof ApiException) {
-            if (errorCode == ((ApiException) e).getErrorCode())
-                ToastHelper.get().showWareShort(errorMessage);
+            for (int i = 0; i < errorCode.length; i++) {
+                if (errorCode[i] == ((ApiException) e).getErrorCode())
+                    ToastHelper.get().showWareShort(errorMessage[i]);
+            }
         } else {
             Logger.d(e.getMessage());
         }

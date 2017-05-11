@@ -111,8 +111,13 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     }
 
     @Override
-    public void successOfCheckIDCode() {
+    public void successOfCheckIDCode(Boolean success) {
+        if (!success) {
+            ToastHelper.get(getContext()).showWareShort("验证码错误");
+            return;
+        }
         goStep4();
+
     }
 
     @Override

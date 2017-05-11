@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -248,6 +249,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
                 return;
             }
 
+
             if (TextUtils.isEmpty(endTime)) {
                 showNotEmpty(R.string.activity_end_time);
                 return;
@@ -256,6 +258,10 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
             activity.setStartTime(startTimeISO);
             String endTimeISO = endTime + ":00";
             activity.setEndTime(endTimeISO);
+            if(StringUtils.string2Date(startTimeISO).before(new Date())){
+                ToastHelper.get(getContext()).showWareShort("开始时间应大于现在");
+                return;
+            }
             if (StringUtils.string2Date(startTimeISO).getTime() - StringUtils.string2Date(endTimeISO).getTime() >= 0) {
                 ToastHelper.get(getContext()).showWareShort("结束时间应大于开始时间");
                 return;

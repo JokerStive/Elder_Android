@@ -58,6 +58,7 @@ import lilun.com.pension.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.CountDownView;
 import lilun.com.pension.widget.InputSendPopupWindow;
+import lilun.com.pension.widget.InputSendView;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.NormalTitleBar;
@@ -68,7 +69,8 @@ import lilun.com.pension.widget.slider.BannerPager;
  * Created by zp on 2017/3/6.
  */
 
-public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter> implements ActivityDetailContact.View, View.OnClickListener {
+public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter>
+        implements ActivityDetailContact.View, View.OnClickListener {
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
@@ -176,6 +178,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         activity = (OrganizationActivity) arguments.getSerializable("activity");
         mActivityId = activity.getId();
         topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+        isMaster = User.getUserId().equals(activity.getMasterId());
     }
 
     @Override
@@ -248,7 +251,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 public void OnClickAnswer(NestedReply nestedReply, int position) {
                     Log.d("zp", position + "");
                     inputSendPopupWindow = new InputSendPopupWindow(getContext());
-                    inputSendPopupWindow.setOnSendListener(new InputSendPopupWindow.OnSendListener() {
+                    inputSendPopupWindow.setOnSendListener(new InputSendView.OnSendListener() {
                         @Override
                         public void send(String sendStr) {
                             Log.d("zp", sendStr);
@@ -347,10 +350,11 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
 
             llactvActStart.setVisibility(View.VISIBLE);
-            cdvTime.setVisibility(View.GONE);
+            cdvTime.setVisibility(View.VISIBLE);
             if (activity.getEndTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getEndTime()))) {
                 //活动结束
-                actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
+             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
+                cdvTime.setText(getString(R.string.activity_has_finished));
                 if (isSignUp) {
                     llAvgEvaluate.setVisibility(View.VISIBLE);
                     llEevalute.setVisibility(View.VISIBLE);
@@ -372,11 +376,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 });
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
-                actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
+             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
+                cdvTime.setText(getString(R.string.activity_has_started));
                 hasStart = OrganizationActivity.STARTED;
             } else {
-                actvStart.setText(getString(R.string.activity_start_, ""));
-                cdvTime.setVisibility(View.VISIBLE);
+             //   actvStart.setText(getString(R.string.activity_start_, ""));
+
                 if (activity.getStartTime() != null && cdvTime.getTime() == null)
                     cdvTime.setTime(StringUtils.IOS2ToUTCDate(activity.getStartTime())).start();
             }
@@ -396,7 +401,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         }
         actvJoinedNumber.setText(getString(R.string.people_number_, signUpNumber + ""));
 
-        isMaster = User.getUserId().equals(activity.getMasterId());
+
         showButton(isMaster, isSignUp);
         if (activity.getPartnerList() != null && activity.getPartnerList().size() > 0)
             llPartnerList.setVisibility(View.VISIBLE);
@@ -451,7 +456,6 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Override
     public void showAnswer(OrganizationReply answer, int position) {
-        inputSendPopupWindow.clearInput();
         inputSendPopupWindow.dismiss();
         nestedReplyAdapter.getItem(position).setAnswer(answer);
         nestedReplyAdapter.notifyDataSetChanged();
@@ -602,7 +606,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 showDialog(getString(R.string.activity_has_finished));
                 return;
             }
-            if (hasStart == OrganizationActivity.STARTED) {
+            if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
                 showDialog(getString(R.string.activity_has_started));
                 return;
             }
@@ -622,7 +626,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 showDialog(getString(R.string.activity_has_finished));
                 return;
             }
-            if (hasStart == OrganizationActivity.STARTED) {
+            if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
                 showDialog(getString(R.string.activity_has_started));
                 return;
             }

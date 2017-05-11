@@ -51,6 +51,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     protected void initView() {
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        welcomeActivity = this;
     }
 
     @Override

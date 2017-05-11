@@ -25,7 +25,7 @@ implements  RegisterContract.PresenterStep3{
         .subscribe(new RxSubscriber<Boolean>(_mActivity) {
             @Override
             public void _next(Boolean bool) {
-                view.successOfCheckIDCode();
+                view.successOfCheckIDCode(bool);
             }
 
             @Override

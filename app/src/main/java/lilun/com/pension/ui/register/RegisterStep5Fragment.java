@@ -22,6 +22,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.Register;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.welcome.LoginModule;
 import lilun.com.pension.widget.NormalDialog;
 
@@ -38,6 +39,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
     String belongOrganizationId;
     String detailAddress;
     BottomDialog dialog;
+    int curLevel = -1;
 
     BaseBean area, distrect;
     @Bind(R.id.ll_belong_stress)
@@ -59,10 +61,18 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
             dialog.setOnAddressSelectedListener(this);
             dialog.show();
         } else if (view.getId() == R.id.tv_belong_stress) {
+            if (curLevel < RECYCLERLEVEL - 1) {
+                ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
+                return;
+            }
             dialog = new BottomDialog(this, RECYCLERLEVEL);
             dialog.setOnAddressSelectedListener(this);
             dialog.show();
         } else if (view.getId() == R.id.fab_go_next) {
+            if (curLevel < RECYCLERLEVEL) {
+                ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
+                return;
+            }
             belongOrganizationId = getBelongOrganizationId();
             detailAddress = belongOrganizationId.replace(getString(R.string.common_address), "") + getDetailAddress();
             detailAddress.replace("/", "");
@@ -132,15 +142,18 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
+
         if (recyclerIndex != RECYCLERLEVEL) {
             area = baseBeen[baseBeen.length - 1];
             tvBelongArea.setText(area.getName());
             llBelongStress.setVisibility(View.VISIBLE);
             tvBelongSteress.setText("");
             distrect = null;
+            curLevel = baseBeen.length - 1;
         } else {
             distrect = baseBeen[baseBeen.length - 1];
             tvBelongSteress.setText(distrect.getName());
+            curLevel = baseBeen.length - 1 + RECYCLERLEVEL;
         }
         dialog.dismiss();
 
@@ -148,11 +161,13 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex) {
+
         if (baseBean == null) {
-            if (recyclerIndex == -1)
+            if (recyclerIndex == -1) {
                 mPresenter.getChildLocation(_mActivity, "", response, level, recyclerIndex);
-            else
+            } else {
                 mPresenter.getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+            }
         } else {
             mPresenter.getChildLocation(_mActivity, baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
         }

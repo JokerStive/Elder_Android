@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -191,9 +193,14 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void getAboutMe(int skip) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String localtime = format.format(new Date());
+        //未开始    现在时间<开始时间
+        String activity_status = ",\"startTime\":{\"gt\":\"" + localtime + "\"}";
         //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
         String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}" +
                 status +
+                activity_status +
                 ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}" +
                 ",{\"partnerList\":\"" + User.getUserId() + "\"}]}" +
                 ",\"order\":\"createdAt DESC\"}";

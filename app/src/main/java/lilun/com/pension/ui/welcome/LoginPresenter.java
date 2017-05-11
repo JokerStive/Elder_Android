@@ -43,7 +43,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                 .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo, finalUsername, finalPassword))
                 .flatMap(account -> mModule.getBelongOrganizations(account))
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity)mView) {
+                .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity) mView) {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
                         mModule.putBelongOrganizations(organizationAccounts);
@@ -52,7 +52,9 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
 
                     @Override
                     public void onError(Throwable e) {
-                        super.onError(e,401,"登录失败");
+                        int[] errorCode = {401};
+                        String[] errorMessage = {"账号或密码错误，请重新输入"};
+                        super.onError(e, errorCode, errorMessage);
                     }
                 }));
     }
