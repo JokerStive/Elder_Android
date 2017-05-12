@@ -62,6 +62,7 @@
     <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址</string>
     <string name="price">补&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;贴</string>
     <string name="memo">内&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容</string>
+    <string name="aid_mobile">电&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;话</string>
     <string name="choose_priority">点击选择优先级</string>
     <string name="normal_priority">一般</string>
     <string name="build">新建</string>

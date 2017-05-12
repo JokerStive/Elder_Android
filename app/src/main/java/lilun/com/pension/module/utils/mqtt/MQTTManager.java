@@ -1,6 +1,7 @@
 package lilun.com.pension.module.utils.mqtt;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
@@ -71,16 +72,17 @@ public class MQTTManager {
             Logger.i("mqtt 已经链接不需要再次链接");
             return;
         }
+
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+            return;
+        }
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(false);
-        if (password != null) {
-            mqttConnectOptions.setPassword(password.toCharArray());
-        }
-        if (userName != null) {
-            mqttConnectOptions.setUserName(userName);
-        }
 
+        mqttConnectOptions.setPassword(password.toCharArray());
+
+        mqttConnectOptions.setUserName(userName);
         if (client == null) {
             String deviceId = new DeviceUtils(App.context).getUniqueID();
             client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
@@ -133,12 +135,12 @@ public class MQTTManager {
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Logger.i(topic+"---订阅成功");
+                    Logger.i(topic + "---订阅成功");
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Logger.i(topic+"---订阅失败");
+                    Logger.i(topic + "---订阅失败");
                 }
             });
 
@@ -172,15 +174,15 @@ public class MQTTManager {
 
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    for(String topic:topics){
-                        Logger.i(topic+"---订阅成功");
+                    for (String topic : topics) {
+                        Logger.i(topic + "---订阅成功");
                     }
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    for(String topic:topics){
-                        Logger.i(topic+"---订阅失败");
+                    for (String topic : topics) {
+                        Logger.i(topic + "---订阅失败");
 //                        ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
                     }
                 }

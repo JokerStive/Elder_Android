@@ -33,11 +33,6 @@ public class NetHelper {
     private static void initOkhttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            if (true) {
-                HttpLoggingInterceptor log = new HttpLoggingInterceptor();
-                log.setLevel(HttpLoggingInterceptor.Level.BODY);
-                builder.addInterceptor(log);
-            }
             okHttpClient = builder
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)

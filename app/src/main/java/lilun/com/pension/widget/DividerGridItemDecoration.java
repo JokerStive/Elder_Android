@@ -3,6 +3,7 @@ package lilun.com.pension.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,8 @@ import android.view.View;
  */
 public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
+    private int mDividerHeight;
+    private Paint mPaint;
     private Drawable mDivider;
 
     public DividerGridItemDecoration(Context context) {
@@ -27,12 +30,18 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
         a.recycle();
     }
 
+
+    public DividerGridItemDecoration(int dividerHeight, int dividerColor) {
+        mDividerHeight = dividerHeight;
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(dividerColor);
+        mPaint.setStyle(Paint.Style.FILL);
+    }
+
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-
         drawHorizontal(c, parent);
         drawVertical(c, parent);
-
     }
 
     private int getSpanCount(RecyclerView parent) {

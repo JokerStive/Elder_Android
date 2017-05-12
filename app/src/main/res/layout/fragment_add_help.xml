@@ -125,6 +125,14 @@
                 android:layout_marginTop="19dp"
                 app:input_title="@string/address" />
 
+            <lilun.com.pension.widget.InputView
+                android:id="@+id/input_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                app:input_title="@string/aid_mobile" />
+
+
             <RelativeLayout
                 android:id="@+id/rl_choice_priority"
                 android:layout_width="match_parent"
@@ -191,7 +199,6 @@
                 android:background="@drawable/shape_reply">
 
                 <EditText
-                    android:maxLines="4"
                     android:id="@+id/et_content"
                     style="@style/et_normal"
                     android:layout_width="match_parent"

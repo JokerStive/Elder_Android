@@ -1,8 +1,11 @@
 package lilun.com.pension.ui.residential.detail;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,6 +30,7 @@ import lilun.com.pension.module.bean.OrganizationProduct;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.ui.agency.detail.AgencyDetailFragment;
 import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
@@ -173,22 +177,6 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             }
         }
 
-//        else {
-//            if (!order.getStatus().equals(status_cancel) && !order.getStatus().equals(status_done)) {
-//                llOperate.setVisibility(ViewStep2.VISIBLE);
-//                if (order.getStatus().equals(status_reserved)) {
-//                    tvCancel.setVisibility(ViewStep2.VISIBLE);
-//                    tvOperate.setText(getStatusOperate(status_assigned));
-//                    tvCancel.setText(getStatusOperate(status_cancel));
-////                    mNextStatus = status_assigned;
-//                } else if (order.getStatus().equals(status_assigned)) {
-//                    tvCancel.setVisibility(ViewStep2.GONE);
-//                    tvOperate.setText(getStatusOperate(status_done));
-////                    mNextStatus = status_done;
-//                }
-//            }
-//        }
-
         //show product
         OrganizationProduct product = order.getProduct();
         Account account = order.getAssignee();
@@ -200,17 +188,17 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         if (User.isCustomer()) {
             agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
             String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations,agencyId, null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations, agencyId, null), R.drawable.avatar, ivProviderAvatar);
             //TODO 现在是获取组织的icon，也可能是information的icon
             tvProviderName.setText(StringUtils.filterNull(agencyName));
             tvProductPhone.setText(account.getMobile());
         } else {
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts,User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
             tvProviderName.setText(mOrder.getCreatorName());
             tvProductPhone.setText(mOrder.getMobile());
         }
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), null), R.drawable.icon_def, ivProductIcon);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, ivProductIcon);
         tvProductName.setText(product.getName());
         tvProductPrice.setText(String.format(getString(R.string.format_price), product.getPrice()));
         rbProduct.setRating(product.getScore());
@@ -277,11 +265,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
             case R.id.rl_product_phone:
                 //TODO 拨打电话
-                if (User.isCustomer()) {
-                    call("确定联系商家？");
-                } else {
-                    call("确定联系顾客？");
-                }
+                call("确定联系商家？");
                 break;
 
             case R.id.tv_operate:
@@ -334,12 +318,32 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private void call(String msg) {
         String phoneDesc = tvProductPhone.getText().toString();
         if (!TextUtils.isEmpty(phoneDesc)) {
-            new NormalDialog().createNormal(_mActivity, msg, () -> {
-                Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneDesc));
-                startActivity(intent);
-            });
+            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
+            if (hasPermission) {
+                callPhone(msg);
+            } else {
+                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
+            }
         }
     }
 
+    private void callPhone(String msg) {
+        new NormalDialog().createNormal(_mActivity, msg, () -> {
+            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mOrder.getMobile()));
+            startActivity(intent);
+        });
+    }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0x11) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                ToastHelper.get().showShort("请给予权限");
+            } else {
+                callPhone("确定联系商家？");
+            }
+        }
+    }
 }

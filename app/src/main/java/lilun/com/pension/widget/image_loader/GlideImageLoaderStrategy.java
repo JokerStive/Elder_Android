@@ -23,7 +23,6 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .placeholder(imageView.getBackground())
                 .error(imageView.getBackground())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .centerCrop()
                 .into(imageView);
     }
 
@@ -71,7 +70,6 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
         Glide.with(ctx).load(url).dontAnimate()
                 .placeholder(placeholder)
                 .error(placeholder)
-                .centerCrop()
                 .into(imageView);
     }
 }

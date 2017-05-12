@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,11 +17,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.adapter.UrgentInfoAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.ScreenUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.push_info.CacheInfoListActivity;
 
@@ -65,6 +68,15 @@ public class AnnounceInfoActivity extends Activity {
         information = (Information) getIntent().getSerializableExtra("organizationInfo");
         Preconditions.checkNull(information);
         initView();
+
+
+        setAppearance();
+    }
+
+    private void setAppearance() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.width = ScreenUtils.getScreenWith(App.context) / 5* 4;
+        getWindow().setAttributes(params);
     }
 
 

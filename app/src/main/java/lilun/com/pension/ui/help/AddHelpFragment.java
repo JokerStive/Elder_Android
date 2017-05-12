@@ -26,6 +26,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseTakePhotoFragment;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.TakePhotoResult;
@@ -62,6 +63,10 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
     @Bind(R.id.input_address)
     InputView inputAddress;
+
+    @Bind(R.id.input_mobile)
+    InputView inputMobile;
+
 
     @Bind(R.id.input_price)
     InputView inputPrice;
@@ -130,6 +135,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
 
         tvPriorityValue.setText(helpPriority[0]);
+        inputMobile.setInput(User.getMobile());
     }
 
     @Override
@@ -158,6 +164,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .title("-选择求助类型-")
                 .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
                     inputAddress.setVisibility(which == 0 ? View.GONE : View.VISIBLE);
+                    inputMobile.setVisibility(which == 0 ? View.GONE : View.VISIBLE);
                     tvKind.setText(text);
                     mKind = which;
                     return true;
@@ -260,6 +267,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setPriority(mPriority);
         organizationAid.setMemo(etContent.getText().toString());
         organizationAid.setKind(mKind);
+        organizationAid.setMobile(inputMobile.getInput());
         //如果提供了补贴
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
             organizationAid.setPrice(Integer.parseInt(inputPrice.getInput()));

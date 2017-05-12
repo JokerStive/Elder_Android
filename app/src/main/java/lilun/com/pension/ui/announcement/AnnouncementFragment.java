@@ -114,9 +114,6 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 //    }
 
 
-    public void startAnnounceDetail(Information information) {
-        start(AnnounceDetailFragment.newInstance(information));
-    }
 
 
     @Override

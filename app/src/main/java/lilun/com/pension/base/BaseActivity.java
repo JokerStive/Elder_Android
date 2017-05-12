@@ -56,8 +56,8 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private MyCallBack callback;
     protected CompositeSubscription subscription = new CompositeSubscription();
     private RxProgressDialog dialog;
-    private int pushAidInfoCunt =0;
-    private int pushInfoCunt=0;
+    private int pushAidInfoCunt = 0;
+    private int pushInfoCunt = 0;
 
 
     @Override
@@ -207,28 +207,28 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     public void showExpressHelpPop(PushMessage pushMessage) {
         Gson gson = new Gson();
         String model = pushMessage.getModel();
-        if (model.equals(Constants.organizationAid)){
+        if (model.equals(Constants.organizationAid)) {
             OrganizationAid aid = gson.fromJson(pushMessage.getData(), OrganizationAid.class);
             if (aid.getKind() == 2) {
-                if (pushAidInfoCunt ==0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
+                if (pushAidInfoCunt == 0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
                     pushAidInfoCunt++;
                     Intent intent = new Intent(this, UrgentAidInfoActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("aid", aid);
                     intent.putExtras(bundle);
-                    startActivityForResult(intent,123);
+                    startActivityForResult(intent, 123);
                 }
                 EventBus.getDefault().post(new Event.RefreshUrgentInfo());
             }
-        }else if(model.equals(Constants.organizationInfo)){
+        } else if (model.equals(Constants.organizationInfo)) {
             Information Information = gson.fromJson(pushMessage.getData(), Information.class);
-            if (pushInfoCunt ==0 && !SystemUtils.isTopActivity(Information.class.getName())) {
+            if (pushInfoCunt == 0 && !SystemUtils.isTopActivity(Information.class.getName())) {
                 pushInfoCunt++;
                 Intent intent = new Intent(this, AnnounceInfoActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("organizationInfo", Information);
                 intent.putExtras(bundle);
-                startActivityForResult(intent,123);
+                startActivityForResult(intent, 123);
             }
             EventBus.getDefault().post(new Event.RefreshUrgentInfo());
         }
@@ -238,9 +238,9 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==123 && resultCode==0){
-            pushAidInfoCunt =0;
-            pushInfoCunt =0;
+        if (requestCode == 123 && resultCode == 0) {
+            pushAidInfoCunt = 0;
+            pushInfoCunt = 0;
         }
     }
 
@@ -275,11 +275,16 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         if (dialog == null) {
             dialog = new RxProgressDialog(this);
         }
-        dialog.show();
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
     }
 
     public void dismissDialog() {
-        dialog.dismiss();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
 

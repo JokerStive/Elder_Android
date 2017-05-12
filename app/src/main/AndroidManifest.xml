@@ -137,6 +137,14 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
+        <activity
+            android:name=".ui.announcement.AnnounceDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
         //mqtt service
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

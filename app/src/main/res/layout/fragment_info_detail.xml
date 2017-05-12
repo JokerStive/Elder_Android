@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <lilun.com.pension.widget.ProgressWebView
+        android:layout_below="@id/titleBar"
+        android:id="@+id/web_content_h5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_below="@id/titleBar"
+        android:id="@+id/ns_content_json"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <lilun.com.pension.widget.slider.BannerPager
+                    android:id="@+id/iv_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/max_photo_height" />
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginTop="29dp"
+                    android:background="@drawable/back_with_circle" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_marginTop="19dp"
+                    tools:text="下水道堵塞了" />
+
+
+                <TextView
+                    android:id="@+id/tv_mobile"
+                    style="@style/tv_small_ellipsize"
+                    android:layout_marginTop="3dp"
+                    tools:text="联系电话：1925544444" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_content_title"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_marginTop="16dp"
+                    android:text="内容" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    style="@style/tv_small_ellipsize"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    tools:text="茶韵新城规范" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_address_title"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_marginTop="16dp"
+                    android:text="地址" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/tv_small"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    tools:text="茶韵新城规范" />
+
+
+                <View
+                    android:id="@+id/line"
+                    style="@style/line_gray"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

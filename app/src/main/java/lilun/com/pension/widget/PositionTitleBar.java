@@ -3,6 +3,7 @@ package lilun.com.pension.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +112,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
                 break;
 
             case R.id.tv_position:
-                if (fragment != null) {
+                if (fragment != null && !TextUtils.isEmpty(User.getRootOrganizationAccountId())) {
                     fragment.startActivity(new Intent(fragment.getActivity(), ChangeOrganizationActivity.class));
                 }
                 break;

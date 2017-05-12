@@ -252,7 +252,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //设置地址和电话
         tvAddress.setText(mAid.getAddress());
-        tvPhone.setText(String.format("联系电话：%1$s", "13206011223"));
+        tvPhone.setText(String.format("联系电话：%1$s", mAid.getMobile()));
 
 
         //显示内容
