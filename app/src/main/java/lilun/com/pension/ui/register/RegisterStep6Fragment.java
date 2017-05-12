@@ -116,7 +116,7 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
     @Override
     protected void initView(LayoutInflater inflater) {
         fragmentManager = _mActivity.getFragmentManager();
-
+        _mActivity.findViewById(R.id.iv_back).setVisibility(View.GONE);
     }
 
     @Override

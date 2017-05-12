@@ -50,6 +50,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
 import lilun.com.pension.module.utils.mqtt.MQTTTopicUtils;
@@ -353,7 +354,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             cdvTime.setVisibility(View.VISIBLE);
             if (activity.getEndTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getEndTime()))) {
                 //活动结束
-             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
+                //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
                 cdvTime.setText(getString(R.string.activity_has_finished));
                 if (isSignUp) {
                     llAvgEvaluate.setVisibility(View.VISIBLE);
@@ -376,14 +377,17 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 });
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
-             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
+                //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
                 cdvTime.setText(getString(R.string.activity_has_started));
                 hasStart = OrganizationActivity.STARTED;
             } else {
-             //   actvStart.setText(getString(R.string.activity_start_, ""));
+                //   actvStart.setText(getString(R.string.activity_start_, ""));
 
-                if (activity.getStartTime() != null && cdvTime.getTime() == null)
-                    cdvTime.setTime(StringUtils.IOS2ToUTCDate(activity.getStartTime())).start();
+                if (activity.getStartTime() != null)
+                    if (cdvTime.getTime() == null)
+                        cdvTime.setTime(StringUtils.IOS2ToUTCDate(activity.getStartTime())).start();
+                    else
+                        cdvTime.start();
             }
         }
 
@@ -537,7 +541,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         MQTTManager.getInstance().unsubscribe(topic, null, new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                showDialog("取消订阅成功");
+                ToastHelper.get().showShort("取消订阅成功");
+                popTo(ActivityClassifyFragment.class, false);
             }
 
             @Override
@@ -569,7 +574,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         pushMessage.setVerb(PushMessage.VERB_QUIT)
                 .setMessage("主持人已解散活动")
                 .setTime(StringUtils.date2String(new Date()));
-        MQTTManager.getInstance().publish(topic,qos,pushMessage.getJsonStr());
+        MQTTManager.getInstance().publish(topic, qos, pushMessage.getJsonStr());
         popTo(ActivityClassifyFragment.class, false);
     }
 

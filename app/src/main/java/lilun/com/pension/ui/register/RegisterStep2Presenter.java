@@ -1,7 +1,10 @@
 package lilun.com.pension.ui.register;
 
+import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.net.ApiException;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import me.yokeyword.fragmentation.SupportActivity;
@@ -27,6 +30,11 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
 
                     @Override
                     public void onError(Throwable e) {
+                        if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
+                            super.onError();
+                            ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
+                            return;
+                        }
                         int[] errorCode = {600, 601, 604};
                         String[] errorMessage = {
                                 "1分钟只能发送一条短信",
