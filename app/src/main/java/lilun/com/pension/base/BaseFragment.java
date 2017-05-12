@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -66,7 +66,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Override
     protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+        return new DefaultHorizontalAnimator();
     }
 
     @Nullable
@@ -170,6 +170,8 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         Logger.d(TAG, getClass().getName() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
+
+
 
 
 
