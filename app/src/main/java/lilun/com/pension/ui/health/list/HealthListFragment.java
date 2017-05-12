@@ -4,21 +4,21 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.HealthServiceAdapter;
 import lilun.com.pension.module.bean.ElderModule;
-import lilun.com.pension.module.bean.HealtheaProduct;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.health.detail.InfoDetailFragment;
@@ -46,11 +46,8 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
     @Bind(R.id.null_data)
     ImageView nullData;
 
-    private List<HealtheaProduct> products = new ArrayList<>();
 
-    private RecyclerView rvPushInfo;
     private HealthServiceAdapter mAdapter;
-    private ArrayList<String> data;
     private ElderModule mClassify;
     private int skip = 0;
 
@@ -93,7 +90,14 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
     private void refreshData() {
         skip = 0;
-        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"/地球村/中国/重庆/#information\",\"parentId\":\"/地球村/中国/重庆/#information/" + mClassify.getParent() + "/" + mClassify.getName() + "\"}}";
+        String filter;
+        String parent = mClassify.getParent();
+        String name = mClassify.getName();
+        if (TextUtils.equals(parent, "健康服务")) {
+            filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"" + User.getCurrentOrganizationId() + "/#information" + "\",\"parentId\":\"" + User.getCurrentOrganizationId() + "/#information" + parent + "/" + name + "\"}}";
+        } else {
+            filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"/地球村/中国/重庆/#information\",\"parentId\":\"/地球村/中国/重庆/#information/" + parent + "/" + name + "\"}}";
+        }
         mPresenter.getDataList(filter, skip);
     }
 

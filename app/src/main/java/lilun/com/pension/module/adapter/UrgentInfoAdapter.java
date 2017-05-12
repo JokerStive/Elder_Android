@@ -23,7 +23,7 @@ public class UrgentInfoAdapter extends QuickAdapter<OrganizationAid> {
     @Override
     protected void convert(BaseViewHolder holder, OrganizationAid aid) {
 
-        holder.setText(R.id.tv_address, "定位：" + aid.getAddress())
+        holder.setText(R.id.tv_address, "位置：" + aid.getAddress())
                 .setText(R.id.tv_time, "发生时间：" + StringUtils.IOS2ToUTC(aid.getCreatedAt(), 1))
                 .setText(R.id.tv_mobile, "联系电话：" + aid.getMobile())
                 .setText(R.id.tv_name, "姓名：" + aid.getCreatorName());

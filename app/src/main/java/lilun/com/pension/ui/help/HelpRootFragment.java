@@ -148,7 +148,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
     private void getHelps(int skip) {
-        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"organizationId\":\"" + User.getCurrentOrganizationId() + "\"}}";
+        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"organizationId\":\"" + User.getCurrentOrganizationId() +"/#aid"+"\"}}";
         mPresenter.getHelps(filter, skip);
     }
 

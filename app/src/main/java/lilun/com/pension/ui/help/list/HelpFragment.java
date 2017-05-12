@@ -203,6 +203,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         }
     }
 
+
     private void setRecyclerAdapter(List<OrganizationAid> helps) {
         mAidAdapter = getAdapterFromLayoutType(helps);
         if (mAidAdapter != null) {

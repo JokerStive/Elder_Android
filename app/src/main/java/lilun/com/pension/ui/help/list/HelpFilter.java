@@ -27,7 +27,7 @@ public class HelpFilter {
     }
 
     public HelpFilter setOrganizationId(String id) {
-        this.organizationId = TextUtils.isEmpty(id) ? "" : ",\"organizationId\":\"" + id + "\"";
+        this.organizationId = TextUtils.isEmpty(id) ? "" : ",\"organizationId\":\"" + id + "/#aid"+"\"";
         return this;
     }
 

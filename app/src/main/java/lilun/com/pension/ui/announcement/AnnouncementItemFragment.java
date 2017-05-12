@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -17,8 +16,6 @@ import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.Preconditions;
-import lilun.com.pension.module.utils.ScreenUtils;
-import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -66,13 +63,9 @@ public class AnnouncementItemFragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
         ivIcon = (ImageView) mRootView.findViewById(R.id.iv_advantage);
 
-        int screenWith = ScreenUtils.getScreenWith(mContent);
-        ivIcon.setLayoutParams(new LinearLayout.LayoutParams(screenWith, UIUtils.dp2px(mContent, 150)));
-
-
         ivIcon.setOnClickListener(v -> {
             String context = information.getContext();
-            if (information.getContextType()==2 && !TextUtils.isEmpty(context)) {
+            if (information.getContextType() == 2 && !TextUtils.isEmpty(context)) {
                 ACache.get().put(information.getId() + "h5", context);
                 Intent intent = new Intent(_mActivity, AnnounceDetailActivity.class);
                 intent.putExtra("infoId", information.getId());

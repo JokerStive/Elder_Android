@@ -1,12 +1,15 @@
 package lilun.com.pension.base;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,7 +47,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
 
-        Log.d(TAG, getClass().getName() + "------onCreate");
+        Logger.d(TAG, getClass().getName() + "------onCreate");
         Bundle arguments = getArguments();
         if (arguments != null) {
             getTransferData(arguments);
@@ -108,28 +111,52 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
      * ======================子类需要实现的方法=============================
      */
 
+
+    protected boolean hasPermission(String permission) {
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt < 23) {
+            return true;
+        }
+        int result = getActivity(). checkSelfPermission(permission);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    protected void requestPermission(String permission, int requestCode) {
+        requestPermissions(new String[]{permission}, requestCode);
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == 0x11) {
+//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+//                ToastHelper.get().showShort("请给予权限");
+//            }
+//        }
+//    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, getClass().getName() + "------onActivityCreated");
+        Logger.d(TAG, getClass().getName() + "------onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, getClass().getName() + "------onStart");
+        Logger.d(TAG, getClass().getName() + "------onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, getClass().getName() + "------onResume");
+        Logger.d(TAG, getClass().getName() + "------onResume");
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, getClass().getName() + "------onViewCreated");
+        Logger.d(TAG, getClass().getName() + "------onViewCreated");
 
     }
 
@@ -137,19 +164,19 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, getClass().getName() + "------onPause");
+        Logger.d(TAG, getClass().getName() + "------onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, getClass().getName() + "------onStop");
+        Logger.d(TAG, getClass().getName() + "------onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG, getClass().getName() + "------onDestroyView");
+        Logger.d(TAG, getClass().getName() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
 
@@ -172,19 +199,20 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         }
 
         EventBus.getDefault().unregister(this);
-        Log.d(TAG, getClass().getName() + "------onDestroy");
+        Logger.d(TAG, getClass().getName() + "------onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG, getClass().getName() + "------onDetach");
+        Logger.d(TAG, getClass().getName() + "------onDetach");
     }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        // Log.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
+        // Logger.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
     }
 
     public void showDialog(String str) {

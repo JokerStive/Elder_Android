@@ -129,9 +129,10 @@ public class CacheInfoListActivity extends BaseActivity {
         switch (model) {
             case Constants.organizationAid:
                 OrganizationAid aid = gson.fromJson(data, OrganizationAid.class);
-                String createdAt = aid.getCreatedAt();
-
-                cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getAddress(), StringUtils.IOS2ToUTC(createdAt, 6), aid.getMobile());
+                if (title.equals("紧急求助") && aid.getKind() == 2) {
+                    String createdAt = aid.getCreatedAt();
+                    cacheInfo = new CacheInfo("姓名：" + aid.getCreatorName(), "位置：" + aid.getAddress(), "发生时间：" + StringUtils.IOS2ToUTC(createdAt, 6), "联系电话：" + aid.getMobile());
+                }
                 break;
 
             case Constants.organizationInfo:
