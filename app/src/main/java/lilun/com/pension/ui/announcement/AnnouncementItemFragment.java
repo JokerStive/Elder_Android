@@ -72,7 +72,7 @@ public class AnnouncementItemFragment extends BaseFragment {
 
         ivIcon.setOnClickListener(v -> {
             String context = information.getContext();
-            if (information.getContextType()==2) {
+            if (information.getContextType()==2 && !TextUtils.isEmpty(context)) {
                 ACache.get().put(information.getId() + "h5", context);
                 Intent intent = new Intent(_mActivity, AnnounceDetailActivity.class);
                 intent.putExtra("infoId", information.getId());

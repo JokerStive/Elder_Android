@@ -41,15 +41,15 @@ android {
 
     buildTypes {
         release {
-            buildConfigField "boolean","LOG_DEBUG","false"
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled true
             zipAlignEnabled true
             shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
-            buildConfigField("boolean","LOG_DEBUG","true")
+        debug {
+            buildConfigField("boolean", "LOG_DEBUG", "true")
             versionNameSuffix "debug"
             minifyEnabled false
             zipAlignEnabled false

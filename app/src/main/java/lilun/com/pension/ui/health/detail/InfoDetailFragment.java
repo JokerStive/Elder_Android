@@ -5,7 +5,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +17,8 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.UIUtils;
+import lilun.com.pension.widget.NormalTitleBar;
+import lilun.com.pension.widget.ProgressWebView;
 import lilun.com.pension.widget.slider.BannerPager;
 
 /**
@@ -28,7 +29,7 @@ import lilun.com.pension.widget.slider.BannerPager;
 public class InfoDetailFragment extends BaseFragment {
 
     @Bind(R.id.web_content_h5)
-    WebView webContentH5;
+    ProgressWebView webContentH5;
     @Bind(R.id.iv_icon)
     BannerPager ivIcon;
     @Bind(R.id.iv_back)
@@ -47,6 +48,8 @@ public class InfoDetailFragment extends BaseFragment {
     TextView tvAddress;
     @Bind(R.id.ns_content_json)
     NestedScrollView nsContentJson;
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
     private Information information;
 
     public static InfoDetailFragment newInstance(Information information) {
@@ -76,6 +79,11 @@ public class InfoDetailFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        titleBar.setOnBackClickListener(this::pop);
+        String parentId = information.getParentId();
+        String substring = parentId.substring(parentId.lastIndexOf("/") + 1);
+        titleBar.setTitle(substring);
+
         UIUtils.setBold(tvAddressTitle);
         UIUtils.setBold(tvContentTitle);
         UIUtils.setBold(tvTitle);
@@ -116,4 +124,15 @@ public class InfoDetailFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        if (webContentH5.getVisibility() == View.VISIBLE) {
+            if (webContentH5.canGoBack()) {
+                webContentH5.goBack();
+                return true;
+            }
+        }
+        return super.onBackPressedSupport();
+
+    }
 }

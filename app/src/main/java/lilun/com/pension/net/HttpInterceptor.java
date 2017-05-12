@@ -1,19 +1,23 @@
 package lilun.com.pension.net;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+import lilun.com.pension.BuildConfig;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.utils.PreUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.Buffer;
 
 /**
  * Created by youke on 2016/12/29.
@@ -21,6 +25,8 @@ import okhttp3.Response;
  */
 public class HttpInterceptor implements Interceptor {
 
+    //    private Response response;
+    public static String TAG = "okhttp";
     private Response response;
 
     @Override
@@ -33,7 +39,7 @@ public class HttpInterceptor implements Interceptor {
             request = request.newBuilder().addHeader("Authorization", token).build();
         }
 
-        response = chain.proceed(request);
+        Response response = chain.proceed(request);
         int code = response.code();
         //401并且不是登陆
         if (code == 401 && !TextUtils.isEmpty(User.getToken())) {
@@ -42,14 +48,45 @@ public class HttpInterceptor implements Interceptor {
                 EventBus.getDefault().post(new Event.PermissionDenied());
             } else {
                 Logger.d("Accounts/me检查也是410，跳转登录界面");
-                PreUtils.putString(User.token,"");
+                PreUtils.putString(User.token, "");
                 EventBus.getDefault().post(new Event.TokenFailure());
             }
         }
 
-
-        return response;
+        if (BuildConfig.LOG_DEBUG) {
+            log(request, response);
+        }
+        return chain.proceed(request);
     }
 
+
+    /**
+     * 日志打印
+     */
+    private void log(Request request, Response response) throws IOException {
+        String requestUrl = request.url().toString();
+        String content = response.body().string();
+        Log.d(TAG, "\n");
+        Log.d(TAG, "\n");
+        Log.d(TAG, "----------Start----------------");
+        String method = request.method();
+        Log.d(TAG, "| request  | " + method + "  |  " + java.net.URLDecoder.decode(requestUrl, "UTF-8")+"   ");
+        if ("POST".equals(method)) {
+            Log.d(TAG, "\n");
+            try {
+                final Request copy = request.newBuilder().build();
+                final Buffer buffer = new Buffer();
+                copy.body().writeTo(buffer);
+                Log.d(TAG, "| request | " + buffer.readUtf8());
+            } catch (final IOException e) {
+                Log.d(TAG, "catch error");
+            }
+        }
+
+        long startNs = System.nanoTime();
+        long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+        Log.d(TAG, "| response | " + content+"   ");
+        Log.d(TAG, "----------End:" + tookMs + "ms----------");
+    }
 
 }

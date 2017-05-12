@@ -6,13 +6,20 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <WebView
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <lilun.com.pension.widget.ProgressWebView
+        android:layout_below="@id/titleBar"
         android:id="@+id/web_content_h5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_below="@id/titleBar"
         android:id="@+id/ns_content_json"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

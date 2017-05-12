@@ -93,7 +93,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
     private void refreshData() {
         skip = 0;
-        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"/地球村/中国/重庆/#information\",\"parentId\":\"/地球村/中国/重庆/#information/"+mClassify.getName()+"\"}}";
+        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"/地球村/中国/重庆/#information\",\"parentId\":\"/地球村/中国/重庆/#information/" + mClassify.getParent() + "/" + mClassify.getName() + "\"}}";
         mPresenter.getDataList(filter, skip);
     }
 
@@ -105,9 +105,9 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         if (mAdapter == null) {
             mAdapter = new HealthServiceAdapter(this, list);
             mAdapter.setEmptyView();
-            mAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
+            mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
                 @Override
-                public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                public void onItemClick(View view, int i) {
                     Information information = mAdapter.getData().get(i);
                     start(InfoDetailFragment.newInstance(information));
                 }
