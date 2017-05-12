@@ -2,6 +2,7 @@ package lilun.com.pension.net;
 
 import java.util.concurrent.TimeUnit;
 
+import lilun.com.pension.BuildConfig;
 import lilun.com.pension.app.Config;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -33,6 +34,11 @@ public class NetHelper {
     private static void initOkhttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            if (BuildConfig.LOG_DEBUG){
+                LogInterceptor logInterceptor = new LogInterceptor();
+                logInterceptor.setLevel(LogInterceptor.Level.BODY);
+                builder.addInterceptor(logInterceptor);
+            }
             okHttpClient = builder
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)

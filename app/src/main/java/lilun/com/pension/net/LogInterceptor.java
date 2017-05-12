@@ -20,12 +20,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -42,7 +40,7 @@ import okio.BufferedSource;
  * this class should not be considered stable and may change slightly between releases. If you need
  * a stable logging format, use your own interceptor.
  */
-public final class HttpLoggingInterceptor implements Interceptor {
+public final class LogInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
@@ -117,11 +115,11 @@ public final class HttpLoggingInterceptor implements Interceptor {
         };
     }
 
-    public HttpLoggingInterceptor() {
+    public LogInterceptor() {
         this(Logger.DEFAULT);
     }
 
-    public HttpLoggingInterceptor(Logger logger) {
+    public LogInterceptor(Logger logger) {
         this.logger = logger;
     }
 
@@ -132,7 +130,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
     /**
      * Change the level at which this interceptor logs.
      */
-    public HttpLoggingInterceptor setLevel(Level level) {
+    public LogInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
         return this;
@@ -156,44 +154,17 @@ public final class HttpLoggingInterceptor implements Interceptor {
         RequestBody requestBody = request.body();
         boolean hasRequestBody = requestBody != null;
 
-        Connection connection = chain.connection();
-        Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
         String requestStartMessage =
-                "--> " + request.method() + ' ' + request.url() + ' ' + protocol(protocol);
-        if (!logHeaders && hasRequestBody) {
-            requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
-        }
+                "--> " + request.method() + ' ' + java.net.URLDecoder.decode(request.url().toString(), "UTF-8");
+        logger.log("\n");
+        logger.log("\n");
+        logger.log("----------Start----------------");
         logger.log(requestStartMessage);
 
         if (logHeaders) {
-            if (hasRequestBody) {
-                // Request body headers are only present when installed as a network interceptor. Force
-                // them to be included (when available) so there values are known.
-                if (requestBody.contentType() != null) {
-                    logger.log("Content-Type: " + requestBody.contentType());
-                }
-                if (requestBody.contentLength() != -1) {
-                    logger.log("Content-Length: " + requestBody.contentLength());
-                }
-            }
-
-            Headers headers = request.headers();
-            for (int i = 0, count = headers.size(); i < count; i++) {
-                String name = headers.name(i);
-                // Skip headers from the request body as they are explicitly logged above.
-                if (!"Content-Type".equalsIgnoreCase(name) && !"Content-Length".equalsIgnoreCase(name)) {
-                    logger.log(name + ": " + headers.value(i));
-                }
-            }
-
-            if (!logBody || !hasRequestBody) {
-                logger.log("--> END " + request.method());
-            } else if (bodyEncoded(request.headers())) {
-                logger.log("--> END " + request.method() + " (encoded body omitted)");
-            } else {
+            if (logBody && hasRequestBody && !bodyEncoded(request.headers())) {
                 Buffer buffer = new Buffer();
                 requestBody.writeTo(buffer);
-
                 Charset charset = UTF8;
                 MediaType contentType = requestBody.contentType();
                 if (contentType != null) {
@@ -202,9 +173,6 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
                 logger.log("");
                 logger.log(buffer.readString(charset));
-
-                logger.log("--> END " + request.method()
-                        + " (" + requestBody.contentLength() + "-byte body)");
             }
         }
 
@@ -214,28 +182,10 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
-        String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-        logger.log("<-- " + response.code() + ' ' + response.message() + ' '
-                + response.request().url() + " (" + tookMs + "ms" + (!logHeaders ? ", "
-                + bodySize + " body" : "") + ')');
-
-//        if (tookMs>80000){
-//            ACache.get(App.app,"retrofitLog").put("HttpResponse"+tookMs,"<-- " + response.code() + ' ' + response.PushMessage() + ' '
-//                    + response.request().url() + " (" + tookMs + "ms" + (!logHeaders ? ", "
-//                    + bodySize + " body" : "") + ')');
-//        }
 
         if (logHeaders) {
-            Headers headers = response.headers();
-            for (int i = 0, count = headers.size(); i < count; i++) {
-                logger.log(headers.name(i) + ": " + headers.value(i));
-            }
 
-            if (!logBody || !HttpEngine.hasBody(response)) {
-                logger.log("<-- END HTTP");
-            } else if (bodyEncoded(response.headers())) {
-                logger.log("<-- END HTTP (encoded body omitted)");
-            } else {
+            if (logBody && HttpEngine.hasBody(response) && !bodyEncoded(response.headers())) {
                 BufferedSource source = responseBody.source();
 
                 source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -251,10 +201,10 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
                 if (contentLength != 0) {
                     logger.log("");
-                    logger.log(buffer.clone().readString(charset));
+                    logger.log("<-- " + buffer.clone().readString(charset));
                 }
 
-                logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
+                logger.log("----------End:" + tookMs + "ms----------");
 
 
             }
@@ -268,7 +218,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
     }
 
-    private static String protocol(Protocol protocol) {
-        return protocol == Protocol.HTTP_1_0 ? "HTTP/1.0" : "HTTP/1.1";
-    }
+//    private static String protocol(Protocol protocol) {
+//        return protocol == Protocol.HTTP_1_0 ? "HTTP/1.0" : "HTTP/1.1";
+//    }
 }

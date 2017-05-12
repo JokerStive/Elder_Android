@@ -80,9 +80,9 @@ public class InfoDetailFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
-        String parentId = information.getParentId();
-        String substring = parentId.substring(parentId.lastIndexOf("/") + 1);
-        titleBar.setTitle(substring);
+//        String parentId = information.getParentId();
+//        String substring = parentId.substring(parentId.lastIndexOf("/") + 1);
+        titleBar.setTitle(information.getTitle());
 
         UIUtils.setBold(tvAddressTitle);
         UIUtils.setBold(tvContentTitle);

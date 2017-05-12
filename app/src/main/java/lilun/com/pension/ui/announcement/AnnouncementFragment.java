@@ -114,8 +114,6 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 //    }
 
 
-
-
     @Override
     public void setVpCurrentPosition() {
 
@@ -137,7 +135,9 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
             listFragments.add(fragment);
         }
         viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity().getSupportFragmentManager(), listFragments));
-        indicator.setViewPager(viewPager);
+        if (listFragments.size() > 1) {
+            indicator.setViewPager(viewPager);
+        }
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

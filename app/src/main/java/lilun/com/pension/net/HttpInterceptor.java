@@ -25,7 +25,6 @@ import okio.Buffer;
  */
 public class HttpInterceptor implements Interceptor {
 
-    //    private Response response;
     public static String TAG = "okhttp";
     private Response response;
 
@@ -54,27 +53,27 @@ public class HttpInterceptor implements Interceptor {
         }
 
         if (BuildConfig.LOG_DEBUG) {
-            log(request, response);
+//            log(response);
         }
-        return chain.proceed(request);
+        return response;
     }
 
 
     /**
      * 日志打印
      */
-    private void log(Request request, Response response) throws IOException {
-        String requestUrl = request.url().toString();
+    private void log(Response response) throws IOException {
+        String requestUrl = response.request().url().toString();
         String content = response.body().string();
         Log.d(TAG, "\n");
         Log.d(TAG, "\n");
         Log.d(TAG, "----------Start----------------");
-        String method = request.method();
+        String method =  response.request().method();
         Log.d(TAG, "| request  | " + method + "  |  " + java.net.URLDecoder.decode(requestUrl, "UTF-8")+"   ");
-        if ("POST".equals(method)) {
+        if ("POST".equals(method) || "PUT".equals(method)) {
             Log.d(TAG, "\n");
             try {
-                final Request copy = request.newBuilder().build();
+                final Request copy =  response.request().newBuilder().build();
                 final Buffer buffer = new Buffer();
                 copy.body().writeTo(buffer);
                 Log.d(TAG, "| request | " + buffer.readUtf8());

@@ -46,7 +46,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:background="@drawable/for_help" />
+            android:background="@drawable/icon_urgent" />
 
 
         <ImageView

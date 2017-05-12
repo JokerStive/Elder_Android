@@ -125,15 +125,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         requestPermissions(new String[]{permission}, requestCode);
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 0x11) {
-//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                ToastHelper.get().showShort("请给予权限");
-//            }
-//        }
-//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -179,6 +170,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         Logger.d(TAG, getClass().getName() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
+
 
 
     @Override

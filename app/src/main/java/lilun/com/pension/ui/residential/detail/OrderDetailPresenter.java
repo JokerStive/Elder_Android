@@ -43,6 +43,10 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                         view.changeOrderStatusSuccess(status);
                     }
 
+                    @Override
+                    public void onError(Throwable e, int[] errorCode, String[] errorMessage) {
+                        super.onError(e, errorCode, errorMessage);
+                    }
                 }));
     }
 
