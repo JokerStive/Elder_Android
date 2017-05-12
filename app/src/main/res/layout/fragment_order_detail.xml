@@ -100,11 +100,12 @@
                 tools:src="@drawable/shape_rect_red" />
 
             <TextView
+                android:maxLines="3"
                 android:id="@+id/tv_sophisticated"
-                style="@style/tv_small_ellipsize"
+                style="@style/tv_small"
                 android:layout_marginLeft="14dp"
                 android:layout_toRightOf="@+id/iv_product_icon"
-                tools:text="卖猪肉" />
+                tools:text="卖带哦饭姐爱哦饭假附近的撒放假打死房价大幅降低撒肥的手法的撒范德萨饭肉" />
 
             <TextView
                 android:id="@+id/tv_product_price"

@@ -89,6 +89,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
     }
 
     private void refreshData() {
+        mSwipeLayout.setRefreshing(true);
         skip = 0;
         String filter;
         String parent = mClassify.getParent();

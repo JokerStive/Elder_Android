@@ -43,22 +43,22 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             RatingBar rb = helper.getView(R.id.rb_product);
             rb.setRating(product.getScore());
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts,product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
 
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
             helper.setText(R.id.tv_sophisticated, product.getName())
-                    .setText(R.id.tv_provider_name,agencyName)
-                    .setText(R.id.tv_reservation_time,"预约时间:"+StringUtils.IOS2ToUTC(order.getRegisterDate(),0)+"  "+StringUtils.IOS2ToUTC(order.getRegisterDate(),1))
+                    .setText(R.id.tv_provider_name, agencyName)
+                    .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0))
                     .setText(R.id.tv_product_price, String.format(App.context.getResources().getString(R.string.format_price), product.getPrice()))
-                    .setVisible(R.id.tv_rank,order.getStatus().equals("done"))
-                    .setOnClickListener(R.id.rl_item,v ->{
-                       if (listener!=null){
-                           listener.onItemClick(order);
-                       }
+                    .setVisible(R.id.tv_rank, order.getStatus().equals("done"))
+                    .setOnClickListener(R.id.rl_item, v -> {
+                        if (listener != null) {
+                            listener.onItemClick(order);
+                        }
                     })
 
-                    .setOnClickListener(R.id.tv_rank,v ->{
-                        if (listener!=null){
+                    .setOnClickListener(R.id.tv_rank, v -> {
+                        if (listener != null) {
                             listener.onRank(order.getProductId());
                         }
                     })
@@ -75,6 +75,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     public interface OnItemClickListener {
         void onItemClick(ProductOrder order);
+
         void onRank(String productId);
     }
 }

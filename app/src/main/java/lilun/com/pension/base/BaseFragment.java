@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -66,7 +66,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Override
     protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+        return new DefaultHorizontalAnimator();
     }
 
     @Nullable
@@ -125,15 +125,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         requestPermissions(new String[]{permission}, requestCode);
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 0x11) {
-//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                ToastHelper.get().showShort("请给予权限");
-//            }
-//        }
-//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -179,6 +170,9 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         Logger.d(TAG, getClass().getName() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
+
+
+
 
 
     @Override

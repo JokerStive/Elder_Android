@@ -166,16 +166,13 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderStatus.setText(status);
         }
 
-
-        if (User.isCustomer()) {
-            if (order.getStatus().equals(status_reserved)) {
-                llOperate.setVisibility(View.VISIBLE);
-                tvOperate.setText(R.string.operate_cancel);
-            } else if (order.getStatus().equals(status_done)) {
-                llOperate.setVisibility(View.VISIBLE);
-                tvOperate.setText(R.string.rank);
-            }
+        int statusStringRes= getStatusOperate(order.getStatus());
+        if (statusStringRes!=-1){
+            llOperate.setVisibility(View.VISIBLE);
+            tvOperate.setText(statusStringRes);
         }
+
+
 
         //show product
         OrganizationProduct product = order.getProduct();
@@ -188,7 +185,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         if (User.isCustomer()) {
             agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
             String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations, agencyId, null), R.drawable.avatar, ivProviderAvatar);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations, agencyId, null), R.drawable.icon_def, ivProviderAvatar);
             //TODO 现在是获取组织的icon，也可能是information的icon
             tvProviderName.setText(StringUtils.filterNull(agencyName));
             tvProductPhone.setText(account.getMobile());
@@ -209,8 +206,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     @Override
     public void changeOrderStatusSuccess(String status) {
         //更改订单状态后的操作
-        llOperate.setVisibility(View.GONE);
-        tvOrderStatus.setText(getStatus(status));
+        getActivity().finish();
         EventBus.getDefault().post(new Event.RefreshMyOrderData());
 
     }
@@ -233,13 +229,13 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private int getStatusOperate(String status) {
         int statusOperate = 0;
         if (status.equals(status_reserved)) {
-            statusOperate = R.string.operate_assigned;
-        } else if (status.equals(status_assigned)) {
-            statusOperate = R.string.operate_assigned;
-        } else if (status.equals(status_done)) {
-            statusOperate = R.string.operate_done;
-        } else if (status.equals(status_cancel)) {
             statusOperate = R.string.operate_cancel;
+        } else if (status.equals(status_assigned)) {
+            statusOperate = R.string.operate_done;
+        } else if (status.equals(status_done)) {
+            statusOperate = R.string.rank;
+        } else if (status.equals(status_cancel)) {
+            statusOperate = -1;
         }
         return statusOperate;
     }

@@ -523,7 +523,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @PUT("ProductOrders/{id}/changeStatus")
-    Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") String ststus);
+    Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") String status);
 
     /**
      * 修改订单

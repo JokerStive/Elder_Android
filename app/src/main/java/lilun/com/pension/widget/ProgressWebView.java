@@ -3,6 +3,7 @@ package lilun.com.pension.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -13,12 +14,17 @@ public class ProgressWebView extends WebView {
 
     public ProgressWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mProgressBar = new ProgressBar(context, null,android.R.attr.progressBarStyleHorizontal);
+        mProgressBar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 8);
         mProgressBar.setLayoutParams(layoutParams);
         addView(mProgressBar);
+
+
+        WebSettings settings = getSettings();
+        settings.setJavaScriptEnabled(true);
         setWebChromeClient(new WebChromeClient());
         setWebViewClient(new WeClient());
+
     }
 
     public class WebChromeClient extends android.webkit.WebChromeClient {
@@ -34,6 +40,7 @@ public class ProgressWebView extends WebView {
             super.onProgressChanged(view, newProgress);
         }
 
+
     }
 
 
@@ -42,8 +49,25 @@ public class ProgressWebView extends WebView {
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             return true;
         }
+
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            imgReset();
+        }
     }
 
+
+    private void imgReset() {
+        loadUrl("javascript:(function(){"
+                + "var objs = document.getElementsByTagName('img'); "
+                + "for(var i=0;i<objs.length;i++)  " + "{"
+                + "var img = objs[i];   "
+                + "    img.style.width = '100%';   "
+                + "    img.style.height = 'auto';   "
+                + "}" + "})()");
+    }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
