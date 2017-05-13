@@ -5,9 +5,13 @@
     android:layout_height="match_parent">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -364,5 +368,4 @@
         android:gravity="center"
         android:text="@string/activity_detail"
         android:textColor="@color/white" />
-
 </RelativeLayout>

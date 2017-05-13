@@ -31,7 +31,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
             view.showClassifies(activityCategories);
             return;
         }
-        String filter = "{\"where\":{\"organizationId\":\""+organizationId+"\",\"setting\":{\"exists\": false}},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"organizationId\":\""+organizationId+"/#activity-category\",\"setting\":{\"exists\": false}},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getActivityCategories(filter)
                 .compose(RxUtils.handleResult())

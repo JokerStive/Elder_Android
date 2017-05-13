@@ -407,6 +407,7 @@ public class StringUtils {
      * @return
      */
     public static String up2thisTime(String strTime) {
+        if (string2Date(strTime) == null) return "";
         long ms = new Date().getTime() - IOS2ToUTCDate(strTime).getTime();
         long days, hours, mins;
         days = ms / (1000 * 60 * 60 * 24);
@@ -425,6 +426,7 @@ public class StringUtils {
      * @return
      */
     public static String thatTime(String strTime) {
+        if (string2Date(strTime) == null) return "";
         long ms = new Date().getTime() - string2Date(strTime).getTime();
         long days, hours, mins;
         days = ms / (1000 * 60 * 60 * 24);

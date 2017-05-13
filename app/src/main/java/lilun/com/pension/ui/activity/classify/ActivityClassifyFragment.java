@@ -188,7 +188,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void getClassifies() {
-        mPresenter.getClassifies(User.getBelongsOrganizationId());
+        mPresenter.getClassifies(User.getCurrentOrganizationId());
     }
 
     private void getAboutMe(int skip) {

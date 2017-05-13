@@ -239,6 +239,8 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     public boolean dealOnBack() {
         if (mRecyclerView.isSelected()) {
             mRecyclerView.setSelected(false);
+            if (partnersAdapter.getSelectedList() != null)
+                partnersAdapter.getSelectedList().clear();
             partnersAdapter.setShowSelectedStatus(false);
             partnersAdapter.notifyDataSetChanged();
             titleBar.setRightWitchShow(NormalTitleBar.ICON);
@@ -246,6 +248,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         }
         return false;
     }
+
 
     @Override
     public void completeRefresh() {
@@ -306,7 +309,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         String[] userNames = userName.split(",");
         String to = "[";
         for (int i = 0; i < userIds.length; i++) {
-            to += "{\"id\":" + userIds[i] + ",\"name\":" + userNames[i] + "},";
+            to += "{\"id\":" + userIds[i] + ",\"name\":\"" + userNames[i] + "\"},";
         }
         to = to.substring(0, to.length() - 1);
         to += "]";
