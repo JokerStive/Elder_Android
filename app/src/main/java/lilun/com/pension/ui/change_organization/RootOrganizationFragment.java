@@ -17,7 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
-import lilun.com.pension.app.Config;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
@@ -26,7 +26,7 @@ import lilun.com.pension.module.adapter.ChangeOrganizationAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.widget.BreadCrumbsView;
-import lilun.com.pension.widget.NormalItemDecoration;
+import lilun.com.pension.widget.DividerGridItemDecoration;
 
 /**
  * 切换地球村社区
@@ -66,11 +66,12 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
             getData(0);
         });
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
 
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
+        swipeLayout.setOnRefreshListener(() -> getData(0));
 
 //        swipeLayout.setRefreshing(true);
     }

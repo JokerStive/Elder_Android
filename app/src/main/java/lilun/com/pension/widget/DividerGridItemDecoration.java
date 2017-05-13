@@ -31,12 +31,7 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
     }
 
 
-    public DividerGridItemDecoration(int dividerHeight, int dividerColor) {
-        mDividerHeight = dividerHeight;
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(dividerColor);
-        mPaint.setStyle(Paint.Style.FILL);
-    }
+
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
