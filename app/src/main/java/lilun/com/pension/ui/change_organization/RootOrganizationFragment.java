@@ -13,6 +13,7 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -60,27 +61,32 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
     @Override
     protected void initView(LayoutInflater inflater) {
-//        crumbView.addBreadCrumb(Constants.organization_root);
         crumbView.setonCrumbClickListener(id -> {
             currentId = id;
-            getData(0);
+            getData(0, false);
         });
-
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
-
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
-        swipeLayout.setOnRefreshListener(() -> getData(0));
+        adapter = new ChangeOrganizationAdapter(new ArrayList<>());
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
+        recyclerView.setAdapter(adapter);
+        adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            Organization organization = adapter.getData().get(i);
+            currentId = organization.getId();
+            getData(0, true);
+        });
+        adapter.setOnLoadMoreListener(() -> getData(adapter.getItemCount(),false));
 
-//        swipeLayout.setRefreshing(true);
+        swipeLayout.setOnRefreshListener(() -> getData(0, false));
+
     }
 
     private void changeCurrentOrganization() {
         String belongsOrganizationId = User.getBelongsOrganizationId();
         boolean equals = belongsOrganizationId.equals(Constants.organization_root);
         //如果本来的所属组织不是地丢村，并且当前选择的组织是本身的默认组织
-        if (!equals  && TextUtils.equals(currentId, belongsOrganizationId)) {
+        if (!equals && TextUtils.equals(currentId, belongsOrganizationId)) {
             if (User.currentOrganizationHasChanged()) {
                 mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
             } else {
@@ -92,18 +98,12 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     }
 
     @Override
-    public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
+    public void showOrganizations(List<Organization> organizations, boolean isLoadMore, boolean isAddCrumb) {
         completeRefresh();
-        if (adapter == null) {
-            adapter = new ChangeOrganizationAdapter(organizations);
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-                Organization organization = adapter.getData().get(i);
-                crumbView.addBreadCrumb(organization.getId());
-                currentId = organization.getId();
-                getData(0);
-            });
-            recyclerView.setAdapter(adapter);
-        } else if (isLoadMore) {
+        if (isAddCrumb) {
+            crumbView.addBreadCrumb(currentId);
+        }
+        if (isLoadMore) {
             adapter.addAll(organizations);
         } else {
             adapter.replaceAll(organizations);
@@ -137,9 +137,9 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
                 crumbView.addBreadCrumb(organizationId);
             }
         } else {
-            crumbView.addBreadCrumb(Constants.organization_root);
+            crumbView.addBreadCrumb(currentId);
         }
-        getData(0);
+        getData(0, false);
     }
 
     @Override
@@ -152,9 +152,9 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     }
 
 
-    private void getData(int skip) {
+    private void getData(int skip, boolean isAddCrumb) {
         swipeLayout.setRefreshing(true);
-        mPresenter.getOrganizations(currentId, null, skip);
+        mPresenter.getOrganizations(currentId, null, skip, isAddCrumb);
     }
 
     @Override

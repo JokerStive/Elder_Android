@@ -120,16 +120,14 @@ public class BreadCrumbsView extends HorizontalScrollView {
                 continue;
             }
             if (isClear) {
-//                crumbCount--;
                 ids.remove(i);
                 crumbContainer.removeView(childAt);
                 i--;
             }
         }
 
-        if (listener != null) {
-            listener.onCrumbClick(targetTag);
-        }
+        listener.onCrumbClick(targetTag);
+
     }
 
 

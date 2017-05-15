@@ -60,7 +60,7 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     }
 
     @Override
-    public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
+    public void showOrganizations(List<Organization> organizations, boolean isLoadMore,boolean isAddCrumb) {
         completeRefresh();
         if (adapter == null) {
             adapter = new ChangeOrganizationAdapter(organizations);

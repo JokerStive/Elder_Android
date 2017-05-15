@@ -117,7 +117,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         if (sdkInt < 23) {
             return true;
         }
-        int result = getActivity(). checkSelfPermission(permission);
+        int result = getActivity().checkSelfPermission(permission);
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -155,7 +155,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onPause() {
         super.onPause();
-        Logger.d(TAG, getClass().getName() + "------onPause");
+//        Logger.d(TAG, getClass().getName() + "------onPause");
     }
 
     @Override
@@ -170,9 +170,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 //        Logger.d(TAG, getClass().getName() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
-
-
-
 
 
     @Override

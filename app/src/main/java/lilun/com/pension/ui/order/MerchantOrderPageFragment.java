@@ -1,9 +1,12 @@
 package lilun.com.pension.ui.order;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +30,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.MerchantOrderAdapter;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.agency.merchant.MemoActivity;
 import lilun.com.pension.ui.order.detail.MerchantOrderDetailActivity;
 import lilun.com.pension.widget.NormalItemDecoration;
@@ -135,9 +139,9 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
 //            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
 //        } else
         if (!TextUtils.isEmpty(productId)) {
-            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+            filter = "{\"include\":[\"product\",\"assignee\",\"userProfile\"],\"where\":{\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         } else {
-            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+            filter = "{\"include\":[\"product\",\"assignee\",\"userProfile\"],\"where\":{\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         }
         mPresenter.getMyOrders(filter, skip);
 
@@ -158,7 +162,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
             adapter = new MerchantOrderAdapter(orders);
             adapter.setEmptyView();
             adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-                clickOrder  = orders.get(i);
+                clickOrder = orders.get(i);
                 openDetail();
             });
             adapter.setOnLoadMoreListener(() -> {
@@ -170,7 +174,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
                 @Override
                 public void onCall(ProductOrder order) {
                     clickOrder = order;
-                    connectCustom(clickOrder.getMobile());
+                    connectCustom();
                 }
 
                 @Override
@@ -190,7 +194,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     private void openDetail() {
         Intent intent = new Intent(_mActivity, MerchantOrderDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("order",clickOrder);
+        bundle.putSerializable("order", clickOrder);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -198,19 +202,41 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     private void openMemo() {
         Intent intent = new Intent(_mActivity, MemoActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("order",clickOrder);
+        bundle.putSerializable("order", clickOrder);
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    private void connectCustom(String phone) {
-        String url = "tel:" + phone;
+    private void connectCustom() {
+        if (hasPermission(Manifest.permission.CALL_PHONE)) {
+            call();
+        } else {
+            requestPermission(Manifest.permission.CALL_PHONE, 0X11);
+        }
+
+
+    }
+
+    private void call() {
+        String url = "tel:" + clickOrder.getMobile();
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
         startActivity(intent);
-
         EndCallListener callListener = new EndCallListener();
         TelephonyManager mTM = (TelephonyManager) _mActivity.getSystemService(Context.TELEPHONY_SERVICE);
         mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0x11) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                ToastHelper.get().showShort("请给予权限");
+            } else {
+                call();
+            }
+        }
     }
 
     @Override

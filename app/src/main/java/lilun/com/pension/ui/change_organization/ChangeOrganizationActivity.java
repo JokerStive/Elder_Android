@@ -131,7 +131,7 @@ public class ChangeOrganizationActivity extends BaseActivity<ChangeOrganizationC
 
 
     @Override
-    public void showOrganizations(List<Organization> organizations, boolean isLoadMore) {
+    public void showOrganizations(List<Organization> organizations, boolean isLoadMore,boolean i) {
 
     }
 

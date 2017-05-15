@@ -27,7 +27,7 @@ import lilun.com.pension.net.RxSubscriber;
  */
 public class ChangeOrganizationPresenter extends RxPresenter<ChangeOrganizationContract.View> implements ChangeOrganizationContract.Presenter {
     @Override
-    public void getOrganizations(String id, String filter, int skip) {
+    public void getOrganizations(String id, String filter, int skip,boolean isAddCrumb) {
         addSubscribe(NetHelper.getApi()
                 .getOrganizations(id, StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
@@ -35,7 +35,7 @@ public class ChangeOrganizationPresenter extends RxPresenter<ChangeOrganizationC
                 .subscribe(new RxSubscriber<List<Organization>>() {
                     @Override
                     public void _next(List<Organization> organizations) {
-                        view.showOrganizations(organizations, skip != 0);
+                        view.showOrganizations(organizations, skip != 0,isAddCrumb);
                     }
 
                     @Override

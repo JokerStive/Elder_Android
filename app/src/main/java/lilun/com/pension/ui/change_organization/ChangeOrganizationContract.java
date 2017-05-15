@@ -15,7 +15,7 @@ import lilun.com.pension.module.bean.Organization;
  */
 public interface ChangeOrganizationContract {
     interface View extends IView<Presenter> {
-        void showOrganizations(List<Organization> organizations,boolean isLoadMore);
+        void showOrganizations(List<Organization> organizations,boolean isLoadMore,boolean isAddCrumb);
 
         void changedRoot();
 
@@ -25,9 +25,12 @@ public interface ChangeOrganizationContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getOrganizations(String organizationId,String filter,int skip);
+        void getOrganizations(String organizationId,String filter,int skip,boolean isAddCrumb);
 
         void changeDefBelongOrganization(String organizationId);
     }
+
+
+
 
 }

@@ -54,6 +54,16 @@ public class ProductOrder extends BaseBean {
     private Account assignee;
     private Contact contact;
     private String categoryId;
+    private Contact userProfile;
+
+    public Contact getUserProfile() {
+        return userProfile;
+    }
+
+    public ProductOrder setUserProfile(Contact userProfile) {
+        this.userProfile = userProfile;
+        return this;
+    }
 
     public String getUserProfileId() {
         return userProfileId;

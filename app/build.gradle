@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "lilun.com.pension"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 22
         versionCode 1
         versionName "1.1.0"
         //64k方法限制

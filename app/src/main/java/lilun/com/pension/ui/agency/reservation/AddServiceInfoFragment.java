@@ -281,7 +281,7 @@ public class AddServiceInfoFragment extends BaseFragment {
 
         Contact contact = new Contact();
         contact.setName(name);
-        contact.setGender(sex.equals(optionSex[0]) ? 0 : 1);
+        contact.setGender(sex.equals(optionSex[0]) ? 1 : 0);
         contact.setRelation(relation.toString());
         contact.setCategoryId(productCategoryId);
 //        contact.setCreatorName(reservationName);
