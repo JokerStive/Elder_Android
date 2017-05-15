@@ -196,7 +196,7 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
         skip += elderEdusList.size();
         if (skip == 0) {
-            nullData.setVisibility(View.VISIBLE);
+            nullData.setVisibility(View.GONE);
         } else
             nullData.setVisibility(View.GONE);
         if (mActivityAdapter == null) {

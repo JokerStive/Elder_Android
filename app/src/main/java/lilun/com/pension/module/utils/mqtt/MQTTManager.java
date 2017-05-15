@@ -120,8 +120,7 @@ public class MQTTManager {
                 message.setPayload(publishMessage.getBytes());
                 IMqttDeliveryToken token = client.publish(publishTopic, message);
                 Logger.i("发送数据:" + token.getMessage());
-                if (!client.isConnected()) {
-                }
+
             } catch (MqttException e) {
                 Log.d("yk", e.getMessage());
             }

@@ -5,7 +5,6 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.ActivityCategory;
 import lilun.com.pension.module.bean.OrganizationActivity;
@@ -25,14 +24,14 @@ import lilun.com.pension.net.RxSubscriber;
 public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContract.View> implements ActivityClassifyContract.Presenter {
 
     @Override
-    public void getClassifies() {
-        List<ActivityCategory> activityCategories = (List<ActivityCategory>) ACache.get().getAsObject(User.getCurrentOrganizationId()+"activityClassify");
+    public void getClassifies(String organizationId) {
+        List<ActivityCategory> activityCategories = (List<ActivityCategory>) ACache.get().getAsObject("activityClassify_"+ StringUtils.encodeURL(organizationId));
         if (activityCategories != null && activityCategories.size() != 0) {
             Logger.i("activity classify has cache");
             view.showClassifies(activityCategories);
             return;
         }
-        String filter = "{\"where\":{\"setting\":{\"exists\": false}},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"organizationId\":\""+organizationId+"/#activity-category\",\"setting\":{\"exists\": false}},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getActivityCategories(filter)
                 .compose(RxUtils.handleResult())
@@ -40,7 +39,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
                 .subscribe(new RxSubscriber<List<ActivityCategory>>() {
                     @Override
                     public void _next(List<ActivityCategory> activityCategories) {
-                        ACache.get().put(User.getCurrentOrganizationId()+"activityClassify", (Serializable) activityCategories);
+                        ACache.get().put("activityClassify_"+ StringUtils.encodeURL(organizationId), (Serializable) activityCategories);
                         view.showClassifies(activityCategories);
                     }
 

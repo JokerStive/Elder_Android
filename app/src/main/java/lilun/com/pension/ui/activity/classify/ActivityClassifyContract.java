@@ -21,7 +21,7 @@ public interface ActivityClassifyContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getClassifies();
+        void getClassifies(String organizationId);
         void getAboutMe(String filter, int skip);
     }
 

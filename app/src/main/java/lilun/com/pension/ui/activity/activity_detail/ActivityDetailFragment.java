@@ -50,6 +50,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.bean.OrganizationReply;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
 import lilun.com.pension.module.utils.mqtt.MQTTTopicUtils;
@@ -237,6 +238,20 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         rvPartnerList.addItemDecoration(new NormalItemDecoration(4));
         rvPartnerList.setAdapter(partnersIconAdapter);
         partnersIconAdapter.notifyDataSetChanged();
+
+        rbEvaluate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser) {
+                    new NormalDialog().createNormal(_mActivity, getString(R.string.commit_evalue, rating + ""), new NormalDialog.OnPositiveListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            mPresenter.postActivityRank(activity.getId(), (int) rating);
+                        }
+                    });
+                }
+            }
+        });
         showDetail(activity);
     }
 
@@ -339,7 +354,11 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         actvActName.setText(activity.getTitle());
         String[] split = activity.getCategoryId().split("#activity-category.");
         if (split.length > 0) actvActType.setText(getString(R.string.activity_type_, split[1]));
-        llEevalute.setVisibility(View.GONE);
+
+        if (isSignUp) {
+            llAvgEvaluate.setVisibility(View.VISIBLE);
+            llEevalute.setVisibility(View.VISIBLE);
+        } else llEevalute.setVisibility(View.GONE);
 
         if (!TextUtils.isEmpty(activity.getRepeatedDesc())) {
             actvActTime.setText(getString(R.string.activity_time_, activity.getRepeatedDesc()));
@@ -353,37 +372,24 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             cdvTime.setVisibility(View.VISIBLE);
             if (activity.getEndTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getEndTime()))) {
                 //活动结束
-             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
-                cdvTime.setText(getString(R.string.activity_has_finished));
-                if (isSignUp) {
-                    llAvgEvaluate.setVisibility(View.VISIBLE);
-                    llEevalute.setVisibility(View.VISIBLE);
-                }
+                //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
+                cdvTime.setText(getString(R.string.activity_has_started));
+
                 ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, civAccountAvatar);
-                rbEvaluate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                    @Override
-                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                        Log.d("zp", rating + "  " + fromUser);
-                        if (fromUser) {
-                            new NormalDialog().createNormal(_mActivity, getString(R.string.commit_evalue, rating + ""), new NormalDialog.OnPositiveListener() {
-                                @Override
-                                public void onPositiveClick() {
-                                    mPresenter.postActivityRank(activity.getId(), (int) rating);
-                                }
-                            });
-                        }
-                    }
-                });
+
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
-             //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
+                //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_started)));
                 cdvTime.setText(getString(R.string.activity_has_started));
                 hasStart = OrganizationActivity.STARTED;
             } else {
-             //   actvStart.setText(getString(R.string.activity_start_, ""));
+                //   actvStart.setText(getString(R.string.activity_start_, ""));
 
-                if (activity.getStartTime() != null && cdvTime.getTime() == null)
-                    cdvTime.setTime(StringUtils.IOS2ToUTCDate(activity.getStartTime())).start();
+                if (activity.getStartTime() != null)
+                    if (cdvTime.getTime() == null)
+                        cdvTime.setTime(StringUtils.IOS2ToUTCDate(activity.getStartTime())).start();
+                    else
+                        cdvTime.start();
             }
         }
 
@@ -537,7 +543,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         MQTTManager.getInstance().unsubscribe(topic, null, new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                showDialog("取消订阅成功");
+                ToastHelper.get().showShort("取消订阅成功");
+                popTo(ActivityClassifyFragment.class, false);
             }
 
             @Override
@@ -569,7 +576,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         pushMessage.setVerb(PushMessage.VERB_QUIT)
                 .setMessage("主持人已解散活动")
                 .setTime(StringUtils.date2String(new Date()));
-        MQTTManager.getInstance().publish(topic,qos,pushMessage.getJsonStr());
+        MQTTManager.getInstance().publish(topic, qos, pushMessage.getJsonStr());
         popTo(ActivityClassifyFragment.class, false);
     }
 
@@ -603,7 +610,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
         if (getString(R.string.question).equals(acbtQuestionChat.getText().toString().trim())) {
             if (hasStart == OrganizationActivity.FINISHED) {
-                showDialog(getString(R.string.activity_has_finished));
+                showDialog(getString(R.string.activity_has_started));
                 return;
             }
             if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {

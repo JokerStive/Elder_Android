@@ -20,7 +20,6 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Event;
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ActivityCategoryAdapter;
@@ -189,7 +188,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void getClassifies() {
-        mPresenter.getClassifies();
+        mPresenter.getClassifies(User.getCurrentOrganizationId());
     }
 
     private void getAboutMe(int skip) {
@@ -198,8 +197,8 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         //未开始    现在时间<开始时间
         String activity_status = "\"endTime\":{\"gt\":\"" + localtime + "\"}";
         //TODO 获取关于我的活动 1.是活动类型  2.创建人是自己  3.参加的活动
-        String filter = "{\"where\":{\"categoryId\":{\"like\":\"" + OrganizationChildrenConfig.activity() + "\"}" +
-                ",\"or\":[{\"endTime\":{\"$exists\":false}},{" + activity_status+"}]"+
+        String filter = "{\"where\":{" +
+                "\"or\":[{\"status\":0},{\"status\":1}]" +
                 ",\"or\":[{\"masterId\":\"" + User.getUserId() + "\"}" +
                 ",{\"partnerList\":\"" + User.getUserId() + "\"}]}" +
                 ",\"order\":\"createdAt DESC\"}";

@@ -142,7 +142,11 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
-
+        if (baseBeen.length == 0) {
+            ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
+           // dialog.dismiss();
+            return;
+        }
         if (recyclerIndex != RECYCLERLEVEL) {
             area = baseBeen[baseBeen.length - 1];
             tvBelongArea.setText(area.getName());
