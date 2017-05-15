@@ -176,7 +176,8 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private void getServices(int skip) {
         String filter = "{\"\":\"\"}";
-        mPresenter.getAboutMe(filter, skip);
+     //   mPresenter.getAboutMe(filter, skip);
+        completeRefresh();
     }
 
 
