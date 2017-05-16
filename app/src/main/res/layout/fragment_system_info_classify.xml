@@ -19,7 +19,7 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:padding="12dp"
-            android:text="社区公告" />
+            android:text="公告通知" />
 
         <View style="@style/line_gray" />
 

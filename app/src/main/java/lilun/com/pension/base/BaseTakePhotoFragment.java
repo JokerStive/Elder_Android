@@ -25,7 +25,7 @@ import lilun.com.pension.app.Config;
 import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.widget.TakePhotoLayout;
 
-public abstract class BaseTakePhotoFragment<T extends IPresenter>  extends BaseFragment implements TakePhoto.TakeResultListener, InvokeListener, TakePhotoClickListener {
+public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFragment implements TakePhoto.TakeResultListener, InvokeListener, TakePhotoClickListener {
 
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
@@ -90,15 +90,16 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter>  extends BaseF
 
     @Override
     public void onCameraClick() {
-        File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");
+        File file;
+        file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
         Uri uri = Uri.fromFile(file);
-        Logger.d("拍照图片的存储地址"+uri.getAuthority());
+        Logger.d("拍照图片的存储地址" + uri.getAuthority());
         getTakePhoto().onPickFromCapture(uri);
     }
 
     @Override
     public void onAlbumClick() {
-        if (takePhotoLayout!=null){
+        if (takePhotoLayout != null) {
             getTakePhoto().onPickMultiple(takePhotoLayout.getEnableDataCount());
         }
     }
@@ -113,20 +114,20 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter>  extends BaseF
 
     @Override
     public void takeFail(TResult result, String msg) {
-
+        Logger.d("take photo fail " + msg);
     }
 
     @Override
     public void takeCancel() {
-
+        Logger.d("take photo cancel ");
     }
 
-    protected void setTakePhotoLayout(TakePhotoLayout takePhotoLayout){
+    protected void setTakePhotoLayout(TakePhotoLayout takePhotoLayout) {
         this.takePhotoLayout = takePhotoLayout;
     }
 
-    protected ArrayList<String> getPhotoData(){
-        if(takePhotoLayout!=null){
+    protected ArrayList<String> getPhotoData() {
+        if (takePhotoLayout != null) {
             return takePhotoLayout.getData();
         }
 

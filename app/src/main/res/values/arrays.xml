@@ -116,19 +116,27 @@
 
 
     //=========备注呼叫情况选项
-    <string-array name="merchant_call_situation">
+    <string-array name="merchant_call_situation_desc">
         <item>接通</item>
         <item>无法接通</item>
         <item>无应答</item>
         <item>空号</item>
     </string-array>
 
+    <string-array name="merchant_call_situation">
+        <item>connected</item>
+        <item>notAvailable</item>
+        <item>noResponse</item>
+        <item>emptyNumber</item>
+    </string-array>
+
 
     //=========新增订单个人信息
     <string-array name="personal_info_sex">
-        <item>男</item>
         <item>女</item>
+        <item>男</item>
     </string-array>
+
 
     <string-array name="personal_info_health_status">
         <item>自理</item>

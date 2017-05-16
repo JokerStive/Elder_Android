@@ -131,6 +131,9 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     public void changedRoot() {
         if (User.currentOrganizationHasChanged() && ACache.get().isExit("chooseIds")) {
             List<String> ids = (List<String>) ACache.get().getAsObject("chooseIds");
+            if (ids.size()>0){
+                ids.add(Constants.organization_root);
+            }
             currentId = ids.get(ids.size() - 1);
             Logger.d("当前组织id = " + currentId);
             for (String organizationId : ids) {

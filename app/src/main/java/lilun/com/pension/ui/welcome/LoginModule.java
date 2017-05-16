@@ -7,7 +7,6 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
-import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.Account;
@@ -45,7 +44,7 @@ public class LoginModule implements LoginContract.Module {
 //        PreUtils.putLong(User.tokenEffectiveDuration, tokenEffectiveDuration);
         User.putUserName(username);
         User.putPassword(password);
-        App.mqttConnectAndSub();
+//        App.mqttConnectAndSub();
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
                 .compose(RxUtils.handleResult());

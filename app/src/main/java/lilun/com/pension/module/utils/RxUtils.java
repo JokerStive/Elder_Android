@@ -30,19 +30,18 @@ public class RxUtils {
                 Error.ErrorBean error = null;
                 try {
                     error_message = tResponse.errorBody().string();
+                    if (GsonUtils.string2Error(error_message) != null && GsonUtils.string2Error(error_message).getError() != null) {
+                        error = GsonUtils.string2Error(error_message).getError();
+                        error_code = error.getStatusCode();
+                        error_message = error.getMessage();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-                if (GsonUtils.string2Error(error_message) != null && GsonUtils.string2Error(error_message).getError() != null) {
-                    error = GsonUtils.string2Error(error_message).getError();
-                    error_code = error.getStatusCode();
-                    error_message = error.getMessage();
                 }
                 tResponse.errorBody().close();
                 return Observable.error(new ApiException(error_code, error_message, error));
             }
 
-//            T body = tResponse.body();
         });
     }
 

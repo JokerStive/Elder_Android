@@ -31,6 +31,7 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.Setting;
 import lilun.com.pension.module.utils.ACache;
+import lilun.com.pension.module.utils.RegexUtils;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
@@ -276,12 +277,16 @@ public class AddServiceInfoFragment extends BaseFragment {
         String reservationPhone = etReservationPhone.getText().toString();
         if (TextUtils.isEmpty(reservationPhone)) {
             ToastHelper.get().showWareShort("请输入电话");
+            if (!RegexUtils.checkMobile(reservationPhone)){
+                ToastHelper.get().showWareShort("电话格式不正确");
+                return;
+            }
             return;
         }
 
         Contact contact = new Contact();
         contact.setName(name);
-        contact.setGender(sex.equals(optionSex[0]) ? 1 : 0);
+        contact.setGender(sex.equals(optionSex[0]) ? 0 : 1);
         contact.setRelation(relation.toString());
         contact.setCategoryId(productCategoryId);
 //        contact.setCreatorName(reservationName);

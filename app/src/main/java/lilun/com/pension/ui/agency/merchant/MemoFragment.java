@@ -12,7 +12,9 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -70,7 +72,8 @@ public class MemoFragment extends BaseFragment {
 //    @Bind(R.id.btn_confirm)
 //    Button btnConfirm;
 
-    private String[] callSituation;
+    private String[] callSituationDesc  =App.context. getResources().getStringArray(R.array.merchant_call_situation_desc);;
+    private String[] callSituation  = App.context.getResources().getStringArray(R.array.merchant_call_situation);;
     //    "reserved","assigned", "delay", "done","cancel"
     private String[] statusList = App.context.getResources().getStringArray(R.array.merchant_order_condition_value);
 
@@ -79,6 +82,7 @@ public class MemoFragment extends BaseFragment {
     private int selectColor = App.context.getResources().getColor(R.color.red);
     private String delayTime;
     private ProductOrder mOrder;
+    private String callStatus;
 //    private boolean canEditStatus;
 
     public static MemoFragment newInstance(ProductOrder order) {
@@ -94,11 +98,11 @@ public class MemoFragment extends BaseFragment {
     protected void getTransferData(Bundle arguments) {
         mOrder = (ProductOrder) arguments.getSerializable("order");
         Preconditions.checkNull(mOrder);
+        callStatus=mOrder.getCallStatus();
     }
 
     @Override
     protected void initPresenter() {
-        callSituation = getResources().getStringArray(R.array.merchant_call_situation);
     }
 
     @Override
@@ -137,10 +141,23 @@ public class MemoFragment extends BaseFragment {
     }
 
     private void setInitData() {
-        tvCallSituation.setText(mOrder.getCallStatus());
+        tvCallSituation.setText(callStatusToDesc(mOrder.getCallStatus()));
         etMemo.setText(mOrder.getRemark());
-
         setStatus();
+    }
+
+
+    /**
+    *根据外呼状态现实为文字
+    */
+    private String callStatusToDesc(String targetCallStatus) {
+        Map<String,String> mapping = new HashMap<>();
+        for(int i=0;i<callSituation.length;i++){
+            String callStatus = callSituation[i];
+            String callStatusDesc = callSituationDesc[i];
+            mapping.put(callStatus,callStatusDesc);
+        }
+        return mapping.get(targetCallStatus);
     }
 
     private void setStatus() {
@@ -214,12 +231,13 @@ public class MemoFragment extends BaseFragment {
      * 呼叫情况选择
      */
     private void callSituationChoose() {
-        OptionPicker picker = new OptionPicker(_mActivity, callSituation);
+        OptionPicker picker = new OptionPicker(_mActivity, callSituationDesc);
         picker.setSelectedItem(tvCallSituation.getText().toString());
         setPickerConfig(picker);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
+                callStatus=callSituation[index];
                 tvCallSituation.setText(item);
             }
         });
@@ -241,31 +259,9 @@ public class MemoFragment extends BaseFragment {
      * 存储备注
      */
     public void saveMemo() {
-        CharSequence callSituation = tvCallSituation.getText();
-//        if (TextUtils.isEmpty(callSituation)) {
-//            ToastHelper.get().showWareShort("请选择通话情况");
-//            return;
-//        }
-
-
-//        if (TextUtils.isEmpty(mCurrentStatus) && mCurrentStatus.equals(statusList[2])) {
-//            ToastHelper.get().showWareShort("请备注状态");
-//
-//            if (TextUtils.equals(mCurrentStatus, statusList[1]) && TextUtils.isEmpty(delayTime)) {
-//                ToastHelper.get().showWareShort("请选择延期时间");
-//                return;
-//            }
-//            return;
-//        }
-
-
-
-
-
         String memo = etMemo.getText().toString();
-
         MerchantMemo order = new MerchantMemo();
-        order.setCallStatus(callSituation.toString());
+        order.setCallStatus(callStatus);
         order.setStatus(mCurrentStatus);
         order.setRemark(memo);
         order.setDelayTime(delayTime);
@@ -274,8 +270,10 @@ public class MemoFragment extends BaseFragment {
 
     }
 
-    private void putOrder(MerchantMemo order) {
-        NetHelper.getApi().putMerchantMemoOrder(mOrder.getId(), order)
+    private void putOrder(MerchantMemo memo) {
+        NetHelper.getApi().putMerchantMemoOrder(mOrder.getId(), memo.getStatus(),
+                memo.getCallStatus(), memo.getRemark(), memo.getDelayTime()
+        )
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(_mActivity) {

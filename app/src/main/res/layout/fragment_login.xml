@@ -107,6 +107,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
-        android:src="@drawable/login_next"
+        android:src="@drawable/next"
         app:backgroundTint="@color/login" />
 </android.support.design.widget.CoordinatorLayout>

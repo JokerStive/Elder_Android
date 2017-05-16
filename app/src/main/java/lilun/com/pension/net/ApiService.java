@@ -14,7 +14,6 @@ import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
 import lilun.com.pension.module.bean.Information;
-import lilun.com.pension.module.bean.MerchantMemo;
 import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAccount;
@@ -162,7 +161,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationAids/{id}/getDetails")
-    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId,@Query("replyFilter") String filter);
+    Observable<Response<AidDetail>> getAidDetail(@Path("id") String aidId, @Query("replyFilter") String filter);
 
 
     /**
@@ -247,7 +246,7 @@ public interface ApiService {
      * 新增aid一个reply
      */
     @POST("OrganizationAids/{id}/answer")
-    Observable<Response<Object>> newAidReply(@Path("id") String aidId,@Body OrganizationReply reply);
+    Observable<Response<Object>> newAidReply(@Path("id") String aidId, @Body OrganizationReply reply);
 
 
     /**
@@ -528,8 +527,12 @@ public interface ApiService {
     /**
      * 修改订单
      */
-    @PUT("ProductOrders/{id}")
-    Observable<Response<Object>> putMerchantMemoOrder(@Path("id") String orderId, @Body MerchantMemo memo);
+    @FormUrlEncoded
+    @PUT("ProductOrders/{id}/communicationRemark")
+    Observable<Response<Object>> putMerchantMemoOrder(@Path("id") String orderId, @Field("status") String status,
+                                                      @Field("callStatus") String callStatus,
+                                                      @Field("remark") String remark,
+                                                      @Field("delayTime") String delayTime);
 
 
     /**

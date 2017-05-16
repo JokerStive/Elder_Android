@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
@@ -59,4 +60,9 @@ public class SystemUtils {
         return false;
     }
 
+
+    public static boolean isExtendStorageEnable() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
+    }
 }

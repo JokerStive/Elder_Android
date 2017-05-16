@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.orhanobut.logger.Logger;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -18,7 +16,7 @@ import butterknife.ButterKnife;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -47,7 +45,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
 
-        Logger.d(TAG, getClass().getName() + "------onCreate");
+//        Logger.d(TAG, getClass().getName() + "------onCreate");
         Bundle arguments = getArguments();
         if (arguments != null) {
             getTransferData(arguments);
@@ -66,7 +64,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Override
     protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
+        return new DefaultNoAnimator();
     }
 
     @Nullable

@@ -1,6 +1,5 @@
 package lilun.com.pension.ui.register;
 
-import lilun.com.pension.app.App;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;

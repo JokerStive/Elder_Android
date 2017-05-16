@@ -17,7 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
-import lilun.com.pension.module.utils.DeviceUtils;
+import lilun.com.pension.app.User;
 
 
 /**
@@ -84,9 +84,9 @@ public class MQTTManager {
 
         mqttConnectOptions.setUserName(userName);
         if (client == null) {
-            String deviceId = new DeviceUtils(App.context).getUniqueID();
-            client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
-            Logger.i("设备Id:" + deviceId);
+//            String deviceId = new DeviceUtils(App.context).getUniqueID();
+            client = new MqttAndroidClient(App.context, Config.MQTT_URL, User.getUserId());
+//            Logger.i("设备Id:" + deviceId);
         }
 
         client.setCallback(mCallback);
