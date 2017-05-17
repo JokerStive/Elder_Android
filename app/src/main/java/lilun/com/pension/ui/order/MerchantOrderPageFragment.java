@@ -28,6 +28,7 @@ import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.MerchantOrderAdapter;
+import lilun.com.pension.module.bean.Contact;
 import lilun.com.pension.module.bean.ProductOrder;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ToastHelper;
@@ -218,7 +219,12 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     }
 
     private void call() {
-        String url = "tel:" + clickOrder.getMobile();
+        String mobile = clickOrder.getMobile();
+        Contact userProfile = clickOrder.getUserProfile();
+        if (userProfile != null && !TextUtils.isEmpty(userProfile.getMobile())) {
+            mobile = userProfile.getMobile();
+        }
+        String url = "tel:" + mobile;
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
         startActivity(intent);
         EndCallListener callListener = new EndCallListener();

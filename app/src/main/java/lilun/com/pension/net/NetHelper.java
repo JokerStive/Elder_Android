@@ -40,9 +40,9 @@ public class NetHelper {
                 builder.addInterceptor(logInterceptor);
             }
             okHttpClient = builder
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .connectTimeout(Config.time_out, TimeUnit.SECONDS)
+                    .readTimeout(Config.time_out, TimeUnit.SECONDS)
+                    .writeTimeout(Config.time_out, TimeUnit.SECONDS)
                     .retryOnConnectionFailure(true)
                     .addInterceptor(new HttpInterceptor())
                     .build();

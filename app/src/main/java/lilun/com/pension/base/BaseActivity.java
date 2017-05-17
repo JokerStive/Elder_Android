@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
@@ -30,11 +31,13 @@ import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.MyCallBack;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.SystemUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.lbs.AnnounceInfoActivity;
 import lilun.com.pension.ui.lbs.UrgentAidInfoActivity;
 import lilun.com.pension.ui.welcome.LoginActivity;
+import lilun.com.pension.ui.welcome.WelcomeActivity;
 import lilun.com.pension.widget.CardConfig;
 import lilun.com.pension.widget.OverLayCardLayoutManager;
 import lilun.com.pension.widget.progress.RxProgressDialog;
@@ -119,6 +122,18 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshPushMessage(PushMessage pushMessage) {
         showExpressHelpPop(pushMessage);
+    }
+
+
+    /**
+     * 登陆事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshPushMessage(Event.OffLine offLine) {
+        startActivity(new Intent(this, WelcomeActivity.class));
+        ToastHelper.get().showShort("您的账号已在其他设备登陆");
+        App.clear();
+        finish();
     }
 
 

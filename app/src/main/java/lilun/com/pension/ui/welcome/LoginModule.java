@@ -42,7 +42,7 @@ public class LoginModule implements LoginContract.Module {
 //        long time = new Date().getTime();
 //        long tokenEffectiveDuration = time + tokenInfo.getTtl();
 //        PreUtils.putLong(User.tokenEffectiveDuration, tokenEffectiveDuration);
-        User.putUserName(username);
+
         User.putPassword(password);
 //        App.mqttConnectAndSub();
         return NetHelper.getApi()
@@ -101,6 +101,14 @@ public class LoginModule implements LoginContract.Module {
 
                 //手机号
                 User.putMobile(account.getMobile());
+
+                //手机号
+                User.putMobile(account.getMobile());
+
+                User.putUserName(account.getUsername());
+
+
+//                App.resetMQTT();
             }
         } else {
 //            ToastHelper.get().showWareShort("脏数据,账号没有所属组织");

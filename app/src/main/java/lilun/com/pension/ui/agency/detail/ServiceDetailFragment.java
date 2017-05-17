@@ -230,7 +230,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
      * 预约
      */
     private void reservation() {
-        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\",\"index\":\"1\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())

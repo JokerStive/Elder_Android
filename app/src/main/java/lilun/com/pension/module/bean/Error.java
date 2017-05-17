@@ -17,20 +17,10 @@ public class Error {
     }
 
     public static class ErrorBean {
-        private String name;
         private int status;
         private String message;
-        private int statusCode;
-        private String code;
-        private String stack;
 
-        public String getName() {
-            return name;
-        }
 
-        public void setName(String name) {
-            this.name = name;
-        }
 
         public int getStatus() {
             return status;
@@ -48,28 +38,6 @@ public class Error {
             this.message = message;
         }
 
-        public int getStatusCode() {
-            return statusCode;
-        }
 
-        public void setStatusCode(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getStack() {
-            return stack;
-        }
-
-        public void setStack(String stack) {
-            this.stack = stack;
-        }
     }
 }

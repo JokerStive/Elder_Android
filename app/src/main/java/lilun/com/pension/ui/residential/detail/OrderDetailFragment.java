@@ -324,8 +324,9 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
     private void callPhone(String msg) {
+        String mobile = tvProductPhone.getText().toString();
         new NormalDialog().createNormal(_mActivity, msg, () -> {
-            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mOrder.getMobile()));
+            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile));
             startActivity(intent);
         });
     }

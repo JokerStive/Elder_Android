@@ -73,7 +73,7 @@ public class ActivityChatFragment extends BaseFragment {
 
     @Override
     protected void initPresenter() {
-
+        MQTTManager.getInstance().subscribe(topic,2);
     }
 
     @Override

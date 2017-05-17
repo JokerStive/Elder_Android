@@ -1,7 +1,5 @@
 package lilun.com.pension.net;
 
-import lilun.com.pension.module.bean.Error;
-
 /**
  * Created by youke on 2016/12/29.
  * api异常，统一处理
@@ -9,21 +7,21 @@ import lilun.com.pension.module.bean.Error;
 public class ApiException extends RuntimeException {
     private int errorCode;
     private String errorMessage;
-    private Error.ErrorBean  error;
-
-    public Error.ErrorBean  getError() {
-        return error;
-    }
-
-    public ApiException setError(Error.ErrorBean  error) {
-        this.error = error;
-        return this;
-    }
-
-    public ApiException(int code, String message,Error.ErrorBean  error){
+//    private Error.ErrorBean  error;
+//
+//    public Error.ErrorBean  getError() {
+//        return error;
+//    }
+//
+//    public ApiException setError(Error.ErrorBean  error) {
+//        this.error = error;
+//        return this;
+//    }
+//
+    public ApiException(int code, String message){
         this.errorCode=code;
         this.errorMessage=message;
-        this.error=error;
+//        this.error=error;
     }
 
     public String getErrorMessage() {

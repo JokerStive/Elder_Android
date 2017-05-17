@@ -17,7 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
-import lilun.com.pension.app.User;
+import lilun.com.pension.module.utils.DeviceUtils;
 
 
 /**
@@ -54,64 +54,106 @@ public class MQTTManager {
     public static void release() {
         try {
             if (mInstance != null) {
+//                mInstance.client.unsubscribe(MQTTTopicUtils.initTopic());
                 mInstance.disConnect();
                 mInstance = null;
             }
+
+
         } catch (Exception e) {
 
         }
     }
 
     public boolean isConnected() {
-
         return client != null && client.isConnected();
     }
+//
+//    public void createConnect(String userName, String password, String[] topics, int[] qos) {
+//        if (client != null && client.isConnected()) {
+//            Logger.i("mqtt 已经链接不需要再次链接");
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+//            return;
+//        }
+//        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+//        mqttConnectOptions.setAutomaticReconnect(true);
+//        mqttConnectOptions.setCleanSession(false);
+//
+//        mqttConnectOptions.setPassword(password.toCharArray());
+//
+//        mqttConnectOptions.setUserName(userName);
+//        if (client == null) {
+//            String deviceId = DeviceUtils.getUniqueIdForThisApp(App.context);
+//            client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
+////            Logger.i("设备Id:" + deviceId);
+//        }
+//
+//        client.setCallback(mCallback);
+//        try {
+//            client.connect(mqttConnectOptions, null, new IMqttActionListener() {
+//                @Override
+//                public void onSuccess(IMqttToken asyncActionToken) {
+//                    Logger.i("连接mqtt服务器成功");
+//                    if (topics != null && qos != null && topics.length == qos.length)
+//                        subscribe(topics, qos);
+//                }
+//
+//                @Override
+//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//                    Logger.i("链接失败" + exception.getMessage());
+//                }
+//            });
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
-    public void createConnect(String userName, String password, String[] topics, int[] qos) {
+
+    public void connect(String userName, String password, IMqttActionListener listener) {
+
         if (client != null && client.isConnected()) {
             Logger.i("mqtt 已经链接不需要再次链接");
             return;
         }
-
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
             return;
         }
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setCleanSession(true);
 
         mqttConnectOptions.setPassword(password.toCharArray());
 
         mqttConnectOptions.setUserName(userName);
+
+
         if (client == null) {
-//            String deviceId = new DeviceUtils(App.context).getUniqueID();
-            client = new MqttAndroidClient(App.context, Config.MQTT_URL, User.getUserId());
-//            Logger.i("设备Id:" + deviceId);
+            String deviceId = DeviceUtils.getUniqueIdForThisApp(App.context);
+            client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
+            Logger.i("设备Id:" + deviceId);
+            client.setCallback(mCallback);
         }
 
-        client.setCallback(mCallback);
-        try {
-            client.connect(mqttConnectOptions, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Logger.i("连接mqtt服务器成功");
-                    subscribe(topics, qos);
-                }
+        if (client!=null){
+//            client.clearAbortBroadcast();
+        }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Logger.i("链接失败" + exception.getMessage());
-//                    ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
-                }
-            });
+        try {
+            client.connect(mqttConnectOptions, null, listener);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
+    /**
+     * 发送消息
+     */
     public void publish(String publishTopic, int qos, String publishMessage) {
         if (client != null && client.isConnected()) {
             try {
@@ -129,12 +171,35 @@ public class MQTTManager {
 
     }
 
+
+    /**
+     * 发送消息
+     */
+    public void publish(String publishTopic, int qos, String publishMessage,boolean isRetain) {
+        if (client != null && client.isConnected()) {
+            try {
+                MqttMessage message = new MqttMessage();
+//                message.setQos(qos);
+                message.setPayload(publishMessage.getBytes());
+                IMqttDeliveryToken token = client.publish(publishTopic, publishMessage.getBytes(),qos,isRetain);
+                Logger.i("发送数据:" + token.getMessage());
+
+            } catch (MqttException e) {
+                Log.d("yk", e.getMessage());
+            }
+
+        }
+
+    }
+
     public void subscribe(String topic, int qos) {
         try {
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+//                    ACache.get(App.context, "topics").put(topic, topic);
                     Logger.i(topic + "---订阅成功");
+//                    Logger.i("缓存topic--" + topic);
                 }
 
                 @Override
@@ -148,18 +213,19 @@ public class MQTTManager {
         }
     }
 
+
+
+
     public void subscribe(String topic, int qos, IMqttActionListener listener) {
         try {
-
             client.subscribe(topic, qos, null, listener);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
-    public void unsubscribe(String topic, Object usertext, IMqttActionListener listener) {
+    public void unSubscribe(String topic, Object usertext, IMqttActionListener listener) {
         try {
-
             client.unsubscribe(topic, usertext, listener);
         } catch (MqttException e) {
             e.printStackTrace();

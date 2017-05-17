@@ -13,9 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.PushMessage;
+import lilun.com.pension.module.utils.DeviceUtils;
 
 /**
  * 使用EventBus分发事件
@@ -30,6 +32,7 @@ public class MQTTCallbackBus implements MqttCallback {
 //        Logger.d("mqtt断开连接",cause.getMessage());
     }
 
+
     @Override
     public void messageArrived(String topic, MqttMessage message) {
         Logger.i(topic + "====\n" + message.toString());
@@ -40,7 +43,16 @@ public class MQTTCallbackBus implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-
+//        try {
+//            String message = token.getMessage().toString();
+//            if (message.contains("{\"verb\":\"login\"")) {
+//                Logger.i("deliveryComplete--start initSub");
+//                App.initSub();
+//            }
+//
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -70,7 +82,6 @@ public class MQTTCallbackBus implements MqttCallback {
                 JSONArray dataJson = (JSONArray) jsonObject.get("to");
 
 
-
                 String to = dataJson.toString();
                 pushMessage.setTo(to);
             }
@@ -92,6 +103,11 @@ public class MQTTCallbackBus implements MqttCallback {
 
 
     private void dealMessage(String topic, String messageData) {
+
+
+        //登陆
+        dealLogin(topic, messageData);
+
         PushMessage pushMessage = getPushMessageFromData(messageData);
 
         if (pushMessage != null) {
@@ -104,13 +120,38 @@ public class MQTTCallbackBus implements MqttCallback {
             pushMessage.save();
 
             //求助推送
-            if (TextUtils.equals(topic,"OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
+            if (TextUtils.equals(topic, "OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
                 EventBus.getDefault().post(pushMessage);
             }
 
 
+            //处理活动
             dealActivity(topic, pushMessage);
 
+        }
+    }
+
+
+    /**
+     * 处理登陆
+     */
+    private void dealLogin(String topic, String messageData) {
+        if (TextUtils.equals(topic,"user/" + User.getUserName() + "/.login")) {
+            try {
+                JSONObject jsonObject = new JSONObject(messageData);
+                String from = jsonObject.getString("from");
+                if (!TextUtils.isEmpty(from)) {
+                    String clientId = DeviceUtils.getUniqueIdForThisApp(App.context);
+                    if (!TextUtils.equals(from, clientId)) {
+//                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
+                        EventBus.getDefault().post(new Event.OffLine());
+                    }
+                } else {
+//                    Logger.i("相同设备登陆");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -135,7 +176,7 @@ public class MQTTCallbackBus implements MqttCallback {
                     //发送刷新我的活动
                     EventBus.getDefault().post(new Event.RefreshActivityData());
                     //取消订阅
-                    MQTTManager.getInstance().unsubscribe(topic, null, null);
+                    MQTTManager.getInstance().unSubscribe(topic, null, null);
 
                 }
             } else if (PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
@@ -152,7 +193,7 @@ public class MQTTCallbackBus implements MqttCallback {
                         //发送刷新我的活动
                         EventBus.getDefault().post(new Event.RefreshActivityData());
                         //取消订阅
-                        MQTTManager.getInstance().unsubscribe(topic, null, null);
+                        MQTTManager.getInstance().unSubscribe(topic, null, null);
                     }
                     //其他人添加信息
                 }

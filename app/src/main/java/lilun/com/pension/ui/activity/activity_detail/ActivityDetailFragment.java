@@ -497,7 +497,6 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Override
     public void sucJoinActivity() {
         if (MQTTManager.getInstance().isConnected()) {
-
             Logger.i("活动订阅中:" + topic);
             MQTTManager.getInstance().subscribe(topic, qos, new IMqttActionListener() {
                 @Override
@@ -540,7 +539,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 .setMessage(User.getName() + "已退出本活动")
                 .setTime(StringUtils.date2String(date));
         MQTTManager.getInstance().publish(topic, qos, pushMessage.getJsonStr());
-        MQTTManager.getInstance().unsubscribe(topic, null, new IMqttActionListener() {
+        MQTTManager.getInstance().unSubscribe(topic, null, new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 ToastHelper.get().showShort("取消订阅成功");

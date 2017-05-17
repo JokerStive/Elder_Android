@@ -47,7 +47,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
     private void init() {
 
-
+        setHorizontalScrollBarEnabled(false);
         setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setBackgroundColor(Color.WHITE);
 
@@ -66,6 +66,10 @@ public class BreadCrumbsView extends HorizontalScrollView {
      */
     public void addBreadCrumb(String id) {
         if (TextUtils.isEmpty(id)) {
+            return;
+        }
+
+        if ( hasRepeatId(id)){
             return;
         }
 
@@ -102,6 +106,24 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
     }
 
+
+    /**
+    *是否有重复的id
+    */
+    private boolean hasRepeatId(String targetId) {
+        for(String id:ids){
+            if (TextUtils.equals(targetId,id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+    *获取id列表
+    */
     public List<String> getIds() {
         return ids;
     }

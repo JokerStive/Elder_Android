@@ -3,8 +3,6 @@ package lilun.com.pension.ui.home;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 
 import lilun.com.pension.R;
@@ -49,10 +47,16 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+//        App.resetMQTT();
+    }
+
+
+    @Override
     protected void onResume() {
         super.onResume();
-        Logger.i("尝试重链接mqtt");
-        App.mqttConnectAndSub();
+        App.resetMQTT();
     }
 
 }

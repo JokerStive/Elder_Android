@@ -145,7 +145,7 @@ public class ReservationFragment extends BaseFragment {
 
 
     private void getDefContact() {
-        String filter = "{\"limit\":\"1\",\"where\":{\"categoryId\":\"" + productCategoryId + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+        String filter = "{\"where\":{\"categoryId\":\"" + productCategoryId + "\",\"creatorId\":\"" + User.getUserId() + "\",\"index\":\"1\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())

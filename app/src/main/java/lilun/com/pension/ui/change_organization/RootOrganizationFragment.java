@@ -39,8 +39,8 @@ import lilun.com.pension.widget.DividerGridItemDecoration;
 public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationContract.Presenter> implements ChangeOrganizationContract.View {
     @Bind(R.id.crumb_view)
     BreadCrumbsView crumbView;
-    @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
+//    @Bind(R.id.recycler_view)
+//    RecyclerView recyclerView;
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
     @Bind(R.id.btn_confirm)
@@ -61,6 +61,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
     @Override
     protected void initView(LayoutInflater inflater) {
+
         crumbView.setonCrumbClickListener(id -> {
             currentId = id;
             getData(0, false);
@@ -68,6 +69,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
         adapter = new ChangeOrganizationAdapter(new ArrayList<>());
+        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
         recyclerView.setAdapter(adapter);
@@ -100,13 +102,14 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore, boolean isAddCrumb) {
         completeRefresh();
-        if (isAddCrumb) {
-            crumbView.addBreadCrumb(currentId);
-        }
         if (isLoadMore) {
             adapter.addAll(organizations);
         } else {
             adapter.replaceAll(organizations);
+        }
+        if (isAddCrumb) {
+            Logger.d("获取组织成功，添加面包屑---"+currentId);
+            crumbView.addBreadCrumb(currentId);
         }
     }
 
@@ -131,15 +134,14 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     public void changedRoot() {
         if (User.currentOrganizationHasChanged() && ACache.get().isExit("chooseIds")) {
             List<String> ids = (List<String>) ACache.get().getAsObject("chooseIds");
-            if (ids.size()>0){
-                ids.add(Constants.organization_root);
-            }
             currentId = ids.get(ids.size() - 1);
             Logger.d("当前组织id = " + currentId);
             for (String organizationId : ids) {
+                Logger.d("有缓存的面包屑，添加...");
                 crumbView.addBreadCrumb(organizationId);
             }
         } else {
+            Logger.d("没有任何面包屑，添加root");
             crumbView.addBreadCrumb(currentId);
         }
         getData(0, false);

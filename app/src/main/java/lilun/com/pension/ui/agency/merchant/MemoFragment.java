@@ -72,8 +72,10 @@ public class MemoFragment extends BaseFragment {
 //    @Bind(R.id.btn_confirm)
 //    Button btnConfirm;
 
-    private String[] callSituationDesc  =App.context. getResources().getStringArray(R.array.merchant_call_situation_desc);;
-    private String[] callSituation  = App.context.getResources().getStringArray(R.array.merchant_call_situation);;
+    private String[] callSituationDesc = App.context.getResources().getStringArray(R.array.merchant_call_situation_desc);
+    ;
+    private String[] callSituation = App.context.getResources().getStringArray(R.array.merchant_call_situation);
+    ;
     //    "reserved","assigned", "delay", "done","cancel"
     private String[] statusList = App.context.getResources().getStringArray(R.array.merchant_order_condition_value);
 
@@ -98,7 +100,7 @@ public class MemoFragment extends BaseFragment {
     protected void getTransferData(Bundle arguments) {
         mOrder = (ProductOrder) arguments.getSerializable("order");
         Preconditions.checkNull(mOrder);
-        callStatus=mOrder.getCallStatus();
+        callStatus = mOrder.getCallStatus();
     }
 
     @Override
@@ -148,14 +150,14 @@ public class MemoFragment extends BaseFragment {
 
 
     /**
-    *根据外呼状态现实为文字
-    */
+     * 根据外呼状态现实为文字
+     */
     private String callStatusToDesc(String targetCallStatus) {
-        Map<String,String> mapping = new HashMap<>();
-        for(int i=0;i<callSituation.length;i++){
+        Map<String, String> mapping = new HashMap<>();
+        for (int i = 0; i < callSituation.length; i++) {
             String callStatus = callSituation[i];
             String callStatusDesc = callSituationDesc[i];
-            mapping.put(callStatus,callStatusDesc);
+            mapping.put(callStatus, callStatusDesc);
         }
         return mapping.get(targetCallStatus);
     }
@@ -237,7 +239,7 @@ public class MemoFragment extends BaseFragment {
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
-                callStatus=callSituation[index];
+                callStatus = callSituation[index];
                 tvCallSituation.setText(item);
             }
         });

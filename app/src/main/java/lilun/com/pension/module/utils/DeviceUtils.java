@@ -1,17 +1,13 @@
 package lilun.com.pension.module.utils;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
  * Created by zp on 2017/5/4.
@@ -19,25 +15,6 @@ import static android.content.Context.TELEPHONY_SERVICE;
 
 public class DeviceUtils {
 
-    private Context mContext;
-
-    public DeviceUtils(Context context) {
-        this.mContext = context;
-    }
-
-    /**
-     * The IMEI: 仅仅只对Android手机有效
-     * 采用此种方法，需要在AndroidManifest.xml中加入一个许可：android.permission.READ_PHONE_STATE，并且用
-     * 户应当允许安装此应用。作为手机来讲，IMEI是唯一的，它应该类似于 359881030314356（除非你有一个没有量产的手
-     * 机（水货）它可能有无效的IMEI，如：0000000000000）。
-     *
-     * @return imei
-     */
-    public String getIMEI() {
-        TelephonyManager TelephonyMgr = (TelephonyManager) mContext.getSystemService(TELEPHONY_SERVICE);
-        String szImei = TelephonyMgr.getDeviceId();
-        return szImei;
-    }
 
     /**
      * Pseudo-Unique ID, 这个在任何Android手机中都有效
@@ -49,7 +26,7 @@ public class DeviceUtils {
      *
      * @return PesudoUniqueID
      */
-    public String getPesudoUniqueID() {
+    public static  String getPesudoUniqueID() {
         String m_szDevIDShort = "35" + //we make this look like a valid IMEI
                 Build.BOARD.length() % 10 +
                 Build.BRAND.length() % 10 +
@@ -74,8 +51,8 @@ public class DeviceUtils {
      *
      * @return AndroidID
      */
-    public String getAndroidID() {
-        String m_szAndroidID = Settings.Secure.getString(mContext.getContentResolver(),
+    public static String getAndroidID(Context context) {
+        String m_szAndroidID = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         return m_szAndroidID;
     }
@@ -88,8 +65,8 @@ public class DeviceUtils {
      *
      * @return m_szWLANMAC
      */
-    public String getWLANMACAddress() {
-        WifiManager wm = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+    public static  String getWLANMACAddress(Context context) {
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         String m_szWLANMAC = wm.getConnectionInfo().getMacAddress();
         return m_szWLANMAC;
     }
@@ -104,10 +81,8 @@ public class DeviceUtils {
      *
      * @return
      */
-    public String getUniqueID() {
-//        String m_szLongID = getIMEI() + getPesudoUniqueID()
-//                + getAndroidID() + getWLANMACAddress() + getBTMACAddress();
-        String m_szLongID = getPesudoUniqueID() + getWLANMACAddress() ;
+    public static String getUniqueID(Context context) {
+        String m_szLongID = getPesudoUniqueID() + getWLANMACAddress(context) ;
         Log.d("zp",m_szLongID);
         // compute md5
         MessageDigest m = null;
@@ -133,4 +108,8 @@ public class DeviceUtils {
         return m_szUniqueID;
     }
 
+
+    public static  String  getUniqueIdForThisApp(Context context){
+        return "android@"+getAndroidID(context);
+    }
 }

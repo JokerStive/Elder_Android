@@ -25,6 +25,12 @@ public class Account implements Serializable {
     private String status;
     private List<IconModule> image;
     private String visibility;
+    /**
+     * profile : {}
+     */
+
+    private ProfileBean profile;
+
 
     public String getDefaultContactId() {
         return defaultContactId;
@@ -187,5 +193,27 @@ public class Account implements Serializable {
         this._perms = _perms;
     }
 
+    public ProfileBean getProfile() {
+        return profile;
+    }
 
+    public void setProfile(ProfileBean profile) {
+        this.profile = profile;
+    }
+
+
+    public static class ProfileBean implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private String belongToDistrict;
+
+        public String getBelongToDistrict() {
+            return belongToDistrict;
+        }
+
+        public ProfileBean setBelongToDistrict(String belongToDistrict) {
+            this.belongToDistrict = belongToDistrict;
+            return this;
+        }
+    }
 }

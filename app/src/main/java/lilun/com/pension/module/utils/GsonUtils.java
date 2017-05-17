@@ -1,6 +1,7 @@
 package lilun.com.pension.module.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +14,13 @@ import lilun.com.pension.module.bean.Error;
  */
 public class GsonUtils {
     public static Error string2Error(String s){
-        return  new Gson().fromJson(s,Error.class);
+        Error error=null;
+        try {
+            error = new Gson().fromJson(s, Error.class);
+        }catch (JsonSyntaxException exception) {
+            return error;
+        }
+        return error;
     }
 
 

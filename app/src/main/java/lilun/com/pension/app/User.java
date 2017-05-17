@@ -18,12 +18,14 @@ import lilun.com.pension.module.utils.StringUtils;
  */
 public class User {
     public static final String token = "token";
-//    public static final String tokenEffectiveDuration = "tokenEffectiveDuration";
+    //    public static final String tokenEffectiveDuration = "tokenEffectiveDuration";
     public static final String userId = "userId";
     public static final String name = "name";
     public static final String username = "username";
     public static final String password = "password";
     public static final String mobile = "mobile";
+//    public static final String has = "mobile";
+    public static final String belongToDistrict = "belongToDistrict";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
     public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
@@ -35,23 +37,31 @@ public class User {
     public static final String belongOrganizations = "belongOrganizations";
 
 
-    public static String getUserId() {return PreUtils.getString(userId, "");}
+    public static String getUserId() {
+        return PreUtils.getString(userId, "");
+    }
+
     public static void putUserId(String userId) {
         PreUtils.putString(User.userId, userId);
     }
 
 
+    public static String getUserName() {
+        return PreUtils.getString(username, "");
+    }
+
+    public static void putUserName(String un) {
+        PreUtils.putString(username, un);
+    }
 
 
-    public static String getUserName() {return PreUtils.getString(username, "");}
-    public static void putUserName(String un) {PreUtils.putString(username, un);}
+    public static String getPassword() {
+        return PreUtils.getString(password, "");
+    }
 
-
-
-
-    public static String getPassword() {return PreUtils.getString(password, "");}
-    public static void putPassword(String pass) {PreUtils.putString(password, pass);}
-
+    public static void putPassword(String pass) {
+        PreUtils.putString(password, pass);
+    }
 
 
     public static String getToken() {
@@ -59,33 +69,40 @@ public class User {
     }
 
 
-
-
     public static String getName() {
         return PreUtils.getString(name, "");
     }
+
     public static void putName(String nam) {
         PreUtils.putString(name, nam);
     }
 
 
+    public static void putIsCustomer(boolean isCustomer) {
+        PreUtils.putBoolean(User.isCustomer, isCustomer);
+    }
 
-
-    public static void putIsCustomer(boolean isCustomer) {PreUtils.putBoolean(User.isCustomer, isCustomer);}
     public static boolean isCustomer() {
         return PreUtils.getBoolean(User.isCustomer, true);
     }
 
 
+    public static String getCurrentOrganizationId() {
+        return PreUtils.getString(currentOrganizationId, defOrganizationId);
+    }
 
-    public static String getCurrentOrganizationId() {return PreUtils.getString(currentOrganizationId, defOrganizationId);}
-    public static void putCurrentOrganizationId(String id) {PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);}
+    public static void putCurrentOrganizationId(String id) {
+        PreUtils.putString(currentOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
+    }
 
 
+    public static String getBelongsOrganizationId() {
+        return PreUtils.getString(belongsOrganizationId, defOrganizationId);
+    }
 
-
-    public static String getBelongsOrganizationId() {return PreUtils.getString(belongsOrganizationId, defOrganizationId);}
-    public static void putBelongsOrganizationId(String id) { PreUtils.putString(belongsOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);}
+    public static void putBelongsOrganizationId(String id) {
+        PreUtils.putString(belongsOrganizationId, TextUtils.isEmpty(id) ? User.defOrganizationId : id);
+    }
 
 
     public static String getCurrentOrganizationName() {
@@ -96,8 +113,6 @@ public class User {
     public static String getBelongsOrganizationName() {
         return StringUtils.getOrganizationNameFromId(PreUtils.getString(belongsOrganizationId, defOrganizationId));
     }
-
-
 
 
     /**
@@ -114,18 +129,18 @@ public class User {
 
 
     /**
-     *根据当前组织判断是否可以增删改
+     * 根据当前组织判断是否可以增删改
      */
-    public static  boolean canOperate(){
+    public static boolean canOperate() {
         String currentOrganizationId = getCurrentOrganizationId();
-        if (ACache.get().isExit(belongOrganizations)){
+        if (ACache.get().isExit(belongOrganizations)) {
             List<OrganizationAccount> belongOrganizationAccount = (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
-            for (OrganizationAccount organizationAccount:belongOrganizationAccount){
+            for (OrganizationAccount organizationAccount : belongOrganizationAccount) {
                 String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
-                if (organizationId.equals(Constants.organization_root)){
+                if (organizationId.equals(Constants.organization_root)) {
                     continue;
                 }
-                if (TextUtils.equals(currentOrganizationId,organizationId)){
+                if (TextUtils.equals(currentOrganizationId, organizationId)) {
                     return true;
                 }
             }
@@ -136,32 +151,31 @@ public class User {
 
 
     /**
-    *创建者是否是自己
-    */
+     * 创建者是否是自己
+     */
     public static boolean creatorIsOwn(String creatorId) {
         return getUserId().equals(creatorId);
     }
 
 
     /**
-     *获取当前组织是否已经切换
+     * 获取当前组织是否已经切换
      */
     public static boolean currentOrganizationHasChanged() {
-        return  PreUtils.getBoolean("currentOrganizationHadChanged", false);
+        return PreUtils.getBoolean("currentOrganizationHadChanged", false);
     }
 
     /**
-     *存当前组织是否已经切换
+     * 存当前组织是否已经切换
      */
     public static boolean putCurrentOrganizationHasChanged(boolean changed) {
-        return  PreUtils.putBoolean("currentOrganizationHadChanged", changed);
+        return PreUtils.putBoolean("currentOrganizationHadChanged", changed);
     }
 
 
-
     /**
-    *获取用户的组织账号
-    */
+     * 获取用户的组织账号
+     */
     public static List<OrganizationAccount> getBelongOrganization() {
         if (ACache.get().getAsObject(belongOrganizations) != null) {
             return (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
@@ -178,7 +192,6 @@ public class User {
     public static String getContactId() {
         return PreUtils.getString(defaultContactId, "");
     }
-
 
 
     //地球村OrganizationAccount  的id
@@ -201,7 +214,6 @@ public class User {
     }
 
 
-
     //当前所属组织OrganizationAccount  的id
     public static void putCurrentOrganizationAccountId(String rootId) {
         PreUtils.putString(currentOrganizationAccountId, rootId);
@@ -212,7 +224,6 @@ public class User {
     }
 
 
-
     //电话
     public static void putMobile(String phone) {
         PreUtils.putString(mobile, phone);
@@ -220,6 +231,15 @@ public class User {
 
     public static String getMobile() {
         return PreUtils.getString(mobile, "");
+    }
+
+
+    //默认小区
+    public static void putBelongToDistrict(String id) {
+        PreUtils.putString(belongToDistrict, id);
+    }
+    public static String getBelongToDistrict() {
+        return PreUtils.getString(belongToDistrict, "");
     }
 
 }

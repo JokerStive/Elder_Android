@@ -127,4 +127,9 @@ public class Event {
             this.information = information;
         }
     }
+
+
+
+    //登陆
+    public static class OffLine {}
 }

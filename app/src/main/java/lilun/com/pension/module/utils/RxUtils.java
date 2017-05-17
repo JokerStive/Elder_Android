@@ -1,5 +1,7 @@
 package lilun.com.pension.module.utils;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 
 import lilun.com.pension.module.bean.Error;
@@ -19,27 +21,31 @@ public class RxUtils {
     public static <T> Observable.Transformer<Response<T>, T> handleResult() {
         return toObservable -> toObservable.doOnSubscribe(() -> {
             if (!SystemUtils.checkHasNet()) {
-                throw new ApiException(111, "无网络连接", null);
+                throw new ApiException(111, "无网络连接");
             }
         }).flatMap(tResponse -> {
             if (tResponse.isSuccessful()) {
                 return dataObservable(tResponse.body());
             } else {
-                String error_message = "解析失败";
+                String error_message = "错误异常数据";
                 int error_code = 110;
-                Error.ErrorBean error = null;
                 try {
                     error_message = tResponse.errorBody().string();
-                    if (GsonUtils.string2Error(error_message) != null && GsonUtils.string2Error(error_message).getError() != null) {
-                        error = GsonUtils.string2Error(error_message).getError();
-                        error_code = error.getStatusCode();
-                        error_message = error.getMessage();
+                    Error error = GsonUtils.string2Error(error_message);
+                    if (error != null) {
+                        Error.ErrorBean errorBean = error.getError();
+                        if (errorBean != null) {
+                            error_code = errorBean.getStatus();
+                            error_message = errorBean.getMessage();
+                        }
+                    }else {
+                        Logger.d(error_message);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 tResponse.errorBody().close();
-                return Observable.error(new ApiException(error_code, error_message, error));
+                return Observable.error(new ApiException(error_code, error_message));
             }
 
         });

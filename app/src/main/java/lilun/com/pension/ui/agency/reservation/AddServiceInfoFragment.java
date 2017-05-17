@@ -277,10 +277,10 @@ public class AddServiceInfoFragment extends BaseFragment {
         String reservationPhone = etReservationPhone.getText().toString();
         if (TextUtils.isEmpty(reservationPhone)) {
             ToastHelper.get().showWareShort("请输入电话");
-            if (!RegexUtils.checkMobile(reservationPhone)){
-                ToastHelper.get().showWareShort("电话格式不正确");
-                return;
-            }
+
+            return;
+        } else if (!RegexUtils.checkMobile(reservationPhone)) {
+            ToastHelper.get().showWareShort("电话格式不正确");
             return;
         }
 

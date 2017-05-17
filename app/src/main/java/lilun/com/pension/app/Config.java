@@ -16,6 +16,8 @@ public class Config {
 
     public static final String help = "help";
 
+    public static final int time_out = 15;
+
     public static final int defLoadDatCount = 20;
 
     public static final int uploadPhotoCount = 3;
