@@ -13,11 +13,11 @@ public class HelpFilter {
 
     @Override
     public String toString() {
-        return "{\"order\":\"createdAt DESC\",\"where\":{\"title\":{\"like\":\"" + title + "\"}"+organizationId + kind + priority + status+"}}";
+        return "{\"order\":\"createdAt DESC\",\"where\":{\"title\":{\"like\":\"" + title + "\"}" + organizationId + kind + priority + status + "}}";
     }
 
     private String title = "";
-    private String kind = "";
+    private String kind = ",\"kind\":{\"neq\":2}";
     private String priority = "";
     private String status = "";
     private String organizationId = "";
@@ -27,7 +27,7 @@ public class HelpFilter {
     }
 
     public HelpFilter setOrganizationId(String id) {
-        this.organizationId = TextUtils.isEmpty(id) ? "" : ",\"organizationId\":\"" + id + "/#aid"+"\"";
+        this.organizationId = TextUtils.isEmpty(id) ? "" : ",\"organizationId\":\"" + id + "/#aid" + "\"";
         return this;
     }
 
@@ -44,8 +44,10 @@ public class HelpFilter {
         return kind;
     }
 
+    // TODO: 2017/5/19 --zp 修改不显示kind = 2 的情况
+
     public HelpFilter setKind(String kind) {
-        this.kind = TextUtils.isEmpty(kind) ? "" : ",\"kind\":" + kind + "";
+        this.kind = TextUtils.isEmpty(kind) ? ",\"kind\":{\"neq\":2}" : ",\"kind\":" + kind + "";
         return this;
     }
 
