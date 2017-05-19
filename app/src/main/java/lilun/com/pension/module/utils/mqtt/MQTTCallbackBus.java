@@ -13,11 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.DeviceUtils;
+import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 使用EventBus分发事件
@@ -106,28 +110,30 @@ public class MQTTCallbackBus implements MqttCallback {
 
 
         //登陆
-        dealLogin(topic, messageData);
+        if (messageData.contains("login"))
+            dealLogin(topic, messageData);
+        else {
+            PushMessage pushMessage = getPushMessageFromData(messageData);
 
-        PushMessage pushMessage = getPushMessageFromData(messageData);
+            if (pushMessage != null) {
+                if (topic.contains("%23activity")) {  //是活动聊天的数据
+                    String[] split = topic.split("/");
+                    if (split.length > 2)
+                        pushMessage.setActivityId(split[split.length - 2]);
+                }
 
-        if (pushMessage != null) {
-            if (topic.contains("%23activity")) {  //是活动聊天的数据
-                String[] split = topic.split("/");
-                if (split.length > 2)
-                    pushMessage.setActivityId(split[split.length - 2]);
+                pushMessage.save();
+
+                //求助推送
+                if (TextUtils.equals(topic, "OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
+                    EventBus.getDefault().post(pushMessage);
+                }
+
+
+                //处理活动
+                dealActivity(topic, pushMessage);
+
             }
-
-            pushMessage.save();
-
-            //求助推送
-            if (TextUtils.equals(topic, "OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
-                EventBus.getDefault().post(pushMessage);
-            }
-
-
-            //处理活动
-            dealActivity(topic, pushMessage);
-
         }
     }
 
@@ -136,15 +142,17 @@ public class MQTTCallbackBus implements MqttCallback {
      * 处理登陆
      */
     private void dealLogin(String topic, String messageData) {
-        if (TextUtils.equals(topic,"user/" + User.getUserName() + "/.login")) {
+        if (TextUtils.equals(topic, "user/" + User.getUserName() + "/.login")) {
             try {
                 JSONObject jsonObject = new JSONObject(messageData);
                 String from = jsonObject.getString("from");
+                String time = jsonObject.getString("time");
+
                 if (!TextUtils.isEmpty(from)) {
                     String clientId = DeviceUtils.getUniqueIdForThisApp(App.context);
                     if (!TextUtils.equals(from, clientId)) {
 //                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
-                        EventBus.getDefault().post(new Event.OffLine());
+                            EventBus.getDefault().post(new Event.OffLine());
                     }
                 } else {
 //                    Logger.i("相同设备登陆");

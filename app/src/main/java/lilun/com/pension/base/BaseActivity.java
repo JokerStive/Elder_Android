@@ -24,6 +24,7 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
+import lilun.com.pension.app.User;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
@@ -32,6 +33,7 @@ import lilun.com.pension.module.callback.MyCallBack;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.SystemUtils;
 import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.module.utils.mqtt.MQTTManager;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.lbs.AnnounceInfoActivity;
@@ -132,6 +134,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     public void refreshPushMessage(Event.OffLine offLine) {
         startActivity(new Intent(this, WelcomeActivity.class));
         ToastHelper.get().showShort("您的账号已在其他设备登陆");
+        MQTTManager.getInstance().unSubscribe("user/" + User.getUserName() + "/.login", null, null);
         App.clear();
         finish();
     }

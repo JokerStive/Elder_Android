@@ -6,9 +6,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -72,6 +77,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private List<OrganizationActivity> organizationActivities = new ArrayList<>();
     private String parentId;
 
+    private int skip = 0;
 
     public static ActivityClassifyFragment newInstance(String parentId) {
         ActivityClassifyFragment fragment = new ActivityClassifyFragment();
@@ -169,6 +175,15 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         });
         mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);
+       // mContentAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mContentAdapter.openLoadMore(20, true);
+        mContentAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                Logger.d("加载更多");
+                getAboutMe(skip);
+            }
+        });
     }
 
 
@@ -184,7 +199,12 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         if (needRefreshClassify) {
             getClassifies();
         }
-        getAboutMe(0);
+        skip = 0;
+        if (mContentAdapter != null) {
+            mContentAdapter.openLoadMore(20, true);
+            mContentAdapter.removeAllFooterView();
+        }
+        getAboutMe(skip);
     }
 
     private void getClassifies() {
@@ -221,6 +241,14 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     @Override
     public void showAboutMe(List<OrganizationActivity> activities, boolean isLoadMore) {
         completeRefresh();
+        skip += activities.size();
+        if (activities.size() < mContentAdapter.getPageSize()) {
+            mContentAdapter.notifyDataChangedAfterLoadMore(false);
+            TextView nodata = new TextView(getContext());
+            nodata.setText("-没有更多数据-");
+            nodata.setGravity(Gravity.CENTER);
+            mContentAdapter.addFooterView(nodata);
+        }
         if (activities != null) {
             for (OrganizationActivity aid : activities) {
 //                aid.setItemType(aid.getKind());

@@ -125,7 +125,7 @@ public class MQTTManager {
         }
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(true);
+        mqttConnectOptions.setCleanSession(false);
 
         mqttConnectOptions.setPassword(password.toCharArray());
 
@@ -158,6 +158,7 @@ public class MQTTManager {
         if (client != null && client.isConnected()) {
             try {
                 MqttMessage message = new MqttMessage();
+
                 message.setQos(qos);
                 message.setPayload(publishMessage.getBytes());
                 IMqttDeliveryToken token = client.publish(publishTopic, message);

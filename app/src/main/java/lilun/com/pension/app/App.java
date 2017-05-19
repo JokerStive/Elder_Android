@@ -86,10 +86,10 @@ public class App extends Application {
 
     public static void initSub() {
         String[] topics = {"OrganizationAid/.added", "OrganizationInformation/.added", "user/" + User.getUserName() + "/.login"};
-        for (String topic :topics) {
+        for (String topic : topics) {
 //            String cacheTopic = ACache.get(App.context, "topics").getAsString(topic);
 //            if (TextUtils.isEmpty(cacheTopic)) {
-                MQTTManager.getInstance().subscribe(topic, 2);
+            MQTTManager.getInstance().subscribe(topic, 2);
 //            }
         }
     }
@@ -100,7 +100,7 @@ public class App extends Application {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = format.format(new Date());
             String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
-            MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 2, msg, false);
+            MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 0, msg, false);
             PreUtils.putBoolean("hasPushLogin", true);
         } else {
             Logger.i("不发送login消息");

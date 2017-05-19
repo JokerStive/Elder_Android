@@ -6,8 +6,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -70,7 +74,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private String activity_status = "";
     private String timeOrder[] = {",\"order\":\"createdAt DESC\"", ",\"order\":\"createdAt ASC\""};
     private String timing_status = timeOrder[0];
-
+    private int skip = 0;
 
     public static ActivityListFragment newInstance(ActivityCategory category) {
         ActivityListFragment fragment = new ActivityListFragment();
@@ -82,7 +86,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     @Subscribe
     public void refreshData(Event.RefreshActivityData event) {
-        getActivityList(0);
+        skip = 0;
+        if (mActivityAdapter != null) {
+            mActivityAdapter.openLoadMore(20, true);
+            mActivityAdapter.removeAllFooterView();
+        }
+        getActivityList(skip);
     }
 
 
@@ -116,7 +125,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             @Override
             public void onSearch(String str) {
                 searchStr = str;
-                getActivityList(0);
+                skip = 0;
+                if (mActivityAdapter != null) {
+                    mActivityAdapter.openLoadMore(20, true);
+                    mActivityAdapter.removeAllFooterView();
+                }
+                getActivityList(skip);
             }
 
             @Override
@@ -134,7 +148,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        getActivityList(0);
+                        skip = 0;
+                        if (mActivityAdapter != null) {
+                            mActivityAdapter.openLoadMore(20, true);
+                            mActivityAdapter.removeAllFooterView();
+                        }
+                        getActivityList(skip);
                     }
                 }
         );
@@ -145,6 +164,15 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void setRecyclerAdapter(List<OrganizationActivity> activities) {
         mActivityAdapter = getAdapterFromLayoutType(activities);
+      //  mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mActivityAdapter.openLoadMore(20, true);
+        mActivityAdapter.setOnLoadMoreListener(20, new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+
+                getActivityList(skip);
+            }
+        });
         if (mActivityAdapter != null) {
             mActivityAdapter.setOnItemClickListener((activityItem) -> {
                 start(ActivityDetailFragment.newInstance(activityItem));
@@ -165,13 +193,11 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         }
 
         adapter = new OrganizationActivityAdapter(activities, layoutId, layoutType);
+
         return adapter;
     }
 
     private void initConditionModules() {
-
-
-
 
 
         List<View> pops = new ArrayList<>();
@@ -213,7 +239,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                     }
                     partner_number = "";
                 }
-                getActivityList(0);
+                skip = 0;
+                if (mActivityAdapter != null) {
+                    mActivityAdapter.openLoadMore(20, true);
+                    mActivityAdapter.removeAllFooterView();
+                }
+                getActivityList(skip);
             });
         }
 
@@ -224,7 +255,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             mSwipeLayout.setRefreshing(true);
-            getActivityList(0);
+            skip = 0;
+            if (mActivityAdapter != null) {
+                mActivityAdapter.openLoadMore(20, true);
+                mActivityAdapter.removeAllFooterView();
+            }
+            getActivityList(skip);
         }
     }
 
@@ -237,8 +273,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
         join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
 
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\""  + join_status +
-                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status+"}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + join_status +
+                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 
@@ -246,6 +282,14 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     @Override
     public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {
         completeRefresh();
+        skip += activities.size();
+        if (mActivityAdapter != null && activities.size() < mActivityAdapter.getPageSize()) {
+            mActivityAdapter.notifyDataChangedAfterLoadMore(false);
+            TextView nodata = new TextView(getContext());
+            nodata.setText("-没有更多数据-");
+            nodata.setGravity(Gravity.CENTER);
+            mActivityAdapter.addFooterView(nodata);
+        }
         this.activities = activities;
         if (mActivityAdapter == null) {
             setRecyclerAdapter(activities);

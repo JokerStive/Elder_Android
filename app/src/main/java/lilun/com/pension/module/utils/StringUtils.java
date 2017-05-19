@@ -427,7 +427,7 @@ public class StringUtils {
      * @return
      */
     public static String thatTime(String strTime) {
-        Date time = IOS2ToUTCDate(strTime);
+        Date time = string2Date(strTime);
         if (time == null) return "";
         long ms = new Date().getTime() - time.getTime();
         long days, hours, mins;

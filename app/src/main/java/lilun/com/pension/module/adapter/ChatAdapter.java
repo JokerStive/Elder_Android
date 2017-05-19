@@ -20,7 +20,6 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.StringUtils;
-import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 聊天界面adapter
@@ -69,7 +68,13 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
             helper.getView(R.id.tv_send_time).setVisibility(View.VISIBLE);
             helper.setText(R.id.tv_send_time, StringUtils.thatTime(pushMessage.getTime()));
         } else {
-            Date beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
+            Date beforeLast = null;
+            for (int i = helper.getAdapterPosition() - 1; i >= 0; i--) {
+                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
+                if (beforeLast != null)
+                    break;
+            }
+            // Date beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
             Date last = StringUtils.string2Date(getData().get(helper.getAdapterPosition()).getTime());
             if (beforeLast != null && last != null && last.getTime() - beforeLast.getTime() > 3 * 60 * 1000)   //3分钟内
             {
