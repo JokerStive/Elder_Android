@@ -15,24 +15,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="5dp"
-            >
+            android:layout_marginBottom="@dimen/dp_4"
+            android:orientation="vertical">
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_background_height"
-                android:background="@color/login"
-                android:paddingEnd="12dp"
-                android:paddingStart="12dp">
+                android:background="@color/login">
 
                 <TextView
                     style="@style/tv_normal_ellipsize"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="65dp"
+                    android:paddingEnd="12dp"
+                    android:paddingStart="12dp"
                     android:text="@string/login"
                     android:textColor="@color/white"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/sp_24" />
+
+                <lilun.com.pension.widget.NormalTitleBar
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/title_bar_height"
+                    android:background="@color/transparent"
+                    app:rightText="@string/forget_password"
+                    app:rightTextColor="@color/white"
+                    app:rightWitchShow="text"
+                    app:leftIcon="@drawable/back_white"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
             </RelativeLayout>
 
@@ -47,7 +59,7 @@
                     style="@style/tv_normal_ellipsize"
                     android:layout_marginTop="34dp"
                     android:text="@string/mobile_number"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp_14" />
 
                 <EditText
                     android:id="@+id/et_mobile"
@@ -56,12 +68,12 @@
                     android:imeOptions="actionNext"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/sp_14"
                     tools:text="1320514" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -69,31 +81,32 @@
 
                     <TextView
                         style="@style/tv_normal_ellipsize"
-                        android:layout_marginTop="23dp"
+                        android:layout_marginTop="@dimen/dp_22"
                         android:text="@string/password"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
 
                     <TextView
                         android:id="@+id/tv_show_password"
                         style="@style/tv_normal_ellipsize"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="23dp"
+                        android:layout_marginTop="@dimen/dp_22"
                         android:drawableLeft="@drawable/password_not_show"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14"
+                        android:layout_alignParentRight="true" />
                 </RelativeLayout>
 
                 <EditText
                     android:id="@+id/et_password"
                     style="@style/et_normal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/sp_14"
                     tools:text="1320514" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
             </LinearLayout>
 
 
@@ -106,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp_10"
         android:src="@drawable/next"
         app:backgroundTint="@color/login" />
 </android.support.design.widget.CoordinatorLayout>

@@ -3,6 +3,8 @@ package lilun.com.pension.app;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.orhanobut.logger.LogLevel;
@@ -30,7 +32,7 @@ import lilun.com.pension.module.utils.mqtt.MQTTManager;
  */
 public class App extends Application {
     public static Context context;
-
+    public static int widthDP =0;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,6 +63,7 @@ public class App extends Application {
 //       百度地图
         SDKInitializer.initialize(this);
 
+        getWidthDP();
     }
 
 
@@ -115,7 +118,12 @@ public class App extends Application {
     }
 
 
-//    on
+    public void getWidthDP(){
+        WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics pm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(pm);
+        widthDP = (int) (pm.widthPixels /pm.density);
+    }
 
 }
 

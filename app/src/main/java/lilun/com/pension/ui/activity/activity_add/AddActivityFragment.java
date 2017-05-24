@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.Bind;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.base.BaseTakePhotoFragment;
@@ -184,8 +185,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     }
 
 
-
-
     private void addActivity() {
         if (TextUtils.isEmpty(mCategoryId)) {
             ToastHelper.get().showWareShort("请选择活动类别");
@@ -258,7 +257,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
             activity.setStartTime(startTimeISO);
             String endTimeISO = endTime + ":00";
             activity.setEndTime(endTimeISO);
-            if(StringUtils.string2Date(startTimeISO).before(new Date())){
+            if (StringUtils.string2Date(startTimeISO).before(new Date())) {
                 ToastHelper.get(getContext()).showWareShort("开始时间应大于现在");
                 return;
             }
@@ -334,7 +333,16 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     }
 
     private void chooseTime() {
-        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.MONTH_DAY, DateTimePicker.HOUR_24);
+        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.HOUR_24);
+        if (App.widthDP > 820) {
+            picker.setTextSize(12 *2);
+            picker.setCancelTextSize(12 *2);
+            picker.setSubmitTextSize(12 *2);
+            picker.setTopPadding(15*3);
+            picker.setTopHeight(40*2);
+        }
+        picker.setRange(2010, 2099);
+
         picker.setOnDateTimePickListener((DateTimePicker.OnMonthDayTimePickListener) (month, day, hour, minute) -> {
             int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;

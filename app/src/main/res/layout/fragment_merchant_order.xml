@@ -12,20 +12,20 @@
         <lilun.com.pension.widget.SearchTitleBar
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:layout_height="@dimen/dp_45" />
 
     </RelativeLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/dp_40"
         android:background="@color/white">
 
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dp_40"
             android:layout_gravity="center_horizontal" />
     </FrameLayout>
 

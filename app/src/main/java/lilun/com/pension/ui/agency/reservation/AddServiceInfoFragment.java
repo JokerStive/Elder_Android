@@ -368,6 +368,13 @@ public class AddServiceInfoFragment extends BaseFragment {
     private void chooseBirthday() {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
         picker.setDateRangeStart(1900, 1, 1);
+        if (App.widthDP > 820) {
+            picker.setTextSize(12 *2);
+            picker.setCancelTextSize(12 *2);
+            picker.setSubmitTextSize(12 *2);
+            picker.setTopPadding(15*3);
+            picker.setTopHeight(40*2);
+        }
         setPickerConfig(picker);
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
             String time = year + "-" + month + "-" + day;
@@ -381,6 +388,13 @@ public class AddServiceInfoFragment extends BaseFragment {
      */
     private void optionPicker(String[] options, String selectItem, TextView view) {
         OptionPicker picker = new OptionPicker(_mActivity, options);
+        if (App.widthDP > 820) {
+            picker.setTextSize(12 *2);
+            picker.setCancelTextSize(12 *2);
+            picker.setSubmitTextSize(12 *2);
+            picker.setTopPadding(15*3);
+            picker.setTopHeight(40*2);
+        }
         picker.setSelectedItem(selectItem);
         setPickerConfig(picker);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {

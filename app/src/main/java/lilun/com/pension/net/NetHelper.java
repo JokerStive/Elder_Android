@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import lilun.com.pension.BuildConfig;
 import lilun.com.pension.app.Config;
+import lilun.com.pension.app.ConfigUri;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -25,7 +26,7 @@ public class NetHelper {
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .baseUrl(Config.BASE_URL)
+                    .baseUrl(ConfigUri.BASE_URL)
                     .build().create(ApiService.class);
         }
         return apis;
@@ -34,7 +35,7 @@ public class NetHelper {
     private static void initOkhttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            if (BuildConfig.LOG_DEBUG){
+            if (BuildConfig.LOG_DEBUG) {
                 LogInterceptor logInterceptor = new LogInterceptor();
                 logInterceptor.setLevel(LogInterceptor.Level.BODY);
                 builder.addInterceptor(logInterceptor);

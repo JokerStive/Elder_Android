@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
-    android:padding="@dimen/dp_14"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dp_14">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,43 +15,41 @@
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:scaleType="fitXY"
-             />
+            android:layout_height="@dimen/dp_200"
+            android:scaleType="fitXY" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_help_other"
-            android:textColor="@color/red"
-            android:layout_marginTop="6dp"
-            android:layout_marginRight="7dp"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:text="帮忙"
             style="@style/tv_normal_ellipsize"
-            android:textSize="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/shape_circle_white"
-            />
+            android:gravity="center"
+            android:text="帮忙"
+            android:textColor="@color/red"
+            android:textSize="@dimen/dp_10"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_item_title"
             style="@style/tv_normal_ellipsize"
-            android:maxWidth="@dimen/title_max_width"
             android:maxLines="1"
+            android:maxWidth="@dimen/title_max_width"
             tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下" />
 
         <TextView
             android:id="@+id/tv_item_time"
             style="@style/tv_small_ellipsize"
-            android:layout_marginLeft="7dp"
+            android:layout_marginLeft="@dimen/dp_8"
             tools:text="补贴50元" />
 
     </LinearLayout>
@@ -60,10 +58,10 @@
         android:id="@+id/tv_item_address"
         style="@style/tv_small_ellipsize"
         android:layout_width="match_parent"
-        android:maxLines="3"
-        android:ellipsize="end"
         android:layout_below="@+id/tv_help_priority"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/dp_4"
+        android:ellipsize="end"
+        android:maxLines="3"
         tools:text="茶园新城茶园新城茶园新城茶茶园新城茶园新城茶园新城茶茶园新城茶园新城茶园新城茶茶园新城茶园新城茶园新城茶" />
 
 </LinearLayout>

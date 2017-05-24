@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -14,29 +14,29 @@
 
         <lilun.com.pension.widget.CircleImageView
             android:id="@+id/iv_icon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_45"
             android:src="@drawable/avatar" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="@dimen/dp_14"
             android:layout_toRightOf="@id/iv_icon"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_creator_name"
                 style="@style/tv_small_ellipsize"
-                android:textSize="17sp"
+                android:textSize="@dimen/sp_16"
                 tools:text="尼玛" />
 
             <TextView
-                android:textColor="@color/gray"
                 android:id="@+id/tv_title"
                 style="@style/tv_small_ellipsize"
-                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/sp_14"
                 tools:text="2016-7-29" />
 
         </LinearLayout>
@@ -47,10 +47,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_rect_red"
-            android:paddingBottom="5dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_4"
             android:text="采纳"
             android:textColor="@color/white"
             android:visibility="gone" />
@@ -60,6 +60,5 @@
     <View
         style="@style/line_gray"
         android:layout_below="@id/rl_avatar"
-        android:layout_marginTop="15dp"
-        />
+        android:layout_marginTop="@dimen/dp_14" />
 </RelativeLayout>

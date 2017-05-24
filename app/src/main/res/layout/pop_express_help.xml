@@ -16,42 +16,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20">
 
             <ImageView
                 android:id="@+id/iv_express_icon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/shape_rect_black"
-                />
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:background="@drawable/shape_rect_black" />
 
             <TextView
-                android:layout_toRightOf="@id/iv_express_icon"
                 android:id="@+id/tv_express_title"
                 style="@style/tv_small"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/iv_express_icon"
                 android:text="有人需要您的帮助"
                 android:textColor="@color/white" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:layout_alignLeft="@id/tv_express_title"
-                android:layout_below="@id/tv_express_title"
                 android:id="@+id/tv_express_come"
                 style="@style/tv_small"
+                android:layout_alignLeft="@id/tv_express_title"
+                android:layout_below="@id/tv_express_title"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_10"
                 android:text="来源：社区公告"
                 android:textColor="@color/white" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_alignLeft="@id/tv_express_title"
-                android:layout_below="@id/tv_express_come"
                 android:id="@+id/tv_express_time"
                 style="@style/tv_small"
+                android:layout_alignLeft="@id/tv_express_title"
+                android:layout_below="@id/tv_express_come"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_4"
                 android:text="2015-03-15"
                 android:textColor="@color/white" />
 
@@ -67,10 +66,10 @@
     </RelativeLayout>
 
     <TextView
-        android:padding="20dp"
-        android:text="啊哈哈荷花和我好的啊黑窝啊黑窝话费哦w"
         android:id="@+id/content"
-        style="@style/tv_small" />
+        style="@style/tv_small"
+        android:padding="@dimen/dp_20"
+        android:text="啊哈哈荷花和我好的啊黑窝啊黑窝话费哦w" />
 
     <Button
         android:id="@+id/btn_all"
@@ -80,6 +79,6 @@
         android:layout_below="@+id/fl_container"
         android:background="@drawable/selector_agency"
         android:text="查看全部"
-        android:textSize="17sp" />
+        android:textSize="@dimen/sp_16" />
 
 </LinearLayout>

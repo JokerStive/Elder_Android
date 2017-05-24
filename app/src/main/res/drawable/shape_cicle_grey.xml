@@ -3,15 +3,15 @@
      android:shape="oval"
     android:useLevel="false">
    <padding
-       android:left="2dp"
-       android:top="1dp"
-       android:right="2dp"
-       android:bottom="1dp" />
+       android:left="@dimen/dp_2"
+       android:top="@dimen/dp_1"
+       android:right="@dimen/dp_2"
+       android:bottom="@dimen/dp_1" />
    <solid
        android:color="@color/gray" />
    <stroke
-       android:width="0.1dp"
+       android:width="@dimen/dp_066"
        android:color="@android:color/darker_gray" />
-   <size android:width="15dp"
-       android:height="15dp" />
+   <size android:width="@dimen/dp_14"
+       android:height="@dimen/dp_14" />
 </shape>

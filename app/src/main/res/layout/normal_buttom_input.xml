@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/dp_50"
     android:background="@color/white"
     android:orientation="vertical"
     >
@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="@dimen/dp_10">
 
 
         <TextView
@@ -25,9 +25,10 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/bg_chat_sent"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             android:text="发送"
+
             android:textColor="@color/white" />
 
 
@@ -36,8 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/black"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:layout_toLeftOf="@id/tv_confirm"
+            android:textSize="@dimen/sp_14"
             android:background="@drawable/bg_chat_input" />
 
     </RelativeLayout>

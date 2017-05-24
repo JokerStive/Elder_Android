@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="13dp"
+            android:layout_marginRight="@dimen/dp_12"
             android:text="发布"
             android:textColor="@color/red"
             android:textSize="@dimen/tv_size" />
@@ -37,37 +37,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp"
-            >
+            android:padding="@dimen/dp_10">
 
             <RadioGroup
-                android:visibility="gone"
                 android:id="@+id/rg_classify"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/rb_ask"
-                    android:gravity="center_horizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:button="@null"
-                    android:padding="10dp"
                     android:background="@drawable/selector_aid_ask"
-                     />
+                    android:button="@null"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/dp_10" />
 
                 <RadioButton
                     android:id="@+id/rb_help"
-                    android:gravity="center_horizontal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:button="@null"
-                    android:padding="10dp"
                     android:background="@drawable/selector_aid_help"
-                     />
+                    android:button="@null"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/dp_10" />
 
             </RadioGroup>
 
@@ -75,9 +72,8 @@
                 android:id="@+id/rl_choice_kind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:background="@color/white"
-                >
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/tv_choice_type_str"
@@ -106,7 +102,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_choice_type_str"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
             </RelativeLayout>
 
 
@@ -114,7 +110,7 @@
                 android:id="@+id/input_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="@dimen/dp_20"
                 app:et_max_length="20"
                 app:input_title="@string/topic" />
 
@@ -122,14 +118,14 @@
                 android:id="@+id/input_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="@dimen/dp_20"
                 app:input_title="@string/address" />
 
             <lilun.com.pension.widget.InputView
                 android:id="@+id/input_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="@dimen/dp_20"
                 app:input_title="@string/aid_mobile" />
 
 
@@ -137,9 +133,8 @@
                 android:id="@+id/rl_choice_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:background="@color/white"
-                >
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/tv_priority"
@@ -151,7 +146,7 @@
                     android:id="@+id/tv_priority_value"
                     style="@style/tv_input_content"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="22dp"
+                    android:layout_marginLeft="@dimen/dp_22"
                     android:layout_toRightOf="@id/tv_priority"
                     android:hint="@string/choose_priority"
                     android:maxLength="20"
@@ -168,34 +163,33 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_priority"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
             </RelativeLayout>
 
             <lilun.com.pension.widget.InputView
                 android:id="@+id/input_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="@dimen/dp_20"
                 app:input_title="@string/price" />
 
             <lilun.com.pension.widget.InputView
-                android:visibility="gone"
                 android:id="@+id/input_memo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:visibility="gone"
                 app:input_title="@string/memo" />
 
             <TextView
                 style="@style/tv_small_ellipsize"
-                android:layout_marginTop="19dp"
-                android:text="@string/memo"
-                />
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="@string/memo" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/dp_90"
+                android:layout_marginTop="@dimen/dp_10"
                 android:background="@drawable/shape_reply">
 
                 <EditText
@@ -203,23 +197,22 @@
                     style="@style/et_normal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="6dp"
+                    android:layout_margin="@dimen/dp_4"
                     android:gravity="top"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/sp_16" />
             </RelativeLayout>
 
             <TextView
                 style="@style/tv_small_ellipsize"
-                android:layout_marginTop="19dp"
-                android:text="@string/add_photo"
-                 />
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="@string/add_photo" />
 
 
             <lilun.com.pension.widget.TakePhotoLayout
                 android:id="@+id/take_photo"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="5dp" />
+                android:layout_height="@dimen/dp_120"
+                android:layout_marginTop="@dimen/dp_4" />
 
 
         </LinearLayout>

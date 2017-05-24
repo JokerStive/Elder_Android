@@ -6,42 +6,42 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="7dp">
+    android:padding="@dimen/dp_8">
 
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="121dp"
-        android:layout_height="121dp"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_120"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/dp_8"
         android:src="@drawable/icon_def" />
 
     <LinearLayout
         android:id="@+id/ll_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_toRightOf="@+id/iv_icon"
         android:orientation="vertical"
-        android:padding="3dp">
+        android:padding="@dimen/dp_4">
 
 
         <TextView
             android:id="@+id/tv_context"
             style="@style/tv_small"
             android:layout_width="match_parent"
-            android:maxLines="2"
-            android:textSize="17sp"
             android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="@dimen/sp_16"
             tools:text="怎么么么么怎么么么么怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
         <LinearLayout
             android:id="@+id/ll_tag_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp">
+            android:layout_marginTop="@dimen/dp_4"
+            android:orientation="horizontal">
 
 
         </LinearLayout>
@@ -50,12 +50,12 @@
         <TextView
             android:id="@+id/tv_duration_traffic"
             style="@style/tv_small"
-            android:layout_below="@+id/tv_help_priority"
-            android:layout_marginTop="3dp"
-            android:text="6天5晚 / 五一 / 直飞"
-            android:maxLines="1"
             android:layout_width="match_parent"
-            android:textSize="14sp" />
+            android:layout_below="@+id/tv_help_priority"
+            android:layout_marginTop="@dimen/dp_4"
+            android:maxLines="1"
+            android:text="6天5晚 / 五一 / 直飞"
+            android:textSize="@dimen/sp_14" />
 
 
         <LinearLayout
@@ -65,26 +65,26 @@
             <TextView
                 android:id="@+id/tv_price"
                 style="@style/tv_small"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/dp_4"
                 android:drawableLeft="@drawable/rmb"
-                android:drawablePadding="3dp"
+                android:drawablePadding="@dimen/dp_4"
                 android:drawableRight="@drawable/start"
                 android:gravity="bottom"
                 android:textColor="@color/red"
-                android:textSize="20sp"
+                android:textSize="@dimen/sp_20"
                 tools:text="2050" />
 
             <TextView
                 android:id="@+id/tv_satisfaction"
-                android:textColor="#bbbbbb"
-                android:layout_marginLeft="10dp"
                 style="@style/tv_small"
-                android:layout_below="@+id/tv_help_priority"
-                android:layout_marginTop="3dp"
-                android:maxLines="1"
                 android:layout_width="match_parent"
+                android:layout_below="@+id/tv_help_priority"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_4"
+                android:maxLines="1"
                 android:text="8万人出游 94％满意"
-                android:textSize="14sp" />
+                android:textColor="#bbbbbb"
+                android:textSize="@dimen/sp_14" />
 
         </LinearLayout>
     </LinearLayout>

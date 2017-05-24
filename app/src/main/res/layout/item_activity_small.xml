@@ -17,8 +17,8 @@
 
         <lilun.com.pension.widget.CircleImageView
             android:id="@+id/iv_ivatar"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:src="@drawable/icon_def" />
 
         <TextView
@@ -64,8 +64,8 @@
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="87dp"
-            android:layout_height="87dp"
+            android:layout_width="@dimen/dp_72"
+            android:layout_height="@dimen/dp_72"
             android:layout_centerVertical="true"
             tools:src="@drawable/selector_agency" />
 
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="18dp"
+            android:layout_marginRight="@dimen/sp_18"
             android:layout_toRightOf="@id/iv_icon"
             android:orientation="vertical"
             android:paddingLeft="@dimen/dp_10">
@@ -84,16 +84,16 @@
                 android:id="@+id/tv_sophisticated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp_8"
                 android:maxLines="2"
                 android:textColor="@color/activity_black"
-                android:textSize="14dp"
+                android:textSize="@dimen/sp_14"
                 tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp_10"
                 android:gravity="center">
 
 
@@ -103,7 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textColor="@color/gray2"
-                    android:textSize="12dp"
+                    android:textSize="@dimen/sp_14"
                     tools:text="@string/has_partin" />
 
 
@@ -111,7 +111,7 @@
                     android:id="@+id/tv_time_joinCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="@dimen/dp_4"
                     android:textColor="@color/gray2"
                     android:textSize="@dimen/dp_14"
                     tools:text="@string/targart_partin_" />
@@ -129,7 +129,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_10"
         android:text="@string/activity_time_"
-        android:textColor="@color/gray2" />
+        android:textColor="@color/gray2"
+        android:textSize="@dimen/sp_14"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -144,6 +145,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="@dimen/sp_14"
             android:drawableLeft="@drawable/cyclical"
             android:text="@string/cyclical" />
 
@@ -151,8 +153,8 @@
             android:id="@+id/tv_creator_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:padding="8dp"
+            android:textSize="@dimen/sp_14"
+            android:padding="@dimen/dp_8"
             android:text="3分钟前"
             android:textColor="@color/md_material_blue_600" />
 

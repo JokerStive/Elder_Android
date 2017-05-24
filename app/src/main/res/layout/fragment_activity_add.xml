@@ -34,7 +34,7 @@
                 android:id="@+id/rl_choice_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp_20"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_10">
 
@@ -47,8 +47,8 @@
                 <TextView
                     android:id="@+id/tv_priority_value"
                     style="@style/tv_input_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="22dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_22"
                     android:layout_toRightOf="@id/tv_choice_type_str"
                     android:hint="@string/choice_type"
                     android:maxLength="20"
@@ -65,7 +65,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_choice_type_str"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
             </RelativeLayout>
 
             <lilun.com.pension.widget.InputView
@@ -73,7 +73,7 @@
                 style="@style/tv_input_desp"
                 android:layout_width="match_parent"
                 android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="17dp"
+                android:paddingTop="@dimen/dp_16"
                 app:et_max_length="200"
                 app:et_max_lines="4"
                 app:et_text_color="@color/gray2"
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="17dp"
+                android:paddingTop="@dimen/dp_16"
                 app:et_max_length="200"
                 app:et_max_lines="4"
                 app:et_text_color="@color/gray2"
@@ -99,7 +99,7 @@
                 android:id="@+id/input_require"
                 style="@style/tv_input_desp"
                 android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="17dp"
+                android:paddingTop="@dimen/dp_16"
                 app:et_max_length="800"
                 app:et_max_lines="10"
                 app:et_text_color="@color/gray2"
@@ -109,18 +109,19 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="@dimen/dp_10"
                 android:background="@color/activity_titlebg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingLeft="@dimen/dp_10">
 
                 <TextView
                     style="@style/tv_input_content"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/activity_repeat"
                     android:textColor="@color/activity_black" />
@@ -128,7 +129,7 @@
                 <RadioGroup
                     android:id="@+id/rg_repeat_type"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="@dimen/dp_40"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
@@ -138,16 +139,18 @@
                         android:layout_height="match_parent"
                         android:checked="true"
                         android:text="周期活动"
-                        android:textColor="@color/gray2" />
+                        android:textColor="@color/gray2"
+                        android:textSize="@dimen/dp_14" />
 
 
                     <RadioButton
                         android:id="@+id/rbtn_once"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/dp_20"
                         android:text="单次活动"
-                        android:textColor="@color/gray2" />
+                        android:textColor="@color/gray2"
+                        android:textSize="@dimen/dp_14" />
 
 
                 </RadioGroup>
@@ -157,7 +160,7 @@
                 style="@style/line_gray"
                 android:layout_below="@id/rl_container"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="@dimen/dp_8" />
 
             <lilun.com.pension.widget.InputView
                 android:id="@+id/input_cyclial_gap"
@@ -165,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="17dp"
+                android:paddingTop="@dimen/dp_16"
                 app:et_max_length="100"
                 app:et_max_lines="4"
                 app:et_text_color="@color/gray2"
@@ -177,7 +180,7 @@
                 android:id="@+id/rl_start_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_10">
 
@@ -193,7 +196,7 @@
                     android:id="@+id/tv_start_time"
                     style="@style/et_normal"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="22dp"
+                    android:layout_marginLeft="@dimen/dp_22"
                     android:layout_toRightOf="@id/tv_start_time_str"
                     android:background="@null"
                     android:hint="@string/start_time_hint"
@@ -204,7 +207,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_start_time_str"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
 
 
             </RelativeLayout>
@@ -214,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_10">
 
@@ -233,7 +236,7 @@
                     style="@style/et_normal"
                     android:layout_width="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="22dp"
+                    android:layout_marginLeft="@dimen/dp_22"
                     android:layout_toRightOf="@id/tv_priority_title"
                     android:hint="@string/end_time_hint"
                     android:maxLength="20"
@@ -244,7 +247,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_priority_title"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="@dimen/dp_8" />
             </RelativeLayout>
 
 
@@ -254,7 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/dp_10"
-                android:paddingTop="17dp"
+                android:paddingTop="@dimen/dp_16"
                 app:et_text_color="@color/gray2"
                 app:input_hint="@string/activity_maxPartner_hint"
                 app:input_title="@string/activity_maxPartner"
@@ -270,7 +273,8 @@
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingTop="@dimen/dp_4"
                 android:text="@string/partin_info"
-                android:textColor="@color/yellowish" />
+                android:textColor="@color/yellowish"
+                android:textSize="@dimen/sp_14" />
 
             <View
                 style="@style/line_gray"
@@ -278,7 +282,7 @@
 
             <TextView
                 style="@style/tv_input_desp"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:paddingLeft="@dimen/dp_10"
                 android:text="@string/add_photo" />
 
@@ -286,9 +290,9 @@
             <lilun.com.pension.widget.TakePhotoLayout
                 android:id="@+id/take_photo"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="@dimen/dp_120"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_4"
                 android:paddingLeft="@dimen/dp_10" />
         </LinearLayout>
 
@@ -298,7 +302,7 @@
         android:id="@+id/btn_add_activity"
         style="@style/btn_normal"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:background="@drawable/selector_activity"
         android:text="新建活动" />
 </LinearLayout>

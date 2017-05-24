@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="30dp"
+    android:padding="@dimen/dp_30"
     >
 
 
@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/btn_agree_protocol"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/dp_30"
         style="@style/btn_red_deep"
         android:gravity="center"
         android:text="@string/agree"
@@ -27,7 +27,7 @@
         android:id="@+id/btn_refuse_protocol"
         style="@style/btn_red_deep"
         android:text="@string/refuse"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/dp_2"
+        android:layout_marginBottom="@dimen/dp_10"
         />
 </LinearLayout>

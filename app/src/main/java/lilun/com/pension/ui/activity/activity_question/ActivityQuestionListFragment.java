@@ -192,7 +192,9 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
     @Override
     public void showQuestion(OrganizationReply question) {
         if (nestedReplyAdapter != null) {
-            nestedReplyAdapter.add(new NestedReply(question, null));
+          //  nestedReplyAdapter.add();
+            nestedReplyAdapter.add(0, new NestedReply(question, null));
+            mRecyclerView.scrollToPosition(0);
         }
         acetQuestion.setText("");
         nullData.setVisibility(View.GONE);

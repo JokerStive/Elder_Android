@@ -16,9 +16,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_announce"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="公告通知" />
 
         <View style="@style/line_gray" />
@@ -28,9 +28,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_urgent_help"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/urgent_help" />
 
         <View style="@style/line_gray" />
@@ -41,9 +41,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_activity"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/community_activity" />
 
         <View style="@style/line_gray" />
@@ -54,9 +54,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_neighbor"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/neighbor_help" />
 
         <View style="@style/line_gray" />
@@ -67,9 +67,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_agency"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/pension_agency" />
 
         <View style="@style/line_gray" />
@@ -80,9 +80,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_education"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/pension_education" />
 
         <View style="@style/line_gray" />
@@ -93,9 +93,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_policy"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="阳光政务" />
 
         <View style="@style/line_gray" />
@@ -106,9 +106,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_heath"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/health_service" />
 
         <View style="@style/line_gray" />
@@ -119,9 +119,9 @@
             style="@style/tv_normal"
             android:layout_width="match_parent"
             android:drawableLeft="@drawable/icon_falimy"
-            android:drawablePadding="12dp"
+            android:drawablePadding="@dimen/dp_12"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="@dimen/dp_12"
             android:text="@string/residential_service" />
 
         <View style="@style/line_gray" />

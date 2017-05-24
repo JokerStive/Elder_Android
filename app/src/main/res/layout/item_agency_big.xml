@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
-    android:padding="14dp"
+    android:padding="@dimen/dp_14"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="197dp"
+        android:layout_height="@dimen/dp_200"
         android:background="@color/icon_def">
 
         <ImageView
@@ -26,7 +26,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -35,7 +35,7 @@
             style="@style/tv_normal_ellipsize"
             android:ellipsize="end"
             android:maxLines="1"
-            android:maxWidth="300dp"
+            android:maxWidth="@dimen/dp_300"
             android:scrollHorizontally="true"
             tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />
 
@@ -48,7 +48,7 @@
         style="@style/ratingBarr_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/dp_4"
         android:isIndicator="true"
         android:numStars="5" />
 
@@ -56,7 +56,7 @@
         android:id="@+id/tv_item_address"
         style="@style/tv_small_ellipsize"
         android:layout_below="@+id/tv_help_priority"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/dp_4"
         tools:text="茶园新城茶园新城茶园新城茶" />
 
 </LinearLayout>

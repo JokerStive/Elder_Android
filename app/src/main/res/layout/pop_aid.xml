@@ -15,8 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20">
 
             <ImageView
                 android:id="@+id/iv_express_icon"
@@ -27,7 +27,7 @@
                 android:id="@+id/tv_express_desc"
                 style="@style/tv_small"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:text="有人需要您的帮助"
                 android:textColor="@color/white" />
 
@@ -61,7 +61,7 @@
         android:layout_below="@id/rv_express_info"
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/dp_150"
         />
 
     <Button
@@ -72,6 +72,6 @@
         android:layout_below="@+id/fl_container"
         android:background="@drawable/shape_rect_red"
         android:text="查看全部"
-        android:textSize="17sp" />
+        android:textSize="@dimen/sp_16" />
 
 </RelativeLayout>

@@ -13,9 +13,9 @@
         android:drawableRight="@drawable/filter_down"
         android:focusable="false"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="@dimen/dp_10"
         android:textColor="#000"
-        android:textSize="17sp"
+        android:textSize="@dimen/sp_16"
         tools:text="哈哈啊ssssss" />
 
 </LinearLayout>

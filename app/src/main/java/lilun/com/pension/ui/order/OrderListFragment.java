@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
@@ -111,7 +112,7 @@ public class OrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            OrderPageFragment fragment = OrderPageFragment.newInstance(productCategoryId,status[i]);
+            OrderPageFragment fragment = OrderPageFragment.newInstance(productCategoryId, status[i]);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {
@@ -136,7 +137,10 @@ public class OrderListFragment extends BaseFragment {
                 ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
                 titleView.setNormalColor(Color.BLACK);
                 titleView.setSelectedColor(getResources().getColor(R.color.red));
-                titleView.setTextSize(17);
+                if (App.widthDP > 820)
+                    titleView.setTextSize(17*3);
+                else
+                    titleView.setTextSize(17);
                 titleView.setText(statusTitle[index]);
                 titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
                 return titleView;
@@ -154,7 +158,7 @@ public class OrderListFragment extends BaseFragment {
 
     }
 
-    public void startRank(String productId){
+    public void startRank(String productId) {
         start(RankFragment.newInstance(Constants.organizationProduct, productId));
     }
 

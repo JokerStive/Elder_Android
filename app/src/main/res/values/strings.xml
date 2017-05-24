@@ -341,5 +341,6 @@
     <string name="search">搜索</string>
     <string name="delete">删除</string>
     <string name="delete_partners">删除活动成员</string>
+    <string name="forget_password">忘记密码</string>
 
 </resources>

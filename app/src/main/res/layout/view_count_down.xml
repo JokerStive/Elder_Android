@@ -22,14 +22,14 @@
                 android:paddingBottom="0dp"
                 android:text="12"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_18" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,14 +46,14 @@
                 android:paddingBottom="0dp"
                 android:text="13"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_18" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hour"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <LinearLayout
@@ -70,14 +70,14 @@
                 android:paddingBottom="0dp"
                 android:text="43"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_18" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/minutes"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,14 +94,14 @@
                 android:paddingBottom="0dp"
                 android:text="43"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_18" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/seconds"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
     </LinearLayout>
 

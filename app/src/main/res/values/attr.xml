@@ -5,6 +5,7 @@
     <attr name="leftString" format="string" />
     <attr name="title" format="string" />
     <attr name="rightText" format="string" />
+    <attr name="rightTextColor" format="reference" />
     <attr name="titleMaxEms" format="integer" />
     <attr name="rightIcon" format="reference" />
     <attr name="rightWitchShow" format="integer">
@@ -57,6 +58,7 @@
         <attr name="titleMaxEms" />
         <attr name="rightIcon" />
         <attr name="rightWitchShow"/>
+        <attr name="rightTextColor"/>
     </declare-styleable>
 
     //带布局的筛选框

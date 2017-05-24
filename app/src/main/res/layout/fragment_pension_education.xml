@@ -20,7 +20,7 @@
         <FrameLayout
             android:id="@+id/fl_announcement_container"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/dp_150"
             android:background="@drawable/icon_def" />
 
     </RelativeLayout>
@@ -28,7 +28,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -46,8 +46,8 @@
             android:layout_weight="1"
             app:module_background="@drawable/selector_education"
             app:module_desc="@string/pension_university"
-            android:layout_marginStart="0.5dp"
-            android:layout_marginEnd="0.5dp"
+            android:layout_marginStart="@dimen/dp_066"
+            android:layout_marginEnd="@dimen/dp_066"
             app:module_icon="@drawable/help_a_neighbor" />
 
         <lilun.com.pension.widget.recycler_view.NormalModule
@@ -62,9 +62,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_education"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

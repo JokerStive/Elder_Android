@@ -61,8 +61,13 @@ public class RegisterStep4Fragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
         tvInputTitle.setText(R.string.password);
         acetRegisterPassword.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
+        acetRegisterPassword.setOnKeyListener(editOnKeyListener);
     }
 
+    @Override
+    public void editViewEnterButton() {
+        onClick();
+    }
 
     private boolean checkRegisterPassword(String registerPassword) {
         if (TextUtils.isEmpty(registerPassword)) {

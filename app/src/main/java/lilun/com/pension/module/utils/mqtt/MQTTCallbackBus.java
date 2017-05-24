@@ -110,10 +110,10 @@ public class MQTTCallbackBus implements MqttCallback {
 
 
         //登陆
-        if (messageData.contains("login"))
-            dealLogin(topic, messageData);
-        else {
-            PushMessage pushMessage = getPushMessageFromData(messageData);
+//        if (messageData.contains("login"))
+//            dealLogin(topic, messageData);
+//        else {
+        {       PushMessage pushMessage = getPushMessageFromData(messageData);
 
             if (pushMessage != null) {
                 if (topic.contains("%23activity")) {  //是活动聊天的数据

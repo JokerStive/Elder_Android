@@ -30,7 +30,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/dp_10">
 
         <ImageView
             android:id="@+id/iv_agency"
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/home_module_margin"
             android:layout_weight="1"
             android:background="@drawable/icon_urgent" />
 
@@ -53,7 +53,7 @@
             android:id="@+id/iv_education"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/home_module_margin"
             android:layout_weight="1"
             android:background="@drawable/the_elderly_education" />
 
@@ -62,7 +62,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/dp_10">
 
         <ImageView
             android:id="@+id/iv_government"
@@ -75,7 +75,7 @@
             android:id="@+id/iv_health_service"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/home_module_margin"
             android:layout_weight="1"
             android:background="@drawable/health" />
 
@@ -83,7 +83,7 @@
             android:id="@+id/iv_residential_service"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/home_module_margin"
             android:layout_weight="1"
             android:background="@drawable/residential_services" />
     </LinearLayout>

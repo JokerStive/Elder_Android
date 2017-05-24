@@ -6,7 +6,10 @@
     <RelativeLayout
         android:id="@+id/rl_register_step1_title"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/login_background_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@color/red">
 
         <ImageView
@@ -23,7 +26,7 @@
             android:layout_alignParentBottom="true"
             android:padding="@dimen/dp_10"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:id="@+id/title"
@@ -33,9 +36,7 @@
             android:padding="@dimen/dp_10"
             android:text="@string/register_step1_title"
             android:textColor="@color/white"
-            android:textSize="24sp" />
-
-
+            android:textSize="@dimen/sp_24" />
     </RelativeLayout>
 
     <FrameLayout
@@ -43,6 +44,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_register_step1_title" />
-
 </RelativeLayout>
 

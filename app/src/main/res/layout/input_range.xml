@@ -5,16 +5,16 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="horizontal"
-    android:padding="10dp"
+    android:padding="@dimen/dp_10"
    >
 
     <EditText
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_14"
         android:id="@+id/et_min"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:padding="5dp"
+        android:padding="@dimen/dp_4"
         android:background="@drawable/shape_rect_gray_corner_5"
         android:gravity="center_vertical"
         android:inputType="number"
@@ -25,18 +25,18 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_margin="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_weight="0.2"
         android:background="@color/black" />
 
     <EditText
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_14"
         android:id="@+id/et_max"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:padding="5dp"
+        android:padding="@dimen/dp_4"
         android:background="@drawable/shape_rect_gray_corner_5"
         android:inputType="number"
         tools:text="2000" />
@@ -46,39 +46,39 @@
         style="@style/tv_small"
         android:layout_width="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
         tools:text="元" />
 
 
     <TextView
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_14"
         android:id="@+id/btn_clear"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/shape_rect_blue_corner_5"
         android:focusable="false"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/dp_4"
         android:text="重置"
         android:textColor="@color/white"
        />
 
 
     <TextView
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_14"
         android:id="@+id/btn_confirm"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/shape_rect_red_corner_5"
         android:focusable="false"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/dp_4"
         android:text="@string/confirm"
         android:textColor="@color/white"
         />

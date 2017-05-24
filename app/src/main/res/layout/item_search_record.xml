@@ -16,7 +16,7 @@
             android:id="@+id/tv_record"
             style="@style/tv_small_ellipsize"
             android:layout_width="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/dp_10"
             tools:text="哈哈哈" />
 
         <View style="@style/line_gray" />

@@ -20,7 +20,7 @@
         android:background="@drawable/shape_rect_red"
         android:text="@string/save"
         android:textColor="@color/white"
-        android:textSize="17sp" />
+        android:textSize="@dimen/sp_16" />
 
 
     <ScrollView
@@ -34,13 +34,13 @@
             android:layout_height="wrap_content"
             android:background="#f4f4f4"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/dp_10">
 
 
             <TextView
                 style="@style/tv_small_ellipsize"
                 android:drawableLeft="@drawable/pension_agency_icon"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/dp_10"
                 android:text="服务详情" />
 
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/home_bg"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="@dimen/dp_10">
 
 
                 <RelativeLayout
@@ -62,7 +62,7 @@
                         style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:maxLines="1"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp_10"
                         tools:text="佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务佩珍服务"
                         android:layout_toLeftOf="@+id/tv_health_status"
                         android:layout_toStartOf="@+id/tv_health_status" />
@@ -78,19 +78,19 @@
                     <ImageView
                         android:layout_below="@id/tv_sophisticated"
                         android:id="@+id/iv_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_width="@dimen/dp_100"
+                        android:layout_height="@dimen/dp_100"
+                        android:layout_marginTop="@dimen/dp_10"
                         tools:src="@drawable/shape_rect_red" />
 
                     <TextView
                         android:id="@+id/tv_name"
                         style="@style/tv_small"
                         android:layout_alignTop="@id/iv_image"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/dp_10"
                         android:layout_toRightOf="@id/iv_image"
                         android:maxLines="3"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/sp_14"
                         tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
 
 
@@ -103,7 +103,7 @@
                         android:layout_alignStart="@+id/tv_name"
                         android:layout_below="@id/tv_name"
                         android:layout_centerVertical="true"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/dp_8"
                         android:isIndicator="true"
                         android:numStars="5" />
 
@@ -113,7 +113,7 @@
                         android:layout_alignLeft="@+id/rb_bar"
                         android:layout_alignStart="@+id/rb_bar"
                         android:layout_below="@id/rb_bar"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/dp_8"
                         tools:text="价格:500/月" />
 
                 </RelativeLayout>
@@ -122,14 +122,14 @@
 
             <TextView
                 style="@style/tv_small"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp_10"
                 android:drawableLeft="@drawable/pension_agency_icon"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/dp_10"
                 android:text="备注" />
 
 
             <FrameLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp_10"
                 android:id="@+id/fl_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,12 +140,12 @@
                 android:id="@+id/tv_user_info"
                 style="@style/tv_small"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/dp_8"
                 android:background="@drawable/home_bg"
                 android:drawableRight="@drawable/next"
                 android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
                 android:text="用户资料" />
 
         </LinearLayout>

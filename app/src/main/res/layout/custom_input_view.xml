@@ -40,7 +40,7 @@
     <View
         style="@style/line_gray"
         android:layout_below="@id/rl_container"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="@dimen/dp_8" />
 
 
 </RelativeLayout>

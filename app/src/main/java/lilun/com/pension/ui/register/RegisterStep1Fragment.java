@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +57,15 @@ public class RegisterStep1Fragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         tvInputTitle.setText(getString(R.string.nickname));
+        acetRegisterName.setOnKeyListener(editOnKeyListener);
+    }
+
+    @Override
+    public void editViewEnterButton() {
+        if (checkRegisterName(acetRegisterName.getText().toString().trim()) == true) {
+            account.setName((acetRegisterName.getText().toString().trim()));
+            goStep2();
+        }
     }
 
 

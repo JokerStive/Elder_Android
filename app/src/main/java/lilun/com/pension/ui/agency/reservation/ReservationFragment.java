@@ -212,6 +212,13 @@ public class ReservationFragment extends BaseFragment {
         int day = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.MONTH_DAY, DateTimePicker.NONE);
         setPickerConfig(picker);
+        if (App.widthDP > 820) {
+            picker.setTextSize(12 *2);
+            picker.setCancelTextSize(12 *2);
+            picker.setSubmitTextSize(12 *2);
+            picker.setTopPadding(15*3);
+            picker.setTopHeight(40*2);
+        }
         picker.setDateRangeStart(month, day);
         picker.setOnDateTimePickListener((DateTimePicker.OnMonthDayTimePickListener) (month1, day1, hour, minute) -> {
             int year = Calendar.getInstance().get(Calendar.YEAR);

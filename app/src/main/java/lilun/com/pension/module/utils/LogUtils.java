@@ -2,7 +2,9 @@ package lilun.com.pension.module.utils;
 
 import com.orhanobut.logger.Logger;
 
+import lilun.com.pension.BuildConfig;
 import lilun.com.pension.app.Config;
+import lilun.com.pension.app.ConfigUri;
 
 /**
 *
@@ -12,26 +14,26 @@ import lilun.com.pension.app.Config;
 */
 public class LogUtils  {
     public static void d(String msg){
-        if (Config.is_debug){
+        if (BuildConfig.LOG_DEBUG){
             Logger.d(msg);
         }
     }
 
     public static void d(String tag, String msg){
-        if (Config.is_debug){
+        if (BuildConfig.LOG_DEBUG){
             Logger.d(tag,msg);
         }
     }
 
 
     public static void i(String msg){
-        if (Config.is_debug){
+        if (BuildConfig.LOG_DEBUG){
             Logger.i(msg);
         }
     }
 
     public static void i(String tag, String msg){
-        if (Config.is_debug){
+        if (BuildConfig.LOG_DEBUG){
             Logger.i(tag,msg);
         }
     }

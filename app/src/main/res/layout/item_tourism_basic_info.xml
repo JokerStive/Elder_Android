@@ -27,7 +27,7 @@
 
 
     <LinearLayout
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/dp_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/tv_traffic_detail"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp_14"
             tools:text="交通详情 飞机往返"
             style="@style/tv_small"
             android:textSize="@dimen/sp_14" />
@@ -48,7 +48,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/dp_14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

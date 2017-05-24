@@ -69,6 +69,12 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             etPassword.setText(account.getPassword());
             login();
         }
+        etPassword.setOnKeyListener(editOnKeyListener);
+    }
+
+    @Override
+    public void editViewEnterButton() {
+        login();
     }
 
     private void showPassword() {

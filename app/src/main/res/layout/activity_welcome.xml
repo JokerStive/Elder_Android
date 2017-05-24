@@ -1,53 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:background="@color/login"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/login_background_height">
+        android:layout_height="@dimen/login_background_height"
+        android:background="@color/login">
 
         <TextView
-            android:textSize="24sp"
             style="@style/tv_normal_ellipsize"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_22"
             android:text="@string/welcome"
             android:textColor="@color/white"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="65dp"
-            android:layout_marginStart="24dp"
-            />
+            android:textSize="@dimen/sp_24" />
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/btn_login"
-        android:layout_centerInParent="true"
         style="@style/btn_normal"
-        android:gravity="center"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="18dp"
+        android:layout_alignLeft="@+id/btn_register"
+        android:layout_alignStart="@+id/btn_register"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp_22"
         android:background="@drawable/shape_login"
-        android:text="@string/login"
-        />
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_20"
+        android:text="@string/login" />
+
     <TextView
         android:id="@+id/btn_register"
-        android:layout_centerInParent="true"
         style="@style/btn_normal"
-        android:gravity="center"
-        android:paddingTop="18dp"
-        android:paddingBottom="18dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/shape_register"
-        android:text="@string/register"
         android:layout_below="@id/btn_login"
-        android:layout_marginTop="24dp"
-        android:textColor="@color/login"
-        />
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/dp_22"
+        android:layout_marginStart="@dimen/dp_22"
+        android:layout_marginTop="@dimen/dp_22"
+        android:background="@drawable/shape_register"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_20"
+        android:text="@string/register"
+        android:textColor="@color/login" />
 
 
 </RelativeLayout>

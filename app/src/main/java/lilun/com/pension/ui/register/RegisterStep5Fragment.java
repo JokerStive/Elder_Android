@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.register;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Bind(R.id.et_belong_communite)
     EditText etBelongCommunite;
+    @Bind(R.id.fab_go_next)
+    FloatingActionButton fabGoNext;
 
     @OnClick({R.id.tv_belong_area, R.id.tv_belong_stress, R.id.fab_go_next})
     public void onClick(View view) {
@@ -96,14 +99,19 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_register_step4;
+        return R.layout.fragment_register_step5;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
         llBelongStress.setVisibility(View.GONE);
+        etBelongCommunite.setOnKeyListener(editOnKeyListener);
     }
 
+    @Override
+    public void editViewEnterButton() {
+        onClick(fabGoNext);
+    }
 
     @Override
     public void successOfCommitRegister(Register register) {

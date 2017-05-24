@@ -65,6 +65,12 @@ public class RegisterStep2Fragment extends BaseFragment<RegisterContract.Present
     protected void initView(LayoutInflater inflater) {
         tvInputTitle.setText(getString(R.string.phone_number));
         acetRegisterPhone.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        acetRegisterPhone.setOnKeyListener(editOnKeyListener);
+    }
+
+    @Override
+    public void editViewEnterButton() {
+        onClick();
     }
 
     private void goStep3() {

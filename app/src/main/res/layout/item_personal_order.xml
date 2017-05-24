@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/dp_10">
 
     <RelativeLayout
         android:id="@+id/rl"
@@ -25,7 +25,7 @@
             android:id="@+id/tv_order_status"
             style="@style/tv_small"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:textColor="@color/red"
             tools:text="完成" />
 
@@ -35,10 +35,10 @@
 
     <ImageView
         android:id="@+id/iv_product_icon"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
+        android:layout_width="@dimen/dp_90"
+        android:layout_height="@dimen/dp_90"
         android:layout_below="@id/rl"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         tools:src="@drawable/shape_rect_red" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:id="@+id/tv_sophisticated"
         style="@style/tv_small"
         android:layout_alignTop="@id/iv_product_icon"
-        android:layout_marginLeft="14dp"
+        android:layout_marginLeft="@dimen/dp_14"
         android:layout_toRightOf="@+id/iv_product_icon"
         tools:text="卖猪肉" />
 
@@ -55,7 +55,7 @@
         style="@style/tv_small_ellipsize"
         android:layout_alignLeft="@id/tv_sophisticated"
         android:layout_below="@id/tv_sophisticated"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         tools:text="14块" />
 
     <RatingBar
@@ -66,7 +66,7 @@
         android:layout_alignLeft="@id/tv_product_price"
         android:layout_below="@id/tv_product_price"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:isIndicator="true"
         android:numStars="5"
         tools:rating="4" />
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_product_icon"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/dp_10">
 
         <TextView
             android:id="@+id/tv_reservation_time"
@@ -90,12 +90,12 @@
             android:id="@+id/tv_rank"
             style="@style/tv_small"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/rect_coner_red"
-            android:paddingBottom="5dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
+            android:paddingTop="@dimen/dp_4"
             android:text="@string/rank"
             android:textColor="@color/red"
             android:visibility="gone" />

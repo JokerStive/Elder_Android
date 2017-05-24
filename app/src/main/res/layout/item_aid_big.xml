@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="14dp">
+    android:padding="@dimen/dp_14">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="197dp"
+        android:layout_height="@dimen/dp_200"
         android:background="@color/icon_def">
 
         <ImageView
@@ -25,28 +25,28 @@
     <TextView
         android:id="@+id/tv_sophisticated"
         style="@style/tv_small_ellipsize"
-        android:layout_width="300dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/dp_300"
+        android:layout_marginTop="@dimen/dp_8"
         android:maxLines="1"
         tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="@dimen/dp_4">
 
 
         <TextView
             android:id="@+id/tv_mobile"
             style="@style/tv_normal_ellipsize"
             android:textColor="@color/red"
-            android:textSize="12dp"
+            android:textSize="@dimen/dp_12"
             tools:text="补贴50元" />
 
         <TextView
             android:id="@+id/tv_time_joinCount"
             style="@style/tv_small_ellipsize"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="@dimen/dp_4"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
             tools:text="03/18 16:00" />
@@ -57,7 +57,7 @@
     <TextView
         android:id="@+id/tv_environment"
         style="@style/tv_small_ellipsize"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/dp_2"
         android:textColor="@color/gray"
         android:textSize="@dimen/dp_14"
         tools:text="重庆市半区去啊啊" />

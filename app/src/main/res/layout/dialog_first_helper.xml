@@ -3,49 +3,42 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="30dp"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:padding="@dimen/dp_30">
 
 
     <TextView
-        android:textSize="17sp"
         style="@style/tv_line_space"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="@dimen/dp_22"
         android:text="@string/first_help_desc"
-         />
+        android:textSize="@dimen/sp_16" />
 
     <TextView
-        android:layout_gravity="center"
         android:id="@+id/tv_family"
         style="@style/tv_normal_ellipsize"
-        android:layout_marginTop="50dp"
-        android:text="@string/family"
-        />
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_50"
+        android:text="@string/family" />
 
     <TextView
         android:id="@+id/tv_neighbor"
         style="@style/tv_normal_ellipsize"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="@string/neigh"
-        />
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/neigh" />
 
     <TextView
         android:id="@+id/tv_security"
         style="@style/tv_normal_ellipsize"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="@string/security"
-        />
-
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/security" />
 
 
     <Button
         android:id="@+id/btn_cancel_help"
-        android:text="@string/cancel"
-        android:layout_marginTop="80dp"
         style="@style/btn_red_deep"
-        />
+        android:layout_marginTop="@dimen/dp_80"
+        android:text="@string/cancel" />
 
 </LinearLayout>

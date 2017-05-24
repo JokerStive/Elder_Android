@@ -30,6 +30,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private final int maxEms;
     private final int rightIcon;
     private final int leftIcon;
+    private final int rightTextColor;
     private final String leftString;
     private final String rightString;
     private String title;
@@ -53,6 +54,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         rightIcon = array.getResourceId(R.styleable.NormalTitleBar_rightIcon, 0);
         rightString = array.getString(R.styleable.NormalTitleBar_rightText);
         rightWitchShow = array.getInt(R.styleable.NormalTitleBar_rightWitchShow, 2);
+        rightTextColor = array.getResourceId(R.styleable.NormalTitleBar_rightTextColor,0);
         mBackgrand = getBackground();
         if (mBackgrand == null) {
             setBackgroundResource(R.color.white);
@@ -75,6 +77,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         if (!TextUtils.isEmpty(leftString)) {
             tvLeftString.setText(leftString);
         }
+
         rightWitchShow();
 
         if (maxEms != 0) {
@@ -117,6 +120,9 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvDoWhat.setCompoundDrawables(drawable, null, null, null);
             tvDoWhat.setCompoundDrawablePadding(4);
+        }
+        if(rightTextColor !=0){
+            tvDoWhat.setTextColor(rightTextColor);
         }
         if (!TextUtils.isEmpty(rightString)) {
             tvDoWhat.setText(rightString);

@@ -13,28 +13,26 @@
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
-             />
+            android:layout_height="@dimen/dp_200" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_help_other"
-            android:textColor="@color/red"
-            android:layout_marginTop="6dp"
-            android:layout_marginRight="7dp"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:text="帮忙"
             style="@style/tv_normal_ellipsize"
-            android:textSize="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
             android:background="@drawable/shape_circle_white"
-            />
+            android:gravity="center"
+            android:text="帮忙"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -48,12 +46,11 @@
         <TextView
             android:id="@+id/tv_item_time"
             style="@style/tv_normal_ellipsize"
-            android:textSize="14sp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp_4"
+            android:textSize="@dimen/sp_14"
             tools:text="补贴50元" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

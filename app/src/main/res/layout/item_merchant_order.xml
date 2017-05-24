@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/dp_10">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:layout_width="match_parent"
             android:id="@+id/tv_sophisticated"
             style="@style/tv_small_ellipsize"
@@ -32,22 +32,22 @@
     <TextView
         android:id="@+id/tv_creator"
         style="@style/tv_small_ellipsize"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         tools:text="3.18" />
 
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:maxLines="3"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="@dimen/sp_16"
         tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈" />
 
     <View
         style="@style/line_gray"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="@dimen/dp_10" />
 
     <LinearLayout
         android:layout_gravity="right"
@@ -57,11 +57,11 @@
         <TextView
             android:id="@+id/tv_call"
             style="@style/tv_small_ellipsize"
-            android:layout_marginTop="8dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             android:background="@drawable/rect_coner_black"
             android:text="一键拨号" />
 
@@ -69,12 +69,12 @@
             android:textColor="@color/red"
             android:id="@+id/tv_memo"
             style="@style/tv_small_ellipsize"
-            android:layout_marginLeft="17dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/rect_coner_black"
             android:text="备注" />
 

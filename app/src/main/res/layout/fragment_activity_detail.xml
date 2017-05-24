@@ -42,7 +42,7 @@
                         android:maxLines="2"
                         android:text="社区组织公益活动"
                         android:textColor="@color/activity_black"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp_18" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="8dp"
+                                android:layout_marginLeft="@dimen/dp_8"
                                 android:layout_marginRight="@dimen/dp_10"
                                 android:isIndicator="true"
                                 android:numStars="5"
@@ -149,7 +149,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
+                        android:layout_height="@dimen/dp_4"
                         android:background="@color/activity_line" />
 
                     <LinearLayout
@@ -175,7 +175,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:minHeight="30dp">
+                            android:minHeight="@dimen/dp_30">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -203,7 +203,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
+                        android:layout_height="@dimen/dp_4"
                         android:background="@color/activity_line" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -212,7 +212,7 @@
                         android:maxLines="1"
                         android:text="@string/activity_desp"
                         android:textColor="@color/activity_black"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp_18" />
 
                     <View
                         style="@style/line_gray"
@@ -225,7 +225,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
+                        android:layout_height="@dimen/dp_4"
                         android:background="@color/activity_line" />
 
                     <LinearLayout
@@ -238,8 +238,8 @@
 
                         <lilun.com.pension.widget.CircleImageView
                             android:id="@+id/civ_account_avatar"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_40"
                             android:src="@drawable/icon_def" />
 
                         <android.support.v7.widget.AppCompatTextView
@@ -251,7 +251,7 @@
                             android:paddingLeft="@dimen/dp_4"
                             android:text="@string/want_evaluate"
                             android:textColor="@color/activity_black"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/sp_18" />
 
                         <RatingBar
                             android:id="@+id/rb_bar"
@@ -259,8 +259,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="8dp"
-                            android:minHeight="10dp"
+                            android:layout_marginLeft="@dimen/dp_8"
+                            android:minHeight="@dimen/dp_22"
                             android:numStars="5"
                             android:rating="4"
                             android:stepSize="1" />
@@ -268,7 +268,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
+                        android:layout_height="@dimen/dp_4"
                         android:background="@color/activity_line" />
 
                     <LinearLayout
@@ -284,7 +284,7 @@
                             android:maxLines="1"
                             android:text="@string/activity_question_list_"
                             android:textColor="@color/activity_black"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/sp_18" />
 
                         <View
                             style="@style/line_gray"
@@ -300,12 +300,12 @@
                             android:id="@+id/tv_more_question"
                             style="@style/acitivyt_detail_normal_grey"
                             android:layout_width="match_parent"
-                            android:layout_marginLeft="45dp"
+                            android:layout_marginLeft="@dimen/dp_45"
                             android:gravity="center"
                             android:padding="@dimen/dp_14"
                             android:text="@string/more_question"
                             android:textColor="#999999"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/sp_16" />
                     </LinearLayout>
 
 
@@ -322,26 +322,28 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/acbt_sign_up"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_margin="6dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_margin="@dimen/dp_8"
                 android:layout_weight="1"
                 android:background="@drawable/selector_rect_corner_yellow"
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
                 android:text="@string/join"
+                android:textSize="@dimen/sp_14"
                 android:textColor="@color/red2" />
 
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/acbt_question_and_chat"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_margin="6dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_margin="@dimen/dp_8"
                 android:layout_weight="1"
                 android:background="@drawable/selector_rect_corner_red"
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
                 android:text="@string/question"
+                android:textSize="@dimen/sp_14"
                 android:textColor="@color/white" />
 
         </LinearLayout>
@@ -357,7 +359,7 @@
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:src="@drawable/back_with_circle2" />
 
     <TextView

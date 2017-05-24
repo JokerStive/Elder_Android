@@ -1,9 +1,11 @@
 package lilun.com.pension.ui.home.help;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RegexUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -50,6 +53,17 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
         View view = inflater.inflate(R.layout.dialog_first_helper_phone, container);
         initView(view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null && App.widthDP > 820) {
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            dialog.getWindow().setLayout((int) (dm.widthPixels * 0.75), ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     private void initView(View view) {

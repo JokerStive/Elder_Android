@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.register;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -44,6 +45,8 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     AppCompatTextView actvShowCntDown;
     @Bind(R.id.acet_input)
     AppCompatEditText acetRegisterCode;
+    @Bind(R.id.fab_go_next)
+    FloatingActionButton fabGoNext;
 
     @OnClick({R.id.fab_go_next, R.id.actv_show_count_down})
     public void onClick(View view) {
@@ -84,10 +87,15 @@ public class RegisterStep3Fragment extends BaseFragment<RegisterContract.Present
     protected void initView(LayoutInflater inflater) {
         tvInputTitle.setText(R.string.register_code);
         acetRegisterCode.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        acetRegisterCode.setOnKeyListener(editOnKeyListener);
         actvShowCntDown.setVisibility(View.VISIBLE);
         startCnt();
     }
 
+    @Override
+    public void editViewEnterButton() {
+        onClick(fabGoNext);
+    }
 
     private boolean checkRegisterCode(String IDCode) {
         if (IDCode.length() != 6) {

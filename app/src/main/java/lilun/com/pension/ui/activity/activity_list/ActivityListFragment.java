@@ -164,7 +164,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void setRecyclerAdapter(List<OrganizationActivity> activities) {
         mActivityAdapter = getAdapterFromLayoutType(activities);
-      //  mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mActivityAdapter.openLoadMore(20, true);
         mActivityAdapter.setOnLoadMoreListener(20, new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -288,6 +288,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
             nodata.setGravity(Gravity.CENTER);
+            nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mActivityAdapter.addFooterView(nodata);
         }
         this.activities = activities;

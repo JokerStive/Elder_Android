@@ -49,20 +49,21 @@
                         <EditText
                             android:id="@+id/et_search_name"
                             android:layout_width="0dp"
-                            android:layout_height="36dp"
-                            android:layout_margin="8dp"
+                            android:layout_height="@dimen/dp_40"
+                            android:layout_margin="@dimen/dp_8"
                             android:layout_weight="1"
                             android:background="@drawable/shape_rect_light_grey_corner_5"
                             android:drawableLeft="@drawable/search"
                             android:hint="@string/search"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/sp_12" />
 
                         <TextView
                             android:id="@+id/tv_search_name"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:padding="8dp"
+                            android:padding="@dimen/dp_8"
+                            android:textSize="@dimen/sp_14"
                             android:text="@string/search" />
                     </LinearLayout>
 
@@ -72,7 +73,8 @@
                         android:paddingBottom="@dimen/dp_4"
                         android:paddingLeft="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_4"
-                        android:text="@string/master" />
+                        android:text="@string/master"
+                        android:textSize="@dimen/sp_14" />
 
                     <include layout="@layout/item_partners" />
 
@@ -82,7 +84,8 @@
                         android:paddingBottom="@dimen/dp_4"
                         android:paddingLeft="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_4"
-                        android:text="@string/partner_list" />
+                        android:text="@string/partner_list"
+                        android:textSize="@dimen/sp_14" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

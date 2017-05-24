@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="@dimen/dp_45"
     android:clickable="true"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/dp_45"
         android:background="@color/white">
 
         <ImageView
@@ -18,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/back"
-            android:padding="20dp" />
+            android:padding="@dimen/dp_20" />
 
 
         <LinearLayout
@@ -28,12 +27,10 @@
             android:background="@drawable/shape_rect_write_corner"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="10dp"
-            >
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_10">
 
             <TextView
-                android:padding="5dp"
                 android:id="@+id/et_search"
                 style="@style/et_normal"
                 android:layout_width="wrap_content"
@@ -41,8 +38,9 @@
                 android:enabled="true"
                 android:hint="请输入您要搜索的关键字"
                 android:maxLength="10"
+                android:padding="@dimen/dp_4"
                 android:singleLine="true"
-                android:textSize="14sp" />
+                android:textSize="@dimen/sp_14" />
 
         </LinearLayout>
 
@@ -51,9 +49,9 @@
             style="@style/tv_normal_ellipsize"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/dp_10"
             android:focusable="false"
-            android:padding="10dp"
+            android:padding="@dimen/dp_10"
             android:src="@drawable/layout_type_big" />
     </RelativeLayout>
 

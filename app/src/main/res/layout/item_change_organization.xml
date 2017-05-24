@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_organization_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:ellipsize="end"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:gravity="center"
-    android:paddingTop="5dp"
-    tools:text="什么社区"
-    android:maxLines="2"
-    android:id="@+id/tv_organization_name"
     android:background="@drawable/shape_reply"
-    >
+    android:ellipsize="end"
+    android:gravity="center"
+    android:maxLines="2"
+    android:paddingBottom="@dimen/dp_4"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_4"
+    android:textSize="@dimen/sp_14"
+    tools:text="什么社区">
 
 </TextView>

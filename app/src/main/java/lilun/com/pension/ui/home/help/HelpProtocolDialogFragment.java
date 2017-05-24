@@ -1,14 +1,17 @@
 package lilun.com.pension.ui.home.help;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.module.utils.PreUtils;
 
 /**
@@ -27,6 +30,17 @@ public class HelpProtocolDialogFragment extends DialogFragment implements View.O
         View view = inflater.inflate(R.layout.dialog_hepl_protocol, container);
         initView(view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null && App.widthDP > 820) {
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            dialog.getWindow().setLayout((int) (dm.widthPixels * 0.75), ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     private void initView(View view) {

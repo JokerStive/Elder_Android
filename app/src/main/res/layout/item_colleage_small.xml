@@ -6,19 +6,19 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="7dp">
+    android:padding="@dimen/dp_8">
 
     <RelativeLayout
         android:id="@+id/rl_container"
-        android:layout_width="87dp"
-        android:layout_height="87dp"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp">
+        android:layout_marginLeft="@dimen/dp_8">
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="87dp"
-            android:layout_height="87dp"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
             android:layout_centerVertical="true"
             tools:src="@drawable/selector_agency" />
 
@@ -36,18 +36,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_toEndOf="@+id/rl_container"
         android:layout_toRightOf="@+id/rl_container"
         android:orientation="vertical"
-        android:padding="7dp">
+        android:padding="@dimen/dp_8">
 
 
         <TextView
             android:id="@+id/tv_title"
             style="@style/tv_small_ellipsize"
-            android:layout_width="300dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/dp_300"
+            android:layout_marginTop="@dimen/dp_8"
             android:maxLines="1"
             tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
@@ -55,7 +55,7 @@
         <TextView
             android:id="@+id/tv_address"
             style="@style/tv_small_ellipsize"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="@dimen/dp_2"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
             tools:text="重庆市半区去啊啊" />

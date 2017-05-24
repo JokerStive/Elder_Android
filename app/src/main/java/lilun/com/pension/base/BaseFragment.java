@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,28 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     protected T mPresenter;
     protected Subscription subscribe;
     protected CompositeSubscription subscription = new CompositeSubscription();
+
+    /**
+     *   用于监听弹出软键盘的Enter事件；
+     */
+    public View.OnKeyListener editOnKeyListener =new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                editViewEnterButton();
+            }
+
+            return false;
+        }
+    };
+
+
+    /**
+     * 软键盘的Enter事件响应
+     */
+    public  void editViewEnterButton(){
+
+    }
 
 
     @Override

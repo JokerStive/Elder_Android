@@ -6,17 +6,17 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="7dp">
+    android:padding="@dimen/dp_8">
 
     <LinearLayout
         android:id="@+id/ll_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="18dp"
+        android:layout_marginRight="@dimen/dp_16"
         android:layout_toLeftOf="@+id/iv_icon"
         android:layout_toStartOf="@+id/iv_icon"
         android:orientation="vertical"
-        android:padding="7dp">
+        android:padding="@dimen/dp_8">
 
         <TextView
             android:id="@+id/tv_creatorName"
@@ -29,7 +29,7 @@
             android:id="@+id/tv_sophisticated"
             style="@style/tv_small_ellipsize"
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/dp_8"
             android:maxLines="1"
             tools:text="怎么么么么么么么么么么么么么么么么么么么么么么么" />
 
@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/tv_environment"
             style="@style/tv_small_ellipsize"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="@dimen/dp_8"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
             tools:text="重庆市半区去啊啊" />
@@ -50,7 +50,7 @@
             <TextView
                 android:id="@+id/tv_mobile"
                 style="@style/tv_small_ellipsize"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="@dimen/dp_4"
                 android:textColor="@color/red"
                 android:textSize="@dimen/dp_14"
                 tools:text="补贴30元" />
@@ -58,8 +58,8 @@
             <TextView
                 android:id="@+id/tv_time_joinCount"
                 style="@style/tv_small_ellipsize"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_4"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/dp_14"
                 tools:text="/03.19 / 50人参与" />
@@ -69,10 +69,10 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/dp_8"
         tools:src="@drawable/selector_agency" />
 </RelativeLayout>

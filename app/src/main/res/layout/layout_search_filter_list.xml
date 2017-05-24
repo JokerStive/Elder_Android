@@ -12,7 +12,7 @@
         <lilun.com.pension.widget.SearchTitleBar
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:layout_height="@dimen/dp_45" />
 
         <lilun.com.pension.widget.filter_view.FilterView
             android:id="@+id/filter_view"
@@ -26,9 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#f4f4f4"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="10dp">
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_10">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"

@@ -9,30 +9,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_20"
         android:orientation="vertical">
 
         <lilun.com.pension.widget.CircleImageView
             android:id="@+id/iv_icon"
-            android:layout_width="78dp"
-            android:layout_height="78dp"
+            android:layout_width="@dimen/dp_72"
+            android:layout_height="@dimen/dp_72"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="@dimen/dp_30" />
 
         <TextView
             android:id="@+id/tv_sophisticated"
             style="@style/tv_normal_ellipsize"
             android:layout_gravity="center"
-            android:layout_marginTop="11dp"
-            android:textSize="20dp"
+            android:layout_marginTop="@dimen/dp_10"
             tools:text="游珂" />
 
         <TextView
             android:id="@+id/tv_account_data"
             style="@style/tv_normal_ellipsize"
-            android:layout_marginTop="34dp"
-            android:drawablePadding="11dp"
+            android:layout_marginTop="@dimen/dp_30"
+            android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_data"
             android:text="@string/account_data" />
 
@@ -40,7 +39,7 @@
             android:id="@+id/tv_account_setting"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="11dp"
+            android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_setting"
             android:text="@string/account_setting" />
 
@@ -48,7 +47,7 @@
             android:id="@+id/tv_account_share"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="11dp"
+            android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
             android:text="@string/account_share" />
 
@@ -56,7 +55,7 @@
             android:id="@+id/tv_account_info"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="11dp"
+            android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_info"
             android:text="@string/account_info" />
 
@@ -65,7 +64,7 @@
             android:id="@+id/tv_account_safe"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="11dp"
+            android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
             android:text="@string/account_safe" />
 
@@ -75,11 +74,10 @@
         android:id="@+id/tv_logout"
         style="@style/tv_normal_ellipsize"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="28dp"
-        android:layout_marginStart="20dp"
-        android:drawablePadding="11dp"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_20"
+        android:drawablePadding="@dimen/dp_10"
         android:drawableStart="@drawable/logout"
-        android:text="@string/logout"
-        android:textSize="20dp" />
+        android:text="@string/logout" />
 
 </RelativeLayout>

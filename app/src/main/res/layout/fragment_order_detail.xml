@@ -10,9 +10,9 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="204dp"
+        android:layout_height="@dimen/dp_200"
         android:background="@color/red"
-        android:paddingLeft="10dp">
+        android:paddingLeft="@dimen/dp_10">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -26,7 +26,7 @@
             style="@style/tv_normal_ellipsize"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="@dimen/sp_24"
             tools:text="已完成" />
 
 
@@ -34,7 +34,7 @@
             android:id="@+id/tv_order_name"
             style="@style/tv_small_ellipsize"
             android:layout_above="@+id/tv_order_address"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="@dimen/dp_8"
             android:textColor="@color/white"
             android:visibility="gone"
             tools:text="姓名：444" />
@@ -43,7 +43,7 @@
             android:id="@+id/tv_order_address"
             style="@style/tv_small_ellipsize"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="@dimen/dp_14"
             android:textColor="@color/white"
             android:visibility="gone"
             tools:text="地址：44554" />
@@ -56,19 +56,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
         android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:paddingLeft="@dimen/dp_10">
 
         <RelativeLayout
             android:id="@+id/rl_provider_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
+            android:paddingBottom="@dimen/dp_20"
+            android:paddingTop="@dimen/dp_20">
 
             <ImageView
                 android:id="@+id/iv_provider_avatar"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
                 android:gravity="center_vertical"
                 tools:src="@drawable/avatar" />
 
@@ -76,7 +76,7 @@
                 android:id="@+id/tv_provider_name"
                 style="@style/tv_normal_ellipsize"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_toEndOf="@+id/iv_provider_avatar"
                 android:layout_toRightOf="@+id/iv_provider_avatar"
                 android:gravity="center_vertical"
@@ -91,20 +91,20 @@
             android:id="@+id/rl_product_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp">
+            android:layout_marginTop="@dimen/dp_14">
 
             <ImageView
                 android:id="@+id/iv_product_icon"
-                android:layout_width="86dp"
-                android:layout_height="86dp"
+                android:layout_width="@dimen/dp_90"
+                android:layout_height="@dimen/dp_90"
                 tools:src="@drawable/shape_rect_red" />
 
             <TextView
-                android:maxLines="3"
                 android:id="@+id/tv_sophisticated"
                 style="@style/tv_small"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="@dimen/dp_14"
                 android:layout_toRightOf="@+id/iv_product_icon"
+                android:maxLines="3"
                 tools:text="卖带哦饭姐爱哦饭假附近的撒放假打死房价大幅降低撒肥的手法的撒范德萨饭肉" />
 
             <TextView
@@ -112,7 +112,7 @@
                 style="@style/tv_small_ellipsize"
                 android:layout_alignLeft="@id/tv_sophisticated"
                 android:layout_below="@id/tv_sophisticated"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp_10"
                 tools:text="14块" />
 
             <RatingBar
@@ -123,7 +123,7 @@
                 android:layout_alignLeft="@id/tv_product_price"
                 android:layout_below="@id/tv_product_price"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp_10"
                 android:isIndicator="true"
                 android:numStars="5"
                 tools:rating="4" />
@@ -143,8 +143,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="@dimen/dp_14"
+                android:paddingTop="@dimen/dp_14"
                 android:src="@drawable/call" />
 
             <!--<TextView-->
@@ -159,7 +159,7 @@
                 android:id="@+id/tv_product_phone"
                 style="@style/tv_small_ellipsize"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="13dp"
+                android:layout_marginLeft="@dimen/dp_14"
                 android:layout_toRightOf="@id/iv_call"
                 tools:text="132060114250" />
         </RelativeLayout>
@@ -171,11 +171,11 @@
 
     <LinearLayout
         android:id="@+id/ll_operate"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <View style="@style/line_gray" />
 
@@ -184,16 +184,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_cancel"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="15dp"
-            android:visibility="gone"
-            android:textSize="@dimen/tv_size"
-            tools:text="取消订单" />
+            <TextView
+                android:id="@+id/tv_cancel"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/dp_14"
+                android:textSize="@dimen/tv_size"
+                android:visibility="gone"
+                tools:text="取消订单" />
 
             <TextView
                 android:id="@+id/tv_operate"
@@ -201,7 +201,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:padding="15dp"
+                android:padding="@dimen/dp_14"
                 android:textSize="@dimen/tv_size"
                 tools:text="受理订单" />
         </LinearLayout>

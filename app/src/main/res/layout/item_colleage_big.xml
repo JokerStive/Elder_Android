@@ -5,17 +5,17 @@
     android:layout_height="wrap_content"
     android:background="@drawable/home_bg"
     android:orientation="vertical"
-    android:padding="14dp">
+    android:padding="@dimen/dp_14">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="197dp"
+        android:layout_height="@dimen/dp_200"
         android:background="@color/icon_def">
 
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="match_parent"
-            android:layout_height="197dp"
+            android:layout_height="@dimen/dp_200"
             android:scaleType="fitXY" />
 
         <!--<ImageView-->
@@ -34,7 +34,7 @@
         style="@style/tv_small_ellipsize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:maxLines="1" />
 
     <TextView
@@ -42,7 +42,7 @@
         style="@style/tv_small_ellipsize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="@dimen/dp_2"
         android:textColor="@color/gray"
         android:textSize="@dimen/dp_14" />
 

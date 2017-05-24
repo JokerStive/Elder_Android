@@ -175,7 +175,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         });
         mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);
-       // mContentAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mContentAdapter.openLoadMore(20, true);
         mContentAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -247,6 +247,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
             nodata.setGravity(Gravity.CENTER);
+            nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mContentAdapter.addFooterView(nodata);
         }
         if (activities != null) {

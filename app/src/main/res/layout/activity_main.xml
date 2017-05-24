@@ -11,9 +11,9 @@
         android:layout_height="match_parent"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_push_info"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_45"
         android:layout_width="match_parent"
         android:layout_height="@dimen/push_bar_height"
         />

@@ -3,7 +3,7 @@
     android:id="@+id/iv_advantage"
     android:layout_width="match_parent"
     android:scaleType="fitXY"
-    android:layout_height="150dp">
+    android:layout_height="@dimen/dp_150">
 
     <!--<ImageView-->
         <!--android:id="@+id/iv_advantage"-->

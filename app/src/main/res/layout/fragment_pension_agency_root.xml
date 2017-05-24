@@ -14,8 +14,7 @@
         app:title="@string/pension_agency" />
 
 
-    <include
-        layout="@layout/announce_container"/>
+    <include layout="@layout/announce_container" />
 
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -28,15 +27,15 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp">
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/tv_agency_title"
                 style="@style/tv_small_ellipsize"
-                android:layout_marginBottom="5dp"
-                android:drawablePadding="3dp"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:drawablePadding="@dimen/dp_4"
                 android:drawableStart="@drawable/pension_agency_icon"
                 android:text="机构" />
 
@@ -47,9 +46,9 @@
 
             <TextView
                 style="@style/tv_small_ellipsize"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="3dp"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_10"
+                android:drawablePadding="@dimen/dp_4"
                 android:drawableStart="@drawable/pension_agency_icon"
                 android:text="服务" />
 

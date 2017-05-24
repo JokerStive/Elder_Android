@@ -6,7 +6,7 @@
     android:background="@drawable/home_bg"
     android:orientation="vertical"
     android:id="@+id/ll_bg"
-    android:padding="14dp"
+    android:padding="@dimen/dp_14"
    >
 
     <LinearLayout
@@ -25,9 +25,9 @@
         <TextView
             android:id="@+id/tv_sophisticated"
             style="@style/tv_small_ellipsize"
-            android:maxWidth="300dp"
+            android:maxWidth="@dimen/dp_300"
             android:maxLines="1"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             tools:text="怎么吧南南岸娜娜娜娜怎么吧南南岸娜娜娜娜怎么吧南南岸娜娜娜娜" />
 
     </LinearLayout>
@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/tv_environment"
         style="@style/tv_small_ellipsize"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp_4"
         android:textColor="@color/gray"
         android:textSize="@dimen/dp_14"
         tools:text="重庆市半区去啊啊" />
@@ -48,16 +48,16 @@
         <TextView
             android:id="@+id/tv_mobile"
             style="@style/tv_small_ellipsize"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/dp_4"
             android:textColor="@color/red"
             android:textSize="@dimen/dp_14"
             tools:text="补贴30元" />
 
         <TextView
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="@dimen/dp_4"
             android:id="@+id/tv_time_joinCount"
             style="@style/tv_small_ellipsize"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/dp_4"
             android:textColor="@color/gray"
             android:textSize="@dimen/dp_14"
             tools:text="/03.19 / 50人参与" />

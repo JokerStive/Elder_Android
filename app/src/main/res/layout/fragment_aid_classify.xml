@@ -11,8 +11,7 @@
         android:layout_height="wrap_content" />
 
 
-    <include
-        layout="@layout/announce_container"/>
+    <include layout="@layout/announce_container" />
 
 
     <LinearLayout
@@ -24,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/tv_need_help"
@@ -33,11 +32,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_help"
                 android:clickable="true"
-                android:drawablePadding="8dp"
+                android:drawablePadding="@dimen/dp_8"
                 android:drawableTop="@drawable/need_help"
                 android:focusable="false"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:padding="@dimen/dp_10"
                 android:text="@string/need_help"
                 android:textColor="@color/white" />
 
@@ -49,11 +48,11 @@
                 android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/selector_help"
-                android:drawablePadding="8dp"
+                android:drawablePadding="@dimen/dp_8"
                 android:drawableTop="@drawable/find_help"
                 android:focusable="false"
                 android:gravity="center_horizontal"
-                android:padding="10dp"
+                android:padding="@dimen/dp_10"
                 android:text="疑问帮忙"
                 android:textColor="@color/white" />
 
@@ -64,18 +63,17 @@
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            >
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 

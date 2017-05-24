@@ -7,7 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.orhanobut.logger.Logger;
 
@@ -41,6 +43,10 @@ public class CountDown extends View {
     public CountDown(Context context) {
         super(context);
         mContext = context;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        if (dm.widthPixels / dm.density > 820) mRadio = 282;
         init();
     }
 
@@ -48,6 +54,10 @@ public class CountDown extends View {
     public CountDown(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        if (dm.widthPixels / dm.density > 820) mRadio = 282;
         init();
     }
 

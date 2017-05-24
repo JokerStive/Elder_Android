@@ -1,76 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
 
-        <ImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="match_parent"
-            android:layout_height="266dp"
-            android:background="@drawable/selector_help"
-            />
-        
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="19dp"
-            android:layout_marginTop="29dp"
-            android:background="@drawable/back_with_circle"
-            />
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_220"
+        android:background="@drawable/selector_help" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/back_with_circle" />
 
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_reservation"
-        android:layout_below="@id/iv_icon"
-        android:layout_marginTop="27dp"
-        android:gravity="center"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
-        tools:text="回答"
         style="@style/tv_normal_ellipsize"
-        android:textSize="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/iv_icon"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_27"
         android:background="@drawable/shape_circle_white"
-        />
-    
+        android:gravity="center"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone"
+        tools:text="回答" />
+
     <TextView
         android:id="@+id/tv_sophisticated"
-        tools:text="怎么创建一个账号"
+        style="@style/tv_normal_ellipsize"
         android:layout_below="@id/tv_reservation"
-        android:layout_marginTop="19dp"
-        android:layout_marginLeft="11dp"
-       style="@style/tv_normal_ellipsize" />
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        tools:text="怎么创建一个账号" />
 
     <TextView
         android:id="@+id/tv_desc"
-        tools:text="2017.3.6"
-        android:textSize="14sp"
-        android:layout_below="@id/tv_sophisticated"
+        style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_sophisticated"
-        android:layout_marginTop="17dp"
-        style="@style/tv_normal_ellipsize" />
+        android:layout_below="@id/tv_sophisticated"
+        android:layout_marginTop="@dimen/dp_16"
+        android:textSize="@dimen/sp_14"
+        tools:text="2017.3.6" />
 
     <TextView
         android:id="@+id/tv_mobile"
-        tools:text="提问人:尼玛"
-        android:textSize="14sp"
-        android:layout_below="@id/tv_desc"
+        style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_sophisticated"
-        android:layout_marginTop="7dp"
-        style="@style/tv_normal_ellipsize" />
+        android:layout_below="@id/tv_desc"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_14"
+        tools:text="提问人:尼玛" />
 
     <TextView
-        tools:text="回答"
-        android:layout_below="@id/tv_mobile"
-        android:layout_marginTop="37dp"
-        android:layout_alignLeft="@id/tv_sophisticated"
         style="@style/tv_normal_ellipsize"
-        android:layout_marginBottom="16dp"
-        />
+        android:layout_alignLeft="@id/tv_sophisticated"
+        android:layout_below="@id/tv_mobile"
+        android:layout_marginBottom="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_36"
+        tools:text="回答" />
 
 </RelativeLayout>

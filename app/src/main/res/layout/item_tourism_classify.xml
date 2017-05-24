@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingBottom="17dp"
-    android:paddingTop="17dp">
+    android:paddingBottom="@dimen/dp_16"
+    android:paddingTop="@dimen/dp_16">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/walking_tours"
             android:gravity="center_horizontal"
             android:tag="@string/hiking"
@@ -29,7 +29,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/drive"
             android:gravity="center_horizontal"
             android:tag="@string/by_car"
@@ -41,7 +41,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/parents"
             android:gravity="center_horizontal"
             android:tag="@string/parents"
@@ -53,7 +53,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/honeymoon"
             android:gravity="center_horizontal"
             android:tag="@string/honey_moon"
@@ -66,7 +66,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="@dimen/dp_16"
         android:orientation="horizontal">
 
         <TextView
@@ -74,7 +74,7 @@
             android:textColor="#666666"
             style="@style/tv_small"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/rim"
             android:gravity="center_horizontal"
             android:tag="@string/near"
@@ -86,7 +86,7 @@
             android:textColor="#666666"
             style="@style/tv_small"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/domestic_travel"
             android:gravity="center_horizontal"
             android:tag="@string/domestic"
@@ -98,7 +98,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/the_outbound_tourism"
             android:gravity="center_horizontal"
             android:tag="@string/multinational"
@@ -110,7 +110,7 @@
             style="@style/tv_small"
             android:textColor="#666666"
             android:layout_weight="1"
-            android:drawablePadding="7dp"
+            android:drawablePadding="@dimen/dp_8"
             android:drawableTop="@drawable/offspring"
             android:gravity="center_horizontal"
             android:textSize="@dimen/sp_14"

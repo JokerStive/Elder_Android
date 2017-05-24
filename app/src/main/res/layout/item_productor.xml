@@ -11,14 +11,14 @@
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="@dimen/dp_200"
         android:background="@drawable/help_detail_icon" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -26,15 +26,15 @@
             android:id="@+id/tv_sophisticated"
             style="@style/tv_normal_ellipsize"
             android:ellipsize="end"
-            android:maxWidth="@dimen/title_max_width"
             android:maxLines="1"
+            android:maxWidth="@dimen/title_max_width"
             tools:text="下水道堵了下水道堵了下水道堵了" />
 
         <TextView
             android:id="@+id/tv_mobile"
             style="@style/tv_normal_ellipsize"
-            android:textSize="14sp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:textSize="@dimen/sp_14"
             tools:text="免费" />
 
 
@@ -43,9 +43,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="6dp"
-        >
+        android:layout_marginTop="@dimen/dp_4"
+        android:orientation="horizontal">
 
 
         <RatingBar
@@ -60,8 +59,8 @@
         <TextView
             android:id="@+id/tv_rank_count"
             style="@style/tv_normal_ellipsize"
-            android:layout_marginLeft="7dp"
-            android:textSize="14sp"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:textSize="@dimen/sp_14"
             tools:text="105条评论" />
     </LinearLayout>
 

@@ -81,6 +81,11 @@ public class UrgentAidInfoActivity extends Activity {
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     protected void initView() {
         drawableAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.anim_express);

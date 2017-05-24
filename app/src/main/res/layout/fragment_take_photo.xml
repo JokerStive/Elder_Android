@@ -10,8 +10,8 @@
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
         android:text="拍照" />
 
     <View style="@style/line_gray" />
@@ -21,8 +21,8 @@
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
         android:text="从相册获取" />
 
 </LinearLayout>

@@ -43,8 +43,8 @@
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="29dp"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/back_with_circle" />
             </RelativeLayout>
 
@@ -53,55 +53,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="@dimen/dp_10">
 
 
                 <TextView
                     android:id="@+id/tv_title"
                     style="@style/tv_normal_ellipsize"
-                    android:layout_marginTop="19dp"
+                    android:layout_marginTop="@dimen/dp_20"
                     tools:text="下水道堵塞了" />
 
 
                 <TextView
                     android:id="@+id/tv_mobile"
                     style="@style/tv_small_ellipsize"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="@dimen/dp_4"
                     tools:text="联系电话：1925544444" />
 
                 <View
                     style="@style/line_gray"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="@dimen/dp_16" />
 
                 <TextView
                     android:id="@+id/tv_content_title"
                     style="@style/tv_normal_ellipsize"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:text="内容" />
 
                 <TextView
                     android:id="@+id/tv_content"
                     style="@style/tv_small_ellipsize"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:gravity="center_vertical"
                     tools:text="茶韵新城规范" />
 
 
                 <View
                     style="@style/line_gray"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="@dimen/dp_16" />
 
                 <TextView
                     android:id="@+id/tv_address_title"
                     style="@style/tv_normal_ellipsize"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:text="地址" />
 
                 <TextView
                     android:id="@+id/tv_address"
                     style="@style/tv_small"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:gravity="center_vertical"
                     tools:text="茶韵新城规范" />
 
@@ -109,9 +109,9 @@
                 <View
                     android:id="@+id/line"
                     style="@style/line_gray"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_16" />
             </LinearLayout>
         </LinearLayout>
 

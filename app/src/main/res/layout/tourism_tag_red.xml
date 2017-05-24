@@ -3,9 +3,9 @@
     style="@style/tv_small"
     android:background="@drawable/shape_tourism_tag"
     android:gravity="center_vertical"
-    android:padding="3dp"
+    android:padding="@dimen/dp_4"
     android:text="境外游"
     android:textColor="@color/red"
-    android:textSize="12sp" >
+    android:textSize="@dimen/sp_12" >
 
 </TextView>

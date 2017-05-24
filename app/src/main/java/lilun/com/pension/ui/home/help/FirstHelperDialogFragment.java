@@ -1,8 +1,10 @@
 package lilun.com.pension.ui.home.help;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.module.utils.StringUtils;
 
 /**
@@ -42,6 +45,16 @@ public class FirstHelperDialogFragment extends DialogFragment implements View.On
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null && App.widthDP > 820) {
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            dialog.getWindow().setLayout((int) (dm.widthPixels * 0.75), ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+    }
 
 
     @Override
@@ -67,7 +80,7 @@ public class FirstHelperDialogFragment extends DialogFragment implements View.On
     private void firstHelperPhone(View v) {
         TextView textView = (TextView) v;
         String string = textView.getText().toString();
-        FirstHelperPhoneDialogFragment.newInstance(StringUtils.filterNull(string)).show(getActivity().getFragmentManager(),FirstHelperPhoneDialogFragment.class.getSimpleName());
+        FirstHelperPhoneDialogFragment.newInstance(StringUtils.filterNull(string)).show(getActivity().getFragmentManager(), FirstHelperPhoneDialogFragment.class.getSimpleName());
         dismiss();
     }
 }

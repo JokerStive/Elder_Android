@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -63,6 +64,24 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private RxProgressDialog dialog;
     private int pushAidInfoCunt = 0;
     private int pushInfoCunt = 0;
+
+    //用于监听弹出软键盘的Enter事件；
+    public View.OnKeyListener editOnKeyListener =new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                editViewEnterButton();
+            }
+            return false;
+        }
+    };
+
+    /**
+     * 软键盘的Enter事件响应
+     */
+    public  void editViewEnterButton(){
+
+    }
 
 
     @Override
