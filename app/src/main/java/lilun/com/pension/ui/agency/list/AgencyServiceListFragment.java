@@ -199,15 +199,15 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
 
         //TODO 区域
-        filterTitles.add(0, "区域");
-        AreaFilter areaFilter = new AreaFilter(mContent, 3, "区域");
-        areaFilter.setOnItemClickListener((id, name, isDef) -> {
-            Logger.d("选中的区域-- " + id);
-            filterView.setTabText(name, isDef);
-            productFilter.where.setAreasList(id);
-            refreshProductWithFilter();
-        });
-        pops.add(0, areaFilter);
+//        filterTitles.add(0, "区域");
+//        AreaFilter areaFilter = new AreaFilter(mContent, 3, "区域");
+//        areaFilter.setOnItemClickListener((id, name, isDef) -> {
+//            Logger.d("选中的区域-- " + id);
+//            filterView.setTabText(name, isDef);
+//            productFilter.where.setAreasList(id);
+//            refreshProductWithFilter();
+//        });
+//        pops.add(0, areaFilter);
         filterView.setTitlesAndPops(filterTitles, pops, mSwipeLayout);
     }
 

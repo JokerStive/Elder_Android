@@ -71,7 +71,8 @@ public class ChangeOrganizationPresenter extends RxPresenter<ChangeOrganizationC
                             Logger.d("切换到地球村成功" + User.getCurrentOrganizationId());
 //                            User.putBelongsOrganizationId(Constants.organization_root);
 //                            Logger.d("当前默认组织"+User.getBelongsOrganizationId());
-                        } else if (TextUtils.equals(organizationId, User.getBelongOrganizationAccountId())) {
+//                        } else if (TextUtils.equals(organizationId, User.getBelongOrganizationAccountId())) {
+                        } else{
                             User.putCurrentOrganizationId(User.getBelongsOrganizationId());
                             Logger.d("切换回默认所属组织成功" + User.getCurrentOrganizationId());
                             view.changedBelong();

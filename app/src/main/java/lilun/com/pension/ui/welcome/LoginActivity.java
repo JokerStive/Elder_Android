@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -25,6 +26,11 @@ import lilun.com.pension.ui.home.HomeActivity;
 public class LoginActivity extends BaseActivity<LoginContract.Presenter> implements LoginContract.View {
 
     Account account;
+
+    @Bind(R.id.iv_back)
+    ImageView ivBack;
+    @Bind(R.id.tv_forget_password)
+    TextView tvForgetPassword;
     @Bind(R.id.et_mobile)
     EditText etMobile;
 
@@ -63,6 +69,12 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         fabNext.setOnClickListener(v -> login());
         tvShowPassword.setOnClickListener(v -> {
             showPassword();
+        });
+        ivBack.setOnClickListener(v -> {
+            finish();
+        });
+        tvForgetPassword.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChangePasswordActivity.class));
         });
         if (autologin) {
             etMobile.setText(account.getMobile());

@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.Bugly;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -33,6 +34,7 @@ import lilun.com.pension.module.utils.mqtt.MQTTManager;
 public class App extends Application {
     public static Context context;
     public static int widthDP =0;
+    public static Date loginDate=null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -64,6 +66,8 @@ public class App extends Application {
         SDKInitializer.initialize(this);
 
         getWidthDP();
+
+        Bugly.init(getApplicationContext(), "b07eef1cd9", BuildConfig.DEBUG);
     }
 
 
@@ -75,6 +79,7 @@ public class App extends Application {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("mqtt 连接成功");
+                    loginDate = new Date();
                     initSub();
                     pushLogin();
                 }
@@ -98,16 +103,16 @@ public class App extends Application {
     }
 
     private static void pushLogin() {
-        if (!PreUtils.getBoolean("hasPushLogin", false)) {
+    //    if (!PreUtils.getBoolean("hasPushLogin", false)) {
             Logger.i("发送login消息");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = format.format(new Date());
             String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
             MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 0, msg, false);
-            PreUtils.putBoolean("hasPushLogin", true);
-        } else {
-            Logger.i("不发送login消息");
-        }
+//            PreUtils.putBoolean("hasPushLogin", true);
+//        } else {
+//            Logger.i("不发送login消息");
+//        }
     }
 
 

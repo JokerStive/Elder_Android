@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <lilun.com.pension.widget.BreadCrumbsView
-        android:background="@color/white"
-        android:id="@+id/crumb_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f4f4f4"
-        android:paddingLeft="@dimen/dp_8"
-        android:paddingRight="@dimen/dp_8"
-        android:paddingTop="@dimen/dp_10">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <lilun.com.pension.widget.BreadCrumbsView
+            android:id="@+id/crumb_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f4f4f4"
+            android:paddingLeft="@dimen/dp_8"
+            android:paddingRight="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_10">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btn_confirm"
         style="@style/btn_normal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_2"
         android:background="@drawable/shape_rect_red"
         android:text="@string/confirm" />
-</RelativeLayout>
+
+
+</LinearLayout>

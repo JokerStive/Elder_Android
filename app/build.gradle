@@ -22,7 +22,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "1.1.0"
+        versionName "1.1.1"
         //64k方法限制
         multiDexEnabled true
 
@@ -92,7 +92,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:design:+'
     compile 'joda-time:joda-time:2.9.4'
     //内存泄漏检查
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
@@ -124,6 +123,8 @@ dependencies {
     compile files('libs/baidumapapi_map_v4_3_0.jar')
 
     //区域选择控件
-    compile 'com.github.vanzh:AreaSelector:1.0.3'
+    compile 'com.github.vanzh:AreaSelector:1.0.5'
+    //腾讯bugly崩溃日志收集库
+     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
 }
 

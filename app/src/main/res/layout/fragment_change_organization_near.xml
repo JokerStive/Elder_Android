@@ -14,6 +14,29 @@
 
     <View style="@style/line_gray" />
 
+    <TextView
+        style="@style/tv_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:text="@string/locat_address" />
+
+    <TextView
+        android:id="@+id/tv_locat_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8"
+        android:background="@drawable/shape_reply"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="@dimen/dp_10"
+        android:text="什么社区"
+        android:textSize="@dimen/sp_14" />
+
+    <View style="@style/line_gray" />
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_layout"

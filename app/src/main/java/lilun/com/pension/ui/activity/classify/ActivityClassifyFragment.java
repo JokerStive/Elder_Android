@@ -24,6 +24,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -247,7 +248,8 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
             nodata.setGravity(Gravity.CENTER);
-            nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
+            if (App.widthDP > 820)
+                nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mContentAdapter.addFooterView(nodata);
         }
         if (activities != null) {

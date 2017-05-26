@@ -10,7 +10,7 @@
     <dimen name="tv_size_big_x">84sp</dimen>
     <dimen name="tv_size_big">60sp</dimen>
     <dimen name="tv_size">60sp</dimen>
-    <dimen name="tv_size_small">51sp</dimen>
+    <dimen name="tv_size_small">48sp</dimen>
     <dimen name="tv_size_small_x">42sp</dimen>
 
 

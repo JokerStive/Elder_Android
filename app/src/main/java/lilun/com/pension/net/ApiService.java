@@ -561,7 +561,19 @@ public interface ApiService {
      * 获取获取电话号码验证码
      */
     @GET("Accounts/IDCode")
-    Observable<Response<Object>> getIDCode(@Query("mobile") String phone);
+    Observable<Response<Object>> getIDCode(@Query("mobile") String phone, @Query("type") String type);
+
+    /**
+     * 获取获取身份验证
+     */
+    @POST("Accounts/identifyUser")
+    Observable<Response<TokenInfo>> getIdentifyUser(@Header("mobile") String phone, @Header("Code") String code);
+
+    /**
+     * 修改密码
+     */
+    @PUT("Accounts/changePassword")
+    Observable<Response<Object>> changePassword(@Header("newPassword") String password);
 
     /**
      * 检测验证码

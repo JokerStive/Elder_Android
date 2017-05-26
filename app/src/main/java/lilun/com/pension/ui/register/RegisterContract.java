@@ -26,7 +26,7 @@ public interface RegisterContract {
     }
 
     interface PresenterStep2 extends IPresenter<ViewStep2> {
-        void getIDCode(SupportActivity _mActivity, String phone);
+        void getIDCode(SupportActivity _mActivity, String phone,String type);
     }
   /**
      * 第3步  检测  验证码的 VP
@@ -38,7 +38,7 @@ public interface RegisterContract {
 
     interface PresenterStep3 extends IPresenter<ViewStep3> {
         void checkIDCode(SupportActivity _mActivity, String phone, String aIDCode);
-        void getIDCode(SupportActivity _mActivity, String phone);
+        void getIDCode(SupportActivity _mActivity, String phone, String type);
     }
 
 

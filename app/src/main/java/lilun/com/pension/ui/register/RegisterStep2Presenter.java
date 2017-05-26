@@ -16,9 +16,9 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
 
 
     @Override
-    public void getIDCode(SupportActivity _mActivity, String phone) {
+    public void getIDCode(SupportActivity _mActivity, String phone,String type) {
         addSubscribe(NetHelper.getApi()
-                .getIDCode(phone)
+                .getIDCode(phone,type)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(_mActivity) {
@@ -34,7 +34,7 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
                             ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
                             return;
                         }
-                        int[] errorCode = {600, 601, 604};
+                        int[] errorCode = {600, 601, 603};
                         String[] errorMessage = {
                                 "1分钟只能发送一条短信",
                                 "短信发送太多，请1小时后尝试",

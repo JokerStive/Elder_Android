@@ -269,6 +269,7 @@
     <string name="end_time_hint">请选择结束时间</string>
     <string name="activity_maxPartner_hint">请输入邀请人数</string>
     <string name="register_step1_title">你的姓名？</string>
+    <string name="password_step1_title">忘记密码？</string>
     <string name="user_name">姓名</string>
     <string name="register_code">验证码</string>
 
@@ -342,5 +343,11 @@
     <string name="delete">删除</string>
     <string name="delete_partners">删除活动成员</string>
     <string name="forget_password">忘记密码</string>
+    <string name="my_community">我的小区</string>
+    <string name="locat_address">居住地</string>
+    <string name="password_step1_title_desp">请输入您的电话号码找回密码</string>
+    <string name="input_IDcode">输入6位验证码</string>
+    <string name="new_password">输入新密码</string>
+    <string name="new_password_str">请输入至少6位的密码</string>
 
 </resources>

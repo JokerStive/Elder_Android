@@ -24,6 +24,25 @@
                 android:layout_height="@dimen/login_background_height"
                 android:background="@color/login">
 
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:padding="@dimen/dp_10"
+                    android:src="@drawable/back_white" />
+
+                <TextView
+                    android:id="@+id/tv_forget_password"
+                    style="@style/tv_normal"
+                    android:layout_alignBottom="@id/iv_back"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/iv_back"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/forget_password"
+                    android:textColor="@color/white" />
+
                 <TextView
                     style="@style/tv_normal_ellipsize"
                     android:layout_alignParentBottom="true"
@@ -33,19 +52,6 @@
                     android:text="@string/login"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_24" />
-
-                <lilun.com.pension.widget.NormalTitleBar
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/title_bar_height"
-                    android:background="@color/transparent"
-                    app:rightText="@string/forget_password"
-                    app:rightTextColor="@color/white"
-                    app:rightWitchShow="text"
-                    app:leftIcon="@drawable/back_white"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
             </RelativeLayout>
 
             <LinearLayout
@@ -89,10 +95,10 @@
                         android:id="@+id/tv_show_password"
                         style="@style/tv_normal_ellipsize"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_marginTop="@dimen/dp_22"
                         android:drawableLeft="@drawable/password_not_show"
-                        android:textSize="@dimen/sp_14"
-                        android:layout_alignParentRight="true" />
+                        android:textSize="@dimen/sp_14" />
                 </RelativeLayout>
 
                 <EditText

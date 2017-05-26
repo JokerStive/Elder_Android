@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.Button;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +29,7 @@ import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.widget.BreadCrumbsView;
 import lilun.com.pension.widget.DividerGridItemDecoration;
+import lilun.com.pension.widget.NormalDialog;
 
 /**
  * 切换地球村社区
@@ -45,6 +47,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     SwipeRefreshLayout swipeLayout;
     @Bind(R.id.btn_confirm)
     Button btnConfirm;
+
     private ChangeOrganizationAdapter adapter;
     private String currentId = Constants.organization_root;
 

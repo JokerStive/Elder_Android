@@ -13,10 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.PushMessage;
@@ -108,12 +105,11 @@ public class MQTTCallbackBus implements MqttCallback {
 
     private void dealMessage(String topic, String messageData) {
 
-
         //登陆
-//        if (messageData.contains("login"))
-//            dealLogin(topic, messageData);
-//        else {
-        {       PushMessage pushMessage = getPushMessageFromData(messageData);
+        if (messageData.contains("login"))
+            dealLogin(topic, messageData);
+        else {
+            PushMessage pushMessage = getPushMessageFromData(messageData);
 
             if (pushMessage != null) {
                 if (topic.contains("%23activity")) {  //是活动聊天的数据
@@ -152,6 +148,8 @@ public class MQTTCallbackBus implements MqttCallback {
                     String clientId = DeviceUtils.getUniqueIdForThisApp(App.context);
                     if (!TextUtils.equals(from, clientId)) {
 //                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
+                        //只有在登录之后的  请求踢账号才有效
+                        if (App.loginDate != null && App.loginDate.before(StringUtils.string2Date(time)))
                             EventBus.getDefault().post(new Event.OffLine());
                     }
                 } else {

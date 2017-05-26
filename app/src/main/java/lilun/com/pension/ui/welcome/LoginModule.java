@@ -70,6 +70,9 @@ public class LoginModule implements LoginContract.Module {
     public void putAccountInfo(Account account) {
         User.putUserId(account.getId());
         OrganizationAccount organizationAccount = account.getOa();
+        if (account.getProfile() != null) {
+            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+        }
         if (organizationAccount != null) {
             String organizationId = organizationAccount.getOrganizationId();
             if (!TextUtils.isEmpty(organizationId)) {
@@ -88,9 +91,10 @@ public class LoginModule implements LoginContract.Module {
                 //用户名
                 User.putName(account.getName());
                 User.putUserName(account.getUsername());
-
+                //手机号
+                User.putMobile(account.getMobile());
                 //个人资料
-                User.putContactId(account.getDefaultContactId());
+                User.putContactId(account.getDefaultContactId() == null ? "" : account.getDefaultContactId());
 
                 //默认组织账号id
                 User.putBelongOrganizationAccountId(organizationAccount.getId());
@@ -98,14 +102,6 @@ public class LoginModule implements LoginContract.Module {
 
                 //当前组织账号id
                 User.putCurrentOrganizationAccountId(organizationAccount.getId());
-
-                //手机号
-                User.putMobile(account.getMobile());
-
-                //手机号
-                User.putMobile(account.getMobile());
-
-                User.putUserName(account.getUsername());
 
 
 //                App.resetMQTT();
@@ -120,8 +116,16 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public void putBelongOrganizations(List<OrganizationAccount> organizations) {
         ACache.get().put(User.belongOrganizations, (Serializable) organizations);
+
         for (OrganizationAccount oa : organizations) {
             String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
+            if (organizationId.equals(User.getBelongToDistrict())) {
+                //  User.putRootOrganizationAccountId(oa.getId());
+                User.putBelongsOrganizationId(User.getBelongToDistrict());
+                User.putCurrentOrganizationId(User.getBelongToDistrict());
+                User.putBelongOrganizationAccountId(oa.getId());
+                User.putCurrentOrganizationAccountId(oa.getId());
+            }
             if (organizationId.equals(Constants.organization_root)) {
                 User.putRootOrganizationAccountId(oa.getId());
             }

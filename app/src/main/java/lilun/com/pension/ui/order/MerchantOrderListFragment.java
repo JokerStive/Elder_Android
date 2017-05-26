@@ -131,7 +131,7 @@ public class MerchantOrderListFragment extends BaseFragment {
                 ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
                 titleView.setNormalColor(Color.BLACK);
                 titleView.setSelectedColor(getResources().getColor(R.color.red));
-                titleView.setTextSize(17);
+                titleView.setTextSize(getResources().getDimension(R.dimen.sp_16));
                 titleView.setText(statusTitle[index]);
                 titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
                 return titleView;

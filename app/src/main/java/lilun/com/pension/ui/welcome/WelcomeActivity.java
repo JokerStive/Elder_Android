@@ -6,6 +6,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.User;
@@ -30,6 +32,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void getTransferData() {
+        Logger.d(User.getUserId());
         if (!TextUtils.isEmpty(User.getUserId())) {
             startActivity(new Intent(this, HomeActivity.class));
             finish();
