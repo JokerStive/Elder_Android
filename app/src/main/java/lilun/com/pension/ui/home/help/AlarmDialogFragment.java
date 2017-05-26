@@ -2,7 +2,10 @@ package lilun.com.pension.ui.home.help;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -16,16 +19,18 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.Date;
+
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.BaiduLocation;
-import lilun.com.pension.module.utils.RxUtils;
+import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
-import lilun.com.pension.net.NetHelper;
-import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.module.utils.mqtt.MQTTManager;
 import lilun.com.pension.widget.AlarmView;
 
 /**
@@ -109,8 +114,8 @@ public class AlarmDialogFragment extends DialogFragment {
      * 发送求助信号
      */
     private void sendSOS() {
-        //TODO 发送短信和推送求助信号
-        postAid(newAid());
+        //TODO 推送求助信号
+        postAid();
 
     }
 
@@ -128,18 +133,34 @@ public class AlarmDialogFragment extends DialogFragment {
         return aid;
     }
 
-    private void postAid(OrganizationAid organizationAid) {
-        NetHelper.getApi()
-                .newOrganizationAid(organizationAid)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationAid>() {
-                    @Override
-                    public void _next(OrganizationAid organizationAid) {
-                        ToastHelper.get().showShort("发送成功");
-                        dismiss();
-                    }
-                });
+    private void postAid() {
+//        NetHelper.getApi()
+//                .newOrganizationAid(organizationAid)
+//                .compose(RxUtils.handleResult())
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<OrganizationAid>() {
+//                    @Override
+//                    public void _next(OrganizationAid organizationAid) {
+//                        ToastHelper.get().showShort("发送成功");
+//                        dismiss();
+//                    }
+//                });
+        String topic = StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/");
+        PushMessage pushMessage = new PushMessage();
+        pushMessage.setVerb(PushMessage.VERB_HELP)
+                .setTitle(User.getName())
+                .setTime(StringUtils.date2String(new Date()))
+                .setMobile(PreUtils.getString("firstHelperPhone", ""))
+                .setFrom(User.getUserId())
+                .setAddress(currentAddress)
+                .setLocation("{\"lat\":\"" + currentLatitude + "\",\"lng\":\"" + currentLongitude + "\"}")
+                .setMessage("")
+                .setPriority("critical");
+
+
+        MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
+        dismiss();
+        sendSmsWithBody(getContext(), PreUtils.getString("firstHelperPhone", ""),"心脏病发作了");
     }
 
     @Override
@@ -153,4 +174,24 @@ public class AlarmDialogFragment extends DialogFragment {
         super.onDestroyView();
         alarm.stopTiming();
     }
+
+    /**
+     * 调用系统界面，给指定的号码发送短信，并附带短信内容
+     *
+     * @param context
+     * @param number
+     * @param body
+     */
+    public void sendSmsWithBody(Context context, String number, String body) {
+        try {
+            Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+            sendIntent.setData(Uri.parse("smsto:" + number));
+            sendIntent.putExtra("sms_body", body);
+            context.startActivity(sendIntent);
+        }catch (Exception e){
+            e.printStackTrace();
+            ToastHelper.get(getContext()).showWareShort("短信调用失败");
+        }
+    }
+
 }

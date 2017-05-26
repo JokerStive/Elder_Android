@@ -22,6 +22,7 @@ import lilun.com.pension.BuildConfig;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.DeviceUtils;
 import lilun.com.pension.module.utils.PreUtils;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
 
 /**
@@ -93,7 +94,9 @@ public class App extends Application {
     }
 
     public static void initSub() {
-        String[] topics = {"OrganizationAid/.added", "OrganizationInformation/.added", "user/" + User.getUserName() + "/.login"};
+        String[] topics = {"OrganizationAid/.added", "OrganizationInformation/.added",
+                "user/" + User.getUserName() + "/.login",
+                StringUtils.encodeURL(User.getBelongToDistrict()+"/#aid/.help").replace("%2F","/")};
         for (String topic : topics) {
 //            String cacheTopic = ACache.get(App.context, "topics").getAsString(topic);
 //            if (TextUtils.isEmpty(cacheTopic)) {

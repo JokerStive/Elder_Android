@@ -21,6 +21,7 @@ import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.module.adapter.CacheInfoAdapter;
 import lilun.com.pension.module.bean.CacheInfo;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.utils.Preconditions;
@@ -62,7 +63,10 @@ public class CacheInfoListActivity extends BaseActivity {
 
     @Override
     protected void initPresenter() {
-        pushMessages = DataSupport.where("model = ?", model).find(PushMessage.class);
+        if(model.equals(Constants.organizationInfo))
+            pushMessages = DataSupport.where("model = ?", model).find(PushMessage.class);
+        else
+            pushMessages = DataSupport.where("verb = ?", PushMessage.VERB_HELP).find(PushMessage.class);
     }
 
 
@@ -109,12 +113,26 @@ public class CacheInfoListActivity extends BaseActivity {
 
     private List<CacheInfo> getCacheInfos() {
         List<CacheInfo> cacheInfos = new ArrayList<>();
-        if (pushMessages != null) {
+        if (pushMessages != null && model.equals(Constants.organizationInfo)) {
             Logger.d("数据库--" + model + "---缓存的条数--" + pushMessages.size());
             for (int i = 0; i < pushMessages.size(); i++) {
                 PushMessage pushMessage = pushMessages.get(i);
                 String data = pushMessage.getData();
                 CacheInfo cacheInfo = getCacheInfoFromModel(data);
+                if (cacheInfo != null) {
+                    cacheInfos.add(cacheInfo);
+                }
+            }
+        }
+        else {
+            Logger.d("数据库--" + PushMessage.VERB_HELP + "---缓存的条数--" + pushMessages.size());
+            for (int i = 0; i < pushMessages.size(); i++) {
+                PushMessage pushMessage = pushMessages.get(i);
+                CacheInfo cacheInfo = new CacheInfo("姓名：" + pushMessage.getTitle(),
+                        "位置：" + pushMessage.getAddress(),
+                        "发生时间：" + pushMessage.getTime(),
+                        "联系电话：" + pushMessage.getMobile());
+
                 if (cacheInfo != null) {
                     cacheInfos.add(cacheInfo);
                 }

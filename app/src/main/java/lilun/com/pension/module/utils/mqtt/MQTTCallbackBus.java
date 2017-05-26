@@ -75,8 +75,13 @@ public class MQTTCallbackBus implements MqttCallback {
                 pushMessage.setData(data);
             }
             if (messageData.contains("\"from\"")) {
-                JSONObject dataJson = (JSONObject) jsonObject.get("from");
-                String from = dataJson.toString();
+                String from = "";
+                if (PushMessage.VERB_HELP.equals(pushMessage.getVerb())) {
+                    from = (String) jsonObject.get("from");
+                } else {
+                    JSONObject dataJson = (JSONObject) jsonObject.get("from");
+                    from = dataJson.toString();
+                }
                 pushMessage.setFrom(from);
             }
             if (messageData.contains("\"to\"")) {
@@ -93,6 +98,26 @@ public class MQTTCallbackBus implements MqttCallback {
             if (messageData.contains("\"time\"")) {
                 String time = (String) jsonObject.get("time");
                 pushMessage.setTime(time);
+            }
+            if (messageData.contains("\"title\"")) {
+                String title = (String) jsonObject.get("title");
+                pushMessage.setTitle(title);
+            }
+            if (messageData.contains("\"priority\"")) {
+                String priority = (String) jsonObject.get("priority");
+                pushMessage.setPriority(priority);
+            }
+            if (messageData.contains("\"mobile\"")) {
+                String mobile = (String) jsonObject.get("mobile");
+                pushMessage.setMobile(mobile);
+            }
+            if (messageData.contains("\"address\"")) {
+                String address = (String) jsonObject.get("address");
+                pushMessage.setAddress(address);
+            }
+            if (messageData.contains("\"location\"")) {
+                JSONObject object = (JSONObject) jsonObject.get("location");
+                pushMessage.setLocation(object.toString());
             }
 
             return pushMessage;
@@ -121,7 +146,10 @@ public class MQTTCallbackBus implements MqttCallback {
                 pushMessage.save();
 
                 //求助推送
-                if (TextUtils.equals(topic, "OrganizationAid/.added") || TextUtils.equals(topic, "OrganizationInformation/.added")) {
+                if (TextUtils.equals(topic, "OrganizationAid/.added") ||
+                        TextUtils.equals(topic, "OrganizationInformation/.added") ||
+                        (TextUtils.equals(topic, StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/"))
+                                && !pushMessage.getFrom().contains(User.getUserId()))) {
                     EventBus.getDefault().post(pushMessage);
                 }
 

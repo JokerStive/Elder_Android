@@ -244,9 +244,15 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     public void showExpressHelpPop(PushMessage pushMessage) {
         Gson gson = new Gson();
         String model = pushMessage.getModel();
-        if (model.equals(Constants.organizationAid)) {
-            OrganizationAid aid = gson.fromJson(pushMessage.getData(), OrganizationAid.class);
-            if (aid.getKind() == 2) {
+        if (PushMessage.VERB_HELP.equals(pushMessage.getVerb())) {
+            OrganizationAid aid = new OrganizationAid();
+            aid.setAddress(pushMessage.getAddress());
+            aid.setMobile(pushMessage.getMobile());
+            aid.setCreatedAt(pushMessage.getTime());
+            aid.setCreatorName(pushMessage.getTitle());
+            aid.setMemo(pushMessage.getLocation());
+
+
                 if (pushAidInfoCunt == 0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
                     pushAidInfoCunt++;
                     Intent intent = new Intent(this, UrgentAidInfoActivity.class);
@@ -256,7 +262,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
                     startActivityForResult(intent, 123);
                 }
                 EventBus.getDefault().post(new Event.RefreshUrgentInfo());
-            }
+
         } else if (model.equals(Constants.organizationInfo)) {
             Information Information = gson.fromJson(pushMessage.getData(), Information.class);
             if (pushInfoCunt == 0 && !SystemUtils.isTopActivity(Information.class.getName())) {

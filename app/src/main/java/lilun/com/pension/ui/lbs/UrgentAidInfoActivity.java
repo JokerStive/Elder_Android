@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,18 +108,26 @@ public class UrgentAidInfoActivity extends Activity {
 
     private void setMap() {
         String memo = aid.getMemo();
-        if (!TextUtils.isEmpty(memo) && memo.contains("/")) {
-            String[] split = memo.split("/");
-            if (split.length == 2) {
-                String longitudeString = split[0];
-                String latitudeString = split[1];
+        if (!TextUtils.isEmpty(memo)) {
+
+            String longitudeString = "";
+            String latitudeString = "";
+            try {
+                JSONObject jsonObject = new JSONObject(memo);
+                latitudeString = jsonObject.getString("lat");
+                longitudeString = jsonObject.getString("lng");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (!TextUtils.isEmpty(latitudeString) && !TextUtils.isEmpty(longitudeString)) {
+
                 double longitude = Double.parseDouble(longitudeString);
                 double latitude = Double.parseDouble(latitudeString);
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 LoadMapFragment loadMapFragment = LoadMapFragment.newInstance(longitude, latitude);
-                transaction.replace(R.id.fl_container,loadMapFragment);
+                transaction.replace(R.id.fl_container, loadMapFragment);
 
                 transaction.commit();
 //

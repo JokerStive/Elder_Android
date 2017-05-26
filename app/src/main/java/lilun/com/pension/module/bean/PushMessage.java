@@ -2,8 +2,6 @@ package lilun.com.pension.module.bean;
 
 import org.litepal.crud.DataSupport;
 
-import lilun.com.pension.module.utils.StringUtils;
-
 /**
  * 极光推送过来的消息
  *
@@ -12,6 +10,7 @@ import lilun.com.pension.module.utils.StringUtils;
  *         email : yk_developer@163.com
  */
 public class PushMessage extends DataSupport {
+    public static final String VERB_HELP = "help";
     public static final String VERB_CHAR = "chat";
     public static final String VERB_KICK = "kick";
     public static final String VERB_QUIT = "quit";
@@ -24,7 +23,56 @@ public class PushMessage extends DataSupport {
     private String time;
     private String activityId;  //活动id
     private String message;
+    private String priority;
+    private String location;
+    private String title;
+    private String mobile;
+    private String address;
 
+    public String getPriority() {
+        return priority;
+    }
+
+    public PushMessage setPriority(String priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public PushMessage setLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public PushMessage setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public PushMessage setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public PushMessage setMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
 
     public String getModel() {
         return model;
@@ -114,7 +162,7 @@ public class PushMessage extends DataSupport {
         }
         if (null != from) {
             ret = ret.substring(0, ret.length() - 1);
-            ret += ret.length() != 1 ? ",\"from\":" + from + "}" : "\"from\":" + from + "}";
+            ret += ret.length() != 1 ? ",\"from\":\"" + from + "\"}" : "\"from\":\"" + from + "\"}";
         }
         if (null != to) {
             ret = ret.substring(0, ret.length() - 1);
@@ -132,7 +180,29 @@ public class PushMessage extends DataSupport {
             ret = ret.substring(0, ret.length() - 1);
             ret += ret.length() != 1 ? ",\"message\":\"" + message + "\"}" : "\"message\":\"" + message + "\"}";
         }
-
+        if (null != priority) {
+            ret = ret.substring(0, ret.length() - 1);
+            ret += ret.length() != 1 ? ",\"priority\":\"" + priority + "\"}" : "\"priority\":\"" + priority + "\"}";
+        }
+        if (null != location) {
+            ret = ret.substring(0, ret.length() - 1);
+            ret += ret.length() != 1 ? ",\"location\":" + location + "}" : "\"location\":" + location + "}";
+        }
+        if (null != title) {
+            ret = ret.substring(0, ret.length() - 1);
+            ret += ret.length() != 1 ? ",\"title\":\"" + title + "\"}" : "\"title\":\"" + title + "\"}";
+        }
+        if (null != mobile) {
+            ret = ret.substring(0, ret.length() - 1);
+            ret += ret.length() != 1 ? ",\"mobile\":\"" + mobile + "\"}" : "\"mobile\":\"" + mobile + "\"}";
+        }
+        if (null != address) {
+            ret = ret.substring(0, ret.length() - 1);
+            ret += ret.length() != 1 ? ",\"address\":\"" + address + "\"}" : "\"address\":\"" + address + "\"}";
+        }
         return ret;
+    }
+    public String getAllField(){
+        return "model,verb,data,from,to,time,activityId,message,priority,location,title,mobile,address" ;
     }
 }

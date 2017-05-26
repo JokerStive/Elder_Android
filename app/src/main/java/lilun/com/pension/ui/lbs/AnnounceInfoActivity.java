@@ -20,7 +20,6 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
-import lilun.com.pension.module.adapter.UrgentInfoAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ScreenUtils;
@@ -48,7 +47,6 @@ public class AnnounceInfoActivity extends Activity {
     Button btnAll;
     private int infoCount = 1;
     private AnimationDrawable drawableAnim;
-    private UrgentInfoAdapter adapter;
     private Information information;
 
     @Subscribe
@@ -75,7 +73,7 @@ public class AnnounceInfoActivity extends Activity {
 
     private void setAppearance() {
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.width = ScreenUtils.getScreenWith(App.context) / 5* 4;
+        params.width = ScreenUtils.getScreenWith(App.context) / 5 * 4;
         getWindow().setAttributes(params);
     }
 
