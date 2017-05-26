@@ -43,8 +43,9 @@ public class ChangePasswordFragment2 extends BaseFragment {
     private final int REGET_TIME = 60;
     CompositeSubscription cntDownRx;
 
-
-    String IDCode;
+    private String phone;
+    String IDCode="";
+    String token="";
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.title)
@@ -61,7 +62,7 @@ public class ChangePasswordFragment2 extends BaseFragment {
     AppCompatEditText acetRegisterCode;
     @Bind(R.id.fab_go_next)
     FloatingActionButton fabGoNext;
-    private String phone;
+
 
     @OnClick({R.id.fab_go_next, R.id.actv_show_count_down})
     public void onClick(View view) {
@@ -124,7 +125,10 @@ public class ChangePasswordFragment2 extends BaseFragment {
     }
 
     private void goStep3() {
+        Bundle bundle = new Bundle();
         ChangePasswordFragment3 fragment3 = new ChangePasswordFragment3();
+        bundle.putString(User.token, token);
+        fragment3.setArguments(bundle);
         start(fragment3);
     }
 
@@ -177,9 +181,9 @@ public class ChangePasswordFragment2 extends BaseFragment {
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<TokenInfo>(_mActivity) {
                     @Override
-                    public void _next(TokenInfo token) {
-                        if (token != null)
-                            PreUtils.putString(User.token, token.getId());
+                    public void _next(TokenInfo retoken) {
+                        if (retoken != null)
+                            token = retoken.getId();
                         goStep3();
                     }
                 }));

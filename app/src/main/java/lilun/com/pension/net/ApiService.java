@@ -573,7 +573,7 @@ public interface ApiService {
      * 修改密码
      */
     @PUT("Accounts/changePassword")
-    Observable<Response<Object>> changePassword(@Header("newPassword") String password);
+    Observable<Response<Object>> changePassword(@Header("newPassword") String password, @Header("Authorization") String takon);
 
     /**
      * 检测验证码

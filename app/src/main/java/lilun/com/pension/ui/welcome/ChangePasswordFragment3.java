@@ -12,8 +12,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
-import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
@@ -26,7 +26,7 @@ import lilun.com.pension.net.RxSubscriber;
 
 public class ChangePasswordFragment3 extends BaseFragment {
 
-    String IDCode;
+    String token;
     String registerPassword;
     @Bind(R.id.iv_back)
     ImageView ivBack;
@@ -41,21 +41,19 @@ public class ChangePasswordFragment3 extends BaseFragment {
     TextView tvInputTitle;
     @Bind(R.id.acet_input)
     AppCompatEditText acetRegisterPassword;
-    private String phone;
 
 
     @OnClick(R.id.fab_go_next)
     public void onClick() {
         registerPassword = acetRegisterPassword.getText().toString().trim();
         if (checkRegisterPassword(registerPassword)) {
-            changePassword(registerPassword);
+            changePassword(registerPassword, token);
         }
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        phone = arguments.getString("phone");
-        IDCode = arguments.getString("IDCode");
+        token = arguments.getString(User.token);
     }
 
     @Override
@@ -70,7 +68,7 @@ public class ChangePasswordFragment3 extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ivBack.setOnClickListener(v->pop());
+        ivBack.setOnClickListener(v -> pop());
         tvTitle.setText(R.string.new_password);
         tvTitleDesp.setText(R.string.new_password_str);
         tvInputTitle.setText(R.string.password);
@@ -97,11 +95,12 @@ public class ChangePasswordFragment3 extends BaseFragment {
 
     /**
      * 修改密码请求
+     *
      * @param password
      */
-    public void changePassword(String password) {
+    public void changePassword(String password, String token) {
         subscription.add(NetHelper.getApi()
-                .changePassword(password)
+                .changePassword(password, token)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(_mActivity) {
