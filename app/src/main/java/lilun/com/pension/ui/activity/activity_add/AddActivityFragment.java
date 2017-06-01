@@ -343,8 +343,9 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         }
         picker.setRange(2010, 2099);
 
-        picker.setOnDateTimePickListener((DateTimePicker.OnMonthDayTimePickListener) (month, day, hour, minute) -> {
-            int year = Calendar.getInstance().get(Calendar.YEAR);
+
+        picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
+         //   int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;
             if (chooseTime == 0) {
 //                if (etStartTime.getVisibility() == ViewStep2.VISIBLE) {

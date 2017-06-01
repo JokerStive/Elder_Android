@@ -150,7 +150,7 @@ public class AlarmDialogFragment extends DialogFragment {
         pushMessage.setVerb(PushMessage.VERB_HELP)
                 .setTitle(User.getName())
                 .setTime(StringUtils.date2String(new Date()))
-                .setMobile(PreUtils.getString("firstHelperPhone", ""))
+                .setMobile(User.getMobile())
                 .setFrom(User.getUserId())
                 .setAddress(currentAddress)
                 .setLocation("{\"lat\":\"" + currentLatitude + "\",\"lng\":\"" + currentLongitude + "\"}")
@@ -160,7 +160,9 @@ public class AlarmDialogFragment extends DialogFragment {
 
         MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
         dismiss();
-        sendSmsWithBody(getContext(), PreUtils.getString("firstHelperPhone", ""),"心脏病发作了");
+        String message = User.getName() + "向您紧急求助，他/她现在的位置在 " + currentAddress
+                + ",联系电话：" + User.getMobile() + "，请尽快联系。";
+        sendSmsWithBody(getContext(), PreUtils.getString("firstHelperPhone", ""), message);
     }
 
     @Override
@@ -188,7 +190,7 @@ public class AlarmDialogFragment extends DialogFragment {
             sendIntent.setData(Uri.parse("smsto:" + number));
             sendIntent.putExtra("sms_body", body);
             context.startActivity(sendIntent);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             ToastHelper.get(getContext()).showWareShort("短信调用失败");
         }

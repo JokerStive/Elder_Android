@@ -1,5 +1,7 @@
 package lilun.com.pension.ui.agency.detail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
@@ -22,6 +25,7 @@ import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.UIUtils;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
@@ -144,7 +148,26 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
         //显示
         tvTitle.setText(mAgency.getName());
 //        tvDesc.setText(StringUtils.filterNull(description.getDescription()));
-        tvPhone.setText(String.format(getString(R.string.format_phone), "18012325354"));
+
+        if(mAgency.getExtension()!= null && !TextUtils.isEmpty(mAgency.getExtension().getPhone())) {
+            tvPhone.setVisibility(View.VISIBLE);
+            tvPhone.setText(String.format(getString(R.string.format_phone), mAgency.getExtension().getPhone()));
+            tvPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(StringUtils.isMobileNumber(mAgency.getExtension().getPhone())){
+                        String url = "tel:" + mAgency.getExtension().getPhone();
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                        try {
+                            startActivity(intent);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }else
+                        ToastHelper.get(_mActivity).showWareShort(getString(R.string.mobile_format_wrong));
+                }
+            });
+        }
 //        tvPhone.setText(String.format(getString(R.string.format_bedsCount), StringUtils.filterNull(description.getBedsCount())));
         tvPrice.setText(String.format("价格区间：%1$s元——%2$s元", description.getChargingStandard().getMin(), description.getChargingStandard().getMax()));
         tvIntroduction.setText(StringUtils.filterNull(description.getDescription()));
@@ -160,7 +183,8 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         if (mAgency == null) {
-            subscription = NetHelper.getApi().getOrganizationById(mId)
+            String filter = "{\"include\":\"extension\"}";
+            subscription = NetHelper.getApi().getOrganizationById(mId, filter)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
                     .subscribe(new RxSubscriber<Organization>(_mActivity) {

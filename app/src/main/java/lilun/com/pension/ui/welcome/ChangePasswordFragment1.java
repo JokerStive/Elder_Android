@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -91,8 +92,12 @@ public class ChangePasswordFragment1 extends BaseFragment<RegisterContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
+                        super.hideDialog();
+                        if (e == null) {
+                            ToastHelper.get(App.context).showWareShort("网络连接失败");
+                            return;
+                        }
                         if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
-                            super.onError();
                             ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
                             return;
                         }

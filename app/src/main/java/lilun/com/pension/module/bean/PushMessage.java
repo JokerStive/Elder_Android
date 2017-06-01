@@ -162,7 +162,11 @@ public class PushMessage extends DataSupport {
         }
         if (null != from) {
             ret = ret.substring(0, ret.length() - 1);
-            ret += ret.length() != 1 ? ",\"from\":\"" + from + "\"}" : "\"from\":\"" + from + "\"}";
+            if (from.startsWith("{") && from.endsWith("}"))
+                ret += ret.length() != 1 ? ",\"from\":" + from + "}" : "\"from\":" + from + "}";
+            else
+                ret += ret.length() != 1 ? ",\"from\":\"" + from + "\"}" : "\"from\":\"" + from + "\"}";
+
         }
         if (null != to) {
             ret = ret.substring(0, ret.length() - 1);
@@ -202,7 +206,8 @@ public class PushMessage extends DataSupport {
         }
         return ret;
     }
-    public String getAllField(){
-        return "model,verb,data,from,to,time,activityId,message,priority,location,title,mobile,address" ;
+
+    public String getAllField() {
+        return "model,verb,data,from,to,time,activityId,message,priority,location,title,mobile,address";
     }
 }

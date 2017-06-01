@@ -169,7 +169,7 @@ public interface ApiService {
      */
 
     @GET("Organizations/{id}")
-    Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId);
+    Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId,@Query("filter") String filter);
 
 
     /**

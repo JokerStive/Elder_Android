@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
 
@@ -48,10 +48,12 @@ public class App extends Application {
 
         //日志
         if (BuildConfig.LOG_DEBUG) {
-            Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+         //   Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+            Logger.addLogAdapter(new AndroidLogAdapter());
         } else {
-            Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
+         //   Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
         }
+       // Logger.addLogAdapter(new AndroidLogAdapter());
 
         //内存泄漏
 //        LeakCanary.install(this);

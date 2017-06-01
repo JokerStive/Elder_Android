@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.bean.TokenInfo;
@@ -154,8 +155,12 @@ public class ChangePasswordFragment2 extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        super.hideDialog();
+                        if (e == null) {
+                            ToastHelper.get(App.context).showWareShort("网络连接失败");
+                            return;
+                        }
                         if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
-                            super.onError();
                             ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
                             return;
                         }

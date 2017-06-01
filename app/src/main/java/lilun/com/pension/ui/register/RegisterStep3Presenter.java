@@ -52,8 +52,12 @@ public class RegisterStep3Presenter extends RxPresenter<RegisterContract.ViewSte
 
                     @Override
                     public void onError(Throwable e) {
+                        super.hideDialog();
+                        if (e == null) {
+                            ToastHelper.get(App.context).showWareShort("网络连接失败");
+                            return;
+                        }
                         if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
-                            super.onError();
                             ToastHelper.get(App.context).showWareShort("短信发送太多，请1小时后尝试");
                             return;
                         }

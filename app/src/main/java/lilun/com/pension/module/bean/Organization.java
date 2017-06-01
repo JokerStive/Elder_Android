@@ -43,6 +43,13 @@ public class Organization extends BaseBean {
     private boolean isInherited;
     private List<IconModule> icon;
 
+    private Extension extension;
+
+    public Extension getExtension() {
+        return extension;
+    }
+
+
     public String getId() {
         return id;
     }
@@ -91,7 +98,7 @@ public class Organization extends BaseBean {
         this.icon = icon;
     }
 
-    public static class DescriptionBean implements Serializable{
+    public static class DescriptionBean implements Serializable {
         private static final long serialVersionUID = 1L;
         private String description;
         private String adress;
@@ -194,6 +201,21 @@ public class Organization extends BaseBean {
             public void setMax(String max) {
                 this.max = max;
             }
+        }
+    }
+
+
+    /**
+     * 服务提供商数据
+     */
+    public static class Extension implements Serializable {
+        private String city;//: "中国重庆重庆市",
+        private String address;//: "中国重庆重庆市南岸区茶园新区",
+        private String phone;//: "15236827810",
+        private String id;//: "/社会组织/营利/商家/重庆俏姨妈家政",
+
+        public String getPhone() {
+            return phone;
         }
     }
 

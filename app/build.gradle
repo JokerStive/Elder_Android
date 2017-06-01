@@ -97,7 +97,7 @@ dependencies {
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4'
     //日志打印
-    compile 'com.github.orhanobut:logger:1.12'
+    compile 'com.orhanobut:logger:2.1.0'
     //one activity multiple fragment
     compile 'me.yokeyword:fragmentation:0.9.3'
     //photo load

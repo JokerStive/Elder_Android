@@ -74,7 +74,7 @@
                     android:imeOptions="actionNext"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="@dimen/sp_14"
+                    android:textSize="@dimen/sp_20"
                     tools:text="1320514" />
 
                 <View
@@ -107,7 +107,7 @@
                     android:layout_marginTop="@dimen/dp_16"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textSize="@dimen/sp_14"
+                    android:textSize="@dimen/sp_20"
                     tools:text="1320514" />
 
                 <View
