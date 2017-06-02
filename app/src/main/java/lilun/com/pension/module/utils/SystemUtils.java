@@ -65,4 +65,25 @@ public class SystemUtils {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
     }
+
+    /**
+     * 判断服务是否运行
+     * @param context
+     * @param className
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, String className) {
+        boolean isRunning = false;
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServices = am.getRunningServices(100);
+        if (!(runningServices.size() > 0)) return isRunning;
+        for (int i = 0; i < runningServices.size(); i++) {
+            if (runningServices.get(i).service.getClassName().equals(className)) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
+    }
 }

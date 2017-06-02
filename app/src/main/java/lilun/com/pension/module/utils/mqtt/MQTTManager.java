@@ -140,7 +140,7 @@ public class MQTTManager {
             client.setCallback(mCallback);
         }
 
-        if (client!=null){
+        if (client != null) {
 //            client.clearAbortBroadcast();
         }
 
@@ -177,13 +177,13 @@ public class MQTTManager {
     /**
      * 发送消息
      */
-    public void publish(String publishTopic, int qos, String publishMessage,boolean isRetain) {
+    public void publish(String publishTopic, int qos, String publishMessage, boolean isRetain) {
         if (client != null && client.isConnected()) {
             try {
                 MqttMessage message = new MqttMessage();
 //                message.setQos(qos);
                 message.setPayload(publishMessage.getBytes());
-                IMqttDeliveryToken token = client.publish(publishTopic, publishMessage.getBytes(),qos,isRetain);
+                IMqttDeliveryToken token = client.publish(publishTopic, publishMessage.getBytes(), qos, isRetain);
                 Logger.i("发送数据:" + token.getMessage());
 
             } catch (MqttException e) {
@@ -195,6 +195,7 @@ public class MQTTManager {
     }
 
     public void subscribe(String topic, int qos) {
+        if (topic == null) return;
         try {
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
@@ -214,8 +215,6 @@ public class MQTTManager {
             e.printStackTrace();
         }
     }
-
-
 
 
     public void subscribe(String topic, int qos, IMqttActionListener listener) {

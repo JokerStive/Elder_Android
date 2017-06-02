@@ -62,8 +62,10 @@
                 style="@style/tv_small_ellipsize"
                 android:layout_below="@id/tv_desc"
                 android:layout_marginTop="@dimen/dp_4"
-                android:visibility="gone"
-                tools:text="床位数：32" />
+                android:visibility="visible"
+                android:text="未提供联系方式"
+                android:background="@drawable/selector_rect_white_to_dark"
+                android:textColor="@color/red"/>
 
             <TextView
                 android:id="@+id/tv_mobile"

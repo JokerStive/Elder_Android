@@ -18,7 +18,11 @@ public class AgencyOrganizationFilter  {
      * where : {"min":{"gte":1000},"max":{"lte":9000},"name":{"like":""},"description.ranking":4}
      */
 
+    public String include;
 
+    public void setInclude(String include) {
+        this.include = include;
+    }
 
     public WhereBean where;
 

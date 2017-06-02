@@ -463,4 +463,17 @@ public class StringUtils {
 
         return encodeURL(orgId).replace("%2F", "/");
     }
+
+    /**
+     * 判断是否为用户注册小区及其上级小区
+     *
+     * @return
+     */
+    public static boolean isResisterTopCommunity(String current, String register) {
+        String[] district = register.split("/");
+        if (!(district.length > 2)) return false;
+        if (current.contains(district[district.length - 1]) || current.contains(district[district.length - 2]))
+            return true;
+        return false;
+    }
 }

@@ -14,6 +14,8 @@ public class Constants {
     public static final String special_organization_agency = "/社会组织/营利/养老";
     public static final String special_organization_root = "/社会组织";
     public static final String organization_root = "/地球村";
+    public static String organization_root_chongqi = "/地球村/中国/重庆";
+    public static final String service_residentail = "服务/居家服务";
 
 
 }

@@ -48,7 +48,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     private ProductCategory productCategory;
     private AgencyServiceAdapter mAdapter;
     private boolean mIsMerchant;
-    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType .BIG;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
     private List<OrganizationProduct> products;
 
 
@@ -152,7 +152,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         if (mIsMerchant) {
             filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         } else {
-            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\"}}";
+            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"areaIds\":[" + User.getCurrentOrganizationId() + "]}}";
         }
         mPresenter.getResidentialServices(filter, skip);
     }

@@ -1,5 +1,6 @@
 package lilun.com.pension.ui.agency.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +57,11 @@ public class ProductFilter {
         private Integer score;
         private String creatorId;
         private String organizationId;
+        private ArrayList<String> areaIds = new ArrayList<>();
+        public WhereBean addArea(String categoryId) {
+            areaIds.add(categoryId);
+            return this;
+        }
 
         public String getCategoryId() {
             return categoryId;

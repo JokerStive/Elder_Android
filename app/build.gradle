@@ -22,7 +22,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "1.1.1"
+        versionName "1.1.2"
         //64k方法限制
         multiDexEnabled true
 

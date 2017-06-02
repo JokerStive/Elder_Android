@@ -162,7 +162,7 @@ public class AlarmDialogFragment extends DialogFragment {
         dismiss();
         String message = User.getName() + "向您紧急求助，他/她现在的位置在 " + currentAddress
                 + ",联系电话：" + User.getMobile() + "，请尽快联系。";
-        sendSmsWithBody(getContext(), PreUtils.getString("firstHelperPhone", ""), message);
+        sendSmsWithBody(App.context, PreUtils.getString("firstHelperPhone", ""), message);
     }
 
     @Override

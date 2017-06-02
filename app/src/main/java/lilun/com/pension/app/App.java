@@ -1,7 +1,9 @@
 package lilun.com.pension.app;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -34,8 +36,9 @@ import lilun.com.pension.module.utils.mqtt.MQTTManager;
  */
 public class App extends Application {
     public static Context context;
-    public static int widthDP =0;
-    public static Date loginDate=null;
+    public static int widthDP = 0;
+    public static Date loginDate = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,12 +51,12 @@ public class App extends Application {
 
         //日志
         if (BuildConfig.LOG_DEBUG) {
-         //   Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+            //   Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
             Logger.addLogAdapter(new AndroidLogAdapter());
         } else {
-         //   Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
+            //   Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
         }
-       // Logger.addLogAdapter(new AndroidLogAdapter());
+        // Logger.addLogAdapter(new AndroidLogAdapter());
 
         //内存泄漏
 //        LeakCanary.install(this);
@@ -98,7 +101,7 @@ public class App extends Application {
     public static void initSub() {
         String[] topics = {"OrganizationAid/.added", "OrganizationInformation/.added",
                 "user/" + User.getUserName() + "/.login",
-                StringUtils.encodeURL(User.getBelongToDistrict()+"/#aid/.help").replace("%2F","/")};
+                StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/")};
         for (String topic : topics) {
 //            String cacheTopic = ACache.get(App.context, "topics").getAsString(topic);
 //            if (TextUtils.isEmpty(cacheTopic)) {
@@ -108,12 +111,12 @@ public class App extends Application {
     }
 
     private static void pushLogin() {
-    //    if (!PreUtils.getBoolean("hasPushLogin", false)) {
-            Logger.i("发送login消息");
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String time = format.format(new Date());
-            String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
-            MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 0, msg, false);
+        //    if (!PreUtils.getBoolean("hasPushLogin", false)) {
+        Logger.i("发送login消息");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(new Date());
+        String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
+        MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 0, msg, false);
 //            PreUtils.putBoolean("hasPushLogin", true);
 //        } else {
 //            Logger.i("不发送login消息");
@@ -128,12 +131,13 @@ public class App extends Application {
     }
 
 
-    public void getWidthDP(){
+    public void getWidthDP() {
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics pm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(pm);
-        widthDP = (int) (pm.widthPixels /pm.density);
+        widthDP = (int) (pm.widthPixels / pm.density);
     }
+
 
 }
 

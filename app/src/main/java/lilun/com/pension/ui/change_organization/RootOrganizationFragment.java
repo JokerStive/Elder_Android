@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.Button;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,13 +26,14 @@ import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ChangeOrganizationAdapter;
 import lilun.com.pension.module.bean.Organization;
 import lilun.com.pension.module.utils.ACache;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.widget.BreadCrumbsView;
 import lilun.com.pension.widget.DividerGridItemDecoration;
-import lilun.com.pension.widget.NormalDialog;
 
+////
 /**
  * 切换地球村社区
- *
+ * 修改: 2017/6/2  切换小区最高层级为重庆   必须选择到街道及以下区域
  * @author yk
  *         create at 2017/4/21 10:17
  *         email : yk_developer@163.com
@@ -49,7 +49,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     Button btnConfirm;
 
     private ChangeOrganizationAdapter adapter;
-    private String currentId = Constants.organization_root;
+    private String currentId = Constants.organization_root_chongqi;
 
     @Override
     protected void initPresenter() {
@@ -98,6 +98,10 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
                 _mActivity.finish();
             }
         } else {
+            if(currentId.split("/").length <7){
+                ToastHelper.get().showWareShort("您需要选择到街道以下区域");
+                return;
+            }
             saveData();
         }
     }

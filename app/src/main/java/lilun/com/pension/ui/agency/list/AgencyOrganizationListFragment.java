@@ -132,6 +132,8 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
         initFilter();
 
+        organizationFilter.setInclude("extension");
+
     }
 
     private void refreshOrganizationWithFilter() {

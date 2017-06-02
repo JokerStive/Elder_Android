@@ -19,6 +19,7 @@ import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Config;
+import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -78,7 +79,6 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Override
@@ -216,9 +216,12 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setOrganizationId(OrganizationChildrenConfig.product(mCategoryId));
         } else {
             productFilter.where.setCategoryId(mCategoryId);
+            if (mCategoryId.contains(Constants.service_residentail))
+                productFilter.where.addArea(User.getCurrentOrganizationId());
             if (!User.isCustomer()) {
                 productFilter.where.setCreatorId(User.getUserId());
             }
+
         }
     }
 
@@ -265,6 +268,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private void getProducts(int skip) {
         mSwipeLayout.setRefreshing(true);
         Gson gson = new Gson();
+
         String filter = gson.toJson(productFilter);
         Logger.d("product--filter = " + filter);
         mPresenter.getProductAgency(filter, skip);

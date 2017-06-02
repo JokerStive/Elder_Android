@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
@@ -35,6 +36,7 @@ import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.callback.TitleBarClickCallBack;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.StringUtils;
+import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.ui.activity.activity_add.AddActivityFragment;
 import lilun.com.pension.ui.activity.activity_detail.ActivityChatFragment;
 import lilun.com.pension.ui.activity.activity_list.ActivityListFragment;
@@ -123,6 +125,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     protected void initView(LayoutInflater inflater) {
         _mActivity.setSupportActionBar(toolbar);
         titleBar.setTitle(getString(R.string.community_activity));
+
         titleBar.setTvRightText(getString(R.string.add_activity));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
@@ -137,13 +140,16 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
             @Override
             public void onRightClick() {
+                if (!StringUtils.isResisterTopCommunity(User.getCurrentOrganizationId(), User.getBelongToDistrict())) {
+                    ToastHelper.get().showWareShort("您在当前区域不能创建活动!");
+                    return;
+                }
                 if (activityCategories != null) {
                     start(AddActivityFragment.newInstance(activityCategories));
 
                 }
             }
         });
-
 
         replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
 

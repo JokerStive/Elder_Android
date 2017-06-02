@@ -23,7 +23,7 @@ import rx.Subscription;
 */
 public class AlarmView extends RelativeLayout {
 
-    private int time = 7;
+    private int time = 10;
     private int currentTime = time;
     private Subscription subscribe;
     private OnStopTimingListener listener;
