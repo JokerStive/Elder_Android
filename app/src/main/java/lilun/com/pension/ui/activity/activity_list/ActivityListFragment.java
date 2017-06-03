@@ -273,11 +273,36 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
         join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
 
-        String filter = "{\"where\":{\"categoryId\":\"" + mCategory.getId() + "\"" + join_status +
+        String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
                 ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 
+    /**
+     * 获取当前路径及其上次路径的类型，并转为json格式
+     *
+     * @param curId
+     * @return
+     */
+    public String getCategoryIdJson(String curId) {
+        String ret = "[";
+        String[] split = curId.split("/");
+        if (split.length < 5) return "";
+        String[] categorys = new String[split.length - 5];
+        for (int i = 0; i < categorys.length; i++) {
+            categorys[i] = "";
+            for (int j = 1; j < split.length - 4 + i; j++) {
+                if (j == split.length - 4 - 1 + i)
+                    categorys[i] += "/" + split[split.length - 1];
+                else
+                    categorys[i] += "/" + split[j];
+            }
+            ret += ",\"" + categorys[i] + "\"";
+        }
+        ret = ret.replaceFirst(",", "") + "]";
+
+        return ret;
+    }
 
     @Override
     public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {

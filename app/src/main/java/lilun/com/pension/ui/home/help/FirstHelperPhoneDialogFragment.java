@@ -103,7 +103,7 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
     private boolean checkPhone() {
         String phone = etPhone.getText().toString();
         if (!TextUtils.isEmpty(phone)) {
-            if (RegexUtils.checkPhone(phone)) {
+            if (RegexUtils.checkMobile(phone)) {
                 return true;
             } else {
                 ToastHelper.get().showWareShort("手机号格式错误");

@@ -45,8 +45,8 @@ public class ChangePasswordFragment2 extends BaseFragment {
     CompositeSubscription cntDownRx;
 
     private String phone;
-    String IDCode="";
-    String token="";
+    String IDCode = "";
+    String token = "";
     @Bind(R.id.iv_back)
     ImageView ivBack;
     @Bind(R.id.title)
@@ -102,7 +102,9 @@ public class ChangePasswordFragment2 extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ivBack.setOnClickListener(v->{pop();});
+        ivBack.setOnClickListener(v -> {
+            pop();
+        });
         tvTitle.setText(R.string.input_IDcode);
         tvTitleDesp.setText("我们向 " + phone + " 发送了一个验证码，请输入该验证码");
         tvInputTitle.setText(R.string.register_code);
@@ -140,6 +142,7 @@ public class ChangePasswordFragment2 extends BaseFragment {
 
     /**
      * 获取验证码请求
+     *
      * @param phone
      */
     public void getIDCode(String phone) {
@@ -160,9 +163,11 @@ public class ChangePasswordFragment2 extends BaseFragment {
                             ToastHelper.get(App.context).showWareShort("网络连接失败");
                             return;
                         }
-                        if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
-                            ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
-                            return;
+                        if (e instanceof ApiException) {
+                            if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
+                                ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
+                                return;
+                            }
                         }
                         int[] errorCode = {600, 601, 604};
                         String[] errorMessage = {
@@ -176,6 +181,7 @@ public class ChangePasswordFragment2 extends BaseFragment {
 
     /**
      * 检测验证码及身份验证
+     *
      * @param phone
      * @param code
      */

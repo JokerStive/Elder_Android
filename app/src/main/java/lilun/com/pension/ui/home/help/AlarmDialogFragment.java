@@ -187,6 +187,7 @@ public class AlarmDialogFragment extends DialogFragment {
     public void sendSmsWithBody(Context context, String number, String body) {
         try {
             Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             sendIntent.setData(Uri.parse("smsto:" + number));
             sendIntent.putExtra("sms_body", body);
             context.startActivity(sendIntent);

@@ -17,9 +17,9 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
 
 
     @Override
-    public void getIDCode(SupportActivity _mActivity, String phone,String type) {
+    public void getIDCode(SupportActivity _mActivity, String phone, String type) {
         addSubscribe(NetHelper.getApi()
-                .getIDCode(phone,type)
+                .getIDCode(phone, type)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(_mActivity) {
@@ -35,10 +35,12 @@ public class RegisterStep2Presenter extends RxPresenter<RegisterContract.ViewSte
                             ToastHelper.get(App.context).showWareShort("网络连接失败");
                             return;
                         }
-                        if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
+                        if (e instanceof ApiException) {
+                            if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
 
-                            ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
-                            return;
+                                ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
+                                return;
+                            }
                         }
                         int[] errorCode = {600, 601, 603};
                         String[] errorMessage = {
