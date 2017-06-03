@@ -35,6 +35,11 @@ public class NetHelper {
     private static OkHttpClient okHttpClient = null;
     private static ApiService apis;
 
+    public static OkHttpClient getOkHttpClient() {
+        initOkhttpClient();
+        return okHttpClient;
+    }
+
 
     public static ApiService getApi() {
         initOkhttpClient();
@@ -95,7 +100,7 @@ public class NetHelper {
 
         // Put the certificates a key store.
         char[] password = "password".toCharArray(); // Any password will work.
-        KeyStore keyStore =  newEmptyKeyStore(password);
+        KeyStore keyStore = newEmptyKeyStore(password);
         int index = 0;
         for (java.security.cert.Certificate certificate : certificates) {
             String certificateAlias = Integer.toString(index++);
@@ -116,8 +121,10 @@ public class NetHelper {
         }
         return (X509TrustManager) trustManagers[0];
     }
+
     /**
      * 添加password
+     *
      * @param password
      * @return
      * @throws GeneralSecurityException

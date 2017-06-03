@@ -43,7 +43,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <meta-data
+            android:name="lilun.com.pension.net.UnsafeOkHttpGlideModule"
+            android:value="GlideModule"/>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8epfP7zxxboqbHMurwej0LW0R6rByTkS" />
