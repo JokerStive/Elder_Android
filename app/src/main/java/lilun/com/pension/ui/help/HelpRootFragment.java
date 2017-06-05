@@ -100,7 +100,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.neighbor_help));
         titleBar.setTvRightText("关于我的");
-        titleBar.setFragment(this);
+      //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {

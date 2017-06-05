@@ -32,10 +32,12 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
         super.onStart();
         if (needProgressBar) {
             if (App.context.getMainLooper().isCurrentThread()) {
-                if (dialog == null) {
-                    dialog = new RxProgressDialog(activity);
+                if (activity != null) {
+                    if (dialog == null) {
+                        dialog = new RxProgressDialog(activity);
+                    }
+                    dialog.show();
                 }
-                dialog.show();
             } else {
                 throw new RuntimeException("this is  not UI thread ");
             }
@@ -46,7 +48,10 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     @Override
     public void onCompleted() {
         if (needProgressBar) {
-            dialog.cancel();
+            if (activity != null) {
+                dialog.cancel();
+                dialog.dismiss();
+            }
         }
 
     }

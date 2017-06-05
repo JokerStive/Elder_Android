@@ -101,7 +101,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTvRightText(getString(R.string.all_orders));
-        titleBar.setFragment(this);
+      //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {

@@ -95,7 +95,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
             if (User.currentOrganizationHasChanged()) {
                 mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
             } else {
-                _mActivity.finish();
+                saveData();
             }
         } else {
             if(currentId.split("/").length <7){
