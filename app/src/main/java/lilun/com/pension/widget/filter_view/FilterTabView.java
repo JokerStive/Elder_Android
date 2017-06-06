@@ -69,7 +69,7 @@ public class FilterTabView extends LinearLayout {
             tvTitle.setTextSize(mTitleSize);
         } else {
             if (App.widthDP > 820)
-                tvTitle.setTextSize(mContext.getResources().getDimension(R.dimen.sp_14));
+                tvTitle.setTextSize(getContext().getResources().getDimension(R.dimen.sp_14));
         }
 //        if (mTitleColorChecked!=-1 ){
 //            tvTitle.setTextSize(mTitleSize);
