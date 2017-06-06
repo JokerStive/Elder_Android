@@ -2,13 +2,11 @@ package lilun.com.pension.ui.announcement;
 
 import android.text.TextUtils;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import lilun.com.pension.app.Config;
-import lilun.com.pension.app.OrganizationChildrenConfig;
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.utils.RxUtils;
@@ -50,13 +48,14 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
 
     @Override
     public void getAnnounce(String parentId) {
-        String filter;
+        String parentIdFilter;
         if (TextUtils.isEmpty(parentId)) {
-            filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "\"}}";
+            parentIdFilter = spliceParentId(Config.announce_root);
         } else {
-            filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "/" + parentId + "\"}}";
+            parentIdFilter = spliceParentId(Config.announce_root + "/" + parentId);
         }
-        Logger.d("公告filter =" + filter);
+
+        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
         addSubscribe(NetHelper.getApi()
                 .getInformations(StringUtils.addFilterWithDef(filter, 0))
                 .compose(RxUtils.handleResult())
@@ -68,6 +67,26 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
 //                        view.showInformation(information);
                     }
                 }));
+    }
+
+    private String spliceParentId(String name) {
+        String result = "[";
+        String currentOrganizationId = User.getCurrentOrganizationId();
+        String[] split = currentOrganizationId.split("/");
+        if (split.length < 4) return "";
+        for (int i = 4; i < split.length; i++) {
+            String parentId = "";
+            for (int j = 1; j <= i; j++) {
+                parentId += "/" + split[j];
+            }
+            if (i == 4) {
+                result += "\"" + parentId + "/#information/" + name + "\"";
+            } else {
+                result += "," + "\"" + parentId + "/#information/" + name + "\"";
+            }
+        }
+        result += "]";
+        return result;
     }
 
 

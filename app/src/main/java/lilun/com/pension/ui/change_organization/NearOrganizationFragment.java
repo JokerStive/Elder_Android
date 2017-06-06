@@ -4,7 +4,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -12,13 +11,11 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
 import lilun.com.pension.app.Config;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -62,15 +59,20 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     @Override
     protected void initView(LayoutInflater inflater) {
         String name = User.getCurrentOrganizationName();
-        tvCurrentOrganization.setText("当前社区:" + name);
+        tvCurrentOrganization.setText("当前位置:" + name);
         tvLocatAddress.setText(StringUtils.getOrganizationNameFromId(User.getBelongToDistrict()));
         tvLocatAddress.setOnClickListener(v->{
-            new NormalDialog().createNormal(_mActivity, "确定要切换回居住小区么？", new NormalDialog.OnPositiveListener() {
-                @Override
-                public void onPositiveClick() {
-                    changeCurrentOrganization();
-                }
-            });
+            if (User.currentOrganizationHasChanged()){
+                new NormalDialog().createNormal(_mActivity, "确定要切换回居住小区么？", new NormalDialog.OnPositiveListener() {
+                    @Override
+                    public void onPositiveClick() {
+                        changeCurrentOrganization();
+                    }
+                });
+            }else {
+                _mActivity.finish();
+            }
+
         });
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
@@ -78,7 +80,7 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 //        swipeLayout.setRefreshing(true);
     }
     private void changeCurrentOrganization() {
-        mPresenter.changeDefBelongOrganization(User.getBelongToDistrict());
+        mPresenter.changeDefBelongOrganization(User.getBelongOrganizationAccountId());
     }
 
 

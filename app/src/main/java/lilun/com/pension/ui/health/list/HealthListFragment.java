@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -94,14 +93,32 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         String filter;
         String parent = mClassify.getParent();
         String name = mClassify.getName();
-        if (TextUtils.equals(parent, "健康服务")) {
-            filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"" + User.getCurrentOrganizationId() + "/#information" + "\",\"parentId\":\"" + User.getCurrentOrganizationId() + "/#information" + parent + "/" + name + "\"}}";
-        } else {
-            filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"organizationId\":\"/地球村/中国/重庆/#information\",\"parentId\":\"/地球村/中国/重庆/#information/" + parent + "/" + name + "\"}}";
-        }
+        String parentIdFilter = spliceParentId(parent+"/"+name);
+        filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
         mPresenter.getDataList(filter, skip);
     }
 
+
+    private String spliceParentId(String name) {
+        int startIndex=3;
+        String result = "[";
+        String currentOrganizationId = User.getCurrentOrganizationId();
+        String[] split = currentOrganizationId.split("/");
+        if (split.length < startIndex) return "";
+        for (int i = startIndex; i < split.length; i++) {
+            String parentId = "";
+            for (int j = 1; j <= i; j++) {
+                parentId += "/" + split[j];
+            }
+            if (i == startIndex) {
+                result += "\"" + parentId + "/#information/" +name + "\"";
+            } else {
+                result += "," + "\"" + parentId + "/#information/" +name+ "\"";
+            }
+        }
+        result += "]";
+        return result;
+    }
 
     @Override
     public void showDataList(List<Information> list, boolean isLoadMore) {
