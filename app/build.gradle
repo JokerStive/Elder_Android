@@ -123,7 +123,8 @@ dependencies {
     compile files('libs/baidumapapi_map_v4_3_0.jar')
 
     //区域选择控件
-    compile 'com.github.vanzh:AreaSelector:1.0.5'
+    compile 'com.github.vanzh:AreaSelector:1.0.6'
+    //  compile 'com.github.vanzh:AreaSelector:14ccddcb03'
     //腾讯bugly崩溃日志收集库
      compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
 }

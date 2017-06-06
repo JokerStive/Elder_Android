@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,9 +96,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Subscribe
     public void changedOrganization(Event.ChangedOrganization event) {
         tvPosition.setText(User.getCurrentOrganizationName());
-//        EventBus
+        mPresenter.getInformation();
     }
-
+    //============更新用户头像
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showNewSetting(Event.AccountSettingChange account){
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+    }
     @Override
     protected void initPresenter() {
         mPresenter = new HomePresenter();
@@ -113,14 +118,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     protected void initView(LayoutInflater inflater) {
-
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
 
     }
+
+
 
     @Override
     protected void initEvent() {

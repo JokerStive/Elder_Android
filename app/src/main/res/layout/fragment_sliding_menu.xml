@@ -30,7 +30,9 @@
         <TextView
             android:id="@+id/tv_account_data"
             style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/selector_rect_white_to_dark"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_data"
             android:text="@string/account_data" />
@@ -38,6 +40,7 @@
         <TextView
             android:id="@+id/tv_account_setting"
             style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_setting"
@@ -46,6 +49,7 @@
         <TextView
             android:id="@+id/tv_account_share"
             style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
@@ -54,6 +58,7 @@
         <TextView
             android:id="@+id/tv_account_info"
             style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_info"
@@ -63,6 +68,7 @@
         <TextView
             android:id="@+id/tv_account_safe"
             style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
@@ -73,6 +79,8 @@
     <TextView
         android:id="@+id/tv_logout"
         style="@style/tv_normal_ellipsize"
+        android:background="@drawable/selector_rect_white_to_dark"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp_30"
         android:layout_marginStart="@dimen/dp_20"

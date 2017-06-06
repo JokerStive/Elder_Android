@@ -20,6 +20,7 @@ public class User {
     public static final String token = "token";
     //    public static final String tokenEffectiveDuration = "tokenEffectiveDuration";
     public static final String userId = "userId";
+    public static final String userAvatar="userAvatar";
     public static final String name = "name";
     public static final String username = "username";
     public static final String password = "password";
@@ -36,6 +37,12 @@ public class User {
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
 
+    public static String getUserAvatar() {
+        return PreUtils.getString(userAvatar, null);
+    }
+    public static void puttUserAvatar(String avatar){
+        PreUtils.putString(User.userAvatar, avatar);
+    }
 
     public static String getUserId() {
         return PreUtils.getString(userId, "");

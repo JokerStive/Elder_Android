@@ -1,5 +1,6 @@
 package lilun.com.pension.app;
 
+import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -132,4 +133,8 @@ public class Event {
 
     //登陆
     public static class OffLine {}
+
+    //通知系统用户设置更改
+    public static class AccountSettingChange{
+    }
 }

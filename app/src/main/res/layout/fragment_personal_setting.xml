@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <lilun.com.pension.widget.NormalTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        apps:title="@string/personal_setting" />
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:id="@+id/ll_account_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_rect_white_to_dark"
+        android:gravity="center">
+
+        <TextView
+            style="@style/personal_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/account_ivatar_str" />
+
+        <lilun.com.pension.widget.CircleImageView
+            android:id="@+id/civ_account_avatar"
+            android:layout_width="@dimen/dp_72"
+            android:layout_height="@dimen/dp_72"
+            android:layout_margin="@dimen/dp_10"
+            android:src="@drawable/icon_def" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/arraw_right" />
+
+    </LinearLayout>
+
+    <View style="@style/line_gray_ml_dp10" />
+
+    <LinearLayout
+        android:id="@+id/ll_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_rect_white_to_dark">
+
+        <TextView
+            style="@style/personal_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/nickname" />
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            style="@style/personal_normal"
+            android:drawablePadding="@dimen/dp_10"
+            android:drawableRight="@drawable/arraw_right"
+            android:textColor="@color/personal_data_color" />
+    </LinearLayout>
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:id="@+id/ll_belong_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_rect_white_to_dark">
+
+        <TextView
+            style="@style/personal_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/belong_area" />
+
+        <TextView
+            android:id="@+id/tv_belong_area"
+            style="@style/personal_normal"
+            android:drawablePadding="@dimen/dp_10"
+            android:drawableRight="@drawable/arraw_right"
+            android:textColor="@color/personal_data_color" />
+    </LinearLayout>
+
+    <View style="@style/line_gray_ml_dp10" />
+
+    <LinearLayout
+        android:id="@+id/ll_belong_stress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_rect_white_to_dark">
+
+        <TextView
+            style="@style/personal_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/belong_stress" />
+
+        <TextView
+            android:id="@+id/tv_belong_stress"
+            style="@style/personal_normal"
+            android:drawablePadding="@dimen/dp_10"
+            android:drawableRight="@drawable/arraw_right"
+            android:textColor="@color/personal_data_color" />
+    </LinearLayout>
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:id="@+id/ll_first_help_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector_rect_white_to_dark">
+
+        <TextView
+            style="@style/personal_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/first_help" />
+
+        <TextView
+            android:id="@+id/tv_first_help_phone"
+            style="@style/personal_normal"
+            android:drawablePadding="@dimen/dp_10"
+            android:drawableRight="@drawable/arraw_right"
+            android:textColor="@color/personal_data_color" />
+    </LinearLayout>
+
+    <View style="@style/line_gray_ml_dp10" />
+</LinearLayout>

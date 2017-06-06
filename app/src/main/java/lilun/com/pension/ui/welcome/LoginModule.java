@@ -91,6 +91,8 @@ public class LoginModule implements LoginContract.Module {
                 //用户名
                 User.putName(account.getName());
                 User.putUserName(account.getUsername());
+                if (null != account.getImage() && account.getImage().size() > 0)
+                    User.puttUserAvatar(account.getImage().get(0).getFileName());
                 //手机号
                 User.putMobile(account.getMobile());
                 //个人资料

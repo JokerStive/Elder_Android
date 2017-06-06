@@ -13,6 +13,7 @@ import lilun.com.pension.module.bean.EdusColleageCourse;
 import lilun.com.pension.module.bean.ElderEdus;
 import lilun.com.pension.module.bean.ElderEdusColleage;
 import lilun.com.pension.module.bean.ElderModule;
+import lilun.com.pension.module.bean.IconModule;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.NestedReply;
 import lilun.com.pension.module.bean.Organization;
@@ -89,8 +90,8 @@ public interface ApiService {
     /**
      * 更新一个account
      */
-    @PUT("Accounts/{id}")
-    Observable<Response<Object>> putAccount(@Path("id") String accountId, @Body Account account);
+    @PUT("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
+    Observable<Response<Account>> putAccount(@Path("id") String accountId, @Body Account account);
 
 
     /**
@@ -600,5 +601,5 @@ public interface ApiService {
      */
     @Multipart
     @PUT("Accounts/{id}/update/image/{imageName}")
-    Observable<Response<Object>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
+    Observable<Response<IconModule>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
 }

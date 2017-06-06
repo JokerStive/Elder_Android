@@ -8,10 +8,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
@@ -52,20 +56,24 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
+    //    ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
     }
 
 
-    @OnClick({R.id.tv_logout, R.id.tv_account_info})
+    @OnClick({R.id.tv_logout, R.id.tv_account_data, R.id.tv_account_info})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
                 logout();
                 break;
+            case R.id.tv_account_data:
+                startActivity(new Intent(_mActivity, PersonalActivity.class));
+                break;
 
             case R.id.tv_account_info:
-//                start(InformationCenterFragment.newInstance());
+                //     start(InformationCenterFragment.newInstance());
                 break;
         }
     }
@@ -110,10 +118,20 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
         startActivity(new Intent(_mActivity, WelcomeActivity.class));
         _mActivity.finish();
         HomeFragment fragment = findFragment(HomeFragment.class);
-        if (fragment!=null){
+        if (fragment != null) {
             fragment.switchDrawer();
         }
     }
 
+    private void personalSetting() {
 
+    }
+
+
+    //============更新用户名
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showNewSetting(Event.AccountSettingChange account){
+        tvName.setText(User.getName());
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+    }
 }

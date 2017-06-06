@@ -244,6 +244,7 @@
     <string name="information_center">消息中心</string>
     <string name="system_information">系统消息</string>
     <string name="personal_information">个人消息</string>
+    <string name="personal_setting">个人资料信息</string>
     <string name="save">保存</string>
     <string name="ongoing">进行中</string>
     <string name="finished">已结束</string>
@@ -349,5 +350,7 @@
     <string name="input_IDcode">输入6位验证码</string>
     <string name="new_password">输入新密码</string>
     <string name="new_password_str">请输入至少6位的密码</string>
+    <string name="account_ivatar_str">账户头像</string>
+    <string name="first_help">第一求助人设置</string>
 
 </resources>

@@ -70,6 +70,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
             }
             dialog = new BottomDialog(this, RECYCLERLEVEL);
             dialog.setOnAddressSelectedListener(this);
+            dialog.setButtonVisiableLevels(new int[]{2}, View.VISIBLE);
             dialog.show();
         } else if (view.getId() == R.id.fab_go_next) {
             if (curLevel < RECYCLERLEVEL) {
@@ -153,7 +154,7 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
     public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
         if (baseBeen.length == 0) {
             ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
-           // dialog.dismiss();
+            // dialog.dismiss();
             return;
         }
         if (recyclerIndex != RECYCLERLEVEL) {
@@ -170,6 +171,12 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
         }
         dialog.dismiss();
 
+    }
+
+    @Override
+    public void onConfirm(BaseBean baseBean) {
+        distrect = baseBean;
+        dialog.dismiss();
     }
 
     @Override
