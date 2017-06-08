@@ -44,7 +44,8 @@
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_setting"
-            android:text="@string/account_setting" />
+            android:text="@string/account_setting"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_account_share"
@@ -53,7 +54,8 @@
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
-            android:text="@string/account_share" />
+            android:text="@string/account_share"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_account_info"
@@ -72,18 +74,19 @@
             android:layout_marginTop="@dimen/sliding_item_margin_top"
             android:drawablePadding="@dimen/dp_10"
             android:drawableStart="@drawable/account_safe"
-            android:text="@string/account_safe" />
+            android:text="@string/account_safe"
+            android:visibility="gone" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_logout"
         style="@style/tv_normal_ellipsize"
-        android:background="@drawable/selector_rect_white_to_dark"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dp_30"
         android:layout_marginStart="@dimen/dp_20"
+        android:background="@drawable/selector_rect_white_to_dark"
         android:drawablePadding="@dimen/dp_10"
         android:drawableStart="@drawable/logout"
         android:text="@string/logout" />

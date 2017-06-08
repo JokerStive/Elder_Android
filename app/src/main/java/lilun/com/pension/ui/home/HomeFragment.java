@@ -337,4 +337,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
 
+    public void startInformationCenterFragment() {
+        start(InformationCenterFragment.newInstance());
+    }
 }

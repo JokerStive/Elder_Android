@@ -1,6 +1,7 @@
 package lilun.com.pension.ui.home;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,7 +57,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-    //    ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
+        //    ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
     }
@@ -73,7 +74,10 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.tv_account_info:
-                //     start(InformationCenterFragment.newInstance());
+                Fragment parentFragment = getParentFragment();
+                if(parentFragment instanceof HomeFragment) {
+                    ((HomeFragment)parentFragment).startInformationCenterFragment();
+                }
                 break;
         }
     }
@@ -130,7 +134,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     //============更新用户名
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void showNewSetting(Event.AccountSettingChange account){
+    public void showNewSetting(Event.AccountSettingChange account) {
         tvName.setText(User.getName());
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
     }

@@ -3,7 +3,6 @@ package lilun.com.pension.ui.home;
 import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -32,9 +31,7 @@ import lilun.com.pension.base.BaseTakePhotoFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.IconModule;
-import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.TakePhotoResult;
-import lilun.com.pension.module.callback.TakePhotoClickListener;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RxUtils;
@@ -213,10 +210,8 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
      * @param distrect
      */
     private void requestSettingAccountDistract(BaseBean distrect) {
-        Account account = new Account();
-        account.setProfile(new Account.ProfileBean().setBelongToDistrict(distrect.getId()));
         NetHelper.getApi()
-                .putAccount(User.getUserId(), account)
+                .putAccountLocation(distrect.getId())
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Account>(_mActivity) {

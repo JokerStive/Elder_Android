@@ -93,6 +93,13 @@ public interface ApiService {
     @PUT("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
     Observable<Response<Account>> putAccount(@Path("id") String accountId, @Body Account account);
 
+    /**
+     * 更新注册地区
+     */
+    @FormUrlEncoded
+    @PUT("Accounts/location")
+    Observable<Response<Account>> putAccountLocation(@Field("Location") String location);
+
 
     /**
      * 获取elderModule分类数据
@@ -170,7 +177,7 @@ public interface ApiService {
      */
 
     @GET("Organizations/{id}")
-    Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId,@Query("filter") String filter);
+    Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId, @Query("filter") String filter);
 
 
     /**
