@@ -44,16 +44,6 @@ public class MQTTCallbackBus implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-//        try {
-//            String message = token.getMessage().toString();
-//            if (message.contains("{\"verb\":\"login\"")) {
-//                Logger.i("deliveryComplete--start initSub");
-//                App.initSub();
-//            }
-//
-//        } catch (MqttException e) {
-//            e.printStackTrace();
-//        }
     }
 
 
@@ -130,12 +120,14 @@ public class MQTTCallbackBus implements MqttCallback {
 
     private void dealMessage(String topic, String messageData) {
 
+        showOnNotification(topic, messageData);
+
+        MqttTopic mqttTopic = new MqttTopic();
         //登陆
-        if (messageData.contains("login"))
+        if (TextUtils.equals(mqttTopic.login, topic))
             dealLogin(topic, messageData);
         else {
             PushMessage pushMessage = getPushMessageFromData(messageData);
-
             if (pushMessage != null) {
                 if (topic.contains("%23activity")) {  //是活动聊天的数据
                     String[] split = topic.split("/");
@@ -146,10 +138,9 @@ public class MQTTCallbackBus implements MqttCallback {
                 pushMessage.save();
 
                 //求助推送
-                if (TextUtils.equals(topic, "OrganizationAid/.added") ||
-                        TextUtils.equals(topic, "OrganizationInformation/.added") ||
-                        (TextUtils.equals(topic, StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/"))
-                                && !pushMessage.getFrom().contains(User.getUserId()))) {
+                if (TextUtils.equals(topic, mqttTopic.normal_help) ||
+                        TextUtils.equals(topic, mqttTopic.normal_announce) ||
+                        (TextUtils.equals(topic, mqttTopic.urgent_help) && !pushMessage.getFrom().contains(User.getUserId()))) {
                     EventBus.getDefault().post(pushMessage);
                 }
 
@@ -159,6 +150,15 @@ public class MQTTCallbackBus implements MqttCallback {
 
             }
         }
+    }
+
+
+    /**
+     * 在通知栏展示
+     */
+    private void showOnNotification(String topic, String pushMessage) {
+        MqttNotificationHelper mqttNotificationHelper = new MqttNotificationHelper();
+        mqttNotificationHelper.showOnNotification(topic, pushMessage);
     }
 
 

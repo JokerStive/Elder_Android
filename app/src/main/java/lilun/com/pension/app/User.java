@@ -2,6 +2,7 @@ package lilun.com.pension.app;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pension.module.bean.OrganizationAccount;
@@ -20,12 +21,12 @@ public class User {
     public static final String token = "token";
     //    public static final String tokenEffectiveDuration = "tokenEffectiveDuration";
     public static final String userId = "userId";
-    public static final String userAvatar="userAvatar";
+    public static final String userAvatar = "userAvatar";
     public static final String name = "name";
     public static final String username = "username";
     public static final String password = "password";
     public static final String mobile = "mobile";
-//    public static final String has = "mobile";
+    //    public static final String has = "mobile";
     public static final String belongToDistrict = "belongToDistrict";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
@@ -40,7 +41,8 @@ public class User {
     public static String getUserAvatar() {
         return PreUtils.getString(userAvatar, null);
     }
-    public static void puttUserAvatar(String avatar){
+
+    public static void puttUserAvatar(String avatar) {
         PreUtils.putString(User.userAvatar, avatar);
     }
 
@@ -245,10 +247,51 @@ public class User {
     public static void putBelongToDistrict(String id) {
         PreUtils.putString(belongToDistrict, id);
     }
+
     public static String getBelongToDistrict() {
         return PreUtils.getString(belongToDistrict, "");
     }
 
+
+    /**
+     * 当前组织id到市
+     */
+    public static ArrayList<String> levelIds() {
+        int level = 4;
+        ArrayList<String> ids = null;
+        String currentOrganizationId = User.getCurrentOrganizationId();
+        String[] split = currentOrganizationId.split("/");
+        if (split.length < level) {
+            ids = new ArrayList<>();
+            for (int i = level; i < split.length; i++) {
+                String id = "";
+                for (int j = 1; j <= i; j++) {
+                    id += "/" + split[j];
+                }
+                ids.add(id);
+            }
+        }
+
+        return ids;
+    }
+
+
+    /**
+    *只有当前组织在所属组织的市级以下，才可以操作
+    */
+    public static boolean canOperate(String targetId) {
+        boolean result = false;
+        ArrayList<String> ids = levelIds();
+        if (ids != null) {
+            for (String id : ids) {
+                if (TextUtils.equals(id, targetId)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 }
 
 

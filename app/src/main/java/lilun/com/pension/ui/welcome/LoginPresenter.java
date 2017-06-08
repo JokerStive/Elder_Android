@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import java.util.List;
 
+import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.OrganizationAccount;
@@ -46,8 +47,12 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                 .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity) mView) {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
-                        mModule.putBelongOrganizations(organizationAccounts);
-                        mView.loginSuccess();
+                        if (!TextUtils.isEmpty(User.getBelongsOrganizationId())){
+                            mModule.putBelongOrganizations(organizationAccounts);
+                            mView.loginSuccess();
+                        }else {
+                            ToastHelper.get().showShort("脏数据");
+                        }
                     }
 
                     @Override

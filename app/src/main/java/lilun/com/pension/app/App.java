@@ -1,9 +1,7 @@
 package lilun.com.pension.app;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -24,8 +22,8 @@ import lilun.com.pension.BuildConfig;
 import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.DeviceUtils;
 import lilun.com.pension.module.utils.PreUtils;
-import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
+import lilun.com.pension.module.utils.mqtt.MqttTopic;
 
 /**
  * 入口
@@ -51,12 +49,11 @@ public class App extends Application {
 
         //日志
         if (BuildConfig.LOG_DEBUG) {
-            //   Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+//               Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
             Logger.addLogAdapter(new AndroidLogAdapter());
         } else {
             //   Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
         }
-        // Logger.addLogAdapter(new AndroidLogAdapter());
 
         //内存泄漏
 //        LeakCanary.install(this);
@@ -95,32 +92,34 @@ public class App extends Application {
                     Logger.i("mqtt连接失败--" + exception);
                 }
             });
+        } else {
+            Logger.i("mqtt已经连接不需要再次连接");
         }
     }
 
     public static void initSub() {
-        String[] topics = {"OrganizationAid/.added", "OrganizationInformation/.added",
-                "user/" + User.getUserName() + "/.login",
-                StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/")};
+        MqttTopic mqttTopic = new MqttTopic();
+        String[] topics = {mqttTopic.normal_announce,
+                mqttTopic.normal_announce,
+                mqttTopic.login,
+                mqttTopic.urgent_help};
         for (String topic : topics) {
-//            String cacheTopic = ACache.get(App.context, "topics").getAsString(topic);
-//            if (TextUtils.isEmpty(cacheTopic)) {
             MQTTManager.getInstance().subscribe(topic, 2);
-//            }
         }
     }
 
     private static void pushLogin() {
-        //    if (!PreUtils.getBoolean("hasPushLogin", false)) {
-        Logger.i("发送login消息");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = format.format(new Date());
-        String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
-        MQTTManager.getInstance().publish("user/" + User.getUserName() + "/.login", 0, msg, false);
-//            PreUtils.putBoolean("hasPushLogin", true);
-//        } else {
-//            Logger.i("不发送login消息");
-//        }
+        if (!PreUtils.getBoolean("hasPushLogin", false)) {
+            Logger.i("发送login消息");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = format.format(new Date());
+            String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
+            MqttTopic mqttTopic = new MqttTopic();
+            MQTTManager.getInstance().publish(mqttTopic.login, 0, msg, false);
+            PreUtils.putBoolean("hasPushLogin", true);
+        } else {
+            Logger.i("不发送login消息");
+        }
     }
 
 

@@ -44,7 +44,6 @@ public class LoginModule implements LoginContract.Module {
 //        PreUtils.putLong(User.tokenEffectiveDuration, tokenEffectiveDuration);
 
         User.putPassword(password);
-//        App.mqttConnectAndSub();
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
                 .compose(RxUtils.handleResult());
