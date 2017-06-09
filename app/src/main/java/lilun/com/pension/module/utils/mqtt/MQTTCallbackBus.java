@@ -138,11 +138,13 @@ public class MQTTCallbackBus implements MqttCallback {
                 pushMessage.save();
 
                 //求助推送
-                if (TextUtils.equals(topic, mqttTopic.normal_help) ||
-                        TextUtils.equals(topic, mqttTopic.normal_announce) ||
-                        (TextUtils.equals(topic, mqttTopic.urgent_help) && !pushMessage.getFrom().contains(User.getUserId()))) {
-                    EventBus.getDefault().post(pushMessage);
-                }
+//                if (TextUtils.equals(topic, mqttTopic.normal_help) ||
+//                        TextUtils.equals(topic, mqttTopic.normal_announce) ||
+//                        (TextUtils.equals(topic, mqttTopic.urgent_help) && !pushMessage.getFrom().contains(User.getUserId()))) {
+//                    EventBus.g0etDefault().post(pushMessage);
+//                }
+
+
 
 
                 //处理活动

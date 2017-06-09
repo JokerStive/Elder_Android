@@ -1,6 +1,5 @@
 package lilun.com.pension.app;
 
-import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
 import lilun.com.pension.module.bean.OrganizationReply;
@@ -69,10 +68,12 @@ public class Event {
     public static class RefreshPushMessage {
 
     }
+
     //刷新消息推送栏
     public static class RefreshPushMessageChat {
 
     }
+
     //添加一个新的聊天消息
     public static class RefreshChatAddOne {
         PushMessage pushMessage;
@@ -89,6 +90,7 @@ public class Event {
     //强制退出活动
     public static class ForcedQuitChat {
         String showMessage;
+
         public ForcedQuitChat(String message) {
             showMessage = message;
         }
@@ -114,7 +116,6 @@ public class Event {
     }
 
 
-
     //刷新紧急消息条数
     public static class RefreshUrgentInfo {
 
@@ -130,11 +131,23 @@ public class Event {
     }
 
 
-
     //登陆
-    public static class OffLine {}
+    public static class OffLine {
+    }
 
     //通知系统用户设置更改
-    public static class AccountSettingChange{
+    public static class AccountSettingChange {
+    }
+
+
+    //需要展示到app的消息
+    public static class BoardMsg {
+        public String data;
+        public String topic;
+
+        public BoardMsg(String topic, String data) {
+            this.data = data;
+            this.topic = topic;
+        }
     }
 }
