@@ -25,6 +25,7 @@ import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ScreenUtils;
 import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.ui.push_info.CacheInfoListActivity;
+import lilun.com.pension.widget.ProgressWebView;
 
 /**
  * 紧急消息弹窗
@@ -42,7 +43,9 @@ public class AnnounceInfoActivity extends Activity {
     @Bind(R.id.tv_express_time)
     TextView tvExpressTime;
     @Bind(R.id.content)
-    TextView content;
+    TextView tvContent;
+    @Bind(R.id.wv_content)
+    ProgressWebView progressWebView;
     @Bind(R.id.btn_all)
     Button btnAll;
     private int infoCount = 1;
@@ -86,8 +89,23 @@ public class AnnounceInfoActivity extends Activity {
         tvExpressTitle.setText(information.getTitle());
         String createdAt = information.getCreatedAt();
         tvExpressTime.setText(StringUtils.IOS2ToUTC(createdAt, 0) + "  " + StringUtils.IOS2ToUTC(createdAt, 3));
-        content.setText(information.getContext());
         btnAll.setText("查看全部(" + infoCount + ")");
+
+
+        int contextType = information.getContextType();
+        String content = information.getContext();
+        tvContent.setVisibility(contextType == 5 ? View.VISIBLE : View.GONE);
+        progressWebView.setVisibility(contextType == 2 ? View.VISIBLE : View.GONE);
+        switch (contextType) {
+            //html
+            case 2:
+                progressWebView.loadData(content, "text/html; charset=UTF-8;", null);
+                break;
+            //json
+            case 0:
+                tvContent.setText(information.getContext());
+                break;
+        }
     }
 
 

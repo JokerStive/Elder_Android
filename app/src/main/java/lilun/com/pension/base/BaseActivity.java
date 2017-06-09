@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,7 +23,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
@@ -35,14 +34,13 @@ import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.SystemUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.module.utils.mqtt.MQTTManager;
+import lilun.com.pension.module.utils.mqtt.MqttTopic;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 import lilun.com.pension.ui.lbs.AnnounceInfoActivity;
 import lilun.com.pension.ui.lbs.UrgentAidInfoActivity;
 import lilun.com.pension.ui.welcome.LoginActivity;
 import lilun.com.pension.ui.welcome.WelcomeActivity;
-import lilun.com.pension.widget.CardConfig;
-import lilun.com.pension.widget.OverLayCardLayoutManager;
 import lilun.com.pension.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
@@ -66,10 +64,10 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private int pushInfoCunt = 0;
 
     //用于监听弹出软键盘的Enter事件；
-    public View.OnKeyListener editOnKeyListener =new View.OnKeyListener() {
+    public View.OnKeyListener editOnKeyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                 editViewEnterButton();
             }
             return false;
@@ -79,7 +77,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     /**
      * 软键盘的Enter事件响应
      */
-    public  void editViewEnterButton(){
+    public void editViewEnterButton() {
 
     }
 
@@ -133,16 +131,16 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     }
 
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void refreshPushMessage(Event.RefreshPushMessage event) {
+//        showPushMessage(getPushMessageFromDatabase());
+//    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshPushMessage(Event.RefreshPushMessage event) {
-        showPushMessage(getPushMessageFromDatabase());
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshPushMessage(PushMessage pushMessage) {
-        showExpressHelpPop(pushMessage);
+    public void refreshPushMessage(Event.BoardMsg data) {
+        showBoardMsg(data.topic, data.data);
     }
 
 
@@ -184,48 +182,48 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     /**
      * 显示推送过来的消息
      */
-    private void showPushMessage(List<PushMessage> pushMessages) {
-        if (pushMessages == null || pushMessages.size() == 0) {
-            rvPushInfo.setVisibility(View.GONE);
-            return;
-        }
+//    private void showPushMessage(List<PushMessage> pushMessages) {
+//        if (pushMessages == null || pushMessages.size() == 0) {
+//            rvPushInfo.setVisibility(View.GONE);
+//            return;
+//        }
+//
+//        rvPushInfo.setVisibility(View.VISIBLE);
+//        if (pushInfoAdapter == null) {
+//            pushInfoAdapter = new PushInfoAdapter(rvPushInfo, pushMessages);
+//            rvPushInfo.setAdapter(pushInfoAdapter);
+//        } else {
+//            pushInfoAdapter.replaceAll(pushMessages);
+//        }
 
-        rvPushInfo.setVisibility(View.VISIBLE);
-        if (pushInfoAdapter == null) {
-            pushInfoAdapter = new PushInfoAdapter(rvPushInfo, pushMessages);
-            rvPushInfo.setAdapter(pushInfoAdapter);
-        } else {
-            pushInfoAdapter.replaceAll(pushMessages);
-        }
-
-    }
+//    }
 
     /**
      * 初始化推送消息栏
      */
-    private void initRecyclerView() {
-        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-        CardConfig.initConfig(this);
-        CardConfig.MAX_SHOW_COUNT = 3;
-
-        callback = new MyCallBack(rvPushInfo);
-        callback.setOnItemSwipedListener(() -> {
-            if (pushInfoAdapter != null && pushInfoAdapter.getItemCount() != 0) {
-                PushMessage item = pushInfoAdapter.getItem(pushInfoAdapter.getItemCount() - 1);
-                pushInfoAdapter.remove(item);
-                if (pushInfoAdapter.getItemCount() == 0) {
-                    Logger.d("推送栏设置gone");
-                    rvPushInfo.setVisibility(View.GONE);
-                }
-
-//                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
-            }
-        });
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(rvPushInfo);
-
-        showPushMessage(getPushMessageFromDatabase());
-    }
+//    private void initRecyclerView() {
+//        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
+//        CardConfig.initConfig(this);
+//        CardConfig.MAX_SHOW_COUNT = 3;
+//
+//        callback = new MyCallBack(rvPushInfo);
+//        callback.setOnItemSwipedListener(() -> {
+//            if (pushInfoAdapter != null && pushInfoAdapter.getItemCount() != 0) {
+//                PushMessage item = pushInfoAdapter.getItem(pushInfoAdapter.getItemCount() - 1);
+//                pushInfoAdapter.remove(item);
+//                if (pushInfoAdapter.getItemCount() == 0) {
+//                    Logger.d("推送栏设置gone");
+//                    rvPushInfo.setVisibility(View.GONE);
+//                }
+//
+////                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
+//            }
+//        });
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        itemTouchHelper.attachToRecyclerView(rvPushInfo);
+//
+//        showPushMessage(getPushMessageFromDatabase());
+//    }
 
 
     /**
@@ -238,38 +236,40 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     /**
      * 显示紧急求助弹窗
-     *
-     * @param pushMessage
      */
-    public void showExpressHelpPop(PushMessage pushMessage) {
+    public void showBoardMsg(String topic, String data) {
         Gson gson = new Gson();
-        String model = pushMessage.getModel();
-        if (PushMessage.VERB_HELP.equals(pushMessage.getVerb())) {
+        MqttTopic mqttTopic = new MqttTopic();
+        JSONObject jsonObject = JSON.parseObject(data);
+        if (topic.equals(mqttTopic.urgent_help)) {
             OrganizationAid aid = new OrganizationAid();
-            aid.setAddress(pushMessage.getAddress());
-            aid.setMobile(pushMessage.getMobile());
-            aid.setCreatedAt(pushMessage.getTime());
-            aid.setCreatorName(pushMessage.getTitle());
-            aid.setMemo(pushMessage.getLocation());
+            aid.setAddress( jsonObject.getString("address"));
+            aid.setMobile( jsonObject.getString("mobile"));
+            aid.setCreatedAt(jsonObject.getString("time"));
+            aid.setCreatorName(jsonObject.getString("title"));
+            aid.setMemo(jsonObject.getString("location"));
+            if (pushAidInfoCunt == 0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
+                pushAidInfoCunt++;
+                Intent intent = new Intent(this, UrgentAidInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("aid", aid);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, 123);
+            }
+            EventBus.getDefault().post(new Event.RefreshUrgentInfo());
+
+        }
 
 
-                if (pushAidInfoCunt == 0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
-                    pushAidInfoCunt++;
-                    Intent intent = new Intent(this, UrgentAidInfoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("aid", aid);
-                    intent.putExtras(bundle);
-                    startActivityForResult(intent, 123);
-                }
-                EventBus.getDefault().post(new Event.RefreshUrgentInfo());
-
-        } else if (model.equals(Constants.organizationInfo)) {
-            Information Information = gson.fromJson(pushMessage.getData(), Information.class);
+         if (topic.equals(mqttTopic.normal_announce)) {
+             String infoString = jsonObject.getString("data");
+             Information information = JSON.parseObject(infoString, Information.class);
+//             Information Information = gson.fromJson(pushMessage.getData(), Information.class);
             if (pushInfoCunt == 0 && !SystemUtils.isTopActivity(Information.class.getName())) {
                 pushInfoCunt++;
                 Intent intent = new Intent(this, AnnounceInfoActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("organizationInfo", Information);
+                bundle.putSerializable("organizationInfo", information);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 123);
             }

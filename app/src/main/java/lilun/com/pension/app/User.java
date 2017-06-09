@@ -261,7 +261,7 @@ public class User {
         ArrayList<String> ids = null;
         String currentOrganizationId = User.getCurrentOrganizationId();
         String[] split = currentOrganizationId.split("/");
-        if (split.length < level) {
+        if (split.length >= level) {
             ids = new ArrayList<>();
             for (int i = level; i < split.length; i++) {
                 String id = "";

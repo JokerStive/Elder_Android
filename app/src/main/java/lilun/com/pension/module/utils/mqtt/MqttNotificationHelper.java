@@ -10,9 +10,13 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import org.greenrobot.eventbus.EventBus;
+
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
+import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 需要展示到通知栏的mqtt消息
@@ -26,19 +30,38 @@ public class MqttNotificationHelper {
 
     public void showOnNotification(String topic, String data) {
         MqttTopic mqttTopic = new MqttTopic();
+
         JSONObject jsonObject = JSON.parseObject(data);
         String title = null;
         String content = null;
 
-        //公告消息
-        // 是基于模型的,只有是自己所在的市级以下发布的公告才展示
-        if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
+        if (TextUtils.equals(topic, mqttTopic.normal_announce) || TextUtils.equals(topic, mqttTopic.normal_help)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
             String organizationId = infoJson.getString("organizationId");
-            boolean isShow = User.canOperate(organizationId);
-            if (isShow) {
-                title = "公告";
-                content = infoJson.getString("name");
+            if (TextUtils.isEmpty(organizationId)) return;
+            String targetId = StringUtils.removeSpecialSuffix(organizationId);
+
+            boolean canOperate = User.canOperate(targetId);
+
+
+            //如果是在当前组织的市级以下的消息才处理，不然直接遗弃
+            if (canOperate) {
+
+                //发送事件，展示到app
+                EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+
+
+                // 公告，展示到通知栏
+                if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
+                    title = "公告";
+                    content = infoJson.getString("name");
+                }
+
+
+                //普通求助
+                if (TextUtils.equals(topic, mqttTopic.normal_announce)){
+                    EventBus.getDefault().post(new Event.RefreshHelpData());
+                }
             }
         }
 
@@ -47,6 +70,9 @@ public class MqttNotificationHelper {
         if (TextUtils.equals(topic, mqttTopic.urgent_help)) {
             title = "紧急求助";
             content = jsonObject.getString("message");
+
+            //发送事件，展示到app
+            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
         }
 
 
@@ -55,8 +81,8 @@ public class MqttNotificationHelper {
     }
 
     /**
-    *通知栏显示
-    */
+     * 通知栏显示
+     */
     private void show(String title, String content) {
         if (!TextUtils.isEmpty(title)) {
             Notification build = new NotificationCompat.Builder(App.context)
@@ -73,12 +99,12 @@ public class MqttNotificationHelper {
     }
 
     /**
-    *唤醒屏幕
-    */
+     * 唤醒屏幕
+     */
     private void wakeScreen() {
         PowerManager pm = (PowerManager) App.context.getSystemService(Context.POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
-        if (!isScreenOn){
+        if (!isScreenOn) {
             PowerManager.WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
             wakeLock.acquire();
             wakeLock.release();

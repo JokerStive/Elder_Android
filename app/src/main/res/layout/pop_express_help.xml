@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -70,6 +70,11 @@
         style="@style/tv_small"
         android:padding="@dimen/dp_20"
         android:text="啊哈哈荷花和我好的啊黑窝啊黑窝话费哦w" />
+    <lilun.com.pension.widget.ProgressWebView
+        android:id="@+id/wv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/tv_small"/>
 
     <Button
         android:id="@+id/btn_all"
