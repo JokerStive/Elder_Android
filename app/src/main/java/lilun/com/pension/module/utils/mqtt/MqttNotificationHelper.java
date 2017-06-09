@@ -11,11 +11,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
+import lilun.com.pension.module.utils.DeviceUtils;
 import lilun.com.pension.module.utils.StringUtils;
 
 /**
@@ -35,6 +37,7 @@ public class MqttNotificationHelper {
         String title = null;
         String content = null;
 
+        //公告和普通求助
         if (TextUtils.equals(topic, mqttTopic.normal_announce) || TextUtils.equals(topic, mqttTopic.normal_help)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
             String organizationId = infoJson.getString("organizationId");
@@ -79,7 +82,39 @@ public class MqttNotificationHelper {
         }
 
 
+        //登陆
+        if (TextUtils.equals(topic, mqttTopic.login)) {
+            dealLogin(data);
+        }
+
+
         show(title, content);
+
+    }
+
+
+    /**
+     * 处理登陆
+     */
+    private void dealLogin(String messageData) {
+        try {
+            org.json.JSONObject jsonObject = new org.json.JSONObject(messageData);
+            String from = jsonObject.getString("from");
+            String time = jsonObject.getString("time");
+            if (!TextUtils.isEmpty(from)) {
+                String clientId = DeviceUtils.getUniqueIdForThisApp(App.context);
+                if (!TextUtils.equals(from, clientId)) {
+//                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
+                    //只有在登录之后的  请求踢账号才有效
+                    if (App.loginDate != null && App.loginDate.before(StringUtils.string2Date(time)))
+                        EventBus.getDefault().post(new Event.OffLine());
+                }
+            } else {
+//                    Logger.i("相同设备登陆");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
