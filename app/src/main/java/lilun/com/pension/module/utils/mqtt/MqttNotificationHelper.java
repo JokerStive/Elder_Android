@@ -53,13 +53,16 @@ public class MqttNotificationHelper {
 
                 // 公告，展示到通知栏
                 if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
-                    title = "公告";
-                    content = infoJson.getString("name");
+                    String parentId = infoJson.getString("parentId");
+                    if (parentId.endsWith("社区公告")) {
+                        title = "公告";
+                        content = infoJson.getString("name");
+                    }
                 }
 
 
                 //普通求助
-                if (TextUtils.equals(topic, mqttTopic.normal_announce)){
+                if (TextUtils.equals(topic, mqttTopic.normal_help)) {
                     EventBus.getDefault().post(new Event.RefreshHelpData());
                 }
             }
