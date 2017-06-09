@@ -90,7 +90,7 @@ public interface ApiService {
     /**
      * 更新一个account
      */
-    @PUT("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
+    @PUT("Accounts/{id}")
     Observable<Response<Account>> putAccount(@Path("id") String accountId, @Body Account account);
 
     /**

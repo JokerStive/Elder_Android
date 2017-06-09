@@ -31,6 +31,7 @@ import lilun.com.pension.base.BaseTakePhotoFragment;
 import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.Area;
 import lilun.com.pension.module.bean.IconModule;
+import lilun.com.pension.module.bean.OrganizationAccount;
 import lilun.com.pension.module.bean.TakePhotoResult;
 import lilun.com.pension.module.utils.BitmapUtils;
 import lilun.com.pension.module.utils.PreUtils;
@@ -39,6 +40,7 @@ import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.module.utils.ToastHelper;
 import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
+import lilun.com.pension.ui.welcome.LoginModule;
 import lilun.com.pension.widget.CircleImageView;
 import lilun.com.pension.widget.NormalDialog;
 import lilun.com.pension.widget.NormalTitleBar;
@@ -146,8 +148,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     private void settingOfNickName() {
-        new NormalDialog().createEditMessage(_mActivity, "修改昵称",
-                false,
+        new NormalDialog().createEditMessage(_mActivity, "修改昵称", true,
                 new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -188,8 +189,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     private void settingOfFirstPhone() {
-        new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话",
-                false,
+        new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话", true,
                 new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -216,19 +216,33 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Account>(_mActivity) {
                                @Override
-                               public void _next(Account account) {
+                               public void _next(Account o) {
                                    //修改成功  更新显示名
                                    tvBelongStress.setText(distrect.getName());
-                                   if (account != null && account.getProfile() != null) {
-                                       User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
-                                       //默认组织id
-                                       User.putBelongsOrganizationId(account.getProfile().getBelongToDistrict());
-                                       User.putCurrentOrganizationId(account.getProfile().getBelongToDistrict());
-                                       //默认组织账号id
-                                       User.putBelongOrganizationAccountId(account.getDefaultContactId());
-                                       //当前组织账号id
-                                       User.putCurrentOrganizationAccountId(account.getDefaultContactId());
-                                   }
+                                   //走Login接口
+                                   LoginModule loginModule = new LoginModule();
+                                   loginModule.login(User.getUserName(), User.getPassword())
+                                           .flatMap(tokenInfo -> loginModule.getAccountInfo(tokenInfo, User.getUserName(), User.getPassword()))
+                                           .flatMap(account -> loginModule.getBelongOrganizations(account))
+                                           .compose(RxUtils.applySchedule())
+                                           .subscribe(new RxSubscriber<List<OrganizationAccount>>(_mActivity) {
+                                               @Override
+                                               public void _next(List<OrganizationAccount> organizationAccounts) {
+                                                   if (!TextUtils.isEmpty(User.getBelongsOrganizationId())) {
+                                                       loginModule.putBelongOrganizations(organizationAccounts);
+
+                                                   } else {
+                                                       ToastHelper.get().showShort("脏数据");
+                                                   }
+                                               }
+
+                                               @Override
+                                               public void onError(Throwable e) {
+                                                   int[] errorCode = {401};
+                                                   String[] errorMessage = {"账号或密码错误，请重新输入"};
+                                                   super.onError(e, errorCode, errorMessage);
+                                               }
+                                           });
                                    EventBus.getDefault().post(new Event.AccountSettingChange());
                                    EventBus.getDefault().post(new Event.ChangedOrganization());
                                }
