@@ -74,11 +74,14 @@ public class MqttNotificationHelper {
 
         //紧急消息
         if (TextUtils.equals(topic, mqttTopic.urgent_help)) {
-            title = "紧急求助";
-            content = jsonObject.getString("message");
+            String userId = jsonObject.getString("from");
+            if (!TextUtils.equals(userId,User.getUserId())){
+                title = "紧急求助";
+                content = jsonObject.getString("message");
 
-            //发送事件，展示到app
-            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+                //发送事件，展示到app
+                EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+            }
         }
 
 

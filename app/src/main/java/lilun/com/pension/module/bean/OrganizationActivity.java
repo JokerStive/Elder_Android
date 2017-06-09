@@ -177,7 +177,7 @@ public class OrganizationActivity extends BaseBean {
         this.repeatedCount = repeatedCount;
     }
 
-    public int getMaxPartner() {
+    public Integer getMaxPartner() {
         return maxPartner;
     }
 
