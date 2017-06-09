@@ -10,5 +10,4 @@ public class ConfigUri {
 
     public static final String MQTT_URL = "tcp://mqtt.lishenghuo.com.cn:1883";
 
-
 }

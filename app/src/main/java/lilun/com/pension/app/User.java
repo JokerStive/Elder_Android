@@ -292,6 +292,29 @@ public class User {
         }
         return result;
     }
+
+    /**
+    *根据层级拼接id
+    */
+    public static  String spliceId(String suffix) {
+        String result = "[";
+        String currentOrganizationId = User.getCurrentOrganizationId();
+        String[] split = currentOrganizationId.split("/");
+        if (split.length < 4) return "";
+        for (int i = 4; i < split.length; i++) {
+            String parentId = "";
+            for (int j = 1; j <= i; j++) {
+                parentId += "/" + split[j];
+            }
+            if (i == 4) {
+                result += "\"" + parentId + suffix + "\"";
+            } else {
+                result += "," + "\"" + parentId + suffix + "\"";
+            }
+        }
+        result += "]";
+        return result;
+    }
 }
 
 

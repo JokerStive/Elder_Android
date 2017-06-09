@@ -6,9 +6,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
-import lilun.com.pension.app.Config;
 import lilun.com.pension.app.Constants;
-import lilun.com.pension.app.OrganizationChildrenConfig;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.RxPresenter;
@@ -34,7 +32,9 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
 
     @Override
     public void getInformation() {
-        String filter = "{\"where\":{\"organizationId\":\"" + OrganizationChildrenConfig.information() + "\",\"isCat\":\"false\",\"parentId\":\"" + OrganizationChildrenConfig.information() + Config.announce_root + "\"}}";
+        String parentIdFilter;
+        parentIdFilter = User.spliceId("/#information/公告");
+        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
         addSubscribe(NetHelper.getApi()
                 .getInformations(StringUtils.addFilterWithDef(filter, 0))
                 .compose(RxUtils.handleResult())
@@ -43,6 +43,7 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                     @Override
                     public void _next(List<Information> information) {
                         view.showInformation(information);
+//                        view.showInformation(information);
                     }
                 }));
     }
@@ -59,7 +60,7 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                         String organizationID = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
                         if (TextUtils.equals(organizationID, belongToDistrict)) {
                             String needChangeOrganizationAccountId = organizationAccount.getId();
-                            Logger.d("异常，需要切换成自己本来的所属组织---"+belongToDistrict);
+                            Logger.d("异常，需要切换成自己本来的所属组织---" + belongToDistrict);
 //                            Logger.d("当前正确的组织账号iD = " + User.getCurrentOrganizationAccountId());
                             changeBelongOrganization(needChangeOrganizationAccountId, -1);
                         }

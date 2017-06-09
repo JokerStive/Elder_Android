@@ -31,7 +31,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
             view.showClassifies(activityCategories);
             return;
         }
-        String filter = "{\"where\":{\"organizationId\":\"" + organizationId + "/#activity-category\",\"setting\":{\"neq\": \"isSpecial\"}},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"organizationId\":\"" + organizationId + "/#activity-category\",\"setting\":{\"$nin\": \"isSpecial\"}},\"order\":\"orderId\"}";
 //        String filter = "{\"where\":{\"organizationId\":\""+organizationId+"/#activity-category\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getActivityCategories(filter)

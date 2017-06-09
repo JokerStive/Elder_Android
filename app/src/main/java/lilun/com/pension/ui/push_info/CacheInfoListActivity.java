@@ -56,9 +56,9 @@ public class CacheInfoListActivity extends BaseActivity {
     protected void getTransferData() {
         super.getTransferData();
         title = getIntent().getStringExtra("title");
-        classify = getIntent().getIntExtra("classify",-1);
+        classify = getIntent().getIntExtra("classify", -1);
         Preconditions.checkNull(title);
-        if (classify==-1){
+        if (classify == -1) {
             throw new NullPointerException();
         }
     }
@@ -66,11 +66,7 @@ public class CacheInfoListActivity extends BaseActivity {
 
     @Override
     protected void initPresenter() {
-//        c
-        cacheMsgs = DataSupport.where("classify = ? and userId=?", classify+"", User.getUserId()).find(CacheMsg.class);
-//        if(classify.equals(Constants.organizationInfo))
-//        else
-//            cacheMsgs = DataSupport.where("verb = ?", PushMessage.VERB_HELP).find(PushMessage.class);
+        cacheMsgs = DataSupport.where("classify = ? and userId=?", classify + "", User.getUserId()).find(CacheMsg.class);
     }
 
 
@@ -108,7 +104,7 @@ public class CacheInfoListActivity extends BaseActivity {
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
                     cacheInfoAdapter.clear();
-                    DataSupport.deleteAll(CacheMsg.class, "classify = ? and userId= ? ", classify+"", User.getUserId());
+                    DataSupport.deleteAll(CacheMsg.class, "classify = ? and userId= ? ", classify + "", User.getUserId());
                 })
                 .onNegative((dialog1, which1) -> dialog1.dismiss())
                 .show();
@@ -130,21 +126,6 @@ public class CacheInfoListActivity extends BaseActivity {
             }
         }
 
-
-//        else {
-//            Logger.d("数据库--" + PushMessage.VERB_HELP + "---缓存的条数--" + cacheMsgs.size());
-//            for (int i = 0; i < cacheMsgs.size(); i++) {
-//                PushMessage pushMessage = cacheMsgs.get(i);
-//                CacheInfo cacheInfo = new CacheInfo("姓名：" + pushMessage.getTitle(),
-//                        "位置：" + pushMessage.getAddress(),
-//                        "发生时间：" + pushMessage.getTime(),
-//                        "联系电话：" + pushMessage.getMobile());
-//
-//                if (cacheInfo != null) {
-//                    cacheInfos.add(cacheInfo);
-//                }
-//            }
-//        }
         return cacheInfos;
     }
 
@@ -154,7 +135,7 @@ public class CacheInfoListActivity extends BaseActivity {
         CacheMsgClassify msgClassify = new CacheMsgClassify();
 
         //紧急求助
-        if (classify==msgClassify.urgent_help){
+        if (classify == msgClassify.urgent_help) {
             cacheInfo = new CacheInfo("姓名：" + dataJson.getString("title"),
                     "位置：" + dataJson.getString("address"),
                     "发生时间：" + StringUtils.IOS2ToUTC(dataJson.getString("time"), 6),
@@ -163,52 +144,32 @@ public class CacheInfoListActivity extends BaseActivity {
 
 
         //公告
-        if (classify==msgClassify.announce){
+        if (classify == msgClassify.announce) {
             String infoJson = dataJson.getString("data");
-            if (infoJson!=null){
+            if (infoJson != null) {
                 Information information = JSON.parseObject(infoJson, Information.class);
-                if (information!=null){
-                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getContext());
+                if (information != null) {
+                    String content = null;
+                    if (information.getContextType() == 0) {
+                        content = information.getContext();
+                    }
+                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), content);
                 }
             }
 
 
-
             //邻居互助
-            if (classify==msgClassify.normal_help){
+            if (classify == msgClassify.normal_help) {
                 String aidJson = dataJson.getString("data");
-                if (aidJson!=null){
+                if (aidJson != null) {
                     OrganizationAid aid = JSON.parseObject(infoJson, OrganizationAid.class);
-                    if (aid!=null){
+                    if (aid != null) {
                         cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getTitle(), StringUtils.IOS2ToUTC(aid.getCreatedAt(), 6), aid.getMemo());
                     }
                 }
             }
-//            Information Information = gson.fromJson(data, Information.class);
-//            if (infoJson@!)
-//            cacheInfo = new CacheInfo("姓名：" + dataJson.getString("title"),
-//                    "位置：" + dataJson.getString("address"),
-//                    "发生时间：" + StringUtils.IOS2ToUTC(dataJson.getString("time"), 6),
-//                    "联系电话：" + dataJson.getString("mobile"));
         }
 
-
-//        //公告
-//        if (classify==msgClassify.urgent_help) {
-//            case msgClassify.urgent_help:
-//                OrganizationAid aid = gson.fromJson(data, OrganizationAid.class);
-//                if (title.equals("紧急求助") && aid.getKind() == 2) {
-//                    String createdAt = aid.getCreatedAt();
-//                    cacheInfo = new CacheInfo("姓名：" + aid.getCreatorName(), "位置：" + aid.getAddress(), "发生时间：" + StringUtils.IOS2ToUTC(createdAt, 6), "联系电话：" + aid.getMobile());
-//                }
-//                break;
-//
-//            case Constants.organizationInfo:
-//                Information Information = gson.fromJson(data, Information.class);
-//                cacheInfo = new CacheInfo(Information.getCreatorName(), Information.getTitle(), StringUtils.IOS2ToUTC(Information.getCreatedAt(), 6), Information.getContext());
-//                break;
-//
-//        }
         return cacheInfo;
     }
 

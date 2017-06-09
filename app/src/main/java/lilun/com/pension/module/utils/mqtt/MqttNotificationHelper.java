@@ -41,7 +41,7 @@ public class MqttNotificationHelper {
         JSONObject jsonObject = JSON.parseObject(data);
         String title = null;
         String content = null;
-        int classify=-1;
+        int classify = -1;
 
         //公告和普通求助
         if (TextUtils.equals(topic, mqttTopic.normal_announce) || TextUtils.equals(topic, mqttTopic.normal_help)) {
@@ -62,7 +62,7 @@ public class MqttNotificationHelper {
 
                 // 1 ----- 公告，展示到通知栏
                 if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
-                    classify=msgClassify.announce;
+                    classify = msgClassify.announce;
 
                     String parentId = infoJson.getString("parentId");
                     if (parentId.endsWith("社区公告")) {
@@ -74,7 +74,7 @@ public class MqttNotificationHelper {
 
                 //2 ----- 普通求助
                 if (TextUtils.equals(topic, mqttTopic.normal_help)) {
-                    classify=msgClassify.normal_help;
+                    classify = msgClassify.normal_help;
 
                     EventBus.getDefault().post(new Event.RefreshHelpData());
                 }
@@ -82,21 +82,17 @@ public class MqttNotificationHelper {
         }
 
 
-        //3 ----- 紧急消息
+        //3 -----紧急求助
         if (TextUtils.equals(topic, mqttTopic.urgent_help)) {
-            classify=msgClassify.urgent_help;
+            classify = msgClassify.urgent_help;
+            title = "紧急求助";
+            content = jsonObject.getString("message");
 
-            String userId = jsonObject.getString("from");
-            if (!TextUtils.equals(userId, User.getUserId())) {
-                title = "紧急求助";
-                content = jsonObject.getString("message");
-
-                //发送事件，展示到app
-                EventBus.getDefault().post(new Event.BoardMsg(topic, data));
-            }
+            //发送事件，展示到app
+            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
         }
 
-
+//
         //4 ----- 登陆
         if (TextUtils.equals(topic, mqttTopic.login)) {
             dealLogin(data);
@@ -104,7 +100,7 @@ public class MqttNotificationHelper {
 
 
         //保存到数据库，绑定用户
-        if (classify!=-1){
+        if (classify != -1) {
             cacheMsg.save();
         }
 
@@ -112,7 +108,6 @@ public class MqttNotificationHelper {
         show(title, content);
 
     }
-
 
 
     /**
