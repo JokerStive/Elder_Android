@@ -17,6 +17,8 @@ import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.app.User;
+import lilun.com.pension.module.bean.CacheMsg;
+import lilun.com.pension.module.utils.CacheMsgClassify;
 import lilun.com.pension.module.utils.DeviceUtils;
 import lilun.com.pension.module.utils.StringUtils;
 
@@ -32,10 +34,14 @@ public class MqttNotificationHelper {
 
     public void showOnNotification(String topic, String data) {
         MqttTopic mqttTopic = new MqttTopic();
+        CacheMsg cacheMsg = new CacheMsg(data);
+        CacheMsgClassify msgClassify = new CacheMsgClassify();
+
 
         JSONObject jsonObject = JSON.parseObject(data);
         String title = null;
         String content = null;
+        int classify=-1;
 
         //公告和普通求助
         if (TextUtils.equals(topic, mqttTopic.normal_announce) || TextUtils.equals(topic, mqttTopic.normal_help)) {
@@ -54,8 +60,10 @@ public class MqttNotificationHelper {
                 EventBus.getDefault().post(new Event.BoardMsg(topic, data));
 
 
-                // 公告，展示到通知栏
+                // 1 ----- 公告，展示到通知栏
                 if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
+                    classify=msgClassify.announce;
+
                     String parentId = infoJson.getString("parentId");
                     if (parentId.endsWith("社区公告")) {
                         title = "公告";
@@ -64,18 +72,22 @@ public class MqttNotificationHelper {
                 }
 
 
-                //普通求助
+                //2 ----- 普通求助
                 if (TextUtils.equals(topic, mqttTopic.normal_help)) {
+                    classify=msgClassify.normal_help;
+
                     EventBus.getDefault().post(new Event.RefreshHelpData());
                 }
             }
         }
 
 
-        //紧急消息
+        //3 ----- 紧急消息
         if (TextUtils.equals(topic, mqttTopic.urgent_help)) {
+            classify=msgClassify.urgent_help;
+
             String userId = jsonObject.getString("from");
-            if (!TextUtils.equals(userId,User.getUserId())){
+            if (!TextUtils.equals(userId, User.getUserId())) {
                 title = "紧急求助";
                 content = jsonObject.getString("message");
 
@@ -85,15 +97,22 @@ public class MqttNotificationHelper {
         }
 
 
-        //登陆
+        //4 ----- 登陆
         if (TextUtils.equals(topic, mqttTopic.login)) {
             dealLogin(data);
         }
 
 
+        //保存到数据库，绑定用户
+        if (classify!=-1){
+            cacheMsg.save();
+        }
+
+        //现实到notification
         show(title, content);
 
     }
+
 
 
     /**

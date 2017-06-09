@@ -132,7 +132,7 @@ public class MQTTCallbackBus implements MqttCallback {
                         pushMessage.setActivityId(split[split.length - 2]);
                 }
 
-                pushMessage.save();
+//                pushMessage.save();
 
                 //处理活动
                 dealActivity(topic, pushMessage);
