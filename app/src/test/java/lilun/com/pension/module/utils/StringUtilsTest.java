@@ -32,6 +32,21 @@ public class StringUtilsTest {
         current = "/地球村/中国/重庆/重庆市/江北区/观音桥街道";
         register = "/地球村/中国/重庆/重庆市/江北区/观音桥街道";
         assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
+        current = "";
+        register = "/地球村/中国/重庆/重庆市/江北区/观音桥街道";
+        assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
+        current = "/地球村/中国/重庆/重庆市/江北区/观音桥街道";
+        register = "";
+        assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
+        current = "";
+        register = "";
+        assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
+        current = null;
+        register = null;
+        assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
+        current = "/越陷越深";
+        register = "/";
+        assertEquals(false, StringUtils.isResisterTopCommunity(current, register));
     }
 
 }

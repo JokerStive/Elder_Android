@@ -230,7 +230,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                                                public void _next(List<OrganizationAccount> organizationAccounts) {
                                                    if (!TextUtils.isEmpty(User.getBelongsOrganizationId())) {
                                                        loginModule.putBelongOrganizations(organizationAccounts);
-
+                                                       EventBus.getDefault().post(new Event.ChangedOrganization());
                                                    } else {
                                                        ToastHelper.get().showShort("脏数据");
                                                    }
@@ -244,7 +244,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                                                }
                                            });
                                    EventBus.getDefault().post(new Event.AccountSettingChange());
-                                   EventBus.getDefault().post(new Event.ChangedOrganization());
+
                                }
                            }
 

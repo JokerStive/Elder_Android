@@ -467,9 +467,11 @@ public class StringUtils {
     /**
      * 判断是否为用户注册小区及其上级小区
      * 注册地区必须是有到社区或小区，否则返回false
+     *
      * @return
      */
     public static boolean isResisterTopCommunity(String current, String register) {
+        if (register == null || current == null) return false;
         String[] district = register.split("/");
         String[] curDistrict = current.split("/");
         if (district.length < 2) return false;
@@ -477,9 +479,9 @@ public class StringUtils {
         if (district.length == 9) {
             if (curDistrict[curDistrict.length - 1].equals(district[district.length - 1])
                     || curDistrict[curDistrict.length - 1].equals(district[district.length - 2]))
-            return true;
+                return true;
         } else if (district.length == 8) {
-            if (curDistrict[curDistrict.length - 1].equals( district[district.length - 1]))
+            if (curDistrict[curDistrict.length - 1].equals(district[district.length - 1]))
                 return true;
         }
         return false;
