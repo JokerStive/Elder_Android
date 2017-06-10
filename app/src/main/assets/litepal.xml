@@ -33,6 +33,7 @@
     -->
     <list>
         <mapping class="lilun.com.pension.module.bean.PushMessage" />
+        <mapping class="lilun.com.pension.module.bean.CacheMsg" />
     </list>
 
     <!--

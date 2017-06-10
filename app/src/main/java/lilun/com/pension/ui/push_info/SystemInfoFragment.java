@@ -8,8 +8,8 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pension.R;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.base.BaseFragment;
+import lilun.com.pension.module.utils.CacheMsgClassify;
 
 /**
  * 系统消息
@@ -56,21 +56,22 @@ public class SystemInfoFragment extends BaseFragment {
 
     @OnClick({R.id.tv_urgent, R.id.tv_announce})
     public void onClick(View view) {
+        CacheMsgClassify msgClassify = new CacheMsgClassify();
         switch (view.getId()) {
             case R.id.tv_urgent:
-                startCacheInfoList(tvUrgent, Constants.organizationAid);
+                startCacheInfoList(tvUrgent, msgClassify.urgent_help);
                 break;
 
             case R.id.tv_announce:
-                startCacheInfoList(tvAnnounce, Constants.organizationInfo);
+                startCacheInfoList(tvAnnounce, msgClassify.announce);
                 break;
         }
     }
 
-    private void startCacheInfoList(TextView textView, String model) {
+    private void startCacheInfoList(TextView textView, int classify) {
         Intent intent = new Intent(_mActivity, CacheInfoListActivity.class);
         intent.putExtra("title", textView.getText().toString());
-        intent.putExtra("model", model);
+        intent.putExtra("classify", classify);
         startActivity(intent);
     }
 

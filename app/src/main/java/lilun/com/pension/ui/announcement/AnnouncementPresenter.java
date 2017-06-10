@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import lilun.com.pension.app.Config;
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.RxPresenter;
 import lilun.com.pension.module.bean.Information;
@@ -50,9 +49,9 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
     public void getAnnounce(String parentId) {
         String parentIdFilter;
         if (TextUtils.isEmpty(parentId)) {
-            parentIdFilter = spliceParentId(Config.announce_root);
+            parentIdFilter =User.spliceId("/#information/公告");
         } else {
-            parentIdFilter = spliceParentId(Config.announce_root + "/" + parentId);
+            parentIdFilter =User.spliceId("/#information/公告/"+parentId);
         }
 
         String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
@@ -69,25 +68,25 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
                 }));
     }
 
-    private String spliceParentId(String name) {
-        String result = "[";
-        String currentOrganizationId = User.getCurrentOrganizationId();
-        String[] split = currentOrganizationId.split("/");
-        if (split.length < 4) return "";
-        for (int i = 4; i < split.length; i++) {
-            String parentId = "";
-            for (int j = 1; j <= i; j++) {
-                parentId += "/" + split[j];
-            }
-            if (i == 4) {
-                result += "\"" + parentId + "/#information/" + name + "\"";
-            } else {
-                result += "," + "\"" + parentId + "/#information/" + name + "\"";
-            }
-        }
-        result += "]";
-        return result;
-    }
+//    private String spliceParentId(String name) {
+//        String result = "[";
+//        String currentOrganizationId = User.getCurrentOrganizationId();
+//        String[] split = currentOrganizationId.split("/");
+//        if (split.length < 4) return "";
+//        for (int i = 4; i < split.length; i++) {
+//            String parentId = "";
+//            for (int j = 1; j <= i; j++) {
+//                parentId += "/" + split[j];
+//            }
+//            if (i == 4) {
+//                result += "\"" + parentId + "/#information/" + name + "\"";
+//            } else {
+//                result += "," + "\"" + parentId + "/#information/" + name + "\"";
+//            }
+//        }
+//        result += "]";
+//        return result;
+//    }
 
 
     @Override

@@ -30,7 +30,7 @@ public class Config {
     public static final String tourism_product_categoryId = "服务/养老机构/养老旅游";
 
 
-    public static String announce_root = "/公告";
+    public static String announce_root = "公告";
 
 
 }

@@ -111,7 +111,7 @@ public class InfoDetailFragment extends BaseFragment {
                     tvTitle.setText(information.getTitle());
                     tvAddress.setText(address);
                     if (!TextUtils.isEmpty(mobile)) {
-                        tvMobile.setText(String.format("联系电话:%$s", mobile));
+                        tvMobile.setText(String.format("联系电话:%1$s", mobile));
                     } else {
                         tvMobile.setVisibility(View.GONE);
                     }

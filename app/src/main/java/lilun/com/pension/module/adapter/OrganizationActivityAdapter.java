@@ -11,7 +11,6 @@ import java.util.List;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.IconUrl;
-import lilun.com.pension.app.User;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationActivity;
 import lilun.com.pension.module.utils.StringUtils;
@@ -82,7 +81,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         help.setText(R.id.tv_isJoin, context.getString(R.string.has_partin, partinNumber + ""));
 
         String numPeople;
-        if ("null".equals(String.valueOf(activity.getMaxPartner())) || "0".equals(String.valueOf(activity.getMaxPartner())))
+        if (activity.getMaxPartner()==null || 0==activity.getMaxPartner())
             numPeople = "不限";
         else
             numPeople = activity.getMaxPartner() + "人";

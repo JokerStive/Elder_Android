@@ -1,7 +1,5 @@
 package lilun.com.pension.ui.change_organization;
 
-import android.text.TextUtils;
-
 import com.orhanobut.logger.Logger;
 
 import java.util.List;

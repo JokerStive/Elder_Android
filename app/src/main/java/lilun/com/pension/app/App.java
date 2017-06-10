@@ -101,8 +101,8 @@ public class App extends Application {
         MqttTopic mqttTopic = new MqttTopic();
         String[] topics = {mqttTopic.normal_announce,
                 mqttTopic.normal_announce,
-                mqttTopic.login,
-                mqttTopic.urgent_help};
+                mqttTopic.personal_msg,
+                };
         for (String topic : topics) {
             MQTTManager.getInstance().subscribe(topic, 2);
         }

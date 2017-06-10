@@ -1,7 +1,6 @@
 package lilun.com.pension.module.utils.mqtt;
 
 import lilun.com.pension.app.User;
-import lilun.com.pension.module.utils.StringUtils;
 
 /**
  * 订阅的主题
@@ -15,8 +14,8 @@ public class MqttTopic {
     //普通求助
     public String normal_help = "OrganizationAid/.added";
 
-    //紧急求助
-    public String urgent_help = StringUtils.encodeURL(User.getBelongToDistrict() + "/#aid/.help").replace("%2F", "/");
+    //个人私有
+    public String personal_msg = "user/" + User.getUserName() + "/#";
 
     //公告
     public String normal_announce = "OrganizationInformation/.added";
@@ -24,6 +23,10 @@ public class MqttTopic {
 
     //登陆
     public String login = "user/" + User.getUserName() + "/.login";
+
+
+    //紧急求助
+    public String urgent_help = "user/" + User.getUserName() + "/.help";
 
 
 }
