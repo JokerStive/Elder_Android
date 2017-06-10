@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
+import lilun.com.pension.app.User;
 import lilun.com.pension.module.utils.PreUtils;
 import lilun.com.pension.module.utils.RegexUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -104,7 +105,11 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
         String phone = etPhone.getText().toString();
         if (!TextUtils.isEmpty(phone)) {
             if (RegexUtils.checkMobile(phone)) {
-                return true;
+                if (TextUtils.equals(phone, User.getUserId())){
+                    ToastHelper.get().showWareShort("不能是自己的手机");
+                }else {
+                    return true;
+                }
             } else {
                 ToastHelper.get().showWareShort("手机号格式错误");
             }

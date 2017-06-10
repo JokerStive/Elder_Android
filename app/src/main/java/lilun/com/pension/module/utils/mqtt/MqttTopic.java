@@ -26,7 +26,7 @@ public class MqttTopic {
 
 
     //紧急求助
-    public String urgent_help = "user/" + User.getUserName() + "/.help";
+    public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
 
 }

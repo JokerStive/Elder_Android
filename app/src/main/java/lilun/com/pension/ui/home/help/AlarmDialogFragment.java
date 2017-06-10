@@ -145,7 +145,7 @@ public class AlarmDialogFragment extends DialogFragment {
 //                        dismiss();
 //                    }
 //                });
-        String topic = "user/" +  PreUtils.getString("firstHelperPhone", "") + "/.help";
+        String topic = "user/" +  PreUtils.getString("firstHelperPhone", "") + "/.help/10";
         PushMessage pushMessage = new PushMessage();
         pushMessage.setVerb(PushMessage.VERB_HELP)
                 .setTitle(User.getName())
