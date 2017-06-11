@@ -127,5 +127,8 @@ dependencies {
     //  compile 'com.github.vanzh:AreaSelector:14ccddcb03'
     //腾讯bugly崩溃日志收集库
      compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    //数据库调试使用
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+
 }
 

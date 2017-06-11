@@ -118,19 +118,20 @@ public class MQTTCallbackBus implements MqttCallback {
     private void dealMessage(String topic, String messageData) {
 
         showOnNotification(topic, messageData);
-            PushMessage pushMessage = getPushMessageFromData(messageData);
-            if (pushMessage != null) {
-                if (topic.contains("%23activity")) {  //是活动聊天的数据
-                    String[] split = topic.split("/");
-                    if (split.length > 2)
-                        pushMessage.setActivityId(split[split.length - 2]);
-                }
-
-
-                //处理活动
-                dealActivity(topic, pushMessage);
-
+        PushMessage pushMessage = getPushMessageFromData(messageData);
+        if (pushMessage != null) {
+            if (topic.contains("%23activity")) {  //是活动聊天的数据
+                String[] split = topic.split("/");
+                if (split.length > 2)
+                    pushMessage.setActivityId(split[split.length - 2]);
+                pushMessage.save();
             }
+
+
+            //处理活动
+            dealActivity(topic, pushMessage);
+
+        }
 //        }
     }
 
@@ -142,7 +143,6 @@ public class MQTTCallbackBus implements MqttCallback {
         MqttNotificationHelper mqttNotificationHelper = new MqttNotificationHelper();
         mqttNotificationHelper.showOnNotification(topic, pushMessage);
     }
-
 
 
     /**
