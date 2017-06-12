@@ -98,11 +98,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         tvPosition.setText(User.getCurrentOrganizationName());
         mPresenter.getInformation();
     }
+
     //============更新用户头像
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void showNewSetting(Event.AccountSettingChange account){
+    public void showNewSetting(Event.AccountSettingChange account) {
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
     }
+
     @Override
     protected void initPresenter() {
         mPresenter = new HomePresenter();
@@ -125,7 +127,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
 
     }
-
 
 
     @Override
@@ -157,8 +158,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onResume() {
         super.onResume();
-        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
-        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
+//        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
+//        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
         mPresenter.needChangeToDefOrganization();
     }
 

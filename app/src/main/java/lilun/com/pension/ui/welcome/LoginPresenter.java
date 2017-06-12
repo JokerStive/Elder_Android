@@ -3,15 +3,20 @@ package lilun.com.pension.ui.welcome;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import lilun.com.pension.app.User;
 import lilun.com.pension.base.BaseActivity;
 import lilun.com.pension.base.RxPresenter;
+import lilun.com.pension.module.bean.Account;
 import lilun.com.pension.module.bean.OrganizationAccount;
+import lilun.com.pension.module.utils.ACache;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.ToastHelper;
+import lilun.com.pension.net.NetHelper;
 import lilun.com.pension.net.RxSubscriber;
 
 /**
@@ -47,11 +52,11 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                 .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity) mView) {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
-                        if (!TextUtils.isEmpty(User.getBelongsOrganizationId())){
-                            mModule.putBelongOrganizations(organizationAccounts);
-                            mView.loginSuccess();
+                        mModule.putBelongOrganizations(organizationAccounts);
+                        if (mModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
+                            changeSpecialOrganization();
                         }else {
-                            ToastHelper.get().showShort("脏数据");
+                            ToastHelper.get().showShort("账户没有defaultAccountId字段");
                         }
                     }
 
@@ -77,6 +82,59 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         }
 
         return true;
+    }
+
+
+    /**
+     * 当前是处在特殊组织时，需要切换回自己的小区
+     */
+    private void changeSpecialOrganization() {
+        String currentOrganizationId = User.getCurrentOrganizationId();
+        if (currentOrganizationId.contains("#department")) {
+            Logger.d("在特殊组织下需要切换");
+            List<OrganizationAccount> list = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
+            for (int i = 0; i < list.size(); i++) {
+                String organizationId = list.get(i).getOrganizationId();
+                if (organizationId.contains("#department") || organizationId.contains("社会组织")) {
+                    list.remove(i);
+                    i--;
+                }
+            }
+            for (int i = 0; i < list.size() - 1; i++) {
+                for (int j = 1; j < list.size() - i; j++) {
+                    if ((list.get(j - 1)).getOrganizationId().length() < (list.get(j)).getOrganizationId().length()) {   //比较两个整数的大小
+                        OrganizationAccount temp = list.get(j - 1);
+                        list.set((j - 1), list.get(j));
+                        list.set(j, temp);
+                    }
+                }
+            }
+
+            String targetId = list.get(0).getId();
+            changeDefOrganizationAccountId(targetId);
+        } else {
+            mView.loginSuccess();
+        }
+    }
+
+    private void changeDefOrganizationAccountId(String targetId) {
+        Account account = new Account();
+        account.setDefaultOrganizationId(targetId);
+        NetHelper.getApi().putAccount(User.getUserId(), account)
+                .compose(RxUtils.applySchedule())
+                .compose(RxUtils.handleResult())
+                .subscribe(new RxSubscriber<Account>((BaseActivity) mView) {
+                    @Override
+                    public void _next(Account account) {
+//                        User.putBelongOrganizationAccountId(account.getDefaultOrganizationId());
+                        if (mModule.saveUserAboutOrganization(targetId)) {
+                            mView.loginSuccess();
+                        }
+                        Logger.d("从特殊切换成功---当前组织账号id--"+account.getDefaultOrganizationId());
+                        Logger.d("从特殊切换成功---当前组织id--"+User.getBelongsOrganizationId());
+
+                    }
+                });
     }
 
 

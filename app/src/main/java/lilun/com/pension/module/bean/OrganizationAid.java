@@ -7,12 +7,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
-*互助模型
-*@author yk
-*create at 2017/2/13 10:49
-*email : yk_developer@163.com
-*/
-public class OrganizationAid extends DataSupport implements Serializable{
+ * 互助模型
+ *
+ * @author yk
+ *         create at 2017/2/13 10:49
+ *         email : yk_developer@163.com
+ */
+public class OrganizationAid extends DataSupport implements Serializable {
     private static final long serialVersionUID = 1L;
 
 

@@ -2,8 +2,6 @@ package lilun.com.pension.ui.welcome;
 
 import android.text.TextUtils;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -39,9 +37,6 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public Observable<Account> getAccountInfo(TokenInfo tokenInfo, String username, String password) {
         putToken(tokenInfo.getId());
-//        long time = new Date().getTime();
-//        long tokenEffectiveDuration = time + tokenInfo.getTtl();
-//        PreUtils.putLong(User.tokenEffectiveDuration, tokenEffectiveDuration);
 
         User.putPassword(password);
         return NetHelper.getApi()
@@ -67,76 +62,149 @@ public class LoginModule implements LoginContract.Module {
 
     @Override
     public void putAccountInfo(Account account) {
+
+        //用户名
         User.putUserId(account.getId());
-        OrganizationAccount organizationAccount = account.getOa();
-        if (account.getProfile() != null) {
-            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
-        }
-        if (organizationAccount != null) {
-            String organizationId = organizationAccount.getOrganizationId();
-            if (!TextUtils.isEmpty(organizationId)) {
-                String defOrganizationId = StringUtils.removeSpecialSuffix(organizationId);
-                Logger.d("账户默认所属组织 = " + defOrganizationId);
 
-                //默认组织id
-                User.putBelongsOrganizationId(defOrganizationId);
-                Logger.d("默认组织id" + organizationAccount.getId());
-                //当前组织id
-                User.putCurrentOrganizationId(defOrganizationId);
+        //默认所属组织账号id,这个必须存在，否则脏数据
+        User.putBelongOrganizationAccountId(account.getDefaultOrganizationId());
 
-                //创建者是否是自己
-                User.putIsCustomer(account.isCustomer());
+        //创建者是否是自己
+        User.putIsCustomer(account.isCustomer());
 
-                //用户名
-                User.putName(account.getName());
-                User.putUserName(account.getUsername());
-                if (null != account.getImage() && account.getImage().size() > 0)
-                    User.puttUserAvatar(account.getImage().get(0).getFileName());
-                //手机号
-                User.putMobile(account.getMobile());
-                //个人资料
-                User.putContactId(account.getDefaultContactId() == null ? "" : account.getDefaultContactId());
+        //姓名
+        User.putName(account.getName());
 
-                //默认组织账号id
-                User.putBelongOrganizationAccountId(organizationAccount.getId());
-                Logger.d("默认组织账号id" + organizationAccount.getId());
+        //用户名
+        User.putUserName(account.getUsername());
 
-                //当前组织账号id
-                User.putCurrentOrganizationAccountId(organizationAccount.getId());
+        //
+        if (null != account.getImage() && account.getImage().size() > 0)
+            User.puttUserAvatar(account.getImage().get(0).getFileName());
 
 
-//                App.resetMQTT();
-            }
-        } else {
-//            ToastHelper.get().showWareShort("脏数据,账号没有所属组织");
-        }
+        //手机号
+        User.putMobile(account.getMobile());
+
+
+        //个人资料
+        User.putContactId(account.getDefaultContactId() == null ? "" : account.getDefaultContactId());
+
+//        saveAboutAccountInfo(account);
+//
+//        OrganizationAccount organizationAccount = account.getOa();
+//        if (account.getProfile() != null) {
+//            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+//        }
+//        if (organizationAccount != null) {
+//            String organizationId = organizationAccount.getOrganizationId();
+//            if (!TextUtils.isEmpty(organizationId)) {
+////                String defOrganizationId = StringUtils.removeSpecialSuffix(organizationId);
+////                Logger.d("账户默认所属组织 = " + defOrganizationId);
+//
+//                //默认组织id
+////                User.putBelongsOrganizationId(defOrganizationId);
+////                Logger.d("默认组织id" + organizationAccount.getId());
+//                //当前组织id
+////                User.putCurrentOrganizationId(defOrganizationId);
+//
+//
+//
+//                //默认组织账号id
+//                User.putBelongOrganizationAccountId(organizationAccount.getId());
+//                Logger.d("默认组织账号id" + organizationAccount.getId());
+//
+//                //当前组织账号id
+//                User.putCurrentOrganizationAccountId(organizationAccount.getId());
+//
+//
+//            }
+//        } else {
+////            ToastHelper.get().showWareShort("脏数据,账号没有所属组织");
+//        }
 
     }
+
+//    private void saveAboutAccountInfo(Account account) {
+//
+//
+//
+//
+//    }
 
 
     @Override
     public void putBelongOrganizations(List<OrganizationAccount> organizations) {
         ACache.get().put(User.belongOrganizations, (Serializable) organizations);
+//        for (OrganizationAccount oa : organizations) {
+//            String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
+//            if (organizationId.equals(User.getBelongToDistrict())) {
+//                //  User.putRootOrganizationAccountId(oa.getId());
+//                User.putBelongsOrganizationId(User.getBelongToDistrict());
+//                User.putCurrentOrganizationId(User.getBelongToDistrict());
+//                User.putBelongOrganizationAccountId(oa.getId());
+//                User.putCurrentOrganizationAccountId(oa.getId());
+//            }
+//            if (organizationId.equals(Constants.organization_root)) {
+//                User.putRootOrganizationAccountId(oa.getId());
+//            }
+//
+//            if (organizationId.contains(Constants.special_organization_root)) {
+//                User.putIsCustomer(false);
+//                return;
+//            }
+//        }
+//        User.putIsCustomer(true);
+    }
 
-        for (OrganizationAccount oa : organizations) {
-            String organizationId = StringUtils.removeSpecialSuffix(oa.getOrganizationId());
-            if (organizationId.equals(User.getBelongToDistrict())) {
-                //  User.putRootOrganizationAccountId(oa.getId());
-                User.putBelongsOrganizationId(User.getBelongToDistrict());
-                User.putCurrentOrganizationId(User.getBelongToDistrict());
-                User.putBelongOrganizationAccountId(oa.getId());
-                User.putCurrentOrganizationAccountId(oa.getId());
-            }
-            if (organizationId.equals(Constants.organization_root)) {
-                User.putRootOrganizationAccountId(oa.getId());
+
+    @Override
+    public boolean saveUserAboutOrganization(String belongOrganizationAccountId) {
+//        String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
+        List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
+        if (!TextUtils.isEmpty(belongOrganizationAccountId) && organizationAccounts != null) {
+            for (OrganizationAccount organizationAccount : organizationAccounts) {
+
+                String organizationAccountId = organizationAccount.getId();
+                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
+
+
+                if (organizationId.equals(Constants.organization_root)) {
+                    User.putRootOrganizationAccountId(organizationAccount.getId());
+                }
+
+                if (organizationId.contains(Constants.special_organization_root)) {
+                    User.putIsCustomer(false);
+
+                }
+
+                //如果其中一个organizationAccountId和account的defacltOrganizationId相同，则这个organizationAccount就是默认的
+                if (organizationAccountId.equals(belongOrganizationAccountId)) {
+
+                    //默认组织id
+                    User.putBelongsOrganizationId(organizationId);
+
+                    //当前组织id
+                    User.putCurrentOrganizationId(organizationId);
+
+                    //默认组织账号id
+                    User.putBelongOrganizationAccountId(organizationAccountId);
+
+                    //当前组织账号id
+                    User.putCurrentOrganizationAccountId(organizationAccountId);
+
+//
+//                    Logger.d("存的当前组织id---"+organizationId);
+//                    Logger.d("存的当前组织账号id---"+organizationAccountId);
+
+                    return true;
+                }
+
             }
 
-            if (organizationId.contains(Constants.special_organization_root)) {
-                User.putIsCustomer(false);
-                return;
-            }
         }
-        User.putIsCustomer(true);
+
+        return false;
     }
 
 
@@ -146,4 +214,6 @@ public class LoginModule implements LoginContract.Module {
         account.setPassword(password);
         return account;
     }
+
+
 }

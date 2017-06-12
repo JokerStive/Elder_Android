@@ -43,6 +43,8 @@ public interface LoginContract {
 
         void putBelongOrganizations(List<OrganizationAccount> organizations);
 
+        boolean saveUserAboutOrganization(String belongOrganizationAccountId);
+
     }
 
 }

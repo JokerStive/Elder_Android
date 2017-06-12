@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
 
@@ -49,10 +49,10 @@ public class App extends Application {
 
         //日志
         if (BuildConfig.LOG_DEBUG) {
-//               Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
-            Logger.addLogAdapter(new AndroidLogAdapter());
+            Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
+//            Logger.addLogAdapter(new AndroidLogAdapter());
         } else {
-            //   Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
+            Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
         }
 
         //内存泄漏
@@ -102,7 +102,7 @@ public class App extends Application {
         String[] topics = {mqttTopic.normal_announce,
                 mqttTopic.normal_announce,
                 mqttTopic.personal_msg,
-                };
+        };
         for (String topic : topics) {
             MQTTManager.getInstance().subscribe(topic, 2);
         }

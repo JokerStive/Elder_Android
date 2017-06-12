@@ -84,7 +84,7 @@ public interface ApiService {
      * 获取当前账户信息
      */
 
-    @GET("Accounts/{id}/?filter={\"include\":\"defaultOrganization\"}")
+    @GET("Accounts/{id}")
     Observable<Response<Account>> getAccountInfo(@Path("id") String accountId);
 
     /**
