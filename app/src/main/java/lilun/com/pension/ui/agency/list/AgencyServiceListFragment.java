@@ -33,7 +33,6 @@ import lilun.com.pension.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pension.widget.FilterInputRangeView;
 import lilun.com.pension.widget.NormalItemDecoration;
 import lilun.com.pension.widget.SearchTitleBar;
-import lilun.com.pension.widget.filter_view.AreaFilter;
 import lilun.com.pension.widget.filter_view.FilterView;
 
 /**
@@ -216,8 +215,10 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setOrganizationId(OrganizationChildrenConfig.product(mCategoryId));
         } else {
             productFilter.where.setCategoryId(mCategoryId);
-            if (mCategoryId.contains(Constants.service_residentail))
-                productFilter.where.addArea(User.getCurrentOrganizationId());
+            if (mCategoryId.contains(Constants.service_residentail)) {
+                //如果居家服务，就要服务区域是当前组织的层级id
+                productFilter.where.getAreaIds().setInq(User.levelIds());
+            }
             if (!User.isCustomer()) {
                 productFilter.where.setCreatorId(User.getUserId());
             }

@@ -49,7 +49,6 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
     public void getHelps(String filter, int skip) {
         Logger.d("求助filter = "+filter);
         addSubscribe(NetHelper.getApi()
-//                .getOrganizationAids(OrganizationChildrenConfig.aid(), StringUtils.addFilterWithDef(filter, skip))
                 .getOrganizationAids(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
