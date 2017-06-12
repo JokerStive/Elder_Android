@@ -60,7 +60,7 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     protected void initView(LayoutInflater inflater) {
         String name = User.getCurrentOrganizationName();
         tvCurrentOrganization.setText("当前位置:" + name);
-        tvLocatAddress.setText(StringUtils.getOrganizationNameFromId(User.getBelongToDistrict()));
+        tvLocatAddress.setText(StringUtils.getOrganizationNameFromId(User.getBelongsOrganizationId()));
         tvLocatAddress.setOnClickListener(v->{
             if (User.currentOrganizationHasChanged()){
                 new NormalDialog().createNormal(_mActivity, "确定要切换回居住小区么？", new NormalDialog.OnPositiveListener() {

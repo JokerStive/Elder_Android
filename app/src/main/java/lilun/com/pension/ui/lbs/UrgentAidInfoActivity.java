@@ -26,10 +26,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.adapter.UrgentInfoAdapter;
 import lilun.com.pension.module.bean.OrganizationAid;
+import lilun.com.pension.module.utils.CacheMsgClassify;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.ui.push_info.CacheInfoListActivity;
 
@@ -182,9 +182,10 @@ public class UrgentAidInfoActivity extends Activity {
 
             case R.id.btn_all:
                 //查看全部
+                CacheMsgClassify msgClassify = new CacheMsgClassify();
                 Intent intent = new Intent(this, CacheInfoListActivity.class);
                 intent.putExtra("title", "紧急求助");
-                intent.putExtra("model", Constants.organizationAid);
+                intent.putExtra("classify", msgClassify.urgent_help);
                 startActivity(intent);
                 finish();
                 break;

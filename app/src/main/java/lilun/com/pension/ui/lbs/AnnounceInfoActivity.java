@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
-import lilun.com.pension.app.Constants;
 import lilun.com.pension.app.Event;
 import lilun.com.pension.module.bean.Information;
+import lilun.com.pension.module.utils.CacheMsgClassify;
 import lilun.com.pension.module.utils.Preconditions;
 import lilun.com.pension.module.utils.ScreenUtils;
 import lilun.com.pension.module.utils.StringUtils;
@@ -119,9 +119,10 @@ public class AnnounceInfoActivity extends Activity {
 
             case R.id.btn_all:
                 //查看全部
+                CacheMsgClassify msgClassify = new CacheMsgClassify();
                 Intent intent = new Intent(this, CacheInfoListActivity.class);
                 intent.putExtra("title", "社区公告");
-                intent.putExtra("model", Constants.organizationInfo);
+                intent.putExtra("classify", msgClassify.announce);
                 startActivity(intent);
                 finish();
                 break;

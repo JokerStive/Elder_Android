@@ -55,7 +55,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         mModule.putBelongOrganizations(organizationAccounts);
                         if (mModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
                             changeSpecialOrganization();
-                        }else {
+                        } else {
                             ToastHelper.get().showShort("账户没有defaultAccountId字段");
                         }
                     }
@@ -126,13 +126,9 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                 .subscribe(new RxSubscriber<Account>((BaseActivity) mView) {
                     @Override
                     public void _next(Account account) {
-//                        User.putBelongOrganizationAccountId(account.getDefaultOrganizationId());
                         if (mModule.saveUserAboutOrganization(targetId)) {
                             mView.loginSuccess();
                         }
-                        Logger.d("从特殊切换成功---当前组织账号id--"+account.getDefaultOrganizationId());
-                        Logger.d("从特殊切换成功---当前组织id--"+User.getBelongsOrganizationId());
-
                     }
                 });
     }

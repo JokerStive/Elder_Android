@@ -210,45 +210,54 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
      * @param distrect
      */
     private void requestSettingAccountDistract(BaseBean distrect) {
+        LoginModule loginModule = new LoginModule();
         NetHelper.getApi()
                 .putAccountLocation(distrect.getId())
                 .compose(RxUtils.handleResult())
+                .flatMap(loginModule::getBelongOrganizations)
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Account>(_mActivity) {
-                               @Override
-                               public void _next(Account o) {
-                                   //修改成功  更新显示名
-                                   tvBelongStress.setText(distrect.getName());
-                                   //走Login接口
-                                   LoginModule loginModule = new LoginModule();
-                                   loginModule.login(User.getUserName(), User.getPassword())
-                                           .flatMap(tokenInfo -> loginModule.getAccountInfo(tokenInfo, User.getUserName(), User.getPassword()))
-                                           .flatMap(account -> loginModule.getBelongOrganizations(account))
-                                           .compose(RxUtils.applySchedule())
-                                           .subscribe(new RxSubscriber<List<OrganizationAccount>>(_mActivity) {
-                                               @Override
-                                               public void _next(List<OrganizationAccount> organizationAccounts) {
-                                                   if (!TextUtils.isEmpty(User.getBelongsOrganizationId())) {
-                                                       loginModule.putBelongOrganizations(organizationAccounts);
-                                                       EventBus.getDefault().post(new Event.ChangedOrganization());
-                                                   } else {
-                                                       ToastHelper.get().showShort("脏数据");
-                                                   }
-                                               }
+                .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
+                    @Override
+                    public void _next(List<OrganizationAccount> organizationAccounts) {
+                        tvBelongStress.setText(distrect.getName());
+                        loginModule.putBelongOrganizations(organizationAccounts);
+                        if (loginModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
+                            EventBus.getDefault().post(new Event.ChangedOrganization());
+                            EventBus.getDefault().post(new Event.AccountSettingChange());
+                        } else {
+                            ToastHelper.get().showShort("脏数据");
+                        }
+                    }
+                });
 
-                                               @Override
-                                               public void onError(Throwable e) {
-                                                   int[] errorCode = {401};
-                                                   String[] errorMessage = {"账号或密码错误，请重新输入"};
-                                                   super.onError(e, errorCode, errorMessage);
-                                               }
-                                           });
-                                   EventBus.getDefault().post(new Event.AccountSettingChange());
+//                .subscribe(new RxSubscriber<List<OrganizationAccount>>(_mActivity) {
+//                               @Override
+//                               public void _next(List<OrganizationAccount> accounts) {
+//                                   //修改成功  更新显示名
+//                                   tvBelongStress.setText(distrect.getName());
+//                                   //走Login接口
+//                                   String accountDefaultContactId = account.getDefaultOrganizationId();
+//
+//                                       loginModule.getBelongOrganizations(account)
+//                                               .compose(RxUtils.applySchedule())
+//                                               .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
+//                                                   @Override
+//                                                   public void _next(List<OrganizationAccount> organizationAccounts) {
+//                                                       loginModule.putBelongOrganizations(organizationAccounts);
+//                                                       loginModule.putAccountInfo(account);
+//                                                       if ( loginModule.saveUserAboutOrganization(accountDefaultContactId)){
+//                                                           EventBus.getDefault().post(new Event.ChangedOrganization());
+//                                                           EventBus.getDefault().post(new Event.AccountSettingChange());
+//                                                       }else {
+//                                                           ToastHelper.get().showShort("脏数据");
+//                                                       }
+//                                                   }
+//                                               });
 
-                               }
-                           }
+//                               }
+//                           }
 
-                );
+//                );
     }
 
     public void updateImage(String id, String imageName, String path) {
