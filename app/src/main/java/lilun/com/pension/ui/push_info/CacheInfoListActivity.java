@@ -138,7 +138,7 @@ public class CacheInfoListActivity extends BaseActivity {
         if (classify == msgClassify.urgent_help) {
             cacheInfo = new CacheInfo("姓名：" + dataJson.getString("title"),
                     "位置：" + dataJson.getString("address"),
-                    "发生时间：" + StringUtils.IOS2ToUTC(dataJson.getString("time"), 6),
+                    "发生时间：" + dataJson.getString("time"),
                     "联系电话：" + dataJson.getString("mobile"));
         }
 

@@ -230,34 +230,6 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                     }
                 });
 
-//                .subscribe(new RxSubscriber<List<OrganizationAccount>>(_mActivity) {
-//                               @Override
-//                               public void _next(List<OrganizationAccount> accounts) {
-//                                   //修改成功  更新显示名
-//                                   tvBelongStress.setText(distrect.getName());
-//                                   //走Login接口
-//                                   String accountDefaultContactId = account.getDefaultOrganizationId();
-//
-//                                       loginModule.getBelongOrganizations(account)
-//                                               .compose(RxUtils.applySchedule())
-//                                               .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
-//                                                   @Override
-//                                                   public void _next(List<OrganizationAccount> organizationAccounts) {
-//                                                       loginModule.putBelongOrganizations(organizationAccounts);
-//                                                       loginModule.putAccountInfo(account);
-//                                                       if ( loginModule.saveUserAboutOrganization(accountDefaultContactId)){
-//                                                           EventBus.getDefault().post(new Event.ChangedOrganization());
-//                                                           EventBus.getDefault().post(new Event.AccountSettingChange());
-//                                                       }else {
-//                                                           ToastHelper.get().showShort("脏数据");
-//                                                       }
-//                                                   }
-//                                               });
-
-//                               }
-//                           }
-
-//                );
     }
 
     public void updateImage(String id, String imageName, String path) {

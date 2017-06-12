@@ -83,12 +83,13 @@ public class MqttNotificationHelper {
 
 
         //3 -----紧急求助
-        if (TextUtils.equals(topic, mqttTopic.urgent_help)) {
+        String urgent_help = mqttTopic.urgent_help;
+        if (TextUtils.equals(topic,urgent_help)) {
             classify = msgClassify.urgent_help;
             title = "紧急求助";
             content = jsonObject.getString("message");
 
-            //发送事件，展示到app
+//            发送事件，展示到app
             EventBus.getDefault().post(new Event.BoardMsg(topic, data));
         }
 
@@ -101,6 +102,7 @@ public class MqttNotificationHelper {
 
         //保存到数据库，绑定用户
         if (classify != -1) {
+            cacheMsg.setClassify(classify);
             cacheMsg.save();
         }
 

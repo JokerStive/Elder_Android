@@ -14,6 +14,7 @@ import lilun.com.pension.app.IconUrl;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.base.QuickAdapter;
 import lilun.com.pension.module.bean.OrganizationReply;
+import lilun.com.pension.module.utils.StringUtils;
 import lilun.com.pension.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -52,7 +53,7 @@ public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
 
 
         helper.setText(R.id.tv_sophisticated, reply.getCreatorName())
-                .setText(R.id.tv_mobile,"13202011223")
+                .setText(R.id.tv_mobile, StringUtils.IOS2ToUTC(reply.getCreatedAt(),0))
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {
                         if (answerId != null) {
