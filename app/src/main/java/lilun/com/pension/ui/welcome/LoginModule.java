@@ -62,7 +62,10 @@ public class LoginModule implements LoginContract.Module {
 
     @Override
     public void putAccountInfo(Account account) {
-
+        //居住地信息
+        if (account.getProfile() != null) {
+            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+        }
         //用户名
         User.putUserId(account.getId());
 
