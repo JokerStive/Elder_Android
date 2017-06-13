@@ -74,7 +74,17 @@ android {
             }
         }
     }
-
+    //合并后 support 使用25.3.1 否则出现Didn't find class "android.support.v4.animation.AnimatorCompatHelper"
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '25.3.1'
+                }
+            }
+        }
+    }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

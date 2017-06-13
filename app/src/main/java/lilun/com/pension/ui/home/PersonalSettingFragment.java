@@ -123,7 +123,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
             _mActivity.finish();
         });
         tvNickName.setText(User.getName());
-        String[] split = User.getCurrentOrganizationId().replace(getString(R.string.common_address), "").split("/");
+        String[] split = User.getBelongsOrganizationId().replace(getString(R.string.common_address), "").split("/");
         if (split.length > 4) {
             areaStr = split[0] + "/" + split[1] + "/" + split[2];
             stressStr = split[split.length - 1];
