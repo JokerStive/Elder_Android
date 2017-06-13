@@ -3,6 +3,7 @@ package lilun.com.pension.app;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -70,7 +71,8 @@ public class App extends Application {
 
         getWidthDP();
 
-        Bugly.init(getApplicationContext(), "b07eef1cd9", BuildConfig.DEBUG);
+        if (!BuildConfig.DEBUG)  //正式版本才监听bugly;
+            Bugly.init(getApplicationContext(), "b07eef1cd9", BuildConfig.DEBUG);
     }
 
 
