@@ -140,23 +140,23 @@ public class User {
     /**
      * 根据当前组织判断是否可以增删改
      */
-    public static boolean canOperate() {
-        String currentOrganizationId = getCurrentOrganizationId();
-        if (ACache.get().isExit(belongOrganizations)) {
-            List<OrganizationAccount> belongOrganizationAccount = (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
-            for (OrganizationAccount organizationAccount : belongOrganizationAccount) {
-                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
-                if (organizationId.equals(Constants.organization_root)) {
-                    continue;
-                }
-                if (TextUtils.equals(currentOrganizationId, organizationId)) {
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
+//    public static boolean canOperate() {
+//        String currentOrganizationId = getCurrentOrganizationId();
+//        if (ACache.get().isExit(belongOrganizations)) {
+//            List<OrganizationAccount> belongOrganizationAccount = (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
+//            for (OrganizationAccount organizationAccount : belongOrganizationAccount) {
+//                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
+//                if (organizationId.equals(Constants.organization_root)) {
+//                    continue;
+//                }
+//                if (TextUtils.equals(currentOrganizationId, organizationId)) {
+//                    return true;
+//                }
+//            }
+//
+//        }
+//        return false;
+//    }
 
 
     /**
@@ -277,8 +277,8 @@ public class User {
 
 
     /**
-    *只有当前组织在所属组织的市级以下，才可以操作
-    */
+     * 只有当前组织在所属组织的市级以下，才可以操作
+     */
     public static boolean canOperate(String targetId) {
         boolean result = false;
         ArrayList<String> ids = levelIds();
@@ -293,12 +293,25 @@ public class User {
         return result;
     }
 
+
     /**
-    *根据层级拼接id
-    */
-    public static  String spliceId(String suffix) {
+     * 判断当前状态是否正确，在切换组织界面，杀进程，就会导致状态错乱
+     */
+    public static boolean isCurrentStatusCorrect() {
+        boolean result = true;
+        boolean currentOrganizationHadChanged = PreUtils.getBoolean("currentOrganizationHadChanged", false);
+        if (!currentOrganizationHadChanged && User.getCurrentOrganizationId().equals(Constants.organization_root)) {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * 根据层级拼接id
+     */
+    public static String spliceId(String suffix) {
         String result = "[";
-        String currentOrganizationId = User.getCurrentOrganizationId();
+        String currentOrganizationId = isCurrentStatusCorrect() ? getCurrentOrganizationId() : getBelongsOrganizationId();
         String[] split = currentOrganizationId.split("/");
         if (split.length < 4) return "";
         for (int i = 4; i < split.length; i++) {

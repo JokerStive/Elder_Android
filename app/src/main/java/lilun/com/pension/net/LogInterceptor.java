@@ -158,7 +158,7 @@ public final class LogInterceptor implements Interceptor {
                 "--> " + request.method() + ' ' + java.net.URLDecoder.decode(request.url().toString(), "UTF-8");
         logger.log("\n");
         logger.log("\n");
-        logger.log("----------Start----------------");
+//        logger.log("----------Start----------------");
         logger.log(requestStartMessage);
 
         if (logHeaders) {
@@ -201,10 +201,11 @@ public final class LogInterceptor implements Interceptor {
 
                 if (contentLength != 0) {
                     logger.log("");
-                    logger.log("<-- " + buffer.clone().readString(charset));
+//                    logger.log("<-- " + java.net.URLDecoder.decode(request.url().toString(), "UTF-8"));
+                    logger.log("<-- " +  java.net.URLDecoder.decode(request.url().toString(), "UTF-8")+ buffer.clone().readString(charset));
                 }
 
-                logger.log("----------End:" + tookMs + "ms----------");
+//                logger.log("----------End:" + tookMs + "ms----------");
 
 
             }

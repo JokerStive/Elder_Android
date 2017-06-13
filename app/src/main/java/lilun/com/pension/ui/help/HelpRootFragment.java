@@ -180,7 +180,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_need_help:
-                if (!User.canOperate()) {
+                if (!User.canOperate(User.getCurrentOrganizationId())) {
                     ToastHelper.get().showShort("当前组织下，不能这样做");
                     return;
                 } else {
