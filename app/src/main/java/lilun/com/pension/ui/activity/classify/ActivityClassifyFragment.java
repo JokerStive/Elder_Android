@@ -140,7 +140,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
             @Override
             public void onRightClick() {
-                if (!StringUtils.isResisterTopCommunity(User.getCurrentOrganizationId(), User.getBelongToDistrict())) {
+                if (!StringUtils.isResisterTopCommunity(User.getCurrentOrganizationId(), User.getBelongsOrganizationId())) {
                     ToastHelper.get().showWareShort("您在当前区域不能创建活动!");
                     return;
                 }
