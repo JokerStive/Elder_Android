@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pension.R;
+import lilun.com.pension.app.App;
 import lilun.com.pension.base.BaseFragment;
 import lilun.com.pension.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pension.widget.NormalTitleBar;
@@ -131,7 +132,10 @@ public class MerchantOrderListFragment extends BaseFragment {
                 ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
                 titleView.setNormalColor(Color.BLACK);
                 titleView.setSelectedColor(getResources().getColor(R.color.red));
-                titleView.setTextSize(getResources().getDimension(R.dimen.sp_16));
+                if (App.widthDP > 820)
+                    titleView.setTextSize(17*3);
+                else
+                    titleView.setTextSize(17);
                 titleView.setText(statusTitle[index]);
                 titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
                 return titleView;
