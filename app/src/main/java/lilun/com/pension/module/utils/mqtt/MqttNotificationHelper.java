@@ -16,7 +16,6 @@ import org.json.JSONException;
 import lilun.com.pension.R;
 import lilun.com.pension.app.App;
 import lilun.com.pension.app.Event;
-import lilun.com.pension.app.User;
 import lilun.com.pension.module.bean.CacheMsg;
 import lilun.com.pension.module.utils.CacheMsgClassify;
 import lilun.com.pension.module.utils.DeviceUtils;
@@ -44,24 +43,24 @@ public class MqttNotificationHelper {
         int classify = -1;
 
         //公告和普通求助
-        if (TextUtils.equals(topic, mqttTopic.normal_announce) || TextUtils.equals(topic, mqttTopic.normal_help)) {
+        if (topic.contains(mqttTopic.topic_help_suffix) ||topic.contains(mqttTopic.topic_information_suffix)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
-            String organizationId = infoJson.getString("organizationId");
-            if (TextUtils.isEmpty(organizationId)) return;
-            String targetId = StringUtils.removeSpecialSuffix(organizationId);
-
-            boolean canOperate = User.canOperate(targetId);
-
-
-            //如果是在当前组织的市级以下的消息才处理，不然直接遗弃
-            if (canOperate) {
+//            String organizationId = infoJson.getString("organizationId");
+//            if (TextUtils.isEmpty(organizationId)) return;
+//            String targetId = StringUtils.removeSpecialSuffix(organizationId);
+//
+//            boolean canOperate = User.canOperate(targetId);
+//
+//
+//            //如果是在当前组织的市级以下的消息才处理，不然直接遗弃
+//            if (canOperate) {
 
                 //发送事件，展示到app
                 EventBus.getDefault().post(new Event.BoardMsg(topic, data));
 
 
                 // 1 ----- 公告，展示到通知栏
-                if (TextUtils.equals(topic, mqttTopic.normal_announce)) {
+                if (topic.contains(mqttTopic.topic_help_suffix)) {
                     classify = msgClassify.announce;
 
                     String parentId = infoJson.getString("parentId");
@@ -73,12 +72,12 @@ public class MqttNotificationHelper {
 
 
                 //2 ----- 普通求助
-                if (TextUtils.equals(topic, mqttTopic.normal_help)) {
+                if (topic.contains(mqttTopic.topic_information_suffix)) {
                     classify = msgClassify.normal_help;
 
                     EventBus.getDefault().post(new Event.RefreshHelpData());
                 }
-            }
+//            }
         }
 
 
@@ -98,6 +97,8 @@ public class MqttNotificationHelper {
         if (TextUtils.equals(topic, mqttTopic.login)) {
             dealLogin(data);
         }
+
+
 
 
         //保存到数据库，绑定用户

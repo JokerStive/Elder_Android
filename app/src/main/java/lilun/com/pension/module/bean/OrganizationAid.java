@@ -47,7 +47,7 @@ public class OrganizationAid extends DataSupport implements Serializable {
     private String address;
     private int priority;
     private int status;
-    private int price;
+    private long price;
     private String memo;
     private String mobile;
     private String answerId;
@@ -131,11 +131,11 @@ public class OrganizationAid extends DataSupport implements Serializable {
         this.status = status;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

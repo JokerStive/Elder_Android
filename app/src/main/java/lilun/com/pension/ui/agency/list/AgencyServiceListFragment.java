@@ -217,7 +217,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setCategoryId(mCategoryId);
             if (mCategoryId.contains(Constants.service_residentail)) {
                 //如果居家服务，就要服务区域是当前组织的层级id
-                productFilter.where.getAreaIds().setInq(User.levelIds());
+                productFilter.where.getAreaIds().setInq(User.levelIds(true));
             }
             if (!User.isCustomer()) {
                 productFilter.where.setCreatorId(User.getUserId());

@@ -1,5 +1,7 @@
 package lilun.com.pension.ui.home;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 import lilun.com.pension.app.User;
@@ -20,13 +22,17 @@ import lilun.com.pension.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class HomePresenter extends RxPresenter<HomeContract.View> implements HomeContract.Presenter {
-
-
     @Override
     public void getInformation() {
         String parentIdFilter;
         parentIdFilter = User.spliceId("/#information/公告");
-        String filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
+        String filter;
+        if (!TextUtils.isEmpty(parentIdFilter)){
+            filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
+        }else {
+            filter =  "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":\"/地区村//#information/公告\"}}";
+        }
+
         addSubscribe(NetHelper.getApi()
                 .getInformations(StringUtils.addFilterWithDef(filter, 0))
                 .compose(RxUtils.handleResult())
@@ -35,7 +41,6 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                     @Override
                     public void _next(List<Information> information) {
                         view.showInformation(information);
-//                        view.showInformation(information);
                     }
                 }));
     }
@@ -43,8 +48,8 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
     @Override
     public void needChangeToDefOrganization() {
         boolean currentStatusCorrect = User.isCurrentStatusCorrect();
-        if (!currentStatusCorrect){
-            changeBelongOrganization(User.getBelongOrganizationAccountId(),-1);
+        if (!currentStatusCorrect) {
+            changeBelongOrganization(User.getBelongOrganizationAccountId(), -1);
         }
     }
 
@@ -64,3 +69,5 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                 }));
     }
 }
+
+

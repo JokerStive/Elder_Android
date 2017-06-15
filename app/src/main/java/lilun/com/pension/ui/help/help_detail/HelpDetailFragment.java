@@ -2,7 +2,6 @@ package lilun.com.pension.ui.help.help_detail;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -169,12 +168,12 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     }
 
 
+
     @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
+    protected void onEnterAnimationEnd(Bundle savedInstanceState) {
+        super.onEnterAnimationEnd(savedInstanceState);
         getDetail();
     }
-
 
     private void getDetail() {
         mPresenter.getHelpDetail(_mActivity, mAidId);
@@ -237,7 +236,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
 
         //显示补贴
-        int price = mAid.getPrice();
+        long price = mAid.getPrice();
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
@@ -326,6 +325,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     public void refreshData(int operate) {
         //0 创建回复  1 删除回复  2.删除aid
         EventBus.getDefault().post(new Event.RefreshHelpData());
+        getDetail();
         switch (operate) {
             case 0:
                 setChangeStatus(true, getString(R.string.cancel));

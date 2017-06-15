@@ -3,7 +3,6 @@ package lilun.com.pension.app;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -101,10 +100,7 @@ public class App extends Application {
 
     public static void initSub() {
         MqttTopic mqttTopic = new MqttTopic();
-        String[] topics = {mqttTopic.normal_announce,
-                mqttTopic.normal_announce,
-                mqttTopic.personal_msg,
-        };
+        String[] topics = mqttTopic.getAllTopicWhenInit();
         for (String topic : topics) {
             MQTTManager.getInstance().subscribe(topic, 2);
         }

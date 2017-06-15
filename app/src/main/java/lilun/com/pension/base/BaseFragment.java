@@ -81,7 +81,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Subscribe
     public void doNothing(Event.TokenFailure event) {
-
     }
 
 
@@ -94,11 +93,14 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null) {
+
+
             mRootView = inflater.inflate(getLayoutId(), container, false);
             ButterKnife.bind(this, mRootView);
             initView(inflater);
             initEvent();
         }
+
         return mRootView;
     }
 

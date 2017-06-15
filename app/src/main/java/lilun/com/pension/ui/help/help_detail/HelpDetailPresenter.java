@@ -48,6 +48,7 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
                     @Override
                     public void _next(Object object) {
                         view.refreshData(0);
+
                     }
 
                 }));

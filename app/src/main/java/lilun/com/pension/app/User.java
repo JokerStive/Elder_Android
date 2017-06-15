@@ -256,10 +256,10 @@ public class User {
     /**
      * 当前组织id到市
      */
-    public static ArrayList<String> levelIds() {
+    public static ArrayList<String> levelIds(boolean isCurrentOrganizationId) {
         int level = 4;
         ArrayList<String> ids = null;
-        String currentOrganizationId = User.getCurrentOrganizationId();
+        String currentOrganizationId = isCurrentOrganizationId?User.getCurrentOrganizationId():User.getBelongsOrganizationId();
         String[] split = currentOrganizationId.split("/");
         if (split.length >= level) {
             ids = new ArrayList<>();
@@ -281,7 +281,7 @@ public class User {
      */
     public static boolean canOperate(String targetId) {
         boolean result = false;
-        ArrayList<String> ids = levelIds();
+        ArrayList<String> ids = levelIds(false);
         if (ids != null) {
             for (String id : ids) {
                 if (TextUtils.equals(id, targetId)) {
@@ -291,7 +291,9 @@ public class User {
             }
         }
         return result;
+
     }
+
 
 
     /**

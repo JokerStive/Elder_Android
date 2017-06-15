@@ -16,9 +16,6 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import lilun.com.pension.R;
@@ -28,7 +25,6 @@ import lilun.com.pension.app.User;
 import lilun.com.pension.module.adapter.PushInfoAdapter;
 import lilun.com.pension.module.bean.Information;
 import lilun.com.pension.module.bean.OrganizationAid;
-import lilun.com.pension.module.bean.PushMessage;
 import lilun.com.pension.module.callback.MyCallBack;
 import lilun.com.pension.module.utils.RxUtils;
 import lilun.com.pension.module.utils.SystemUtils;
@@ -229,10 +225,10 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     /**
      * 从数据库中取消息
      */
-    public List<PushMessage> getPushMessageFromDatabase() {
-        List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
-        return allMessage;
-    }
+//    public List<PushMessage> getPushMessageFromDatabase() {
+//        List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
+//        return allMessage;
+//    }
 
     /**
      * 显示紧急求助弹窗
@@ -261,7 +257,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         }
 
 
-         if (topic.equals(mqttTopic.normal_announce)) {
+         if (topic.contains(mqttTopic.topic_information_suffix)) {
              String infoString = jsonObject.getString("data");
              Information information = JSON.parseObject(infoString, Information.class);
 //             Information Information = gson.fromJson(pushMessage.getData(), Information.class);

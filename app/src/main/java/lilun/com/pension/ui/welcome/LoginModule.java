@@ -123,7 +123,7 @@ public class LoginModule implements LoginContract.Module {
                 }
 
                 //如果其中一个organizationAccountId和account的defacltOrganizationId相同，则这个organizationAccount就是默认的
-                if (organizationAccountId.equals(belongOrganizationAccountId)) {
+                if (organizationAccountId.equals(belongOrganizationAccountId)  &&  !organizationId.equals(Constants.organization_root)) {
 
                     //默认组织id
                     User.putBelongsOrganizationId(organizationId);

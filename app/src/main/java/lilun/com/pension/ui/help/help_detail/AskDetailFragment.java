@@ -213,7 +213,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
 
         //显示补贴
-        int price = mAid.getPrice();
+        long price = mAid.getPrice();
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {

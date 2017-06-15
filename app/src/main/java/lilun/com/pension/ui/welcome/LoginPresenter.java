@@ -56,7 +56,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         if (mModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
                             changeSpecialOrganization();
                         } else {
-                            ToastHelper.get().showShort("账户没有defaultAccountId字段");
+                            ToastHelper.get().showShort("脏数据,请检查账户");
                         }
                     }
 
