@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
 
-        <lilun.com.pension.widget.CircleImageView
+        <lilun.com.pensionlife.widget.CircleImageView
             android:id="@+id/civ_account_avatar"
             android:layout_width="@dimen/ivatar_choice_show_WH"
             android:layout_height="@dimen/ivatar_choice_show_WH"

@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <lilun.com.pension.widget.BreadCrumbsView
+        <lilun.com.pensionlife.widget.BreadCrumbsView
             android:id="@+id/crumb_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

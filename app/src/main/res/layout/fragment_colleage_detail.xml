@@ -18,7 +18,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/max_photo_height">
-                <lilun.com.pension.widget.slider.BannerPager
+                <lilun.com.pensionlife.widget.slider.BannerPager
                     android:id="@+id/bp_colleage_icon"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -77,7 +77,7 @@
                     android:paddingTop="@dimen/dp_10"
                     android:text="@string/connect_person_" />
 
-                <lilun.com.pension.widget.CircleImageView
+                <lilun.com.pensionlife.widget.CircleImageView
                     android:id="@+id/cig_connect_icon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

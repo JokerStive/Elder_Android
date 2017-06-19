@@ -32,8 +32,8 @@
         </list>
     -->
     <list>
-        <mapping class="lilun.com.pension.module.bean.PushMessage" />
-        <mapping class="lilun.com.pension.module.bean.CacheMsg" />
+        <mapping class="lilun.com.pensionlife.module.bean.PushMessage" />
+        <mapping class="lilun.com.pensionlife.module.bean.CacheMsg" />
     </list>
 
     <!--

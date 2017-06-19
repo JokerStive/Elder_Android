@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/answer" />
 
 
-    <lilun.com.pension.widget.ChatInputView
+    <lilun.com.pensionlife.widget.ChatInputView
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"

@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:text="@string/account_ivatar_str" />
 
-        <lilun.com.pension.widget.CircleImageView
+        <lilun.com.pensionlife.widget.CircleImageView
             android:id="@+id/civ_account_avatar"
             android:layout_width="@dimen/dp_72"
             android:layout_height="@dimen/dp_72"

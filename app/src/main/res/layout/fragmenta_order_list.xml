@@ -10,13 +10,13 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/white">
 
-        <lilun.com.pension.widget.SearchTitleBar
+        <lilun.com.pensionlife.widget.SearchTitleBar
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45"
             android:visibility="gone" />
 
-        <lilun.com.pension.widget.NormalTitleBar
+        <lilun.com.pensionlife.widget.NormalTitleBar
             android:id="@+id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

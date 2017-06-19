@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_notify_message">
 
-        <lilun.com.pension.widget.CircleImageView
+        <lilun.com.pensionlife.widget.CircleImageView
             android:id="@+id/civ_their_ivatar"
             android:layout_width="@dimen/ivatar_icon_width_height"
             android:layout_height="@dimen/ivatar_icon_width_height"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_notify_message">
 
-        <lilun.com.pension.widget.CircleImageView
+        <lilun.com.pensionlife.widget.CircleImageView
             android:id="@+id/civ_my_ivatar"
             android:layout_width="@dimen/ivatar_icon_width_height"
             android:layout_height="@dimen/ivatar_icon_width_height"

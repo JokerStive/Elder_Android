@@ -52,7 +52,7 @@
                 android:background="@color/white"
                 app:layout_collapseMode="pin">
 
-                <lilun.com.pension.widget.PositionTitleBar
+                <lilun.com.pensionlife.widget.PositionTitleBar
                     android:id="@+id/title_bar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

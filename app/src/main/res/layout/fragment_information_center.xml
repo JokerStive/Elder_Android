@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 
             <fragment
                 android:id="@+id/fragment_system_info"
-                android:name="lilun.com.pension.ui.push_info.SystemInfoFragment"
+                android:name="lilun.com.pensionlife.ui.push_info.SystemInfoFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
@@ -79,7 +79,7 @@
 
             <fragment
                 android:id="@+id/fragment_personal_info"
-                android:name="lilun.com.pension.ui.push_info.PersonalInfoFragment"
+                android:name="lilun.com.pensionlife.ui.push_info.PersonalInfoFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

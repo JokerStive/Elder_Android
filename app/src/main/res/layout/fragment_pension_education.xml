@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.PositionTitleBar
+    <lilun.com.pensionlife.widget.PositionTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <lilun.com.pension.widget.recycler_view.NormalModule
+        <lilun.com.pensionlife.widget.recycler_view.NormalModule
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -40,7 +40,7 @@
             app:module_desc="@string/community_university"
             app:module_icon="@drawable/ask_a_neighbor" />
 
-        <lilun.com.pension.widget.recycler_view.NormalModule
+        <lilun.com.pensionlife.widget.recycler_view.NormalModule
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,7 +50,7 @@
             android:layout_marginEnd="@dimen/dp_066"
             app:module_icon="@drawable/help_a_neighbor" />
 
-        <lilun.com.pension.widget.recycler_view.NormalModule
+        <lilun.com.pensionlife.widget.recycler_view.NormalModule
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

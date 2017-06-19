@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white">
 
-                <lilun.com.pension.widget.slider.BannerPager
+                <lilun.com.pensionlife.widget.slider.BannerPager
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/max_photo_height" />

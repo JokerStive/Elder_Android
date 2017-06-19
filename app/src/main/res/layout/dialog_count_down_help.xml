@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/dp_14"
         android:text="@string/count_down_help_desc" />
 
-    <lilun.com.pension.widget.AlarmView
+    <lilun.com.pensionlife.widget.AlarmView
         android:id="@+id/alarm"
         android:layout_width="@dimen/dp_220"
         android:layout_height="@dimen/dp_220"

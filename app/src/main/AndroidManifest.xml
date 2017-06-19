@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lilun.com.pension">
+    package="lilun.com.pensionlife">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,7 +37,7 @@
 
 
     <application
-        android:name=".app.App"
+        android:name="lilun.com.pensionlife.app.App"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/icon"
@@ -45,14 +45,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="lilun.com.pension.net.UnsafeOkHttpGlideModule"
+            android:name="lilun.com.pensionlife.net.UnsafeOkHttpGlideModule"
             android:value="GlideModule" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8epfP7zxxboqbHMurwej0LW0R6rByTkS" />
 
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name="lilun.com.pensionlife.ui.home.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -60,7 +60,7 @@
 
         <!--欢迎界面,注册登录入口-->
         <activity
-            android:name=".ui.welcome.SplashActivity"
+            android:name="lilun.com.pensionlife.ui.welcome.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
@@ -75,76 +75,76 @@
 
         <!-- 登录 -->
         <activity
-            android:name=".ui.welcome.LoginActivity"
+            android:name="lilun.com.pensionlife.ui.welcome.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
 
         <!-- 注册 -->
         <activity
-            android:name=".ui.welcome.WelcomeActivity"
+            android:name="lilun.com.pensionlife.ui.welcome.WelcomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
 
 
-        <activity android:name=".ui.welcome.ChangePasswordActivity" />
+        <activity android:name="lilun.com.pensionlife.ui.welcome.ChangePasswordActivity" />
 
 
 
 
         <activity
-            android:name=".ui.register.RegisterActivity"
+            android:name="lilun.com.pensionlife.ui.register.RegisterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
 
         <!-- 订单详情-->
         <activity
-            android:name=".ui.residential.detail.OrderDetailActivity"
+            android:name="lilun.com.pensionlife.ui.residential.detail.OrderDetailActivity"
             android:screenOrientation="portrait" />
 
 
         <!-- 商家订单详情-->
         <activity
-            android:name=".ui.order.detail.MerchantOrderDetailActivity"
+            android:name="lilun.com.pensionlife.ui.order.detail.MerchantOrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <!-- 商家备注-->
         <activity
-            android:name=".ui.agency.merchant.MemoActivity"
+            android:name="lilun.com.pensionlife.ui.agency.merchant.MemoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <!-- 聊天-->
         <activity
-            android:name=".ui.chat.ChatActivity"
+            android:name="lilun.com.pensionlife.ui.chat.ChatActivity"
             android:screenOrientation="portrait" />
 
 
         <!-- 切换组织-->
         <activity
-            android:name=".ui.change_organization.ChangeOrganizationActivity"
+            android:name="lilun.com.pensionlife.ui.change_organization.ChangeOrganizationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
         <!-- 确认订单-->
         <activity
-            android:name=".ui.agency.reservation.ReservationActivity"
+            android:name="lilun.com.pensionlife.ui.agency.reservation.ReservationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
-            android:name=".ui.lbs.UrgentAidInfoActivity"
+            android:name="lilun.com.pensionlife.ui.lbs.UrgentAidInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.FloatActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
-            android:name=".ui.lbs.AnnounceInfoActivity"
+            android:name="lilun.com.pensionlife.ui.lbs.AnnounceInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.FloatActivity"
@@ -152,14 +152,14 @@
 
 
         <activity
-            android:name=".ui.push_info.CacheInfoListActivity"
+            android:name="lilun.com.pensionlife.ui.push_info.CacheInfoListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
         <activity
-            android:name=".ui.announcement.AnnounceDetailActivity"
+            android:name="lilun.com.pensionlife.ui.announcement.AnnounceDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -170,7 +170,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
 
-        <activity android:name=".ui.home.PersonalActivity" />
+        <activity android:name="lilun.com.pensionlife.ui.home.PersonalActivity" />
         //mqtt service
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

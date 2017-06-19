@@ -18,7 +18,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "lilun.com.pension"
+        applicationId "lilun.com.pensionlife"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1

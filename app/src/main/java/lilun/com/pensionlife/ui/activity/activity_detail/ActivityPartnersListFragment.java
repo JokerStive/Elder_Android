@@ -1,0 +1,323 @@
+package lilun.com.pensionlife.ui.activity.activity_detail;
+
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import butterknife.Bind;
+import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Event;
+import lilun.com.pensionlife.app.IconUrl;
+import lilun.com.pensionlife.app.User;
+import lilun.com.pensionlife.base.BaseFragment;
+import lilun.com.pensionlife.module.adapter.PartnersAdapter;
+import lilun.com.pensionlife.module.bean.Account;
+import lilun.com.pensionlife.module.bean.OrganizationActivity;
+import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
+import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
+import lilun.com.pensionlife.widget.BottonPopupWindow;
+import lilun.com.pensionlife.widget.CircleImageView;
+import lilun.com.pensionlife.widget.DividerDecoration;
+import lilun.com.pensionlife.widget.NormalTitleBar;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
+
+/**
+ * Created by zp on 2017/4/20.
+ */
+
+public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailContact.PPartner>
+        implements ActivityDetailContact.VPartner {
+    BottonPopupWindow bottonPopupWindow;
+    OrganizationActivity activity;
+    PartnersAdapter partnersAdapter;
+    String searchKey = "";
+    int skip = 0;
+    private View.OnKeyListener backListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK
+                    && event.getAction() == KeyEvent.ACTION_DOWN) {
+                // ToDo
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private String topic;
+    private int qos = 2;
+
+    @Bind(R.id.et_search_name)
+    EditText etSearchName;
+    @Bind(R.id.tv_search_name)
+    TextView tvSearchName;
+
+    @Bind(R.id.iv_avatar)
+    CircleImageView masterIcon;
+    @Bind(R.id.tv_name)
+    TextView masterName;
+
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout mSwipeLayout;
+
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
+
+
+    @Bind(R.id.null_data)
+    ImageView nullData;
+
+    public static ActivityPartnersListFragment newInstance(OrganizationActivity activity) {
+        ActivityPartnersListFragment fragment = new ActivityPartnersListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("activity", activity);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        activity = (OrganizationActivity) arguments.getSerializable("activity");
+        Preconditions.checkNull(activity);
+        topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+    }
+
+    @Override
+    protected void initPresenter() {
+        mPresenter = new ActivityPartnersListPresenter();
+        mPresenter.bindView(this);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_partners_list;
+    }
+
+    @Override
+    protected void initData() {
+        skip = 0;
+        mPresenter.queryPartners(activity.getId(), "", skip);
+    }
+
+    @Override
+    protected void initView(LayoutInflater inflater) {
+        bottonPopupWindow = new BottonPopupWindow(_mActivity);
+        bottonPopupWindow.setOnDeleteListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 2017/5/8 进入多选状态
+                titleBar.setRightWitchShow(NormalTitleBar.NONE);
+                if (partnersAdapter != null) {
+                    partnersAdapter.setShowSelectedStatus(true);
+                    partnersAdapter.notifyDataSetChanged();
+                }
+                mRecyclerView.setSelected(true);
+                bottonPopupWindow.dismiss();
+            }
+        });
+        bottonPopupWindow.setOnCancelListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottonPopupWindow.dismiss();
+            }
+        });
+
+        titleBar.setTitle("参与者列表");
+        titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
+            @Override
+            public void onBackClick() {
+                if (dealOnBack()) return;
+                pop();
+            }
+        });
+        titleBar.setOnRightClickListener(new NormalTitleBar.OnRightClickListener() {
+            @Override
+            public void onRightClick() {
+                if (titleBar.getRightWitchShow() == NormalTitleBar.ICON) {
+
+                    bottonPopupWindow.isShowDelete(User.getUserId().equals(activity.getMasterId()));
+                    bottonPopupWindow.showAtLocation(titleBar, Gravity.BOTTOM, 0, 0);
+
+                } else if (titleBar.getRightWitchShow() == NormalTitleBar.TEXT) {
+                    // TODO: 2017/5/8 处理删除的数据 ,响应成功后切换回ICON状态,并退出可选状态
+                    mRecyclerView.setSelected(false);
+                    titleBar.setRightWitchShow(NormalTitleBar.ICON);
+                    if (partnersAdapter != null && partnersAdapter.getData().size() > 0 &&
+                            partnersAdapter.getSelectedList() != null && partnersAdapter.getSelectedList().size() > 0) {
+                        ArrayList<Integer> selectedList = partnersAdapter.getSelectedList();
+
+                        String userId = "[";
+                        String userName = "";
+                        for (int i = 0; i < selectedList.size(); i++) {
+                            userId += "\"" + partnersAdapter.getItem(selectedList.get(i)).getId() + "\",";
+                            userName += partnersAdapter.getItem(selectedList.get(i)).getName() + ",";
+                        }
+                        userId = userId.length() > 1 ? userId.substring(0, userId.length() - 1) + "]" : "]";
+                        userName = userName.length() > 1 ? userName.substring(0, userName.length() - 1) : "";
+                        mPresenter.deletePartners(activity.getId(), userId, userName);
+                    }
+                }
+            }
+        });
+
+        masterName.setText(activity.getCreatorName());
+        etSearchName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) tvSearchName.setVisibility(View.VISIBLE);
+                else {
+                    searchKey = "";
+                }
+            }
+        });
+        tvSearchName.setVisibility(View.GONE);
+        tvSearchName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchKey = etSearchName.getText().toString().trim();
+                skip = 0;
+                String filter = "{\"where\":{\"name\":{\"like\":\"" + searchKey + "\"}}}";
+                mPresenter.queryPartners(activity.getId(), filter, skip);
+                if (TextUtils.isEmpty(searchKey)) tvSearchName.setVisibility(View.GONE);
+            }
+        });
+        ImageLoaderUtil.instance().loadImage(
+                IconUrl.moduleIconUrl(IconUrl.Accounts, activity.getMasterId(), null),
+                R.drawable.icon_def, masterIcon);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new DividerDecoration(getContext(), LinearLayoutManager.VERTICAL, 1, ContextCompat.getColor(getContext(), R.color.help)));
+        //刷新
+        mSwipeLayout.setOnRefreshListener(() -> {
+                    if (mPresenter != null) {
+                        skip = 0;
+                        String filter = "{\"where\":{\"name\":{\"like\":\"" + searchKey + "\"}}}";
+                        mPresenter.queryPartners(activity.getId(), filter, skip);
+                    }
+                }
+        );
+
+    }
+
+    public boolean dealOnBack() {
+        if (mRecyclerView.isSelected()) {
+            mRecyclerView.setSelected(false);
+            if (partnersAdapter.getSelectedList() != null)
+                partnersAdapter.getSelectedList().clear();
+            partnersAdapter.setShowSelectedStatus(false);
+            partnersAdapter.notifyDataSetChanged();
+            titleBar.setRightWitchShow(NormalTitleBar.ICON);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public void completeRefresh() {
+        if (mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
+            mSwipeLayout.setRefreshing(false);
+        }
+    }
+
+
+    @Override
+    public void showPartners(List<Account> accounts) {
+        boolean isLoadMore = skip != 0;
+
+        skip += accounts.size();
+        if (skip == 0) {
+            nullData.setVisibility(View.VISIBLE);
+        } else
+            nullData.setVisibility(View.GONE);
+        if (partnersAdapter == null) {
+            partnersAdapter = new PartnersAdapter(accounts);
+            mRecyclerView.setAdapter(partnersAdapter);
+            partnersAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(View view, int i) {
+                    if (mRecyclerView.isSelected()) {
+                        partnersAdapter.dealSelectedStatus(i);
+                        partnersAdapter.notifyItemChanged(i);
+                        if (partnersAdapter.getSelectedList().size() > 0) {
+                            titleBar.setRightWitchShow(NormalTitleBar.TEXT);
+                        } else
+                            titleBar.setRightWitchShow(NormalTitleBar.NONE);
+                    }
+                }
+            });
+
+
+        } else if (isLoadMore) {
+            partnersAdapter.addAll(accounts);
+        } else {
+            partnersAdapter.replaceAll(accounts);
+        }
+    }
+
+    @Override
+    public void successDeletePartners(String userId, String userName) {
+        if (bottonPopupWindow != null) bottonPopupWindow.dismiss();
+        skip = 0;
+        partnersAdapter.setShowSelectedStatus(false);
+        mPresenter.queryPartners(activity.getId(), "", skip);
+        if (partnersAdapter.getSelectedList() != null) partnersAdapter.getSelectedList().clear();
+        /**
+         * {@link ActivityDetailFragment}
+         */
+        EventBus.getDefault().post(new Event.RefreshActivityDetail());
+        PushMessage pushMessage = new PushMessage();
+        userId = userId.replace("[", "").replace("]", "");
+        String[] userIds = userId.split(",");
+        String[] userNames = userName.split(",");
+        String to = "[";
+        for (int i = 0; i < userIds.length; i++) {
+            to += "{\"id\":" + userIds[i] + ",\"name\":\"" + userNames[i] + "\"},";
+        }
+        to = to.substring(0, to.length() - 1);
+        to += "]";
+        pushMessage.setVerb(PushMessage.VERB_KICK)
+                .setTo(to)
+                .setMessage(userName + "被主持人请出了本活动")
+                .setTime(StringUtils.date2String(new Date()));
+        MQTTManager.getInstance().publish(topic, qos, pushMessage.getJsonStr());
+    }
+
+}

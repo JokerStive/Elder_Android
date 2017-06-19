@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/fragment_menu"
-        android:name="lilun.com.pension.ui.home.LeftMenuFragment"
+        android:name="lilun.com.pensionlife.ui.home.LeftMenuFragment"
         android:layout_width="@dimen/left_menu"
         android:layout_height="match_parent"
         android:layout_gravity="start"

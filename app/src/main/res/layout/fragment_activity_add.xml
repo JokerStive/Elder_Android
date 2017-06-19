@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                     android:layout_marginTop="@dimen/dp_8" />
             </RelativeLayout>
 
-            <lilun.com.pension.widget.InputView
+            <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_title"
                 style="@style/tv_input_desp"
                 android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 app:input_title="@string/activity_title"
                 app:title_text_color="@color/activity_black" />
 
-            <lilun.com.pension.widget.InputView
+            <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_address"
                 style="@style/tv_input_desp"
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 app:input_title="@string/activity_address"
                 app:title_text_color="@color/activity_black" />
 
-            <lilun.com.pension.widget.InputView
+            <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_require"
                 style="@style/tv_input_desp"
                 android:paddingLeft="@dimen/dp_10"
@@ -162,7 +162,7 @@
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_8" />
 
-            <lilun.com.pension.widget.InputView
+            <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_cyclial_gap"
                 style="@style/tv_input_desp"
                 android:layout_width="match_parent"
@@ -251,7 +251,7 @@
             </RelativeLayout>
 
 
-            <lilun.com.pension.widget.InputView
+            <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_maxPartner"
                 style="@style/tv_input_desp"
                 android:layout_width="match_parent"
@@ -287,7 +287,7 @@
                 android:text="@string/add_photo" />
 
 
-            <lilun.com.pension.widget.TakePhotoLayout
+            <lilun.com.pensionlife.widget.TakePhotoLayout
                 android:id="@+id/take_photo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_120"
@@ -298,7 +298,7 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <lilun.com.pension.widget.CommonButton
+    <lilun.com.pensionlife.widget.CommonButton
         android:id="@+id/btn_add_activity"
         style="@style/btn_normal"
         android:layout_alignParentBottom="true"

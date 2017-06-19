@@ -34,7 +34,7 @@
         android:textColor="@color/red" />
 
 
-    <lilun.com.pension.widget.CircleImageView
+    <lilun.com.pensionlife.widget.CircleImageView
         android:id="@+id/civ_icon"
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_72"

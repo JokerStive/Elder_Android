@@ -5,12 +5,12 @@
     android:background="#f4f4f4"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.SearchTitleBar
+    <lilun.com.pensionlife.widget.SearchTitleBar
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45" />
 
-    <lilun.com.pension.widget.filter_view.FilterView
+    <lilun.com.pensionlife.widget.filter_view.FilterView
         android:id="@+id/filter_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -15,7 +15,7 @@
         android:src="@drawable/partners_unselected"
         android:visibility="gone" />
 
-    <lilun.com.pension.widget.CircleImageView
+    <lilun.com.pensionlife.widget.CircleImageView
         android:id="@+id/iv_avatar"
         android:layout_width="@dimen/dp_45"
         android:layout_height="@dimen/dp_45"

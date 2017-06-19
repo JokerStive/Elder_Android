@@ -6,7 +6,7 @@
     android:clickable="true"
     android:gravity="center_vertical">
 
-    <lilun.com.pension.widget.CommonImageView
+    <lilun.com.pensionlife.widget.CommonImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

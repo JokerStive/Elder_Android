@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.progress.ProgressWheel
+    <lilun.com.pensionlife.widget.progress.ProgressWheel
         android:id="@+id/progressWheel"
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_72"

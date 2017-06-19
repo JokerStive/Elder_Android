@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <lilun.com.pension.widget.ProgressWebView
+    <lilun.com.pensionlife.widget.ProgressWebView
         android:id="@+id/wv_h5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <lilun.com.pension.widget.slider.BannerPager
+                    <lilun.com.pensionlife.widget.slider.BannerPager
                         android:id="@+id/bp_activity_images"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/max_photo_height" />
@@ -108,7 +108,7 @@
                             android:drawableLeft="@drawable/activity_start"
                             android:text="@string/activity_start" />
 
-                        <lilun.com.pension.widget.CountDownView
+                        <lilun.com.pensionlife.widget.CountDownView
                             android:id="@+id/cdv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -236,7 +236,7 @@
                         android:orientation="horizontal"
                         android:padding="@dimen/dp_10">
 
-                        <lilun.com.pension.widget.CircleImageView
+                        <lilun.com.pensionlife.widget.CircleImageView
                             android:id="@+id/civ_account_avatar"
                             android:layout_width="@dimen/dp_40"
                             android:layout_height="@dimen/dp_40"
@@ -349,7 +349,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"

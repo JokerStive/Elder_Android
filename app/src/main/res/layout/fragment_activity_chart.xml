@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <lilun.com.pension.widget.NormalTitleBar
+    <lilun.com.pensionlife.widget.NormalTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
@@ -23,7 +23,7 @@
         android:paddingRight="@dimen/dp_10" />
 
 
-    <lilun.com.pension.widget.InputSendView
+    <lilun.com.pensionlife.widget.InputSendView
         android:id="@+id/isv_input_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
