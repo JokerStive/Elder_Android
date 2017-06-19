@@ -33,7 +33,7 @@ public interface LoginContract {
     interface Module {
         Observable<TokenInfo> login(String username, String password);
 
-        Observable<Account> getAccountInfo(TokenInfo accountId,String username, String password);
+        Observable<Account> getAccountInfo(TokenInfo accountId, String username, String password);
 
         Observable<List<OrganizationAccount>> getBelongOrganizations(Account account);
 
@@ -44,6 +44,13 @@ public interface LoginContract {
         void putBelongOrganizations(List<OrganizationAccount> organizations);
 
         boolean saveUserAboutOrganization(String belongOrganizationAccountId);
+
+
+        String isNeedChangeDefaultOrganizationId();
+
+        String getLongestOrganizationAccountId();
+
+        String getOrganizationIdMappingOrganizationAccountId(String organizationId);
 
     }
 

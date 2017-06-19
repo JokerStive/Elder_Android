@@ -3,8 +3,6 @@ package lilun.com.pensionlife.ui.welcome;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 
 import lilun.com.pensionlife.app.User;
@@ -12,7 +10,6 @@ import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
-import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -53,10 +50,22 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
                         mModule.putBelongOrganizations(organizationAccounts);
-                        if (mModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
-                            changeSpecialOrganization();
-                        } else {
-                            ToastHelper.get().showShort("脏数据,请检查账户");
+                        String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
+                        if (TextUtils.isEmpty(belongOrganizationAccountId)){
+                            ToastHelper.get().showShort("defaultOrganizationId不存在,请检查账户");
+                        }else {
+                            String needChangeDefaultOrganizationId = mModule.isNeedChangeDefaultOrganizationId();
+                            if (TextUtils.isEmpty(needChangeDefaultOrganizationId)){
+                                //切换到最长的
+                                String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
+                                changeDefOrganizationAccountId(longestOrganizationAccountId);
+                            }else if (TextUtils.equals("success",needChangeDefaultOrganizationId)){
+                                //登陆成功
+                                view.loginSuccess();
+                            }else {
+                                //切换到居住地
+                                changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
+                            }
                         }
                     }
 
@@ -85,37 +94,6 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
     }
 
 
-    /**
-     * 当前是处在特殊组织时，需要切换回自己的小区
-     */
-    private void changeSpecialOrganization() {
-        String currentOrganizationId = User.getCurrentOrganizationId();
-        if (currentOrganizationId.contains("#department")) {
-            Logger.d("在特殊组织下需要切换");
-            List<OrganizationAccount> list = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
-            for (int i = 0; i < list.size(); i++) {
-                String organizationId = list.get(i).getOrganizationId();
-                if (organizationId.contains("#department") || organizationId.contains("社会组织")) {
-                    list.remove(i);
-                    i--;
-                }
-            }
-            for (int i = 0; i < list.size() - 1; i++) {
-                for (int j = 1; j < list.size() - i; j++) {
-                    if ((list.get(j - 1)).getOrganizationId().length() < (list.get(j)).getOrganizationId().length()) {   //比较两个整数的大小
-                        OrganizationAccount temp = list.get(j - 1);
-                        list.set((j - 1), list.get(j));
-                        list.set(j, temp);
-                    }
-                }
-            }
-
-            String targetId = list.get(0).getId();
-            changeDefOrganizationAccountId(targetId);
-        } else {
-            mView.loginSuccess();
-        }
-    }
 
     private void changeDefOrganizationAccountId(String targetId) {
         Account account = new Account();
@@ -128,6 +106,8 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                     public void _next(Account account) {
                         if (mModule.saveUserAboutOrganization(targetId)) {
                             mView.loginSuccess();
+                        }else {
+                            ToastHelper.get().showShort("没有找到和居住地对应的数据，或者居住地是地球村,检查账户");
                         }
                     }
                 });

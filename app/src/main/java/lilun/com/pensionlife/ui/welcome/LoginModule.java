@@ -62,6 +62,7 @@ public class LoginModule implements LoginContract.Module {
 
     @Override
     public void putAccountInfo(Account account) {
+
         //居住地信息
         if (account.getProfile() != null) {
             User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
@@ -102,9 +103,80 @@ public class LoginModule implements LoginContract.Module {
     }
 
 
+
+    @Override
+    public String isNeedChangeDefaultOrganizationId() {
+        String result="";
+
+        //居住地
+        String belongToDistrict = User.getBelongToDistrict();
+        String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
+
+
+
+        //居住地不存在，则是在商家端注册的，需要切换
+        if (!TextUtils.isEmpty(belongToDistrict) ){
+            //居住地存在
+            String organizationIdMappingOrganizationAccountId = getOrganizationIdMappingOrganizationAccountId(belongToDistrict);
+            if (TextUtils.equals(belongOrganizationAccountId,organizationIdMappingOrganizationAccountId)){
+                // 和defaultOrganizationId对应，则不需要切换组织
+                result = "success";
+            }else {
+                // 和defaultOrganizationId不对应，则需要切换到居住村对应的组织
+                result = organizationIdMappingOrganizationAccountId;
+            }
+        }
+
+
+
+
+        return result;
+    }
+
+    @Override
+    public String getLongestOrganizationAccountId() {
+        List<OrganizationAccount> list = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
+        if (list==null  || list.size()==0){
+            return "";
+        }
+        for (int i = 0; i < list.size(); i++) {
+            String organizationId = list.get(i).getOrganizationId();
+            if (organizationId.contains("#department") || organizationId.contains("社会组织")) {
+                list.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = 1; j < list.size() - i; j++) {
+                if ((list.get(j - 1)).getOrganizationId().length() < (list.get(j)).getOrganizationId().length()) {   //比较两个整数的大小
+                    OrganizationAccount temp = list.get(j - 1);
+                    list.set((j - 1), list.get(j));
+                    list.set(j, temp);
+                }
+            }
+        }
+        return list.get(0).getId();
+    }
+
+    @Override
+    public String getOrganizationIdMappingOrganizationAccountId(String targetOrganizationId) {
+        List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
+        if (!TextUtils.isEmpty(targetOrganizationId) && organizationAccounts != null && organizationAccounts.size()!=0) {
+            for (OrganizationAccount organizationAccount : organizationAccounts) {
+                String organizationId = organizationAccount.getOrganizationId();
+                String id = organizationAccount.getId();
+                if (TextUtils.equals(targetOrganizationId,organizationId)){
+                    return id;
+                }
+            }
+        }
+        return null;
+    }
+
+
     @Override
     public boolean saveUserAboutOrganization(String belongOrganizationAccountId) {
-        boolean result=false;
+        boolean result = false;
         List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
         if (!TextUtils.isEmpty(belongOrganizationAccountId) && organizationAccounts != null) {
             for (OrganizationAccount organizationAccount : organizationAccounts) {
@@ -146,6 +218,8 @@ public class LoginModule implements LoginContract.Module {
 
         return result;
     }
+
+
 
 
     private Account getAccount(String username, String password) {
