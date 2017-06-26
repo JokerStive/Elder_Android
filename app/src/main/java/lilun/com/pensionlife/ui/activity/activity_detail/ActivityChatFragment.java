@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -108,6 +109,13 @@ public class ActivityChatFragment extends BaseFragment {
         mRecyclerView.setAdapter(chatAdapter);
         if (chatAdapter.getItemCount() > 0)
             mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (chatAdapter.getItemCount() > 0)
+                    mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+            }
+        });
         isvSend.setOnSendListener(new InputSendView.OnSendListener() {
             @Override
             public void send(String sendStr) {
