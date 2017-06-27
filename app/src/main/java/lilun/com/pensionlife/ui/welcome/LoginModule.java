@@ -94,6 +94,22 @@ public class LoginModule implements LoginContract.Module {
         //个人资料
         User.putContactId(account.getDefaultContactId() == null ? "" : account.getDefaultContactId());
 
+
+        //商家跑单人员
+        User.putBusinessId(getBusinessId(account.getRoles()));
+
+    }
+
+    private String getBusinessId(List<String> roles) {
+        String result = "";
+        if (roles != null) {
+            for (String roleId : roles) {
+                if (roleId.endsWith("/#role/跑单")) {
+                    result = roleId.substring(0, roleId.lastIndexOf("/#role"));
+                }
+            }
+        }
+        return result;
     }
 
 
@@ -103,31 +119,27 @@ public class LoginModule implements LoginContract.Module {
     }
 
 
-
     @Override
     public String isNeedChangeDefaultOrganizationId() {
-        String result="";
+        String result = "";
 
         //居住地
         String belongToDistrict = User.getBelongToDistrict();
         String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
 
 
-
         //居住地不存在，则是在商家端注册的，需要切换
-        if (!TextUtils.isEmpty(belongToDistrict) ){
+        if (!TextUtils.isEmpty(belongToDistrict)) {
             //居住地存在
             String organizationIdMappingOrganizationAccountId = getOrganizationIdMappingOrganizationAccountId(belongToDistrict);
-            if (TextUtils.equals(belongOrganizationAccountId,organizationIdMappingOrganizationAccountId)){
+            if (TextUtils.equals(belongOrganizationAccountId, organizationIdMappingOrganizationAccountId)) {
                 // 和defaultOrganizationId对应，则不需要切换组织
                 result = "success";
-            }else {
+            } else {
                 // 和defaultOrganizationId不对应，则需要切换到居住村对应的组织
                 result = organizationIdMappingOrganizationAccountId;
             }
         }
-
-
 
 
         return result;
@@ -136,12 +148,13 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public String getLongestOrganizationAccountId() {
         List<OrganizationAccount> list = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
-        if (list==null  || list.size()==0){
+        if (list == null || list.size() == 0) {
             return "";
         }
         for (int i = 0; i < list.size(); i++) {
             String organizationId = list.get(i).getOrganizationId();
-            if (organizationId.contains("#department") || organizationId.contains("社会组织")) {
+            boolean condition = organizationId.contains("#department") || organizationId.contains("社会组织") || organizationId.endsWith("/#staff");
+            if (condition) {
                 list.remove(i);
                 i--;
             }
@@ -161,11 +174,11 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public String getOrganizationIdMappingOrganizationAccountId(String targetOrganizationId) {
         List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
-        if (!TextUtils.isEmpty(targetOrganizationId) && organizationAccounts != null && organizationAccounts.size()!=0) {
+        if (!TextUtils.isEmpty(targetOrganizationId) && organizationAccounts != null && organizationAccounts.size() != 0) {
             for (OrganizationAccount organizationAccount : organizationAccounts) {
                 String organizationId = organizationAccount.getOrganizationId();
                 String id = organizationAccount.getId();
-                if (TextUtils.equals(targetOrganizationId,organizationId)){
+                if (TextUtils.equals(targetOrganizationId, organizationId)) {
                     return id;
                 }
             }
@@ -189,13 +202,13 @@ public class LoginModule implements LoginContract.Module {
                     User.putRootOrganizationAccountId(organizationAccount.getId());
                 }
 
-                if (organizationId.contains(Constants.special_organization_root)) {
+                if (organizationId.contains("社会组织") &&  organizationId.contains("商家")) {
                     User.putIsCustomer(false);
 
                 }
 
                 //如果其中一个organizationAccountId和account的defacltOrganizationId相同，则这个organizationAccount就是默认的
-                if (organizationAccountId.equals(belongOrganizationAccountId)  &&  !organizationId.equals(Constants.organization_root)) {
+                if (organizationAccountId.equals(belongOrganizationAccountId) && !organizationId.equals(Constants.organization_root)) {
 
                     //默认组织id
                     User.putBelongsOrganizationId(organizationId);
@@ -209,7 +222,7 @@ public class LoginModule implements LoginContract.Module {
                     //当前组织账号id
                     User.putCurrentOrganizationAccountId(organizationAccountId);
 
-                    result =  true;
+                    result = true;
                 }
 
             }
@@ -218,8 +231,6 @@ public class LoginModule implements LoginContract.Module {
 
         return result;
     }
-
-
 
 
     private Account getAccount(String username, String password) {

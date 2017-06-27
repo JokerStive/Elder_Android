@@ -37,6 +37,7 @@ public class User {
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
+    public static final String businessId = "businessId";
 
     public static String getUserAvatar() {
         return PreUtils.getString(userAvatar, null);
@@ -123,40 +124,6 @@ public class User {
         return StringUtils.getOrganizationNameFromId(PreUtils.getString(belongsOrganizationId, defOrganizationId));
     }
 
-
-    /**
-     *检查token是否过期
-     */
-//    public static boolean isTokenEffective() {
-//        long currentTime = new Date().getTime();
-//        long tokenEffectiveDuration = PreUtils.getLong(User.tokenEffectiveDuration, 0);
-//        if (tokenEffectiveDuration==0){
-//            throw new RuntimeException("数据异常");
-//        }
-//        return getUserId().equals(creatorId);
-//    }
-
-
-    /**
-     * 根据当前组织判断是否可以增删改
-     */
-//    public static boolean canOperate() {
-//        String currentOrganizationId = getCurrentOrganizationId();
-//        if (ACache.get().isExit(belongOrganizations)) {
-//            List<OrganizationAccount> belongOrganizationAccount = (List<OrganizationAccount>) ACache.get().getAsObject(belongOrganizations);
-//            for (OrganizationAccount organizationAccount : belongOrganizationAccount) {
-//                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
-//                if (organizationId.equals(Constants.organization_root)) {
-//                    continue;
-//                }
-//                if (TextUtils.equals(currentOrganizationId, organizationId)) {
-//                    return true;
-//                }
-//            }
-//
-//        }
-//        return false;
-//    }
 
 
     /**
@@ -250,6 +217,16 @@ public class User {
 
     public static String getBelongToDistrict() {
         return PreUtils.getString(belongToDistrict, "");
+    }
+
+
+
+    //跑单人员id
+    public static void putBusinessId(String id) {
+        PreUtils.putString(businessId, id);
+    }
+    public static String getBusinessId() {
+        return PreUtils.getString(businessId, "");
     }
 
 

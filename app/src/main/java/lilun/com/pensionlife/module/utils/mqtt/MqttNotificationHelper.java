@@ -43,47 +43,38 @@ public class MqttNotificationHelper {
         int classify = -1;
 
         //公告和普通求助
-        if (topic.contains(mqttTopic.topic_help_suffix) ||topic.contains(mqttTopic.topic_information_suffix)) {
+        if (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
-//            String organizationId = infoJson.getString("organizationId");
-//            if (TextUtils.isEmpty(organizationId)) return;
-//            String targetId = StringUtils.removeSpecialSuffix(organizationId);
-//
-//            boolean canOperate = User.canOperate(targetId);
-//
-//
-//            //如果是在当前组织的市级以下的消息才处理，不然直接遗弃
-//            if (canOperate) {
 
-                //发送事件，展示到app
-                EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+            //发送事件，展示到app
+            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
 
 
-                // 1 ----- 公告，展示到通知栏
-                if (topic.contains(mqttTopic.topic_help_suffix)) {
-                    classify = msgClassify.announce;
+            // 1 ----- 公告，展示到通知栏
+            if (topic.contains(mqttTopic.topic_help_suffix)) {
+                classify = msgClassify.announce;
 
-                    String parentId = infoJson.getString("parentId");
-                    if (parentId.endsWith("社区公告")) {
-                        title = "公告";
-                        content = infoJson.getString("name");
-                    }
+                String parentId = infoJson.getString("parentId");
+                if (parentId.endsWith("社区公告")) {
+                    title = "公告";
+                    content = infoJson.getString("name");
                 }
+            }
 
 
-                //2 ----- 普通求助
-                if (topic.contains(mqttTopic.topic_information_suffix)) {
-                    classify = msgClassify.normal_help;
+            //2 ----- 普通求助
+            if (topic.contains(mqttTopic.topic_information_suffix)) {
+                classify = msgClassify.normal_help;
 
-                    EventBus.getDefault().post(new Event.RefreshHelpData());
-                }
+                EventBus.getDefault().post(new Event.RefreshHelpData());
+            }
 //            }
         }
 
 
         //3 -----紧急求助
         String urgent_help = mqttTopic.urgent_help;
-        if (TextUtils.equals(topic,urgent_help)) {
+        if (TextUtils.equals(topic, urgent_help)) {
             classify = msgClassify.urgent_help;
             title = "紧急求助";
             content = jsonObject.getString("message");
@@ -92,13 +83,11 @@ public class MqttNotificationHelper {
             EventBus.getDefault().post(new Event.BoardMsg(topic, data));
         }
 
-//
+
         //4 ----- 登陆
         if (TextUtils.equals(topic, mqttTopic.login)) {
             dealLogin(data);
         }
-
-
 
 
         //保存到数据库，绑定用户

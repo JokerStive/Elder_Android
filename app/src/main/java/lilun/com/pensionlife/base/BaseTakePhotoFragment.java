@@ -15,7 +15,6 @@ import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
-import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -47,8 +46,9 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getTakePhoto().onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
+        TakePhotoImpl takePhoto = (TakePhotoImpl) getTakePhoto();
+        takePhoto.onActivityResult(requestCode,resultCode,data);
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -59,15 +59,16 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
      */
     public TakePhoto getTakePhoto() {
         if (takePhoto == null) {
-            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+            takePhoto = new TakePhotoImpl(this,this);
+//            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+            LubanOptions option = new LubanOptions.Builder()
+                    .setMaxHeight(Config.uploadPhotoMaxHeight)
+                    .setMaxWidth(Config.uploadPhotoMaxWidth)
+                    .setMaxSize(Config.uploadPhotoMaxSize)
+                    .create();
+            CompressConfig config = CompressConfig.ofLuban(option);
+            takePhoto.onEnableCompress(config, true);
         }
-        LubanOptions option = new LubanOptions.Builder()
-                .setMaxHeight(Config.uploadPhotoMaxHeight)
-                .setMaxWidth(Config.uploadPhotoMaxWidth)
-                .setMaxSize(Config.uploadPhotoMaxSize)
-                .create();
-        CompressConfig config = CompressConfig.ofLuban(option);
-        takePhoto.onEnableCompress(config, true);
         return takePhoto;
     }
 

@@ -63,13 +63,10 @@ public class AlarmDialogFragment extends DialogFragment {
         this.phone = StringUtils.checkNotEmpty(phone);
 
         BaiduLocation.getLocation(getActivity());
-        BaiduLocation.setMyLocationListener(new BaiduLocation.currentLocationListener() {
-            @Override
-            public void currentLocation(double mylongitude, double mylatitude, String address) {
-                currentLongitude = mylongitude;
-                currentLatitude = mylatitude;
-                currentAddress = address;
-            }
+        BaiduLocation.setMyLocationListener((mylongitude, mylatitude, address) -> {
+            currentLongitude = mylongitude;
+            currentLatitude = mylatitude;
+            currentAddress = address;
         });
     }
 
@@ -145,7 +142,7 @@ public class AlarmDialogFragment extends DialogFragment {
 //                        dismiss();
 //                    }
 //                });
-        String topic = "user/" +  PreUtils.getString("firstHelperPhone", "") + "/.help/10";
+        String topic = "user/" + PreUtils.getString("firstHelperPhone", "") + "/.help/10";
         PushMessage pushMessage = new PushMessage();
         pushMessage.setVerb(PushMessage.VERB_HELP)
                 .setTitle(User.getName())
@@ -160,9 +157,9 @@ public class AlarmDialogFragment extends DialogFragment {
 
         MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
         dismiss();
-        String message = User.getName() + "向您紧急求助，他/她现在的位置在 " + currentAddress
-                + ",联系电话：" + User.getMobile() + "，请尽快联系。";
-        sendSmsWithBody(App.context, PreUtils.getString("firstHelperPhone", ""), message);
+//        String message = User.getName() + "向您紧急求助，他/她现在的位置在 " + currentAddress
+//                + ",联系电话：" + User.getMobile() + "，请尽快联系。";
+//        sendSmsWithBody(App.context, PreUtils.getString("firstHelperPhone", ""), message);
     }
 
     @Override

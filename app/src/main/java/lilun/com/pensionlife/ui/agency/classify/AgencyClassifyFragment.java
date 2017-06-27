@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -101,7 +100,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTvRightText(getString(R.string.all_orders));
-      //  titleBar.setFragment(this);
+        //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -120,6 +119,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             }
         });
 
+
         rvAgency.addItemDecoration(new ElderModuleClassifyDecoration());
         rvServer.addItemDecoration(new ElderModuleClassifyDecoration());
 
@@ -135,12 +135,15 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
-        if (User.isCustomer()) {
-            mPresenter.getClassifiesByAgency();
-        } else {
-            tvAgencyTitle.setVisibility(View.GONE);
-            rvAgency.setVisibility(View.GONE);
-        }
+        mPresenter.getClassifiesByAgency();
+//        if (User.isCustomer()) {
+//            mPresenter.getClassifiesByAgency();
+//        }
+//
+//        else {
+//            tvAgencyTitle.setVisibility(View.GONE);
+//            rvAgency.setVisibility(View.GONE);
+//        }
         mPresenter.getClassifiesByService();
         mSwipeLayout.setEnabled(false);
     }

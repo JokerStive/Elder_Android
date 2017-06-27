@@ -4,7 +4,6 @@ import android.view.KeyEvent;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.ui.activity.activity_detail.ActivityPartnersListFragment;
 
@@ -43,8 +42,6 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String belongsOrganizationId = User.getBelongsOrganizationId();
-        String currentOrganizationId = User.getCurrentOrganizationId();
         App.resetMQTT();
     }
 

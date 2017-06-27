@@ -58,10 +58,14 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                             if (TextUtils.isEmpty(needChangeDefaultOrganizationId)){
                                 //切换到最长的
                                 String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
-                                changeDefOrganizationAccountId(longestOrganizationAccountId);
+                                if (TextUtils.isEmpty(longestOrganizationAccountId)){
+                                    ToastHelper.get().showLong("最长的oa为空");
+                                }else {
+                                    changeDefOrganizationAccountId(longestOrganizationAccountId);
+                                }
                             }else if (TextUtils.equals("success",needChangeDefaultOrganizationId)){
                                 //登陆成功
-                                view.loginSuccess();
+                              loginSuccess();
                             }else {
                                 //切换到居住地
                                 changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
@@ -76,6 +80,13 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         super.onError(e, errorCode, errorMessage);
                     }
                 }));
+    }
+
+    /**
+    *登陆成功贮备
+    */
+    private void loginSuccess() {
+//        User。
     }
 
     @Override
