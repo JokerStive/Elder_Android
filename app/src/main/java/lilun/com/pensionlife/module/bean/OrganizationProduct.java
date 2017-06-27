@@ -30,7 +30,7 @@ public class OrganizationProduct extends BaseBean {
      * updatorName : string
      * organizationId : string
      * visible : 0
-     * images : {}
+     * image : {}
      * categoryId : string
      */
 
@@ -48,7 +48,7 @@ public class OrganizationProduct extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> images;
+    private List<IconModule> image;
     private String categoryId;
     private List<String> areas;
 
@@ -166,12 +166,12 @@ public class OrganizationProduct extends BaseBean {
     }
 
 
-    public List<IconModule> getImages() {
-        return images;
+    public List<IconModule> getImage() {
+        return image;
     }
 
-    public void setImages(List<IconModule> images) {
-        this.images = images;
+    public void setImage(List<IconModule> image) {
+        this.image = image;
     }
 
     public String getCategoryId() {

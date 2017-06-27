@@ -159,6 +159,10 @@ public class LoginModule implements LoginContract.Module {
                 i--;
             }
         }
+
+        if (list.size()<=0){
+            return null;
+        }
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 1; j < list.size() - i; j++) {
                 if ((list.get(j - 1)).getOrganizationId().length() < (list.get(j)).getOrganizationId().length()) {   //比较两个整数的大小
@@ -176,7 +180,7 @@ public class LoginModule implements LoginContract.Module {
         List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
         if (!TextUtils.isEmpty(targetOrganizationId) && organizationAccounts != null && organizationAccounts.size() != 0) {
             for (OrganizationAccount organizationAccount : organizationAccounts) {
-                String organizationId = organizationAccount.getOrganizationId();
+                String organizationId = StringUtils.removeSpecialSuffix(organizationAccount.getOrganizationId());
                 String id = organizationAccount.getId();
                 if (TextUtils.equals(targetOrganizationId, organizationId)) {
                     return id;
@@ -190,6 +194,8 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public boolean saveUserAboutOrganization(String belongOrganizationAccountId) {
         boolean result = false;
+        User.putCurrentOrganizationHasChanged(false);
+        ACache.get().remove("chooseIds");
         List<OrganizationAccount> organizationAccounts = (List<OrganizationAccount>) ACache.get().getAsObject(User.belongOrganizations);
         if (!TextUtils.isEmpty(belongOrganizationAccountId) && organizationAccounts != null) {
             for (OrganizationAccount organizationAccount : organizationAccounts) {
@@ -213,11 +219,15 @@ public class LoginModule implements LoginContract.Module {
                     //默认组织id
                     User.putBelongsOrganizationId(organizationId);
 
-                    //当前组织id
-                    User.putCurrentOrganizationId(organizationId);
-
                     //默认组织账号id
                     User.putBelongOrganizationAccountId(organizationAccountId);
+
+
+//                    //当前组织id
+//                    if (!User.currentOrganizationHasChanged()){
+                        User.putCurrentOrganizationId(organizationId);
+//                    }
+
 
                     //当前组织账号id
                     User.putCurrentOrganizationAccountId(organizationAccountId);

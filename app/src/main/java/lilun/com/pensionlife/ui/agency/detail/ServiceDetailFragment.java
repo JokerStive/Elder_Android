@@ -164,8 +164,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         super.onLazyInitView(savedInstanceState);
         //展示product图片
         List<String> urls = new ArrayList<>();
-        if (mProduct.getImages() != null) {
-            for (IconModule iconModule : mProduct.getImages()) {
+        if (mProduct.getImage() != null) {
+            for (IconModule iconModule : mProduct.getImage()) {
                 String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mProduct.getId(), iconModule.getFileName());
                 urls.add(url);
             }

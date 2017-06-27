@@ -221,7 +221,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                     public void _next(List<OrganizationAccount> organizationAccounts) {
                         tvBelongStress.setText(distrect.getName());
                         loginModule.putBelongOrganizations(organizationAccounts);
-                        if (loginModule.saveUserAboutOrganization(User.getBelongOrganizationAccountId())) {
+                        if (loginModule.saveUserAboutOrganization(loginModule.getOrganizationIdMappingOrganizationAccountId(distrect.getId()))) {
                             EventBus.getDefault().post(new Event.ChangedOrganization());
                             EventBus.getDefault().post(new Event.AccountSettingChange());
                         } else {

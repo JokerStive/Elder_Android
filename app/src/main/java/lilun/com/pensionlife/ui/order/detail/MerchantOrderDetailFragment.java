@@ -124,7 +124,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
         rbBar.setRating(product.getScore());
         tvPrice.setText("价格:" + product.getPrice());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImages())), R.drawable.icon_def, ivImage);
+        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage())), R.drawable.icon_def, ivImage);
     }
 
 
