@@ -142,39 +142,42 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setData() {
-        Organization.DescriptionBean description = mAgency.getDescription();
+
 
         //显示
         tvTitle.setText(mAgency.getName());
 //        tvDesc.setText(StringUtils.filterNull(description.getDescription()));
 
-        if(mAgency.getExtension()!= null && !TextUtils.isEmpty(mAgency.getExtension().getPhone())) {
+        if (mAgency.getExtension() != null && !TextUtils.isEmpty(mAgency.getExtension().getPhone())) {
             tvPhone.setVisibility(View.VISIBLE);
             tvPhone.setText(String.format(getString(R.string.format_phone), mAgency.getExtension().getPhone()));
             tvPhone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(StringUtils.isMobileNumber(mAgency.getExtension().getPhone())){
+                    if (StringUtils.isMobileNumber(mAgency.getExtension().getPhone())) {
                         String url = "tel:" + mAgency.getExtension().getPhone();
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
                         try {
                             startActivity(intent);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else
+                    } else
                         ToastHelper.get(_mActivity).showWareShort(getString(R.string.mobile_format_wrong));
                 }
             });
         }
+        Organization.DescriptionBean description = mAgency.getDescription();
+        if (description != null) {
 //        tvPhone.setText(String.format(getString(R.string.format_bedsCount), StringUtils.filterNull(description.getBedsCount())));
-        tvPrice.setText(String.format("价格区间：%1$s元——%2$s元", description.getChargingStandard().getMin(), description.getChargingStandard().getMax()));
-        tvIntroduction.setText(StringUtils.filterNull(description.getDescription()));
-        tvRequirement.setText(StringUtils.filterNull(StringUtils.filterNull(description.getRequirements())));
-        tvAddress.setText(StringUtils.filterNull(description.getAdress()));
+            if (description.getChargingStandard() != null)
+                tvPrice.setText(String.format("价格区间：%1$s元——%2$s元", description.getChargingStandard().getMin(), description.getChargingStandard().getMax()));
+            tvIntroduction.setText(StringUtils.filterNull(description.getDescription()));
+            tvRequirement.setText(StringUtils.filterNull(StringUtils.filterNull(description.getRequirements())));
+            tvAddress.setText(StringUtils.filterNull(description.getAdress()));
 
-        rbBar.setRating(description.getRanking());
-
+            rbBar.setRating(description.getRanking());
+        }
         setIcon();
     }
 
@@ -206,11 +209,11 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
             List<String> urls = new ArrayList<>();
             if (mAgency.getIcon() != null) {
                 for (IconModule iconModule : mAgency.getIcon()) {
-                    String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), iconModule.getFileName(),"icon");
+                    String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), iconModule.getFileName(), "icon");
                     urls.add(url);
                 }
             } else {
-                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), null,"icon");
+                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, mAgency.getId(), null, "icon");
                 urls.add(url);
             }
             banner.setData(urls);
