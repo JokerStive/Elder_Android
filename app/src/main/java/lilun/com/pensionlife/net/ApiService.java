@@ -7,6 +7,7 @@ import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
 import lilun.com.pensionlife.module.bean.ActivityEvaluate;
 import lilun.com.pensionlife.module.bean.AidDetail;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
@@ -57,6 +58,8 @@ public interface ApiService {
 
 //    ====================用户账户相关
 
+    @GET("/APPs/{appName}/version/{versionName}")
+    Observable<Response<AppVersion>> getVersionInfo(@Path("appName")String appName, @Path("versionName")String versionName);
     /**
      * token检查
      */

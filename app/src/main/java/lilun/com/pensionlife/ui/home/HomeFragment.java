@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.ui.home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -17,15 +18,18 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -40,7 +44,9 @@ import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
+import lilun.com.pensionlife.widget.recycler_view.NormalModule;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -110,6 +116,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter = new HomePresenter();
         mPresenter.bindView(this);
         mPresenter.getInformation();
+        mPresenter.getVersionInfo(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME);
     }
 
 
@@ -335,6 +342,26 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 User.putCurrentOrganizationId(User.getBelongsOrganizationId());
                 tvPosition.setText(User.getCurrentOrganizationName());
         }
+    }
+
+    @Override
+    public void showVersionInfo(AppVersion version) {
+        if (version == null) return;
+        new NormalDialog().createVersionDialog(_mActivity, version.getDescription(), version.getForced(), new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse(version.getUrl()));
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        })
+        ;
     }
 
 
