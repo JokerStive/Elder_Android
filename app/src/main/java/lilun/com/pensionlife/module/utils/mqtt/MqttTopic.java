@@ -37,6 +37,7 @@ public class MqttTopic {
         topics.add(personal_msg);
         ArrayList<String> levelIds = User.levelIds(false);
         for(String levelId:levelIds){
+//            String encodeId = StringUtils.encodeURLOfOrg(levelId);
             String aidTopic = levelId +topic_help_suffix;
             String informationTopic = levelId+topic_information_suffix;
             topics.add(aidTopic);

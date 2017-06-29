@@ -30,7 +30,6 @@ import lilun.com.pensionlife.module.utils.StringUtils;
  *         email : yk_developer@163.com
  */
 public class MqttNotificationHelper {
-
     public void showOnNotification(String topic, String data) {
         MqttTopic mqttTopic = new MqttTopic();
         CacheMsg cacheMsg = new CacheMsg(data);
@@ -51,7 +50,7 @@ public class MqttNotificationHelper {
 
 
             // 1 ----- 公告，展示到通知栏
-            if (topic.contains(mqttTopic.topic_help_suffix)) {
+            if (topic.contains(mqttTopic.topic_information_suffix)) {
                 classify = msgClassify.announce;
 
                 String parentId = infoJson.getString("parentId");
@@ -63,12 +62,11 @@ public class MqttNotificationHelper {
 
 
             //2 ----- 普通求助
-            if (topic.contains(mqttTopic.topic_information_suffix)) {
+            if (topic.contains(mqttTopic.topic_help_suffix)) {
                 classify = msgClassify.normal_help;
 
                 EventBus.getDefault().post(new Event.RefreshHelpData());
             }
-//            }
         }
 
 

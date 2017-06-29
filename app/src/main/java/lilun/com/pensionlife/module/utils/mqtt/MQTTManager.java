@@ -68,50 +68,6 @@ public class MQTTManager {
     public boolean isConnected() {
         return client != null && client.isConnected();
     }
-//
-//    public void createConnect(String userName, String password, String[] topics, int[] qos) {
-//        if (client != null && client.isConnected()) {
-//            Logger.i("mqtt 已经链接不需要再次链接");
-//            return;
-//        }
-//
-//        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
-//            return;
-//        }
-//        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-//        mqttConnectOptions.setAutomaticReconnect(true);
-//        mqttConnectOptions.setCleanSession(false);
-//
-//        mqttConnectOptions.setPassword(password.toCharArray());
-//
-//        mqttConnectOptions.setUserName(userName);
-//        if (client == null) {
-//            String deviceId = DeviceUtils.getUniqueIdForThisApp(App.context);
-//            client = new MqttAndroidClient(App.context, Config.MQTT_URL, deviceId);
-////            Logger.i("设备Id:" + deviceId);
-//        }
-//
-//        client.setCallback(mCallback);
-//        try {
-//            client.connect(mqttConnectOptions, null, new IMqttActionListener() {
-//                @Override
-//                public void onSuccess(IMqttToken asyncActionToken) {
-//                    Logger.i("连接mqtt服务器成功");
-//                    if (topics != null && qos != null && topics.length == qos.length)
-//                        subscribe(topics, qos);
-//                }
-//
-//                @Override
-//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-//                    Logger.i("链接失败" + exception.getMessage());
-//                }
-//            });
-//        } catch (MqttException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
 
 
     public void connect(String userName, String password, IMqttActionListener listener) {
