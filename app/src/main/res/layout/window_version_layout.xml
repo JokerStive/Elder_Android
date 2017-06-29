@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/version_bg_top" />
+
+        <TextView
+            android:id="@+id/tv_version_desp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minLines="5"
+            android:padding="@dimen/dp_8"
+            android:text="当前版本1.1.0   苦  落地有声土著落地有声楳某某霏霏桔柑雸" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_version_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_20"
+                android:background="@drawable/selector_click_yellow_drak_coners_5"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/version_update_imm"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/version_bg_botton" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ig_version_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ll_version"
+        android:layout_toRightOf="@id/ll_version"
+        android:padding="@dimen/dp_10"
+        android:src="@drawable/version_close" />
+
+
+</LinearLayout>

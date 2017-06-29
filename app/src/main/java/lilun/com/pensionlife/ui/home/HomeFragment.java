@@ -1,7 +1,6 @@
 package lilun.com.pensionlife.ui.home;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -33,6 +31,7 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pensionlife.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementItemFragment;
@@ -44,9 +43,7 @@ import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
-import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
-import lilun.com.pensionlife.widget.recycler_view.NormalModule;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -116,7 +113,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter = new HomePresenter();
         mPresenter.bindView(this);
         mPresenter.getInformation();
-        mPresenter.getVersionInfo(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME);
     }
 
 
@@ -132,6 +128,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+
 
     }
 
@@ -168,6 +165,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 //        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
 //        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
         mPresenter.needChangeToDefOrganization();
+
+
     }
 
     @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
@@ -328,6 +327,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public void onPageSelected(int position) {
             }
         });
+        mPresenter.getVersionInfo(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -344,24 +344,15 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         }
     }
 
+    /**
+     * 显示版本升级信息
+     * @param version
+     */
     @Override
     public void showVersionInfo(AppVersion version) {
         if (version == null) return;
-        new NormalDialog().createVersionDialog(_mActivity, version.getDescription(), version.getForced(), new NormalDialog.OnPositiveListener() {
-            @Override
-            public void onPositiveClick() {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setData(Uri.parse(version.getUrl()));
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        })
-        ;
+        if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion()))
+            VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
     }
 
 
