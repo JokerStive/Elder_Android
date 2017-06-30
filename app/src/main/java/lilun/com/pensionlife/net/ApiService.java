@@ -7,6 +7,7 @@ import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
 import lilun.com.pensionlife.module.bean.ActivityEvaluate;
 import lilun.com.pensionlife.module.bean.AidDetail;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
@@ -57,6 +58,8 @@ public interface ApiService {
 
 //    ====================用户账户相关
 
+    @GET("APPs/{appName}/version/{versionName}")
+    Observable<Response<AppVersion>> getVersionInfo(@Path("appName")String appName, @Path("versionName")String versionName);
     /**
      * token检查
      */
@@ -445,6 +448,16 @@ public interface ApiService {
      */
     @DELETE("OrganizationActivities/{id}/rel/partner")
     Observable<Response<Account>> deleteOfPartners(@Path("id") String activityId, @Header("usersId") String userId);
+    /**
+     * 踢出参与者并加入黑名单
+     *
+     * @param activityId
+     * @param userId
+     * @return
+     */
+    @FormUrlEncoded
+    @PUT("OrganizationActivities/{id}/rel/blockUser")
+    Observable<Response<Object>> addBlockUser(@Path("id") String activityId, @Field("usersId") String userId);
 
     /**
      * 关闭（解散）活动

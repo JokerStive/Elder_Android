@@ -336,6 +336,8 @@
     <string name="activity_has_finished">活动已结束</string>
     <string name="activity_has_started">活动已开始</string>
     <string name="activity_has_people_full">活动参加人数已满</string>
+    <string name="you_not_allow_join">该活动不允许您参加</string>
+    <string name="activity_not_allow_join">不再允许选中人员参加本活动</string>
     <string name="people_number_">%1$s名成员</string>
     <string name="chat">聊天室</string>
     <string name="master">主持人</string>
@@ -352,5 +354,10 @@
     <string name="new_password_str">请输入至少6位的密码</string>
     <string name="account_ivatar_str">账户头像</string>
     <string name="first_help">第一求助人设置</string>
+
+
+    <string name="version_new">发现新版本</string>
+    <string name="version_update_imm">立即更新</string>
+    <string name="version_update_ignore">忽略更新</string>
 
 </resources>

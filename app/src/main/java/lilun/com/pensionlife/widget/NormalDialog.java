@@ -58,6 +58,38 @@ public class NormalDialog {
                 .show();
     }
 
+    public void createCheckDialog(Activity activity, String title, boolean cancelOnOutSide, MaterialDialog.SingleButtonCallback posback) {
+        new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+                .canceledOnTouchOutside(cancelOnOutSide)
+                .title(title)
+                .checkBoxPrompt(activity.getString(R.string.activity_not_allow_join), false, null)
+                .positiveText(R.string.confirm)
+                .onPositive(posback)
+                .show();
+    }
+
+    /**
+     * 版本更新的提示Dialog
+     *
+     * @param activity
+     * @param desp
+     * @param listener
+     * @param forced
+     */
+    public void createVersionDialog(Activity activity, String desp, boolean forced, OnPositiveListener listener) {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(activity);
+        builder.canceledOnTouchOutside(!forced)
+                .title(R.string.version_new)
+                .content(desp)
+                .positiveText(R.string.version_update_imm)
+                .onPositive((dialog1, which) -> listener.onPositiveClick());
+        if (!forced) {
+            builder.negativeText(R.string.version_update_ignore)
+                    .onNegative((dialog1, which) -> dialog1.dismiss());
+        }
+        builder.show();
+    }
+
 
     public interface OnPositiveListener {
         void onPositiveClick();

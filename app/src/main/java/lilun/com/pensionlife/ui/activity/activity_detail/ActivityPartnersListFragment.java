@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.ui.activity.activity_detail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,16 +40,19 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.widget.BottonPopupWindow;
 import lilun.com.pensionlife.widget.CircleImageView;
 import lilun.com.pensionlife.widget.DividerDecoration;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * Created by zp on 2017/4/20.
+ * 2017/6/30  踢人时可选择是否加入黑名单选项
  */
 
 public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailContact.PPartner>
@@ -168,22 +175,36 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
 
                 } else if (titleBar.getRightWitchShow() == NormalTitleBar.TEXT) {
                     // TODO: 2017/5/8 处理删除的数据 ,响应成功后切换回ICON状态,并退出可选状态
-                    mRecyclerView.setSelected(false);
-                    titleBar.setRightWitchShow(NormalTitleBar.ICON);
-                    if (partnersAdapter != null && partnersAdapter.getData().size() > 0 &&
-                            partnersAdapter.getSelectedList() != null && partnersAdapter.getSelectedList().size() > 0) {
-                        ArrayList<Integer> selectedList = partnersAdapter.getSelectedList();
+                    new NormalDialog().createCheckDialog(_mActivity, "确定删除选择中员", true,
+                            new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    ToastHelper.get().showShort(dialog.isPromptCheckBoxChecked() + "");
+                                    mRecyclerView.setSelected(false);
+                                    titleBar.setRightWitchShow(NormalTitleBar.ICON);
+                                    if (partnersAdapter != null && partnersAdapter.getData().size() > 0 &&
+                                            partnersAdapter.getSelectedList() != null && partnersAdapter.getSelectedList().size() > 0) {
+                                        ArrayList<Integer> selectedList = partnersAdapter.getSelectedList();
 
-                        String userId = "[";
-                        String userName = "";
-                        for (int i = 0; i < selectedList.size(); i++) {
-                            userId += "\"" + partnersAdapter.getItem(selectedList.get(i)).getId() + "\",";
-                            userName += partnersAdapter.getItem(selectedList.get(i)).getName() + ",";
-                        }
-                        userId = userId.length() > 1 ? userId.substring(0, userId.length() - 1) + "]" : "]";
-                        userName = userName.length() > 1 ? userName.substring(0, userName.length() - 1) : "";
-                        mPresenter.deletePartners(activity.getId(), userId, userName);
-                    }
+                                        String userId = "[";
+                                        String userName = "";
+                                        for (int i = 0; i < selectedList.size(); i++) {
+                                            userId += "\"" + partnersAdapter.getItem(selectedList.get(i)).getId() + "\",";
+                                            userName += partnersAdapter.getItem(selectedList.get(i)).getName() + ",";
+                                        }
+                                        userId = userId.length() > 1 ? userId.substring(0, userId.length() - 1) + "]" : "]";
+                                        userName = userName.length() > 1 ? userName.substring(0, userName.length() - 1) : "";
+
+                                        if (dialog.isPromptCheckBoxChecked()) {
+                                            Logger.d(userId);
+                                            mPresenter.addBlockUser(activity.getId(), userId, userName);
+                                        }
+                                        else
+                                            mPresenter.deletePartners(activity.getId(), userId, userName);
+                                    }
+                                }
+                            });
+
                 }
             }
         });

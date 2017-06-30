@@ -20,15 +20,19 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pensionlife.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementItemFragment;
@@ -49,6 +53,7 @@ import me.relex.circleindicator.CircleIndicator;
  * @author yk
  *         create at 2017/2/6 16:48
  *         email : yk_developer@163.com
+ *         2017/6/30 进入主页后，发送请求获取最近版本，判断是否弹出升级框，使用外部浏览器下载新版本；
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, HomeContract.View {
 
@@ -110,6 +115,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter = new HomePresenter();
         mPresenter.bindView(this);
         mPresenter.getInformation();
+        mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
     }
 
 
@@ -125,6 +131,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+
 
     }
 
@@ -158,8 +165,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onResume() {
         super.onResume();
-//        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
-//        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
         mPresenter.needChangeToDefOrganization();
     }
 
@@ -321,6 +326,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public void onPageSelected(int position) {
             }
         });
+
     }
 
     @Override
@@ -335,6 +341,18 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 User.putCurrentOrganizationId(User.getBelongsOrganizationId());
                 tvPosition.setText(User.getCurrentOrganizationName());
         }
+    }
+
+    /**
+     * 显示版本升级信息
+     *
+     * @param version
+     */
+    @Override
+    public void showVersionInfo(AppVersion version) {
+        if (version == null) return;
+        if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion()))
+            VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
     }
 
 

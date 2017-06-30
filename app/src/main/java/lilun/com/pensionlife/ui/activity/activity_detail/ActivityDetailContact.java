@@ -76,6 +76,6 @@ public interface ActivityDetailContact {
 
         void deletePartners(String activityId, String userId, String userName);
 
-
+        void addBlockUser(String activityId, String userId, String userName);
     }
 }
