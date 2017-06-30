@@ -22,6 +22,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -52,6 +53,7 @@ import me.relex.circleindicator.CircleIndicator;
  * @author yk
  *         create at 2017/2/6 16:48
  *         email : yk_developer@163.com
+ *         2017/6/30 进入主页后，发送请求获取最近版本，判断是否弹出升级框，使用外部浏览器下载新版本；
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, HomeContract.View {
 
@@ -113,6 +115,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter = new HomePresenter();
         mPresenter.bindView(this);
         mPresenter.getInformation();
+        mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
     }
 
 
@@ -162,11 +165,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void onResume() {
         super.onResume();
-//        Logger.d("当前默认组织id = " + User.getBelongsOrganizationId());
-//        Logger.d("当前组织id = " + User.getCurrentOrganizationId());
         mPresenter.needChangeToDefOrganization();
-
-
     }
 
     @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
@@ -327,7 +326,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             public void onPageSelected(int position) {
             }
         });
-        mPresenter.getVersionInfo(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME);
+
     }
 
     @Override
@@ -346,6 +345,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     /**
      * 显示版本升级信息
+     *
      * @param version
      */
     @Override

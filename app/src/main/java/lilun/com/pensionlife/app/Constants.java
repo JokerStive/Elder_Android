@@ -18,4 +18,9 @@ public class Constants {
     public static final String service_residentail = "服务/居家服务";
 
 
+    /**
+     * 版本升级使用的参数
+     */
+    public static final String appName = "AndroidClient";
+    public static final String version_latest = "latest";
 }

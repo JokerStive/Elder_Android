@@ -68,6 +68,7 @@ import lilun.com.pensionlife.widget.slider.BannerPager;
 
 /**
  * Created by zp on 2017/3/6.
+ *  2017/6/30  活动添加黑名单字段，加入活动前判断是否在黑名单内
  */
 
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter>
@@ -638,6 +639,10 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             }
             if (hasfull) {
                 showDialog(getString(R.string.activity_has_people_full));
+                return;
+            }
+            if (activity.getBlackList().contains(User.getUserId())) {
+                showDialog(getString(R.string.you_not_allow_join));
                 return;
             }
             joinActivity();

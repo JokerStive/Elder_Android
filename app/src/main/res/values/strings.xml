@@ -336,6 +336,8 @@
     <string name="activity_has_finished">活动已结束</string>
     <string name="activity_has_started">活动已开始</string>
     <string name="activity_has_people_full">活动参加人数已满</string>
+    <string name="you_not_allow_join">该活动不允许您参加</string>
+    <string name="activity_not_allow_join">不再允许选中人员参加本活动</string>
     <string name="people_number_">%1$s名成员</string>
     <string name="chat">聊天室</string>
     <string name="master">主持人</string>

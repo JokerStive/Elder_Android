@@ -74,30 +74,30 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
 
     @Override
     public void getVersionInfo(String appName, String versionName) {
-//        addSubscribe(NetHelper.getApi()
-//                .getVersionInfo(appName, versionName)
-//                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<AppVersion>() {
-//                    @Override
-//                    public void _next(AppVersion version) {
-//                        view.showVersionInfo(version);
-//                    }
-//                }));
-        String jsonData = "{\n" +
-                "  \"name\": \"tt\",\n" +
-                "  \"version\": \"1.1.0\",\n" +
-                "  \"url\": \"http://120.25.78.157/serviceProvider.apk\",\n" +
-                "  \"description\": \"修复BUG\",\n" +
-                "  \"forced\": false\n" +
-                "}\n";
-        AppVersion version = null;
-        try {
-            version = new Gson().fromJson(jsonData, AppVersion.class);
-        } catch (Exception e) {
-
-        }
-        view.showVersionInfo(version);
+        addSubscribe(NetHelper.getApi()
+                .getVersionInfo(appName, versionName)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<AppVersion>() {
+                    @Override
+                    public void _next(AppVersion version) {
+                        view.showVersionInfo(version);
+                    }
+                }));
+//        String jsonData = "{\n" +
+//                "  \"name\": \"tt\",\n" +
+//                "  \"version\": \"1.1.0\",\n" +
+//                "  \"url\": \"http://120.25.78.157/serviceProvider.apk\",\n" +
+//                "  \"description\": \"修复BUG\",\n" +
+//                "  \"forced\": false\n" +
+//                "}\n";
+//        AppVersion version = null;
+//        try {
+//            version = new Gson().fromJson(jsonData, AppVersion.class);
+//        } catch (Exception e) {
+//
+//        }
+//        view.showVersionInfo(version);
 
     }
 }

@@ -50,5 +50,19 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
                 }));
     }
 
+    @Override
+    public void addBlockUser(String activityId, String userId, String userName) {
+        addSubscribe(NetHelper.getApi()
+                .addBlockUser(activityId, userId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>() {
+                    @Override
+                    public void _next(Object o) {
+                        view.successDeletePartners(userId,userName);
+                    }
+                }));
+    }
+
 
 }

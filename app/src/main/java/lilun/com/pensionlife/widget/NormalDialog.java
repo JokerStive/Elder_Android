@@ -58,6 +58,16 @@ public class NormalDialog {
                 .show();
     }
 
+    public void createCheckDialog(Activity activity, String title, boolean cancelOnOutSide, MaterialDialog.SingleButtonCallback posback) {
+        new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+                .canceledOnTouchOutside(cancelOnOutSide)
+                .title(title)
+                .checkBoxPrompt(activity.getString(R.string.activity_not_allow_join), false, null)
+                .positiveText(R.string.confirm)
+                .onPositive(posback)
+                .show();
+    }
+
     /**
      * 版本更新的提示Dialog
      *

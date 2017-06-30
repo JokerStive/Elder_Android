@@ -76,6 +76,7 @@ public class OrganizationActivity extends BaseBean {
     private String organizationId;
     private ArrayList<IconModule> icon;
     private List<String> partnerList;
+    private List<String> blackList;
     private Account contact;
     private int partnerCount;
 
@@ -295,6 +296,14 @@ public class OrganizationActivity extends BaseBean {
 
     public void setPartnerCount(int partnerCount) {
         this.partnerCount = partnerCount;
+    }
+
+    public List<String> getBlackList() {
+        return blackList;
+    }
+
+    public void setBlackList(List<String> blackList) {
+        this.blackList = blackList;
     }
 
     public static int TYPE = 1;

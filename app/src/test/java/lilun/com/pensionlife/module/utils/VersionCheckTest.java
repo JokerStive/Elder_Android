@@ -37,6 +37,9 @@ public class VersionCheckTest {
         nowVersion = "21.2.22";
         retVersion = "31.1.11";
         assertEquals(true, VersionCheck.compareVersion(nowVersion, retVersion));
+        nowVersion = "21.2.22.1";
+        retVersion = "22.1.11.2";
+        assertEquals(false, VersionCheck.compareVersion(nowVersion, retVersion));
     }
 
 }
