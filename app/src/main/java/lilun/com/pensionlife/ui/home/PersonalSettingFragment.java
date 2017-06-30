@@ -231,7 +231,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             EventBus.getDefault().post(new Event.AccountSettingChange());
 
                             //重新订阅所在地
-                            App.initSub();
+                            App.resetMQTT();
                         } else {
                             ToastHelper.get().showShort("脏数据");
                         }
