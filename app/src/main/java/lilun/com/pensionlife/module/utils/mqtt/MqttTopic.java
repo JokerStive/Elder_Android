@@ -32,14 +32,16 @@ public class MqttTopic {
     public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
 
-    public String[]  getAllTopicWhenInit(){
-        List<String>  topics = new ArrayList<>();
+    public String[] getAllTopicWhenInit() {
+        List<String> topics = new ArrayList<>();
         topics.add(personal_msg);
         ArrayList<String> levelIds = User.levelIds(false);
-        for(String levelId:levelIds){
-//            String encodeId = StringUtils.encodeURLOfOrg(levelId);
-            String aidTopic = levelId +topic_help_suffix;
-            String informationTopic = levelId+topic_information_suffix;
+        if (levelIds == null) {
+            return null;
+        }
+        for (String levelId : levelIds) {
+            String aidTopic = levelId + topic_help_suffix;
+            String informationTopic = levelId + topic_information_suffix;
             topics.add(aidTopic);
             topics.add(informationTopic);
         }

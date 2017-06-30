@@ -26,10 +26,16 @@ import rx.Observable;
  */
 public class LoginModule implements LoginContract.Module {
 
+    public static String noOrganizationAccountIdMappingLocation="0";
+    public static String locationEqualsDefaultOrganizationId="1";
+    public static String locationIsEmpty="2";
+
 
     @Override
+
     public Observable<TokenInfo> login(String username, String password) {
         return NetHelper.getApi()
+
                 .login(getAccount(username, password))
                 .compose(RxUtils.handleResult());
     }
@@ -73,8 +79,8 @@ public class LoginModule implements LoginContract.Module {
         //默认所属组织账号id,这个必须存在，否则脏数据
         User.putBelongOrganizationAccountId(account.getDefaultOrganizationId());
 
-        //创建者是否是自己
-        User.putIsCustomer(account.isCustomer());
+        //是否是个人用户
+        User.putIsCustomer(true);
 
         //姓名
         User.putName(account.getName());
@@ -121,7 +127,7 @@ public class LoginModule implements LoginContract.Module {
 
     @Override
     public String isNeedChangeDefaultOrganizationId() {
-        String result = "";
+        String result = locationIsEmpty;
 
         //居住地
         String belongToDistrict = User.getBelongToDistrict();
@@ -132,9 +138,12 @@ public class LoginModule implements LoginContract.Module {
         if (!TextUtils.isEmpty(belongToDistrict)) {
             //居住地存在
             String organizationIdMappingOrganizationAccountId = getOrganizationIdMappingOrganizationAccountId(belongToDistrict);
+            if (TextUtils.isEmpty(organizationIdMappingOrganizationAccountId)) {
+                return noOrganizationAccountIdMappingLocation;
+            }
             if (TextUtils.equals(belongOrganizationAccountId, organizationIdMappingOrganizationAccountId)) {
                 // 和defaultOrganizationId对应，则不需要切换组织
-                result = "success";
+                result = locationEqualsDefaultOrganizationId;
             } else {
                 // 和defaultOrganizationId不对应，则需要切换到居住村对应的组织
                 result = organizationIdMappingOrganizationAccountId;
@@ -160,7 +169,7 @@ public class LoginModule implements LoginContract.Module {
             }
         }
 
-        if (list.size()<=0){
+        if (list.size() <= 0) {
             return null;
         }
         for (int i = 0; i < list.size() - 1; i++) {
@@ -208,12 +217,16 @@ public class LoginModule implements LoginContract.Module {
                     User.putRootOrganizationAccountId(organizationAccount.getId());
                 }
 
-                if (organizationId.contains("社会组织") &&  organizationId.contains("商家")) {
-                    User.putIsCustomer(false);
-
+                //判断是否是商家，sb方法
+                if (organizationId.contains("社会组织") ) {
+                    String[] split = organizationId.split("/");
+                    if (split.length>2){
+                        User.putisMerchant(true);
+                    }
                 }
 
                 //如果其中一个organizationAccountId和account的defacltOrganizationId相同，则这个organizationAccount就是默认的
+//                organizationAccountId.equals(belongOrganizationAccountId) && !organizationId.equals(Constants.organization_root)
                 if (organizationAccountId.equals(belongOrganizationAccountId) && !organizationId.equals(Constants.organization_root)) {
 
                     //默认组织id
@@ -225,7 +238,7 @@ public class LoginModule implements LoginContract.Module {
 
 //                    //当前组织id
 //                    if (!User.currentOrganizationHasChanged()){
-                        User.putCurrentOrganizationId(organizationId);
+                    User.putCurrentOrganizationId(organizationId);
 //                    }
 
 

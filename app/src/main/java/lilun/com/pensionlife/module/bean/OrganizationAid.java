@@ -43,10 +43,10 @@ public class OrganizationAid extends DataSupport implements Serializable {
 
     private String id;
     private String title;
-    private int kind;
+    private Integer kind;
     private String address;
-    private int priority;
-    private int status;
+    private Integer priority;
+    private Integer status;
     private long price;
     private String memo;
     private String mobile;
@@ -59,7 +59,7 @@ public class OrganizationAid extends DataSupport implements Serializable {
     public String updatorId;
     public String updatorName;
     private String organizationId;
-    public int visible;
+    public Integer visible;
     public List<String> tags;
     public List<String> partnerList;
 
@@ -99,11 +99,11 @@ public class OrganizationAid extends DataSupport implements Serializable {
         this.title = title;
     }
 
-    public int getKind() {
+    public Integer getKind() {
         return kind;
     }
 
-    public void setKind(int kind) {
+    public void setKind(Integer kind) {
         this.kind = kind;
     }
 
@@ -115,19 +115,19 @@ public class OrganizationAid extends DataSupport implements Serializable {
         this.address = address;
     }
 
-    public int getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -227,11 +227,11 @@ public class OrganizationAid extends DataSupport implements Serializable {
         this.organizationId = organizationId;
     }
 
-    public int getVisible() {
+    public Integer getVisible() {
         return visible;
     }
 
-    public void setVisible(int visible) {
+    public void setVisible(Integer visible) {
         this.visible = visible;
     }
 

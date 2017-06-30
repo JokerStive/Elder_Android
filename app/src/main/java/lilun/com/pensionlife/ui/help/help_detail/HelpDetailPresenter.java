@@ -31,6 +31,7 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
                         view.showHelpDetail(detail);
                     }
 
+
                 }));
     }
 
@@ -55,10 +56,10 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     }
 
     @Override
-    public void acceptOneReply(String aidId, String replyId, int kind) {
+    public void acceptOneReply(String aidId, String replyId) {
         OrganizationAid aid = new OrganizationAid();
         aid.setAnswerId(replyId);
-        aid.setKind(kind);
+//        aid.setKind(kind);
         addSubscribe(NetHelper.getApi()
                 .putAid(aidId, aid)
                 .compose(RxUtils.handleResult())

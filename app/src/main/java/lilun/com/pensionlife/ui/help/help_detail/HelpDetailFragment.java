@@ -189,7 +189,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         mReplyAdapter.setOnFunctionClickListener(new AidJoinerAdapter.OnFunctionClickListener() {
             @Override
             public void agree(String id) {
-                mPresenter.acceptOneReply(mAidId, id, mAid.getKind());
+                mPresenter.acceptOneReply(mAidId, id);
             }
 
             @Override

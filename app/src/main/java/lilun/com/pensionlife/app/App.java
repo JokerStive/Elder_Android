@@ -101,8 +101,10 @@ public class App extends Application {
     public static void initSub() {
         MqttTopic mqttTopic = new MqttTopic();
         String[] topics = mqttTopic.getAllTopicWhenInit();
-        for (String topic : topics) {
-            MQTTManager.getInstance().subscribe(topic, 2);
+        if (topics != null) {
+            for (String topic : topics) {
+                MQTTManager.getInstance().subscribe(topic, 2);
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
@@ -227,9 +226,9 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
                 //如果居家服务，就要服务区域是当前组织的层级id
                 productFilter.where.getAreaIds().setInq(User.levelIds(true));
             }
-            if (!User.isCustomer()) {
-                productFilter.where.setCreatorId(User.getUserId());
-            }
+//            if (!User.isCustomer()) {
+//                productFilter.where.setCreatorId(User.getUserId());
+//            }
 
         }
     }
@@ -257,12 +256,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         if (layoutId != 0) {
             adapter = new AgencyServiceAdapter(products, layoutId);
             final AgencyServiceAdapter finalAdapter = adapter;
-            adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                @Override
-                public void onLoadMoreRequested() {
-                    getProducts(finalAdapter.getItemCount());
-                }
-            });
+            adapter.setOnLoadMoreListener(() -> getProducts(finalAdapter.getItemCount()));
         }
         return adapter;
     }

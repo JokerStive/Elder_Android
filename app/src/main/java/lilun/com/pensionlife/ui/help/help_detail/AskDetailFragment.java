@@ -175,7 +175,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         mReplyAdapter = new AidReplyAdapter(this, mDetailData, mCreatorIsOwn);
         mReplyAdapter.addHeaderView(mHeadView);
         mReplyAdapter.setOnAgreeClickListenerr(id -> {
-            mPresenter.acceptOneReply(mAid.getId(), id, mAid.getKind());
+            mPresenter.acceptOneReply(mAid.getId(), id);
         });
         recyclerView.setAdapter(mReplyAdapter);
     }

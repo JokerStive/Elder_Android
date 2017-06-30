@@ -50,27 +50,38 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
                         mModule.putBelongOrganizations(organizationAccounts);
-                        String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
-                        if (TextUtils.isEmpty(belongOrganizationAccountId)) {
-                            ToastHelper.get().showShort("defaultOrganizationId不存在,请检查账户");
-                        } else {
-                            String needChangeDefaultOrganizationId = mModule.isNeedChangeDefaultOrganizationId();
-                            if (TextUtils.isEmpty(needChangeDefaultOrganizationId)) {
-                                //切换到最长的
-                                String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
-                                if (TextUtils.isEmpty(longestOrganizationAccountId)) {
-                                    ToastHelper.get().showLong("最长的oa为空");
-                                } else {
-                                    changeDefOrganizationAccountId(longestOrganizationAccountId);
-                                }
-                            } else if (TextUtils.equals("success", needChangeDefaultOrganizationId)) {
-                                //登陆成功
-                                loginSuccess(User.getBelongOrganizationAccountId());
+
+                        String needChangeDefaultOrganizationId = mModule.isNeedChangeDefaultOrganizationId();
+                        if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationIsEmpty)) {
+                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
+                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
+                                ToastHelper.get().showLong("没有找到最长organizationAccount");
                             } else {
-                                //切换到居住地
-                                changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
+                                changeDefOrganizationAccountId(longestOrganizationAccountId);
                             }
+                        } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationEqualsDefaultOrganizationId)) {
+                            loginSuccess(User.getBelongOrganizationAccountId());
+                        } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.noOrganizationAccountIdMappingLocation)) {
+                            ToastHelper.get().showLong("没有找到location对应的organizationAccount");
+                        } else {
+                            changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
                         }
+//                        if (TextUtils.isEmpty(needChangeDefaultOrganizationId)) {
+//                            //切换到最长的
+//                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
+//                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
+//                                ToastHelper.get().showLong("没有找到location对应的organizationAccount");
+//                            } else {
+//                                changeDefOrganizationAccountId(longestOrganizationAccountId);
+//                            }
+//                        } else if (TextUtils.equals("success", needChangeDefaultOrganizationId)) {
+//                            //登陆成功
+//
+//                        } else if(){
+//                            //切换到居住地
+//                            changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
+//                        }
+//                        }
                     }
 
                     @Override

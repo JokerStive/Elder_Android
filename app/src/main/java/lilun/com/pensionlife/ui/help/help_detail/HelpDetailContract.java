@@ -22,7 +22,7 @@ public interface HelpDetailContract {
     interface Presenter extends IPresenter<View> {
         void getHelpDetail(Activity activity,String aidId);
         void createHelpReply(String aidId,String replyContent);
-        void acceptOneReply(String aidId,String replyId,int kind);
+        void acceptOneReply(String aidId,String replyId);
         void deleteAid(String aidId);
         void deleteAidAnswer(String aidId,String replyId);
     }

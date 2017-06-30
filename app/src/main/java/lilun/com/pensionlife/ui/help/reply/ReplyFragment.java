@@ -173,10 +173,10 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
     public void newReplySuccess(OrganizationReply reply) {
         Logger.d("reply success");
         inputView.clear();
-        getReplies(0);
+//        getReplies(0);
         EventBus.getDefault().post(new Event.RefreshHelpReply(reply));
         EventBus.getDefault().post(new Event.RefreshHelpData());
-
+        pop();
     }
 
 

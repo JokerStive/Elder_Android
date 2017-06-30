@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -38,6 +39,7 @@ import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.welcome.LoginModule;
@@ -219,11 +221,17 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                 .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
-                        tvBelongStress.setText(distrect.getName());
+                        //断开mqtt取消所有订阅
+                        MQTTManager.release();
+
                         loginModule.putBelongOrganizations(organizationAccounts);
                         if (loginModule.saveUserAboutOrganization(loginModule.getOrganizationIdMappingOrganizationAccountId(distrect.getId()))) {
+                            tvBelongStress.setText(distrect.getName());
                             EventBus.getDefault().post(new Event.ChangedOrganization());
                             EventBus.getDefault().post(new Event.AccountSettingChange());
+
+                            //重新订阅所在地
+                            App.initSub();
                         } else {
                             ToastHelper.get().showShort("脏数据");
                         }
@@ -251,7 +259,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                         User.puttUserAvatar(icon.getFileName());
                         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
                         EventBus.getDefault().post(new Event.AccountSettingChange());
-                        //  EventBus.getDefault().post(new Event.AccountSettingChange(acc));
+
                     }
                 });
     }

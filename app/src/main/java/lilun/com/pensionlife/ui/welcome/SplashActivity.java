@@ -32,7 +32,8 @@ public class SplashActivity extends Activity {
 
 
     private void start() {
-        if (!TextUtils.isEmpty(User.getBelongOrganizationAccountId())) {
+        String belongsOrganizationId = User.getBelongsOrganizationId();
+        if (!TextUtils.isEmpty(belongsOrganizationId)) {
             startActivity(new Intent(this, HomeActivity.class));
         }else {
             startActivity(new Intent(this, WelcomeActivity.class));

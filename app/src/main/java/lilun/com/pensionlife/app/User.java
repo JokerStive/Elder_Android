@@ -33,7 +33,7 @@ public class User {
     public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
     public static final String belongOrganizationAccountId = "belongOrganizationAccountId";
     public static final String currentOrganizationAccountId = "currentOrganizationAccountId";
-    public static final String defOrganizationId = "脏数据";
+    public static final String defOrganizationId = "";
     public static final String belongsOrganizationId = "belongsOrganizationId";
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
@@ -90,6 +90,15 @@ public class User {
 
     public static void putIsCustomer(boolean isCustomer) {
         PreUtils.putBoolean(User.isCustomer, isCustomer);
+    }
+
+    public static boolean isMerchant() {
+        return PreUtils.getBoolean("merchant", false);
+    }
+
+
+    public static void putisMerchant(boolean isCustomer) {
+        PreUtils.putBoolean("merchant", isCustomer);
     }
 
     public static boolean isCustomer() {

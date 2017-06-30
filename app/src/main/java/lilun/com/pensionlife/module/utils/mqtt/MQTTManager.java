@@ -15,6 +15,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.Arrays;
+
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
@@ -48,22 +50,30 @@ public class MQTTManager {
         return mInstance;
     }
 
-    /**
-     * 释放单例, 及其所引用的资源
-     */
     public static void release() {
-        try {
-            if (mInstance != null) {
-//                mInstance.client.unsubscribe(MQTTTopicUtils.initTopic());
-                mInstance.disConnect();
-                mInstance = null;
-            }
+        MqttTopic mqttTopic = new MqttTopic();
+        String[] topics = mqttTopic.getAllTopicWhenInit();
+        if (topics != null && mInstance.isConnected()) {
+            Logger.d("移除订阅----" + Arrays.toString(topics));
+            mInstance.unSubscribe(topics, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    try {
+                        mInstance.disConnect();
+                        mInstance = null;
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
-        } catch (Exception e) {
-
+                }
+            });
         }
     }
+
 
     public boolean isConnected() {
         return client != null && client.isConnected();
@@ -180,14 +190,6 @@ public class MQTTManager {
         }
     }
 
-    public void unSubscribe(String topic, Object usertext, IMqttActionListener listener) {
-        try {
-            client.unsubscribe(topic, usertext, listener);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void subscribe(String[] topics, int[] qos) {
         try {
@@ -213,6 +215,23 @@ public class MQTTManager {
         }
     }
 
+
+    public void unSubscribe(String topic, Object usertext, IMqttActionListener listener) {
+        try {
+            client.unsubscribe(topic, usertext, listener);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unSubscribe(String[] topic, Object userContext,
+                            IMqttActionListener callback) {
+        try {
+            client.unsubscribe(topic, userContext, callback);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 取消连接
