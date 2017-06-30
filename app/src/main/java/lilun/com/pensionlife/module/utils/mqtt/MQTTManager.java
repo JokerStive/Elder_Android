@@ -60,7 +60,7 @@ public class MQTTManager {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     try {
                         mInstance.disConnect();
-                        mInstance = null;
+//                        mInstance = null;
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }
@@ -241,7 +241,7 @@ public class MQTTManager {
     public void disConnect() throws MqttException {
         if (client != null && client.isConnected()) {
             client.disconnect();
-            client = null;
+//            client = null;
         }
     }
 }

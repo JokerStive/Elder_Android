@@ -77,13 +77,19 @@ public class Event {
     //添加一个新的聊天消息
     public static class RefreshChatAddOne {
         PushMessage pushMessage;
+        String activityId;
 
-        public RefreshChatAddOne(PushMessage pushMessage) {
+        public RefreshChatAddOne(PushMessage pushMessage, String activityId) {
             this.pushMessage = pushMessage;
+            this.activityId = activityId;
         }
 
         public PushMessage getPushMessage() {
             return pushMessage;
+        }
+
+        public String getActivityId() {
+            return activityId;
         }
     }
 

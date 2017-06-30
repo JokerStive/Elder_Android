@@ -179,7 +179,6 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                             new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    ToastHelper.get().showShort(dialog.isPromptCheckBoxChecked() + "");
                                     mRecyclerView.setSelected(false);
                                     titleBar.setRightWitchShow(NormalTitleBar.ICON);
                                     if (partnersAdapter != null && partnersAdapter.getData().size() > 0 &&

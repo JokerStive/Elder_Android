@@ -74,7 +74,7 @@ public class ActivityChatFragment extends BaseFragment {
 
     @Override
     protected void initPresenter() {
-        MQTTManager.getInstance().subscribe(topic,2);
+        MQTTManager.getInstance().subscribe(topic, 2);
     }
 
     @Override
@@ -126,7 +126,8 @@ public class ActivityChatFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void RefreshNewMessage(Event.RefreshChatAddOne chat) {
-        chatAdapter.add(chat.getPushMessage());
+        if (chat.getActivityId().equals(activity.getId()))
+            chatAdapter.add(chat.getPushMessage());
         mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
     }
 

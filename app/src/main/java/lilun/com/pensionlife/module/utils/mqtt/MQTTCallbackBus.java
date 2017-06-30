@@ -188,7 +188,10 @@ public class MQTTCallbackBus implements MqttCallback {
                 }
 
             }
-            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage));
+
+            String tmp = topic.substring(topic.lastIndexOf("activity")).replace("activity/","");
+            String tmp2 = tmp.substring(0,tmp.lastIndexOf("/"));
+            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage,tmp2));
         }
     }
 
