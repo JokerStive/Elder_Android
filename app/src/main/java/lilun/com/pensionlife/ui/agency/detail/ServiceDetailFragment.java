@@ -38,6 +38,8 @@ import lilun.com.pensionlife.ui.agency.reservation.ReservationActivity;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
+import lilun.com.pensionlife.widget.CircleImageView;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
 /**
@@ -60,6 +62,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     @Bind(R.id.tv_desc)
     TextView tvProvider;
+    @Bind(R.id.civ_provider_avator)
+    CircleImageView civProviderAvator;
 
     @Bind(R.id.tv_mobile)
     TextView tvPrice;
@@ -173,7 +177,8 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
             urls.add(url);
         }
         banner.setData(urls);
-
+        String organizatinurl = IconUrl.moduleIconUrl(IconUrl.Organizations, mProduct.getOrganizationId().replace("/#product", ""), "{iconName}", "");
+        ImageLoaderUtil.instance().loadImage(organizatinurl, civProviderAvator);
         //如果这个服务不是自己创建的，就要去判断是否能够预约
         if (!User.creatorIsOwn(mProduct.getCreatorId())) {
             String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
@@ -253,13 +258,13 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     }
 
     private void statReservation(Contact contact) {
-        Intent intent = new Intent(_mActivity,ReservationActivity.class);
+        Intent intent = new Intent(_mActivity, ReservationActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("contact",contact);
-        bundle.putString("productCategoryId",mProduct.getCategoryId());
-        bundle.putString("productId",mProduct.getId());
+        bundle.putSerializable("contact", contact);
+        bundle.putString("productCategoryId", mProduct.getCategoryId());
+        bundle.putString("productId", mProduct.getId());
         intent.putExtras(bundle);
-        startActivityForResult(intent,ReservationFragment.requestCode);
+        startActivityForResult(intent, ReservationFragment.requestCode);
     }
 
     private void next() {
@@ -274,7 +279,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        Logger.d("requestCode =  "+reqCode+"----"+"resultCode = "+resultCode);
+        Logger.d("requestCode =  " + reqCode + "----" + "resultCode = " + resultCode);
         if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
             setHadReservation();
         }

@@ -63,6 +63,13 @@
                 android:layout_marginTop="@dimen/dp_4"
                 tools:text="价格:2000" />
 
+            <lilun.com.pensionlife.widget.CircleImageView
+                android:id="@+id/civ_provider_avator"
+                android:layout_width="@dimen/dp_45"
+                android:layout_alignTop="@id/tv_desc"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_height="@dimen/dp_45" />
             <LinearLayout
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
