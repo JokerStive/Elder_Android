@@ -53,13 +53,13 @@ public class MQTTManager {
     public static void release() {
         MqttTopic mqttTopic = new MqttTopic();
         String[] topics = mqttTopic.getAllTopicWhenInit();
-        if (topics != null && mInstance.isConnected()) {
+        if (topics != null && getInstance().isConnected()) {
             Logger.d("移除订阅----" + Arrays.toString(topics));
-            mInstance.unSubscribe(topics, null, new IMqttActionListener() {
+            getInstance().unSubscribe(topics, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     try {
-                        mInstance.disConnect();
+                        getInstance().disConnect();
                         mInstance = null;
                     } catch (MqttException e) {
                         e.printStackTrace();
