@@ -69,6 +69,13 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private ProductFilter productFilter = new ProductFilter();
 
 
+    /**
+     *
+     * @param title
+     * @param categoryId  组织id  或 类型
+     * @param type     0-查询区域服务   1-查询商家所有服务
+     * @return
+     */
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
         AgencyServiceListFragment fragment = new AgencyServiceListFragment();
         Bundle args = new Bundle();
@@ -213,6 +220,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     private void initFilter() {
         if (mType != 0) {
             productFilter.where.setOrganizationId(OrganizationChildrenConfig.product(mCategoryId));
+            productFilter.where.setAreaIds(null);
         } else {
             productFilter.where.setCategoryId(mCategoryId);
             if (mCategoryId.contains(Constants.service_residentail)) {

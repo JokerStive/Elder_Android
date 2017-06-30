@@ -217,6 +217,10 @@ public class Organization extends BaseBean {
         public String getPhone() {
             return phone;
         }
+
+        public String getAddress() {
+            return address;
+        }
     }
 
 

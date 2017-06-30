@@ -17,6 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.IconModule;
@@ -34,6 +35,7 @@ import rx.Subscription;
 
 /**
  * 养老机构提供的服务详情V
+ * 居家服务详情
  *
  * @author yk
  *         create at 2017/2/23 13:19
@@ -88,8 +90,13 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     private Organization mAgency;
     private String mId;
     private Subscription subscription;
+    private boolean formAgency = false;  //是否由养老传入，根据传入id或传入agency.id判断
 
-
+    /**
+     * @param id
+     * @param agency
+     * @return
+     */
     public static AgencyDetailFragment newInstance(@Nullable String id, Organization agency) {
         AgencyDetailFragment fragment = new AgencyDetailFragment();
         Bundle args = new Bundle();
@@ -107,6 +114,12 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
         if (TextUtils.isEmpty(mId)) {
             Preconditions.checkNull(mAgency);
             Preconditions.checkNull(mAgency.getDescription());
+            if (!TextUtils.isEmpty(mAgency.getId())) {
+                formAgency = mAgency.getId().contains(Constants.special_organization_agency);
+            }
+
+        } else {
+            formAgency = mId.contains(Constants.special_organization_agency);
         }
     }
 
@@ -146,37 +159,39 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
         //显示
         tvTitle.setText(mAgency.getName());
-//        tvDesc.setText(StringUtils.filterNull(description.getDescription()));
-
-        if (mAgency.getExtension() != null && !TextUtils.isEmpty(mAgency.getExtension().getPhone())) {
-            tvPhone.setVisibility(View.VISIBLE);
-            tvPhone.setText(String.format(getString(R.string.format_phone), mAgency.getExtension().getPhone()));
-            tvPhone.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (StringUtils.isMobileNumber(mAgency.getExtension().getPhone())) {
-                        String url = "tel:" + mAgency.getExtension().getPhone();
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
-                        try {
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else
-                        ToastHelper.get(_mActivity).showWareShort(getString(R.string.mobile_format_wrong));
-                }
-            });
+        Organization.Extension extension = mAgency.getExtension();
+        if (extension != null) {
+            if (!TextUtils.isEmpty(extension.getPhone())) {
+                tvPhone.setVisibility(View.VISIBLE);
+                tvPhone.setText(String.format(getString(R.string.format_phone), extension.getPhone()));
+                tvPhone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (StringUtils.isMobileNumber(extension.getPhone())) {
+                            String url = "tel:" + extension.getPhone();
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                            try {
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else
+                            ToastHelper.get(_mActivity).showWareShort(getString(R.string.mobile_format_wrong));
+                    }
+                });
+            }
+            if (!formAgency)
+                tvAddress.setText(StringUtils.filterNull(extension.getAddress()));
         }
         Organization.DescriptionBean description = mAgency.getDescription();
         if (description != null) {
-//        tvPhone.setText(String.format(getString(R.string.format_bedsCount), StringUtils.filterNull(description.getBedsCount())));
             if (description.getChargingStandard() != null)
                 tvPrice.setText(String.format("价格区间：%1$s元——%2$s元", description.getChargingStandard().getMin(), description.getChargingStandard().getMax()));
             tvIntroduction.setText(StringUtils.filterNull(description.getDescription()));
             tvRequirement.setText(StringUtils.filterNull(StringUtils.filterNull(description.getRequirements())));
-            tvAddress.setText(StringUtils.filterNull(description.getAdress()));
-
             rbBar.setRating(description.getRanking());
+            if (formAgency)
+                tvAddress.setText(StringUtils.filterNull(description.getAdress()));
         }
         setIcon();
     }

@@ -96,8 +96,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     public static ServiceDetailFragment newInstance(OrganizationProduct product) {
         ServiceDetailFragment fragment = new ServiceDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("pro" +
-                "duct", product);
+        args.putSerializable("product", product);
         fragment.setArguments(args);
         return fragment;
     }
