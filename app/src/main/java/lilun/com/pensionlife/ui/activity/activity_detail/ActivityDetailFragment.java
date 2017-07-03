@@ -73,7 +73,6 @@ import lilun.com.pensionlife.widget.slider.BannerPager;
 
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter>
         implements ActivityDetailContact.View, View.OnClickListener {
-
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
     @Bind(R.id.iv_back)
