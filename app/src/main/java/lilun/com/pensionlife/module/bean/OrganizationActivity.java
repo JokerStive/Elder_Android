@@ -179,6 +179,7 @@ public class OrganizationActivity extends BaseBean {
     }
 
     public Integer getMaxPartner() {
+        if(maxPartner == null) maxPartner = 0;
         return maxPartner;
     }
 
