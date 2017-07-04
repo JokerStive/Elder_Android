@@ -285,14 +285,16 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
      * @return
      */
     public String getCategoryIdJson(String curId) {
+        String organization_root_zg = "/地球村/中国";
         String ret = "[";
-        String[] split = curId.split("/");
-        if (split.length < 5) return "";
-        String[] categorys = new String[split.length - 5];
+        if (curId == null) return "[]";
+        String[] split = curId.replace(organization_root_zg + "/", "").split("/");
+        if (split.length < 3) return "[]";
+        String[] categorys = new String[split.length - 2];
         for (int i = 0; i < categorys.length; i++) {
-            categorys[i] = "";
-            for (int j = 1; j < split.length - 4 + i; j++) {
-                if (j == split.length - 4 - 1 + i)
+            categorys[i] = organization_root_zg;
+            for (int j = 0; j < split.length - i; j++) {
+                if (j == split.length - i - 1)
                     categorys[i] += "/" + split[split.length - 1];
                 else
                     categorys[i] += "/" + split[j];
