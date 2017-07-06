@@ -38,6 +38,7 @@ public class User {
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
     public static final String businessId = "businessId";
+    public static final String firstHelperPhone = "firstHelperPhone";
 
     public static String getUserAvatar() {
         return PreUtils.getString(userAvatar, null);
@@ -134,7 +135,6 @@ public class User {
     }
 
 
-
     /**
      * 创建者是否是自己
      */
@@ -228,12 +228,20 @@ public class User {
         return PreUtils.getString(belongToDistrict, "");
     }
 
+    public static void putHelpPhone(String phone) {
+        PreUtils.putString(firstHelperPhone, phone);
+    }
+
+    public static String getFirstHelperPhone() {
+        return PreUtils.getString(firstHelperPhone, "");
+    }
 
 
     //跑单人员id
     public static void putBusinessId(String id) {
         PreUtils.putString(businessId, id);
     }
+
     public static String getBusinessId() {
         return PreUtils.getString(businessId, "");
     }
@@ -245,7 +253,7 @@ public class User {
     public static ArrayList<String> levelIds(boolean isCurrentOrganizationId) {
         int level = 4;
         ArrayList<String> ids = null;
-        String currentOrganizationId = isCurrentOrganizationId?User.getCurrentOrganizationId():User.getBelongsOrganizationId();
+        String currentOrganizationId = isCurrentOrganizationId ? User.getCurrentOrganizationId() : User.getBelongsOrganizationId();
         String[] split = currentOrganizationId.split("/");
         if (split.length >= level) {
             ids = new ArrayList<>();
@@ -279,7 +287,6 @@ public class User {
         return result;
 
     }
-
 
 
     /**

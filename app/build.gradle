@@ -6,6 +6,8 @@ apply plugin: 'com.antfortune.freeline'
 
 android {
 
+    def Properties version = new Properties()
+   version.load(new FileInputStream(file('version.properties')))
     signingConfigs {
         release {
             keyAlias 'lilang'
@@ -21,8 +23,10 @@ android {
         applicationId "lilun.com.pensionlife"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.1.4"
+        versionCode version['major'].toInteger() * 10000  +
+                version['patch'].toInteger() * 100 +
+                version['build'].toInteger()
+        versionName "${version['major']}.${version['patch']}.${version['build']}"
         //64k方法限制
         multiDexEnabled true
 
@@ -63,13 +67,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-
     //apk名称
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = outputFile.name.replace("app-","v3_client-").replace(".apk", "-${defaultConfig.versionName}.apk")
+                def fileName = outputFile.name.replace("app-", "v3_client-").replace(".apk", "-${defaultConfig.versionName}.apk")
                 output.outputFile = new File(outputFile.parent, fileName)
             }
         }
@@ -136,7 +139,7 @@ dependencies {
     compile 'com.github.vanzh:AreaSelector:1.0.6'
     //  compile 'com.github.vanzh:AreaSelector:14ccddcb03'
     //腾讯bugly崩溃日志收集库
-     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //数据库调试使用
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 
