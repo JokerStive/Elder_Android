@@ -45,9 +45,6 @@ public class MqttNotificationHelper {
         if (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
 
-            //发送事件，展示到app
-            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
-
 
             // 1 ----- 公告，展示到通知栏
             if (topic.contains(mqttTopic.topic_information_suffix)) {
@@ -55,6 +52,8 @@ public class MqttNotificationHelper {
 
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
+                    //发送事件，展示到app
+                    EventBus.getDefault().post(new Event.BoardMsg(topic, data));
                     title = "公告";
                     content = infoJson.getString("name");
                 }

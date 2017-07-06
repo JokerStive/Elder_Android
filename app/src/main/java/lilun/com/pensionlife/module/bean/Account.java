@@ -25,12 +25,21 @@ public class Account implements Serializable {
     private String status;
     private List<IconModule> image;
     private String visibility;
+    private String location;
     /**
      * profile : {}
      */
 
     private ProfileBean profile;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public Account setLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
     public String getDefaultContactId() {
         return defaultContactId;

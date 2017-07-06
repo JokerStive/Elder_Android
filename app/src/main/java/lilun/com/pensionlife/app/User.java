@@ -27,7 +27,7 @@ public class User {
     public static final String password = "password";
     public static final String mobile = "mobile";
     //    public static final String has = "mobile";
-    public static final String belongToDistrict = "belongToDistrict";
+    public static final String location = "location";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
     public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
@@ -220,12 +220,12 @@ public class User {
 
 
     //默认小区
-    public static void putBelongToDistrict(String id) {
-        PreUtils.putString(belongToDistrict, id);
+    public static void putLocation(String id) {
+        PreUtils.putString(location, id);
     }
 
-    public static String getBelongToDistrict() {
-        return PreUtils.getString(belongToDistrict, "");
+    public static String getLocation() {
+        return PreUtils.getString(location, "");
     }
 
 

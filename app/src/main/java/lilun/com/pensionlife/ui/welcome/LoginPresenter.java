@@ -53,16 +53,17 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
 
                         String needChangeDefaultOrganizationId = mModule.isNeedChangeDefaultOrganizationId();
                         if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationIsEmpty)) {
-                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
-                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
-                                ToastHelper.get().showLong("没有找到最长organizationAccount");
-                            } else {
-                                changeDefOrganizationAccountId(longestOrganizationAccountId);
-                            }
+                            ToastHelper.get().showLong("location为空，检查数据");
+//                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
+//                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
+//                                ToastHelper.get().showLong("没有找到最长organizationAccount");
+//                            } else {
+//                                changeDefOrganizationAccountId(longestOrganizationAccountId);
+//                            }
                         } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationEqualsDefaultOrganizationId)) {
                             loginSuccess(User.getBelongOrganizationAccountId());
                         } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.noOrganizationAccountIdMappingLocation)) {
-                            ToastHelper.get().showLong("没有找到location对应的organizationAccount");
+                            ToastHelper.get().showLong("没有找到location对应的organizationAccount,检查数据");
                         } else {
                             changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
                         }

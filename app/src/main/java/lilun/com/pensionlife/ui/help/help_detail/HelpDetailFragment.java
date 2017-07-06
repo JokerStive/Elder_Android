@@ -325,12 +325,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     public void refreshData(int operate) {
         //0 创建回复  1 删除回复  2.删除aid
         EventBus.getDefault().post(new Event.RefreshHelpData());
-        getDetail();
         switch (operate) {
             case 0:
+                getDetail();
                 setChangeStatus(true, getString(R.string.cancel));
                 break;
             case 1:
+                getDetail();
                 setChangeStatus(true, getString(R.string.help));
                 break;
             case 2:

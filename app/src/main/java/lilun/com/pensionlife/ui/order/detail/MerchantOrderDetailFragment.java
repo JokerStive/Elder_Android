@@ -145,15 +145,11 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
                 if (!TextUtils.isEmpty(contactId)) {
                     String categoryId = mOrder.getCategoryId();
                     if (categoryId.equals(Config.tourism_product_categoryId)) {
-                        start(AddTourismInfoFragment.newInstance(contactId, false));
+                        start(AddTourismInfoFragment.newInstance(mOrder.getUserProfile(), false));
                     } else {
-                        start(AddServiceInfoFragment.newInstance(contactId, false));
+                        start(AddServiceInfoFragment.newInstance(mOrder.getUserProfile(), false));
                     }
                 }
-//                Contact contact = mOrder.getContact();
-//                start(AddServiceInfoFragment.newInstance(mOrder.getProduct().getCategoryId(), contact, false));
-//                if (contact != null) {
-//                }
                 break;
 
             //产品详情界面

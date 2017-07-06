@@ -26,9 +26,9 @@ import rx.Observable;
  */
 public class LoginModule implements LoginContract.Module {
 
-    public static String noOrganizationAccountIdMappingLocation="0";
-    public static String locationEqualsDefaultOrganizationId="1";
-    public static String locationIsEmpty="2";
+    public static String noOrganizationAccountIdMappingLocation = "0";
+    public static String locationEqualsDefaultOrganizationId = "1";
+    public static String locationIsEmpty = "2";
 
 
     @Override
@@ -70,9 +70,10 @@ public class LoginModule implements LoginContract.Module {
     public void putAccountInfo(Account account) {
 
         //居住地信息
-        if (account.getProfile() != null) {
-            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
-        }
+//        if (account.getProfile() != null) {
+//            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+//        }
+        User.putLocation(account.getLocation());
         //用户名
         User.putUserId(account.getId());
 
@@ -130,7 +131,7 @@ public class LoginModule implements LoginContract.Module {
         String result = locationIsEmpty;
 
         //居住地
-        String belongToDistrict = User.getBelongToDistrict();
+        String belongToDistrict = User.getLocation();
         String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
 
 
@@ -218,9 +219,9 @@ public class LoginModule implements LoginContract.Module {
                 }
 
                 //判断是否是商家，sb方法
-                if (organizationId.contains("社会组织") ) {
+                if (organizationId.contains("社会组织")) {
                     String[] split = organizationId.split("/");
-                    if (split.length>2){
+                    if (split.length > 2) {
                         User.putisMerchant(true);
                     }
                 }

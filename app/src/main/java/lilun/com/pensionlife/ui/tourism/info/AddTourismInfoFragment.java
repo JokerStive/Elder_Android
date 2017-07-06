@@ -61,11 +61,22 @@ public class AddTourismInfoFragment extends BaseFragment {
     }
 
 
+    public static AddTourismInfoFragment newInstance(Contact contact,boolean canEdit) {
+        AddTourismInfoFragment fragment = new AddTourismInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("canEdit", canEdit);
+        bundle.putSerializable("contact", contact);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
     @Override
     protected void getTransferData(Bundle arguments) {
         productCategoryId = arguments.getString("productCategoryId");
         contactId = arguments.getString("contactId");
         canEdit = arguments.getBoolean("canEdit", true);
+        mContact = (Contact) arguments.getSerializable("contact");
     }
 
     public void setProductId(String productId) {

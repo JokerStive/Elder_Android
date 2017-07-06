@@ -111,15 +111,15 @@ public class AddServiceInfoFragment extends BaseFragment {
         return fragment;
     }
 
-//    public static AddServiceInfoFragment newInstance(String productCategoryId,String contactId, Boolean canEdit) {
-//        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean("canEdit", canEdit);
-//        bundle.putString("productCategoryId",productCategoryId);
-//        bundle.putString("contactId", contactId);
-//        fragment.setArguments(bundle);
-//        return fragment;
-//    }
+
+    public static AddServiceInfoFragment newInstance(Contact  contact, boolean canEdit) {
+        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("canEdit", canEdit);
+        bundle.putSerializable("contact", contact);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
 
     @Override
@@ -127,7 +127,7 @@ public class AddServiceInfoFragment extends BaseFragment {
         productCategoryId = arguments.getString("productCategoryId");
         contactId = arguments.getString("contactId");
         canEdit = arguments.getBoolean("canEdit", true);
-//        mContact = (Contact) arguments.getSerializable("mContact");
+        mContact = (Contact) arguments.getSerializable("contact");
         if (!TextUtils.isEmpty(productCategoryId)) {
             expandKeys = (List<Setting>) ACache.get().getAsObject(productCategoryId);
         }

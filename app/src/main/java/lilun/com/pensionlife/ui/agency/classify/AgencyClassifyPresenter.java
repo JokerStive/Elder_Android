@@ -36,7 +36,7 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
 //        String filter = "{\"where\":{\"parent\":\"" + pension_agency + "\"},\"order\":\"orderId\"}";
 
         addSubscribe(NetHelper.getApi()
-                .getOrganizations(id, StringUtils.addFilterWithDef("",0))
+                .getOrganizations(id, StringUtils.addFilterWithDef("", 0))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Organization>>() {
