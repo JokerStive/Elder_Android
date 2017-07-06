@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
@@ -191,6 +192,10 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     private void settingOfFirstPhone() {
+        if (TextUtils.isEmpty(PreUtils.getString("firstHelperPhone", ""))) {
+            ToastHelper.get().showWareShort("您需要先在首页--一键求助模块下设置联系人电话");
+            return;
+        }
         new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话", true,
                 new MaterialDialog.InputCallback() {
                     @Override
@@ -199,8 +204,25 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             ToastHelper.get().showWareShort("手机号格式错误");
                             return;
                         }
-                        PreUtils.putString("firstHelperPhone", input.toString());
-                        tvFirstHelpPhone.setText(input.toString());
+                        //该功能在10106上实现
+                        if (BuildConfig.VERSION_CODE >= 10106) {
+                            Account postAccount = new Account();
+                            postAccount.setProfile(new Account.ProfileBean(User.getBelongToDistrict(), input.toString()));
+                            NetHelper.getApi()
+                                    .putAccount(User.getUserId(), postAccount)
+                                    .compose(RxUtils.handleResult())
+                                    .compose(RxUtils.applySchedule())
+                                    .subscribe(new RxSubscriber<Account>() {
+                                        @Override
+                                        public void _next(Account account) {
+                                            PreUtils.putString("firstHelperPhone", input.toString());
+                                            tvFirstHelpPhone.setText(input.toString());
+                                        }
+                                    });
+                        } else {
+                            PreUtils.putString("firstHelperPhone", input.toString());
+                            tvFirstHelpPhone.setText(input.toString());
+                        }
                     }
                 });
     }

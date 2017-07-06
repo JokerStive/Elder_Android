@@ -241,5 +241,9 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         });
     }
 
-
+    @Override
+    public void pop() {
+        hideSoftInput();
+        super.pop();
+    }
 }

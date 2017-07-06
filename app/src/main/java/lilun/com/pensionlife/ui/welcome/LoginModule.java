@@ -70,10 +70,10 @@ public class LoginModule implements LoginContract.Module {
     public void putAccountInfo(Account account) {
 
         //居住地信息
-//        if (account.getProfile() != null) {
-//            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
-//        }
-        User.putLocation(account.getLocation());
+        if (account.getProfile() != null) {
+            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+            User.putHelpPhone(account.getProfile().getFirstHelperPhone());
+        }
         //用户名
         User.putUserId(account.getId());
 
@@ -131,7 +131,7 @@ public class LoginModule implements LoginContract.Module {
         String result = locationIsEmpty;
 
         //居住地
-        String belongToDistrict = User.getLocation();
+        String belongToDistrict = User.getBelongToDistrict();
         String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
 
 
