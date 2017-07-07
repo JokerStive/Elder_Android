@@ -54,7 +54,7 @@ public class MqttNotificationHelper {
                 if (parentId.endsWith("社区公告")) {
                     //发送事件，展示到app
                     EventBus.getDefault().post(new Event.BoardMsg(topic, data));
-                    title = "公告";
+                    title = "社区公告";
                     content = infoJson.getString("name");
                 }
             }
@@ -74,7 +74,8 @@ public class MqttNotificationHelper {
         if (TextUtils.equals(topic, urgent_help)) {
             classify = msgClassify.urgent_help;
             title = "紧急求助";
-            content = jsonObject.getString("message");
+//            content = jsonObject.getString("message");
+            content = "有人需要您的帮助";
 
 //            发送事件，展示到app
             EventBus.getDefault().post(new Event.BoardMsg(topic, data));
@@ -130,7 +131,7 @@ public class MqttNotificationHelper {
     private void show(String title, String content) {
         if (!TextUtils.isEmpty(title)) {
             Notification build = new NotificationCompat.Builder(App.context)
-                    .setSmallIcon(R.drawable.small_icon)
+                    .setSmallIcon(R.mipmap.icon)
                     .setContentTitle(title)
                     .setContentText(content).build();
 

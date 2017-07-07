@@ -105,7 +105,7 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
         String phone = etPhone.getText().toString();
         if (!TextUtils.isEmpty(phone)) {
             if (RegexUtils.checkMobile(phone)) {
-                if (TextUtils.equals(phone, User.getUserId())){
+                if (TextUtils.equals(phone, User.getUserName())){
                     ToastHelper.get().showWareShort("不能是自己的手机");
                 }else {
                     return true;
