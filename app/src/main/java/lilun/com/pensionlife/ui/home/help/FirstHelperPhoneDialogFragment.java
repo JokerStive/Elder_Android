@@ -13,13 +13,18 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
+import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RegexUtils;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.net.NetHelper;
+import lilun.com.pensionlife.net.RxSubscriber;
 
 /**
  * 输入第一求助人电话dialog
@@ -95,9 +100,27 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
     private void help() {
         if (checkPhone()) {
             String phone = etPhone.getText().toString();
-            PreUtils.putString("firstHelperPhone", phone);
-            AlarmDialogFragment.newInstance(phone).show(getActivity().getFragmentManager(), AlarmDialogFragment.class.getSimpleName());
-            dismiss();
+            //该功能在10106上实现
+            if (BuildConfig.VERSION_CODE >= 10106) {
+                Account postAccount = new Account();
+                postAccount.setProfile(new Account.ProfileBean(User.getLocation(), phone));
+                NetHelper.getApi()
+                        .putAccount(User.getUserId(), postAccount)
+                        .compose(RxUtils.handleResult())
+                        .compose(RxUtils.applySchedule())
+                        .subscribe(new RxSubscriber<Account>() {
+                            @Override
+                            public void _next(Account account) {
+                                User.putHelpPhone(phone);
+                                AlarmDialogFragment.newInstance(phone).show(getActivity().getFragmentManager(), AlarmDialogFragment.class.getSimpleName());
+                                dismiss();
+                            }
+                        });
+            } else {
+                User.putHelpPhone(phone);
+                AlarmDialogFragment.newInstance(phone).show(getActivity().getFragmentManager(), AlarmDialogFragment.class.getSimpleName());
+                dismiss();
+            }
         }
     }
 

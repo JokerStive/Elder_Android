@@ -207,7 +207,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                         //该功能在10106上实现
                         if (BuildConfig.VERSION_CODE >= 10106) {
                             Account postAccount = new Account();
-                            postAccount.setProfile(new Account.ProfileBean(User.getBelongToDistrict(), input.toString()));
+                            postAccount.setProfile(new Account.ProfileBean(User.getLocation(), input.toString()));
                             NetHelper.getApi()
                                     .putAccount(User.getUserId(), postAccount)
                                     .compose(RxUtils.handleResult())
