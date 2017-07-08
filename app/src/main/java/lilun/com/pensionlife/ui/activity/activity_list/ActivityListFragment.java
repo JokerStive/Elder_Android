@@ -174,11 +174,13 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             }
         });
         if (mActivityAdapter != null) {
-            mActivityAdapter.setOnItemClickListener((activityItem) -> {
-                start(ActivityDetailFragment.newInstance(activityItem));
+
+            mActivityAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+                start(ActivityDetailFragment.newInstance(mActivityAdapter.getItem(i)));
             });
             mActivityAdapter.setEmptyView();
         }
+
         mRecyclerView.setAdapter(mActivityAdapter);
     }
 

@@ -26,8 +26,6 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
-    private OnItemClickListener listener;
-
     private boolean allowshowIcon = true;
 
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
@@ -51,12 +49,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         Context context = help.getConvertView().getContext().getApplicationContext();
         help.setText(R.id.tv_sophisticated, activity.getTitle())
                 .setText(R.id.tv_creator, activity.getCreatorName())
-                .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4))
-                .setOnClickListener(R.id.ll_bg, v -> {
-                    if (listener != null) {
-                        listener.onItemClick(activity);
-                    }
-                });
+                .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4));
         help.getView(R.id.tv_activity_status).setVisibility(View.VISIBLE);
         //不是周期活动
         if (TextUtils.isEmpty(activity.getRepeatedDesc())) {
@@ -81,7 +74,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         help.setText(R.id.tv_isJoin, context.getString(R.string.has_partin, partinNumber + ""));
 
         String numPeople;
-        if (activity.getMaxPartner()==null || 0==activity.getMaxPartner())
+        if (activity.getMaxPartner() == null || 0 == activity.getMaxPartner())
             numPeople = "不限";
         else
             numPeople = activity.getMaxPartner() + "人";
@@ -115,13 +108,5 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
         help.setText(R.id.tv_creator_time, StringUtils.up2thisTime(activity.getCreatedAt()));
 
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(OrganizationActivity activity);
     }
 }

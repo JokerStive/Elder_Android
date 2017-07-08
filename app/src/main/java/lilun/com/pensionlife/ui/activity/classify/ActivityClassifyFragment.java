@@ -175,8 +175,8 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
-        mContentAdapter.setOnItemClickListener((activityItem) -> {
-            start(ActivityChatFragment.newInstance(activityItem));
+        mContentAdapter.setOnRecyclerViewItemClickListener((view,activityItem) -> {
+            start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
 
         });
         mContentAdapter.setEmptyView();
