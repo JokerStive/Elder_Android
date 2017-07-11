@@ -48,10 +48,9 @@ public class MqttNotificationHelper {
 
             // 1 ----- 公告，展示到通知栏
             if (topic.contains(mqttTopic.topic_information_suffix)) {
-                classify = msgClassify.announce;
-
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
+                    classify = msgClassify.announce;
                     //发送事件，展示到app
                     EventBus.getDefault().post(new Event.BoardMsg(topic, data));
                     title = "社区公告";

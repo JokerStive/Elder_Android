@@ -39,6 +39,16 @@ public class User {
     public static final String belongOrganizations = "belongOrganizations";
     public static final String businessId = "businessId";
     public static final String firstHelperPhone = "firstHelperPhone";
+    public static final String loginTime = "loginTime";
+
+
+    public static String getLoginTime() {
+        return PreUtils.getString(loginTime, null);
+    }
+
+    public static void putLoginTime(String time) {
+        PreUtils.putString(User.loginTime, time);
+    }
 
     public static String getUserAvatar() {
         return PreUtils.getString(userAvatar, null);

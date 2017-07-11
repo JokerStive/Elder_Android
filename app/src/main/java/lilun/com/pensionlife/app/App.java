@@ -83,7 +83,7 @@ public class App extends Application {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("mqtt 连接成功");
-                    loginDate = new Date();
+//                    loginDate = new Date();
                     initSub();
                     pushLogin();
                 }
@@ -103,7 +103,7 @@ public class App extends Application {
         String[] topics = mqttTopic.getAllTopicWhenInit();
         if (topics != null) {
             for (String topic : topics) {
-                MQTTManager.getInstance().subscribe(topic, 2);
+                MQTTManager.getInstance().subscribe(topic, 0);
             }
         }
     }
@@ -112,7 +112,7 @@ public class App extends Application {
         if (!PreUtils.getBoolean("hasPushLogin", false)) {
             Logger.i("发送login消息");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String time = format.format(new Date());
+            String time = format.format(App.loginDate);
             String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
             MqttTopic mqttTopic = new MqttTopic();
             MQTTManager.getInstance().publish(mqttTopic.login, 0, msg, false);
