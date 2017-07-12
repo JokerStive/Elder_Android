@@ -15,7 +15,6 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.litepal.LitePal;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lilun.com.pensionlife.BuildConfig;
@@ -111,8 +110,8 @@ public class App extends Application {
     private static void pushLogin() {
         if (!PreUtils.getBoolean("hasPushLogin", false)) {
             Logger.i("发送login消息");
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String time = format.format(App.loginDate);
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time =User.getLoginTime();
             String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
             MqttTopic mqttTopic = new MqttTopic();
             MQTTManager.getInstance().publish(mqttTopic.login, 0, msg, false);

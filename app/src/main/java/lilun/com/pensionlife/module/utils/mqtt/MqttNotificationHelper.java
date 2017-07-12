@@ -9,13 +9,19 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.CacheMsg;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
@@ -112,13 +118,19 @@ public class MqttNotificationHelper {
                 if (!TextUtils.equals(from, clientId)) {
 //                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
                     //只有在登录之后的  请求踢账号才有效
-                    if (App.loginDate != null && App.loginDate.before(StringUtils.string2Date(time)))
+                    String loginTime = User.getLoginTime();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = format.parse(loginTime);
+                    Logger.d("原账户登录时间是--" + loginTime + "----" + "新登录时间--" + time);
+                    if (date != null && date.before(StringUtils.string2Date(time)))
                         EventBus.getDefault().post(new Event.OffLine());
                 }
             } else {
 //                    Logger.i("相同设备登陆");
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

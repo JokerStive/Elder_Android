@@ -3,11 +3,8 @@ package lilun.com.pensionlife.ui.welcome;
 import android.text.TextUtils;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.Account;
@@ -48,12 +45,13 @@ public class LoginModule implements LoginContract.Module {
         putToken(tokenInfo.getId());
         String created = tokenInfo.getCreated();
         String loginTime = StringUtils.IOS2ToUTC(created, 2);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            App.loginDate = format.parse(loginTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        User.putLoginTime(loginTime);
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            App.loginDate = format.parse(loginTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         User.putPassword(password);
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
