@@ -270,7 +270,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setMobile(inputMobile.getInput());
         //如果提供了补贴
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
-            organizationAid.setPrice(Integer.parseInt(inputPrice.getInput()));
+            organizationAid.setPrice(Long.parseLong(inputPrice.getInput()));
         }
         organizationAid.setOrganizationId(OrganizationChildrenConfig.aid());
         return organizationAid;

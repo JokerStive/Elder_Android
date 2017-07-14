@@ -37,7 +37,7 @@
                 android:layout_marginBottom="@dimen/dp_4"
                 android:drawablePadding="@dimen/dp_4"
                 android:drawableStart="@drawable/pension_agency_icon"
-                android:text="机构" />
+                android:text="服务" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_agency"
@@ -50,7 +50,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:drawablePadding="@dimen/dp_4"
                 android:drawableStart="@drawable/pension_agency_icon"
-                android:text="服务" />
+                android:text="养老旅游" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_server"

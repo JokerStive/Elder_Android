@@ -16,14 +16,14 @@ import lilun.com.pensionlife.module.bean.ProductCategory;
 public interface AgencyClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifiesByAgency(List<Organization> organizations);
-        void showClassifiesByService(List<ProductCategory> productCategories);
+        void showClassifiesByService(List<ProductCategory> productCategories,String categoryId);
 //        void showAgencies(List<OrganizationProduct> products,boolean isLoadMore);
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
         void getClassifiesByAgency();
-        void getClassifiesByService();
+        void getClassifiesByService(String categoryId);
 //        void getAgencies(String filter,int skip);
     }
 

@@ -135,7 +135,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     private void refreshData() {
         mSwipeLayout.setRefreshing(true);
-        mPresenter.getClassifiesByAgency();
+//        mPresenter.getClassifiesByAgency();
 //        if (User.isCustomer()) {
 //            mPresenter.getClassifiesByAgency();
 //        }
@@ -144,7 +144,8 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 //            tvAgencyTitle.setVisibility(View.GONE);
 //            rvAgency.setVisibility(View.GONE);
 //        }
-        mPresenter.getClassifiesByService();
+        mPresenter.getClassifiesByService(Config.agency_product_categoryId);
+        mPresenter.getClassifiesByService(Config.tourism_product_categoryId);
         mSwipeLayout.setEnabled(false);
     }
 
@@ -163,24 +164,32 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
 
     @Override
-    public void showClassifiesByService(List<ProductCategory> productCategories) {
+    public void showClassifiesByService(List<ProductCategory> productCategories, String categoryId) {
         completeRefresh();
         cacheExpendKeys(productCategories);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
 
-        rvServer.setLayoutManager(gridLayoutManager);
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-
             ProductCategory productCategory = adapter.getData().get(i);
-            if (productCategory.getId().equals(Config.tourism_product_categoryId)) {
+            if (productCategory.getParentId().equals(Config.tourism_product_categoryId)) {
                 start(TourismRootFragment.newInstance(productCategory.getId()));
             } else {
                 start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
             }
         });
-        rvServer.setAdapter(adapter);
+        show(gridLayoutManager, adapter, categoryId);
         gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
+    }
+
+    private void show(GridLayoutManager gridLayoutManager, ProductCategoryAdapter adapter, String categoryId) {
+        if (categoryId.equals(Config.agency_product_categoryId)) {
+            rvAgency.setLayoutManager(gridLayoutManager);
+            rvAgency.setAdapter(adapter);
+        } else if (categoryId.equals(Config.tourism_product_categoryId)) {
+            rvServer.setLayoutManager(gridLayoutManager);
+            rvServer.setAdapter(adapter);
+        }
     }
 
     private void cacheExpendKeys(List<ProductCategory> productCategories) {

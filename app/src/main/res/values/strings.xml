@@ -360,4 +360,6 @@
     <string name="version_update_imm">立即更新</string>
     <string name="version_update_ignore">忽略更新</string>
 
+    <string name="recommend_to_friend">扫一扫推荐好友</string>
+
 </resources>
