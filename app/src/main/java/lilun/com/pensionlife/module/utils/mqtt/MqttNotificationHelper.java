@@ -9,13 +9,19 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.CacheMsg;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
@@ -45,17 +51,15 @@ public class MqttNotificationHelper {
         if (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix)) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
 
-            //发送事件，展示到app
-            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
-
 
             // 1 ----- 公告，展示到通知栏
             if (topic.contains(mqttTopic.topic_information_suffix)) {
-                classify = msgClassify.announce;
-
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
-                    title = "公告";
+                    classify = msgClassify.announce;
+                    //发送事件，展示到app
+                    EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+                    title = "社区公告";
                     content = infoJson.getString("name");
                 }
             }
@@ -75,7 +79,8 @@ public class MqttNotificationHelper {
         if (TextUtils.equals(topic, urgent_help)) {
             classify = msgClassify.urgent_help;
             title = "紧急求助";
-            content = jsonObject.getString("message");
+//            content = jsonObject.getString("message");
+            content = "有人需要您的帮助";
 
 //            发送事件，展示到app
             EventBus.getDefault().post(new Event.BoardMsg(topic, data));
@@ -113,13 +118,19 @@ public class MqttNotificationHelper {
                 if (!TextUtils.equals(from, clientId)) {
 //                        Logger.i("不同设备登陆，此设备下线"+"两个设备id--" + "from--" + from + "---" + "clientId" + clientId);
                     //只有在登录之后的  请求踢账号才有效
-                    if (App.loginDate != null && App.loginDate.before(StringUtils.string2Date(time)))
+                    String loginTime = User.getLoginTime();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = format.parse(loginTime);
+                    Logger.d("原账户登录时间是--" + loginTime + "----" + "新登录时间--" + time);
+                    if (date != null && date.before(StringUtils.string2Date(time)))
                         EventBus.getDefault().post(new Event.OffLine());
                 }
             } else {
 //                    Logger.i("相同设备登陆");
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -131,7 +142,7 @@ public class MqttNotificationHelper {
     private void show(String title, String content) {
         if (!TextUtils.isEmpty(title)) {
             Notification build = new NotificationCompat.Builder(App.context)
-                    .setSmallIcon(R.drawable.small_icon)
+                    .setSmallIcon(R.mipmap.icon)
                     .setContentTitle(title)
                     .setContentText(content).build();
 

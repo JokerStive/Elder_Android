@@ -81,7 +81,6 @@ public class RegisterStep5Fragment extends BaseFragment<RegisterContract.Present
             detailAddress = belongOrganizationId.replace(getString(R.string.common_address), "") + getDetailAddress();
             detailAddress.replace("/", "");
             account.setProfile(new Account.ProfileBean().setBelongToDistrict(belongOrganizationId));
-            account.setDefaultOrganizationId(belongOrganizationId);
             mPresenter.commitRegister(_mActivity, belongOrganizationId, IDCode, detailAddress, account);
         }
     }

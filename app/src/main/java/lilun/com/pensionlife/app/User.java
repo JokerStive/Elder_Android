@@ -27,7 +27,7 @@ public class User {
     public static final String password = "password";
     public static final String mobile = "mobile";
     //    public static final String has = "mobile";
-    public static final String belongToDistrict = "belongToDistrict";
+    public static final String location = "location";
     public static final String isCustomer = "isCustomer";
     public static final String defaultContactId = "defaultContactId ";
     public static final String rootOrganizationAccountId = "rootOrganizationAccountId";
@@ -38,6 +38,17 @@ public class User {
     public static final String currentOrganizationId = "currentOrganizationId";
     public static final String belongOrganizations = "belongOrganizations";
     public static final String businessId = "businessId";
+    public static final String firstHelperPhone = "firstHelperPhone";
+    public static final String loginTime = "loginTime";
+
+
+    public static String getLoginTime() {
+        return PreUtils.getString(loginTime, null);
+    }
+
+    public static void putLoginTime(String time) {
+        PreUtils.putString(User.loginTime, time);
+    }
 
     public static String getUserAvatar() {
         return PreUtils.getString(userAvatar, null);
@@ -134,7 +145,6 @@ public class User {
     }
 
 
-
     /**
      * 创建者是否是自己
      */
@@ -220,20 +230,28 @@ public class User {
 
 
     //默认小区
-    public static void putBelongToDistrict(String id) {
-        PreUtils.putString(belongToDistrict, id);
+    public static void putLocation(String id) {
+        PreUtils.putString(location, id);
     }
 
-    public static String getBelongToDistrict() {
-        return PreUtils.getString(belongToDistrict, "");
+    public static String getLocation() {
+        return PreUtils.getString(location, "");
     }
 
+    public static void putHelpPhone(String phone) {
+        PreUtils.putString(firstHelperPhone, phone);
+    }
+
+    public static String getFirstHelperPhone() {
+        return PreUtils.getString(firstHelperPhone, "");
+    }
 
 
     //跑单人员id
     public static void putBusinessId(String id) {
         PreUtils.putString(businessId, id);
     }
+
     public static String getBusinessId() {
         return PreUtils.getString(businessId, "");
     }
@@ -245,7 +263,7 @@ public class User {
     public static ArrayList<String> levelIds(boolean isCurrentOrganizationId) {
         int level = 4;
         ArrayList<String> ids = null;
-        String currentOrganizationId = isCurrentOrganizationId?User.getCurrentOrganizationId():User.getBelongsOrganizationId();
+        String currentOrganizationId = isCurrentOrganizationId ? User.getCurrentOrganizationId() : User.getBelongsOrganizationId();
         String[] split = currentOrganizationId.split("/");
         if (split.length >= level) {
             ids = new ArrayList<>();
@@ -279,7 +297,6 @@ public class User {
         return result;
 
     }
-
 
 
     /**

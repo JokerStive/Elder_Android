@@ -10,28 +10,6 @@ import lilun.com.pensionlife.base.BaseBean;
 */
 public class ProductOrder extends BaseBean {
 
-    /**
-     * id : string
-     * name : string
-     * status : string
-     * mobile : string
-     * address : string
-     * description : string
-     * callStatus : string
-     * remark : string
-     * registerDate : 2017-04-10T00:54:50.526Z
-     * productId : string
-     * assigneeId : string
-     * canceledById : string
-     * rankId : string
-     * createdAt : $now
-     * updatedAt : $now
-     * creatorId : string
-     * creatorName : string
-     * updatorId : string
-     * updatorName : string
-     */
-
     private String id;
     private String name;
     private String status;

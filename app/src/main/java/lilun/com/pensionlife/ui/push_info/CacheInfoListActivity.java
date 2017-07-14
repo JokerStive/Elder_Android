@@ -66,7 +66,7 @@ public class CacheInfoListActivity extends BaseActivity {
 
     @Override
     protected void initPresenter() {
-        cacheMsgs = DataSupport.where("classify = ? and userId=?", classify + "", User.getUserId()).find(CacheMsg.class);
+        cacheMsgs = DataSupport.where("classify = ? and userId=?", classify + "", User.getUserId()).order("id desc").find(CacheMsg.class);
     }
 
 
@@ -93,6 +93,12 @@ public class CacheInfoListActivity extends BaseActivity {
         recyclerView.addItemDecoration(new NormalItemDecoration(10));
         cacheInfoAdapter = new CacheInfoAdapter(getCacheInfos());
         recyclerView.setAdapter(cacheInfoAdapter);
+        cacheInfoAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            CacheInfo item = cacheInfoAdapter.getItem(i);
+            if (item.getType() == CacheMsgClassify.announce) {
+                PushAnnounceActivity.start(this, item);
+            }
+        });
         swipeLayout.setEnabled(false);
 
     }
@@ -139,7 +145,7 @@ public class CacheInfoListActivity extends BaseActivity {
             cacheInfo = new CacheInfo("姓名：" + dataJson.getString("title"),
                     "位置：" + dataJson.getString("address"),
                     "发生时间：" + dataJson.getString("time"),
-                    "联系电话：" + dataJson.getString("mobile"));
+                    "联系电话：" + dataJson.getString("mobile"), classify);
         }
 
 
@@ -149,11 +155,7 @@ public class CacheInfoListActivity extends BaseActivity {
             if (infoJson != null) {
                 Information information = JSON.parseObject(infoJson, Information.class);
                 if (information != null) {
-                    String content = null;
-                    if (information.getContextType() == 0) {
-                        content = information.getContext();
-                    }
-                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), content);
+                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getContext(), classify);
                 }
             }
 
@@ -164,7 +166,7 @@ public class CacheInfoListActivity extends BaseActivity {
                 if (aidJson != null) {
                     OrganizationAid aid = JSON.parseObject(infoJson, OrganizationAid.class);
                     if (aid != null) {
-                        cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getTitle(), StringUtils.IOS2ToUTC(aid.getCreatedAt(), 6), aid.getMemo());
+                        cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getTitle(), StringUtils.IOS2ToUTC(aid.getCreatedAt(), 6), aid.getMemo(), classify);
                     }
                 }
             }

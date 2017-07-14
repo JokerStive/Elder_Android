@@ -25,12 +25,21 @@ public class Account implements Serializable {
     private String status;
     private List<IconModule> image;
     private String visibility;
+    private String location;
     /**
      * profile : {}
      */
 
     private ProfileBean profile;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public Account setLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
     public String getDefaultContactId() {
         return defaultContactId;
@@ -41,7 +50,7 @@ public class Account implements Serializable {
         return this;
     }
 
-    private String defaultContactId ;
+    private String defaultContactId;
 
     public boolean isCustomer() {
         return isCustomer;
@@ -206,6 +215,15 @@ public class Account implements Serializable {
         private static final long serialVersionUID = 1L;
 
         private String belongToDistrict;
+        private String firstHelperPhone;
+
+        public ProfileBean(String belongToDistrict, String firstHelperPhone) {
+            this.belongToDistrict = belongToDistrict;
+            this.firstHelperPhone = firstHelperPhone;
+        }
+
+        public ProfileBean() {
+        }
 
         public String getBelongToDistrict() {
             return belongToDistrict;
@@ -214,6 +232,15 @@ public class Account implements Serializable {
         public ProfileBean setBelongToDistrict(String belongToDistrict) {
             this.belongToDistrict = belongToDistrict;
             return this;
+        }
+
+        public ProfileBean setFirstHelperPhone(String firstHelperPhone) {
+            this.firstHelperPhone = firstHelperPhone;
+            return this;
+        }
+
+        public String getFirstHelperPhone() {
+            return firstHelperPhone == null ? "" : firstHelperPhone;
         }
     }
 }

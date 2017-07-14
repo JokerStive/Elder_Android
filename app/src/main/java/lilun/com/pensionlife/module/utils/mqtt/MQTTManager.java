@@ -15,10 +15,9 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.util.Arrays;
-
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.ConfigUri;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
 
 
@@ -50,28 +49,35 @@ public class MQTTManager {
         return mInstance;
     }
 
+
     public static void release() {
-        MqttTopic mqttTopic = new MqttTopic();
-        String[] topics = mqttTopic.getAllTopicWhenInit();
-        if (topics != null && getInstance().isConnected()) {
-            Logger.d("移除订阅----" + Arrays.toString(topics));
-            getInstance().unSubscribe(topics, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    try {
-                        getInstance().disConnect();
-                        mInstance = null;
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-                }
-            });
+        try {
+            getInstance().disConnect();
+//            mInstance = null;
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
+//        MqttTopic mqttTopic = new MqttTopic();
+//        String[] topics = mqttTopic.getAllTopicWhenInit();
+//        if (topics != null && getInstance().isConnected()) {
+//            Logger.d("移除订阅----" + Arrays.toString(topics));
+//            getInstance().unSubscribe(topics, null, new IMqttActionListener() {
+//                @Override
+//                public void onSuccess(IMqttToken asyncActionToken) {
+//                    try {
+//                        getInstance().disConnect();
+//                        mInstance = null;
+//                    } catch (MqttException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//
+//                }
+//            });
+//        }
     }
 
 
@@ -99,9 +105,9 @@ public class MQTTManager {
 
 
         if (client == null) {
-            String deviceId = DeviceUtils.getUniqueIdForThisApp(App.context);
+            String deviceId = DeviceUtils.getUniqueIdForThisApp(App.context) + "@" + User.getUserName();
             client = new MqttAndroidClient(App.context, ConfigUri.MQTT_URL, deviceId);
-            Logger.i("设备Id:" + deviceId);
+            Logger.i("mqttId:" + deviceId);
             client.setCallback(mCallback);
         }
 
@@ -230,6 +236,32 @@ public class MQTTManager {
             client.unsubscribe(topic, userContext, callback);
         } catch (MqttException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 取消所有账户初始订阅
+     */
+    public static void unSubscribeAllTopic() {
+        MqttTopic mqttTopic = new MqttTopic();
+        String[] topics = mqttTopic.getAllTopicWhenInit();
+        if (topics != null && getInstance().isConnected()) {
+            getInstance().unSubscribe(topics, null, null);
+        }
+    }
+
+
+    /**
+     * 订阅所有账户初始
+     */
+    public static void subscribeAllTopic() {
+        MqttTopic mqttTopic = new MqttTopic();
+        String[] topics = mqttTopic.getAllTopicWhenInit();
+        if (topics != null && getInstance().isConnected()) {
+            for (String topic : topics) {
+                MQTTManager.getInstance().subscribe(topic, 2);
+            }
         }
     }
 

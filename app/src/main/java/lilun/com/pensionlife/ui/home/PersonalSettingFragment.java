@@ -23,8 +23,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -75,6 +75,8 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     TextView tvBelongArea;
     @Bind(R.id.tv_belong_stress)
     TextView tvBelongStress;
+
+
     @Bind(R.id.tv_first_help_phone)
     TextView tvFirstHelpPhone;
 
@@ -97,6 +99,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                 settingOfStress();
                 break;
             case R.id.ll_first_help_phone:
+
                 settingOfFirstPhone();
                 break;
 
@@ -191,6 +194,10 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     private void settingOfFirstPhone() {
+        if (TextUtils.isEmpty(PreUtils.getString("firstHelperPhone", ""))) {
+            ToastHelper.get().showWareShort("您需要先在首页--一键求助模块下设置联系人电话");
+            return;
+        }
         new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话", true,
                 new MaterialDialog.InputCallback() {
                     @Override
@@ -199,8 +206,26 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             ToastHelper.get().showWareShort("手机号格式错误");
                             return;
                         }
-                        PreUtils.putString("firstHelperPhone", input.toString());
-                        tvFirstHelpPhone.setText(input.toString());
+                        //该功能在10106上实现
+                        if (BuildConfig.VERSION_CODE >= 10106) {
+                            Account postAccount = new Account();
+//                            postAccount.setLocation()
+//                            postAccount.setProfile(new Account.ProfileBean(User.getBelongToDistrict(), input.toString()));
+                            NetHelper.getApi()
+                                    .putAccount(User.getUserId(), postAccount)
+                                    .compose(RxUtils.handleResult())
+                                    .compose(RxUtils.applySchedule())
+                                    .subscribe(new RxSubscriber<Account>() {
+                                        @Override
+                                        public void _next(Account account) {
+                                            PreUtils.putString("firstHelperPhone", input.toString());
+                                            tvFirstHelpPhone.setText(input.toString());
+                                        }
+                                    });
+                        } else {
+                            PreUtils.putString("firstHelperPhone", input.toString());
+                            tvFirstHelpPhone.setText(input.toString());
+                        }
                     }
                 });
     }
@@ -221,8 +246,8 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                 .subscribe(new RxSubscriber<List<OrganizationAccount>>() {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
-                        //断开mqtt取消所有订阅
-                        MQTTManager.release();
+                        //取消所有订阅
+                        MQTTManager.unSubscribeAllTopic();
 
                         loginModule.putBelongOrganizations(organizationAccounts);
                         if (loginModule.saveUserAboutOrganization(loginModule.getOrganizationIdMappingOrganizationAccountId(distrect.getId()))) {
@@ -231,7 +256,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             EventBus.getDefault().post(new Event.AccountSettingChange());
 
                             //重新订阅所在地
-                            App.resetMQTT();
+                            MQTTManager.subscribeAllTopic();
                         } else {
                             ToastHelper.get().showShort("脏数据");
                         }

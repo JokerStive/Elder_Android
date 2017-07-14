@@ -26,9 +26,9 @@ import rx.Observable;
  */
 public class LoginModule implements LoginContract.Module {
 
-    public static String noOrganizationAccountIdMappingLocation="0";
-    public static String locationEqualsDefaultOrganizationId="1";
-    public static String locationIsEmpty="2";
+    public static String noOrganizationAccountIdMappingLocation = "0";
+    public static String locationEqualsDefaultOrganizationId = "1";
+    public static String locationIsEmpty = "2";
 
 
     @Override
@@ -43,7 +43,15 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public Observable<Account> getAccountInfo(TokenInfo tokenInfo, String username, String password) {
         putToken(tokenInfo.getId());
-
+        String created = tokenInfo.getCreated();
+        String loginTime = StringUtils.IOS2ToUTC(created, 2);
+        User.putLoginTime(loginTime);
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            App.loginDate = format.parse(loginTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         User.putPassword(password);
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())
@@ -69,10 +77,13 @@ public class LoginModule implements LoginContract.Module {
     @Override
     public void putAccountInfo(Account account) {
 
-        //居住地信息
+        //第一求助人
         if (account.getProfile() != null) {
-            User.putBelongToDistrict(account.getProfile().getBelongToDistrict());
+            User.putHelpPhone(account.getProfile().getFirstHelperPhone());
         }
+
+        //居住地方
+        User.putLocation(account.getLocation());
         //用户名
         User.putUserId(account.getId());
 
@@ -130,14 +141,14 @@ public class LoginModule implements LoginContract.Module {
         String result = locationIsEmpty;
 
         //居住地
-        String belongToDistrict = User.getBelongToDistrict();
+        String location = User.getLocation();
         String belongOrganizationAccountId = User.getBelongOrganizationAccountId();
 
 
         //居住地不存在，则是在商家端注册的，需要切换
-        if (!TextUtils.isEmpty(belongToDistrict)) {
+        if (!TextUtils.isEmpty(location)) {
             //居住地存在
-            String organizationIdMappingOrganizationAccountId = getOrganizationIdMappingOrganizationAccountId(belongToDistrict);
+            String organizationIdMappingOrganizationAccountId = getOrganizationIdMappingOrganizationAccountId(location);
             if (TextUtils.isEmpty(organizationIdMappingOrganizationAccountId)) {
                 return noOrganizationAccountIdMappingLocation;
             }
@@ -148,8 +159,9 @@ public class LoginModule implements LoginContract.Module {
                 // 和defaultOrganizationId不对应，则需要切换到居住村对应的组织
                 result = organizationIdMappingOrganizationAccountId;
             }
+        } else {
+            result = locationIsEmpty;
         }
-
 
         return result;
     }
@@ -218,9 +230,9 @@ public class LoginModule implements LoginContract.Module {
                 }
 
                 //判断是否是商家，sb方法
-                if (organizationId.contains("社会组织") ) {
+                if (organizationId.contains("社会组织")) {
                     String[] split = organizationId.split("/");
-                    if (split.length>2){
+                    if (split.length > 2) {
                         User.putisMerchant(true);
                     }
                 }

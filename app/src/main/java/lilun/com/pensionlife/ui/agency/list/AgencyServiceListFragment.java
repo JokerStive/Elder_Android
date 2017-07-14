@@ -74,6 +74,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
      * @param categoryId  组织id  或 类型
      * @param type     0-查询区域服务   1-查询商家所有服务
      * @return
+     *
      */
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
         AgencyServiceListFragment fragment = new AgencyServiceListFragment();

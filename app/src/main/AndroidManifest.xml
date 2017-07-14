@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lilun.com.pensionlife">
+    package="lilun.com.pensionlife"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -54,8 +55,7 @@
         <activity
             android:name="lilun.com.pensionlife.ui.home.HomeActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
 
 
         <!--欢迎界面,注册登录入口-->
@@ -87,10 +87,7 @@
             android:screenOrientation="portrait" />
 
 
-
         <activity android:name="lilun.com.pensionlife.ui.welcome.ChangePasswordActivity" />
-
-
 
 
         <activity
@@ -163,6 +160,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <activity android:name=".ui.push_info.PushAnnounceActivity" />
 
         <!--腾讯bugly-->
         <activity
