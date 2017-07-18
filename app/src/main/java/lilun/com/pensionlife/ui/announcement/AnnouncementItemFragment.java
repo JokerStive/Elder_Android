@@ -87,6 +87,9 @@ public class AnnouncementItemFragment extends BaseFragment {
             //TODO 占位图
         } else {
             String url = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, this.information.getId(), mFileName);
+//            if(information.getParentId().contains("阳光政务")){
+//                Logger.i(url);
+//            }
             ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
         }
     }

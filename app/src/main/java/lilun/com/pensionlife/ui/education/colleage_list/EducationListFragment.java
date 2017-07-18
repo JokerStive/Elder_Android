@@ -38,7 +38,7 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
     ElderModule mElderModule;
     List<ElderEdusColleage> dataList = new ArrayList<>();
-    private String[] filterTitles = {"区域","价格","等级"};
+    private String[] filterTitles = {"区域", "价格", "等级"};
     String searchStr = "";
 
     private EdusColleageAdapter mActivityAdapter;
@@ -184,9 +184,9 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
     private void getDataList(int skip, String searchStr) {
         String filter = "";
         if (mElderModule.getName().equals(getString(R.string.pension_university)))
-            filter = "{\"include\":\"contact\",\"where\":{\"$location\":{\"$exists\": true},\"name\":{\"like\":\"" + searchStr + "\"}}, \"skip\":" + skip + "}";
+            filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"$exists\": true},\"name\":{\"like\":\"" + searchStr + "\"}}, \"skip\":" + skip + "}";
         else if (mElderModule.getName().equals(getString(R.string.net_university)))
-            filter = "{\"include\":\"contact\",\"where\":{\"$location\":{\"$exists\": false},\"name\":{\"like\":\"" + searchStr + "\"}}, \"skip\":" + skip + "}";
+            filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"$exists\": false},\"name\":{\"like\":\"" + searchStr + "\"}}, \"skip\":" + skip + "}";
         mPresenter.getColleage(filter, skip);
     }
 
