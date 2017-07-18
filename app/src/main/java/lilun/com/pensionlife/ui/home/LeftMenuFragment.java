@@ -24,9 +24,8 @@ import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
-import lilun.com.pensionlife.ui.welcome.WelcomeActivity;
+import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
