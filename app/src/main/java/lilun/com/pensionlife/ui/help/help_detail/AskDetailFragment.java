@@ -44,10 +44,8 @@ import lilun.com.pensionlife.widget.slider.BannerPager;
  *
  * @author yk
  *         create at 2017/2/20 9:34
- *         email : yk_developer@163.com
+ *         email : yk_developer@163.com.
  */
-
-
 public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter> implements HelpDetailContract.View, View.OnClickListener {
 
 

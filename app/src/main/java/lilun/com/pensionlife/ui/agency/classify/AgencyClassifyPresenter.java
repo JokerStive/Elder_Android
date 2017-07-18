@@ -5,7 +5,6 @@ import com.orhanobut.logger.Logger;
 import java.io.Serializable;
 import java.util.List;
 
-import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.ProductCategory;
@@ -55,15 +54,15 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
     }
 
     @Override
-    public void getClassifiesByService() {
-        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("agencyProductClassify");
+    public void getClassifiesByService(String categoryId) {
+        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject(categoryId+"classify");
         if (productCategories != null && productCategories.size() != 0) {
             Logger.i("agency product classify has cache");
-            view.showClassifiesByService(productCategories);
+            view.showClassifiesByService(productCategories,categoryId);
             return;
         }
 
-        String filter = "{\"where\":{\"parentId\":\"" + Config.agency_product_categoryId + "\"},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"parentId\":\"" + categoryId+ "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getProductCategories(filter)
                 .compose(RxUtils.handleResult())
@@ -71,8 +70,8 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
                 .subscribe(new RxSubscriber<List<ProductCategory>>() {
                     @Override
                     public void _next(List<ProductCategory> productCategories) {
-                        ACache.get().put("agencyProductClassify", (Serializable) productCategories);
-                        view.showClassifiesByService(productCategories);
+                        ACache.get().put(categoryId+"classify", (Serializable) productCategories);
+                        view.showClassifiesByService(productCategories,categoryId);
                     }
 
                     @Override

@@ -98,8 +98,8 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
     protected void initView(LayoutInflater inflater) {
         //显示图片
         List<String> urls = new ArrayList<>();
-        if (mColleage.getPicture() != null) {
-            for (IconModule iconModule : mColleage.getPicture()) {
+        if (mColleage.getImage() != null) {
+            for (IconModule iconModule : mColleage.getImage()) {
                 String url = IconUrl.organizationEdus(mColleage.getId(), iconModule.getFileName());
                 urls.add(url);
             }
@@ -114,8 +114,8 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
             tvConnectPerson.setText(getString(R.string.connect_person_, mColleage.getContact().getUsername()));
             //if(!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())))
             ImageLoaderUtil.instance().loadImage(
-                    IconUrl.moduleIconUrl(IconUrl.Accounts,mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())),
-                    R.drawable.icon_def,tvConnectIcon);
+                    IconUrl.moduleIconUrl(IconUrl.Accounts, mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())),
+                    R.drawable.icon_def, tvConnectIcon);
 //            Glide.with(this)
 //                    .load(IconUrl.account(mColleage.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) mColleage.getContact().getImage())))
 //                    .error(R.drawable.icon_def)

@@ -2,7 +2,7 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/iv_advantage"
     android:layout_width="match_parent"
-    android:scaleType="fitXY"
+    android:scaleType="center"
     android:layout_height="@dimen/dp_150">
 
     <!--<ImageView-->

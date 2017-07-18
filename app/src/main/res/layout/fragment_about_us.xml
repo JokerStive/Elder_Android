@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f7f7f7"
+    >
+
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="关于我们" />
+
+    <ImageView
+        android:id="@+id/iv_qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:src="@drawable/qr_code" />
+
+    <TextView
+        android:id="@+id/tv_recommend"
+        style="@style/tv_normal"
+        android:layout_below="@id/iv_qr_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:textColor="#686868"
+        android:text="@string/recommend_to_friend" />
+
+
+    <TextView
+        style="@style/tv_normal"
+        android:layout_below="@id/tv_recommend"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:textColor="#9F9F9F"
+        android:text="V2.0.14"
+        android:id="@+id/tv_version" />
+
+
+    <TextView
+
+        android:id="@+id/tv_copyright1"
+        style="@style/tv_normal"
+        android:textColor="#989898"
+        android:text="版权所有"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tv_copyright2"
+        />
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/tv_copyright2"
+        style="@style/tv_normal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:textColor="#989898"
+        android:text="重庆物联利浪科技有限公司"
+        android:layout_marginBottom="83dp"
+        />
+
+
+</RelativeLayout>

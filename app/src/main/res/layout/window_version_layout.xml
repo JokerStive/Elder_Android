@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:gravity="center"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:id="@+id/ll_version"
@@ -43,6 +43,22 @@
                 android:text="@string/version_update_imm"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_18" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="@dimen/dp_20"
+                android:background="@drawable/shape_rect_white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                style="@style/tv_small"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <ImageView
@@ -63,4 +79,12 @@
         android:src="@drawable/version_close" />
 
 
-</LinearLayout>
+    <!--<ProgressBar-->
+    <!--android:id="@+id/progressBar"-->
+    <!--style="@android:style/Widget.ProgressBar.Horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:visibility="gone" />-->
+
+</RelativeLayout>

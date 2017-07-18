@@ -3,13 +3,17 @@ package lilun.com.pensionlife.module.utils;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
 import java.util.List;
 
 import lilun.com.pensionlife.app.App;
@@ -68,6 +72,7 @@ public class SystemUtils {
 
     /**
      * 判断服务是否运行
+     *
      * @param context
      * @param className
      * @return
@@ -85,5 +90,28 @@ public class SystemUtils {
             }
         }
         return isRunning;
+    }
+
+
+    public static String getVersionName(Context context) {
+        String versionName = "";
+        String pkName = context.getPackageName();
+        try {
+            versionName = context.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    public static void installApk(Context context, String filePath) {
+//        Logger.d("apk 路径--" + filePath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(new File(filePath)),
+                "application/vnd.android.package-archive");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

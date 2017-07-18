@@ -42,7 +42,7 @@ public class EdusColleageAdapter extends QuickAdapter<ElderEdusColleage> {
                     }
                 });
         Glide.with(help.getConvertView().getContext().getApplicationContext())
-                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName(edu.getPicture())))
+                .load(IconUrl.organizationEdus(edu.getId(), BitmapUtils.picName(edu.getImage())))
                 .dontAnimate()
                 .placeholder(R.drawable.icon_def)
                 .error(R.drawable.icon_def)

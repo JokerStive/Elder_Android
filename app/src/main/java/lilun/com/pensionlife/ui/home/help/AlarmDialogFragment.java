@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +16,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.Date;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.BaiduLocation;
 import lilun.com.pensionlife.module.utils.PreUtils;
@@ -116,19 +112,19 @@ public class AlarmDialogFragment extends DialogFragment {
 
     }
 
-    private OrganizationAid newAid() {
-        OrganizationAid aid = new OrganizationAid();
-        aid.setKind(2);
-        aid.setPrice(10);
-        aid.setTitle("紧急求助");
-        Logger.d("当前aid的经纬度==地址" + currentLongitude + "---" + currentLatitude + "---" + currentAddress);
-        if (currentLongitude != 0 && currentLatitude != 0 && !TextUtils.isEmpty(currentAddress)) {
-            aid.setMemo(currentLongitude + "/" + currentLatitude);
-            aid.setAddress(currentAddress);
-        }
-        aid.setMobile(User.getMobile());
-        return aid;
-    }
+//    private OrganizationAid newAid() {
+//        OrganizationAid aid = new OrganizationAid();
+//        aid.setKind(2);
+//        aid.setPrice(10);
+//        aid.setTitle("紧急求助");
+//        Logger.d("当前aid的经纬度==地址" + currentLongitude + "---" + currentLatitude + "---" + currentAddress);
+//        if (currentLongitude != 0 && currentLatitude != 0 && !TextUtils.isEmpty(currentAddress)) {
+//            aid.setMemo(currentLongitude + "/" + currentLatitude);
+//            aid.setAddress(currentAddress);
+//        }
+//        aid.setMobile(User.getMobile());
+//        return aid;
+//    }
 
     private void postAid() {
 //        NetHelper.getApi()

@@ -6,6 +6,7 @@ import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
 import lilun.com.pensionlife.module.bean.ElderEdusColleage;
 import lilun.com.pensionlife.module.utils.RxUtils;
+import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 
@@ -21,7 +22,7 @@ public class EducationListPresenter extends RxPresenter<EducationListContract.Vi
     @Override
     public void getColleage(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationsEdus(filter)
+                .getOrganizationsEdus(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<ElderEdusColleage>>() {
@@ -41,6 +42,7 @@ public class EducationListPresenter extends RxPresenter<EducationListContract.Vi
                     }
                 }));
     }
+
     @Override
     public List<List<ConditionOption>> getConditionOptionsList() {
 

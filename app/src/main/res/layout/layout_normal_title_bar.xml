@@ -26,6 +26,7 @@
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_toLeftOf="@+id/tv_doWhat"
         android:layout_toRightOf="@id/iv_back"
         android:gravity="center"

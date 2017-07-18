@@ -175,6 +175,8 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <service android:name=".ui.home.upload.DownLoadService" />
+
     </application>
 
 </manifest>
