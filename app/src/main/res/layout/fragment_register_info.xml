@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/register_info_header" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_height"
+            android:gravity="center"
+            android:text="@string/write_preson_info"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20" />
+    </RelativeLayout>
+
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/dp_10" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_belong_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_10">
+
+                <ImageView
+                    android:id="@+id/iv_belong_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/register_info_belong_area" />
+
+                <TextView
+                    android:id="@+id/tv_belong_area_str"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@id/iv_belong_area"
+                    android:background="@drawable/selector_click_trans_to_dark_corners_5"
+                    android:text="@string/belong_area"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/tv_belong_area"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_belong_area_str"
+                    android:layout_below="@id/tv_belong_area_str"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:drawableRight="@drawable/arraw_right"
+                    android:hint="@string/belong_area_hint"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/sp_16" />
+
+
+            </RelativeLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_margin="@dimen/dp_10" />
+
+            <RelativeLayout
+                android:id="@+id/rl_belong_stress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_10">
+
+                <ImageView
+                    android:id="@+id/iv_belong_stress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/register_info_belong_stress" />
+
+                <TextView
+                    android:id="@+id/tv_belong_stress_str"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@id/iv_belong_stress"
+                    android:text="@string/belong_stress"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/tv_belong_stress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_belong_stress_str"
+                    android:layout_below="@id/tv_belong_stress_str"
+                    android:background="@drawable/selector_click_trans_to_dark_corners_5"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:drawableRight="@drawable/arraw_right"
+                    android:hint="@string/belong_stress_hint"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_belong_stress"
+                    android:layout_margin="@dimen/dp_10" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/ll_belong_communite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_10">
+
+                <ImageView
+                    android:id="@+id/iv_detail_addr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/register_info_detail_address" />
+
+                <TextView
+                    android:id="@+id/tv_detial_addr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@id/iv_detail_addr"
+
+                    android:text="@string/belong_communite"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_16" />
+
+                <EditText
+                    android:id="@+id/et_belong_communite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_detial_addr"
+                    android:layout_below="@id/tv_detial_addr"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/belong_communite_hint"
+                    android:inputType="text"
+                    android:minLines="4"
+                    android:paddingTop="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_margin="@dimen/dp_10" />
+
+            <Button
+                android:id="@+id/bt_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/selector_rect_corner_red"
+                android:text="@string/commit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

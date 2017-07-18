@@ -36,7 +36,7 @@ public class SplashActivity extends Activity {
         if (!TextUtils.isEmpty(belongsOrganizationId)) {
             startActivity(new Intent(this, HomeActivity.class));
         }else {
-            startActivity(new Intent(this, WelcomeActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
         finish();
     }

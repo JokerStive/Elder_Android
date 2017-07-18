@@ -24,7 +24,7 @@ import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import lilun.com.pensionlife.ui.welcome.WelcomeActivity;
+import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -75,8 +75,8 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
             case R.id.tv_account_info:
                 Fragment parentFragment = getParentFragment();
-                if(parentFragment instanceof HomeFragment) {
-                    ((HomeFragment)parentFragment).startInformationCenterFragment();
+                if (parentFragment instanceof HomeFragment) {
+                    ((HomeFragment) parentFragment).startInformationCenterFragment();
                 }
                 break;
         }
@@ -119,7 +119,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     private void backLogin() {
         App.clear();
-        startActivity(new Intent(_mActivity, WelcomeActivity.class));
+        startActivity(new Intent(_mActivity, LoginActivity.class));
         _mActivity.finish();
         HomeFragment fragment = findFragment(HomeFragment.class);
         if (fragment != null) {

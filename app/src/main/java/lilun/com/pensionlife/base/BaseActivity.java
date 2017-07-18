@@ -36,7 +36,6 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.lbs.AnnounceInfoActivity;
 import lilun.com.pensionlife.ui.lbs.UrgentAidInfoActivity;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
-import lilun.com.pensionlife.ui.welcome.WelcomeActivity;
 import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
@@ -145,7 +144,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshPushMessage(Event.OffLine offLine) {
-        startActivity(new Intent(this, WelcomeActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         ToastHelper.get().showShort("您的账号已在其他设备登陆");
         MQTTManager.getInstance().unSubscribe("user/" + User.getUserName() + "/.login", null, null);
         App.clear();
@@ -239,8 +238,8 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         JSONObject jsonObject = JSON.parseObject(data);
         if (topic.equals(mqttTopic.urgent_help)) {
             OrganizationAid aid = new OrganizationAid();
-            aid.setAddress( jsonObject.getString("address"));
-            aid.setMobile( jsonObject.getString("mobile"));
+            aid.setAddress(jsonObject.getString("address"));
+            aid.setMobile(jsonObject.getString("mobile"));
             aid.setCreatedAt(jsonObject.getString("time"));
             aid.setCreatorName(jsonObject.getString("title"));
             aid.setMemo(jsonObject.getString("location"));
@@ -257,9 +256,9 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         }
 
 
-         if (topic.contains(mqttTopic.topic_information_suffix)) {
-             String infoString = jsonObject.getString("data");
-             Information information = JSON.parseObject(infoString, Information.class);
+        if (topic.contains(mqttTopic.topic_information_suffix)) {
+            String infoString = jsonObject.getString("data");
+            Information information = JSON.parseObject(infoString, Information.class);
 //             Information Information = gson.fromJson(pushMessage.getData(), Information.class);
             if (pushInfoCunt == 0 && !SystemUtils.isTopActivity(Information.class.getName())) {
                 pushInfoCunt++;

@@ -1,8 +1,11 @@
 package lilun.com.pensionlife.net;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 
 import com.orhanobut.logger.Logger;
+
+import java.lang.ref.WeakReference;
 
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -15,7 +18,7 @@ import rx.Subscriber;
  */
 public abstract class RxSubscriber<T> extends Subscriber<T> {
 
-    private Activity activity;
+    private WeakReference<Activity> activity;
     public boolean needProgressBar;
     public RxProgressDialog dialog;
 
@@ -23,7 +26,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     }
 
     public RxSubscriber(Activity content) {
-        this.activity = content;
+        this.activity = new WeakReference<>(content);
         needProgressBar = true;
     }
 
@@ -34,7 +37,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
             if (App.context.getMainLooper().isCurrentThread()) {
                 if (activity != null) {
                     if (dialog == null) {
-                        dialog = new RxProgressDialog(activity);
+                        dialog = new RxProgressDialog(activity.get());
                     }
                     dialog.show();
                 }
@@ -48,9 +51,8 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     @Override
     public void onCompleted() {
         if (needProgressBar) {
-            if (activity != null) {
+            if (activity != null && dialog.isShowing()) {
                 dialog.cancel();
-                dialog.dismiss();
             }
         }
 
@@ -75,7 +77,18 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
 
     public void hideDialog() {
         if (needProgressBar) {
-            dialog.cancel();
+            if (activity != null && dialog.isShowing()) {
+                dialog.cancel();
+            }
+        }
+    }
+
+    /**
+     * 对于 要立即finish的activity需要先diss Dialog
+     */
+    public void dissDialog() {
+        if (activity != null && dialog.isShowing()) {
+            dialog.dismiss();
         }
     }
 
@@ -110,6 +123,7 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onNext(T t) {
+        hideDialog();
         _next(t);
     }
 

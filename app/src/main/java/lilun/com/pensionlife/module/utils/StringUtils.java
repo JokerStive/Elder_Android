@@ -385,6 +385,16 @@ public class StringUtils {
         return m.matches();
     }
 
+    /**
+     * 检查验证码
+     * @param verif
+     * @return
+     */
+    public static boolean isVerifCode(String verif){
+        Pattern p = Pattern.compile("^(\\d{6})");
+        Matcher m = p.matcher(verif);
+        return m.matches();
+    }
 
     /**
      * 根据订单状态得到现实的值

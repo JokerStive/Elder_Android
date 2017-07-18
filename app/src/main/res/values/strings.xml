@@ -212,6 +212,7 @@
     <string name="register">注册</string>
     <string name="mobile_number">电话号码</string>
     <string name="password">密码</string>
+    <string name="password_again" >确认密码</string>
     <string name="show">显示</string>
     <string name="choose">选择</string>
 
@@ -270,7 +271,7 @@
     <string name="end_time_hint">请选择结束时间</string>
     <string name="activity_maxPartner_hint">请输入邀请人数</string>
     <string name="register_step1_title">你的姓名？</string>
-    <string name="password_step1_title">忘记密码？</string>
+    <string name="forget_password_">忘记密码？</string>
     <string name="user_name">姓名</string>
     <string name="register_code">验证码</string>
 
@@ -302,8 +303,8 @@
     <string name="belong_stress">所在街道/社区/小区</string>
     <string name="belong_stress_hint">请点击选择一个街道</string>
     <string name="belong_area_hint">请点击选择一个地区</string>
-    <string name="belong_communite">居住地址</string>
-    <string name="belong_communite_hint">请填写你的详细居住地址</string>
+    <string name="belong_communite">详细地址</string>
+    <string name="belong_communite_hint">请填写你的详细地址</string>
     <string name="common_address">/地球村/中国/</string>
     <string name="sign_up_list">参与者列表</string>
     <string name="more_question">查看更多提问</string>
@@ -329,9 +330,11 @@
     <string name="finished_sign_up">报名已截止</string>
     <string name="commit_evalue">您对本活动评价为%1$s星，确认提交么?</string>
     <string name="count_down_seconds">%1$s秒后可重新获取</string>
+    <string name="quest_verif_code">获取验证码</string>
     <string name="reget">重新获取验证码</string>
     <string name="register_success">账号已注册成功，欢迎使用</string>
     <string name="nickname">昵称</string>
+
     <string name="activity_has_cancel">活动已解散</string>
     <string name="activity_has_finished">活动已结束</string>
     <string name="activity_has_started">活动已开始</string>
@@ -346,12 +349,14 @@
     <string name="delete">删除</string>
     <string name="delete_partners">删除活动成员</string>
     <string name="forget_password">忘记密码</string>
+    <string name="new_account">新用户注册</string>
     <string name="my_community">我的小区</string>
     <string name="locat_address">居住地</string>
     <string name="password_step1_title_desp">请输入您的电话号码找回密码</string>
     <string name="input_IDcode">输入6位验证码</string>
     <string name="new_password">输入新密码</string>
     <string name="new_password_str">请输入至少6位的密码</string>
+    <string name="password_not_equal">两次输入密码不一致</string>
     <string name="account_ivatar_str">账户头像</string>
     <string name="first_help">第一求助人设置</string>
 
@@ -359,5 +364,19 @@
     <string name="version_new">发现新版本</string>
     <string name="version_update_imm">立即更新</string>
     <string name="version_update_ignore">忽略更新</string>
+    
+    <string name="please_input_phone">请输入手机号码</string>
+    <string name="please_input_verification">请输入验证码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_password_again">请再次输入密码</string>
+    <string name="please_input_verif_code">请输入验证码</string>
+    <string name="confirm_exchange">确认修改</string>
 
+    <string name="my_nickname">我的昵称</string>
+    <string name="please_input_nickname">请输入昵称</string>
+    <string name="register_info">请如实填写您的注册信息，验证码30分钟有效</string>
+    <string name="write_preson_info">完善个人信息</string>
+    <string name="commit">提交</string>
+    <string name="add_avator_success">添加头像成功</string>
+    <string name="update_avator">上传头像</string>
 </resources>

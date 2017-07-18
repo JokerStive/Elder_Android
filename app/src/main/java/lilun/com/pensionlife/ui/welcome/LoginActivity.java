@@ -2,11 +2,10 @@ package lilun.com.pensionlife.ui.welcome;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -14,6 +13,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.ui.home.HomeActivity;
+import lilun.com.pensionlife.ui.register.RegisterActivity;
 
 /**
  * 登录V
@@ -27,8 +27,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
     Account account;
 
-    @Bind(R.id.iv_back)
-    ImageView ivBack;
+
     @Bind(R.id.tv_forget_password)
     TextView tvForgetPassword;
     @Bind(R.id.et_mobile)
@@ -40,15 +39,32 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     @Bind(R.id.et_password)
     EditText etPassword;
 
-    @Bind(R.id.fab_next)
-    FloatingActionButton fabNext;
+    @Bind(R.id.bt_login)
+    Button btLogin;
+
+    @Bind(R.id.tv_new_account)
+    TextView tvNewAccount;
+
     private boolean autologin;
     private boolean isShow = false;
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            autologin = data.getBooleanExtra("autologin", false);
+            account = (Account) data.getSerializableExtra("account");
+            if (autologin) {
+                etMobile.setText(account.getMobile());
+                etPassword.setText(account.getPassword());
+                login();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_login;
+        return R.layout.activity_login;
     }
 
 
@@ -66,13 +82,15 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
     @Override
     protected void initView() {
-        fabNext.setOnClickListener(v -> login());
+        btLogin.setOnClickListener(v -> login());
+        tvNewAccount.setOnClickListener(v -> {
+            startRegister();
+        });
         tvShowPassword.setOnClickListener(v -> {
             showPassword();
         });
-        ivBack.setOnClickListener(v -> {
-            finish();
-        });
+
+
         tvForgetPassword.setOnClickListener(v -> {
             startActivity(new Intent(this, ChangePasswordActivity.class));
         });
@@ -84,9 +102,15 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         etPassword.setOnKeyListener(editOnKeyListener);
     }
 
+
     @Override
     public void editViewEnterButton() {
         login();
+    }
+
+    private void startRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivityForResult(intent, 1);
     }
 
     private void showPassword() {
@@ -114,10 +138,6 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     public void loginSuccess() {
         startActivity(new Intent(this, HomeActivity.class));
         finish();
-        if (WelcomeActivity.welcomeActivity != null) {
-            WelcomeActivity.welcomeActivity.finish();
-            WelcomeActivity.welcomeActivity = null;
-        }
     }
 
 

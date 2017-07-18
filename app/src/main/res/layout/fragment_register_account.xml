@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/register_account_bg"
+    android:orientation="vertical">
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/transparent"
+        app:leftIcon="@drawable/back_white"
+        app:title="@string/register"
+        app:titleColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_16"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/register_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_rect_gradient_register"
+            android:orientation="vertical">
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/iv_register_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                app:drawableLeft="@drawable/must_input_icon"
+                app:input_hint="@string/please_input_nickname"
+                app:input_title="@string/my_nickname"
+                app:this_backgrand="@color/transparent"
+                app:this_ems="4"
+                app:title_text_size="@dimen/sp_16" />
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/iv_register_moblie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                app:drawableLeft="@drawable/must_input_icon"
+                app:input_hint="@string/please_input_phone"
+                app:input_title="@string/phone_number"
+                app:this_backgrand="@color/transparent"
+                app:this_ems="4"
+                app:title_text_size="@dimen/sp_16" />
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/iv_register_verif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                app:bt_background="@drawable/selector_rect_corner_red"
+                app:bt_show="true"
+                app:bt_text="@string/quest_verif_code"
+                app:bt_text_color="@color/white"
+                app:drawableLeft="@drawable/must_input_icon"
+                app:input_hint="@string/please_input_verif_code"
+                app:input_title="@string/register_code"
+                app:this_backgrand="@color/transparent"
+                app:this_ems="4"
+                app:title_text_size="@dimen/sp_16" />
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/iv_register_password_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                app:drawableLeft="@drawable/must_input_icon"
+                app:input_hint="@string/please_input_password"
+                app:input_title="@string/password"
+                app:this_backgrand="@color/transparent"
+                app:this_ems="4"
+                app:title_text_size="@dimen/sp_16" />
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/iv_register_password_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                app:drawableLeft="@drawable/must_input_icon"
+                app:input_hint="@string/please_input_password_again"
+                app:input_title="@string/password_again"
+                app:this_backgrand="@color/transparent"
+                app:this_ems="4"
+                app:title_text_size="@dimen/sp_16" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/register_info"
+                android:textSize="@dimen/sp_16" />
+
+            <Button
+                android:id="@+id/bt_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_rect_corner_red"
+                android:text="@string/register"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

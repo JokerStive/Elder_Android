@@ -83,7 +83,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     private String areaStr = "", stressStr = "";
 
 
-    @OnClick({R.id.ll_account_avatar, R.id.ll_nickname, R.id.ll_belong_area, R.id.ll_belong_stress, R.id.ll_first_help_phone})
+    @OnClick({R.id.ll_account_avatar, R.id.ll_nickname, R.id.rl_belong_area, R.id.rl_belong_stress, R.id.ll_first_help_phone})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_account_avatar:
@@ -92,10 +92,10 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
             case R.id.ll_nickname:
                 settingOfNickName();
                 break;
-            case R.id.ll_belong_area:
+            case R.id.rl_belong_area:
                 settingOfArea();
                 break;
-            case R.id.ll_belong_stress:
+            case R.id.rl_belong_stress:
                 settingOfStress();
                 break;
             case R.id.ll_first_help_phone:

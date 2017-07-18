@@ -175,6 +175,12 @@
         <item name="android:background">@color/gray_less</item>
     </style>
 
+    <style name="line_gray_vertical">
+        <item name="android:layout_width">@dimen/dp_066</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/gray_less</item>
+    </style>
+
     <style name="line_gray_ml_dp10" parent="line_gray">
         <item name="android:layout_marginLeft">@dimen/dp_10</item>
     </style>
@@ -249,6 +255,7 @@
     <style name="TabLayoutTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/sp_14</item>
     </style>
+    
 
 
 </resources>

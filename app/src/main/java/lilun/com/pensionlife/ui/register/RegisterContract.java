@@ -19,6 +19,48 @@ import me.yokeyword.fragmentation.SupportActivity;
 public interface RegisterContract {
 
     /**
+     * 注册接口
+     */
+    interface ViewAccount extends IView<PresenterAccount> {
+        void successOfIDCode();
+
+        void successOfRegisterAccount(Register register);
+    }
+
+    interface PresenterAccount extends IPresenter<ViewAccount> {
+        void getIDCode(String phone, String type);
+
+        void postRegisterAccount(String IdCode, Account account);
+    }
+
+    /**
+     * 注册完善信息
+     */
+    interface ViewInfo extends IView<PresenterInfo> {
+        void successOfAccountLocation(Account account);
+
+        void successOfChildLocation(List<Area> areas, DataInterface.Response<BaseBean> response, int level, int recyclerIndex);
+    }
+
+    interface PresenterInfo extends IPresenter<ViewInfo> {
+        void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int i, int level);
+
+        void putAccountLocation(String organizationId, String address);
+    }
+
+    /**
+     * 第6步获取注册的 VP
+     */
+    interface ViewAvator extends IView<PresenterAvator> {
+        void successOfUpdateImage();
+
+    }
+
+    interface PresenterAvator extends IPresenter<ViewAvator> {
+        void updateImage(String id, String imageName, String path);
+    }
+
+    /**
      * 第2步获取验证码的 VP
      */
     interface ViewStep2 extends IView<PresenterStep2> {
@@ -26,18 +68,21 @@ public interface RegisterContract {
     }
 
     interface PresenterStep2 extends IPresenter<ViewStep2> {
-        void getIDCode(SupportActivity _mActivity, String phone,String type);
+        void getIDCode(SupportActivity _mActivity, String phone, String type);
     }
-  /**
+
+    /**
      * 第3步  检测  验证码的 VP
      */
     interface ViewStep3 extends IView<PresenterStep3> {
         void successOfCheckIDCode(Boolean bool);
-      void successOfIDCode();
+
+        void successOfIDCode();
     }
 
     interface PresenterStep3 extends IPresenter<ViewStep3> {
         void checkIDCode(SupportActivity _mActivity, String phone, String aIDCode);
+
         void getIDCode(SupportActivity _mActivity, String phone, String type);
     }
 

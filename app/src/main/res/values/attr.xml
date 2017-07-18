@@ -4,15 +4,16 @@
     <attr name="leftIcon" format="reference" />
     <attr name="leftString" format="string" />
     <attr name="title" format="string" />
+    <attr name="titleColor" format="color" />
     <attr name="rightText" format="string" />
-    <attr name="rightTextColor" format="reference" />
+    <attr name="rightTextColor" format="color" />
     <attr name="titleMaxEms" format="integer" />
     <attr name="rightIcon" format="reference" />
     <attr name="rightWitchShow" format="integer">
         <enum name="icon" value="0" />
         <enum name="text" value="1" />
         <enum name="both" value="2" />
-        <enum name="none" value="3"/>
+        <enum name="none" value="3" />
     </attr>
 
     <declare-styleable name="ProgressWheel">
@@ -54,11 +55,12 @@
         <attr name="leftIcon" />
         <attr name="leftString" />
         <attr name="title" />
+        <attr name="titleColor" />
         <attr name="rightText" />
         <attr name="titleMaxEms" />
         <attr name="rightIcon" />
-        <attr name="rightWitchShow"/>
-        <attr name="rightTextColor"/>
+        <attr name="rightWitchShow" />
+        <attr name="rightTextColor" />
     </declare-styleable>
 
     //带布局的筛选框
@@ -88,6 +90,15 @@
         <attr name="et_input_type" format="reference" />
         <attr name="et_input_size" format="dimension" />
         <attr name="et_max_lines" format="integer" />
+        <attr name="this_backgrand" format="reference" />
+        <attr name="drawableLeft" format="reference" />
+        <attr name="this_ems" format="integer" />
+
+        <attr name="bt_show" format="boolean" />
+        <attr name="bt_text" format="string" />
+        <attr name="bt_text_size" format="dimension" />
+        <attr name="bt_text_color" format="color" />
+        <attr name="bt_background" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="InputSendView">

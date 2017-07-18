@@ -14,28 +14,39 @@
         android:textSize="@dimen/tv_size_small"
         tools:text="优先级" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
-        android:layout_toEndOf="@id/tv_input_title">
+        android:layout_toEndOf="@id/tv_input_title"
+        android:layout_toRightOf="@id/tv_input_title"
+        android:orientation="horizontal">
 
         <EditText
 
             android:id="@+id/et_input"
             style="@style/et_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:background="@null"
             android:maxLength="20"
             android:maxLines="1"
             android:textCursorDrawable="@null"
             android:textSize="@dimen/tv_size_small"
-
             tools:hint="请选择优先级"
             tools:text="一般" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/bt_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/et_input"
+            android:textSize="@dimen/sp_16" />
+
+    </LinearLayout>
 
     <View
         style="@style/line_gray"

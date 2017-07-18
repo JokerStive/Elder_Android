@@ -80,18 +80,15 @@
             android:screenOrientation="portrait" />
 
 
-        <!-- 注册 -->
-        <activity
-            android:name="lilun.com.pensionlife.ui.welcome.WelcomeActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
 
-        <activity android:name="lilun.com.pensionlife.ui.welcome.ChangePasswordActivity" />
+        <activity android:name="lilun.com.pensionlife.ui.welcome.ChangePasswordActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
 
         <activity
             android:name="lilun.com.pensionlife.ui.register.RegisterActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

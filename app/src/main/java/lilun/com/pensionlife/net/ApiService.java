@@ -2,6 +2,7 @@ package lilun.com.pensionlife.net;
 
 import java.util.List;
 
+import dalvik.annotation.TestTargetClass;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
@@ -59,7 +60,8 @@ public interface ApiService {
 //    ====================用户账户相关
 
     @GET("APPs/{appName}/version/{versionName}")
-    Observable<Response<AppVersion>> getVersionInfo(@Path("appName")String appName, @Path("versionName")String versionName);
+    Observable<Response<AppVersion>> getVersionInfo(@Path("appName") String appName, @Path("versionName") String versionName);
+
     /**
      * token检查
      */
@@ -97,11 +99,18 @@ public interface ApiService {
     Observable<Response<Account>> putAccount(@Path("id") String accountId, @Body Account account);
 
     /**
-     * 更新注册地区
+     * 更新注册地区 （个人中心修改使用）
      */
     @FormUrlEncoded
     @PUT("Accounts/location")
     Observable<Response<Account>> putAccountLocation(@Field("Location") String location);
+
+    /**
+     * 更新注册地区 (注册时使用)
+     */
+    @FormUrlEncoded
+    @PUT("Accounts/location")
+    Observable<Response<Account>> putAccountLocation(@Field("Location") String location, @Field("address") String address);
 
 
     /**
@@ -448,6 +457,7 @@ public interface ApiService {
      */
     @DELETE("OrganizationActivities/{id}/rel/partner")
     Observable<Response<Account>> deleteOfPartners(@Path("id") String activityId, @Header("usersId") String userId);
+
     /**
      * 踢出参与者并加入黑名单
      *
@@ -580,6 +590,7 @@ public interface ApiService {
 
     /**
      * 获取获取电话号码验证码
+     * type: 2 修改密码   1 注册用户
      */
     @GET("Accounts/IDCode")
     Observable<Response<Object>> getIDCode(@Query("mobile") String phone, @Query("type") String type);
@@ -607,13 +618,21 @@ public interface ApiService {
     Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName);
 
     /**
+     * 1.1.5以前使用，1.1.6 已弃用
+     *
      * @param organizationId 组织id :/地球村/中国/重庆/重庆市/南岸区/铜元局街道
      * @param IDCode         验证码
      * @param address        居住地址： 重庆市南岸区铜元局街道盘龙花园。。。
      * @return
      */
+    /**
+     * @deprecated
+     */
     @POST("Accounts/register/OrgID/{organizationId}/IDCode/{IDCode}/address/{address}")
     Observable<Response<Register>> commitRegister(@Path("organizationId") String organizationId, @Path("IDCode") String IDCode, @Path("address") String address, @Body Account account);
+
+    @POST("Accounts/register/code/{IDCode}")
+    Observable<Response<Register>> commitRegister(@Path("IDCode") String IDCode, @Body Account account);
 
 
     /**

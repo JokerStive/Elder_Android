@@ -30,6 +30,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private final int maxEms;
     private final int rightIcon;
     private final int leftIcon;
+    private final int tilteColor;
     private final int rightTextColor;
     private final String leftString;
     private final String rightString;
@@ -50,11 +51,12 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         leftIcon = array.getResourceId(R.styleable.NormalTitleBar_leftIcon, 0);
         leftString = array.getString(R.styleable.NormalTitleBar_leftString);
         title = array.getString(R.styleable.NormalTitleBar_title);
+        tilteColor = array.getColor(R.styleable.NormalTitleBar_titleColor, 0);
         maxEms = array.getInteger(R.styleable.NormalTitleBar_titleMaxEms, 0);
         rightIcon = array.getResourceId(R.styleable.NormalTitleBar_rightIcon, 0);
         rightString = array.getString(R.styleable.NormalTitleBar_rightText);
         rightWitchShow = array.getInt(R.styleable.NormalTitleBar_rightWitchShow, 2);
-        rightTextColor = array.getResourceId(R.styleable.NormalTitleBar_rightTextColor,0);
+        rightTextColor = array.getColor(R.styleable.NormalTitleBar_rightTextColor, 0);
         mBackgrand = getBackground();
         if (mBackgrand == null) {
             setBackgroundResource(R.color.white);
@@ -71,12 +73,13 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         tvTitle = (TextView) view.findViewById(R.id.tv_product_name);
         tvDoWhat = (TextView) view.findViewById(R.id.tv_doWhat);
         if (leftIcon != 0) {
-            ivBack.setImageResource(leftIcon);
+            ivBack.setBackgroundResource(leftIcon);
         }
 
         if (!TextUtils.isEmpty(leftString)) {
             tvLeftString.setText(leftString);
         }
+
 
         rightWitchShow();
 
@@ -86,7 +89,9 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             tvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
         setTitle(title);
-
+        if (tilteColor != 0) {
+            tvTitle.setTextColor(tilteColor);
+        }
 
         ivBack.setOnClickListener(this);
         tvDoWhat.setOnClickListener(this);
@@ -121,7 +126,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             tvDoWhat.setCompoundDrawables(drawable, null, null, null);
             tvDoWhat.setCompoundDrawablePadding(4);
         }
-        if(rightTextColor !=0){
+        if (rightTextColor != 0) {
             tvDoWhat.setTextColor(rightTextColor);
         }
         if (!TextUtils.isEmpty(rightString)) {
@@ -131,7 +136,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             tvDoWhat.setText("");
         } else if (rightWitchShow == TEXT) {
             tvDoWhat.setCompoundDrawables(null, null, null, null);
-        } else if(rightWitchShow == NONE){
+        } else if (rightWitchShow == NONE) {
             tvDoWhat.setText("");
             tvDoWhat.setCompoundDrawables(null, null, null, null);
         }

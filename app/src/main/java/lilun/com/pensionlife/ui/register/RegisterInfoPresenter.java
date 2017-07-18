@@ -1,29 +1,26 @@
 package lilun.com.pensionlife.ui.register;
 
-import android.util.Log;
-
 import com.vanzh.library.BaseBean;
 import com.vanzh.library.DataInterface;
 
 import java.util.List;
 
+import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Area;
-import lilun.com.pensionlife.module.bean.Register;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import me.yokeyword.fragmentation.SupportActivity;
 
 /**
- * Created by zp on 2017/4/14.
+ * Created by zp on 2017/7/18.
  */
 
-public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewStep5>
-        implements RegisterContract.PresenterStep5 {
+public class RegisterInfoPresenter extends RxPresenter<RegisterContract.ViewInfo>
+        implements RegisterContract.PresenterInfo {
     @Override
-    public void getChildLocation(SupportActivity _mActivity, String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex) {
+    public void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex) {
         addSubscribe(NetHelper.getApi()
                 .getChildLocation(locationName)
                 .compose(RxUtils.handleResult())
@@ -37,16 +34,15 @@ public class RegisterStep5Presenter extends RxPresenter<RegisterContract.ViewSte
     }
 
     @Override
-    public void commitRegister(SupportActivity _mActivity, String organizationId, String IDCode, String address, Account account) {
+    public void putAccountLocation(String organizationId, String address) {
         addSubscribe(NetHelper.getApi()
-                .commitRegister(organizationId, IDCode, address, account)
+                .putAccountLocation(organizationId, address)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Register>(_mActivity) {
+                .subscribe(new RxSubscriber<Account>(((BaseFragment) view).getActivity()) {
                     @Override
-                    public void _next(Register register) {
-                        Log.d("zp", "提交返回");
-                        view.successOfCommitRegister(register);
+                    public void _next(Account account) {
+                        view.successOfAccountLocation(account);
                     }
                 }));
     }

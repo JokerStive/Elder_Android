@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/head_forgment" />
+
+        <lilun.com.pensionlife.widget.NormalTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_height"
+            android:background="@color/transparent"
+            app:leftIcon="@drawable/back_white"
+            app:title="@string/forget_password"
+            app:titleColor="@color/white"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_40"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:drawableLeft="@drawable/phone_number_icon" />
+
+            <EditText
+                android:id="@+id/et_mobile"
+                style="@style/et_normal"
+                android:hint="@string/please_input_phone"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:padding="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:drawableLeft="@drawable/verification_code_icon" />
+
+
+            <EditText
+                android:id="@+id/et_verification_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/please_input_verification"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/dp_10"
+                android:textSize="@dimen/sp_16" />
+
+            <View style="@style/line_gray_vertical" />
+
+            <TextView
+                android:id="@+id/tv_verif_code"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_click_trans_to_dark_corners_5"
+                android:gravity="center"
+                android:padding="@dimen/dp_10"
+                android:text="@string/count_down_seconds"
+                android:textColor="@color/yellowish"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:drawableLeft="@drawable/change_password_icon" />
+
+            <EditText
+                android:id="@+id/et_password_first"
+                style="@style/et_normal"
+                android:hint="@string/please_input_password"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:drawableLeft="@drawable/change_password_icon" />
+
+            <EditText
+                android:id="@+id/et_password_second"
+                style="@style/et_normal"
+                android:hint="@string/please_input_password_again"
+                android:maxLines="1"
+                android:padding="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8" />
+
+        <Button
+            android:id="@+id/bt_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_rect_corner_red"
+            android:text="@string/confirm_exchange"
+            android:padding="@dimen/dp_10"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20" />
+    </LinearLayout>
+</LinearLayout>

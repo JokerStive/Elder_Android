@@ -1,13 +1,13 @@
 package lilun.com.pensionlife.ui.register;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.jph.takephoto.model.TImage;
@@ -24,39 +24,30 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.callback.TakePhotoClickListener;
-import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
+import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
-import lilun.com.pensionlife.ui.welcome.WelcomeActivity;
 import lilun.com.pensionlife.widget.CircleImageView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.TakePhotoDialogFragment;
 import rx.Observable;
 
 /**
- * 注册成功后 到登录界面
+ * 注册成功后 finish回登录界面并自动登录
  * Created by zp on 2017/4/13.
  */
 
-public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContract.PresenterStep6>
-        implements RegisterContract.ViewStep6 {
+public class RegisterAvatorFragment extends BaseTakePhotoFragment<RegisterContract.PresenterAvator>
+        implements RegisterContract.ViewAvator {
     private FragmentManager fragmentManager;
     private TakePhotoDialogFragment fragment;
-    private TakePhotoClickListener listener;
 
     Account account;  //此时 已注册成功 的
-    @Bind(R.id.et_account_id)
-    EditText etAccountId;
-    @Bind(R.id.et_image_name)
-    EditText etImageName;
-    @Bind(R.id.et_token)
-    EditText etToken;
     @Bind(R.id.civ_account_avatar)
     CircleImageView civAccountAvatar;
     private String path;
 
-    @OnClick({R.id.civ_account_avatar, R.id.fab_go_next, R.id.bt_token})
+    @OnClick({R.id.civ_account_avatar, R.id.iv_commit})
     public void onClick(View v) {
         if (v.getId() == R.id.civ_account_avatar) {
             if (fragmentManager != null) {
@@ -64,7 +55,7 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
                 fragment.setOnResultListener(this);
                 fragment.show(fragmentManager, null);
             }
-        } else if (v.getId() == R.id.fab_go_next) {
+        } else if (v.getId() == R.id.iv_commit) {
             //不选择头像
             if (TextUtils.isEmpty(path)) {
                 new NormalDialog().createNormal(_mActivity, R.string.confirm_no_ivatar, () -> {
@@ -75,25 +66,17 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
                 if (account.getImage() != null && account.getImage().size() > 0) {
                     imageName = account.getImage().get(0).getFileName();
                 }
-
-                //   mPresenter.updateImage(account.getId(), imageName, path);
-                mPresenter.updateImage(_mActivity, User.getUserId(), imageName, path);
+                mPresenter.updateImage(User.getUserId(), imageName, path);
             }
-        } else if (v.getId() == R.id.bt_token) {
-            PreUtils.putString(User.token, etToken.getText().toString().trim());
-            Log.d("zp", User.getToken());
         }
-
-
     }
 
-    private String getImageName() {
-
-        return etImageName.getText().toString().trim();
-    }
-
-    private String getAccountId() {
-        return etAccountId.getText().toString().trim();
+    public static RegisterAvatorFragment newInstance(Account account) {
+        Bundle args = new Bundle();
+        args.putSerializable("account", account);
+        RegisterAvatorFragment fragment = new RegisterAvatorFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -104,19 +87,18 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
 
     @Override
     protected void initPresenter() {
-        mPresenter = new RegisterStep6Presenter();
+        mPresenter = new RegisterAvatorPresenter();
         mPresenter.bindView(this);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_register_step6;
+        return R.layout.fragment_register_avator;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
         fragmentManager = _mActivity.getFragmentManager();
-        _mActivity.findViewById(R.id.iv_back).setVisibility(View.GONE);
     }
 
     @Override
@@ -124,12 +106,8 @@ public class RegisterStep6Fragment extends BaseTakePhotoFragment<RegisterContrac
         Intent intent = new Intent(getContext(), LoginActivity.class);
         intent.putExtra("autologin", true);
         intent.putExtra("account", account);
-        startActivity(intent);
+        _mActivity.setResult(Activity.RESULT_OK, intent);
         _mActivity.finish();
-        if (WelcomeActivity.welcomeActivity != null) {
-            WelcomeActivity.welcomeActivity.finish();
-            WelcomeActivity.welcomeActivity = null;
-        }
     }
 
     @Override
