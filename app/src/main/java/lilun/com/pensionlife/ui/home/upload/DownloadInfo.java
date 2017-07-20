@@ -6,51 +6,25 @@ package lilun.com.pensionlife.ui.home.upload;
  */
 
 public class DownloadInfo {
-    public static final long TOTAL_ERROR = -1;//获取进度失败
-    private String url;
-    private long total;
-    private long progress;
-    private String fileName;
-    private String filePath;
+    /**
+     * 文件大小
+     */
+    long total;
+    /**
+     * 已下载大小
+     */
+    long progress;
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public DownloadInfo setFilePath(String filePath) {
-        this.filePath = filePath;
-        return this;
-    }
-
-    public DownloadInfo(String url) {
-        this.url = url;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public long getProgress() {
+        return progress;
     }
 
     public long getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public DownloadInfo(long total, long progress) {
         this.total = total;
-    }
-
-    public long getProgress() {
-        return progress;
-    }
-
-    public void setProgress(long progress) {
         this.progress = progress;
     }
 }

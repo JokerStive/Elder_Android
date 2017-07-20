@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.orhanobut.logger.Logger;
+import java.io.File;
 
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.utils.SystemUtils;
@@ -36,26 +36,19 @@ public class DownLoadService extends Service {
     private void startLoadApk(String url) {
         DownNotification notification = new DownNotification(App.context);
         notification.showNotification(100);
-        DownloadManager.getInstance().download(url, new DownLoadObserver() {
+        DownloadManager.getInstance().download(url, new DownLoadCallBack() {
             @Override
-            public void onNext(DownloadInfo downloadInfo) {
-                super.onNext(downloadInfo);
-                int progress = (int) downloadInfo.getProgress();
-                int total = (int) downloadInfo.getTotal();
-                notification.updateProgress(100, progress, total);
-
-
-
-                if (progress == total) {
-                    Logger.d("下载完成");
-                    SystemUtils.installApk(DownLoadService.this, downloadInfo.getFilePath());
-                    notification.cancel(100);
-                }
+            public void onSuccess(File file) {
+                SystemUtils.installApk(App.context,file);
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onProgress(int progress, int total) {
+                notification.updateProgress(100,progress,total);
+            }
+
+            @Override
+            public void onFail(Throwable t) {
 
             }
         });

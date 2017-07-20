@@ -106,11 +106,10 @@ public class SystemUtils {
         return versionName;
     }
 
-    public static void installApk(Context context, String filePath) {
-//        Logger.d("apk 路径--" + filePath);
+    public static void installApk(Context context, File file) {
+        Uri uri = Uri.fromFile(file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(filePath)),
-                "application/vnd.android.package-archive");
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

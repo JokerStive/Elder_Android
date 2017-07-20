@@ -11,11 +11,10 @@ import java.util.Map;
 import lilun.com.pensionlife.R;
 
 /**
-*
-*@author yk
-*create at 2017/7/18 16:48
-*email : yk_developer@163.com
-*/
+ * @author yk
+ *         create at 2017/7/18 16:48
+ *         email : yk_developer@163.com
+ */
 public class DownNotification {
     private Context mContext;
     private NotificationManager manager;
@@ -54,8 +53,8 @@ public class DownNotification {
         if (null != notify) {
             // 修改进度条
             float result = (float) progress / max * 100;
-            notify.contentView.setProgressBar(R.id.progressBar, max, progress, false);
-            notify.contentView.setTextViewText(R.id.tv_progress, (int) result + "%");
+            notify.contentView.setProgressBar(R.id.progressBar,  max,  progress, false);
+            notify.contentView.setTextViewText(R.id.tv_progress, "正在下载" + (int) result + "%");
             manager.notify(notificationId, notify);
 
         }

@@ -17,13 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
+import java.io.File;
+
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.utils.SystemUtils;
-import lilun.com.pensionlife.ui.home.upload.DownLoadObserver;
+import lilun.com.pensionlife.ui.home.upload.DownLoadCallBack;
 import lilun.com.pensionlife.ui.home.upload.DownLoadService;
 import lilun.com.pensionlife.ui.home.upload.DownNotification;
-import lilun.com.pensionlife.ui.home.upload.DownloadInfo;
 import lilun.com.pensionlife.ui.home.upload.DownloadManager;
 
 /**
@@ -97,6 +100,7 @@ public class VersionDialogFragment extends DialogFragment {
     }
 
     private void startLoad(AppVersion version) {
+        Logger.d("url ---" + version.getUrl());
         if (version.getForced()) {
             startLoadApk(version);
         } else {
@@ -111,7 +115,9 @@ public class VersionDialogFragment extends DialogFragment {
      */
     private void startLoadApkBackground(AppVersion version) {
         Intent intent = new Intent(getActivity(), DownLoadService.class);
-        intent.putExtra("url", version.getUrl());
+        String url = version.getUrl();
+        String apkName = url.substring(url.lastIndexOf("/"));
+        intent.putExtra("url", apkName);
         getActivity().startService(intent);
         dismiss();
     }
@@ -124,32 +130,27 @@ public class VersionDialogFragment extends DialogFragment {
         tvVersionUpdate.setVisibility(View.GONE);
         tvProgress.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        DownloadManager.getInstance().download(version.getUrl(), new DownLoadObserver() {
+        String url = version.getUrl();
+        String apkName = url.substring(url.lastIndexOf("/"));
+        DownloadManager.getInstance().download(apkName, new DownLoadCallBack() {
             @Override
-            public void onNext(DownloadInfo downloadInfo) {
-                super.onNext(downloadInfo);
-//                if (downloadInfo.getProgress() == 0) {
-//                    Logger.d("总进度 ---" + downloadInfo.getTotal());
-//                    Logger.d("保存路径 ---" + downloadInfo.getFileName());
-//                    Logger.d("url ---" + version.getUrl());
-//                }
-//                Logger.d("当前进度 ---" + downloadInfo.getProgress());
-
-
-                int progress = (int) downloadInfo.getProgress();
-                int total = (int) downloadInfo.getTotal();
-                progressBar.setMax(total);
-                progressBar.setProgress(progress);
-
-
-                float result = (float) progress / total * 100;
-                tvProgress.setText((int) result + "%");
-                if (downloadInfo.getProgress() == downloadInfo.getTotal()) {
-                    SystemUtils.installApk(getActivity(), downloadInfo.getFilePath());
-                    dismiss();
-                }
+            public void onSuccess(File file) {
+                SystemUtils.installApk(getActivity(), file);
+                dismiss();
             }
 
+            @Override
+            public void onProgress(int progress, int total) {
+                progressBar.setMax(total);
+                progressBar.setProgress(progress);
+                float result = (float) progress / total * 100;
+                tvProgress.setText("下载中" + (int) result + "%");
+            }
+
+            @Override
+            public void onFail(Throwable t) {
+
+            }
         });
     }
 

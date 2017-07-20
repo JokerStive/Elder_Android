@@ -1,23 +1,21 @@
 package lilun.com.pensionlife.ui.home.upload;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import android.os.Environment;
+import android.text.TextUtils;
 
-import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.module.utils.RxUtils;
-import okhttp3.Call;
+import com.orhanobut.logger.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscriber;
+import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
+import retrofit2.http.GET;
+import retrofit2.http.Url;
 
 /**
  * @author yk
@@ -27,239 +25,91 @@ import rx.Subscriber;
 
 public class DownloadManager {
 
-    private static final AtomicReference<DownloadManager> INSTANCE = new AtomicReference<>();
-    private HashMap<String, Call> downCalls;//用来存放各个下载的请求
-    private OkHttpClient mClient;//OKHttpClient;
+    /**
+     * 目标文件存储的文件夹路径
+     */
+    private String destFileDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File
+            .separator + "M_DEFAULT_DIR";
+    /**
+     * 目标文件存储的文件名
+     */
+    private String fileName = "test.apk";
+
+    private Retrofit.Builder retrofit;
+
+    private static DownloadManager instance;
+
 
     //获得一个单例类
-    public static DownloadManager getInstance() {
-        for (; ; ) {
-            DownloadManager current = INSTANCE.get();
-            if (current != null) {
-                return current;
-            }
-            current = new DownloadManager();
-            if (INSTANCE.compareAndSet(null, current)) {
-                return current;
-            }
+    public static synchronized DownloadManager getInstance() {
+        if (instance == null) {
+            instance = new DownloadManager();
         }
+        return instance;
     }
 
-    private DownloadManager() {
-        downCalls = new HashMap<>();
-        mClient = new OkHttpClient.Builder().build();
-    }
 
     /**
-     * 开始下载
-     *
-     * @param url              下载请求的网址
-     * @param downLoadObserver 用来回调的接口
+     * 下载文件
      */
-    public void download(String url, DownLoadObserver downLoadObserver) {
-        Observable.just(url)
-                .filter(s -> !downCalls.containsKey(s))//call的map已经有了,就证明正在下载,则这次不下载
-                .flatMap(s -> Observable.just(createDownInfo(s)))
-                .map(this::getRealFileName)//检测本地文件夹,生成新的文件名
-                .flatMap(downloadInfo -> Observable.create(new DownloadSubscribe(downloadInfo)))//下载
-                .sample(100, TimeUnit.MILLISECONDS)
-                .compose(RxUtils.applySchedule())
-                .subscribe(downLoadObserver);//添加观察者
-
-    }
-
-    public void cancel(String url) {
-        Call call = downCalls.get(url);
-        if (call != null) {
-            call.cancel();//取消
+    public void download(String apkName, DownLoadCallBack callBack) {
+        if (TextUtils.isEmpty(apkName) || callBack == null) {
+            throw new NullPointerException("文件名或回掉不能為空");
         }
-        downCalls.remove(url);
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder();
+        }
+        retrofit.baseUrl("http://download.j1home.com/")
+                .client(initOkHttpClient())
+                .build()
+                .create(IFileLoad.class)
+                .loadFile(apkName)
+                .enqueue(new FileCallback(destFileDir, fileName) {
+
+                    @Override
+                    public void onSuccess(File file) {
+                        Logger.i("下載成功");
+                        callBack.onSuccess(file);
+                    }
+
+                    @Override
+                    public void onLoading(long progress, long total) {
+                        Logger.i(progress + "----" + total);
+                        callBack.onProgress((int) progress, (int) total);
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                        Logger.i("请求失败");
+                    }
+                });
     }
+
+    public interface IFileLoad {
+        @GET
+        retrofit2.Call<ResponseBody> loadFile(@Url String apkName);
+    }
+
 
     /**
-     * 创建DownInfo
+     * 初始化OkHttpClient
      *
-     * @param url 请求网址
-     * @return DownInfo
-     */
-    private DownloadInfo createDownInfo(String url) {
-        DownloadInfo downloadInfo = new DownloadInfo(url);
-        long contentLength = getContentLength(url);//获得文件大小
-        downloadInfo.setTotal(contentLength);
-        String fileName = url.substring(url.lastIndexOf("/"));
-        downloadInfo.setFileName(fileName);
-        return downloadInfo;
-    }
-
-    private DownloadInfo getRealFileName(DownloadInfo downloadInfo) {
-        String fileName = downloadInfo.getFileName();
-        long downloadLength = 0, contentLength = downloadInfo.getTotal();
-        File file = new File(App.context.getFilesDir(), fileName);
-        if (file.exists()) {
-            //找到了文件,代表已经下载过,则获取其长度
-            downloadLength = file.length();
-        }
-        //之前下载过,需要重新来一个文件
-        int i = 1;
-        while (downloadLength >= contentLength) {
-            int dotIndex = fileName.lastIndexOf(".");
-            String fileNameOther;
-            if (dotIndex == -1) {
-                fileNameOther = fileName + "(" + i + ")";
-            } else {
-                fileNameOther = fileName.substring(0, dotIndex)
-                        + "(" + i + ")" + fileName.substring(dotIndex);
-            }
-            File newFile = new File(App.context.getFilesDir(), fileNameOther);
-            file = newFile;
-            downloadLength = newFile.length();
-            i++;
-        }
-        //设置改变过的文件名/大小
-        downloadInfo.setProgress(downloadLength);
-        downloadInfo.setFileName(file.getName());
-        downloadInfo.setFilePath(file.getAbsolutePath());
-        return downloadInfo;
-    }
-
-    private class DownloadSubscribe implements Observable.OnSubscribe<DownloadInfo> {
-        private DownloadInfo downloadInfo;
-
-        public DownloadSubscribe(DownloadInfo downloadInfo) {
-            this.downloadInfo = downloadInfo;
-        }
-//
-//        @Override
-//        public void subscribe(ObservableEmitter<DownloadInfo> e) throws Exception {
-//            String url = downloadInfo.getUrl();
-//            long downloadLength = downloadInfo.getProgress();//已经下载好的长度
-//            long contentLength = downloadInfo.getTotal();//文件的总长度
-//            //初始进度信息
-//            e.onNext(downloadInfo);
-//
-//            Request request = new Request.Builder()
-//                    //确定下载的范围,添加此头,则服务器就可以跳过已经下载好的部分
-//                    .addHeader("RANGE", "bytes=" + downloadLength + "-" + contentLength)
-//                    .url(url)
-//                    .build();
-//            Call call = mClient.newCall(request);
-//            downCalls.put(url, call);//把这个添加到call里,方便取消
-//            Response response = call.execute();
-//
-//            File file = new File(App.context.getFilesDir(), downloadInfo.getFileName());
-//            InputStream is = null;
-//            FileOutputStream fileOutputStream = null;
-//            try {
-//                is = response.body().byteStream();
-//                fileOutputStream = new FileOutputStream(file, true);
-//                byte[] buffer = new byte[2048];//缓冲数组2kB
-//                int len;
-//                while ((len = is.read(buffer)) != -1) {
-//                    fileOutputStream.write(buffer, 0, len);
-//                    downloadLength += len;
-//                    downloadInfo.setProgress(downloadLength);
-//                    e.onNext(downloadInfo);
-//                }
-//                fileOutputStream.flush();
-//                downCalls.remove(url);
-//            } finally {
-//                //关闭IO流
-//                IOUtil.closeAll(is, fileOutputStream);
-//
-//            }
-//            e.onComplete();//完成
-//        }
-
-        @Override
-        public void call(Subscriber<? super DownloadInfo> e) {
-            String url = downloadInfo.getUrl();
-            long downloadLength = downloadInfo.getProgress();//已经下载好的长度
-            long contentLength = downloadInfo.getTotal();//文件的总长度
-            //初始进度信息
-            e.onNext(downloadInfo);
-
-            Request request = new Request.Builder()
-                    //确定下载的范围,添加此头,则服务器就可以跳过已经下载好的部分
-                    .addHeader("RANGE", "bytes=" + downloadLength + "-" + contentLength)
-                    .url(url)
-                    .build();
-            Call call = mClient.newCall(request);
-            downCalls.put(url, call);//把这个添加到call里,方便取消
-            Response response = null;
-            try {
-                response = call.execute();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-            File file = new File(App.context.getFilesDir(), downloadInfo.getFileName());
-            InputStream is = null;
-            FileOutputStream fileOutputStream = null;
-            try {
-                is = response.body().byteStream();
-                fileOutputStream = new FileOutputStream(file, true);
-                byte[] buffer = new byte[2048];//缓冲数组2kB
-                int len;
-                while ((len = is.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, len);
-                    downloadLength += len;
-                    downloadInfo.setProgress(downloadLength);
-                    e.onNext(downloadInfo);
-                }
-                fileOutputStream.flush();
-                downCalls.remove(url);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
-                //关闭IO流
-                closeAll(is, fileOutputStream);
-//                IOUtil.closeAll(is, fileOutputStream);
-
-            }
-            e.onCompleted();//完成
-        }
-    }
-
-    /**
-     * 获取下载长度
-     *
-     * @param downloadUrl
      * @return
      */
-    private long getContentLength(String downloadUrl) {
-        Request request = new Request.Builder()
-                .url(downloadUrl)
-                .build();
-        try {
-            Response response = mClient.newCall(request).execute();
-            if (response != null && response.isSuccessful()) {
-                long contentLength = response.body().contentLength();
-                response.close();
-                return contentLength == 0 ? DownloadInfo.TOTAL_ERROR : contentLength;
+    private OkHttpClient initOkHttpClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(100000, TimeUnit.SECONDS);
+        builder.networkInterceptors().add(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Response originalResponse = chain.proceed(chain.request());
+                return originalResponse
+                        .newBuilder()
+                        .body(new FileResponseBody(originalResponse))
+                        .build();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return DownloadInfo.TOTAL_ERROR;
-    }
-
-
-    public void closeAll(Closeable... closeables) {
-        if (closeables == null) {
-            return;
-        }
-        for (Closeable closeable : closeables) {
-            if (closeable != null) {
-                try {
-                    closeable.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        });
+        return builder.build();
     }
 
 }
