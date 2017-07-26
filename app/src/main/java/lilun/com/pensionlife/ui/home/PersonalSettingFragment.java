@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -161,7 +162,9 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     protected void initView() {
         fragmentManager = _mActivity.getFragmentManager();
         titleBar.setOnBackClickListener(() -> {
-            _mActivity.finish();
+            if (_mActivity instanceof PersonalActivity)
+                _mActivity.finish();
+            else pop();
         });
         tvNickName.setText(User.getName());
         String[] split = User.getBelongsOrganizationId().replace(getString(R.string.common_address), "").split("/");
@@ -196,7 +199,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                     int stautsBarHeight = UIUtils.dp2px(_mActivity, Build.VERSION.SDK_INT == 25 ? 25 : 24);
                     addressGuidePopupWindow.setHeaderXYHeight(0, 0, headerHeight - stautsBarHeight);
                     addressGuidePopupWindow.setMidXYHeight(0, headerHeight, midHeight);
-                    addressGuidePopupWindow.showAsDropDown(tvBelongStress);
+                    addressGuidePopupWindow.showAtLocation(tvBelongStress, Gravity.CENTER, 0, 0);
                     llBelongArea.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
@@ -204,11 +207,6 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener);
     }
 
-    @Override
-    public void pop() {
-        super.pop();
-
-    }
 
     private void settingOfIvatar() {
         if (fragmentManager != null) {
@@ -278,8 +276,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                         //该功能在10106上实现
                         if (BuildConfig.VERSION_CODE >= 10106) {
                             Account postAccount = new Account();
-//                            postAccount.setLocation()
-//                            postAccount.setProfile(new Account.ProfileBean(User.getBelongToDistrict(), input.toString()));
+                            postAccount.setProfile(new Account.ProfileBean(User.getLocation(), input.toString(), User.getAddress()));
                             NetHelper.getApi()
                                     .putAccount(User.getUserId(), postAccount)
                                     .compose(RxUtils.handleResult())

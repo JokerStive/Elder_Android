@@ -18,7 +18,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.Account;
-import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -103,7 +102,7 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
             //该功能在10106上实现
             if (BuildConfig.VERSION_CODE >= 10106) {
                 Account postAccount = new Account();
-                postAccount.setProfile(new Account.ProfileBean(User.getLocation(), phone));
+                postAccount.setProfile(new Account.ProfileBean(User.getLocation(), phone, User.getAddress()));
                 NetHelper.getApi()
                         .putAccount(User.getUserId(), postAccount)
                         .compose(RxUtils.handleResult())
@@ -128,9 +127,9 @@ public class FirstHelperPhoneDialogFragment extends DialogFragment implements Vi
         String phone = etPhone.getText().toString();
         if (!TextUtils.isEmpty(phone)) {
             if (RegexUtils.checkMobile(phone)) {
-                if (TextUtils.equals(phone, User.getUserName())){
+                if (TextUtils.equals(phone, User.getUserName())) {
                     ToastHelper.get().showWareShort("不能是自己的手机");
-                }else {
+                } else {
                     return true;
                 }
             } else {

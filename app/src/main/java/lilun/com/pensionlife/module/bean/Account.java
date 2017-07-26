@@ -216,9 +216,11 @@ public class Account implements Serializable {
 
         private String belongToDistrict;
         private String firstHelperPhone;
+        private String address;
 
-        public ProfileBean(String belongToDistrict, String firstHelperPhone) {
+        public ProfileBean(String belongToDistrict, String firstHelperPhone, String address) {
             this.belongToDistrict = belongToDistrict;
+            this.address = address;
             this.firstHelperPhone = firstHelperPhone;
         }
 
@@ -241,6 +243,15 @@ public class Account implements Serializable {
 
         public String getFirstHelperPhone() {
             return firstHelperPhone == null ? "" : firstHelperPhone;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public ProfileBean setAddress(String address) {
+            this.address = address;
+            return this;
         }
     }
 }
