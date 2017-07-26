@@ -55,11 +55,13 @@ public class RegisterInfoFragment extends BaseFragment<RegisterContract.Presente
     @Bind(R.id.bt_commit)
     Button btCommit;
 
+    int[] skipArray = new int[6];
+    int limitSkip = 20;
 
     @OnClick({R.id.tv_belong_area, R.id.tv_belong_stress, R.id.bt_commit})
     public void onClick(View view) {
         if (view.getId() == R.id.tv_belong_area) {
-            dialog = new BottomDialog(this, -1);
+            dialog = new BottomDialog(this, -1, limitSkip);
             dialog.setOnAddressSelectedListener(this);
             dialog.show();
         } else if (view.getId() == R.id.tv_belong_stress) {
@@ -67,7 +69,7 @@ public class RegisterInfoFragment extends BaseFragment<RegisterContract.Presente
                 ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
                 return;
             }
-            dialog = new BottomDialog(this, RECYCLERLEVEL);
+            dialog = new BottomDialog(this, RECYCLERLEVEL, limitSkip);
             dialog.setOnAddressSelectedListener(this);
             dialog.setButtonVisiableLevels(new int[]{2}, View.VISIBLE);
             dialog.show();
@@ -129,16 +131,17 @@ public class RegisterInfoFragment extends BaseFragment<RegisterContract.Presente
 
     @Override
     public void successOfChildLocation(List<Area> areas, Response<BaseBean> response, int level, int recyclerIndex) {
+        skipArray[level] += areas.size();
         ArrayList<BaseBean> data = new ArrayList<>();
         for (int i = 0; i < areas.size(); i++) {
             data.add(new BaseBean(areas.get(i).getId(), areas.get(i).getName()));
         }
         if (level == recyclerIndex || level == RECYCLERLEVEL) {
-            response.send(level, null);
+            response.send(level, null, false);
             return;
         }
 
-        response.send(level, data);
+        response.send(level, data, data != null && data.size() == limitSkip);
     }
 
     public String getBelongOrganizationId() {
@@ -175,20 +178,21 @@ public class RegisterInfoFragment extends BaseFragment<RegisterContract.Presente
     @Override
     public void onConfirm(BaseBean baseBean) {
         distrect = baseBean;
+        tvBelongSteress.setText(distrect.getName());
         dialog.dismiss();
     }
 
     @Override
-    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex) {
+    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex, int startIndex, int reqCount) {
 
         if (baseBean == null) {
             if (recyclerIndex == -1) {
-                mPresenter.getChildLocation("", response, level, recyclerIndex);
+                mPresenter.getChildLocation("", response, level, recyclerIndex, startIndex, reqCount);
             } else {
-                mPresenter.getChildLocation(area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+                mPresenter.getChildLocation(area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
             }
         } else {
-            mPresenter.getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+            mPresenter.getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
         }
     }
 }

@@ -23,4 +23,7 @@ public class Constants {
      */
     public static final String appName = "AndroidClient";
     public static final String version_latest = "latest";
+
+    //注册时未选择居住地址时的默认地址
+    public static final String unSettingLocation = "/地球村/中国/重庆/重庆市/演示区/演示街道/演示社区";
 }

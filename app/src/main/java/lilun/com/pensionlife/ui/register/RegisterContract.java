@@ -43,7 +43,7 @@ public interface RegisterContract {
     }
 
     interface PresenterInfo extends IPresenter<ViewInfo> {
-        void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int i, int level);
+        void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex, int skip,int limitSkip);
 
         void putAccountLocation(String organizationId, String address);
     }

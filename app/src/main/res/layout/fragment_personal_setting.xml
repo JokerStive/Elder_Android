@@ -75,7 +75,7 @@
         android:background="@color/light_grey" />
 
     <LinearLayout
-        android:id="@+id/rl_belong_area"
+        android:id="@+id/ll_belong_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -98,7 +98,7 @@
     <View style="@style/line_gray_ml_dp10" />
 
     <LinearLayout
-        android:id="@+id/rl_belong_stress"
+        android:id="@+id/ll_belong_stress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

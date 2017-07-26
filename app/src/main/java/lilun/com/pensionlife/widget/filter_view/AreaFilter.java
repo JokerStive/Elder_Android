@@ -78,7 +78,7 @@ public class AreaFilter extends LinearLayout {
         swipeRefreshLayout.setOnRefreshListener(() -> getLevelData(level, locationName));
 
         NetHelper.getApi()
-                .getChildLocation(locationName)
+                .getChildLocation(locationName, 0, 50)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Area>>() {

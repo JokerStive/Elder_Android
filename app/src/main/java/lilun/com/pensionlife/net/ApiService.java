@@ -615,7 +615,7 @@ public interface ApiService {
 
 
     @GET("Accounts/getChildLocation")
-    Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName);
+    Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName,@Query("skipNumber") int skipNumber,@Query("limitNumber") int limitNumber);
 
     /**
      * 1.1.5以前使用，1.1.6 已弃用

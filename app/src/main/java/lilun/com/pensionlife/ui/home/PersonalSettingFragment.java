@@ -1,10 +1,14 @@
 package lilun.com.pensionlife.ui.home;
 
 import android.app.FragmentManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,10 +43,12 @@ import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.welcome.LoginModule;
+import lilun.com.pensionlife.widget.AddressGuidePopupWindow;
 import lilun.com.pensionlife.widget.CircleImageView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -54,16 +60,21 @@ import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
+ * 居住地址是系统默认的演示社区，HomeFragment弹框进入该页面设置居住地址及头像-->本页面显示提示标签
  * Created by zp on 2017/6/5.
  */
 
 public class PersonalSettingFragment extends BaseTakePhotoFragment implements DataInterface<BaseBean>, OnAddressSelectedListener {
+    private static final String IN_TYPE = "IN_TYPE";
+    public static final int UN_SETTING = 1;  // 居住地址是演示社区
+    public static final int HAS_SETTING = 0;  //
     final int RECYCLERLEVEL = 3;
     int curLevel = -1;
     private FragmentManager fragmentManager;
     private TakePhotoDialogFragment fragment;
     BottomDialog dialog;
     BaseBean area, distrect;
+    int[] skipArray = new int[6];
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
@@ -73,17 +84,25 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     TextView tvNickName;
     @Bind(R.id.tv_belong_area)
     TextView tvBelongArea;
+    @Bind(R.id.ll_belong_area)
+    LinearLayout llBelongArea;
     @Bind(R.id.tv_belong_stress)
     TextView tvBelongStress;
+    @Bind(R.id.ll_belong_stress)
+    LinearLayout llBelongStress;
 
 
     @Bind(R.id.tv_first_help_phone)
     TextView tvFirstHelpPhone;
 
     private String areaStr = "", stressStr = "";
+    private int inType;  //默认为0
+    private AddressGuidePopupWindow addressGuidePopupWindow;
+    ViewTreeObserver viewTreeObserver;
+    ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+    private int limitSkip = 20;
 
-
-    @OnClick({R.id.ll_account_avatar, R.id.ll_nickname, R.id.rl_belong_area, R.id.rl_belong_stress, R.id.ll_first_help_phone})
+    @OnClick({R.id.ll_account_avatar, R.id.ll_nickname, R.id.ll_belong_area, R.id.ll_belong_stress, R.id.ll_first_help_phone})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_account_avatar:
@@ -92,10 +111,10 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
             case R.id.ll_nickname:
                 settingOfNickName();
                 break;
-            case R.id.rl_belong_area:
+            case R.id.ll_belong_area:
                 settingOfArea();
                 break;
-            case R.id.rl_belong_stress:
+            case R.id.ll_belong_stress:
                 settingOfStress();
                 break;
             case R.id.ll_first_help_phone:
@@ -106,19 +125,36 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         }
     }
 
+    public static PersonalSettingFragment newInstance(int inType) {
+
+        Bundle args = new Bundle();
+        args.putInt(IN_TYPE, inType);
+        PersonalSettingFragment fragment = new PersonalSettingFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_personal_setting;
     }
 
+
     @Override
-    protected void initView(LayoutInflater inflater) {
-        initView();
+    protected void getTransferData(Bundle arguments) {
+        super.getTransferData(arguments);
+        inType = getArguments().getInt(IN_TYPE);
     }
 
     @Override
     protected void initPresenter() {
 
+    }
+
+    @Override
+    protected void initView(LayoutInflater inflater) {
+        initView();
     }
 
 
@@ -141,8 +177,38 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         tvFirstHelpPhone.setText(TextUtils.isEmpty(helpPhone) ? "未设置" : helpPhone);
 
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
+
+        //绘制完成
+        viewTreeObserver = llBelongArea.getViewTreeObserver();
+        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int[] locationOnScreen = new int[2];
+                int[] locationOnScreen2 = new int[2];
+                llBelongArea.getLocationInWindow(locationOnScreen);
+                llBelongStress.getLocationInWindow(locationOnScreen2);
+                int headerHeight = locationOnScreen[1];
+                int midHeight = locationOnScreen2[1] + llBelongStress.getMeasuredHeight() - locationOnScreen[1];
+                if (inType == UN_SETTING) {  //显示发动标签
+                    if (addressGuidePopupWindow == null)
+                        addressGuidePopupWindow = new AddressGuidePopupWindow(_mActivity);
+                    //api 25 status_bar_height =25dip  其他都 是24
+                    int stautsBarHeight = UIUtils.dp2px(_mActivity, Build.VERSION.SDK_INT == 25 ? 25 : 24);
+                    addressGuidePopupWindow.setHeaderXYHeight(0, 0, headerHeight - stautsBarHeight);
+                    addressGuidePopupWindow.setMidXYHeight(0, headerHeight, midHeight);
+                    addressGuidePopupWindow.showAsDropDown(tvBelongStress);
+                    llBelongArea.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        };
+        viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener);
     }
 
+    @Override
+    public void pop() {
+        super.pop();
+
+    }
 
     private void settingOfIvatar() {
         if (fragmentManager != null) {
@@ -177,17 +243,20 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     private void settingOfArea() {
-        dialog = new BottomDialog(this, -1);
+        skipArray = new int[6];
+        dialog = new BottomDialog(this, -1, limitSkip);
         dialog.setOnAddressSelectedListener(this);
         dialog.show();
     }
 
     private void settingOfStress() {
+        skipArray = new int[6];
         if (curLevel < RECYCLERLEVEL - 1) {
             ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
             return;
         }
-        dialog = new BottomDialog(this, RECYCLERLEVEL);
+
+        dialog = new BottomDialog(this, RECYCLERLEVEL, limitSkip);
         dialog.setOnAddressSelectedListener(this);
         dialog.setButtonVisiableLevels(new int[]{2}, View.VISIBLE);
         dialog.show();
@@ -349,27 +418,28 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     }
 
     @Override
-    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex) {
+    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex, int startIndex, int reqCount) {
 
         if (baseBean == null) {
             if (recyclerIndex == -1) {
-                getChildLocation(_mActivity, "", response, level, recyclerIndex);
+                getChildLocation(_mActivity, "", response, level, recyclerIndex, startIndex, reqCount);
             } else {
-                getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+                getChildLocation(_mActivity, area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
             }
         } else {
-            getChildLocation(_mActivity, baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex);
+            getChildLocation(_mActivity, baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
         }
     }
 
-    public void getChildLocation(SupportActivity _mActivity, String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex) {
+    public void getChildLocation(SupportActivity _mActivity, String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex, int skip, int reqCount) {
         NetHelper.getApi()
-                .getChildLocation(locationName)
+                .getChildLocation(locationName, skip, reqCount)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Area>>() {
                     @Override
                     public void _next(List<Area> areas) {
+                        skipArray[level] += areas.size();
                         successOfChildLocation(areas, response, level, recyclerIndex);
                     }
                 });
@@ -381,11 +451,11 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
             data.add(new BaseBean(areas.get(i).getId(), areas.get(i).getName()));
         }
         if (level == recyclerIndex || level == RECYCLERLEVEL) {
-            response.send(level, null);
+            response.send(level, null, false);
             return;
         }
 
-        response.send(level, data);
+        response.send(level, data, data != null && data.size() == limitSkip);
     }
 
 }

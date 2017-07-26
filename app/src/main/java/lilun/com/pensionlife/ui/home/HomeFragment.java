@@ -44,6 +44,7 @@ import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -126,13 +127,17 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     protected void initView(LayoutInflater inflater) {
+        if (Constants.unSettingLocation.equals(User.getLocation())) {
+            new NormalDialog().createShowMessage(_mActivity, "您还未设置默认小区", "去设置", () -> {
+                start(PersonalSettingFragment.newInstance(PersonalSettingFragment.UN_SETTING));
+            }, getString(R.string.cancel), false);
+        }
+
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-
-
     }
 
 

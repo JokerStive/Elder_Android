@@ -20,9 +20,9 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class RegisterInfoPresenter extends RxPresenter<RegisterContract.ViewInfo>
         implements RegisterContract.PresenterInfo {
     @Override
-    public void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex) {
+    public void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex, int skip, int limitSkip) {
         addSubscribe(NetHelper.getApi()
-                .getChildLocation(locationName)
+                .getChildLocation(locationName, skip, limitSkip)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Area>>() {

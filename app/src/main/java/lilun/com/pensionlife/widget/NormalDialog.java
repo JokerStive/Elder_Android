@@ -40,6 +40,17 @@ public class NormalDialog {
                 .show();
     }
 
+    public void createShowMessage(Activity activity, String msg, String posText, OnPositiveListener listener, String negText, boolean cancelOnOutSide) {
+        new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+                .content(msg)
+                .positiveText(posText)
+                .onPositive((dialog1, which) -> listener.onPositiveClick())
+                .negativeText(negText)
+                .onNegative(((dialog, which) -> dialog.dismiss()))
+                .canceledOnTouchOutside(cancelOnOutSide)
+                .show();
+    }
+
     public void createShowMessage(Activity activity, String msg, OnPositiveListener listener, boolean cancelOnOutSide) {
         new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
                 .canceledOnTouchOutside(cancelOnOutSide)
