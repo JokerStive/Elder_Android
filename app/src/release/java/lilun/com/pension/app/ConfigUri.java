@@ -6,8 +6,8 @@ package lilun.com.pensionlife.app;
  */
 public class ConfigUri {
 
-    public static final String BASE_URL = "https://elder.lishenghuo.com.cn/api/";
+    public static final String BASE_URL = "https://api.j1home.com/api/";
 
-    public static final String MQTT_URL = "tcp://mqtt.lishenghuo.com.cn:1883";
+    public static final String MQTT_URL = "tcp://mqtt.j1home.com:1883";
 
 }
