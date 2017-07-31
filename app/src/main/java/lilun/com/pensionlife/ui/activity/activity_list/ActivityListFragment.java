@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.vanzh.library.utils.Lists;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -67,7 +69,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private ActivityCategory mCategory;
 
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
-    private List<OrganizationActivity> activities;
     private String searchStr = "";
     private String join_status = "";
     private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
@@ -89,7 +90,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     public void refreshData(Event.RefreshActivityData event) {
         skip = 0;
         if (mActivityAdapter != null) {
-            mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
             mActivityAdapter.removeAllFooterView();
         }
         getActivityList(skip);
@@ -128,7 +128,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 searchStr = str;
                 skip = 0;
                 if (mActivityAdapter != null) {
-                    mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                     mActivityAdapter.removeAllFooterView();
                 }
                 getActivityList(skip);
@@ -136,10 +135,11 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
             @Override
             public void onChangeLayout(SearchTitleBar.LayoutType type) {
+                //小图切换成大图,重设Adapter
                 layoutType = type;
-                if (activities != null && activities.size() != 0) {
-                    setRecyclerAdapter(activities);
-                }
+                if (mActivityAdapter != null && Lists.isEmpty(mActivityAdapter.getData())) return;
+                setRecyclerAdapter(mActivityAdapter.getData());
+
             }
         });
 
@@ -151,15 +151,16 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                     if (mPresenter != null) {
                         skip = 0;
                         if (mActivityAdapter != null) {
-                            mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                             mActivityAdapter.removeAllFooterView();
                         }
                         getActivityList(skip);
                     }
                 }
         );
-
+        //设置筛选条件
         initConditionModules();
+        //设置 Adapter
+        setRecyclerAdapter(new ArrayList<>());
     }
 
 
@@ -167,10 +168,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         mActivityAdapter = getAdapterFromLayoutType(activities);
         mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
-        mActivityAdapter.setOnLoadMoreListener(Config.defLoadDatCount, new BaseQuickAdapter.RequestLoadMoreListener() {
+        mActivityAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-
                 getActivityList(skip);
             }
         });
@@ -244,7 +244,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 }
                 skip = 0;
                 if (mActivityAdapter != null) {
-                    mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                     mActivityAdapter.removeAllFooterView();
                 }
                 getActivityList(skip);
@@ -260,7 +259,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             mSwipeLayout.setRefreshing(true);
             skip = 0;
             if (mActivityAdapter != null) {
-                mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                 mActivityAdapter.removeAllFooterView();
             }
             getActivityList(skip);
@@ -309,11 +307,24 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         return ret;
     }
 
+    /**
+     * @param activities
+     * @param isFirstLoad 该数据是否为加载更多状态
+     */
     @Override
-    public void showActivityList(List<OrganizationActivity> activities, boolean islOadMore) {
+    public void showActivityList(List<OrganizationActivity> activities, boolean isFirstLoad) {
         completeRefresh();
         skip += activities.size();
-        if (mActivityAdapter != null && activities.size() < mActivityAdapter.getPageSize()) {
+
+        if (isFirstLoad) {
+            mActivityAdapter.replaceAll(activities);
+        } else {
+            mActivityAdapter.addAll(activities);
+        }
+        mActivityAdapter.notifyDataChangedAfterLoadMore(true);//取消正在加载并设置加载更多
+
+        //获取的数据比请求数据少，说明没有更多数据
+        if (activities.size() < mActivityAdapter.getPageSize()) {
             mActivityAdapter.notifyDataChangedAfterLoadMore(false);
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
@@ -322,14 +333,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mActivityAdapter.addFooterView(nodata);
         }
-        this.activities = activities;
-        if (mActivityAdapter == null) {
-            setRecyclerAdapter(activities);
-        } else if (islOadMore) {
-            mActivityAdapter.addAll(activities);
-        } else {
-            mActivityAdapter.replaceAll(activities);
-        }
+
     }
 
     @Override

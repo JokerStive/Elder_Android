@@ -11,7 +11,7 @@ public class Config {
 
     public static final int time_out = 300;
 
-    public static final int defLoadDatCount = 50;
+    public static final int defLoadDatCount = 10;
 
     public static final int uploadPhotoCount = 3;
 
