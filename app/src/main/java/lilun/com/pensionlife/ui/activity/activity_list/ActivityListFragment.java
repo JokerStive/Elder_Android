@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -88,7 +89,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     public void refreshData(Event.RefreshActivityData event) {
         skip = 0;
         if (mActivityAdapter != null) {
-            mActivityAdapter.openLoadMore(20, true);
+            mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
             mActivityAdapter.removeAllFooterView();
         }
         getActivityList(skip);
@@ -127,7 +128,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 searchStr = str;
                 skip = 0;
                 if (mActivityAdapter != null) {
-                    mActivityAdapter.openLoadMore(20, true);
+                    mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                     mActivityAdapter.removeAllFooterView();
                 }
                 getActivityList(skip);
@@ -150,7 +151,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                     if (mPresenter != null) {
                         skip = 0;
                         if (mActivityAdapter != null) {
-                            mActivityAdapter.openLoadMore(20, true);
+                            mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                             mActivityAdapter.removeAllFooterView();
                         }
                         getActivityList(skip);
@@ -165,8 +166,8 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private void setRecyclerAdapter(List<OrganizationActivity> activities) {
         mActivityAdapter = getAdapterFromLayoutType(activities);
         mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mActivityAdapter.openLoadMore(20, true);
-        mActivityAdapter.setOnLoadMoreListener(20, new BaseQuickAdapter.RequestLoadMoreListener() {
+        mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
+        mActivityAdapter.setOnLoadMoreListener(Config.defLoadDatCount, new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
 
@@ -243,7 +244,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 }
                 skip = 0;
                 if (mActivityAdapter != null) {
-                    mActivityAdapter.openLoadMore(20, true);
+                    mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                     mActivityAdapter.removeAllFooterView();
                 }
                 getActivityList(skip);
@@ -259,7 +260,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             mSwipeLayout.setRefreshing(true);
             skip = 0;
             if (mActivityAdapter != null) {
-                mActivityAdapter.openLoadMore(20, true);
+                mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
                 mActivityAdapter.removeAllFooterView();
             }
             getActivityList(skip);

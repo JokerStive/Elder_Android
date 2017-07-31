@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -182,7 +183,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mContentAdapter.setEmptyView();
         mRecyclerView.setAdapter(mContentAdapter);
         mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mContentAdapter.openLoadMore(20, true);
+        mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
         mContentAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -207,7 +208,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         }
         skip = 0;
         if (mContentAdapter != null) {
-            mContentAdapter.openLoadMore(20, true);
+            mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
             mContentAdapter.removeAllFooterView();
         }
         getAboutMe(skip);
