@@ -35,6 +35,7 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_big, R.drawable.layout_type_small, R.drawable.layout_type_null};
     private boolean noNullLayout;
     private BaseFragment fragment;
+    private RelativeLayout rl;
 
     public SearchTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,12 +47,12 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
 
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.search_title_bar, this);
-        ivBack = (ImageView) view.findViewById(R.id.iv_back);
+        rl = (RelativeLayout) view.findViewById(R.id.rl);
         tvSearch = (TextView) view.findViewById(R.id.et_search);
         ivChangeLayout = (ImageView) view.findViewById(R.id.iv_change_layout);
 
 
-        ivBack.setOnClickListener(this);
+        rl.setOnClickListener(this);
         tvSearch.setOnClickListener(this);
         ivChangeLayout.setOnTouchListener(this);
 
@@ -69,7 +70,7 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
+            case R.id.rl:
                 if (listener != null) {
                     listener.onBack();
                 }

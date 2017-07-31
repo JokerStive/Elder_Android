@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,9 +36,9 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     public TextView tvPosition;
     private TextView tvTitle;
     private Button tvRight;
-    private ImageView ivBack;
     private TitleBarClickCallBack listener;
     private BaseFragment fragment;
+    private RelativeLayout rl;
 
     public PositionTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -70,7 +69,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
 
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_position_title_bar, this);
-        ivBack = (ImageView) view.findViewById(R.id.iv_back);
+        rl = (RelativeLayout) view.findViewById(R.id.rl);
         tvPosition = (TextView) view.findViewById(R.id.tv_position);
         tvTitle = (TextView) view.findViewById(R.id.tv_sophisticated);
         tvRight = (Button) view.findViewById(R.id.tv_right);
@@ -80,7 +79,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
         setPosition();
 
 
-        ivBack.setOnClickListener(this);
+        rl.setOnClickListener(this);
         tvPosition.setOnClickListener(this);
         tvRight.setOnClickListener(this);
 
@@ -105,7 +104,7 @@ public class PositionTitleBar extends RelativeLayout implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
+            case R.id.rl:
                 if (listener != null) {
                     listener.onBackClick();
                 }

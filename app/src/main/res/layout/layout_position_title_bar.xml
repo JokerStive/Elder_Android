@@ -7,35 +7,38 @@
     android:clickable="true"
     android:gravity="center_vertical">
 
+   <RelativeLayout
+       android:id="@+id/rl"
+       android:layout_centerVertical="true"
+       android:layout_width="wrap_content"
+       android:padding="@dimen/dp_10"
+       android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/back"
-        android:padding="@dimen/dp_20" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/back"
+       />
 
-
-    <!--<ImageView-->
-    <!--android:id="@+id/iv_position"-->
-    <!---->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@drawable/position_black"-->
-    <!--android:paddingStart="5dp"-->
-    <!--android:paddingEnd="5dp"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--/>-->
+   </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_position"
+        android:layout_toRightOf="@id/rl"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/position_black"
+         />
 
     <TextView
+        android:layout_toRightOf="@id/iv_position"
         android:id="@+id/tv_position"
         style="@style/tv_normal_ellipsize"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_2"
-        android:layout_toEndOf="@id/iv_back"
-        android:drawablePadding="@dimen/dp_2"
-        android:drawableLeft="@drawable/position_black"
         android:maxWidth="@dimen/dp_100"
-        android:text="枫叶小区枫叶小区枫叶小区" />
+        tools:text="枫叶小区枫叶小区枫叶小区" />
 
     <TextView
         android:id="@+id/tv_sophisticated"

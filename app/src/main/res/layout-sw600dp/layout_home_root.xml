@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/ll_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/home_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/white">
+
+        <lilun.com.pensionlife.widget.CircleImageView
+            android:id="@id/iv_icon"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40" />
+
+        <ImageView
+            android:layout_marginLeft="@dimen/dp_20"
+            android:id="@id/iv_position"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_icon"
+            android:src="@drawable/positioning" />
+
+        <TextView
+            android:id="@id/tv_position"
+            style="@style/tv_normal_ellipsize"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_position"
+            android:drawablePadding="5.0dip"
+            android:maxWidth="@dimen/position_length" />
+
+        <ImageView
+            android:id="@id/iv_message"
+            android:layout_width="30.0dip"
+            android:layout_height="30.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/message" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:background="@color/gray"
+            android:orientation="horizontal"
+            android:padding="10.0dip">
+
+            <RelativeLayout
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="2.0"
+                android:background="@drawable/announcement_def">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@id/viewpager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@id/indicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    app:ci_height="@dimen/dp_4"
+                    app:ci_width="@dimen/dp_4" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@id/iv_help"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_weight="1.0"
+                android:background="@drawable/icon_urgent" />
+
+            <LinearLayout
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@id/iv_activities"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/community_activities" />
+
+                <ImageView
+                    android:id="@id/iv_help_each"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/neighbourhood_help" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:padding="10.0dip">
+
+            <TextView
+                android:id="@id/tv_desc"
+                style="@style/tv_normal"
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="2.0"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="10.0dip"
+                android:gravity="center_vertical"
+                android:text="社区重磅" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_below="@id/tv_desc"
+                android:layout_marginTop="5.0dip"
+                android:layout_weight="9.0"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@id/iv_agency"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/pension_agency" />
+
+                <ImageView
+                    android:id="@id/iv_education"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/the_elderly_education" />
+
+                <ImageView
+                    android:id="@id/iv_government"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/government" />
+
+                <ImageView
+                    android:id="@id/iv_health_service"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/health" />
+
+                <ImageView
+                    android:id="@id/iv_residential_service"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/residential_services" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

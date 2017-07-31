@@ -36,7 +36,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private final String rightString;
     private String title;
     private TextView tvTitle;
-    private TextView tvLeftString;
+//    private TextView tvLeftString;
     private ImageView ivBack;
     private OnBackClickListener listener;
     private TextView tvDoWhat;
@@ -44,6 +44,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private Drawable mBackgrand;
     private int rightWitchShow = 0;
     private Context context;
+    private RelativeLayout rl;
 
     public NormalTitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,7 +70,8 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_normal_title_bar, this);
         ivBack = (ImageView) view.findViewById(R.id.iv_back);
-        tvLeftString = (TextView) view.findViewById(R.id.tv_left_string);
+        rl = (RelativeLayout) view.findViewById(R.id.rl);
+//        tvLeftString = (TextView) view.findViewById(R.id.tv_left_string);
         tvTitle = (TextView) view.findViewById(R.id.tv_product_name);
         tvDoWhat = (TextView) view.findViewById(R.id.tv_doWhat);
         if (leftIcon != 0) {
@@ -77,7 +79,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         }
 
         if (!TextUtils.isEmpty(leftString)) {
-            tvLeftString.setText(leftString);
+//            tvLeftString.setText(leftString);
         }
 
 
@@ -93,7 +95,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
             tvTitle.setTextColor(tilteColor);
         }
 
-        ivBack.setOnClickListener(this);
+        rl.setOnClickListener(this);
         tvDoWhat.setOnClickListener(this);
 
     }
@@ -145,7 +147,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
+            case R.id.rl:
                 if (listener != null) {
                     listener.onBackClick();
                 }

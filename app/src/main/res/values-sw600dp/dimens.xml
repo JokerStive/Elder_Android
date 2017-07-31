@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="titleBar_position_size">20dp</dimen>
+    <dimen name="titleBar_back_size">20dp</dimen>
+
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="position_length">300dp</dimen>
+
+    <dimen name="sp_14">14dp</dimen>
+
+</resources>
