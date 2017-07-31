@@ -18,7 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
@@ -28,12 +28,14 @@ import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.BreadCrumbsView;
-import lilun.com.pensionlife.widget.DividerGridItemDecoration;
+import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 
 ////
+
 /**
  * 切换地球村社区
  * 修改: 2017/6/2  切换小区最高层级为重庆   必须选择到街道及以下区域
+ *
  * @author yk
  *         create at 2017/4/21 10:17
  *         email : yk_developer@163.com
@@ -41,7 +43,7 @@ import lilun.com.pensionlife.widget.DividerGridItemDecoration;
 public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationContract.Presenter> implements ChangeOrganizationContract.View {
     @Bind(R.id.crumb_view)
     BreadCrumbsView crumbView;
-//    @Bind(R.id.recycler_view)
+    //    @Bind(R.id.recycler_view)
 //    RecyclerView recyclerView;
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
@@ -71,20 +73,26 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
         });
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
-        adapter = new ChangeOrganizationAdapter(new ArrayList<>());
         RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(20));
+
+
+        adapter = new ChangeOrganizationAdapter(new ArrayList<>());
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             Organization organization = adapter.getData().get(i);
             currentId = organization.getId();
             getData(0, true);
         });
-        adapter.setOnLoadMoreListener(() -> getData(adapter.getItemCount(),false));
 
+        adapter.openLoadMore(Config.defLoadDatCount, true);
+        adapter.setOnLoadMoreListener(() -> {
+            Logger.d("load more");
+            getData(adapter.getItemCount(), false);
+        });
         swipeLayout.setOnRefreshListener(() -> getData(0, false));
 
+        recyclerView.setAdapter(adapter);
     }
 
     private void changeCurrentOrganization() {
@@ -98,7 +106,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
                 saveData();
             }
         } else {
-            if(currentId.split("/").length <7){
+            if (currentId.split("/").length < 7) {
                 ToastHelper.get().showWareShort("您需要选择到街道以下区域");
                 return;
             }
@@ -109,13 +117,16 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore, boolean isAddCrumb) {
         completeRefresh();
+        if (organizations.size() < Config.defLoadDatCount) {
+            adapter.notifyDataChangedAfterLoadMore(false);
+        }
         if (isLoadMore) {
             adapter.addAll(organizations);
         } else {
             adapter.replaceAll(organizations);
         }
         if (isAddCrumb) {
-            Logger.d("获取组织成功，添加面包屑---"+currentId);
+            Logger.d("获取组织成功，添加面包屑---" + currentId);
             crumbView.addBreadCrumb(currentId);
         }
     }
