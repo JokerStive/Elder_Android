@@ -74,10 +74,6 @@ public class RegisterInfoFragment extends BaseFragment<RegisterContract.Presente
             dialog.setButtonVisiableLevels(new int[]{2}, View.VISIBLE);
             dialog.show();
         } else if (view.getId() == R.id.bt_commit) {
-            if (curLevel < RECYCLERLEVEL) {
-                ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
-                return;
-            }
             belongOrganizationId = getBelongOrganizationId();
             detailAddress = getDetailAddress();
             mPresenter.putAccountLocation(belongOrganizationId, detailAddress);

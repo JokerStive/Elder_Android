@@ -40,6 +40,7 @@ public class User {
     public static final String businessId = "businessId";
     public static final String firstHelperPhone = "firstHelperPhone";
     public static final String loginTime = "loginTime";
+    public static final String address = "address";
 
 
     public static String getLoginTime() {
@@ -254,6 +255,15 @@ public class User {
 
     public static String getBusinessId() {
         return PreUtils.getString(businessId, "");
+    }
+
+    //跑单人员id
+    public static void putAddress(String addr) {
+        PreUtils.putString(address, addr);
+    }
+
+    public static String getAddress() {
+        return PreUtils.getString(address, "");
     }
 
 

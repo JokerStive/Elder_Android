@@ -52,6 +52,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
     private ChangeOrganizationAdapter adapter;
     private String currentId = Constants.organization_root_chongqi;
+    private int skip = 0;
 
     @Override
     protected void initPresenter() {
@@ -69,30 +70,33 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
         crumbView.setonCrumbClickListener(id -> {
             currentId = id;
-            getData(0, false);
+            skip = 0;
+            getData(skip, false);
         });
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
+        adapter = new ChangeOrganizationAdapter(new ArrayList<>());
+        adapter.openLoadMore(Config.defLoadDatCount, true);
+        adapter.setOnLoadMoreListener(() -> {
+            getData(skip, false);
+        });
         RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(20));
-
-
-        adapter = new ChangeOrganizationAdapter(new ArrayList<>());
+        recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(10));
+        recyclerView.setAdapter(adapter);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             Organization organization = adapter.getData().get(i);
             currentId = organization.getId();
-            getData(0, true);
+            skip = 0;
+            getData(skip, true);
         });
 
-        adapter.openLoadMore(Config.defLoadDatCount, true);
-        adapter.setOnLoadMoreListener(() -> {
-            Logger.d("load more");
-            getData(adapter.getItemCount(), false);
-        });
-        swipeLayout.setOnRefreshListener(() -> getData(0, false));
 
-        recyclerView.setAdapter(adapter);
+        swipeLayout.setOnRefreshListener(() -> {
+            skip = 0;
+            getData(skip, false);
+        });
+
     }
 
     private void changeCurrentOrganization() {
@@ -117,13 +121,16 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore, boolean isAddCrumb) {
         completeRefresh();
-        if (organizations.size() < Config.defLoadDatCount) {
-            adapter.notifyDataChangedAfterLoadMore(false);
-        }
+        skip += organizations.size();
+
         if (isLoadMore) {
             adapter.addAll(organizations);
         } else {
             adapter.replaceAll(organizations);
+        }
+        adapter.notifyDataChangedAfterLoadMore(true);
+        if (organizations.size() < adapter.getPageSize()) {
+            adapter.notifyDataChangedAfterLoadMore(false);
         }
         if (isAddCrumb) {
             Logger.d("获取组织成功，添加面包屑---" + currentId);
@@ -162,7 +169,8 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
             Logger.d("没有任何面包屑，添加root");
             crumbView.addBreadCrumb(currentId);
         }
-        getData(0, false);
+        skip = 0;
+        getData(skip, false);
     }
 
     @Override

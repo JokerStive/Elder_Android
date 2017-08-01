@@ -80,6 +80,7 @@ public class LoginModule implements LoginContract.Module {
         //第一求助人
         if (account.getProfile() != null) {
             User.putHelpPhone(account.getProfile().getFirstHelperPhone());
+            User.putAddress(account.getProfile().getAddress());
         }
 
         //居住地方

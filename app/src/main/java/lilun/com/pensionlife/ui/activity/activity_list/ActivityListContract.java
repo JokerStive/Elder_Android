@@ -12,7 +12,7 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 
 public interface ActivityListContract {
     interface View extends IView<Presenter> {
-        void showActivityList(List<OrganizationActivity> activities, boolean islOadMore);
+        void showActivityList(List<OrganizationActivity> activities, boolean isFirstLoad);
         void completeRefresh();
     }
     interface Presenter extends IPresenter<View>{

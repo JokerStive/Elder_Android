@@ -11,28 +11,30 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 
 /**
-*添加header、footer快速集成的adapter
-*@author yk
-*create at 2017/2/13 15:48
-*email : yk_developer@163.com
-*/
+ * 添加header、footer快速集成的adapter
+ *
+ * @author yk
+ *         create at 2017/2/13 15:48
+ *         email : yk_developer@163.com
+ */
 public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
 
 
     public QuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
-
     }
 
 
-    public void setEmptyView(){
+
+    public void setEmptyView() {
         setEmptyView(getEmptyView());
     }
+
     public View getEmptyView() {
-        return LayoutInflater.from(App.context).inflate(R.layout.empty_data,null);
+        return LayoutInflater.from(App.context).inflate(R.layout.empty_data, null);
     }
 
-    public void clear(){
+    public void clear() {
         getData().clear();
         notifyDataChanged();
     }
@@ -62,7 +64,7 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
     }
 
     public void addAllReverse(List<T> elements) {
-        getData().addAll(0,elements);
+        getData().addAll(0, elements);
         notifyDataSetChanged();
     }
 

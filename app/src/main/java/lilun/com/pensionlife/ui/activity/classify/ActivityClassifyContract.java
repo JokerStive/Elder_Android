@@ -16,7 +16,7 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 public interface ActivityClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifies(List<ActivityCategory> activityCategories);
-        void showAboutMe(List<OrganizationActivity> activities, boolean isLoadMore);
+        void showAboutMe(List<OrganizationActivity> activities, boolean isFirstLoad);
         void completeRefresh();
     }
 
