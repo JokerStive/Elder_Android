@@ -55,7 +55,7 @@ public class FilterLayoutView extends LinearLayout implements View.OnTouchListen
     private OnLayoutClickListener layoutlistener;
     private int layoutTypeIndex = 0;
     private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.BIG, LayoutType.SMALL};
-    private int[] layoutTypeIcon = new int[]{R.drawable.big_icon, R.drawable.small_icon};
+    private int[] layoutTypeIcon = new int[]{R.drawable.big_icon, R.drawable.big_icon};
     private boolean noNullLayout;
     private boolean changeLayout;
     private ImageView imageView;

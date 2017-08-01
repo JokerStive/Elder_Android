@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <lilun.com.pensionlife.widget.NormalTitleBar
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/info_setting" />
+
+
+        <TextView
+            style="@style/tv_small"
+            android:layout_gravity="center"
+            android:background="#f9f9fb"
+            android:padding="10dp"
+            android:text="@string/info_setting_desc" />
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="公告信息" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_announce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="一键求助" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="社区活动" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="打牌" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_cards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="唱歌跳舞" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_dance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="健步" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_walk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="打球" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_ball"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="旅游" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_tourism"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_centerVertical="true"
+                style="@style/tv_small"
+                android:text="其他" />
+
+            <lilun.com.pensionlife.widget.SwitchButton
+                android:layout_centerVertical="true"
+                android:id="@+id/sb_activity_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:sb_checked_color="#4bb1fa"
+                app:sb_show_indicator="false" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

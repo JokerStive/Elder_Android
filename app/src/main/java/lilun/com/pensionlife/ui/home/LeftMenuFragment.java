@@ -24,6 +24,7 @@ import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
@@ -64,7 +65,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    @OnClick({R.id.tv_logout, R.id.tv_account_data, R.id.tv_account_info,R.id.tv_about_us})
+    @OnClick({R.id.tv_logout, R.id.tv_account_data, R.id.tv_account_info,R.id.tv_info_setting,R.id.tv_about_us})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
@@ -80,6 +81,10 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
             case R.id.tv_about_us:
                 startTargetFragment(new AboutUsFragment());
+                break;
+
+            case R.id.tv_info_setting:
+                startTargetFragment(new InfoSettingFragment());
                 break;
         }
     }

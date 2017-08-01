@@ -66,6 +66,15 @@
             android:drawableStart="@drawable/account_info"
             android:text="@string/account_info" />
 
+        <TextView
+            android:id="@+id/tv_info_setting"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/sliding_item_margin_top"
+            android:drawablePadding="@dimen/dp_10"
+            android:drawableStart="@drawable/account_info"
+            android:text="个人信息设置" />
+
 
         <TextView
             android:id="@+id/tv_about_us"

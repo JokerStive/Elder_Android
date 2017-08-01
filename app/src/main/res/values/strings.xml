@@ -381,4 +381,9 @@
     <string name="update_avator">上传头像</string>
     <string name="recommend_to_friend">扫一扫推荐好友</string>
 
+
+    <!--个人消息设置-->
+    <string name="info_setting">个人消息设置</string>
+    <string name="info_setting_desc">开启后,您将会在锁屏状态下收到推送消息通知,消息内容能够在消息中心中显示;关闭后,您将接收不到对应的系统推送消息</string>
+
 </resources>
