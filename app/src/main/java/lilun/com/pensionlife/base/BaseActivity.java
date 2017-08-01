@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -233,7 +232,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
      * 显示紧急求助弹窗
      */
     public void showBoardMsg(String topic, String data) {
-        Gson gson = new Gson();
         MqttTopic mqttTopic = new MqttTopic();
         JSONObject jsonObject = JSON.parseObject(data);
         if (topic.equals(mqttTopic.urgent_help)) {

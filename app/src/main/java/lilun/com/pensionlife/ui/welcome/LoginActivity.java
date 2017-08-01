@@ -13,6 +13,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.ui.home.HomeActivity;
+import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFilter;
 import lilun.com.pensionlife.ui.register.RegisterActivity;
 
 /**
@@ -136,6 +137,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
     @Override
     public void loginSuccess() {
+        InfoSettingFilter.initInfoFilter();
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }

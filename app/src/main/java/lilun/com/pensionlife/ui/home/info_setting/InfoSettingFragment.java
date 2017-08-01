@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.home.info_setting;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
@@ -56,16 +57,16 @@ public class InfoSettingFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        addSwitchButtons();
+        initSwitchButtons();
 
 
         titleBar.setOnBackClickListener(this::pop);
         sbAnnounce.setOnCheckedChangeListener((view, isChecked) -> {
-            addOrRemoveTopicToSqlite(isChecked, "公告");
+            addOrRemoveTopicToSqlite(isChecked, sbAnnounce);
         });
 
         sbHelp.setOnCheckedChangeListener((view, isChecked) -> {
-            addOrRemoveTopicToSqlite(isChecked, "求助");
+            addOrRemoveTopicToSqlite(isChecked, sbHelp);
         });
 
 
@@ -73,7 +74,7 @@ public class InfoSettingFragment extends BaseFragment {
             if ((isChecked && isAllChildClassifyToggle(!isChecked)) || !isChecked) {
                 toggleTogether(isChecked);
             }
-            addOrRemoveTopicToSqlite(isChecked, "活动--");
+            addOrRemoveTopicToSqlite(isChecked, sbActivity);
         });
 
 
@@ -94,27 +95,30 @@ public class InfoSettingFragment extends BaseFragment {
                         sbActivity.setChecked(true);
                     }
 
-                    addOrRemoveTopicToSqlite(isChecked, (String) switchButton.getTag());
+                    addOrRemoveTopicToSqlite(isChecked, switchButton);
                 }
             });
         }
     }
 
-    private void addOrRemoveTopicToSqlite(boolean isChecked, String topic) {
+    private void addOrRemoveTopicToSqlite(boolean isChecked, SwitchButton switchButton) {
+        String topic = (String) switchButton.getTag();
         if (isChecked) {
-            ToastHelper.get().showNormal("添加" + topic + "到数据库", Toast.LENGTH_SHORT);
+            ToastHelper.get().showNormal("添加---" + topic + "---到本地", Toast.LENGTH_SHORT);
         } else {
-            ToastHelper.get().showNormal("移除" + topic + "从数据库", Toast.LENGTH_SHORT);
+            ToastHelper.get().showNormal("移除---" + topic + "---从本地", Toast.LENGTH_SHORT);
         }
     }
 
-    private void addSwitchButtons() {
-        sbActivityBall.setTag("打球");
-        sbActivityCards.setTag("打牌");
-        sbActivityTourism.setTag("旅游");
-        sbActivityWalk.setTag("健步");
-        sbActivityDance.setTag("跳舞");
-        sbActivityOther.setTag("其他");
+    private void initSwitchButtons() {
+        sbAnnounce.setTag(InfoSettingFilter.announce);
+        sbHelp.setTag(InfoSettingFilter.help);
+        sbActivityBall.setTag(InfoSettingFilter.ball);
+        sbActivityCards.setTag(InfoSettingFilter.cards);
+        sbActivityTourism.setTag(InfoSettingFilter.tourism);
+        sbActivityWalk.setTag(InfoSettingFilter.walk);
+        sbActivityDance.setTag(InfoSettingFilter.dance);
+        sbActivityOther.setTag(InfoSettingFilter.other);
 
 
         switchButtons.add(sbActivityCards);
@@ -123,6 +127,23 @@ public class InfoSettingFragment extends BaseFragment {
         switchButtons.add(sbActivityWalk);
         switchButtons.add(sbActivityDance);
         switchButtons.add(sbActivityOther);
+
+
+        initIsCheck();
+    }
+
+    /**
+     * 从文件读取开关是否开启
+     */
+    private void initIsCheck() {
+        for (SwitchButton switchButton : switchButtons) {
+            String tag = (String) switchButton.getTag();
+            if (!TextUtils.isEmpty(tag)) {
+                boolean infoFilter = InfoSettingFilter.isInfoFilter(tag);
+                switchButton.setChecked(infoFilter);
+            }
+        }
+
     }
 
 

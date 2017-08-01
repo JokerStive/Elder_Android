@@ -18,7 +18,6 @@ import org.litepal.LitePal;
 import java.util.Date;
 
 import lilun.com.pensionlife.BuildConfig;
-import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
@@ -49,7 +48,6 @@ public class App extends Application {
         //日志
         if (BuildConfig.LOG_DEBUG) {
             Logger.init(Config.TAG_LOGGER).methodCount(1).hideThreadInfo();
-//            Logger.addLogAdapter(new AndroidLogAdapter());
         } else {
             Logger.init(Config.TAG_LOGGER).logLevel(LogLevel.NONE);
         }
@@ -111,7 +109,7 @@ public class App extends Application {
         if (!PreUtils.getBoolean("hasPushLogin", false)) {
             Logger.i("发送login消息");
 //            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String time =User.getLoginTime();
+            String time = User.getLoginTime();
             String msg = "{\"verb\":\"login\",\"from\":\"" + DeviceUtils.getUniqueIdForThisApp(App.context) + "\",\"time\":\"" + time + "\"}";
             MqttTopic mqttTopic = new MqttTopic();
             MQTTManager.getInstance().publish(mqttTopic.login, 0, msg, false);
@@ -124,7 +122,7 @@ public class App extends Application {
 
     public static void clear() {
         MQTTManager.release();
-        ACache.get().clear();
+//        ACache.get().clear();
         PreUtils.clear();
     }
 

@@ -32,6 +32,11 @@ public class MqttTopic {
     public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
 
+
+    //活动
+    public String activity = ""+User.getCurrentOrganizationId()+"/#activity/.added";
+
+
     public String[] getAllTopicWhenInit() {
         List<String> topics = new ArrayList<>();
         topics.add(personal_msg);
