@@ -50,6 +50,17 @@ public class OrganizationProduct extends BaseBean {
     private String organizationId;
     private List<IconModule> image;
     private String categoryId;
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public OrganizationProduct setMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
     private List<String> areas;
 
 

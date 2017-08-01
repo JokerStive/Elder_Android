@@ -41,7 +41,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     SwipeRefreshLayout mSwipeLayout;
 
 
-//    private ArrayList<Information> announcements;
+    //    private ArrayList<Information> announcements;
     private ProductCategoryAdapter mClassifyAdapter;
     private String parentId;
     //
@@ -136,7 +136,6 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
         if (mClassifyAdapter == null) {
 //            int spanCount = spanCountByData(productCategories);
             GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
-            manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 3));
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
@@ -144,6 +143,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
                 start(AgencyServiceListFragment.newInstance(category.getName(), category.getId(), 0));
             });
             mClassifyRecycler.setAdapter(mClassifyAdapter);
+            manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 3));
         } else {
             mClassifyAdapter.replaceAll(productCategories);
         }

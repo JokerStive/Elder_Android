@@ -18,7 +18,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
@@ -29,7 +28,7 @@ import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.BreadCrumbsView;
-import lilun.com.pensionlife.widget.DividerGridItemDecoration;
+import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 
 ////
 
@@ -82,8 +81,8 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
             getData(skip, false);
         });
         RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(10));
         recyclerView.setAdapter(adapter);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             Organization organization = adapter.getData().get(i);
