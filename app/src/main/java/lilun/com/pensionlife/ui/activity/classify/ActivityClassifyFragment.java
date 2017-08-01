@@ -176,7 +176,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
-        mContentAdapter.setOnRecyclerViewItemClickListener((view,activityItem) -> {
+        mContentAdapter.setOnRecyclerViewItemClickListener((view, activityItem) -> {
             start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
 
         });
@@ -246,9 +246,18 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     @Override
-    public void showAboutMe(List<OrganizationActivity> activities, boolean isLoadMore) {
+    public void showAboutMe(List<OrganizationActivity> activities, boolean isFirstLoad) {
         completeRefresh();
         skip += activities.size();
+
+        if (isFirstLoad) {
+            mContentAdapter.replaceAll(activities);
+        } else {
+            mContentAdapter.addAll(activities);
+        }
+
+        mContentAdapter.notifyDataChangedAfterLoadMore(true);
+
         if (activities.size() < mContentAdapter.getPageSize()) {
             mContentAdapter.notifyDataChangedAfterLoadMore(false);
             TextView nodata = new TextView(getContext());
@@ -257,16 +266,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             if (App.widthDP > 820)
                 nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mContentAdapter.addFooterView(nodata);
-        }
-        if (activities != null) {
-            for (OrganizationActivity aid : activities) {
-//                aid.setItemType(aid.getKind());
-            }
-            if (isLoadMore) {
-                mContentAdapter.addAll(activities);
-            } else {
-                mContentAdapter.replaceAll(activities);
-            }
         }
     }
 

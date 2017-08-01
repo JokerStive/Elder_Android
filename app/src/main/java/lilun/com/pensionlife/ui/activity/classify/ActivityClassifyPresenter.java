@@ -61,7 +61,7 @@ public class ActivityClassifyPresenter extends RxPresenter<ActivityClassifyContr
                 .subscribe(new RxSubscriber<List<OrganizationActivity>>() {
                     @Override
                     public void _next(List<OrganizationActivity> activities) {
-                        view.showAboutMe(activities, skip != 0);
+                        view.showAboutMe(activities, skip == 0);
                     }
 
                     @Override

@@ -26,7 +26,7 @@ public class ActivtyListPresenter extends RxPresenter<ActivityListContract.View>
                     @Override
                     public void _next(List<OrganizationActivity> activityCategories) {
                         view.completeRefresh();
-                        view.showActivityList(activityCategories, skip != 0);
+                        view.showActivityList(activityCategories, skip == 0);
                     }
 
                     @Override

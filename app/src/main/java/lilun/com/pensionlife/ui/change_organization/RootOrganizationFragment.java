@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.Button;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
@@ -29,7 +29,7 @@ import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.BreadCrumbsView;
-import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
+import lilun.com.pensionlife.widget.DividerGridItemDecoration;
 
 ////
 
@@ -53,6 +53,7 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
     private ChangeOrganizationAdapter adapter;
     private String currentId = Constants.organization_root_chongqi;
+    private int skip = 0;
 
     @Override
     protected void initPresenter() {
@@ -70,30 +71,32 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
 
         crumbView.setonCrumbClickListener(id -> {
             currentId = id;
-            getData(0, false);
+            skip = 0;
+            getData(skip, false);
         });
         btnConfirm.setOnClickListener(v -> changeCurrentOrganization());
 
         adapter = new ChangeOrganizationAdapter(new ArrayList<>());
+        adapter.openLoadMore(Config.defLoadDatCount, true);
+        adapter.setOnLoadMoreListener(() -> {
+            getData(skip, false);
+        });
         RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
-        recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(10));
+        recyclerView.addItemDecoration(new DividerGridItemDecoration(App.context));
         recyclerView.setAdapter(adapter);
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             Organization organization = adapter.getData().get(i);
             currentId = organization.getId();
-            getData(0, true);
-        });
-        adapter.openLoadMore(Config.defLoadDatCount,true);
-        adapter.setOnLoadMoreListener(Config.defLoadDatCount,new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                Logger.d("加载更多");
-                RootOrganizationFragment.this.getData(adapter.getItemCount(), false);
-            }
+            skip = 0;
+            getData(skip, true);
         });
 
-        swipeLayout.setOnRefreshListener(() -> getData(0, false));
+
+        swipeLayout.setOnRefreshListener(() -> {
+            skip = 0;
+            getData(skip, false);
+        });
 
     }
 
@@ -119,14 +122,17 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
     @Override
     public void showOrganizations(List<Organization> organizations, boolean isLoadMore, boolean isAddCrumb) {
         completeRefresh();
-        if (organizations.size()<Config.defLoadDatCount){
+        skip += organizations.size();
+
+        if (isLoadMore) {
+            adapter.addAll(organizations);
+        } else {
+            adapter.replaceAll(organizations);
+        }
+        adapter.notifyDataChangedAfterLoadMore(true);
+        if (organizations.size() < adapter.getPageSize()) {
             adapter.notifyDataChangedAfterLoadMore(false);
         }
-            if (isLoadMore) {
-                adapter.addAll(organizations);
-            } else {
-                adapter.replaceAll(organizations);
-            }
         if (isAddCrumb) {
             Logger.d("获取组织成功，添加面包屑---" + currentId);
             crumbView.addBreadCrumb(currentId);
@@ -164,7 +170,8 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
             Logger.d("没有任何面包屑，添加root");
             crumbView.addBreadCrumb(currentId);
         }
-        getData(0, false);
+        skip = 0;
+        getData(skip, false);
     }
 
     @Override
