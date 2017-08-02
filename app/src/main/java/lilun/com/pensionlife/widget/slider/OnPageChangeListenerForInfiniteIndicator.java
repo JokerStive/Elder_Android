@@ -21,7 +21,7 @@ import lilun.com.pension.module.bean.IconModule;
 *//*
 
 public class OnPageChangeListenerForInfiniteIndicator implements ViewPager.OnPageChangeListener {
-    private Activity activity;
+    private Activity topic_activity;
     private List<ImageView> pageIndicatorList = new ArrayList<>();
     private List<IconModule> bannerList;
     private LinearLayout containerIndicator;
@@ -29,8 +29,8 @@ public class OnPageChangeListenerForInfiniteIndicator implements ViewPager.OnPag
     private int positionToUse = 0;
     private int actualPosition;
 
-    public OnPageChangeListenerForInfiniteIndicator(Activity activity, List<IconModule> bannerList, int currentItem) {
-        this.activity = activity;
+    public OnPageChangeListenerForInfiniteIndicator(Activity topic_activity, List<IconModule> bannerList, int currentItem) {
+        this.topic_activity = topic_activity;
         this.bannerList = bannerList;
         this.actualPosition = currentItem;
         this.viewPagerActivePosition = currentItem;
@@ -38,13 +38,13 @@ public class OnPageChangeListenerForInfiniteIndicator implements ViewPager.OnPag
     }
 
     private void loadIndicators() {
-        containerIndicator = (LinearLayout) activity.findViewById(R.id.container_home_page_indicator);
+        containerIndicator = (LinearLayout) topic_activity.findViewById(R.id.container_home_page_indicator);
         if (pageIndicatorList.size() < 1) {
             for (IconModule IconModule : bannerList) {
-                ImageView imageView = new ImageView(activity);
+                ImageView imageView = new ImageView(topic_activity);
                 imageView.setImageResource(R.drawable.banner_pagination_normal);// normal indicator image
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(activity.getResources().getDimensionPixelOffset(R.dimen.home_banner_indicator_width),
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(topic_activity.getResources().getDimensionPixelOffset(R.dimen.home_banner_indicator_width),
                         ViewGroup.LayoutParams.MATCH_PARENT));
                 pageIndicatorList.add(imageView);
             }

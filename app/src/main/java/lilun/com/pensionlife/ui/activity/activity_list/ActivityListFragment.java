@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -267,7 +266,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
     private void getActivityList(int skip) {
         // TODO 关联organizationId
-        //{"where":{"categoryId":"/地球村/中国/重庆/重庆市/南岸区/铜元局街道/A小区/#activity-category.旅游","status":"checking","and":[{"masterId":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}},{"partnerList":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}}],"or":[{"repeatedDesc":{"like": ""}},{"startTime":{"gt":"2017-05-09 15:54:22"}}],"title":{"like":""}},"order":"createdAt DESC","limit":"20","skip":"0"}
+        //{"where":{"categoryId":"/地球村/中国/重庆/重庆市/南岸区/铜元局街道/A小区/#topic_activity-category.旅游","status":"checking","and":[{"masterId":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}},{"partnerList":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}}],"or":[{"repeatedDesc":{"like": ""}},{"startTime":{"gt":"2017-05-09 15:54:22"}}],"title":{"like":""}},"order":"createdAt DESC","limit":"20","skip":"0"}
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String localtime = format.format(new Date());
         //未开始    现在时间<开始时间

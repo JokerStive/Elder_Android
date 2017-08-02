@@ -61,6 +61,7 @@ public class InfoSettingFragment extends BaseFragment {
 
 
         titleBar.setOnBackClickListener(this::pop);
+
         sbAnnounce.setOnCheckedChangeListener((view, isChecked) -> {
             addOrRemoveTopicToSqlite(isChecked, sbAnnounce);
         });
@@ -104,8 +105,10 @@ public class InfoSettingFragment extends BaseFragment {
     private void addOrRemoveTopicToSqlite(boolean isChecked, SwitchButton switchButton) {
         String topic = (String) switchButton.getTag();
         if (isChecked) {
+            InfoSettingFilter.addInfoFilter(topic);
             ToastHelper.get().showNormal("添加---" + topic + "---到本地", Toast.LENGTH_SHORT);
         } else {
+            InfoSettingFilter.removeInfoFilter(topic);
             ToastHelper.get().showNormal("移除---" + topic + "---从本地", Toast.LENGTH_SHORT);
         }
     }
@@ -113,6 +116,9 @@ public class InfoSettingFragment extends BaseFragment {
     private void initSwitchButtons() {
         sbAnnounce.setTag(InfoSettingFilter.announce);
         sbHelp.setTag(InfoSettingFilter.help);
+
+        sbActivity.setTag(InfoSettingFilter.activity);
+
         sbActivityBall.setTag(InfoSettingFilter.ball);
         sbActivityCards.setTag(InfoSettingFilter.cards);
         sbActivityTourism.setTag(InfoSettingFilter.tourism);
@@ -121,11 +127,13 @@ public class InfoSettingFragment extends BaseFragment {
         sbActivityOther.setTag(InfoSettingFilter.other);
 
 
+//        switchButtons.add(sbAnnounce);
+//        switchButtons.add(sbHelp);
         switchButtons.add(sbActivityCards);
+        switchButtons.add(sbActivityDance);
+        switchButtons.add(sbActivityWalk);
         switchButtons.add(sbActivityBall);
         switchButtons.add(sbActivityTourism);
-        switchButtons.add(sbActivityWalk);
-        switchButtons.add(sbActivityDance);
         switchButtons.add(sbActivityOther);
 
 
@@ -136,6 +144,13 @@ public class InfoSettingFragment extends BaseFragment {
      * 从文件读取开关是否开启
      */
     private void initIsCheck() {
+        sbAnnounce.setChecked(InfoSettingFilter.isInfoFilter((String) sbAnnounce.getTag()));
+        sbHelp.setChecked(InfoSettingFilter.isInfoFilter((String) sbHelp.getTag()));
+        sbActivity.setChecked(InfoSettingFilter.isInfoFilter((String) sbActivity.getTag()));
+//        String tagAnnounce = sbAnnounce.getTag();
+//        String tag1 = sbAnnounce.getTag();
+//        String tag2 = sbAnnounce.getTag();
+
         for (SwitchButton switchButton : switchButtons) {
             String tag = (String) switchButton.getTag();
             if (!TextUtils.isEmpty(tag)) {

@@ -26,6 +26,7 @@ import lilun.com.pensionlife.module.bean.CacheMsg;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFilter;
 
 /**
  * 需要展示到通知栏的mqtt消息
@@ -53,7 +54,7 @@ public class MqttNotificationHelper {
 
 
             // 1 ----- 公告，展示到通知栏
-            if (topic.contains(mqttTopic.topic_information_suffix)) {
+            if (isMsgICache(InfoSettingFilter.announce) && topic.contains(mqttTopic.topic_activity)) {
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
                     classify = msgClassify.announce;
@@ -75,17 +76,31 @@ public class MqttNotificationHelper {
 
 
         //3 -----紧急求助
-        String urgent_help = mqttTopic.urgent_help;
-        if (TextUtils.equals(topic, urgent_help)) {
+        String topic_help = mqttTopic.urgent_help;
+        if (isMsgICache(InfoSettingFilter.help) && TextUtils.equals(topic, topic_help)) {
             classify = msgClassify.urgent_help;
             title = "紧急求助";
-//            content = jsonObject.getString("message");
             content = "有人需要您的帮助";
 
 //            发送事件，展示到app
             EventBus.getDefault().post(new Event.BoardMsg(topic, data));
         }
 
+
+        //5-----活动
+        String topic_activity = mqttTopic.topic_activity;
+        if (isMsgICache(InfoSettingFilter.activity) && topic.contains(topic_activity)) {
+            JSONObject activityJson = jsonObject.getJSONObject("data");
+            String categoryId = activityJson.getString("categoryId");
+            String category = categoryId.substring(categoryId.lastIndexOf(".") + 1);
+            if (!TextUtils.isEmpty(category) && isMsgICache(category)) {
+                classify = msgClassify.activity;
+                title = "活动";
+                String activityTitle = activityJson.getString("title");
+                content = "+1社区有新的活动‘" + category + "-" + activityTitle + "’开始了，赶快点我参加吧！";
+            }
+
+        }
 
         //4 ----- 登陆
         if (TextUtils.equals(topic, mqttTopic.login)) {
@@ -100,10 +115,17 @@ public class MqttNotificationHelper {
         }
 
         //现实到notification
-        show(title, content);
+        show(topic, title, content);
 
     }
 
+
+    /**
+     * 是否过滤这条消息
+     */
+    private boolean isMsgICache(String filter) {
+        return InfoSettingFilter.isInfoFilter(filter);
+    }
 
     /**
      * 处理登陆
@@ -139,13 +161,22 @@ public class MqttNotificationHelper {
     /**
      * 通知栏显示
      */
-    private void show(String title, String content) {
+    private void show(String topic, String title, String content) {
         if (!TextUtils.isEmpty(title)) {
-            Notification build = new NotificationCompat.Builder(App.context)
+            MqttTopic mqttTopic = new MqttTopic();
+
+            android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(App.context)
                     .setSmallIcon(R.mipmap.icon)
                     .setContentTitle(title)
-                    .setContentText(content).build();
+                    .setContentText(content);
+            if (topic.contains(mqttTopic.topic_activity)) {
+//                Intent intent = new Intent(context, XXX.class);
+//                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//                builder.setContentIntent(pendingIntent);
+            }
 
+
+            Notification build = builder.build();
             NotificationManager manager =
                     (NotificationManager) App.context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(0x01, build);

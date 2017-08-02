@@ -40,7 +40,6 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.widget.BottonPopupWindow;
@@ -112,7 +111,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        activity = (OrganizationActivity) arguments.getSerializable("activity");
+        activity = (OrganizationActivity) arguments.getSerializable("topic_activity");
         Preconditions.checkNull(activity);
         topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
     }

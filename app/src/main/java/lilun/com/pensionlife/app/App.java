@@ -18,6 +18,7 @@ import org.litepal.LitePal;
 import java.util.Date;
 
 import lilun.com.pensionlife.BuildConfig;
+import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.DeviceUtils;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
@@ -122,7 +123,7 @@ public class App extends Application {
 
     public static void clear() {
         MQTTManager.release();
-//        ACache.get().clear();
+        ACache.get().clear();
         PreUtils.clear();
     }
 

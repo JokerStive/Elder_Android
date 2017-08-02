@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.ui.home.info_setting;
 
+import android.text.TextUtils;
+
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.utils.ACache;
@@ -19,37 +21,42 @@ public class InfoSettingFilter {
     public static String ball = "打球";
     public static String tourism = "旅游";
     public static String other = "其他";
+    public static String cache_key = "info_setting_filter";
 
 
     public static boolean isInfoFilter(String filter) {
-        String userId = User.getUserId();
-        return ACache.get(App.context, "info_setting_filter").isExit(userId + filter);
+        String asString = ACache.get(App.context, cache_key).getAsString(composeKeyWithFilter(filter));
+        return !TextUtils.isEmpty(asString);
     }
 
 
+
+
     public static void initInfoFilter() {
-        String userId = User.getUserId();
-        ACache infoFilterCache = ACache.get(App.context, "info_setting_filter");
-        infoFilterCache.put(userId + announce, announce);
-        infoFilterCache.put(userId + help, help);
-        infoFilterCache.put(userId + activity, activity);
-        infoFilterCache.put(userId + cards, cards);
-        infoFilterCache.put(userId + dance, dance);
-        infoFilterCache.put(userId + walk, walk);
-        infoFilterCache.put(userId + ball, ball);
-        infoFilterCache.put(userId + tourism, tourism);
-        infoFilterCache.put(userId + other, other);
+        ACache infoFilterCache = ACache.get(App.context, cache_key);
+        infoFilterCache.put(composeKeyWithFilter(announce), announce);
+        infoFilterCache.put(composeKeyWithFilter(help), help);
+        infoFilterCache.put(composeKeyWithFilter(activity), activity);
+        infoFilterCache.put(composeKeyWithFilter(cards), cards);
+        infoFilterCache.put(composeKeyWithFilter(dance), dance);
+        infoFilterCache.put(composeKeyWithFilter(walk), walk);
+        infoFilterCache.put(composeKeyWithFilter(ball), ball);
+        infoFilterCache.put(composeKeyWithFilter(tourism), tourism);
+        infoFilterCache.put(composeKeyWithFilter(other), other);
     }
 
 
     public static void addInfoFilter(String filter) {
-        String userId = User.getUserId();
-        ACache.get(App.context, "info_setting_filter").put(userId + filter, filter);
+        ACache.get(App.context, cache_key).put(composeKeyWithFilter(filter), filter);
     }
 
 
     public static void removeInfoFilter(String filter) {
+        ACache.get(App.context, cache_key).remove(composeKeyWithFilter(filter));
+    }
+
+    public static String composeKeyWithFilter(String filter) {
         String userId = User.getUserId();
-        ACache.get(App.context, "info_setting_filter").remove(userId + filter);
+        return userId + "_" + filter;
     }
 }
