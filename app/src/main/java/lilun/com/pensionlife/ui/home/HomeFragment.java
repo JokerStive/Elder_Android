@@ -28,11 +28,15 @@ import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.VersionCheck;
+import lilun.com.pensionlife.module.utils.mqtt.MqttNotificationExtra;
+import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
+import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pensionlife.ui.agency.classify.AgencyClassifyFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementItemFragment;
@@ -360,6 +364,20 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
     }
 
+
+    @Subscribe(sticky = true)
+    public void mqttNotificationOperate(MqttNotificationExtra extra) {
+        String topic = extra.getTopic();
+        if (!TextUtils.isEmpty(topic)) {
+            MqttTopic mqttTopic = new MqttTopic();
+            if (topic.contains(mqttTopic.topic_activity)) {
+                String activityCatrgoryId = extra.getId();
+                ActivityCategory activityCategory = new ActivityCategory();
+                activityCategory.setId(activityCatrgoryId);
+                start(ActivityListFragment.newInstance(activityCategory));
+            }
+        }
+    }
 
     public void startFragment(BaseFragment targetFragment) {
         start(targetFragment);

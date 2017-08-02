@@ -176,6 +176,7 @@
             android:process=":remote" />
 
         <service android:name=".ui.home.upload.DownLoadService" />
+        <receiver android:name=".module.utils.mqtt.MqttNotificationReceiver"/>
 
     </application>
 

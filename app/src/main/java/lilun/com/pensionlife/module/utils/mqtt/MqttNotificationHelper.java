@@ -2,7 +2,10 @@ package lilun.com.pensionlife.module.utils.mqtt;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
@@ -115,7 +118,7 @@ public class MqttNotificationHelper {
         }
 
         //现实到notification
-        show(topic, title, content);
+        show(title, content, topic,jsonObject);
 
     }
 
@@ -161,24 +164,39 @@ public class MqttNotificationHelper {
     /**
      * 通知栏显示
      */
-    private void show(String topic, String title, String content) {
+    private void show(String title, String content, String topic, JSONObject dataJson) {
         if (!TextUtils.isEmpty(title)) {
             MqttTopic mqttTopic = new MqttTopic();
 
             android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(App.context)
                     .setSmallIcon(R.mipmap.icon)
                     .setContentTitle(title)
+                    .setAutoCancel(true)
                     .setContentText(content);
+
+            //点击通知栏后的操作
+            MqttNotificationExtra extra = new MqttNotificationExtra();
+            Intent intent = new Intent(App.context, MqttNotificationReceiver.class);
+            extra.setTopic(topic);
+
+            //活动需要跳转活动列表，需要携带categoryId
             if (topic.contains(mqttTopic.topic_activity)) {
-//                Intent intent = new Intent(context, XXX.class);
-//                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//                builder.setContentIntent(pendingIntent);
+                JSONObject activityJson = dataJson.getJSONObject("data");
+                String categoryId = activityJson.getString("categoryId");
+                extra.setId(categoryId);
             }
 
 
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("extra", extra);
+            intent.putExtras(bundle);
+            PendingIntent pIntent = PendingIntent.getBroadcast(App.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pIntent);
+
+
             Notification build = builder.build();
-            NotificationManager manager =
-                    (NotificationManager) App.context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager manager =(NotificationManager) App.context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(0x01, build);
 
             wakeScreen();
