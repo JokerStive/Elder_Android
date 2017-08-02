@@ -1,116 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <lilun.com.pensionlife.widget.NormalTitleBar
-        android:id="@+id/titleBar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_grey"
-        app:rightIcon="@drawable/more"
-        app:rightText="@string/delete"
-        app:rightWitchShow="icon" />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
         android:background="#f4f4f4"
-        android:gravity="center">
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_layout"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
-            <android.support.v4.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/title_bar_height" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white">
-
-                        <EditText
-                            android:id="@+id/et_search_name"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_40"
-                            android:layout_margin="@dimen/dp_8"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_rect_light_grey_corner_5"
-                            android:drawableLeft="@drawable/search"
-                            android:hint="@string/search"
-                            android:maxLines="1"
-                            android:textSize="@dimen/sp_12" />
-
-                        <TextView
-                            android:id="@+id/tv_search_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:padding="@dimen/dp_8"
-                            android:text="@string/search"
-                            android:textSize="@dimen/sp_14" />
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_search_name"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_40"
+                        android:layout_margin="@dimen/dp_8"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_rect_light_grey_corner_5"
+                        android:drawableLeft="@drawable/search"
+                        android:hint="@string/search"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textSize="@dimen/sp_12" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/dp_4"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_4"
-                        android:text="@string/master"
+                        android:id="@+id/tv_search_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_8"
+                        android:text="@string/search"
                         android:textSize="@dimen/sp_14" />
-
-                    <include layout="@layout/item_partners" />
-
-                    <TextView
-                        android:id="@+id/tv_parents_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/dp_4"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingTop="@dimen/dp_4"
-                        android:text="@string/partner_list"
-                        android:textSize="@dimen/sp_14" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <ImageView
-                            android:id="@+id/null_data"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/null_data"
-                            android:visibility="gone" />
-                    </RelativeLayout>
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
-        </android.support.v4.widget.SwipeRefreshLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp_4"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_4"
+                    android:text="@string/master"
+                    android:textSize="@dimen/sp_14" />
 
-    </RelativeLayout>
-</LinearLayout>
+                <include layout="@layout/item_partners" />
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_height"
+                android:background="@color/white"
+                app:layout_collapseMode="pin">
+
+                <lilun.com.pensionlife.widget.NormalTitleBar
+                    android:id="@+id/titleBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_grey"
+                    app:rightIcon="@drawable/more"
+                    app:rightText="@string/delete"
+                    app:rightWitchShow="icon" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <TextView
+            android:id="@+id/tv_parents_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_4"
+            android:text="@string/partner_list"
+            android:textSize="@dimen/sp_14" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/null_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/null_data"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

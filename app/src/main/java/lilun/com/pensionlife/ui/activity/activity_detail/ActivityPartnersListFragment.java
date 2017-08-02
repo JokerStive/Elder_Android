@@ -53,6 +53,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 /**
  * Created by zp on 2017/4/20.
  * 2017/6/30  踢人时可选择是否加入黑名单选项
+ * 2017/8/2  布局文件更新，
  */
 
 public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailContact.PPartner>
@@ -143,15 +144,22 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     }
 
     @Override
+    public void editViewEnterButton() {
+        searchKey = etSearchName.getText().toString().trim();
+        skip = 0;
+        mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
+        if (TextUtils.isEmpty(searchKey)) tvSearchName.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void initData() {
         skip = 0;
-
         mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-
+        etSearchName.setOnKeyListener(editOnKeyListener);
         partnersAdapter = new PartnersAdapter(new ArrayList<>());
         partnersAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         partnersAdapter.openLoadMore(Config.defLoadDatCount, true);
