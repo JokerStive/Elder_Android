@@ -96,6 +96,7 @@ public class ActivityChatFragment extends BaseFragment {
             public void onRightClick() {
                 ActivityDetailFragment fragment = findFragment(ActivityDetailFragment.class);
                 if (fragment == null) {
+                    hideSoftInput();
                     start(ActivityDetailFragment.newInstance(activity));
                 } else
                     popTo(ActivityDetailFragment.class, false);
@@ -144,6 +145,11 @@ public class ActivityChatFragment extends BaseFragment {
                 }
             }, false);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void clearChat(Event.ClearChat clearChat) {
+        chatAdapter.clear();
     }
 
     public void sendData(String str) {

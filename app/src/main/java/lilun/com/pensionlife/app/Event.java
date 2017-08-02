@@ -156,4 +156,7 @@ public class Event {
             this.topic = topic;
         }
     }
+
+    public static class ClearChat {
+    }
 }
