@@ -22,7 +22,7 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<ProductOrder>(((BaseFragment)view).getActivity()) {
+                .subscribe(new RxSubscriber<ProductOrder>(getActivity()) {
                     @Override
                     public void _next(ProductOrder order) {
                         view.showOrder(order);
@@ -37,7 +37,7 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                 .changeOrderStatus(orderId, status)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object o) {
                         view.changeOrderStatusSuccess(status);

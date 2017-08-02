@@ -1,7 +1,6 @@
 package lilun.com.pensionlife.net;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 
 import com.orhanobut.logger.Logger;
 
@@ -26,8 +25,10 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
     }
 
     public RxSubscriber(Activity content) {
-        this.activity = new WeakReference<>(content);
-        needProgressBar = true;
+        if (content != null) {
+            this.activity = new WeakReference<>(content);
+            needProgressBar = true;
+        }
     }
 
     @Override

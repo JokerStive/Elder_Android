@@ -46,7 +46,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                 .flatMap(tokenInfo -> mModule.getAccountInfo(tokenInfo, finalUsername, finalPassword))
                 .flatMap(account -> mModule.getBelongOrganizations(account))
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationAccount>>((BaseActivity) mView) {
+                .subscribe(new RxSubscriber<List<OrganizationAccount>>(getActivity()) {
                     @Override
                     public void _next(List<OrganizationAccount> organizationAccounts) {
                         mModule.putBelongOrganizations(organizationAccounts);
@@ -127,7 +127,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         NetHelper.getApi().putAccount(User.getUserId(), account)
                 .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
-                .subscribe(new RxSubscriber<Account>((BaseActivity) mView) {
+                .subscribe(new RxSubscriber<Account>(getActivity()) {
                     @Override
                     public void _next(Account account) {
                         loginSuccess(targetId);

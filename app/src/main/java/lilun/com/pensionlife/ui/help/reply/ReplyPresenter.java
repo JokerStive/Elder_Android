@@ -24,7 +24,7 @@ public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements R
                 .getOrganizationReplies(StringUtils.addFilterWithDef(filter,skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationReply>>(((BaseFragment)view).getActivity()) {
+                .subscribe(new RxSubscriber<List<OrganizationReply>>(getActivity()) {
                     @Override
                     public void _next(List<OrganizationReply> replies) {
                         view.showReplies(replies,skip!=0);
@@ -44,7 +44,7 @@ public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements R
                 .newOrganizationReply(reply)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationReply>(((BaseFragment)view).getActivity()) {
+                .subscribe(new RxSubscriber<OrganizationReply>(getActivity()) {
                     @Override
                     public void _next(OrganizationReply reply) {
                         view.newReplySuccess(reply);
@@ -61,7 +61,7 @@ public class ReplyPresenter extends RxPresenter<ReplyContract.View> implements R
                 .newAidReply(reply.getWhatId(),reply)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment)view).getActivity()) {
+                .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object O) {
                         view.newReplySuccess(reply);
