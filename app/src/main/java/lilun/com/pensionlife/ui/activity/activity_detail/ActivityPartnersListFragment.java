@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -40,7 +41,6 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.widget.BottonPopupWindow;
@@ -61,6 +61,8 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     OrganizationActivity activity;
     PartnersAdapter partnersAdapter;
     String searchKey = "";
+
+
     int skip = 0;
     private View.OnKeyListener backListener = new View.OnKeyListener() {
         @Override
@@ -96,9 +98,21 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
 
-
+    @Bind(R.id.tv_parents_number)
+    TextView tvParentsNum;
     @Bind(R.id.null_data)
     ImageView nullData;
+
+    /**
+     * 获取过滤条件
+     *
+     * @return
+     */
+    public String getFilterIdName() {
+        //只查询名字和id即可;
+        //{"fields":{"id":true,"name":true},"where":{"name":{"like":""}},"limit":"10","skip":"0"}
+        return "{\"fields\":{\"id\":true,\"name\":true},\"where\":{\"name\":{\"like\":\"" + searchKey + "\"}}}";
+    }
 
     public static ActivityPartnersListFragment newInstance(OrganizationActivity activity) {
         ActivityPartnersListFragment fragment = new ActivityPartnersListFragment();
@@ -131,11 +145,33 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     @Override
     protected void initData() {
         skip = 0;
-        mPresenter.queryPartners(activity.getId(), "", skip);
+
+        mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
+
+        partnersAdapter = new PartnersAdapter(new ArrayList<>());
+        partnersAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        partnersAdapter.openLoadMore(Config.defLoadDatCount, true);
+        partnersAdapter.setOnLoadMoreListener(() -> {
+            mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
+        });
+        partnersAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+                if (mRecyclerView.isSelected()) {
+                    partnersAdapter.dealSelectedStatus(i);
+                    partnersAdapter.notifyItemChanged(i);
+                    if (partnersAdapter.getSelectedList().size() > 0) {
+                        titleBar.setRightWitchShow(NormalTitleBar.TEXT);
+                    } else
+                        titleBar.setRightWitchShow(NormalTitleBar.NONE);
+                }
+            }
+        });
+
         bottonPopupWindow = new BottonPopupWindow(_mActivity);
         bottonPopupWindow.setOnDeleteListener(new View.OnClickListener() {
             @Override
@@ -197,8 +233,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                                         if (dialog.isPromptCheckBoxChecked()) {
                                             Logger.d(userId);
                                             mPresenter.addBlockUser(activity.getId(), userId, userName);
-                                        }
-                                        else
+                                        } else
                                             mPresenter.deletePartners(activity.getId(), userId, userName);
                                     }
                                 }
@@ -234,8 +269,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
             public void onClick(View v) {
                 searchKey = etSearchName.getText().toString().trim();
                 skip = 0;
-                String filter = "{\"where\":{\"name\":{\"like\":\"" + searchKey + "\"}}}";
-                mPresenter.queryPartners(activity.getId(), filter, skip);
+                mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
                 if (TextUtils.isEmpty(searchKey)) tvSearchName.setVisibility(View.GONE);
             }
         });
@@ -244,12 +278,12 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                 R.drawable.icon_def, masterIcon);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(getContext(), LinearLayoutManager.VERTICAL, 1, ContextCompat.getColor(getContext(), R.color.help)));
+        mRecyclerView.setAdapter(partnersAdapter);
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
                         skip = 0;
-                        String filter = "{\"where\":{\"name\":{\"like\":\"" + searchKey + "\"}}}";
-                        mPresenter.queryPartners(activity.getId(), filter, skip);
+                        mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
                     }
                 }
         );
@@ -280,35 +314,25 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
 
     @Override
     public void showPartners(List<Account> accounts) {
-        boolean isLoadMore = skip != 0;
+        boolean isFirstLoad = skip == 0;
 
         skip += accounts.size();
+
+
+        if (isFirstLoad) {
+            partnersAdapter.replaceAll(accounts);
+        } else {
+            partnersAdapter.addAll(accounts);
+        }
+        partnersAdapter.notifyDataChangedAfterLoadMore(true);
         if (skip == 0) {
             nullData.setVisibility(View.VISIBLE);
-        } else
-            nullData.setVisibility(View.GONE);
-        if (partnersAdapter == null) {
-            partnersAdapter = new PartnersAdapter(accounts);
-            mRecyclerView.setAdapter(partnersAdapter);
-            partnersAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int i) {
-                    if (mRecyclerView.isSelected()) {
-                        partnersAdapter.dealSelectedStatus(i);
-                        partnersAdapter.notifyItemChanged(i);
-                        if (partnersAdapter.getSelectedList().size() > 0) {
-                            titleBar.setRightWitchShow(NormalTitleBar.TEXT);
-                        } else
-                            titleBar.setRightWitchShow(NormalTitleBar.NONE);
-                    }
-                }
-            });
-
-
-        } else if (isLoadMore) {
-            partnersAdapter.addAll(accounts);
         } else {
-            partnersAdapter.replaceAll(accounts);
+            nullData.setVisibility(View.GONE);
+            if (accounts.size() < partnersAdapter.getPageSize())
+                partnersAdapter.notifyDataChangedAfterLoadMore(false);
+            String tmp = getString(R.string.partner_list) + "(" + (partnersAdapter.getData() == null ? 0 : partnersAdapter.getData().size()) + ")";
+            tvParentsNum.setText(tmp);
         }
     }
 
@@ -317,7 +341,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         if (bottonPopupWindow != null) bottonPopupWindow.dismiss();
         skip = 0;
         partnersAdapter.setShowSelectedStatus(false);
-        mPresenter.queryPartners(activity.getId(), "", skip);
+        mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
         if (partnersAdapter.getSelectedList() != null) partnersAdapter.getSelectedList().clear();
         /**
          * {@link ActivityDetailFragment}
