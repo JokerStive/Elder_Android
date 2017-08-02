@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,15 +72,17 @@ import lilun.com.pensionlife.widget.slider.BannerPager;
 
 /**
  * Created by zp on 2017/3/6.
- *  2017/6/30  活动添加黑名单字段，加入活动前判断是否在黑名单内
+ * 2017/6/30  活动添加黑名单字段，加入活动前判断是否在黑名单内
  */
 
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.Presenter>
-        implements ActivityDetailContact.View, View.OnClickListener {
+        implements ActivityDetailContact.View, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
     @Bind(R.id.iv_back)
     ImageView ivBack;
+    @Bind(R.id.iv_menu)
+    ImageView ivMenu;
     @Bind(R.id.tv_title_name)
     TextView tvTitleName;
     @Bind(R.id.srl_swipe_layout)
@@ -157,6 +163,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private InputSendPopupWindow inputSendPopupWindow;
     private String topic;
     private int qos = 2;
+    private PopupMenu menu;
 
     public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
@@ -198,7 +205,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 pop();
             }
         });
-
+        initMenu();
         llQuestionList.setVisibility(View.GONE);
         mSwipeLayout.setOnRefreshListener(this::getActivityDetail);
         nsvScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -579,9 +586,12 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         popTo(ActivityClassifyFragment.class, false);
     }
 
-    @OnClick({R.id.acbt_sign_up, R.id.acbt_question_and_chat, R.id.tv_more_question, R.id.actv_people_number})
+    @OnClick({R.id.iv_menu, R.id.acbt_sign_up, R.id.acbt_question_and_chat, R.id.tv_more_question, R.id.actv_people_number})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_menu:
+                openMenu();
+                break;
             case R.id.acbt_sign_up:
                 dealSignUp();
                 break;
@@ -595,6 +605,42 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 goPartnersList();
                 break;
         }
+    }
+
+
+    /**
+     * 初始化menu
+     */
+    private void initMenu() {
+        menu = new PopupMenu(_mActivity, ivMenu);  //ivMenu是触发弹出menu的View
+        menu.getMenuInflater().inflate(R.menu.menu_activity, menu.getMenu());  //设置关联布局文件
+        ((MenuBuilder) menu.getMenu()).setOptionalIconsVisible(true);     //设置其icon显示，默认是不显示的
+        menu.setOnMenuItemClickListener(this);    //设置监听器
+    }
+
+    /**
+     * 打开menu
+     */
+    private void openMenu() {
+        menu.show();
+    }
+
+    /**
+     * 处理选中的Item
+     * 删除本活动的聊天数据
+     *
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.item_delete_message) {
+            if (DataSupport.deleteAll(PushMessage.class, "activityId = ?", activity.getId()) != 0) {
+                ToastHelper.get().showShort("清理成功");
+                EventBus.getDefault().post(new Event.ClearChat());
+            }
+        }
+        return false;
     }
 
     /**
@@ -689,5 +735,6 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private void addQuestion() {
         start(ActivityQuestionListFragment.newInstance(activity));
     }
+
 
 }

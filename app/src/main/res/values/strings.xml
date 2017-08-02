@@ -380,6 +380,7 @@
     <string name="add_avator_success">添加头像成功</string>
     <string name="update_avator">上传头像</string>
     <string name="recommend_to_friend">扫一扫推荐好友</string>
+    <string name="item_delete_message">清空聊天记录</string>
 
 
     <!--个人消息设置-->

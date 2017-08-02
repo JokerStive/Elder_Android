@@ -42,6 +42,16 @@ public class ActivityDetailPresenter extends RxPresenter<ActivityDetailContact.V
                     public void _next(Object object) {
                         view.sucJoinActivity();
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        int[] errorCode = {415};
+                        String[] errorMessage = {
+                                "您不能加入该活动，请刷新后再试",
+                        };
+                        super.onError(e, errorCode, errorMessage);
+                    }
                 }));
     }
 

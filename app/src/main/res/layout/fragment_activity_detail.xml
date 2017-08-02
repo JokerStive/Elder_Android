@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -329,8 +328,8 @@
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
                 android:text="@string/join"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/red2" />
+                android:textColor="@color/red2"
+                android:textSize="@dimen/sp_14" />
 
 
             <android.support.v7.widget.AppCompatButton
@@ -343,8 +342,8 @@
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
                 android:text="@string/question"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
 
         </LinearLayout>
     </LinearLayout>
@@ -370,4 +369,14 @@
         android:gravity="center"
         android:text="@string/activity_detail"
         android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_title_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/tv_title_name"
+        android:padding="@dimen/dp_10"
+        android:src="@drawable/more" />
 </RelativeLayout>
