@@ -25,8 +25,8 @@ public class FilterTabView extends LinearLayout {
     private TextView tvTitle;
     private int tabIconDUp = -1;
     private int tabIconDownChecked = -1;
-    private int mTitleColor = 0xff000000;
-    private int mTitleColorChecked = getResources().getColor(R.color.red);
+    private int mTitleColor = getResources().getColor(R.color.gray2);
+    private int mTitleColorChecked = getResources().getColor(R.color.filter_checked_color);
     private float mTitleSize = -1;
     private int tabIconDown = -1;
     private Drawable iconDownDrawable;

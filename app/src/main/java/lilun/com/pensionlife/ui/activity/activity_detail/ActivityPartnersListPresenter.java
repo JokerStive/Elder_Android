@@ -1,7 +1,10 @@
 package lilun.com.pensionlife.ui.activity.activity_detail;
 
+import android.app.Activity;
+
 import java.util.List;
 
+import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -15,6 +18,8 @@ import lilun.com.pensionlife.net.RxSubscriber;
 
 public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailContact.VPartner>
         implements ActivityDetailContact.PPartner {
+
+
     @Override
     public void queryPartners(String activityId, String filter, int skip) {
         addSubscribe(NetHelper.getApi()
@@ -42,10 +47,10 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
                 .deleteOfPartners(activityId, userId)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Account>() {
+                .subscribe(new RxSubscriber<Account>(getActivity()) {
                     @Override
                     public void _next(Account account) {
-                        view.successDeletePartners(userId,userName);
+                        view.successDeletePartners(userId, userName);
                     }
                 }));
     }
@@ -56,10 +61,10 @@ public class ActivityPartnersListPresenter extends RxPresenter<ActivityDetailCon
                 .addBlockUser(activityId, userId)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>() {
+                .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        view.successDeletePartners(userId,userName);
+                        view.successDeletePartners(userId, userName);
                     }
                 }));
     }

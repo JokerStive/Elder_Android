@@ -34,11 +34,11 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
     @Override
     protected void convert(BaseViewHolder help, Organization organization) {
         Organization.DescriptionBean description = organization.getDescription();
-        RatingBar ratingBar = help.getView(R.id.rb_bar);
+        RatingBar ratingBar = help.getView(R.id.rb_score);
         ratingBar.setRating(description.getRanking());
 
-        UIUtils.setBold(help.getView(R.id.tv_item_title));
-        help.setText(R.id.tv_item_title, organization.getName())
+        UIUtils.setBold(help.getView(R.id.tv_product_title));
+        help.setText(R.id.tv_product_title, organization.getName())
                 .setText(R.id.tv_item_address, description.getAdress());
 
         help.setOnClickListener(R.id.ll_bg,v -> {

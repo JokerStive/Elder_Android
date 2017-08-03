@@ -27,7 +27,7 @@ public class OrganizationEdusAdapter extends QuickAdapter<ElderEdus> {
 
     @Override
     protected void convert(BaseViewHolder help, ElderEdus edu) {
-        help.setText(R.id.tv_item_title, edu.getTitle())
+        help.setText(R.id.tv_product_title, edu.getTitle())
                 .setText(R.id.tv_item_address, edu.getAddress())
                 .setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(),0))
                 .setOnClickListener(R.id.ll_module_background, v -> {

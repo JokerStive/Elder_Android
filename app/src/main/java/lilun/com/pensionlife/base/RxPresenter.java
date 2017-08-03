@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.base;
 
+import android.app.Activity;
+
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -32,8 +34,19 @@ public class RxPresenter<T> implements IPresenter<T> {
 
     @Override
     public void unBindView() {
-        view=null;
+        view = null;
         unSubscribe();
     }
 
+    /**
+     * 获取到当前View所在的Activity
+     */
+    public Activity getActivity() {
+        if (view instanceof BaseFragment) {
+            return ((BaseFragment) view).getActivity();
+        } else if (view instanceof BaseActivity) {
+            return (BaseActivity) view;
+        }
+        return null;
+    }
 }

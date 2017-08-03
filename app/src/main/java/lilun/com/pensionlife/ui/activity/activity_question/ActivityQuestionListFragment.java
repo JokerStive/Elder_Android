@@ -18,13 +18,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -109,6 +113,7 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
     @Override
     protected void initData() {
         super.initData();
+        skip = 0;
         getReplyList(skip);
     }
 
@@ -130,8 +135,37 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
             }
         });
 
+        nestedReplyAdapter = new NestedReplyAdapter(this, new ArrayList<>(), isMaster, mActivity.getCreatorName(), new NestedReplyAdapter.AnswerListener() {
+            @Override
+            public void OnClickAnswer(NestedReply nestedReply, int position) {
+                Log.d("zp", position + "");
+                inputSendPopupWindow = new InputSendPopupWindow(getContext());
+                inputSendPopupWindow.setOnSendListener(new InputSendView.OnSendListener() {
+                    @Override
+                    public void send(String sendStr) {
+                        Log.d("zp", sendStr);
+                        mPresenter.addAnswer(mActivity.getId(), nestedReply.getQuestion().getId(), sendStr, position);
+                    }
+                });
+                //设置弹出窗体需要软键盘，
+                inputSendPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+                //再设置模式，和Activity的一样，覆盖。
+                inputSendPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                inputSendPopupWindow.showAtLocation(mRecyclerView, Gravity.BOTTOM, 0, 0);
+            }
+        });
+        nestedReplyAdapter.setOnLoadMoreListener(() -> {
+            getReplyList(skip);
+        });
+        nestedReplyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        nestedReplyAdapter.openLoadMore(Config.defLoadDatCount, true);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(5));
+
+
+        mRecyclerView.setAdapter(nestedReplyAdapter);
+
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -163,7 +197,7 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
 
     public void getReplyList(int skip) {
         String filter = "";
-        mPresenter.replyList(mActivity.getId(), filter, 0);
+        mPresenter.replyList(mActivity.getId(), filter, skip);
     }
 
     @Override
@@ -192,7 +226,7 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
     @Override
     public void showQuestion(OrganizationReply question) {
         if (nestedReplyAdapter != null) {
-          //  nestedReplyAdapter.add();
+            //  nestedReplyAdapter.add();
             nestedReplyAdapter.add(0, new NestedReply(question, null));
             mRecyclerView.scrollToPosition(0);
         }
@@ -206,36 +240,23 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
         boolean isLoadMore = skip != 0;
 
         skip += nestedReplies.size();
-        if (skip == 0) {
-            nullData.setVisibility(View.VISIBLE);
-        } else
-            nullData.setVisibility(View.GONE);
+
 
         if (nestedReplyAdapter == null) {
-            nestedReplyAdapter = new NestedReplyAdapter(this, nestedReplies, isMaster, mActivity.getCreatorName(), new NestedReplyAdapter.AnswerListener() {
-                @Override
-                public void OnClickAnswer(NestedReply nestedReply, int position) {
-                    Log.d("zp", position + "");
-                    inputSendPopupWindow = new InputSendPopupWindow(getContext());
-                    inputSendPopupWindow.setOnSendListener(new InputSendView.OnSendListener() {
-                        @Override
-                        public void send(String sendStr) {
-                            Log.d("zp", sendStr);
-                            mPresenter.addAnswer(mActivity.getId(), nestedReply.getQuestion().getId(), sendStr, position);
-                        }
-                    });
-                    //设置弹出窗体需要软键盘，
-                    inputSendPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-                    //再设置模式，和Activity的一样，覆盖。
-                    inputSendPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                    inputSendPopupWindow.showAtLocation(mRecyclerView, Gravity.BOTTOM, 0, 0);
-                }
-            });
-            mRecyclerView.setAdapter(nestedReplyAdapter);
+
         } else if (isLoadMore) {
             nestedReplyAdapter.addAll(nestedReplies);
         } else {
             nestedReplyAdapter.replaceAll(nestedReplies);
+        }
+        nestedReplyAdapter.notifyDataChangedAfterLoadMore(true);
+        if (skip == 0) {
+            nullData.setVisibility(View.VISIBLE);
+        } else {
+            nullData.setVisibility(View.GONE);
+            if (nestedReplies.size() < nestedReplyAdapter.getPageSize()) {
+                nestedReplyAdapter.notifyDataChangedAfterLoadMore(false);
+            }
         }
     }
 }

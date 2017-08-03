@@ -30,7 +30,7 @@
             tools:text="尼玛" />
 
         <TextView
-            android:id="@+id/tv_mobile"
+            android:id="@+id/tv_product_price"
             style="@style/tv_small_ellipsize"
             tools:text="132222222" />
     </LinearLayout>

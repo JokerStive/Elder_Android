@@ -72,7 +72,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.iv_call)
     ImageView ivCall;
 
-    @Bind(R.id.tv_mobile)
+    @Bind(R.id.tv_product_price)
     TextView tvPrice;
 
     @Bind(R.id.tv_introduction)
@@ -84,7 +84,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.tv_enter_rank)
     TextView tvEnterRank;
 
-    @Bind(R.id.rb_bar)
+    @Bind(R.id.rb_score)
     RatingBar rbBar;
 
     @Bind(R.id.tv_sophisticated)

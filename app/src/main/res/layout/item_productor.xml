@@ -31,7 +31,7 @@
             tools:text="下水道堵了下水道堵了下水道堵了" />
 
         <TextView
-            android:id="@+id/tv_mobile"
+            android:id="@+id/tv_product_price"
             style="@style/tv_normal_ellipsize"
             android:layout_marginLeft="@dimen/dp_12"
             android:textSize="@dimen/sp_14"
@@ -48,7 +48,7 @@
 
 
         <RatingBar
-            android:id="@+id/rb_bar"
+            android:id="@+id/rb_score"
             style="@style/ratingBarr_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
