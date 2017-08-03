@@ -123,11 +123,11 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         tvChangeStatus.setOnClickListener(this);
 
         //标题加粗
-        tvTitle = (TextView) mHeadView.findViewById(R.id.tv_item_title);
+        tvTitle = (TextView) mHeadView.findViewById(R.id.tv_product_title);
         UIUtils.setBold(tvTitle);
 
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
-        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
+        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_product_price);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
         //内容

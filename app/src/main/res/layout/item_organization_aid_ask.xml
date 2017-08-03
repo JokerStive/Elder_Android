@@ -37,7 +37,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_item_title"
+            android:id="@+id/tv_product_title"
             style="@style/tv_normal_ellipsize"
             android:maxLength="10"
             android:maxLines="1"

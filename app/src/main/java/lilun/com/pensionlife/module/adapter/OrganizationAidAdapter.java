@@ -54,7 +54,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
         }
 
         //补贴
-        TextView tvItemPrice = help.getView(R.id.tv_mobile);
+        TextView tvItemPrice = help.getView(R.id.tv_product_price);
         tvItemPrice.setText(String.format(App.context.getString(R.string.help_price), aid.getPrice()));
 
         //参与者和时间

@@ -53,7 +53,7 @@ public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
 
 
         helper.setText(R.id.tv_sophisticated, reply.getCreatorName())
-                .setText(R.id.tv_mobile, StringUtils.IOS2ToUTC(reply.getCreatedAt(),0))
+                .setText(R.id.tv_product_price, StringUtils.IOS2ToUTC(reply.getCreatedAt(),0))
                 .setOnClickListener(R.id.tv_agree, v -> {
                     if (listener != null) {
                         if (answerId != null) {

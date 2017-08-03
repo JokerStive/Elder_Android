@@ -53,7 +53,7 @@
         tools:text="2017.3.6" />
 
     <TextView
-        android:id="@+id/tv_mobile"
+        android:id="@+id/tv_product_price"
         style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_sophisticated"
         android:layout_below="@id/tv_desc"
@@ -64,7 +64,7 @@
     <TextView
         style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_sophisticated"
-        android:layout_below="@id/tv_mobile"
+        android:layout_below="@id/tv_product_price"
         android:layout_marginBottom="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_36"
         tools:text="回答" />

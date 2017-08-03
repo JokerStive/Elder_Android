@@ -24,7 +24,7 @@ public class UrgentInfoAdapter extends QuickAdapter<OrganizationAid> {
 
         holder.setText(R.id.tv_address, "位置：" + aid.getAddress())
                 .setText(R.id.tv_time, "发生时间：" + aid.getCreatedAt())
-                .setText(R.id.tv_mobile, "联系电话：" + aid.getMobile())
+                .setText(R.id.tv_product_price, "联系电话：" + aid.getMobile())
                 .setText(R.id.tv_name, "姓名：" + aid.getCreatorName());
     }
 }
