@@ -107,6 +107,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void tokenFailure(Event.TokenFailure event) {
+        App.clear();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
