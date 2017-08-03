@@ -42,7 +42,7 @@
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
                 android:text="@string/version_update_imm"
-           android:textColor="#F7631A"
+                android:textColor="#F7631A"
                 tools:visibility="gone"
                 android:textSize="@dimen/sp_18" />
 
@@ -64,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:textColor="#F7631A"
                 tools:text="証字啊更新"
-                 />
+                />
 
         </RelativeLayout>
 
