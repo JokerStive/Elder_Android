@@ -24,6 +24,7 @@ import java.io.File;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.utils.SystemUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.home.upload.DownLoadCallBack;
 import lilun.com.pensionlife.ui.home.upload.DownLoadService;
 import lilun.com.pensionlife.ui.home.upload.DownNotification;
@@ -119,6 +120,7 @@ public class VersionDialogFragment extends DialogFragment {
         String apkName = url.substring(url.lastIndexOf("/"));
         intent.putExtra("url", apkName);
         getActivity().startService(intent);
+        ToastHelper.get().showShort("安装包正在后台下载中,请稍候");
         dismiss();
     }
 
