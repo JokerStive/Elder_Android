@@ -2,6 +2,7 @@ package lilun.com.pensionlife.net;
 
 import java.util.List;
 
+import dalvik.annotation.TestTargetClass;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
@@ -142,14 +143,6 @@ public interface ApiService {
 
     @GET("OrganizationProducts")
     Observable<Response<List<OrganizationProduct>>> getProducts(@Query("filter") String filter);
-
-
-    /**
-     * 获取某一个product
-     */
-
-    @GET("OrganizationProducts/{id}")
-    Observable<Response<OrganizationProduct>> getProduct(@Path("id") String productId,@Query("filter") String filter);
 
 
     /**
@@ -622,7 +615,7 @@ public interface ApiService {
 
 
     @GET("Accounts/getChildLocation")
-    Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName, @Query("skipNumber") int skipNumber, @Query("limitNumber") int limitNumber);
+    Observable<Response<List<Area>>> getChildLocation(@Query("locationName") String locationName,@Query("skipNumber") int skipNumber,@Query("limitNumber") int limitNumber);
 
     /**
      * 1.1.5以前使用，1.1.6 已弃用

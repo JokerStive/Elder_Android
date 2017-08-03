@@ -36,7 +36,7 @@ public class InfoDetailFragment extends BaseFragment {
     ImageView ivBack;
     @Bind(R.id.tv_title)
     TextView tvTitle;
-    @Bind(R.id.tv_product_price)
+    @Bind(R.id.tv_mobile)
     TextView tvMobile;
     @Bind(R.id.tv_content_title)
     TextView tvContentTitle;

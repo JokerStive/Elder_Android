@@ -132,7 +132,7 @@
 
         <activity
             android:name="lilun.com.pensionlife.ui.lbs.UrgentAidInfoActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.FloatActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />

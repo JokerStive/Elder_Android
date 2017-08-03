@@ -68,7 +68,7 @@
                 android:textColor="@color/red"/>
 
             <TextView
-                android:id="@+id/tv_product_price"
+                android:id="@+id/tv_mobile"
                 style="@style/tv_small_ellipsize"
                 android:layout_below="@id/tv_phone"
                 android:layout_marginTop="@dimen/dp_4"
@@ -78,7 +78,7 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_product_price"
+                android:layout_below="@id/tv_mobile"
                 android:layout_marginTop="@dimen/dp_14"
                 android:orientation="vertical">
 
@@ -166,7 +166,7 @@
                 </LinearLayout>
 
                 <RatingBar
-                    android:id="@+id/rb_score"
+                    android:id="@+id/rb_bar"
                     style="@style/ratingBarr_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

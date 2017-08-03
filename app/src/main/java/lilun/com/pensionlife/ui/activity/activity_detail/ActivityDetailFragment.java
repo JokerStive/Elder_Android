@@ -133,7 +133,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     CircleImageView civAccountAvatar;
     @Bind(R.id.actv_my_evaluate)
     AppCompatTextView actvMyEvaluate;
-    @Bind(R.id.rb_score)
+    @Bind(R.id.rb_bar)
     RatingBar rbEvaluate;
     @Bind(R.id.ll_question_list)
     LinearLayout llQuestionList;

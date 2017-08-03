@@ -43,7 +43,7 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
                 e.printStackTrace();
             }
         }
-        help.setText(R.id.tv_product_title, info.getTitle())
+        help.setText(R.id.tv_item_title, info.getTitle())
                 .setText(R.id.tv_item_address, item.getAddress())
         ;
 

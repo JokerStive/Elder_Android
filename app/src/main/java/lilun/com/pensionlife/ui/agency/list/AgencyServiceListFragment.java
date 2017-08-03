@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -26,9 +27,9 @@ import lilun.com.pensionlife.module.bean.ConditionOption;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
-import lilun.com.pensionlife.widget.DividerDecoration;
+import lilun.com.pensionlife.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pensionlife.widget.FilterInputRangeView;
+import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterView;
 
@@ -67,10 +68,12 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
 
     /**
+     *
      * @param title
-     * @param categoryId 组织id  或 类型
-     * @param type       0-查询区域服务   1-查询商家所有服务
+     * @param categoryId  组织id  或 类型
+     * @param type     0-查询区域服务   1-查询商家所有服务
      * @return
+     *
      */
     public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
         AgencyServiceListFragment fragment = new AgencyServiceListFragment();
@@ -136,7 +139,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, 1, App.context.getResources().getColor(R.color.gray)));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -171,7 +174,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
                 recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
                 NormalFilterAdapter adapter = new NormalFilterAdapter(conditionOption);
                 adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
-                    filterView.setTabText(position == 0 ? "智能排序" : title, position == 0);
+                    filterView.setTabText(position == 0 ? "星级" : title, position == 0);
                     productFilter.where.setScore(null);
                     if (whereKey.equals("score") && whereValue != null) {
                         productFilter.where.setScore(Integer.parseInt(whereValue));
@@ -184,7 +187,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         }
 
         //价格筛选
-        filterTitles.add("筛选");
+        filterTitles.add("价格");
         FilterInputRangeView priceRangeView = new FilterInputRangeView(mContent, "价格");
         priceRangeView.setOnConfirmListener((range, show, isDef) -> {
             productFilter.where.setPrice(null);
@@ -221,7 +224,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setCategoryId(mCategoryId);
             productFilter.where.getAreaIds().setInq(User.levelIds(true));
 //            if (mCategoryId.contains(Constants.service_residentail)) {
-            //如果居家服务，就要服务区域是当前组织的层级id
+                //如果居家服务，就要服务区域是当前组织的层级id
 //            }
 //            if (!User.isCustomer()) {
 //                productFilter.where.setCreatorId(User.getUserId());
@@ -235,7 +238,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
         if (mAgencyServiceAdapter != null) {
             mAgencyServiceAdapter.setOnItemClickListener((product) -> {
-                start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK);
+                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
             });
             mAgencyServiceAdapter.setEmptyView();
         }

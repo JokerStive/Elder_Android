@@ -58,7 +58,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
     @Bind(R.id.tv_name)
     TextView tvName;
 
-    @Bind(R.id.rb_score)
+    @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
     @Bind(R.id.tv_price)
