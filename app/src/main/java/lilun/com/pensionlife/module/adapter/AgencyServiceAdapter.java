@@ -32,7 +32,7 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
     @Override
     protected void convert(BaseViewHolder help, OrganizationProduct product) {
         RatingBar ratingBar = help.getView(R.id.rb_bar);
-        ratingBar.setRating(product.getScore());
+        ratingBar.setRating(product.getScore()==0?5:0);
 
         UIUtils.setBold(help.getView(R.id.tv_item_title));
         help.setText(R.id.tv_item_title, product.getTitle())
