@@ -130,7 +130,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_agency_detail;
+        return R.layout.fragment_provider_detail;
     }
 
     @Override

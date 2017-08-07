@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_bottom_menu"
-        android:layout_below="@id/titleBar">
+        android:layout_below="@id/titleBar"
+        android:layout_marginBottom="@dimen/dp_10">
 
 
         <android.support.v4.widget.NestedScrollView
@@ -35,7 +36,7 @@
                 <lilun.com.pensionlife.widget.slider.BannerPager
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="218dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,28 +46,28 @@
 
                     <TextView
                         android:id="@+id/tv_product_title"
-                        style="@style/tv_normal_ellipsize"
+                        style="@style/tv_normal"
                         android:layout_width="match_parent"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_16"
                         tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />
 
                     <TextView
                         android:id="@+id/tv_product_title_extra"
-                        style="@style/tv_normal_ellipsize"
+                        style="@style/tv_normal"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:maxLines="1"
+                        android:maxLines="3"
                         android:textColor="#a9a9a9"
-                        android:textSize="@dimen/sp_14"
+                        android:textSize="@dimen/sp_15"
                         tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:orientation="horizontal">
 
                         <RatingBar
@@ -85,7 +86,7 @@
                             android:layout_marginLeft="@dimen/dp_5"
                             android:maxLines="1"
                             android:textColor="#FF9D09"
-                            android:textSize="@dimen/sp_12"
+                            android:textSize="@dimen/sp_15"
                             tools:text="4.6" />
 
                     </LinearLayout>
@@ -101,14 +102,14 @@
                             style="@style/tv_small_ellipsize"
                             android:text="¥"
                             android:textColor="#FF9D09"
-                            android:textSize="@dimen/sp_14" />
+                            android:textSize="@dimen/sp_15" />
 
                         <TextView
                             android:id="@+id/tv_product_price"
                             style="@style/tv_small_ellipsize"
                             android:layout_marginLeft="@dimen/dp_2"
                             android:textColor="#FF9D09"
-                            android:textSize="@dimen/sp_18"
+                            android:textSize="@dimen/sp_16"
                             tools:text="998.00" />
                     </LinearLayout>
 
@@ -116,7 +117,10 @@
 
                 <View
                     style="@style/line_gray"
-                    android:layout_height="2dp" />
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="#f5f5f9" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,9 +133,9 @@
                         style="@style/tv_normal_ellipsize"
                         android:layout_width="match_parent"
                         android:maxLines="1"
-                        android:textColor="#a9a9a9"
-                        android:textSize="@dimen/sp_14"
-                        tools:text="服务方式：线上咨询，线下服务" />
+                        android:textColor="#666666"
+                        android:textSize="@dimen/sp_16"
+                        android:text="服务方式：线下服务" />
 
                     <TextView
                         android:id="@+id/tv_product_area"
@@ -139,50 +143,34 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/dp_5"
                         android:maxLines="1"
-                        android:textColor="#a9a9a9"
-                        android:textSize="@dimen/sp_14"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/sp_16"
                         tools:text="服务范围：重庆、四川" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+
+                    <TextView
+                        android:id="@+id/tv_product_mobile"
+                        style="@style/tv_normal_ellipsize"
+                        android:layout_width="wrap_content"
                         android:layout_marginTop="@dimen/dp_2"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            style="@style/tv_normal_ellipsize"
-                            android:layout_width="wrap_content"
-
-                            android:gravity="center_vertical"
-                            android:maxLines="1"
-                            android:text="服务热线："
-                            android:textColor="#a9a9a9"
-                            android:textSize="@dimen/sp_14" />
-
-                        <TextView
-                            android:id="@+id/tv_product_mobile"
-                            style="@style/tv_normal_ellipsize"
-                            android:layout_width="wrap_content"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:drawableRight="@drawable/call"
-                            android:gravity="center_vertical"
-                            android:maxLines="1"
-                            android:textColor="#a9a9a9"
-                            android:textSize="@dimen/sp_14"
-                            tools:text="13569687542" />
-                    </LinearLayout>
+                        android:drawablePadding="@dimen/dp_10"
+                        android:drawableRight="@drawable/call"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:textColor="#17c5b4"
+                        android:textSize="@dimen/sp_16"
+                        tools:text="13569687542" />
                 </LinearLayout>
 
                 <View
                     style="@style/line_gray"
-                    android:layout_height="10dp" />
+                    android:layout_height="10dp"
+                    android:background="#f5f5f9" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.59"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingRight="@dimen/dp_10"
@@ -191,12 +179,11 @@
                     <TextView
                         style="@style/tv_normal_ellipsize"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:gravity="center_horizontal"
+                        android:gravity="center"
                         android:maxLines="1"
                         android:text="服务内容"
-                        android:textColor="#333333"
-                        android:textSize="@dimen/sp_16" />
+                        android:textColor="#000000"
+                        android:textSize="@dimen/sp_18" />
 
 
                     <TextView
@@ -205,17 +192,17 @@
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="center_horizontal"
                         android:maxLines="1"
-                        android:text="--- : CONTENT :---"
-                        android:textColor="#a9a9a9"
-                        android:textSize="@dimen/sp_14" />
+                        android:text="———— ● CONTENT ● ————"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/sp_11" />
 
                     <TextView
                         android:id="@+id/tv_product_content"
                         style="@style/tv_normal"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:textColor="#a9a9a9"
-                        android:textSize="@dimen/sp_14"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/sp_16"
                         tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />
 
 
@@ -227,14 +214,12 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
-
     <LinearLayout
         android:id="@+id/ll_bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_rect_gray_corner_5"
+        android:background="@drawable/shape_rect_write_strock"
         android:orientation="horizontal">
 
         <TextView
@@ -242,37 +227,45 @@
             style="@style/tv_normal"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/shape_rect_write_strock"
+            android:drawableTop="@drawable/enter_provider"
             android:gravity="center"
+            android:paddingTop="@dimen/dp_10"
             android:text="进入商家"
             android:textColor="#a9a9a9"
             android:textSize="@dimen/sp_12" />
 
+        <View
+            style="@style/line_gray"
+            android:layout_width="1dp"
+            android:layout_height="match_parent" />
+
         <TextView
+            android:id="@+id/tv_bottom_price"
             style="@style/tv_normal"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:drawableTop="@drawable/price"
             android:gravity="center"
-            android:text="价格：998"
+            android:paddingTop="@dimen/dp_10"
             android:textColor="#a9a9a9"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_12"
+            tools:text="价格：998" />
 
         <TextView
             android:id="@+id/tv_reservation"
             style="@style/tv_normal"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="@color/filter_checked_color"
+            android:background="#108ee9"
             android:gravity="center"
             android:paddingBottom="@dimen/dp_5"
             android:paddingTop="@dimen/dp_5"
             android:text="立即预约"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_18" />
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

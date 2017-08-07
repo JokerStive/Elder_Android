@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f4f4f4"
+    android:background="#ffffff"
     android:orientation="vertical">
 
 
@@ -12,111 +12,135 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/confirm_order" />
+        app:title="立即预约" />
 
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/titleBar"
-        android:orientation="vertical"
-        android:padding="@dimen/dp_8">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar">
 
-        <TextView
-            style="@style/tv_small"
-            android:layout_marginLeft="@dimen/dp_2"
-            android:layout_marginTop="@dimen/dp_14"
-            android:drawableLeft="@drawable/pension_agency_icon"
-            android:drawablePadding="@dimen/dp_4"
-            android:text="@string/def_contract" />
-
-        <RelativeLayout
-            android:id="@+id/rl_check_contact"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_bg"
-            android:padding="@dimen/dp_10">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <View
+                style="@style/line_gray"
+                android:layout_height="10dp"
+                android:background="#f5f5f9" />
 
-            <TextView
-                android:id="@+id/tv_name"
-                style="@style/tv_small_ellipsize"
-                tools:text="张三 ( 男 )" />
-
-            <TextView
-                android:id="@+id/tv_health_status"
-                style="@style/tv_small_ellipsize"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                tools:text="半自理" />
-
-            <TextView
-                android:id="@+id/tv_phone"
-                style="@style/tv_small_ellipsize"
-                android:layout_below="@id/tv_name"
-                android:layout_marginTop="@dimen/dp_8"
-                tools:text="3.18" />
-
-            <TextView
-                android:id="@+id/tv_health_desc"
+            <RelativeLayout
+                android:id="@+id/rl_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_phone"
-                android:layout_marginTop="@dimen/dp_8"
-                android:maxLines="3"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_14"
-                tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
-                android:layout_toLeftOf="@+id/imageView"
-                android:layout_toStartOf="@+id/imageView" />
+                android:padding="@dimen/sp_15">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/next"
-                android:id="@+id/imageView" />
+                <ImageView
+                    android:id="@+id/iv_product_image"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_80"
+                    android:src="@drawable/icon_def" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_product_title"
+                    style="@style/tv_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_toRightOf="@id/iv_product_image"
+                    android:maxLines="1"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="为您提供以房养老业务" />
+
+                <TextView
+                    android:id="@+id/tv_product_area"
+                    style="@style/tv_normal"
+                    android:layout_below="@id/tv_product_title"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_toRightOf="@id/iv_product_image"
+                    android:maxLines="2"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="服务范围:重庆路小区" />
 
 
-        <TextView
-            style="@style/tv_small"
-            android:layout_marginLeft="@dimen/dp_2"
-            android:layout_marginTop="@dimen/dp_16"
-            android:drawableLeft="@drawable/pension_agency_icon"
-            android:drawablePadding="@dimen/dp_4"
-            android:text="@string/reservation_time" />
+                <TextView
+                    android:id="@+id/tv_product_price"
+                    style="@style/tv_normal"
 
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/tv_product_title"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_toRightOf="@id/iv_product_image"
+                    android:gravity="right"
+                    android:maxLines="2"
+                    android:textColor="#fe620f"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="￥998.00" />
 
-        <RelativeLayout
-            android:id="@+id/rl_reservation_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_bg"
-            android:padding="@dimen/dp_10">
+            </RelativeLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="10dp"
+                android:background="#f5f5f9" />
 
             <TextView
-                style="@style/tv_small_ellipsize"
-                android:layout_centerVertical="true"
-                android:text="@string/reservation_time" />
-
-            <TextView
-                android:id="@+id/tv_reservation_time"
-                style="@style/tv_small_ellipsize"
+                style="@style/tv_normal"
                 android:layout_width="match_parent"
-                android:layout_alignParentRight="true"
-                android:drawablePadding="@dimen/dp_10"
-                android:drawableRight="@drawable/next"
-                android:gravity="right"
-                android:hint="点击选择预约日期" />
+                android:padding="@dimen/dp_16"
+                android:text="预约服务信息"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_15" />
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="1dp"
+                android:background="#f5f5f9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/tv_normal"
+                    android:layout_margin="@dimen/dp_16"
+                    android:text="姓名"
+                    android:textSize="@dimen/sp_16" />
 
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_contact_name"
+                    style="@style/tv_normal"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/dp_16"
+                    android:padding="@dimen/dp_16"
+                    android:textSize="@dimen/sp_16"
+                    tools:text="测试员乐乐" />
 
-    </LinearLayout>
+                <View
+                    style="@style/line_gray"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_contact_name"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:background="#f5f5f9" />
 
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_below=""
+                    android:text="联系方式"
+                    android:textSize="@dimen/sp_16" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btn_confirm"

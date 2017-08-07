@@ -10,6 +10,7 @@
     <dimen name="tv_size">20sp</dimen>
     <dimen name="tv_size_small">16sp</dimen>
     <dimen name="tv_size_small_x">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
 
 
     <dimen name="push_bar_height">170dp</dimen>
@@ -38,6 +39,7 @@
     <dimen name="left_menu">225dp</dimen>
     <dimen name="sp_24">24sp</dimen>
     <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
     <dimen name="ivatar_choice_show_WH">100dp</dimen>
     <dimen name="dp_20">20dp</dimen>
     <dimen name="dp_30">30dp</dimen>
