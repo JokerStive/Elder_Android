@@ -112,11 +112,22 @@ public class AddServiceInfoFragment extends BaseFragment {
     }
 
 
-    public static AddServiceInfoFragment newInstance(Contact  contact, boolean canEdit) {
+    public static AddServiceInfoFragment newInstance(Contact contact, boolean canEdit) {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("canEdit", canEdit);
         bundle.putSerializable("contact", contact);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    public static AddServiceInfoFragment newInstance(Contact contact, String productCategoryId, boolean canEdit) {
+        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("canEdit", canEdit);
+        bundle.putSerializable("contact", contact);
+        bundle.putString("productCategoryId", productCategoryId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -194,14 +205,18 @@ public class AddServiceInfoFragment extends BaseFragment {
 
             etReservationPhone.setText(mContact.getMobile());
 
-            if (expandKeys != null && expandKeys.size() >= 3) {
-                Map<String, String> extend = mContact.getExtend();
-                if (extend != null) {
-                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
-                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
-                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
-                }
+//            if (expandKeys != null && expandKeys.size() >= 3) {
+            Map<String, String> extend = mContact.getExtend();
+            if (extend != null) {
+//                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
+//                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
+//                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
+
+                tvBirthday.setText(extend.get("birthday"));
+                tvHealthStatus.setText(extend.get("healthyDescription"));
+                etHealthDesc.setText(extend.get("healthyStatus"));
             }
+//            }
 
         }
     }
@@ -369,11 +384,11 @@ public class AddServiceInfoFragment extends BaseFragment {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
         picker.setDateRangeStart(1900, 1, 1);
         if (App.widthDP > 820) {
-            picker.setTextSize(12 *2);
-            picker.setCancelTextSize(12 *2);
-            picker.setSubmitTextSize(12 *2);
-            picker.setTopPadding(15*3);
-            picker.setTopHeight(40*2);
+            picker.setTextSize(12 * 2);
+            picker.setCancelTextSize(12 * 2);
+            picker.setSubmitTextSize(12 * 2);
+            picker.setTopPadding(15 * 3);
+            picker.setTopHeight(40 * 2);
         }
         setPickerConfig(picker);
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
@@ -389,11 +404,11 @@ public class AddServiceInfoFragment extends BaseFragment {
     private void optionPicker(String[] options, String selectItem, TextView view) {
         OptionPicker picker = new OptionPicker(_mActivity, options);
         if (App.widthDP > 820) {
-            picker.setTextSize(12 *2);
-            picker.setCancelTextSize(12 *2);
-            picker.setSubmitTextSize(12 *2);
-            picker.setTopPadding(15*3);
-            picker.setTopHeight(40*2);
+            picker.setTextSize(12 * 2);
+            picker.setCancelTextSize(12 * 2);
+            picker.setSubmitTextSize(12 * 2);
+            picker.setTopPadding(15 * 3);
+            picker.setTopHeight(40 * 2);
         }
         picker.setSelectedItem(selectItem);
         setPickerConfig(picker);
