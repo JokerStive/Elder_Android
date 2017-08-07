@@ -151,7 +151,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         tvPrice.setText(String.format(getString(R.string.format_price), mProduct.getPrice()));
         tvContent.setText(StringUtils.filterNull(mProduct.getContext()));
 
-        rbBar.setRating(mProduct.getScore());
+        rbBar.setRating(mProduct.getScore() == 0 ? 5 : 0);
 
         tvProviderName.setText(agencyName);
 
