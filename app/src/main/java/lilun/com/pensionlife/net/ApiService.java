@@ -10,6 +10,7 @@ import lilun.com.pensionlife.module.bean.AidDetail;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderEdusColleage;
@@ -214,6 +215,14 @@ public interface ApiService {
     @GET("OrganizationRanks")
     Observable<Response<List<Rank>>> getRanks(@Query("filter") String filter);
 
+
+
+    /**
+     * 获取评价的条数
+     */
+
+    @GET("OrganizationRanks/count")
+    Observable<Response<Count>> getRanksCount(@Query("filter") String filter);
 
     /**
      * 获取某个订单

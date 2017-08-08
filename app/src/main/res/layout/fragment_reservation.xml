@@ -132,7 +132,6 @@
 
                 <TextView
                     style="@style/tv_normal"
-                    android:layout_below=""
                     android:text="联系方式"
                     android:textSize="@dimen/sp_16" />
 

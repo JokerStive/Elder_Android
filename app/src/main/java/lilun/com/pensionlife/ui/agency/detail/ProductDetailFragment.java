@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -22,16 +26,24 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
+import lilun.com.pensionlife.module.adapter.ProductRankAdapter;
+import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
+import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
@@ -75,14 +87,28 @@ public class ProductDetailFragment extends BaseFragment {
     @Bind(R.id.tv_product_mobile)
     TextView tvProductMobile;
 
-    @Bind(R.id.tv_product_content)
-    TextView tvProductContent;
+    @Bind(R.id.wb_product_content)
+    WebView wbProductContent;
 
     @Bind(R.id.tv_bottom_price)
     TextView tvBottomPrice;
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout swipeLayout;
+
+    @Bind(R.id.tv_rank_count)
+    TextView tvRankCount;
+
+    @Bind(R.id.rv_rank)
+    RecyclerView rvRank;
+
+    @Bind(R.id.tv_all_rank)
+    TextView tvAllRank;
+    @Bind(R.id.ll_rank)
+    LinearLayout llRank;
+    @Bind(R.id.tv_reservation)
+    TextView tvReservation;
+
     private String mProductId;
     private OrganizationProduct mProduct;
 
@@ -113,8 +139,15 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
+
         titleBar.setOnBackClickListener(this::pop);
+
         swipeLayout.setEnabled(false);
+
+        UIUtils.setBold(tvRankCount);
+
+        rvRank.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
+        rvRank.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, 1, App.context.getResources().getColor(R.color.gray)));
     }
 
 
@@ -122,30 +155,53 @@ public class ProductDetailFragment extends BaseFragment {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         getProduct();
+        get2Rank();
+        getRankCount();
     }
 
+
     private void getProduct() {
-//        if (!swipeLayout.isRefreshing()) {
-//            swipeLayout.setRefreshing(true);
-//        }
         NetHelper.getApi().getProduct(mProductId, null)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<OrganizationProduct>(getActivity()) {
                     @Override
                     public void _next(OrganizationProduct product) {
-//                        swipeLayout.setRefreshing(false);
                         showProductDetail(product);
                     }
-
-//                    @Override
-//                    public void onNext(OrganizationProduct organizationProduct) {
-//                        super.onNext(organizationProduct);
-//                        swipeLayout.setRefreshing(false);
-//                    }
                 });
 
     }
+
+    private void get2Rank() {
+        String filter = "{\"limit\":\"2\",\"order\":\"createdAt DESC\",\"where\":{\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + mProductId + "\"}}";
+        NetHelper.getApi()
+                .getRanks(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Rank>>() {
+                    @Override
+                    public void _next(List<Rank> ranks) {
+                        show2Rank(ranks);
+                    }
+                });
+    }
+
+
+    private void getRankCount() {
+        String filter = "{\"whatId\":\"" + mProductId + "\"}";
+        NetHelper.getApi()
+                .getRanksCount(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Count>() {
+                    @Override
+                    public void _next(Count count) {
+                        showRankCount(count.getCount());
+                    }
+                });
+    }
+
 
     private void showProductDetail(OrganizationProduct product) {
 
@@ -172,23 +228,46 @@ public class ProductDetailFragment extends BaseFragment {
         tvScore.setText((double) product.getScore() + "");
 
         //价格
-        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()) + "");
+        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()) + "/次");
 
         //服务方式
-        tvProductType.setText(String.format("服务方式: %1$s", product.getContextType()));
+        tvProductType.setText("服务方式: 线下服务");
 
         //服务范围
-        tvProductArea.setText(String.format("服务范围: %1$s", "待定"));
+        showProductArea();
+
 
         //服务电话
         tvProductMobile.setText(Html.fromHtml("服务热线: <font color='#17c5b4'>" + product.getMobile() + "</font>"));
 
         //内容
-        tvProductContent.setText(product.getContext());
+        wbProductContent.getSettings().setJavaScriptEnabled(true);
+        wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
 
         //底部价格
         tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + product.getPrice() + "</font>"));
 
+    }
+
+    /**
+     * 服务范围
+     */
+    private void showProductArea() {
+        List<String> areas = mProduct.getAreas();
+        String result = "无";
+        if (areas != null) {
+            for (int i = 0; i < areas.size(); i++) {
+                String area = StringUtils.getOrganizationNameFromId(areas.get(i));
+                if (!TextUtils.isEmpty(area)) {
+                    if (i == 0) {
+                        result = result + area;
+                    } else {
+                        result = result + "、" + area;
+                    }
+                }
+            }
+        }
+        tvProductArea.setText(String.format("服务范围: %1$s", result));
     }
 
     private void showBanner(OrganizationProduct product) {
@@ -206,22 +285,53 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_mobile})
+    private void show2Rank(List<Rank> ranks) {
+        if (ranks.size() != 0) {
+            llRank.setVisibility(View.VISIBLE);
+            ProductRankAdapter adapter = new ProductRankAdapter(ranks);
+            rvRank.setAdapter(adapter);
+        }
+    }
+
+
+    private void showRankCount(int count) {
+        if (count > 0) {
+            tvRankCount.setText(String.format("评价 （ %1$s ）", count));
+        }
+    }
+
+
+    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
         switch (v.getId()) {
 
             case R.id.tv_enter_provider:
                 String organizationId = mProduct.getOrganizationId();
-                start(ProviderDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId)),SINGLETASK);
+                start(ProviderDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId)), SINGLETASK);
                 break;
 
             case R.id.tv_reservation:
+                //立即预约
                 break;
 
             case R.id.tv_product_mobile:
                 call();
                 break;
+
+            case R.id.tv_all_rank:
+                //查看所有评价
+                allRankAboutThisProduct();
+                break;
+
+            case R.id.tv_rank_count:
+                //查看所有评价
+                allRankAboutThisProduct();
+                break;
         }
+    }
+
+    private void allRankAboutThisProduct() {
+        start(RankListFragment.newInstance(Constants.organizationProduct, mProduct.getId(), mProduct.getTitle()));
     }
 
 
@@ -259,5 +369,6 @@ public class ProductDetailFragment extends BaseFragment {
             }
         }
     }
+
 
 }

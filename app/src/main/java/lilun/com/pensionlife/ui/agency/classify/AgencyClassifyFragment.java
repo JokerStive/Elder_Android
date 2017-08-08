@@ -25,7 +25,6 @@ import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.bean.Setting;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ACache;
-import lilun.com.pensionlife.ui.agency.list.AgencyOrganizationListFragment;
 import lilun.com.pensionlife.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
@@ -155,7 +154,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(organizations)));
         AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
         adapter.setOnItemClickListener((organization -> {
-            start(AgencyOrganizationListFragment.newInstance(organization.getName(), organization.getId()));
+//            start(AgencyOrganizationListFragment.newInstance(organization.getName(), organization.getId()));
 
         }));
         rvAgency.setAdapter(adapter);

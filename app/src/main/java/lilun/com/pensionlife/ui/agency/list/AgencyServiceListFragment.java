@@ -219,7 +219,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setAreaIds(null);
         } else {
             productFilter.where.setCategoryId(mCategoryId);
-            productFilter.where.getAreaIds().setInq(User.levelIds(true));
+//            productFilter.where.getAreaIds().setInq(User.levelIds(true));
 //            if (mCategoryId.contains(Constants.service_residentail)) {
             //如果居家服务，就要服务区域是当前组织的层级id
 //            }

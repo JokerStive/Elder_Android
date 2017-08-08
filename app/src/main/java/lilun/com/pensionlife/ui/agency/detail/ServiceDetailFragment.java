@@ -284,7 +284,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     private void next() {
         if (User.isCustomer()) {
             String organizationId = mProduct.getOrganizationId();
-            start(AgencyDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId), null), SINGLETASK);
+            start(ProviderDetailFragment.newInstance(StringUtils.removeSpecialSuffix(organizationId)), SINGLETASK);
         } else {
             start(MerchantOrderListFragment.newInstance(mProduct.getId()));
         }

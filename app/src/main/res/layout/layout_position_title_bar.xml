@@ -31,20 +31,23 @@
         android:background="@drawable/position_black"
          />
 
-    <TextView
-        android:layout_toRightOf="@id/iv_position"
-        android:id="@+id/tv_position"
-        style="@style/tv_normal_ellipsize"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_2"
-        android:maxWidth="@dimen/dp_100"
-        tools:text="枫叶小区枫叶小区枫叶小区" />
 
     <TextView
         android:id="@+id/tv_sophisticated"
         style="@style/tv_normal_ellipsize"
         android:layout_centerInParent="true"
         tools:text="我是标题" />
+
+
+    <TextView
+        android:layout_toRightOf="@id/iv_position"
+        android:id="@+id/tv_position"
+        style="@style/tv_normal_ellipsize"
+        android:layout_toLeftOf="@id/tv_sophisticated"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_2"
+        android:layout_marginRight="@dimen/dp_2"
+        tools:text="枫叶小区枫叶小区枫叶小区" />
 
 
     <Button

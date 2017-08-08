@@ -1,3 +1,4 @@
+/*
 package lilun.com.pensionlife.module.adapter;
 
 import android.widget.RatingBar;
@@ -15,13 +16,15 @@ import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
+*/
 /**
  * 养老机构adapter
  *
  * @author yk
  *         create at 2017/2/21 18:43
  *         email : yk_developer@163.com
- */
+ *//*
+
 public class AgencyAdapter extends QuickAdapter<Organization> {
     private SearchTitleBar.LayoutType layoutType;
     private OnItemClickListener listener;
@@ -59,3 +62,4 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
         void onItemClick(Organization agency);
     }
 }
+*/

@@ -14,10 +14,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,7 @@ import lilun.com.pensionlife.module.adapter.AllProductAdapter;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.Provider;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -78,12 +79,8 @@ public class ProviderDetailFragment extends BaseFragment {
     TextView tvAllProduct;
     @Bind(R.id.tv_provider_content)
     TextView tvProviderContent;
-    @Bind(R.id.tv_provider_attention)
-    TextView tvProviderAttention;
-    @Bind(R.id.provider_content)
-    TextView providerContent;
-    @Bind(R.id.provider_attention)
-    TextView providerAttention;
+    @Bind(R.id.wb_provider_content)
+    WebView wbProviderContent;
     @Bind(R.id.rv_all_product)
     RecyclerView rvAllProduct;
     @Bind(R.id.swipe_layout)
@@ -92,6 +89,8 @@ public class ProviderDetailFragment extends BaseFragment {
     private String clickMobile;
     private ArrayList<TextView> changeLayoutTextViews;
     private AllProductAdapter adapter;
+    private String phone;
+    private String mobile;
 
     public static ProviderDetailFragment newInstance(String providerId) {
         ProviderDetailFragment fragment = new ProviderDetailFragment();
@@ -140,7 +139,6 @@ public class ProviderDetailFragment extends BaseFragment {
         changeLayoutTextViews = new ArrayList<>();
         changeLayoutTextViews.add(tvAllProduct);
         changeLayoutTextViews.add(tvProviderContent);
-        changeLayoutTextViews.add(tvProviderAttention);
 
         rvAllProduct.setLayoutManager(new GridLayoutManager(App.context, 2));
         rvAllProduct.addItemDecoration(new ElderModuleClassifyDecoration(6));
@@ -148,7 +146,8 @@ public class ProviderDetailFragment extends BaseFragment {
 
 
     private void getProvider() {
-        NetHelper.getApi().getOrganizationById(mProviderId, null)
+        String filter = "{\"include\":\"extension\"}";
+        NetHelper.getApi().getOrganizationById(mProviderId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Organization>(getActivity()) {
@@ -180,43 +179,41 @@ public class ProviderDetailFragment extends BaseFragment {
         //标题
         tvProviderTitle.setText(provider.getName());
 
-        Organization.DescriptionBean description = provider.getDescription();
-        if (description != null) {
+        Provider extension = provider.getExtension();
+        if (extension != null) {
 
             //地址
-            tvProviderAddress.setText(description.getAdress());
+            tvProviderAddress.setText(extension.getAddress());
 
             //星
-            rbScore.setRating(description.getRanking());
+            rbScore.setRating(extension.getScore());
 
             //文字星
-            tvScore.setText((double) description.getRanking() + "");
+            tvScore.setText((double) extension.getScore() + "");
 
             //价格区间
-            Organization.DescriptionBean.ChargingStandardBean chargingStandard = description.getChargingStandard();
-            if (chargingStandard != null) {
-                String min = chargingStandard.getMin();
-                String max = chargingStandard.getMax();
-                if (!TextUtils.isEmpty(min) && !TextUtils.isEmpty(max)) {
-                    String minString = new DecimalFormat("######0.00").format(min) + "";
-                    String maxString = new DecimalFormat("######0.00").format(max) + "";
-                    String price = "价格区间: <font color='#ff9d09'>" + "¥" + minString + " - " + maxString + "</font>";
-                    tvProductPrice.setText(Html.fromHtml(price));
-                }
-            }
+            String price = "价格区间: <font color='#ff9d09'>" + "¥" + extension.getMinPriceRange() + " - " + extension.getMaxPriceRange() + "</font>";
+            tvProductPrice.setText(Html.fromHtml(price));
 
-        }
-
-        //电话
-        Organization.Extension extension = provider.getExtension();
-        if (extension != null) {
-            String phone = extension.getPhone();
+            //电话
+            phone = extension.getPhone();
+            mobile = extension.getMobile();
             if (!TextUtils.isEmpty(phone)) {
-                String mobile = "手机号: <font color='#17c5b4'>" + phone + "</font>";
-                tvProviderPhone.setText(mobile);
-                tvProviderMobile.setText(mobile);
+                String mobileDes = "手机号: <font color='#17c5b4'>" + mobile + "</font>";
+                String phoneDes = "座机号: <font color='#17c5b4'>" + phone + "</font>";
+                tvProviderPhone.setText(mobileDes);
+                tvProviderMobile.setText(phoneDes);
+            }
+
+            //商家介紹
+            String context = extension.getContext();
+            if (!TextUtils.isEmpty(context)) {
+                wbProviderContent.getSettings().setJavaScriptEnabled(true);
+                wbProviderContent.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
             }
         }
+
+
     }
 
 
@@ -237,7 +234,7 @@ public class ProviderDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_provider_mobile, R.id.tv_provider_phone, R.id.tv_all_product, R.id.tv_provider_content, R.id.tv_provider_attention})
+    @OnClick({R.id.tv_provider_mobile, R.id.tv_provider_phone, R.id.tv_all_product, R.id.tv_provider_content})
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -257,9 +254,6 @@ public class ProviderDetailFragment extends BaseFragment {
                 changeLayout(R.id.tv_provider_content);
                 break;
 
-            case R.id.tv_provider_attention:
-                changeLayout(R.id.tv_provider_attention);
-                break;
         }
     }
 
@@ -271,31 +265,24 @@ public class ProviderDetailFragment extends BaseFragment {
         switch (clickTextViewId) {
             case R.id.tv_all_product:
                 rvAllProduct.setVisibility(View.VISIBLE);
-                providerContent.setVisibility(View.INVISIBLE);
-                providerAttention.setVisibility(View.INVISIBLE);
+                wbProviderContent.setVisibility(View.INVISIBLE);
                 break;
 
             case R.id.tv_provider_content:
                 rvAllProduct.setVisibility(View.INVISIBLE);
-                providerContent.setVisibility(View.VISIBLE);
-                providerAttention.setVisibility(View.INVISIBLE);
+                wbProviderContent.setVisibility(View.VISIBLE);
                 break;
 
-            case R.id.tv_provider_attention:
-                rvAllProduct.setVisibility(View.INVISIBLE);
-                providerContent.setVisibility(View.INVISIBLE);
-                providerAttention.setVisibility(View.VISIBLE);
-                break;
         }
     }
 
     private void connectProvider(int flag) {
         switch (flag) {
             case 1:
-                clickMobile = "13206011556";
+                clickMobile = mobile;
                 break;
             case 2:
-                clickMobile = "023-365498";
+                clickMobile = phone;
                 break;
         }
         call();

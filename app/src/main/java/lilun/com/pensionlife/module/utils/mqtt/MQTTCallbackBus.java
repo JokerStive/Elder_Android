@@ -25,8 +25,7 @@ import lilun.com.pensionlife.module.bean.PushMessage;
  */
 public class MQTTCallbackBus implements MqttCallback {
 
-    @Override
-    public void connectionLost(Throwable cause) {
+    @Override   public void connectionLost(Throwable cause) {
 //        Logger.d("mqtt断开连接",cause.getMessage());
     }
 

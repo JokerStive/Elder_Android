@@ -151,6 +151,8 @@ public class StringUtils {
                     format = new SimpleDateFormat("MM/dd HH:mm");
                 } else if (mode == 4) {
                     format = new SimpleDateFormat("MM.dd");
+                } else if (mode == 5) {
+                    format = new SimpleDateFormat("yyyy-MM-dd");
                 } else
                     format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
@@ -387,10 +389,11 @@ public class StringUtils {
 
     /**
      * 检查验证码
+     *
      * @param verif
      * @return
      */
-    public static boolean isVerifCode(String verif){
+    public static boolean isVerifCode(String verif) {
         Pattern p = Pattern.compile("^(\\d{6})");
         Matcher m = p.matcher(verif);
         return m.matches();

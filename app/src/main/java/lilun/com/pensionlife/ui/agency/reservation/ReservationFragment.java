@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pensionlife.R;
@@ -122,26 +120,26 @@ public class ReservationFragment extends BaseFragment {
         }
     }
 
-
-    @OnClick({R.id.btn_confirm, R.id.rl_check_contact, R.id.rl_reservation_time})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_confirm:
-                if (!TextUtils.isEmpty(contactId)) {
-                    reservation(productId, contactId, reservationTime);
-                }
-                break;
-
-            case R.id.rl_check_contact:
-                startForResult(ServiceUserInfoFragment.newInstance(productCategoryId, productId), requestCode);
-                break;
-
-
-            case R.id.rl_reservation_time:
-                chooseReservationTime();
-                break;
-        }
-    }
+//
+//    @OnClick({R.id.btn_confirm, R.id.rl_check_contact, R.id.rl_reservation_time})
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.btn_confirm:
+//                if (!TextUtils.isEmpty(contactId)) {
+//                    reservation(productId, contactId, reservationTime);
+//                }
+//                break;
+//
+//            case R.id.rl_check_contact:
+//                startForResult(ServiceUserInfoFragment.newInstance(productCategoryId, productId), requestCode);
+//                break;
+//
+//
+//            case R.id.rl_reservation_time:
+//                chooseReservationTime();
+//                break;
+//        }
+//    }
 
 
     private void getDefContact() {

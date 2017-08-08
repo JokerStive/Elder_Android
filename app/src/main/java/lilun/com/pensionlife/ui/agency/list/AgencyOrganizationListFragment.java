@@ -1,3 +1,4 @@
+/*
 package lilun.com.pensionlife.ui.agency.list;
 
 import android.os.Bundle;
@@ -32,13 +33,15 @@ import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterView;
 
+*/
 /**
  * 养老机构V
  *
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
- */
+ *//*
+
 public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
 
 
@@ -279,3 +282,4 @@ public class AgencyOrganizationListFragment extends BaseFragment<AgencyListContr
 
 
 }
+*/

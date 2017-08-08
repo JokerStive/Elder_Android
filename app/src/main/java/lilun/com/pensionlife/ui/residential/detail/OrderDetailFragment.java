@@ -32,7 +32,7 @@ import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
-import lilun.com.pensionlife.ui.agency.detail.AgencyDetailFragment;
+import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -249,7 +249,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
             case R.id.rl_provider_detail:
                 if (User.isCustomer()) {
-                    start(AgencyDetailFragment.newInstance(agencyId, null));
+                    start(ProviderDetailFragment.newInstance(agencyId));
                 }
                 break;
 

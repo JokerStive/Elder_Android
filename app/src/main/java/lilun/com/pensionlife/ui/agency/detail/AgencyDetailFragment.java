@@ -1,3 +1,4 @@
+/*
 package lilun.com.pensionlife.ui.agency.detail;
 
 import android.content.Intent;
@@ -33,6 +34,7 @@ import lilun.com.pensionlife.ui.agency.list.AgencyServiceListFragment;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 import rx.Subscription;
 
+*/
 /**
  * 养老机构提供的服务详情V
  * 居家服务详情
@@ -40,7 +42,8 @@ import rx.Subscription;
  * @author yk
  *         create at 2017/2/23 13:19
  *         email : yk_developer@163.com
- */
+ *//*
+
 public class AgencyDetailFragment extends BaseFragment implements View.OnClickListener {
 
 
@@ -92,11 +95,13 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     private Subscription subscription;
     private boolean formAgency = false;  //是否由养老传入，根据传入id或传入agency.id判断
 
-    /**
+    */
+/**
      * @param id
      * @param agency
      * @return
-     */
+     *//*
+
     public static AgencyDetailFragment newInstance(@Nullable String id, Organization agency) {
         AgencyDetailFragment fragment = new AgencyDetailFragment();
         Bundle args = new Bundle();
@@ -265,3 +270,4 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
 }
+*/
