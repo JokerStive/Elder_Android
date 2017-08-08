@@ -236,11 +236,11 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
 
         //显示补贴
-        long price = mAid.getPrice();
+        double price = mAid.getPrice();
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format(getString(R.string.format_subsidy), mAid.getPrice()));
+            tvPrice.setText("（"+price+"元补贴）");
         }
 
         //显示发起人
