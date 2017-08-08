@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
@@ -55,7 +54,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //补贴
         TextView tvItemPrice = help.getView(R.id.tv_mobile);
-        tvItemPrice.setText(String.format(App.context.getString(R.string.help_price), aid.getPrice()));
+        tvItemPrice.setText(aid.getPrice()+"元补贴");
 
         //参与者和时间
         TextView time_joinerCount = help.getView(R.id.tv_time_joinCount);
