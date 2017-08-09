@@ -44,6 +44,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -334,29 +335,29 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
     /**
-    *预约
-    */
+     * 预约
+     */
     private void takeReservation() {
-        String filter = "{\"where\":{\"accountId\":\""+ User.getUserId()+"\"}}";
+        String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
                     @Override
                     public void _next(List<Contact> contacts) {
-                        if (contacts.size()>0){
+                        if (contacts.size() > 0) {
                             //显示 预约者信息列表
-                        }else {
+                        } else {
                             //新增基础信息界面
-
+                            start(AddBasicContactFragment.newInstance());
                         }
                     }
                 });
     }
 
     /**
-    *查看所有评价
-    */
+     * 查看所有评价
+     */
     private void allRankAboutThisProduct() {
         start(RankListFragment.newInstance(Constants.organizationProduct, mProduct.getId(), mProduct.getTitle()));
     }

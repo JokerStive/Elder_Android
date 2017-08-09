@@ -32,6 +32,8 @@
 
     <color name="help">#29AEA9</color>
 
+    <color name="filter_checked_color">#008CEE</color>
+
     <color name="health">#3E725C</color>
 
     <color name="agency">#41B9D4</color>
@@ -53,8 +55,6 @@
     <color name="white_dark">#EDFAFF</color>
     <color name="yellow">#FFD908</color>
     <color name="light_grey">#F3F3F3</color>
-
-
 
 
 </resources>

@@ -126,13 +126,13 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         tvHelp.setOnClickListener(this);
 
         //标题加粗
-        tvTitle = (TextView) mHeadView.findViewById(R.id.tv_product_title);
+        tvTitle = (TextView) mHeadView.findViewById(R.id.tv_item_title);
         setBold(tvTitle);
 
 
         //各种信息
         tvTime = (TextView) mHeadView.findViewById(R.id.tv_aid_time);
-        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_product_price);
+        tvPrice = (TextView) mHeadView.findViewById(R.id.tv_mobile);
         tvCreator = (TextView) mHeadView.findViewById(R.id.tv_aid_creator);
 
 
@@ -166,7 +166,6 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
     private void setBold(TextView textView) {
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
     }
-
 
 
     @Override
@@ -240,7 +239,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText("（"+price+"元补贴）");
+            tvPrice.setText(String.format("（" + price + "元补贴）"));
         }
 
         //显示发起人
@@ -363,7 +362,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
                 });
             } else {
                 new NormalDialog().createNormal(_mActivity, R.string.confirm_cancel_help, () -> {
-                    mPresenter.deleteAidAnswer(mAidId,mReplyId);
+                    mPresenter.deleteAidAnswer(mAidId, mReplyId);
                 });
             }
 

@@ -90,7 +90,7 @@ public class HelpDetailPresenter extends RxPresenter<HelpDetailContract.View> im
     }
 
     @Override
-    public void deleteAidAnswer(String aidId,String replyId) {
+    public void deleteAidAnswer(String aidId, String replyId) {
         addSubscribe(NetHelper.getApi()
                 .deleteAidAnswer(aidId, replyId)
                 .compose(RxUtils.handleResult())
