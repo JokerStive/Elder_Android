@@ -48,7 +48,7 @@ public class MqttNotificationHelper {
         int classify = -1;
 
         //公告和普通求助
-        if (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix)) {
+        if ( mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix))) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
 
 
