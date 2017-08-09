@@ -28,7 +28,7 @@
 
 
         <TextView
-            android:id="@+id/tv_product_title"
+            android:id="@+id/tv_item_title"
             style="@style/tv_small_ellipsize"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_8"
@@ -37,7 +37,7 @@
 
 
         <RatingBar
-            android:id="@+id/rb_score"
+            android:id="@+id/rb_bar"
             style="@style/ratingBarr_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

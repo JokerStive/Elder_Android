@@ -173,7 +173,7 @@
 
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
-    <string name="price_format">￥%1$d</string>
+    <string name="price_format">%1$d元</string>
     <string name="new_service">发布服务</string>
     <string name="all_orders">所有订单</string>
 

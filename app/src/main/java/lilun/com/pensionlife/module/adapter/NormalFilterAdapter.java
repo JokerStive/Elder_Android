@@ -30,8 +30,7 @@ public class NormalFilterAdapter extends QuickAdapter<Option> {
 
     @Override
     protected void convert(BaseViewHolder helper, Option option) {
-        helper.setVisible(R.id.tv_gou, helper.getAdapterPosition() == mSelectedPosition);
-        helper.setTextColor(R.id.tv_option, helper.getAdapterPosition() == mSelectedPosition ? App.context.getResources().getColor((R.color.filter_checked_color)) : Color.BLACK);
+        helper.setTextColor(R.id.tv_option, helper.getAdapterPosition() == mSelectedPosition ? App.context.getResources().getColor((R.color.red)) : Color.BLACK);
         helper.setText(R.id.tv_option, option.getOptionValue())
                 .setOnClickListener(R.id.ll_item, v -> {
                     if (listener != null) {

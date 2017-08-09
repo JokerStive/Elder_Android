@@ -69,7 +69,7 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
         List<ConditionOption> conditionOptionList = new ArrayList<>();
 
         List<Option> kindOptions = new ArrayList<>();
-        Option option0 = new Option(null, "智能排序");
+        Option option0 = new Option(null, "不限");
         Option option1 = new Option("0", "一星");
         Option option2 = new Option("1", "二星");
         Option option3 = new Option("3", "三星");
@@ -81,7 +81,7 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
         kindOptions.add(option3);
         kindOptions.add(option4);
         kindOptions.add(option5);
-        ConditionOption conditionOptionKind = new ConditionOption(whereKey, "智能排序", kindOptions);
+        ConditionOption conditionOptionKind = new ConditionOption(whereKey, "星级", kindOptions);
 
         conditionOptionList.add(conditionOptionKind);
         return conditionOptionList;

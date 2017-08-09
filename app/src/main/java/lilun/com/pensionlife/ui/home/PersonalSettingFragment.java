@@ -273,6 +273,12 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             ToastHelper.get().showWareShort("手机号格式错误");
                             return;
                         }
+                        if (TextUtils.equals(input.toString(),User.getMobile())) {
+                            ToastHelper.get().showWareShort("手机号不能是自己的");
+                            return;
+                        }
+
+
                         //该功能在10106上实现
                         if (BuildConfig.VERSION_CODE >= 10106) {
                             Account postAccount = new Account();

@@ -1,8 +1,7 @@
 package lilun.com.pensionlife.ui.push_info;
 
 import android.content.Intent;
-import android.text.Html;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
@@ -10,6 +9,7 @@ import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.module.bean.CacheInfo;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.widget.NormalTitleBar;
+import lilun.com.pensionlife.widget.ProgressWebView;
 
 /**
  * Created by zp on 2017/7/8.
@@ -21,8 +21,9 @@ public class PushAnnounceActivity extends BaseActivity {
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
-    @Bind(R.id.tv_announce_data)
-    TextView tvAnnounceData;
+    @Bind(R.id.wv_announce_data)
+    ProgressWebView pwvAnnounceData;
+
 
     public static void start(BaseActivity activity, CacheInfo item) {
         Intent intent = new Intent(activity, PushAnnounceActivity.class);
@@ -48,7 +49,9 @@ public class PushAnnounceActivity extends BaseActivity {
             finish();
         });
         titleBar.setTitle(item.getFirst() + "详情");
-        tvAnnounceData.setText(Html.fromHtml(item.getFourth()));
+     //   tvAnnounceData.setText(Html.fromHtml());
+        pwvAnnounceData.loadData(item.getFourth(), "text/html; charset=UTF-8;", null);
+
     }
 
     @Override

@@ -253,7 +253,7 @@
                             android:textSize="@dimen/sp_18" />
 
                         <RatingBar
-                            android:id="@+id/rb_score"
+                            android:id="@+id/rb_bar"
                             style="@style/ratingBarr_big"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

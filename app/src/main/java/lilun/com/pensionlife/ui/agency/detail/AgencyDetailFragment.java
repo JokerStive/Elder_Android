@@ -62,7 +62,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     @Bind(R.id.tv_phone)
     TextView tvPhone;
 
-    @Bind(R.id.tv_product_price)
+    @Bind(R.id.tv_mobile)
     TextView tvPrice;
 
 
@@ -72,7 +72,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
     @Bind(R.id.tv_environment)
     TextView tvAddress;
 
-    @Bind(R.id.rb_score)
+    @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
     @Bind(R.id.tv_provide_service)

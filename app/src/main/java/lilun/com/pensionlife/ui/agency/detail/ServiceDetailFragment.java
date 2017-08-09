@@ -72,7 +72,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.iv_call)
     ImageView ivCall;
 
-    @Bind(R.id.tv_product_price)
+    @Bind(R.id.tv_mobile)
     TextView tvPrice;
 
     @Bind(R.id.tv_introduction)
@@ -84,7 +84,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     @Bind(R.id.tv_enter_rank)
     TextView tvEnterRank;
 
-    @Bind(R.id.rb_score)
+    @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
     @Bind(R.id.tv_sophisticated)
@@ -151,7 +151,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         tvPrice.setText(String.format(getString(R.string.format_price), mProduct.getPrice()));
         tvContent.setText(StringUtils.filterNull(mProduct.getContext()));
 
-        rbBar.setRating(mProduct.getScore());
+        rbBar.setRating(mProduct.getScore() == 0 ? 5 : 0);
 
         tvProviderName.setText(agencyName);
 

@@ -95,7 +95,7 @@
 
 
                     <RatingBar
-                        android:id="@+id/rb_score"
+                        android:id="@+id/rb_bar"
                         style="@style/ratingBarr_small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,9 +110,9 @@
                     <TextView
                         android:id="@+id/tv_price"
                         style="@style/tv_small"
-                        android:layout_alignLeft="@+id/rb_score"
-                        android:layout_alignStart="@+id/rb_score"
-                        android:layout_below="@id/rb_score"
+                        android:layout_alignLeft="@+id/rb_bar"
+                        android:layout_alignStart="@+id/rb_bar"
+                        android:layout_below="@id/rb_bar"
                         android:layout_marginTop="@dimen/dp_8"
                         tools:text="价格:500/月" />
 

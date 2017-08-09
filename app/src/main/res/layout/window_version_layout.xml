@@ -58,7 +58,7 @@
                 android:visibility="gone"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
-                 />
+                />
 
             <TextView
                 android:id="@+id/tv_progress"

@@ -48,6 +48,8 @@ public class AnnounceInfoActivity extends Activity {
     ProgressWebView progressWebView;
     @Bind(R.id.btn_all)
     Button btnAll;
+    @Bind(R.id.tv_express_come)
+    TextView tvExpressCome;
     private int infoCount = 1;
     private AnimationDrawable drawableAnim;
     private Information information;
@@ -91,6 +93,7 @@ public class AnnounceInfoActivity extends Activity {
         tvExpressTime.setText(StringUtils.IOS2ToUTC(createdAt, 0) + "  " + StringUtils.IOS2ToUTC(createdAt, 3));
         btnAll.setText("查看全部(" + infoCount + ")");
 
+        tvExpressCome.setText("来源：" + information.getCreatorName() + "");
 
         int contextType = information.getContextType();
         String content = information.getContext();

@@ -58,7 +58,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
     @Bind(R.id.tv_name)
     TextView tvName;
 
-    @Bind(R.id.rb_score)
+    @Bind(R.id.rb_bar)
     RatingBar rbBar;
 
     @Bind(R.id.tv_price)
@@ -147,7 +147,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
                     if (categoryId.equals(Config.tourism_product_categoryId)) {
                         start(AddTourismInfoFragment.newInstance(mOrder.getUserProfile(), false));
                     } else {
-                        start(AddServiceInfoFragment.newInstance(mOrder.getUserProfile(), false));
+                        start(AddServiceInfoFragment.newInstance(mOrder.getUserProfile(),categoryId, false));
                     }
                 }
                 break;

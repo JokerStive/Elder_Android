@@ -4,14 +4,15 @@ import android.widget.RatingBar;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -30,13 +31,12 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationProduct product) {
-        RatingBar ratingBar = help.getView(R.id.rb_score);
-        ratingBar.setRating(product.getScore() == 0 ? 5 : product.getScore());
+        RatingBar ratingBar = help.getView(R.id.rb_bar);
+        ratingBar.setRating(product.getScore()==0?5:0);
 
-        help.setText(R.id.tv_product_title, product.getTitle())
-                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
-                .setText(R.id.tv_score, product.getScore() == 0 ? "5.0" : (double)product.getScore()+"")
-                .setText(R.id.tv_product_price,   new DecimalFormat("######0.00").format(product.getPrice())+"");
+        UIUtils.setBold(help.getView(R.id.tv_item_title));
+        help.setText(R.id.tv_item_title, product.getTitle())
+                .setText(R.id.tv_mobile, String.format(App.context.getString(R.string.price_format), product.getPrice()));
         help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {
                 listener.onItemClick(product);

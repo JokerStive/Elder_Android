@@ -1,12 +1,12 @@
 package lilun.com.pensionlife.widget.filter_view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +47,6 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     private FilterTabView mCurrentClickTabView;
     private FrameLayout popContainer;
     private OnOptionClickListener listener;
-    private int lingColor = getResources().getColor(R.color.gray);
 
     public FilterView(Context context) {
         super(context, null);
@@ -80,26 +79,18 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         setLayoutParams(params0);
         setOrientation(VERTICAL);
 
-        //分割线
-        View viewLineTop = new View(context);
-        viewLineTop.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        viewLineTop.setBackgroundColor(lingColor);
-        addView(viewLineTop);
-
-
         filterTabContainer = new LinearLayout(context);
         filterTabContainer.setOrientation(HORIZONTAL);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         filterTabContainer.setLayoutParams(params);
-        params.gravity = Gravity.CENTER_VERTICAL;
         addView(filterTabContainer);
 
 
         //分割线
-        View viewLineBottom = new View(context);
-        viewLineBottom.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        viewLineBottom.setBackgroundColor(lingColor);
-        addView(viewLineBottom);
+        View view = new View(context);
+        view.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        view.setBackgroundColor(Color.BLACK);
+        addView(view);
 
         pop = new FrameLayout(context);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -119,7 +110,7 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
             adapter.setOnItemClickListener((position, title, whereKey, whereValue) -> {
                 setTabText(position == 0 ? tabTitles.get(finalI) : title, position == 0);
                 if (listener != null) {
-                    listener.onOptionClick(whereKey, whereValue);
+                    listener.onOptionClick(whereKey,whereValue);
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -130,7 +121,7 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     }
 
     public interface OnOptionClickListener {
-        void onOptionClick(String whereKey, String whereValue);
+        void onOptionClick(String whereKey,String  whereValue);
     }
 
     public void setOnOptionClickListener(OnOptionClickListener listener) {
@@ -144,13 +135,6 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         }
 
         for (int i = 0; i < tabTitles.size(); i++) {
-//            if (i > 0 && i < tabTitles.size()) {
-//                View dividingLine = new View(context);
-//                dividingLine.setLayoutParams(new LinearLayoutCompat.LayoutParams(1, 30));
-//                dividingLine.setBackgroundColor(Color.BLACK);
-//                filterTabContainer.addView(dividingLine);
-//
-//            }
             addTabView(tabTitles, i);
         }
 
@@ -190,14 +174,6 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
     private void switchPop(FilterTabView targetView) {
         for (int i = 0; i < filterTabContainer.getChildCount(); i++) {
             FilterTabView tabView = (FilterTabView) filterTabContainer.getChildAt(i);
-//            if (i%2==0){
-//                tabView  = (FilterTabView) filterTabContainer.getChildAt(i);
-//            }else {
-//                tabView  = (FilterTabView) filterTabContainer.getChildAt(i+1);
-//            }
-//            if (i>0  &&  i < filterTabContainer.getChildCount()){
-//            }else {
-//            }
             if (targetView == tabView) {
                 if (checkedTabPosition == i) {
                     tabView.setTabStatus(false);
