@@ -29,8 +29,10 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.IconUrl;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ProductRankAdapter;
+import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
@@ -312,6 +314,7 @@ public class ProductDetailFragment extends BaseFragment {
 
             case R.id.tv_reservation:
                 //立即预约
+                takeReservation();
                 break;
 
             case R.id.tv_product_mobile:
@@ -330,6 +333,30 @@ public class ProductDetailFragment extends BaseFragment {
         }
     }
 
+    /**
+    *预约
+    */
+    private void takeReservation() {
+        String filter = "{\"where\":{\"accountId\":\""+ User.getUserId()+"\"}}";
+        NetHelper.getApi().getContacts(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
+                    @Override
+                    public void _next(List<Contact> contacts) {
+                        if (contacts.size()>0){
+                            //显示 预约者信息列表
+                        }else {
+                            //新增基础信息界面
+
+                        }
+                    }
+                });
+    }
+
+    /**
+    *查看所有评价
+    */
     private void allRankAboutThisProduct() {
         start(RankListFragment.newInstance(Constants.organizationProduct, mProduct.getId(), mProduct.getTitle()));
     }
