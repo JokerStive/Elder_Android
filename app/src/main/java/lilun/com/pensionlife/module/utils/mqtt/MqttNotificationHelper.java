@@ -92,7 +92,7 @@ public class MqttNotificationHelper {
 
         //5-----活动
         String topic_activity = mqttTopic.topic_activity;
-        if (isMsgICache(InfoSettingFilter.activity) && topic.contains(topic_activity)) {
+        if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && isMsgICache(InfoSettingFilter.activity) && topic.contains(topic_activity)) {
             JSONObject activityJson = jsonObject.getJSONObject("data");
             String categoryId = activityJson.getString("categoryId");
             String category = categoryId.substring(categoryId.lastIndexOf(".") + 1);
