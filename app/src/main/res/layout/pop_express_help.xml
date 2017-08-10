@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="500dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -41,7 +42,7 @@
                 android:layout_below="@id/tv_express_title"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/dp_10"
-                android:text="来源：社区公告"
+                tools:text="来源：社区公告"
                 android:textColor="@color/white" />
 
             <TextView

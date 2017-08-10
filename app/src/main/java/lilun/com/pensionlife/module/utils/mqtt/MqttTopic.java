@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.module.utils.mqtt;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,5 +51,19 @@ public class MqttTopic {
         return topics.toArray(new String[topics.size()]);
     }
 
+    /**
+     * topic包含的组织id是否在个人所在组织列表层级中
+     */
+    public boolean isTopicBelongCurrentOrganizationLevel(String topic) {
+        String substring = topic.substring(0, topic.lastIndexOf("/"));
+        String topicOrganizationId = substring.substring(0,substring.lastIndexOf("/"));
+        ArrayList<String> levelIds = User.levelIds(false);
+        for (String levelId : levelIds) {
+            if (TextUtils.equals(levelId, topicOrganizationId)) {
+                return true;
+            }
+        }
 
+        return false;
+    }
 }

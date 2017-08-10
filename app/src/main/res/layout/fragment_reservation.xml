@@ -63,20 +63,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_phone"
                 android:layout_marginTop="@dimen/dp_8"
+                android:layout_toLeftOf="@+id/imageView"
+                android:layout_toStartOf="@+id/imageView"
                 android:maxLines="3"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_14"
-                tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
-                android:layout_toLeftOf="@+id/imageView"
-                android:layout_toStartOf="@+id/imageView" />
+                tools:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/next"
-                android:id="@+id/imageView" />
+                android:src="@drawable/next" />
 
         </RelativeLayout>
 
