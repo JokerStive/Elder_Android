@@ -381,5 +381,6 @@
     <string name="update_avator">上传头像</string>
     <string name="recommend_to_friend">扫一扫推荐好友</string>
     <string name="item_delete_message">清空聊天记录</string>
+    <string name="building">该模块正在开发中...</string>
 
 </resources>
