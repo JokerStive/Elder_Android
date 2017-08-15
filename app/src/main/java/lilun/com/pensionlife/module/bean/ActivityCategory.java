@@ -24,6 +24,15 @@ public class ActivityCategory extends BaseBean {
     private String updatorName;
     private String organizationId;
     private List<IconModule> icon;
+    private int unRead;
+
+    public int getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(int unRead) {
+        this.unRead = unRead;
+    }
 
     public String getName() {
         return name;

@@ -5,15 +5,21 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.orhanobut.logger.Logger;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.IconUrl;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
+import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
 import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
@@ -43,17 +49,26 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
                 }
             }
         }
+
     }
 
     public void setIsRadioModule(boolean isRadioMode) {
         this.isRadioMode = isRadioMode;
     }
 
+
     @Override
     protected void convert(BaseViewHolder helper, ActivityCategory activityCategory) {
         if (isRadioMode) {
             helper.getView(R.id.ll_module_background).setSelected(mSelectedPosition == helper.getAdapterPosition());
         }
+
+        if (activityCategory.getUnRead() != 0) {
+            helper.setText(R.id.tv_msg_number, activityCategory.getUnRead() > 99 ? "..." : activityCategory.getUnRead() + "")
+                    .setVisible(R.id.tv_msg_number, true);
+        } else
+            helper.setVisible(R.id.tv_msg_number, false);
+
         helper.setText(R.id.tv_module_name, activityCategory.getName())
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {

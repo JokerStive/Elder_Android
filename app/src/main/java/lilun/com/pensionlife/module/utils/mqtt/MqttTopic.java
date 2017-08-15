@@ -15,6 +15,9 @@ import lilun.com.pensionlife.app.User;
  *         email : yk_developer@163.com
  */
 public class MqttTopic {
+    //新增活动
+    public String topic_activity_suffix = "/%23activity/.added";
+
 
     //普通求助
     public String topic_help_suffix = "/%23aid/.added";
@@ -33,7 +36,6 @@ public class MqttTopic {
     //紧急求助
     public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
-
     //活动
     public String topic_activity = "/%23activity/.added";
 
@@ -48,7 +50,7 @@ public class MqttTopic {
         for (String levelId : levelIds) {
             String aidTopic = levelId + topic_help_suffix;
             String informationTopic = levelId + topic_information_suffix;
-            String activityTopic = levelId + topic_activity;
+            String activityTopic = levelId + topic_activity_suffix;
             topics.add(aidTopic);
             topics.add(informationTopic);
             topics.add(activityTopic);
@@ -62,7 +64,7 @@ public class MqttTopic {
      */
     public boolean isTopicBelongCurrentOrganizationLevel(String topic) {
         String substring = topic.substring(0, topic.lastIndexOf("/"));
-        String topicOrganizationId = substring.substring(0, substring.lastIndexOf("/"));
+        String topicOrganizationId = substring.substring(0,substring.lastIndexOf("/"));
         ArrayList<String> levelIds = User.levelIds(false);
         for (String levelId : levelIds) {
             if (TextUtils.equals(levelId, topicOrganizationId)) {

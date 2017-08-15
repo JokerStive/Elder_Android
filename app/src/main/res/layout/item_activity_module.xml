@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_module_background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/dp_10"
-    android:paddingTop="@dimen/dp_10">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_module_icon"
-        android:layout_width="@dimen/module_icon_height"
-        android:layout_height="@dimen/module_icon_height"
-        tools:src="@drawable/for_help" />
+
+    <LinearLayout
+        android:id="@+id/ll_module_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/iv_module_icon"
+            android:layout_width="@dimen/module_icon_height"
+            android:layout_height="@dimen/module_icon_height"
+            tools:src="@drawable/for_help" />
+
+        <TextView
+            android:id="@+id/tv_module_name"
+            style="@style/tv_normal_ellipsize"
+            android:layout_marginTop="@dimen/dp_8"
+            android:textColor="@color/activity_black"
+            android:textSize="@dimen/sp_14"
+            tools:text="我是描述" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_module_name"
-        style="@style/tv_normal_ellipsize"
+        android:id="@+id/tv_msg_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:minWidth="@dimen/dp_20"
+        android:minHeight="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_8"
-        android:textColor="@color/activity_black"
-        android:textSize="@dimen/sp_14"
-        tools:text="我是描述" />
-
-</LinearLayout>
+        android:background="@drawable/bg_msg_bubble"
+        android:gravity="center"
+        android:text="17"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:translationX="@dimen/dp_20"
+        android:visibility="visible" />
+</RelativeLayout>

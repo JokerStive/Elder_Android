@@ -1,6 +1,8 @@
 package lilun.com.pensionlife.app;
 
+import lilun.com.pensionlife.module.bean.ActivityCategoryMsg;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.bean.PushMessage;
@@ -158,5 +160,16 @@ public class Event {
     }
 
     public static class ClearChat {
+    }
+
+    public static class ActivityNew {
+        ActivityCategoryMsg actCatMsg;
+        public ActivityNew(ActivityCategoryMsg actCatMsg) {
+            this.actCatMsg  = actCatMsg;
+        }
+
+        public ActivityCategoryMsg getActCatMsg() {
+            return actCatMsg;
+        }
     }
 }

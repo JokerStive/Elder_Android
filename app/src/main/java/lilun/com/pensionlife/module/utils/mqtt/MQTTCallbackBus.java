@@ -3,6 +3,8 @@ package lilun.com.pensionlife.module.utils.mqtt;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -16,6 +18,7 @@ import org.json.JSONObject;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.utils.GsonUtils;
 
 /**
  * 使用EventBus分发事件
@@ -25,7 +28,8 @@ import lilun.com.pensionlife.module.bean.PushMessage;
  */
 public class MQTTCallbackBus implements MqttCallback {
 
-    @Override   public void connectionLost(Throwable cause) {
+    @Override
+    public void connectionLost(Throwable cause) {
 //        Logger.d("mqtt断开连接",cause.getMessage());
     }
 
@@ -43,97 +47,14 @@ public class MQTTCallbackBus implements MqttCallback {
     }
 
 
-    private PushMessage getPushMessageFromData(String messageData) {
-        try {
-            PushMessage pushMessage = new PushMessage();
-            JSONObject jsonObject = new JSONObject(messageData);
-            if (messageData.contains("\"model\"")) {
-                String model = (String) jsonObject.get("model");
-                pushMessage.setModel(model);
-            }
-            if (messageData.contains("\"verb\"")) {
-                String verb = (String) jsonObject.get("verb");
-                pushMessage.setVerb(verb);
-            }
-            if (messageData.contains("\"data\"")) {
-                JSONObject dataJson = (JSONObject) jsonObject.get("data");
-                String data = dataJson.toString();
-                pushMessage.setData(data);
-            }
-            if (messageData.contains("\"from\"")) {
-                String from = "";
-                if (PushMessage.VERB_HELP.equals(pushMessage.getVerb())) {
-                    from = (String) jsonObject.get("from");
-                } else {
-                    JSONObject dataJson = (JSONObject) jsonObject.get("from");
-                    from = dataJson.toString();
-                }
-                pushMessage.setFrom(from);
-            }
-            if (messageData.contains("\"to\"")) {
-                JSONArray dataJson = (JSONArray) jsonObject.get("to");
-
-
-                String to = dataJson.toString();
-                pushMessage.setTo(to);
-            }
-            if (messageData.contains("\"message\"")) {
-                String message = (String) jsonObject.get("message");
-                pushMessage.setMessage(message);
-            }
-            if (messageData.contains("\"time\"")) {
-                String time = (String) jsonObject.get("time");
-                pushMessage.setTime(time);
-            }
-            if (messageData.contains("\"title\"")) {
-                String title = (String) jsonObject.get("title");
-                pushMessage.setTitle(title);
-            }
-            if (messageData.contains("\"priority\"")) {
-                String priority = (String) jsonObject.get("priority");
-                pushMessage.setPriority(priority);
-            }
-            if (messageData.contains("\"mobile\"")) {
-                String mobile = (String) jsonObject.get("mobile");
-                pushMessage.setMobile(mobile);
-            }
-            if (messageData.contains("\"address\"")) {
-                String address = (String) jsonObject.get("address");
-                pushMessage.setAddress(address);
-            }
-            if (messageData.contains("\"location\"")) {
-                JSONObject object = (JSONObject) jsonObject.get("location");
-                pushMessage.setLocation(object.toString());
-            }
-
-            return pushMessage;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     private void dealMessage(String topic, String messageData) {
 
         showOnNotification(topic, messageData);
-        PushMessage pushMessage = getPushMessageFromData(messageData);
-        if (pushMessage != null) {
-            if (topic.contains("%23activity")) {  //是活动聊天的数据
-                String[] split = topic.split("/");
-                if (split.length > 2)
-                    pushMessage.setActivityId(split[split.length - 2]);
-                pushMessage.save();
-            }
 
+        //处理活动相关的消息
+        new MqttActivityHelper(topic, messageData);
 
-            //处理活动
-            dealActivity(topic, pushMessage);
-
-        }
-//        }
     }
-
 
     /**
      * 在通知栏展示
@@ -142,57 +63,5 @@ public class MQTTCallbackBus implements MqttCallback {
         MqttNotificationHelper mqttNotificationHelper = new MqttNotificationHelper();
         mqttNotificationHelper.showOnNotification(topic, pushMessage);
     }
-
-
-    /**
-     * 集中处理丢活动相关Message
-     *
-     * @param topic
-     * @param pushMessage
-     */
-    public void dealActivity(String topic, PushMessage pushMessage) {
-        if (PushMessage.VERB_JOIN.equals(pushMessage.getVerb()) ||
-                PushMessage.VERB_CHAR.equals(pushMessage.getVerb()) ||
-                PushMessage.VERB_KICK.equals(pushMessage.getVerb()) ||
-                PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
-
-            if (PushMessage.VERB_KICK.equals(pushMessage.getVerb())) {
-                //主持人请出
-                //发送强制退出聊天
-                if (pushMessage.getTo().contains(User.getUserId())) {
-                    EventBus.getDefault().post(new Event.ForcedQuitChat("您被主持人请出了本活动"));
-                    //发送刷新我的活动
-                    EventBus.getDefault().post(new Event.RefreshActivityData());
-                    //取消订阅
-                    MQTTManager.getInstance().unSubscribe(topic, null, null);
-
-                }
-            } else if (PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
-
-                //被动强制退出
-                if (TextUtils.isEmpty(pushMessage.getFrom())) {
-                    EventBus.getDefault().post(new Event.ForcedQuitChat(pushMessage.getMessage()));
-                    //发送刷新我的活动
-                    EventBus.getDefault().post(new Event.RefreshActivityData());
-                } else {
-                    //是主动退出活动，
-                    //是主动退出是否自己
-                    if (pushMessage.getFrom().contains(User.getUserId())) {
-                        //发送刷新我的活动
-                        EventBus.getDefault().post(new Event.RefreshActivityData());
-                        //取消订阅
-                        MQTTManager.getInstance().unSubscribe(topic, null, null);
-                    }
-                    //其他人添加信息
-                }
-
-            }
-
-            String tmp = topic.substring(topic.lastIndexOf("activity")).replace("activity/","");
-            String tmp2 = tmp.substring(0,tmp.lastIndexOf("/"));
-            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage,tmp2));
-        }
-    }
-
 
 }

@@ -28,6 +28,15 @@ public class PushMessage extends DataSupport {
     private String title;
     private String mobile;
     private String address;
+    private String unRead;
+
+    public String getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(String unRead) {
+        this.unRead = unRead;
+    }
 
     public String getPriority() {
         return priority;

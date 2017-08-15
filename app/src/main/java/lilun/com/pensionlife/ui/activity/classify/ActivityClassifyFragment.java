@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +35,9 @@ import lilun.com.pensionlife.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pensionlife.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
+import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
+import lilun.com.pensionlife.module.utils.DBHelper;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -81,6 +85,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private String parentId;
 
     private int skip = 0;
+    private ActivityCategoryAdapter categoryAdapter;
 
     public static ActivityClassifyFragment newInstance(String parentId) {
         ActivityClassifyFragment fragment = new ActivityClassifyFragment();
@@ -89,14 +94,63 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         fragment.setArguments(args);
         return fragment;
     }
-//
-//    public static ActivityClassifyFragment newInstance(List<Information> announcements) {
-//        ActivityClassifyFragment fragment = new ActivityClassifyFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable("announcements", (Serializable) announcements);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+
+    //有新消息到来，需要更新
+    @Subscribe
+    public void activityNewMessage(Event.ActivityNew activityNew) {
+        if (activityNew == null || activityNew.getActCatMsg() == null) return;
+        OrganizationActivityDS data = activityNew.getActCatMsg().getData();
+        if (data == null) return;
+        CalcCatUnRead(data.getCategoryId());
+
+    }
+
+    /**
+     * 查询 categoryId类别 未读条数据
+     *
+     * @param categoryId 传入""查询所有类别
+     */
+    public void CalcCatUnRead(String categoryId) {
+        if (categoryAdapter == null) return;
+        List<ActivityCategory> list = categoryAdapter.getData();
+        if (list == null) return;
+
+        String[] categorySplit = categoryId.split("/");
+        String categoryType = categorySplit[categorySplit.length - 1];
+
+        for (int i = 0; i < list.size(); i++) {
+            ActivityCategory category = list.get(i);
+            String id = category.getId();
+            if (categoryType == "") {
+                list.get(i).setUnRead(unReadCategoryCount(list.get(i).getId()));
+                categoryAdapter.notifyItemChanged(i);
+            } else if (id.contains(categoryType)) {
+                String tmpCate = categoryId.replace("/" + categoryType, "");
+                String idCate = id.replace("/" + categoryType, "");
+                if (StringUtils.isResisterTopCommunity(idCate, tmpCate)) {
+                    list.get(i).setUnRead(unReadCategoryCount(list.get(i).getId()));
+                    categoryAdapter.notifyItemChanged(i);
+                }
+            }
+        }
+
+    }
+
+    //从数据库中获取到当前类别 向上至市 的所有 未读消息条数
+    public int unReadCategoryCount(String id) {
+        int pos = id.indexOf("/#");
+        String categotyType = id.substring(pos);
+        String orgId = id.replace(categotyType, "");
+        ArrayList<String> orgs = User.levelIds(orgId);
+        int total = 0;
+        int count = 0;
+        for (int i = 0; i < orgs.size(); i++) {
+            count = DataSupport.where("categoryId = ?", orgs.get(i) + categotyType).count(OrganizationActivityDS.class);
+            total += count;
+            Logger.d("个数:" + total + " " + count);
+        }
+        return total;
+    }
 
     @Subscribe
     public void refreshData(Event.RefreshActivityData event) {
@@ -237,12 +291,15 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         completeRefresh();
         this.activityCategories = (ArrayList<ActivityCategory>) activityCategories;
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
-        ActivityCategoryAdapter adapter = new ActivityCategoryAdapter(this, activityCategories);
-        adapter.setOnItemClickListener((activityCategory -> {
+        categoryAdapter = new ActivityCategoryAdapter(this, activityCategories);
+        categoryAdapter.setOnItemClickListener((activityCategory -> {
+            DBHelper.deleterCategory(activityCategory.getId());
+            CalcCatUnRead(activityCategory.getId());
             start(ActivityListFragment.newInstance(activityCategory));
         }));
 
-        mClassifyRecycler.setAdapter(adapter);
+        mClassifyRecycler.setAdapter(categoryAdapter);
+        CalcCatUnRead("");
     }
 
     @Override

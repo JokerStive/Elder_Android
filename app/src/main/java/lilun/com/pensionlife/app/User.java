@@ -271,10 +271,14 @@ public class User {
      * 当前组织id到市
      */
     public static ArrayList<String> levelIds(boolean isCurrentOrganizationId) {
+        String currentOrganizationId = isCurrentOrganizationId ? User.getCurrentOrganizationId() : User.getBelongsOrganizationId();
+        return levelIds(currentOrganizationId);
+    }
+
+    public static ArrayList<String> levelIds(String curOrgId) {
         int level = 4;
         ArrayList<String> ids = null;
-        String currentOrganizationId = isCurrentOrganizationId ? User.getCurrentOrganizationId() : User.getBelongsOrganizationId();
-        String[] split = currentOrganizationId.split("/");
+        String[] split = curOrgId.split("/");
         if (split.length >= level) {
             ids = new ArrayList<>();
             for (int i = level; i < split.length; i++) {
