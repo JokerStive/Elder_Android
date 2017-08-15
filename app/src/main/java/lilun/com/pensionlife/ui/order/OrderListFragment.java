@@ -120,6 +120,7 @@ public class OrderListFragment extends BaseFragment {
      */
     private void initIndicator() {
         CommonNavigator navigator = new CommonNavigator(getActivity());
+        navigator.setAdjustMode(true);
         navigator.setAdapter(new CommonNavigatorAdapter() {
 
             @Override
@@ -170,20 +171,6 @@ public class OrderListFragment extends BaseFragment {
                     }
                 });
 
-//                ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
-//                titleView.setNormalColor(Color.BLACK);
-//                titleView.setSelectedColor(selectedColor);
-//                if (App.widthDP > 820)
-//                    titleView.setTextSize(14 * 3);
-//                else
-//                    titleView.setTextSize(14);
-//                titleView.setText(statusTitle[index]);
-//                titleView.setCompoundDrawablesWithIntrinsicBounds(null, selectorList.get(index), null, null);
-////                if (index==0){
-////                    titleView.setSelected(true);
-////                }
-////                titleView.setCompoundDrawablePadding(UIUtils.dp2px(App.context,10));
-//                titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
                 return commonPagerTitleView;
             }
 
@@ -192,6 +179,7 @@ public class OrderListFragment extends BaseFragment {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setColors(selectedColor);
                 indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
+                indicator.setBackgroundColor(Color.parseColor("#f1f1f1"));
                 return indicator;
             }
         });
