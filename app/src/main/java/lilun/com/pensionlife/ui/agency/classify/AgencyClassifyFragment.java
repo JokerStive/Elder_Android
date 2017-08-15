@@ -109,7 +109,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             @Override
             public void onRightClick() {
                 //TODO 商家和个人查看所有订单
-                if (!User.isMerchant()) {
+                if (User.isCustomer()) {
                     start(OrderListFragment.newInstance(Config.agency_product_categoryId));
                 } else {
                     Logger.d("商家模式进入");

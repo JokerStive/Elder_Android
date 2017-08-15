@@ -220,7 +220,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
 
     private void call() {
         String mobile = clickOrder.getMobile();
-        Contact userProfile = clickOrder.getUserProfile();
+        Contact userProfile = clickOrder.getContact();
         if (userProfile != null && !TextUtils.isEmpty(userProfile.getMobile())) {
             mobile = userProfile.getMobile();
         }

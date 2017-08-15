@@ -302,7 +302,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("OrganizationProducts/{id}/createOrder")
-    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId, @Field("registerDate") String registerDate);
+    Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId, @Field("registerDate") String registerDate,@Field("description") String description);
 
 
     /**

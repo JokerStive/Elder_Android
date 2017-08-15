@@ -1,6 +1,5 @@
-package lilun.com.pensionlife.ui.residential.detail;
+package lilun.com.pensionlife.ui.order.personal_detail;
 
-import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -17,9 +16,9 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> implements OrderDetailContract.Presenter {
     @Override
     public void getOrder(String orderId) {
-        String filter = "{\"include\":[\"product\",\"assignee\"]}";
+//        String filter = "{\"include\":[\"product\",\"assignee\"]}";
         addSubscribe(NetHelper.getApi()
-                .getOrder(orderId, filter)
+                .getOrder(orderId, null)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<ProductOrder>(getActivity()) {

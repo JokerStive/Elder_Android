@@ -16,8 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -44,8 +48,11 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
+import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
+import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -73,7 +80,7 @@ public class ProductDetailFragment extends BaseFragment {
     TextView tvProductTitleExtra;
 
     @Bind(R.id.rb_score)
-    RatingBar rbScore;
+    CustomRatingBar rbScore;
 
     @Bind(R.id.tv_score)
     TextView tvScore;
@@ -123,6 +130,13 @@ public class ProductDetailFragment extends BaseFragment {
         return fragment;
     }
 
+    @Subscribe
+    public void refresh(String tx) {
+        if (tx.equals("hasOrder")) {
+            setHadOrdered();
+        }
+    }
+
 
     @Override
     protected void getTransferData(Bundle arguments) {
@@ -160,6 +174,7 @@ public class ProductDetailFragment extends BaseFragment {
         getProduct();
         get2Rank();
         getRankCount();
+        getIsOrder();
     }
 
 
@@ -174,6 +189,28 @@ public class ProductDetailFragment extends BaseFragment {
                     }
                 });
 
+    }
+
+    private void getIsOrder() {
+        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
+        NetHelper.getApi()
+                .getOrdersOfProduct(mProductId, filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                    @Override
+                    public void _next(List<ProductOrder> orders) {
+                        if (orders.size() != 0) {
+                            setHadOrdered();
+                        }
+                    }
+                });
+    }
+
+    private void setHadOrdered() {
+        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+        tvReservation.setEnabled(false);
+        tvReservation.setText("已经预约");
     }
 
     private void get2Rank() {
@@ -225,7 +262,7 @@ public class ProductDetailFragment extends BaseFragment {
         tvProductTitleExtra.setText(product.getTitle());
 
         //星
-        rbScore.setRating(product.getScore());
+        rbScore.setCountSelected(product.getScore());
 
         //星文字
         tvScore.setText((double) product.getScore() + "");
@@ -241,7 +278,7 @@ public class ProductDetailFragment extends BaseFragment {
 
 
         //服务电话
-        tvProductMobile.setText(Html.fromHtml("服务热线: <font color='#17c5b4'>" + product.getMobile() + "</font>"));
+        tvProductMobile.setText(Html.fromHtml("服务热线: <font color='#17c5c3'>" + product.getMobile() + "</font>"));
 
         //内容
         wbProductContent.getSettings().setJavaScriptEnabled(true);
@@ -347,9 +384,10 @@ public class ProductDetailFragment extends BaseFragment {
                     public void _next(List<Contact> contacts) {
                         if (contacts.size() > 0) {
                             //显示 预约者信息列表
+                            start(ContactListFragment.newInstance(mProduct.getId()));
                         } else {
                             //新增基础信息界面
-                            start(AddBasicContactFragment.newInstance());
+                            start(AddBasicContactFragment.newInstance(mProduct.getId()));
                         }
                     }
                 });
@@ -398,5 +436,22 @@ public class ProductDetailFragment extends BaseFragment {
         }
     }
 
+
+    @Override
+    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        Logger.d("requestCode =  " + requestCode + "----" + "resultCode = " + resultCode);
+        if (requestCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
+            setHadOrdered();
+        }
+    }
+
+//    @Override
+//    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+//        Logger.d("requestCode =  " + reqCode + "----" + "resultCode = " + resultCode);
+//        if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
+//            setHadOrdered();
+//        }
+//    }
 
 }

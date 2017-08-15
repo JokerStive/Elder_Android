@@ -16,15 +16,16 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Config;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.PersonalOrderAdapter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.ui.residential.detail.OrderDetailActivity;
-import lilun.com.pensionlife.widget.NormalItemDecoration;
+import lilun.com.pensionlife.module.utils.UIUtils;
+import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailActivity;
+import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -91,7 +92,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         titleBar.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(Config.list_decoration));
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, UIUtils.dp2px(App.context, 10), App.context.getResources().getColor(R.color.gray)));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -112,7 +113,6 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-//        String filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\",\"categoryId\":{\"like\":\"" + productCategoryId + "\"}}";
         String filter = "  {\"include\":[\"product\",\"assignee\"],\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"},{\"categoryId\":{\"like\":\"" + productCategoryId + "\"}}]},\"limit\":\"20\",\"skip\":\"0\"}";
         mPresenter.getMyOrders(filter, skip);
 
@@ -145,10 +145,10 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
                 }
 
                 @Override
-                public void onRank(String productId) {
+                public void nextOperate(String productId) {
                     Fragment parentFragment = getParentFragment();
-                    if (parentFragment instanceof OrderListFragment){
-                        ( (OrderListFragment)parentFragment).startRank(productId);
+                    if (parentFragment instanceof OrderListFragment) {
+                        ((OrderListFragment) parentFragment).startRank(productId);
                     }
                 }
             });

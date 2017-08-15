@@ -206,16 +206,16 @@ public class AddServiceInfoFragment extends BaseFragment {
             etReservationPhone.setText(mContact.getMobile());
 
 //            if (expandKeys != null && expandKeys.size() >= 3) {
-            Map<String, String> extend = mContact.getExtend();
-            if (extend != null) {
-//                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
-//                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
-//                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
-
-                tvBirthday.setText(extend.get("birthday"));
-                tvHealthStatus.setText(extend.get("healthyDescription"));
-                etHealthDesc.setText(extend.get("healthyStatus"));
-            }
+//            Map<String, String> extend = mContact.getExtend();
+//            if (extend != null) {
+////                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
+////                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
+////                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
+//
+//                tvBirthday.setText(extend.get("birthday"));
+//                tvHealthStatus.setText(extend.get("healthyDescription"));
+//                etHealthDesc.setText(extend.get("healthyStatus"));
+//            }
 //            }
 
         }
@@ -313,7 +313,7 @@ public class AddServiceInfoFragment extends BaseFragment {
             expand.put(key, birthday.toString());
             expand.put(expandKeys.get(1).getKey(), healthStatus.toString());
             expand.put(expandKeys.get(2).getKey(), healthDesc);
-            contact.setExtend(expand);
+//            contact.setExtend(expand);
 
             if (mContact != null) {
                 putContact(contact);
@@ -355,8 +355,8 @@ public class AddServiceInfoFragment extends BaseFragment {
                     @Override
                     public void _next(Contact contact) {
                         if (!TextUtils.isEmpty(productId)) {
-                            statReservation(contact);
-//                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
+//                            statReservation(contact);
+                            startWithPop(ReservationFragment.newInstance(productId, contact));
                         } else {
                             EventBus.getDefault().post(new Event.RefreshContract());
                         }

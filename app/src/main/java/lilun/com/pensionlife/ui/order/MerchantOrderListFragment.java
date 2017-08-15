@@ -24,7 +24,6 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pensionlife.widget.NormalTitleBar;
-import lilun.com.pensionlife.widget.SearchTitleBar;
 
 /**
  * 订单列表页面
@@ -37,11 +36,10 @@ public class MerchantOrderListFragment extends BaseFragment {
 
     @Bind(R.id.indicator)
     MagicIndicator indicator;
-
     @Bind(R.id.vp_container)
     ViewPager mViewPager;
-    @Bind(R.id.searchBar)
-    SearchTitleBar searchBar;
+    //    @Bind(R.id.searchBar)
+//    SearchTitleBar searchBar;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
 
@@ -77,23 +75,23 @@ public class MerchantOrderListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
-        searchBar.isChangeLayout(false);
-        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
-            @Override
-            public void onBack() {
-                pop();
-            }
-
-            @Override
-            public void onSearch(String searchStr) {
-
-            }
-
-            @Override
-            public void onChangeLayout(SearchTitleBar.LayoutType layoutType) {
-
-            }
-        });
+//        searchBar.isChangeLayout(false);
+//        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
+//            @Override
+//            public void onBack() {
+//                pop();
+//            }
+//
+//            @Override
+//            public void onSearch(String searchStr) {
+//
+//            }
+//
+//            @Override
+//            public void onChangeLayout(SearchTitleBar.LayoutType layoutType) {
+//
+//            }
+//        });
 
 
         initViewPager();
@@ -107,7 +105,7 @@ public class MerchantOrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            MerchantOrderPageFragment fragment = MerchantOrderPageFragment.newInstance(status[i],productId);
+            MerchantOrderPageFragment fragment = MerchantOrderPageFragment.newInstance(status[i], productId);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {
@@ -133,7 +131,7 @@ public class MerchantOrderListFragment extends BaseFragment {
                 titleView.setNormalColor(Color.BLACK);
                 titleView.setSelectedColor(getResources().getColor(R.color.red));
                 if (App.widthDP > 820)
-                    titleView.setTextSize(17*3);
+                    titleView.setTextSize(17 * 3);
                 else
                     titleView.setTextSize(17);
                 titleView.setText(statusTitle[index]);

@@ -1,7 +1,5 @@
 package lilun.com.pensionlife.module.bean;
 
-import java.util.Map;
-
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
@@ -19,7 +17,7 @@ public class Contact extends BaseBean {
     public boolean isDefault() {
         return isDefault;
     }
-
+//
     public Contact setDefault(boolean aDefault) {
         isDefault = aDefault;
         return this;
@@ -37,7 +35,7 @@ public class Contact extends BaseBean {
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private Map<String, String> extend;
+    private AgencyContactExtension extend;
 
     public String getId() {
         return id;
@@ -95,11 +93,11 @@ public class Contact extends BaseBean {
         this.gender = gender;
     }
 
-    public Map<String, String> getExtend() {
+    public AgencyContactExtension getExtend() {
         return extend;
     }
 
-    public void setExtend(Map<String, String> extend) {
+    public void setExtend(AgencyContactExtension extend) {
         this.extend = extend;
     }
 

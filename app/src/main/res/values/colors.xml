@@ -33,6 +33,7 @@
     <color name="help">#29AEA9</color>
 
     <color name="filter_checked_color">#008CEE</color>
+    <color name="filter_unchecked_color">#666666</color>
 
     <color name="health">#3E725C</color>
 

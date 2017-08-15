@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -27,12 +26,12 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     private Context content;
     private ImageView ivBack;
     private OnItemClickListener listener;
-    private TextView tvSearch;
+    private CustomTextView tvSearch;
     private ImageView ivChangeLayout;
     private String lastSearchStr;
     private int layoutTypeIndex = 0;
-    private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.BIG, LayoutType.SMALL, LayoutType.NULL};
-    private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_big, R.drawable.layout_type_small, R.drawable.layout_type_null};
+    private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.SMALL, LayoutType.BIG, LayoutType.NULL};
+    private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_small, R.drawable.layout_type_big, R.drawable.layout_type_null};
     private boolean noNullLayout;
     private BaseFragment fragment;
     private RelativeLayout rl;
@@ -48,10 +47,11 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.search_title_bar, this);
         rl = (RelativeLayout) view.findViewById(R.id.rl);
-        tvSearch = (TextView) view.findViewById(R.id.et_search);
+        tvSearch = (CustomTextView) view.findViewById(R.id.tv_search);
         ivChangeLayout = (ImageView) view.findViewById(R.id.iv_change_layout);
 
 
+        ivChangeLayout.setImageResource(layoutTypeIcon[layoutTypeIndex]);
         rl.setOnClickListener(this);
         tvSearch.setOnClickListener(this);
         ivChangeLayout.setOnTouchListener(this);
@@ -76,7 +76,7 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
                 }
                 break;
 
-            case R.id.et_search:
+            case R.id.tv_search:
                 if (fragment != null) {
                     SearchFragment searchPop = SearchFragment.newInstance(tvSearch.getText() + "");
                     searchPop.setOnSearchListenerListener(str -> {
@@ -93,8 +93,8 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     }
 
 
-    public void isChangeLayout(boolean changeLayout){
-        ivChangeLayout.setVisibility(changeLayout?VISIBLE:GONE);
+    public void isChangeLayout(boolean changeLayout) {
+        ivChangeLayout.setVisibility(changeLayout ? VISIBLE : GONE);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

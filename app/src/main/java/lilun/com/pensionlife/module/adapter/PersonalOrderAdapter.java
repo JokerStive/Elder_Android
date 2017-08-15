@@ -1,13 +1,15 @@
 package lilun.com.pensionlife.module.adapter;
 
-import android.widget.RatingBar;
+import android.text.Html;
+import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
@@ -40,31 +42,53 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     protected void convert(BaseViewHolder helper, ProductOrder order) {
         OrganizationProduct product = order.getProduct();
         if (product != null) {
-            RatingBar rb = helper.getView(R.id.rb_product);
-            rb.setRating(product.getScore());
 
             ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
 
+            setOrderStatus(helper, order);
+            setNextOperate(helper, order);
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
-            helper.setText(R.id.tv_sophisticated, product.getName())
-                    .setText(R.id.tv_provider_name, agencyName)
+            helper.setText(R.id.tv_provider_name, agencyName)
+                    .setText(R.id.tv_product_title, product.getTitle())
                     .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0))
-                    .setText(R.id.tv_product_price, String.format(App.context.getResources().getString(R.string.format_price), product.getPrice()))
-                    .setVisible(R.id.tv_rank, order.getStatus().equals("done"))
+                    .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
                         if (listener != null) {
                             listener.onItemClick(order);
                         }
                     })
 
-                    .setOnClickListener(R.id.tv_rank, v -> {
+                    .setOnClickListener(R.id.tv_next_operate, v -> {
                         if (listener != null) {
-                            listener.onRank(order.getProductId());
+                            listener.nextOperate(order.getProductId());
                         }
                     })
 
             ;
 
+        }
+    }
+
+    private void setNextOperate(BaseViewHolder helper, ProductOrder order) {
+        TextView tvNextOperate = helper.getView(R.id.tv_next_operate);
+        String status = order.getStatus();
+        if (status.equals("reserved") || status.equals("delay")) {
+            tvNextOperate.setVisibility(View.VISIBLE);
+            tvNextOperate.setText("取消预约");
+        }
+    }
+
+    private void setOrderStatus(BaseViewHolder helper, ProductOrder order) {
+        TextView tvOrderStatus = helper.getView(R.id.tv_order_status);
+        String status = order.getStatus();
+        if (status.equals("reserved") || status.equals("delay")) {
+            tvOrderStatus.setText("等待商家处理");
+        } else if (status.equals("assigned")) {
+            tvOrderStatus.setText("商家已经受理");
+        } else if (status.equals("done")) {
+            tvOrderStatus.setText("该订单已经完成");
+        } else if (status.equals("cancel")) {
+            tvOrderStatus.setText("该订单已经取消");
         }
     }
 
@@ -76,6 +100,6 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     public interface OnItemClickListener {
         void onItemClick(ProductOrder order);
 
-        void onRank(String productId);
+        void nextOperate(String productId);
     }
 }

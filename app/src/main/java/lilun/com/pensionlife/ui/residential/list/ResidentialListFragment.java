@@ -18,7 +18,7 @@ import lilun.com.pensionlife.module.adapter.AgencyServiceAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.ui.agency.detail.ServiceDetailFragment;
+import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterView;
@@ -119,7 +119,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
         mAdapter = getAdapterFromLayoutType(products);
         if (mAdapter != null) {
             mAdapter.setOnItemClickListener((product) -> {
-                start(ServiceDetailFragment.newInstance(product), SINGLETASK);
+                start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK);
             });
             mAdapter.setEmptyView();
         }

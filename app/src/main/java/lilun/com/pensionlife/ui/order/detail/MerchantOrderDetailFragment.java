@@ -22,7 +22,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.ui.agency.detail.ServiceDetailFragment;
+import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.merchant.MemoFragment;
 import lilun.com.pensionlife.ui.agency.reservation.AddServiceInfoFragment;
 import lilun.com.pensionlife.ui.tourism.detail.TourismDetailFragment;
@@ -145,9 +145,9 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
                 if (!TextUtils.isEmpty(contactId)) {
                     String categoryId = mOrder.getCategoryId();
                     if (categoryId.equals(Config.tourism_product_categoryId)) {
-                        start(AddTourismInfoFragment.newInstance(mOrder.getUserProfile(), false));
+                        start(AddTourismInfoFragment.newInstance(mOrder.getContact(), false));
                     } else {
-                        start(AddServiceInfoFragment.newInstance(mOrder.getUserProfile(),categoryId, false));
+                        start(AddServiceInfoFragment.newInstance(mOrder.getContact(),categoryId, false));
                     }
                 }
                 break;
@@ -156,7 +156,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             case R.id.ll_product_item:
                 String categoryId = mOrder.getCategoryId();
                 if (!categoryId.equals(Config.tourism_product_categoryId)) {
-                    start(ServiceDetailFragment.newInstance(mOrder.getProduct()));
+                    start(ProductDetailFragment.newInstance(mOrder.getProduct().getId()));
                 } else {
                     start(TourismDetailFragment.newInstance(mOrder.getProduct().getId()));
                 }

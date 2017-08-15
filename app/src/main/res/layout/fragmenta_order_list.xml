@@ -3,39 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
-    <RelativeLayout
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        app:title="@string/all_orders" />
 
-        <lilun.com.pensionlife.widget.SearchTitleBar
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_45"
-            android:visibility="gone" />
-
-        <lilun.com.pensionlife.widget.NormalTitleBar
-            android:id="@+id/titleBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="@string/all_orders" />
-
-    </RelativeLayout>
+    <View
+        style="@style/line_gray"
+        android:layout_height="10dp"
+        android:background="#f1f1f1" />
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:background="@color/white">
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
 
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_40"
-            android:layout_gravity="center_horizontal" />
-    </FrameLayout>
+         />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_container"

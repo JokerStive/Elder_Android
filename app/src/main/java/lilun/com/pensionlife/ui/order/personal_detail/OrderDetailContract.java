@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.ui.residential.detail;
+package lilun.com.pensionlife.ui.order.personal_detail;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;

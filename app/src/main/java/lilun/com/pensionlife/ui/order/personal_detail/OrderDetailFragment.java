@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.ui.residential.detail;
+package lilun.com.pensionlife.ui.order.personal_detail;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,35 +7,36 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.DecimalFormat;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.bean.Account;
+import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
-import lilun.com.pensionlife.module.utils.UIUtils;
-import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
-import lilun.com.pensionlife.ui.agency.detail.ServiceDetailFragment;
 import lilun.com.pensionlife.ui.help.RankFragment;
+import lilun.com.pensionlife.widget.CustomTextView;
 import lilun.com.pensionlife.widget.NormalDialog;
+import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -46,59 +47,38 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 
-public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presenter> implements OrderDetailContract.View, View.OnClickListener {
+public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presenter> implements OrderDetailContract.View {
 
-
-    @Bind(R.id.iv_back)
-    ImageView ivBack;
-
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
     @Bind(R.id.tv_order_status)
     TextView tvOrderStatus;
-
-
-    @Bind(R.id.tv_order_name)
-    TextView tvOrderName;
-
-    @Bind(R.id.tv_order_address)
-    TextView tvOrderAddress;
-
-    @Bind(R.id.iv_provider_avatar)
-    ImageView ivProviderAvatar;
-
+    @Bind(R.id.tv_order_create_time)
+    TextView tvOrderCreateTime;
+    @Bind(R.id.tv_order_reservation_time)
+    TextView tvOrderReservationTime;
+    @Bind(R.id.tv_contact_mobile)
+    TextView tvContactMobile;
+    @Bind(R.id.tv_contact_name)
+    TextView tvContactName;
+    @Bind(R.id.tv_contact_address)
+    TextView tvContactAddress;
     @Bind(R.id.tv_provider_name)
     TextView tvProviderName;
-
     @Bind(R.id.iv_product_icon)
     ImageView ivProductIcon;
-
-    @Bind(R.id.tv_sophisticated)
-    TextView tvProductName;
-
-    @Bind(R.id.tv_product_price)
-    TextView tvProductPrice;
-
-    @Bind(R.id.rb_product)
-    RatingBar rbProduct;
-
-    @Bind(R.id.tv_product_phone)
-    TextView tvProductPhone;
-
-    @Bind(R.id.rl_product_phone)
-    RelativeLayout rlProductPhone;
-
-    @Bind(R.id.tv_operate)
-    TextView tvOperate;
-
-    @Bind(R.id.rl_provider_detail)
-    RelativeLayout rlProviderDetail;
-
-    @Bind(R.id.rl_product_detail)
-    RelativeLayout rlProductDetail;
-
-    @Bind(R.id.ll_operate)
-    LinearLayout llOperate;
-    @Bind(R.id.tv_cancel)
-    TextView tvCancel;
+    @Bind(R.id.tv_product_title)
+    TextView tvProductTitle;
+    @Bind(R.id.tv_product_area)
+    TextView tvProductArea;
+    @Bind(R.id.tv_order_count)
+    TextView tvOrderCount;
+    @Bind(R.id.tv_order_total_price)
+    TextView tvOrderTotalPrice;
+    @Bind(R.id.tv_order_price)
+    TextView tvOrderPrice;
+    @Bind(R.id.tv_cancel_order)
+    CustomTextView tvCancelOrder;
 
     private String mOrderId;
     private String status_reserved = "reserved";
@@ -137,17 +117,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        UIUtils.setBold(tvProviderName);
-        UIUtils.setBold(tvOperate);
-        UIUtils.setBold(tvCancel);
-
-
-        ivBack.setOnClickListener(this);
-        tvOperate.setOnClickListener(this);
-        rlProductPhone.setOnClickListener(this);
-        rlProductDetail.setOnClickListener(this);
-        rlProviderDetail.setOnClickListener(this);
-        tvCancel.setOnClickListener(this);
+        titleBar.setOnBackClickListener(this::pop);
     }
 
     @Override
@@ -161,44 +131,66 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     public void showOrder(ProductOrder order) {
         //show order
         this.mOrder = order;
+
+        //订单信息
         int status = getStatus(order.getStatus());
         if (status != 0) {
-            tvOrderStatus.setText(status);
+            tvOrderStatus.setText(Html.fromHtml("订单状态: <font color='#fe620f'>" + App.context.getString(status) + "</font>"));
         }
 
-        int statusStringRes= getStatusOperate(order.getStatus());
-        if (statusStringRes!=-1){
-            llOperate.setVisibility(View.VISIBLE);
-            tvOperate.setText(statusStringRes);
+        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), 0));
+
+        tvOrderReservationTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
+
+        //联系人信息
+        Contact contact = order.getContact();
+        if (contact != null) {
+            tvContactMobile.setText(Html.fromHtml("手机号:<font color='#fe620f'>" + contact.getMobile() + "</font>"));
+
+            tvContactName.setText("联系人:" + contact.getName());
+
+            tvContactAddress.setText(contact.getAddress());
+        }
+
+        //根据订单状态下一步的操作
+        int statusStringRes = getStatusOperate(order.getStatus());
+        if (statusStringRes != -1) {
+            tvCancelOrder.setVisibility(View.VISIBLE);
+            tvCancelOrder.setText(statusStringRes);
         }
 
 
-
-        //show product
+        //显示产品信息
         OrganizationProduct product = order.getProduct();
-        Account account = order.getAssignee();
-
-        if (product == null || account == null) {
-            return;
-        }
-
-        if (User.isCustomer()) {
+        if (product != null) {
+            //服务提供商
             agencyId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
             String agencyName = StringUtils.getOrganizationNameFromId(agencyId);
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Organizations, agencyId, null), R.drawable.icon_def, ivProviderAvatar);
-            //TODO 现在是获取组织的icon，也可能是information的icon
             tvProviderName.setText(StringUtils.filterNull(agencyName));
-            tvProductPhone.setText(account.getMobile());
-        } else {
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
-            tvProviderName.setText(mOrder.getCreatorName());
-            tvProductPhone.setText(mOrder.getMobile());
-        }
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, ivProductIcon);
-        tvProductName.setText(product.getName());
-        tvProductPrice.setText(String.format(getString(R.string.format_price), product.getPrice()));
-        rbProduct.setRating(product.getScore());
+            //产品图
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, ivProductIcon);
+
+            //产品名称
+            tvProductTitle.setText(product.getTitle());
+
+            //价格
+            tvOrderTotalPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
+            tvOrderPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
+        }
+//
+//        if (User.isCustomer()) {
+//
+//        } else {
+//            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
+//            tvProviderName.setText(mOrder.getCreatorName());
+//            tvProductPhone.setText(mOrder.getMobile());
+//        }
+
+
+//        tvProductName.setText(product.getName());
+//        tvProductPrice.setText(String.format(getString(R.string.format_price), product.getPrice()));
+//        rbProduct.setRating(product.getScore());
 
 
     }
@@ -240,42 +232,42 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         return statusOperate;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_back:
-                getActivity().finish();
-                break;
-
-            case R.id.rl_provider_detail:
-                if (User.isCustomer()) {
-                    start(ProviderDetailFragment.newInstance(agencyId));
-                }
-                break;
-
-            case R.id.rl_product_detail:
-                if (mOrder.getProduct() != null) {
-                    start(ServiceDetailFragment.newInstance(mOrder.getProduct()));
-                }
-                break;
-
-            case R.id.rl_product_phone:
-                //TODO 拨打电话
-                call("确定联系商家？");
-                break;
-
-            case R.id.tv_operate:
-                operate();
-                break;
-
-            case R.id.tv_cancel:
-                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.iv_back:
+//                getActivity().finish();
+//                break;
+//
+//            case R.id.rl_provider_detail:
+//                if (User.isCustomer()) {
+//                    start(ProviderDetailFragment.newInstance(agencyId));
+//                }
+//                break;
+//
+//            case R.id.rl_product_detail:
+//                if (mOrder.getProduct() != null) {
+//                    start(ProductDetailFragment.newInstance(mOrder.getProduct().getId()));
+//                }
+//                break;
+//
+//            case R.id.rl_product_phone:
+//                //TODO 拨打电话
+//                call("确定联系商家？");
+//                break;
+//
+//            case R.id.tv_operate:
+//                operate();
+//                break;
+//
+//            case R.id.tv_cancel:
+//                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
+//                break;
+//        }
+//    }
 
     private void operate() {
-        String operate = tvOperate.getText().toString();
+        String operate = tvCancelOrder.getText().toString();
         if (!TextUtils.isEmpty(operate)) {
             //取消订单
             if (operate.equals(getString(R.string.operate_cancel))) {
@@ -312,7 +304,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
     private void call(String msg) {
-        String phoneDesc = tvProductPhone.getText().toString();
+        String phoneDesc = tvContactMobile.getText().toString();
         if (!TextUtils.isEmpty(phoneDesc)) {
             boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission) {
@@ -324,7 +316,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
     private void callPhone(String msg) {
-        String mobile = tvProductPhone.getText().toString();
+        String mobile = tvContactMobile.getText().toString();
         new NormalDialog().createNormal(_mActivity, msg, () -> {
             Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile));
             startActivity(intent);
@@ -342,5 +334,19 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
                 callPhone("确定联系商家？");
             }
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

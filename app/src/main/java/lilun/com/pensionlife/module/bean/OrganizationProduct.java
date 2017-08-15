@@ -35,6 +35,17 @@ public class OrganizationProduct extends BaseBean {
      */
 
     private String name;
+    private String subTitle ;
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public OrganizationProduct setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+        return this;
+    }
+
     private String title;
     private String context;
     private String contextType;

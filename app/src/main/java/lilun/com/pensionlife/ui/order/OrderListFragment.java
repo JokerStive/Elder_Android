@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -13,21 +16,19 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
-import lilun.com.pensionlife.widget.SearchTitleBar;
 
 /**
  * 订单列表页面
@@ -43,13 +44,14 @@ public class OrderListFragment extends BaseFragment {
 
     @Bind(R.id.vp_container)
     ViewPager mViewPager;
-    @Bind(R.id.searchBar)
-    SearchTitleBar searchBar;
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
+    int selectedColor = 0xffef620f;
 
 
-    private String[] statusTitle = {"已预约", "已受理", "已完成", "已取消"};
+    private String[] statusTitle = {"待处理", "已受理", "已完成", "已取消"};
+    private ArrayList<Integer> normalDrawablesRes = new ArrayList();
+    private ArrayList<Integer> selectedDrawablesRes = new ArrayList();
     private String[] status = {"reserved", "assigned", "done", "cancel"};
     private String productCategoryId;
 
@@ -72,6 +74,16 @@ public class OrderListFragment extends BaseFragment {
     protected void initPresenter() {
         statusTitle = getResources().getStringArray(R.array.order_condition);
         status = getResources().getStringArray(R.array.order_condition_value);
+
+        normalDrawablesRes.add(R.drawable.undeal_off);
+        normalDrawablesRes.add(R.drawable.deal_off);
+        normalDrawablesRes.add(R.drawable.complete_off);
+        normalDrawablesRes.add(R.drawable.cancel_off);
+
+        selectedDrawablesRes.add(R.drawable.undeal_on);
+        selectedDrawablesRes.add(R.drawable.deal_on);
+        selectedDrawablesRes.add(R.drawable.complete_on);
+        selectedDrawablesRes.add(R.drawable.cancel_on);
     }
 
     @Override
@@ -82,23 +94,6 @@ public class OrderListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
-        searchBar.isChangeLayout(false);
-        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
-            @Override
-            public void onBack() {
-                pop();
-            }
-
-            @Override
-            public void onSearch(String searchStr) {
-
-            }
-
-            @Override
-            public void onChangeLayout(SearchTitleBar.LayoutType layoutType) {
-
-            }
-        });
 
 
         initViewPager();
@@ -134,23 +129,69 @@ public class OrderListFragment extends BaseFragment {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
-                titleView.setNormalColor(Color.BLACK);
-                titleView.setSelectedColor(getResources().getColor(R.color.red));
-                if (App.widthDP > 820)
-                    titleView.setTextSize(17*3);
-                else
-                    titleView.setTextSize(17);
-                titleView.setText(statusTitle[index]);
-                titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
-                return titleView;
+                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(_mActivity);
+                commonPagerTitleView.setContentView(R.layout.item_order_list_indictor);
+
+                ImageView image = (ImageView) commonPagerTitleView.findViewById(R.id.iv_image);
+                TextView title = (TextView) commonPagerTitleView.findViewById(R.id.tv_title);
+
+                title.setText(statusTitle[index]);
+                image.setImageResource(normalDrawablesRes.get(index));
+
+                commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
+
+                    @Override
+                    public void onSelected(int i, int i1) {
+                        title.setTextColor(selectedColor);
+                        image.setImageResource(selectedDrawablesRes.get(i));
+                    }
+
+                    @Override
+                    public void onDeselected(int i, int i1) {
+                        title.setTextColor(Color.BLACK);
+                        image.setImageResource(normalDrawablesRes.get(i));
+                    }
+
+                    @Override
+                    public void onLeave(int i, int i1, float v, boolean b) {
+
+                    }
+
+                    @Override
+                    public void onEnter(int i, int i1, float v, boolean b) {
+
+                    }
+                });
+
+                commonPagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewPager.setCurrentItem(index);
+                    }
+                });
+
+//                ColorTransitionPagerTitleView titleView = new ColorTransitionPagerTitleView(context);
+//                titleView.setNormalColor(Color.BLACK);
+//                titleView.setSelectedColor(selectedColor);
+//                if (App.widthDP > 820)
+//                    titleView.setTextSize(14 * 3);
+//                else
+//                    titleView.setTextSize(14);
+//                titleView.setText(statusTitle[index]);
+//                titleView.setCompoundDrawablesWithIntrinsicBounds(null, selectorList.get(index), null, null);
+////                if (index==0){
+////                    titleView.setSelected(true);
+////                }
+////                titleView.setCompoundDrawablePadding(UIUtils.dp2px(App.context,10));
+//                titleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
+                return commonPagerTitleView;
             }
 
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setColors(getResources().getColor(R.color.red));
-                indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                indicator.setColors(selectedColor);
+                indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
                 return indicator;
             }
         });
@@ -161,5 +202,6 @@ public class OrderListFragment extends BaseFragment {
     public void startRank(String productId) {
         start(RankFragment.newInstance(Constants.organizationProduct, productId));
     }
+
 
 }

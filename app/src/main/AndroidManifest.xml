@@ -94,7 +94,7 @@
 
         <!-- 订单详情-->
         <activity
-            android:name="lilun.com.pensionlife.ui.residential.detail.OrderDetailActivity"
+            android:name=".ui.order.personal_detail.OrderDetailActivity"
             android:screenOrientation="portrait" />
 
 

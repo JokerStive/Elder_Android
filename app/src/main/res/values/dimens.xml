@@ -65,5 +65,6 @@
     <dimen name="dp_11">11dp</dimen>
     <dimen name="sp_11">11sp</dimen>
     <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
 
 </resources>

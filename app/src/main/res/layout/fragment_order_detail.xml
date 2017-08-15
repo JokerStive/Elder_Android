@@ -1,209 +1,331 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f9f9f9"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200"
-        android:background="@color/red"
-        android:paddingLeft="@dimen/dp_10">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tv_size_big_x"
-            android:src="@drawable/back_with_circle" />
-
-        <TextView
-            android:id="@+id/tv_order_status"
-            style="@style/tv_normal_ellipsize"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_24"
-            tools:text="已完成" />
-
-
-        <TextView
-            android:id="@+id/tv_order_name"
-            style="@style/tv_small_ellipsize"
-            android:layout_above="@+id/tv_order_address"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            tools:text="姓名：444" />
-
-        <TextView
-            android:id="@+id/tv_order_address"
-            style="@style/tv_small_ellipsize"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dp_14"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            tools:text="地址：44554" />
-
-
-    </RelativeLayout>
-
-    <LinearLayout
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_title"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/dp_10">
-
-        <RelativeLayout
-            android:id="@+id/rl_provider_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dp_20"
-            android:paddingTop="@dimen/dp_20">
-
-            <ImageView
-                android:id="@+id/iv_provider_avatar"
-                android:layout_width="@dimen/dp_45"
-                android:layout_height="@dimen/dp_45"
-                android:gravity="center_vertical"
-                tools:src="@drawable/avatar" />
-
-            <TextView
-                android:id="@+id/tv_provider_name"
-                style="@style/tv_normal_ellipsize"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_toEndOf="@+id/iv_provider_avatar"
-                android:layout_toRightOf="@+id/iv_provider_avatar"
-                android:gravity="center_vertical"
-                tools:text="猪肉提供商" />
+        app:title="预约详情"
+        />
 
 
-        </RelativeLayout>
-
-        <View style="@style/line_gray" />
-
-        <RelativeLayout
-            android:id="@+id/rl_product_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_14">
-
-            <ImageView
-                android:id="@+id/iv_product_icon"
-                android:layout_width="@dimen/dp_90"
-                android:layout_height="@dimen/dp_90"
-                tools:src="@drawable/shape_rect_red" />
-
-            <TextView
-                android:id="@+id/tv_sophisticated"
-                style="@style/tv_small"
-                android:layout_marginLeft="@dimen/dp_14"
-                android:layout_toRightOf="@+id/iv_product_icon"
-                android:maxLines="3"
-                tools:text="卖带哦饭姐爱哦饭假附近的撒放假打死房价大幅降低撒肥的手法的撒范德萨饭肉" />
-
-            <TextView
-                android:id="@+id/tv_product_price"
-                style="@style/tv_small_ellipsize"
-                android:layout_alignLeft="@id/tv_sophisticated"
-                android:layout_below="@id/tv_sophisticated"
-                android:layout_marginTop="@dimen/dp_10"
-                tools:text="14块" />
-
-            <RatingBar
-                android:id="@+id/rb_product"
-                style="@style/ratingBarr_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/tv_product_price"
-                android:layout_below="@id/tv_product_price"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/dp_10"
-                android:isIndicator="true"
-                android:numStars="5"
-                tools:rating="4" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_product_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_product_icon"
-
-            >
-
-            <ImageView
-                android:id="@+id/iv_call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:paddingBottom="@dimen/dp_14"
-                android:paddingTop="@dimen/dp_14"
-                android:src="@drawable/call" />
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_product_phone_desc"-->
-            <!--style="@style/tv_small"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="13dp"-->
-            <!--android:layout_toRightOf="@id/iv_call"-->
-            <!--android:text="联系电话:" />-->
-
-            <TextView
-                android:id="@+id/tv_product_phone"
-                style="@style/tv_small_ellipsize"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_14"
-                android:layout_toRightOf="@id/iv_call"
-                tools:text="132060114250" />
-        </RelativeLayout>
-
-
-        <View style="@style/line_gray" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/ll_operate"
+    <lilun.com.pensionlife.widget.CustomTextView
+        android:id="@+id/tv_cancel_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="取消预约"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_16"
+        app:textNormalSolidColor="#4aa5f0"
+        app:textNormalTextColor="#4aa5f0"
+        app:textRadius="10dp" />
 
-        <View style="@style/line_gray" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_above="@id/tv_cancel_order"
+        android:layout_below="@id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_cancel"
-                style="@style/tv_normal_ellipsize"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/dp_14"
-                android:textSize="@dimen/tv_size"
-                android:visibility="gone"
-                tools:text="取消订单" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="18dp">
 
-            <TextView
-                android:id="@+id/tv_operate"
-                style="@style/tv_normal_ellipsize"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/dp_14"
-                android:textSize="@dimen/tv_size"
-                tools:text="受理订单" />
+
+                <TextView
+                    android:id="@+id/tv_order_status"
+                    style="@style/tv_normal"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_15"
+                    tools:text="订单状态:代处理" />
+
+                <TextView
+                    android:id="@+id/tv_order_create_time"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_15"
+                    tools:text="预约时间: 2017-03-28 20:11:43" />
+
+                <TextView
+                    android:id="@+id/tv_order_reservation_time"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_15"
+                    tools:text="服务时间: 2017-04-12 13:48:46" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_contact_mobile"
+                    style="@style/tv_normal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:drawableLeft="@drawable/order_detail_mobile"
+                    android:drawablePadding="10dp"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="手机号:18723078926" />
+
+                <View
+                    style="@style/line_gray"
+                    android:background="#dedede" />
+
+                <TextView
+                    android:id="@+id/tv_contact_name"
+                    style="@style/tv_normal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:textColor="#474747"
+                    android:textSize="@dimen/sp_14"
+                    android:drawableLeft="@drawable/order_detail_name"
+                    android:drawablePadding="10dp"
+                    tools:text="联系人:黄小希" />
+
+                <View
+                    style="@style/line_gray"
+                    android:background="#dedede" />
+
+
+                <TextView
+                    android:id="@+id/tv_contact_address"
+                    style="@style/tv_normal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:textColor="#a8a8a8"
+                    android:textSize="@dimen/sp_14"
+                    android:drawableLeft="@drawable/order_detail_position"
+                    android:drawablePadding="10dp"
+                    tools:text="重庆市-重庆市-北碚区-光荣村50号-光光荣村 小区" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#ffffff"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_provider_name"
+                    style="@style/tv_small"
+                    android:drawableLeft="@drawable/icon_provider"
+                    android:drawablePadding="@dimen/dp_5"
+                    android:drawableRight="@drawable/add_contact_next"
+                    android:paddingBottom="14dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="14dp"
+                    android:textSize="@dimen/dp_13"
+                    tools:text="合展天池老年护养中心" />
+
+                <RelativeLayout
+                    android:id="@+id/ll_product_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#f9f9f9"
+                    android:padding="10dp">
+
+
+                    <ImageView
+
+                        android:id="@+id/iv_product_icon"
+                        android:layout_width="@dimen/dp_90"
+                        android:layout_height="@dimen/dp_90"
+                        tools:src="@drawable/shape_rect_red" />
+
+
+                    <TextView
+                        android:id="@+id/tv_product_price"
+                        style="@style/tv_small"
+                        android:layout_alignBottom="@id/iv_product_icon"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_toRightOf="@id/iv_product_icon"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="价格:100" />
+
+
+                    <TextView
+                        android:id="@+id/tv_product_area"
+                        style="@style/tv_small"
+                        android:layout_above="@id/tv_product_price"
+                        android:layout_alignLeft="@id/tv_product_price"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:maxLines="1"
+                        android:textSize="@dimen/dp_13"
+                        tools:text="服务范围:歌乐山天池村" />
+
+                    <TextView
+                        android:id="@+id/tv_product_title"
+                        style="@style/tv_small"
+                        android:layout_above="@id/tv_product_area"
+                        android:layout_alignLeft="@id/tv_product_area"
+                        android:layout_marginBottom="20dp"
+                        android:maxLines="1"
+                        android:textSize="@dimen/sp_14"
+                        tools:text="营养师制定科" />
+
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff">
+
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginLeft="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="数量"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/tv_order_count"
+                    style="@style/tv_normal"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="1"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_order_count"
+                    android:layout_marginLeft="16dp"
+                    android:background="#dedede" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff">
+
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginLeft="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="总价"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/tv_order_total_price"
+                    style="@style/tv_normal"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="￥0.00" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_order_total_price"
+                    android:layout_marginLeft="16dp"
+                    android:background="#dedede" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff">
+
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_marginLeft="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="应付金额"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/tv_order_price"
+                    style="@style/tv_normal"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:textColor="#FE620F"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="￥0.00" />
+
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_below="@id/tv_order_price"
+                    android:layout_marginLeft="16dp"
+                    android:background="#dedede" />
+
+            </RelativeLayout>
+
         </LinearLayout>
-    </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
 </RelativeLayout>

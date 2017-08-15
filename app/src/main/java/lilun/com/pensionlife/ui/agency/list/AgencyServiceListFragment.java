@@ -106,7 +106,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
     @Override
     protected void initView(LayoutInflater inflater) {
         searchBar.isChangeLayout(User.isCustomer());
-        layoutType = User.isCustomer() ? SearchTitleBar.LayoutType.BIG : SearchTitleBar.LayoutType.SMALL;
+        layoutType = User.isCustomer() ? SearchTitleBar.LayoutType.SMALL : SearchTitleBar.LayoutType.SMALL;
         searchBar.setNoNullLayout();
         searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {

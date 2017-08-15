@@ -5,13 +5,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
-import java.util.Map;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 
 /**
  * 用户预约登记信息adapter
@@ -20,58 +17,50 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
  *         create at 2017/4/5 13:26
  *         email : yk_developer@163.com
  */
-public class ServiceUserInfoAdapter extends QuickAdapter<Contact> {
+public class ContactListAdapter extends QuickAdapter<Contact> {
     private OnItemClickListener listener;
 
-    public ServiceUserInfoAdapter(List<Contact> data) {
-        super(R.layout.item_reservation_info, data);
-       init();
+    public ContactListAdapter(List<Contact> data) {
+        super(R.layout.item_contact, data);
+        init();
     }
 
     private void init() {
-        for(Contact contact:mData){
-            if (contact.getIndex()==1){
+        for (Contact contact : mData) {
+            if (contact.getIndex() == 1) {
                 contact.setDefault(true);
             }
         }
     }
 
-    public ServiceUserInfoAdapter(int layoutResId, List<Contact> data) {
-        super(layoutResId, data);
-    }
+//    public ContactListAdapter(int layoutResId, List<Contact> data) {
+//        super(layoutResId, data);
+//    }
 
     @Override
     protected void convert(BaseViewHolder helper, Contact info) {
-        TextView tvSetDef = helper.getView(R.id.tv_set_def);
+        TextView tvSetDef = helper.getView(R.id.tv_contact_default);
         tvSetDef.setSelected(info.isDefault());
 
-        Map<String, String> extend = info.getExtend();
-
-        if (extend != null && info.getCategoryId().contains(Config.agency_product_categoryId)) {
-            helper.setText(R.id.tv_health_status, info.getExtend().get("healthyStatus"))
-                    .setText(R.id.tv_health_desc, info.getExtend().get("healthyDescription"));
-        } else {
-            helper.setText(R.id.tv_health_desc, info.getAddress());
-        }
-
-        helper.setText(R.id.tv_name, info.getName())
-                .setText(R.id.tv_phone, info.getMobile())
-                .setOnClickListener(R.id.tv_edit, v -> {
+        helper.setText(R.id.tv_contact_name, info.getName())
+                .setText(R.id.tv_contact_mobile, info.getMobile())
+                .setText(R.id.tv_contact_address, info.getAddress())
+                .setOnClickListener(R.id.tv_contact_edit, v -> {
                     if (listener != null) {
                         listener.onEdit(info);
                     }
                 })
-                .setOnClickListener(R.id.tv_delete, v -> {
+                .setOnClickListener(R.id.tv_contact_delete, v -> {
                     if (listener != null) {
-                        if (mData.size()>1){
-                            listener.onDelete(info);
-                        }else {
-                            ToastHelper.get().showWareShort("再删就没有了哟");
-                        }
+                        listener.onDelete(info);
+//                        if (mData.size() > 1) {
+//                        } else {
+//                            ToastHelper.get().showWareShort("再删就没有了哟");
+//                        }
                     }
                 })
 
-                .setOnClickListener(R.id.tv_set_def, v -> {
+                .setOnClickListener(R.id.tv_contact_default, v -> {
                     if (listener != null && !info.isDefault()) {
                         listener.onSetDefault(info.getId());
                     }

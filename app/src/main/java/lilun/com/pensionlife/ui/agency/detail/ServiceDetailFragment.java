@@ -1,3 +1,4 @@
+/*
 package lilun.com.pensionlife.ui.agency.detail;
 
 import android.Manifest;
@@ -47,13 +48,15 @@ import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
+*/
 /**
  * 养老机构提供的服务详情V
  *
  * @author yk
  *         create at 2017/2/23 13:19
  *         email : yk_developer@163.com
- */
+ *//*
+
 public class ServiceDetailFragment extends BaseFragment implements View.OnClickListener {
 
     @Bind(R.id.iv_back)
@@ -187,7 +190,9 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         banner.setData(urls);
 //        String organizatinurl = IconUrl.moduleIconUrl(IconUrl.Organizations, mProduct.getOrganizationId().replace("/#product", ""), "{iconName}", "");
 
-//        ImageLoaderUtil.instance().loadImage(organizatinurl, civProviderAva/**/tor);
+//        ImageLoaderUtil.instance().loadImage(organizatinurl, civProviderAva*/
+/**//*
+tor);
 
         //如果这个服务不是自己创建的，就要去判断是否能够预约
         if (!User.creatorIsOwn(mProduct.getCreatorId())) {
@@ -244,9 +249,11 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     }
 
 
-    /**
+    */
+/**
      * 预约
-     */
+     *//*
+
     private void reservation() {
         String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\",\"index\":\"1\"}}";
         NetHelper.getApi().getContacts(filter)
@@ -336,3 +343,4 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
     }
 
 }
+*/

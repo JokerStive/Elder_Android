@@ -1,6 +1,6 @@
 package lilun.com.pensionlife.module.adapter;
 
-import android.widget.RatingBar;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -12,6 +12,7 @@ import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -30,13 +31,19 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
 
     @Override
     protected void convert(BaseViewHolder help, OrganizationProduct product) {
-        RatingBar ratingBar = help.getView(R.id.rb_score);
-        ratingBar.setRating(product.getScore() == 0 ? 5 : product.getScore());
+        CustomRatingBar ratingBar = help.getView(R.id.rb_score);
+        ratingBar.setCountSelected(product.getScore());
 
+        String contextType = product.getContextType();
+        if (!TextUtils.isEmpty(contextType) && contextType.equals("2")) {
+            help.setText(R.id.tv_product_title_extra, product.getSubTitle());
+        } else {
+            help.setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()));
+        }
         help.setText(R.id.tv_product_title, product.getTitle())
-                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
-                .setText(R.id.tv_score, product.getScore() == 0 ? "5.0" : (double)product.getScore()+"")
-                .setText(R.id.tv_product_price,   new DecimalFormat("######0.00").format(product.getPrice())+"");
+//                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
+                .setText(R.id.tv_score, product.getScore() == 0 ? "5.0" : (double) product.getScore() + "")
+                .setText(R.id.tv_product_price, new DecimalFormat("######0.00").format(product.getPrice()) + "");
         help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {
                 listener.onItemClick(product);
