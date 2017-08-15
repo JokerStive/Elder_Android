@@ -23,7 +23,7 @@
             android:background="@color/transparent"
             app:leftIcon="@drawable/back_white"
             app:title="@string/forget_password"
-            app:titleColor="@color/white"/>
+            app:titleColor="@color/white" />
 
     </RelativeLayout>
 
@@ -159,6 +159,7 @@
                 android:id="@+id/et_password_second"
                 style="@style/et_normal"
                 android:hint="@string/please_input_password_again"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:padding="@dimen/dp_10"
                 android:singleLine="true"
@@ -176,9 +177,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_rect_corner_red"
-            android:text="@string/confirm_exchange"
-            android:padding="@dimen/dp_10"
             android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="@string/confirm_exchange"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_20" />
     </LinearLayout>
