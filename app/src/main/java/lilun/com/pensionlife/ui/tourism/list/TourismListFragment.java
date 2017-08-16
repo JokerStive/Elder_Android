@@ -23,7 +23,7 @@ import lilun.com.pensionlife.module.adapter.TourismSmallAdapter;
 import lilun.com.pensionlife.module.bean.Tourism;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.tourism.detail.TourismDetailFragment;
-import lilun.com.pensionlife.widget.FilterInputRangeView;
+import lilun.com.pensionlife.widget.FilterPriceView;
 import lilun.com.pensionlife.widget.FilterInputView;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.SearchTitleBar;
@@ -155,7 +155,7 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
         List<View> views = new ArrayList<>();
 
         //价格
-        FilterInputRangeView rangePriceView = new FilterInputRangeView(getContext(), "价格");
+        FilterPriceView rangePriceView = new FilterPriceView(_mActivity, "价格");
         rangePriceView.setUnit("元");
         rangePriceView.setOnConfirmListener((range, show, isDef) -> {
             tourismFilter.where.setPrice(null);

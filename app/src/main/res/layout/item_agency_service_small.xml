@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_width="@dimen/dp_97"
             android:layout_height="@dimen/dp_97"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_def" />
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:id="@+id/ll_price"
@@ -34,14 +34,14 @@
 
             <TextView
                 style="@style/tv_small_ellipsize"
+                android:text="¥"
                 android:textColor="#41b9d4"
-                android:textSize="@dimen/sp_14"
-                android:text="¥" />
+                android:textSize="@dimen/sp_14" />
 
             <TextView
-                android:layout_marginLeft="@dimen/dp_2"
                 android:id="@+id/tv_product_price"
                 style="@style/tv_small_ellipsize"
+                android:layout_marginLeft="@dimen/dp_2"
                 android:textColor="#41b9d4"
                 android:textSize="@dimen/sp_18"
                 tools:text="998.00" />

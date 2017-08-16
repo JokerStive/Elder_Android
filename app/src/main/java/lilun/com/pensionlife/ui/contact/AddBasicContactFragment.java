@@ -8,9 +8,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.vanzh.library.BaseBean;
 import com.vanzh.library.BottomDialog;
+import com.vanzh.library.DataInterface;
+import com.vanzh.library.OnAddressSelectedListener;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -18,6 +24,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
+import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -35,7 +42,7 @@ import lilun.com.pensionlife.widget.SwitchButton;
  *         create at 2017/8/9 9:34
  *         email : yk_developer@163.com
  */
-public class AddBasicContactFragment extends BaseFragment {
+public class AddBasicContactFragment extends BaseFragment implements DataInterface<BaseBean> {
 
 
     @Bind(R.id.titleBar)
@@ -55,6 +62,9 @@ public class AddBasicContactFragment extends BaseFragment {
     private int limitSkip = 20;
     private int[] skipArray;
     private BottomDialog dialog;
+    BaseBean area, distrect;
+    private int RECYCLERLEVEL = 5;
+    int curLevel = -1;
 
     public static AddBasicContactFragment newInstance(String productId) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
@@ -127,11 +137,37 @@ public class AddBasicContactFragment extends BaseFragment {
     }
 
     private void chooseArea() {
-//        skipArray = new int[6];
-//        dialog = new BottomDialog(this, -1, limitSkip);
-//        dialog.setOnAddressSelectedListener(new OnAddressSelectedListener(new ) {
-//        });
-//        dialog.show();
+        skipArray = new int[RECYCLERLEVEL + 1];
+        dialog = new BottomDialog(this, -1, limitSkip);
+//        dialog.setButtonVisiableLevels(new int[]{6}, RECYCLERLEVEL);
+        dialog.setOnAddressSelectedListener(new OnAddressSelectedListener() {
+            @Override
+            public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
+                if (baseBeen.length == 0) {
+                    ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
+                    return;
+                }
+                if (recyclerIndex != RECYCLERLEVEL) {
+                    area = baseBeen[baseBeen.length - 1];
+                    tvChooseAddress.setText(area.getName());
+                    distrect = null;
+                    curLevel = baseBeen.length - 1;
+                } else {
+                    distrect = baseBeen[baseBeen.length - 1];
+                    tvChooseAddress.setText(distrect.getName());
+                    curLevel = baseBeen.length - 1 + RECYCLERLEVEL;
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onConfirm(BaseBean baseBean) {
+                distrect = baseBean;
+                tvChooseAddress.setText(distrect.getName());
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
 
@@ -216,14 +252,59 @@ public class AddBasicContactFragment extends BaseFragment {
 
 
     private void statReservation(Contact contact) {
-//        Intent intent = new Intent(_mActivity, ReservationActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("contact", contact);
-//        bundle.putString("productId", mProductId);
-//        intent.putExtras(bundle);
-//        startActivityForResult(intent, ReservationFragment.requestCode);
-//        startActivityForResult(intent, ReservationFragment.requestCode);
         startWithPop(ReservationFragment.newInstance(mProductId, contact));
     }
 
+    @Override
+    public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex, int startIndex, int reqCount) {
+        if (baseBean == null) {
+            if (level == 0) {
+                getChildLocation("", response, level, recyclerIndex, startIndex, reqCount);
+            } else {
+                getChildLocation(area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
+            }
+        } else {
+            getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
+//            if (level < RECYCLERLEVEL) {
+//            } else {
+//                response.send(level, null, false);
+//            }
+//            if (level< RECYCLERLEVEL){
+//            }else {
+//
+//            }
+        }
+    }
+
+
+    public void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex, int skip, int limitSkip) {
+        NetHelper.getApi()
+                .getChildLocation(locationName, skip, limitSkip)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Area>>() {
+                    @Override
+                    public void _next(List<Area> areas) {
+                        successOfChildLocation(areas, response, level, recyclerIndex);
+                    }
+                });
+    }
+
+
+    public void successOfChildLocation(List<Area> areas, Response<BaseBean> response, int level, int recyclerIndex) {
+        skipArray[level] += areas.size();
+        ArrayList<BaseBean> data = new ArrayList<>();
+        for (int i = 0; i < areas.size(); i++) {
+            data.add(new BaseBean(areas.get(i).getId(), areas.get(i).getName()));
+        }
+//        if (level>0){
+//            level = level-1;
+//        }
+        if (level == recyclerIndex || level == RECYCLERLEVEL) {
+            response.send(level, null, false);
+            return;
+        }
+
+        response.send(level, data, data != null && data.size() == limitSkip);
+    }
 }

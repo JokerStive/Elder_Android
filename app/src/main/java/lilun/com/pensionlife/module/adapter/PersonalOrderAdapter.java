@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
@@ -27,6 +28,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     private OnItemClickListener listener;
+    private SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 
     public PersonalOrderAdapter(List<ProductOrder> data) {
         super(R.layout.item_personal_order, data);
@@ -48,9 +50,11 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             setOrderStatus(helper, order);
             setNextOperate(helper, order);
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
-            helper.setText(R.id.tv_provider_name, agencyName)
+            helper  .setVisible(R.id.tv_next_operate,order.getStatus().equals("reserved") || order.getStatus().equals("done"))
+                    .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
-                    .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0))
+                    .setText(R.id.tv_product_area,  String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreas())))
+                    .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format))
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
                         if (listener != null) {
@@ -60,7 +64,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
                     .setOnClickListener(R.id.tv_next_operate, v -> {
                         if (listener != null) {
-                            listener.nextOperate(order.getProductId());
+                            listener.nextOperate(order);
                         }
                     })
 
@@ -100,6 +104,6 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     public interface OnItemClickListener {
         void onItemClick(ProductOrder order);
 
-        void nextOperate(String productId);
+        void nextOperate(ProductOrder order);
     }
 }

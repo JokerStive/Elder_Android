@@ -140,9 +140,9 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
 //            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
 //        } else
         if (!TextUtils.isEmpty(productId)) {
-            filter = "{\"include\":[\"product\",\"assignee\",\"userProfile\"],\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         } else {
-            filter = "{\"include\":[\"product\",\"assignee\",\"userProfile\"],\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
         }
         mPresenter.getMyOrders(filter, skip);
 

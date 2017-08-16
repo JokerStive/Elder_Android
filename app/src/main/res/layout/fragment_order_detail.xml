@@ -12,8 +12,7 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="预约详情"
-        />
+        app:title="预约详情" />
 
 
     <lilun.com.pensionlife.widget.CustomTextView
@@ -31,16 +30,17 @@
         android:text="取消预约"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_16"
+        android:visibility="gone"
         app:textNormalSolidColor="#4aa5f0"
         app:textNormalTextColor="#4aa5f0"
         app:textRadius="10dp" />
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/tv_cancel_order"
         android:layout_below="@id/titleBar"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content">
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,10 +95,10 @@
                 <TextView
                     android:id="@+id/tv_contact_mobile"
                     style="@style/tv_normal"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
                     android:drawableLeft="@drawable/order_detail_mobile"
                     android:drawablePadding="10dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
                     android:textSize="@dimen/sp_14"
                     tools:text="手机号:18723078926" />
 
@@ -109,12 +109,12 @@
                 <TextView
                     android:id="@+id/tv_contact_name"
                     style="@style/tv_normal"
+                    android:drawableLeft="@drawable/order_detail_name"
+                    android:drawablePadding="10dp"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:textColor="#474747"
                     android:textSize="@dimen/sp_14"
-                    android:drawableLeft="@drawable/order_detail_name"
-                    android:drawablePadding="10dp"
                     tools:text="联系人:黄小希" />
 
                 <View
@@ -125,12 +125,12 @@
                 <TextView
                     android:id="@+id/tv_contact_address"
                     style="@style/tv_normal"
+                    android:drawableLeft="@drawable/order_detail_position"
+                    android:drawablePadding="10dp"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:textColor="#a8a8a8"
                     android:textSize="@dimen/sp_14"
-                    android:drawableLeft="@drawable/order_detail_position"
-                    android:drawablePadding="10dp"
                     tools:text="重庆市-重庆市-北碚区-光荣村50号-光光荣村 小区" />
 
 
@@ -150,6 +150,7 @@
                     android:drawableLeft="@drawable/icon_provider"
                     android:drawablePadding="@dimen/dp_5"
                     android:drawableRight="@drawable/add_contact_next"
+                    android:gravity="center_vertical"
                     android:paddingBottom="14dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
@@ -161,7 +162,6 @@
                     android:id="@+id/ll_product_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:background="#f9f9f9"
                     android:padding="10dp">
 
@@ -171,6 +171,7 @@
                         android:id="@+id/iv_product_icon"
                         android:layout_width="@dimen/dp_90"
                         android:layout_height="@dimen/dp_90"
+                        android:scaleType="fitXY"
                         tools:src="@drawable/shape_rect_red" />
 
 
@@ -181,6 +182,7 @@
                         android:layout_marginLeft="@dimen/dp_16"
                         android:layout_toRightOf="@id/iv_product_icon"
                         android:textSize="@dimen/sp_12"
+                        android:visibility="invisible"
                         tools:text="价格:100" />
 
 
@@ -203,7 +205,6 @@
                         android:maxLines="1"
                         android:textSize="@dimen/sp_14"
                         tools:text="营养师制定科" />
-
 
 
                 </RelativeLayout>
@@ -324,8 +325,6 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-
 
 
 </RelativeLayout>

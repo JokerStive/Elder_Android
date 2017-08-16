@@ -11,16 +11,16 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
@@ -117,7 +117,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setOnBackClickListener(this::pop);
+        titleBar.setOnBackClickListener(() -> getActivity().finish());
     }
 
     @Override
@@ -138,9 +138,9 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderStatus.setText(Html.fromHtml("订单状态: <font color='#fe620f'>" + App.context.getString(status) + "</font>"));
         }
 
-        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), 0));
-
-        tvOrderReservationTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
+        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), format));
+        tvOrderReservationTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format));
 
         //联系人信息
         Contact contact = order.getContact();
@@ -177,23 +177,11 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             //价格
             tvOrderTotalPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
             tvOrderPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
+
+            tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreas())));
         }
-//
-//        if (User.isCustomer()) {
-//
-//        } else {
-//            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivProviderAvatar);
-//            tvProviderName.setText(mOrder.getCreatorName());
-//            tvProductPhone.setText(mOrder.getMobile());
-//        }
-
-
-//        tvProductName.setText(product.getName());
-//        tvProductPrice.setText(String.format(getString(R.string.format_price), product.getPrice()));
-//        rbProduct.setRating(product.getScore());
-
-
     }
+
 
     @Override
     public void changeOrderStatusSuccess(String status) {
@@ -232,64 +220,46 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         return statusOperate;
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.iv_back:
-//                getActivity().finish();
-//                break;
-//
-//            case R.id.rl_provider_detail:
-//                if (User.isCustomer()) {
-//                    start(ProviderDetailFragment.newInstance(agencyId));
-//                }
-//                break;
-//
-//            case R.id.rl_product_detail:
-//                if (mOrder.getProduct() != null) {
-//                    start(ProductDetailFragment.newInstance(mOrder.getProduct().getId()));
-//                }
-//                break;
-//
-//            case R.id.rl_product_phone:
-//                //TODO 拨打电话
-//                call("确定联系商家？");
-//                break;
-//
-//            case R.id.tv_operate:
-//                operate();
-//                break;
-//
-//            case R.id.tv_cancel:
-//                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-//                break;
-//        }
-//    }
+    @OnClick({R.id.tv_cancel_order})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_cancel_order:
+                operate();
+                break;
+        }
+    }
 
     private void operate() {
         String operate = tvCancelOrder.getText().toString();
-        if (!TextUtils.isEmpty(operate)) {
-            //取消订单
-            if (operate.equals(getString(R.string.operate_cancel))) {
-                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-            }
-
-            //受理订单
-            if (operate.equals(getString(R.string.operate_assigned))) {
-                changeOrderStatus(status_assigned, getAlartMsg(R.string.operate_assigned));
-            }
-
-            //完成订单
-            if (operate.equals(getString(R.string.operate_done))) {
-                changeOrderStatus(status_done, "确定已经给顾客服务过了吗？不然会收到差评的哟！");
-            }
-
-
-            //评价
-            if (operate.equals(getString(R.string.rank))) {
-                start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
-            }
+        String status = mOrder.getStatus();
+        if (status.equals(status_reserved)) {
+            changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
+        } else if (status.equals(status_done)) {
+            start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
         }
+
+//        if (!TextUtils.isEmpty(operate)) {
+//            //取消订单
+//            if (operate.equals(getString(R.string.operate_cancel))) {
+//                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
+//            }
+//
+//            //受理订单
+//            if (operate.equals(getString(R.string.operate_assigned))) {
+//                changeOrderStatus(status_assigned, getAlartMsg(R.string.operate_assigned));
+//            }
+//
+//            //完成订单
+//            if (operate.equals(getString(R.string.operate_done))) {
+//                changeOrderStatus(status_done, "确定已经给顾客服务过了吗？不然会收到差评的哟！");
+//            }
+//
+//
+//            //评价
+//            if (operate.equals(getString(R.string.rank))) {
+//                start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
+//            }
+//        }
     }
 
     private void changeOrderStatus(String status, String msg) {
@@ -336,17 +306,4 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

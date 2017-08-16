@@ -1,7 +1,10 @@
 package lilun.com.pensionlife.ui.order;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
+import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -33,6 +36,26 @@ public class OrderPagePresenter extends RxPresenter<OrderPageContract.View> impl
                     public void onError(Throwable e) {
                         super.onError(e);
                         view.completeRefresh();
+                    }
+                }));
+    }
+
+
+    @Override
+    public void changeOrderStatus(String orderId, String status) {
+        addSubscribe(NetHelper.getApi()
+                .changeOrderStatus(orderId, status)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(getActivity()) {
+                    @Override
+                    public void _next(Object o) {
+                        EventBus.getDefault().post(new Event.RefreshMyOrderData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e, int[] errorCode, String[] errorMessage) {
+                        super.onError(e, errorCode, errorMessage);
                     }
                 }));
     }
