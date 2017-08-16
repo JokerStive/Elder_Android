@@ -42,7 +42,7 @@ import lilun.com.pensionlife.widget.SwitchButton;
  *         create at 2017/8/9 9:34
  *         email : yk_developer@163.com
  */
-public class AddBasicContactFragment extends BaseFragment implements DataInterface<BaseBean> {
+public class AddBasicContactFragment extends BaseFragment implements DataInterface<BaseBean>, OnAddressSelectedListener {
 
 
     @Bind(R.id.titleBar)
@@ -60,11 +60,11 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     private String mProductId;
     private Contact mContact;
     private int limitSkip = 20;
-    private int[] skipArray;
     private BottomDialog dialog;
-    BaseBean area, distrect;
-    private int RECYCLERLEVEL = 5;
+    BaseBean area;
+    private int eachLevelCount = 3;
     int curLevel = -1;
+    String AddressSepreator = " - ";
 
     public static AddBasicContactFragment newInstance(String productId) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
@@ -117,8 +117,14 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
         if (mContact != null) {
             etContactName.setText(mContact.getName());
             etContactMobile.setText(mContact.getMobile());
-            etContactAddress.setText(mContact.getAddress());
             sbSetDefault.setChecked(mContact.getIndex() == 1);
+
+
+            String address = mContact.getAddress();
+            String area = address.substring(0, address.lastIndexOf(AddressSepreator));
+            String local = address.substring(address.lastIndexOf(AddressSepreator) + 2);
+            tvChooseAddress.setText(area);
+            etContactAddress.setText(local);
         }
 
     }
@@ -137,36 +143,8 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     }
 
     private void chooseArea() {
-        skipArray = new int[RECYCLERLEVEL + 1];
         dialog = new BottomDialog(this, -1, limitSkip);
-//        dialog.setButtonVisiableLevels(new int[]{6}, RECYCLERLEVEL);
-        dialog.setOnAddressSelectedListener(new OnAddressSelectedListener() {
-            @Override
-            public void onAddressSelected(int recyclerIndex, BaseBean... baseBeen) {
-                if (baseBeen.length == 0) {
-                    ToastHelper.get(getContext()).showWareShort("该地区未开通服务，请重新选择");
-                    return;
-                }
-                if (recyclerIndex != RECYCLERLEVEL) {
-                    area = baseBeen[baseBeen.length - 1];
-                    tvChooseAddress.setText(area.getName());
-                    distrect = null;
-                    curLevel = baseBeen.length - 1;
-                } else {
-                    distrect = baseBeen[baseBeen.length - 1];
-                    tvChooseAddress.setText(distrect.getName());
-                    curLevel = baseBeen.length - 1 + RECYCLERLEVEL;
-                }
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onConfirm(BaseBean baseBean) {
-                distrect = baseBean;
-                tvChooseAddress.setText(distrect.getName());
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnAddressSelectedListener(this);
         dialog.show();
 
     }
@@ -178,6 +156,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     private void addContact() {
         String contactName = etContactName.getText().toString();
         String contactMobile = etContactMobile.getText().toString();
+        String contactArea = tvChooseAddress.getText().toString();
         String contactAddress = etContactAddress.getText().toString();
 
         if (TextUtils.isEmpty(contactName)) {
@@ -193,6 +172,10 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
             return;
         }
 
+        if (TextUtils.isEmpty(contactArea)) {
+            ToastHelper.get().showWareShort("请选择区域");
+            return;
+        }
 
         if (TextUtils.isEmpty(contactAddress)) {
             ToastHelper.get().showWareShort("请输入详细地址");
@@ -202,20 +185,33 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
         Contact contact = new Contact();
         contact.setName(contactName);
         contact.setMobile(contactMobile);
-        contact.setAddress(contactAddress);
+        contact.setAddress(contactArea + AddressSepreator + contactAddress);
         contact.setAccountId(User.getUserId());
         contact.setUserId(User.getUserId());
 
-        NetHelper.getApi().newContact(contact)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Contact>(_mActivity) {
-                    @Override
-                    public void _next(Contact contact) {
-                        mContact = contact;
-                        isSetDefault();
-                    }
-                });
+        if (mContact != null) {
+            NetHelper.getApi().putContact(mContact.getId(), contact)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Contact>(_mActivity) {
+                        @Override
+                        public void _next(Contact contact) {
+                            mContact = contact;
+                            isSetDefault();
+                        }
+                    });
+        } else {
+            NetHelper.getApi().newContact(contact)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Contact>(_mActivity) {
+                        @Override
+                        public void _next(Contact contact) {
+                            mContact = contact;
+                            isSetDefault();
+                        }
+                    });
+        }
     }
 
 
@@ -258,21 +254,19 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     @Override
     public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex, int startIndex, int reqCount) {
         if (baseBean == null) {
-            if (level == 0) {
+            //baseBean为空，表示首次获取数据
+            if (curLevel == -1) {
+                //cuLevel=0，表示第一层的第一层级
                 getChildLocation("", response, level, recyclerIndex, startIndex, reqCount);
             } else {
                 getChildLocation(area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
             }
         } else {
-            getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
-//            if (level < RECYCLERLEVEL) {
-//            } else {
-//                response.send(level, null, false);
-//            }
-//            if (level< RECYCLERLEVEL){
-//            }else {
-//
-//            }
+            if (curLevel == eachLevelCount) {
+                response.send(level, null, false);
+            } else {
+                getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
+            }
         }
     }
 
@@ -292,19 +286,65 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
 
 
     public void successOfChildLocation(List<Area> areas, Response<BaseBean> response, int level, int recyclerIndex) {
-        skipArray[level] += areas.size();
+        curLevel++;
         ArrayList<BaseBean> data = new ArrayList<>();
         for (int i = 0; i < areas.size(); i++) {
             data.add(new BaseBean(areas.get(i).getId(), areas.get(i).getName()));
         }
-//        if (level>0){
-//            level = level-1;
-//        }
-        if (level == recyclerIndex || level == RECYCLERLEVEL) {
+        if (level == eachLevelCount || areas.size() == 0) {
             response.send(level, null, false);
             return;
         }
 
         response.send(level, data, data != null && data.size() == limitSkip);
+    }
+
+    @Override
+    public void onAddressSelected(int index, BaseBean... baseBeen) {
+        if (baseBeen.length == 0) {
+            ToastHelper.get().showWareShort("size  = 0");
+            return;
+        }
+
+        //当第一层完成的时候
+        area = baseBeen[baseBeen.length - 1];
+        if (curLevel <= eachLevelCount) {
+            dialog.dismiss();
+            tvChooseAddress.performClick();
+        } else {
+            tvChooseAddress.setText(getAddressResultFromId());
+            resetInstance();
+            dialog.dismiss();
+        }
+    }
+
+    private String getAddressResultFromId() {
+        StringBuilder resultBuffer = new StringBuilder();
+        String id = area.getId();
+        String[] split = id.split("/");
+        //从省开始
+        for (int i = 3; i < split.length; i++) {
+            if (i < split.length - 1) {
+                resultBuffer.append(split[i]).append(AddressSepreator);
+            } else {
+                resultBuffer.append(split[i]);
+            }
+        }
+
+        return resultBuffer.toString();
+    }
+
+    /**
+     * 重置变量
+     */
+    private void resetInstance() {
+        curLevel = -1;
+        area = null;
+
+    }
+
+    @Override
+    public void onConfirm(BaseBean baseBean) {
+
     }
 }

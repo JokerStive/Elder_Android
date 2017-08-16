@@ -91,9 +91,12 @@
                 android:background="#f5f5f9" />
 
             <TextView
+                android:gravity="center_vertical"
                 style="@style/tv_normal"
                 android:layout_width="match_parent"
+                android:drawableLeft="@drawable/icon_reservation_info"
                 android:padding="@dimen/dp_16"
+                android:drawablePadding="10dp"
                 android:text="预约服务信息"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_15" />

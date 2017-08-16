@@ -40,7 +40,7 @@ import lilun.com.pensionlife.widget.filter_view.FilterView;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
+public class ProductListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
 
@@ -73,8 +73,8 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
      * @param type       0-查询区域服务   1-查询商家所有服务
      * @return
      */
-    public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
-        AgencyServiceListFragment fragment = new AgencyServiceListFragment();
+    public static ProductListFragment newInstance(String title, String categoryId, int type) {
+        ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putString("categoryId", categoryId);
         args.putString("title", title);

@@ -559,7 +559,7 @@ public interface ApiService {
      * 更新个人资料
      */
     @PUT("Contacts/{id}")
-    Observable<Response<Object>> putContact(@Path("id") String contactId, @Body Contact contact);
+    Observable<Response<Contact>> putContact(@Path("id") String contactId, @Body Contact contact);
 
 
     /**

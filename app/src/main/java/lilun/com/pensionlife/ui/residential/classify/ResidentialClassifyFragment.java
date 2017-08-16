@@ -14,7 +14,7 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ProductCategoryAdapter;
 import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
-import lilun.com.pensionlife.ui.agency.list.AgencyServiceListFragment;
+import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
@@ -140,7 +140,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
                 ProductCategory category = mClassifyAdapter.getData().get(i);
-                start(AgencyServiceListFragment.newInstance(category.getName(), category.getId(), 0));
+                start(ProductListFragment.newInstance(category.getName(), category.getId(), 0));
             });
             mClassifyRecycler.setAdapter(mClassifyAdapter);
             manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 3));

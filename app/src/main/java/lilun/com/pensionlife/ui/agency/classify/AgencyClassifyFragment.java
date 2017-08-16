@@ -25,7 +25,7 @@ import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.bean.Setting;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ACache;
-import lilun.com.pensionlife.ui.agency.list.AgencyServiceListFragment;
+import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
@@ -109,7 +109,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             @Override
             public void onRightClick() {
                 //TODO 商家和个人查看所有订单
-                if (User.isCustomer()) {
+                if (!User.isMerchant()) {
                     start(OrderListFragment.newInstance(Config.agency_product_categoryId));
                 } else {
                     Logger.d("商家模式进入");
@@ -174,7 +174,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             if (productCategory.getParentId().equals(Config.tourism_product_categoryId)) {
                 start(TourismRootFragment.newInstance(productCategory.getId()));
             } else {
-                start(AgencyServiceListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
+                start(ProductListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
             }
         });
         show(gridLayoutManager, adapter, categoryId);
