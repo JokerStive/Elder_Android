@@ -418,7 +418,7 @@ public class ProductDetailFragment extends BaseFragment {
     private void callMobile() {
         String mobile = mProduct.getMobile();
         new NormalDialog().createNormal(_mActivity, "是否联系：" + mobile, () -> {
-            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile));
+            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile.replace("-","")));
             startActivity(intent);
         });
     }

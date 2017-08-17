@@ -201,8 +201,8 @@ public class ProviderDetailFragment extends BaseFragment {
             if (!TextUtils.isEmpty(phone)) {
                 String mobileDes = "手机号: <font color='#17c5b4'>" + mobile + "</font>";
                 String phoneDes = "座机号: <font color='#17c5b4'>" + phone + "</font>";
-                tvProviderPhone.setText(Html.fromHtml(mobileDes));
-                tvProviderMobile.setText(Html.fromHtml(phoneDes));
+                tvProviderPhone.setText(Html.fromHtml(phoneDes));
+                tvProviderMobile.setText(Html.fromHtml(mobileDes));
             }
 
             //商家介紹
