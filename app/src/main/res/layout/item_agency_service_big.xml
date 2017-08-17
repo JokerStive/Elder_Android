@@ -65,6 +65,7 @@
                 android:layout_gravity="center_vertical"
                 app:dividerWidth="3dp"
                 app:starCount="5"
+                app:countSelected="0"
                 app:widthAndHeight="13dp" />
 
             <TextView

@@ -105,8 +105,13 @@ public class ContactListFragment extends BaseFragment {
         adapter.setOnRecyclerViewItemClickListener((view, i) -> {
             if (!TextUtils.isEmpty(mProductId)) {
                 Contact contact = adapter.getData().get(i);
-                statReservation(contact);
-//                pop();
+                if (TextUtils.isEmpty(contact.getMobile()) || TextUtils.isEmpty(contact.getName()) || TextUtils.isEmpty(contact.getAddress())) {
+                    contact.setProductId(mProductId);
+                    //必要信息不完善
+                    start(AddBasicContactFragment.newInstance(contact, 1));
+                } else {
+                    statReservation(contact);
+                }
             }
         });
         adapter.setOnItemClickListener(new ContactListAdapter.OnItemClickListener() {
@@ -117,13 +122,7 @@ public class ContactListFragment extends BaseFragment {
 
             @Override
             public void onEdit(Contact contact) {
-                start(AddBasicContactFragment.newInstance(contact));
-//                if (productCategoryId.equals(Config.tourism_product_categoryId)) {
-//                    start(AddTourismInfoFragment.newInstance(contact.getId(), true));
-//                } else {
-//                    start(AddServiceInfoFragment.newInstance(contact.getId(), true));
-//                }
-//                Logger.d("编辑个人信息");
+                start(AddBasicContactFragment.newInstance(contact, 0));
             }
 
             @Override
@@ -136,13 +135,6 @@ public class ContactListFragment extends BaseFragment {
 
 
     private void statReservation(Contact contact) {
-//        Intent intent = new Intent(_mActivity, ReservationActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("contact", contact);
-//        bundle.putString("productId", mProductId);
-//        intent.putExtras(bundle);
-//        startActivityForResult(intent, ReservationFragment.requestCode);
-
         startWithPop(ReservationFragment.newInstance(mProductId, contact));
     }
 
@@ -157,16 +149,6 @@ public class ContactListFragment extends BaseFragment {
                     @Override
                     public void _next(Object object) {
                         adapter.setDefault(contactId);
-//                        Contact data = null;
-//                        for (Contact contact : adapter.getData()) {
-//                            if (contact.getId().equals(contactId)) {
-//                                data = contact;
-//                            }
-//                        }
-//                        Bundle bundle = new Bundle();
-//                        bundle.putSerializable("contact", data);
-//                        setFragmentResult(0, bundle);
-//                        pop();
                     }
                 });
 
