@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -28,7 +29,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
-import lilun.com.pensionlife.widget.FilterInputRangeView;
+import lilun.com.pensionlife.widget.FilterPriceView;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterView;
 
@@ -39,7 +40,7 @@ import lilun.com.pensionlife.widget.filter_view.FilterView;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
+public class ProductListFragment extends BaseFragment<AgencyListContract.Presenter> implements AgencyListContract.View {
     @Bind(R.id.searchBar)
     SearchTitleBar searchBar;
 
@@ -72,8 +73,8 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
      * @param type       0-查询区域服务   1-查询商家所有服务
      * @return
      */
-    public static AgencyServiceListFragment newInstance(String title, String categoryId, int type) {
-        AgencyServiceListFragment fragment = new AgencyServiceListFragment();
+    public static ProductListFragment newInstance(String title, String categoryId, int type) {
+        ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putString("categoryId", categoryId);
         args.putString("title", title);
@@ -185,10 +186,15 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
 
         //价格筛选
         filterTitles.add("筛选");
-        FilterInputRangeView priceRangeView = new FilterInputRangeView(mContent, "价格");
+        FilterPriceView priceRangeView = new FilterPriceView(_mActivity, "价格");
         priceRangeView.setOnConfirmListener((range, show, isDef) -> {
+
             productFilter.where.setPrice(null);
-            if (range != null) {
+            //如果沒有价格区间，并且不显示，就是隐藏
+            if (range == null && TextUtils.isEmpty(show)) {
+                filterView.hint();
+                return;
+            } else if (range != null) {
                 ProductFilter.WhereBean.PriceBean price = new ProductFilter.WhereBean.PriceBean();
                 price.setBetween(range);
                 productFilter.where.setPrice(price);
@@ -219,7 +225,7 @@ public class AgencyServiceListFragment extends BaseFragment<AgencyListContract.P
             productFilter.where.setAreaIds(null);
         } else {
             productFilter.where.setCategoryId(mCategoryId);
-//            productFilter.where.getAreaIds().setInq(User.levelIds(true));
+            productFilter.where.getAreaIds().setInq(User.levelIds(true));
 //            if (mCategoryId.contains(Constants.service_residentail)) {
             //如果居家服务，就要服务区域是当前组织的层级id
 //            }

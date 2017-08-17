@@ -6,15 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffff"
-    android:orientation="vertical"
-   >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_10"
-        >
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:id="@+id/tv_provider_name"
@@ -42,12 +40,11 @@
         android:id="@+id/ll_product_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/rl"
+        android:layout_marginTop="10dp"
         android:background="#f9f9f9"
         android:orientation="vertical"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
 
         <ImageView
@@ -55,7 +52,7 @@
             android:id="@+id/iv_product_icon"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_90"
-
+            android:scaleType="fitXY"
             tools:src="@drawable/shape_rect_red" />
 
 
@@ -68,15 +65,6 @@
             android:textSize="@dimen/sp_12"
             tools:text="价格:100" />
 
-        <TextView
-            android:id="@+id/tv_product_title"
-            style="@style/tv_small"
-            android:layout_above="@id/tv_product_area"
-            android:layout_alignLeft="@id/tv_product_area"
-            android:layout_marginBottom="20dp"
-            android:maxLines="1"
-            android:textSize="@dimen/sp_14"
-            tools:text="营养师制定科" />
 
         <TextView
             android:id="@+id/tv_product_area"
@@ -87,6 +75,16 @@
             android:maxLines="1"
             android:textSize="@dimen/dp_13"
             tools:text="服务范围:歌乐山天池村" />
+
+        <TextView
+            android:id="@+id/tv_product_title"
+            style="@style/tv_small"
+            android:layout_above="@id/tv_product_area"
+            android:layout_alignLeft="@id/tv_product_price"
+            android:layout_marginBottom="20dp"
+            android:maxLines="1"
+            android:textSize="@dimen/sp_14"
+            tools:text="营养师制定科" />
 
 
     </RelativeLayout>
@@ -118,14 +116,14 @@
             android:layout_marginRight="@dimen/dp_10"
             android:background="@drawable/rect_coner_red"
             android:gravity="center"
+            android:visibility="gone"
             android:paddingBottom="@dimen/dp_4"
-            android:paddingLeft="@dimen/dp_4"
-            android:paddingRight="@dimen/dp_4"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             android:paddingTop="@dimen/dp_4"
             android:text="@string/rank"
             android:textColor="#fa1001"
             android:textSize="13dp"
-            android:visibility="gone"
             app:textNormalSolidColor="#ffffff"
             app:textRadius="20dp"
             app:textStrokeColor="#e09b20"

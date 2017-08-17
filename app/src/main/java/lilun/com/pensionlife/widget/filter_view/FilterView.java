@@ -244,6 +244,13 @@ public class FilterView extends LinearLayout implements View.OnTouchListener, Vi
         }
     }
 
+    public void hint() {
+        if (checkedTabPosition != -1) {
+            FilterTabView tabView = (FilterTabView) filterTabContainer.getChildAt(checkedTabPosition);
+            switchPop(tabView);
+        }
+    }
+
 
     private void closePop() {
         popContainer.setVisibility(GONE);

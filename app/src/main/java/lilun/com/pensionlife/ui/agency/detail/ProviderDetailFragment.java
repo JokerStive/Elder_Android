@@ -77,10 +77,10 @@ public class ProviderDetailFragment extends BaseFragment {
     TextView tvProviderPhone;
     @Bind(R.id.tv_all_product)
     TextView tvAllProduct;
-    @Bind(R.id.tv_provider_content)
-    TextView tvProviderContent;
-    @Bind(R.id.wb_provider_content)
-    WebView wbProviderContent;
+    @Bind(R.id.tv_provider_attention)
+    TextView tvProviderAttention;
+    @Bind(R.id.wb_provider_attention)
+    WebView wbProviderAttention;
     @Bind(R.id.rv_all_product)
     RecyclerView rvAllProduct;
     @Bind(R.id.swipe_layout)
@@ -138,7 +138,7 @@ public class ProviderDetailFragment extends BaseFragment {
 
         changeLayoutTextViews = new ArrayList<>();
         changeLayoutTextViews.add(tvAllProduct);
-        changeLayoutTextViews.add(tvProviderContent);
+        changeLayoutTextViews.add(tvProviderAttention);
 
         rvAllProduct.setLayoutManager(new GridLayoutManager(App.context, 2));
         rvAllProduct.addItemDecoration(new ElderModuleClassifyDecoration(6));
@@ -201,15 +201,15 @@ public class ProviderDetailFragment extends BaseFragment {
             if (!TextUtils.isEmpty(phone)) {
                 String mobileDes = "手机号: <font color='#17c5b4'>" + mobile + "</font>";
                 String phoneDes = "座机号: <font color='#17c5b4'>" + phone + "</font>";
-                tvProviderPhone.setText(mobileDes);
-                tvProviderMobile.setText(phoneDes);
+                tvProviderPhone.setText(Html.fromHtml(phoneDes));
+                tvProviderMobile.setText(Html.fromHtml(mobileDes));
             }
 
             //商家介紹
             String context = extension.getContext();
             if (!TextUtils.isEmpty(context)) {
-                wbProviderContent.getSettings().setJavaScriptEnabled(true);
-                wbProviderContent.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
+                wbProviderAttention.getSettings().setJavaScriptEnabled(true);
+                wbProviderAttention.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
             }
         }
 
@@ -234,7 +234,7 @@ public class ProviderDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_provider_mobile, R.id.tv_provider_phone, R.id.tv_all_product, R.id.tv_provider_content})
+    @OnClick({R.id.tv_provider_mobile, R.id.tv_provider_phone, R.id.tv_all_product, R.id.tv_provider_attention})
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -250,8 +250,8 @@ public class ProviderDetailFragment extends BaseFragment {
                 changeLayout(R.id.tv_all_product);
                 break;
 
-            case R.id.tv_provider_content:
-                changeLayout(R.id.tv_provider_content);
+            case R.id.tv_provider_attention:
+                changeLayout(R.id.tv_provider_attention);
                 break;
 
         }
@@ -265,12 +265,12 @@ public class ProviderDetailFragment extends BaseFragment {
         switch (clickTextViewId) {
             case R.id.tv_all_product:
                 rvAllProduct.setVisibility(View.VISIBLE);
-                wbProviderContent.setVisibility(View.INVISIBLE);
+                wbProviderAttention.setVisibility(View.INVISIBLE);
                 break;
 
-            case R.id.tv_provider_content:
+            case R.id.tv_provider_attention:
                 rvAllProduct.setVisibility(View.INVISIBLE);
-                wbProviderContent.setVisibility(View.VISIBLE);
+                wbProviderAttention.setVisibility(View.VISIBLE);
                 break;
 
         }

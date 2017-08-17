@@ -210,7 +210,7 @@
 
 
                     <TextView
-                        android:id="@+id/tv_provider_content"
+                        android:id="@+id/tv_provider_attention"
                         style="@style/tv_normal"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

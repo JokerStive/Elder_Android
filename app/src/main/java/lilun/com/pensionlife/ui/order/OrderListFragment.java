@@ -178,8 +178,10 @@ public class OrderListFragment extends BaseFragment {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setColors(selectedColor);
+
                 indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
-                indicator.setBackgroundColor(Color.parseColor("#f1f1f1"));
+
+//                indicator.setBackgroundColor(Color.parseColor("#f1f1f1"));
                 return indicator;
             }
         });

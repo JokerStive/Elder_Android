@@ -55,7 +55,8 @@
         <activity
             android:name="lilun.com.pensionlife.ui.home.HomeActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
 
         <!--欢迎界面,注册登录入口-->
@@ -175,7 +176,8 @@
             android:process=":remote" />
 
         <service android:name=".ui.home.upload.DownLoadService" />
-        <receiver android:name=".module.utils.mqtt.MqttNotificationReceiver"/>
+
+        <receiver android:name=".module.utils.mqtt.MqttNotificationReceiver" />
 
     </application>
 

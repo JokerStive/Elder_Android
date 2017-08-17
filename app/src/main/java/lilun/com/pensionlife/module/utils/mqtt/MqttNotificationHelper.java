@@ -57,7 +57,7 @@ public class MqttNotificationHelper {
 
 
             // 1 ----- 公告，展示到通知栏
-            if (isMsgICache(InfoSettingFilter.announce) && topic.contains(mqttTopic.topic_activity)) {
+            if (isMsgICache(InfoSettingFilter.announce) && topic.contains(mqttTopic.topic_information_suffix)) {
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
                     classify = msgClassify.announce;

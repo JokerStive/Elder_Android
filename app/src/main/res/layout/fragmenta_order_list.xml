@@ -24,8 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="84dp"
 
-         />
+        />
 
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="10dp"
+        android:background="#f1f1f1" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_container"

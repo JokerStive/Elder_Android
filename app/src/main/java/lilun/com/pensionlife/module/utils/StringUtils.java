@@ -164,6 +164,25 @@ public class StringUtils {
         return ret;
     }
 
+
+    public static String IOS2ToUTC(String isoTime1, SimpleDateFormat format) {
+        String ret = "";
+        if (!TextUtils.isEmpty(isoTime1)) {
+            try {
+                String[] ss = isoTime1.split("\\.");
+
+                String isoTime = ss[0] + "+08:00";
+                DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+                DateTime dateTime = parser2.parseDateTime(isoTime);
+                ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ret;
+    }
+
     /***
      * 东八区时间 转换为 0区时间  转mongoDB 时间
      *
@@ -498,5 +517,24 @@ public class StringUtils {
                 return true;
         }
         return false;
+    }
+
+
+    public static String  getProductArea(List<String>  areas){
+        String result = "无";
+        if (areas != null) {
+            for (int i = 0; i < areas.size(); i++) {
+                String area = StringUtils.getOrganizationNameFromId(areas.get(i));
+                if (!TextUtils.isEmpty(area)) {
+                    if (i == 0) {
+                        result = result + area;
+                    } else {
+                        result = result + "、" + area;
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }

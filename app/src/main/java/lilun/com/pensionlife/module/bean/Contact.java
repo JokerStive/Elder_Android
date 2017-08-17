@@ -25,7 +25,7 @@ public class Contact extends BaseBean {
 
     private boolean isDefault;
     private int gender;
-    private Integer index;
+    private int index;
     private String userId;
     private String categoryId;
     private String accountId;

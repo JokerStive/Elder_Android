@@ -22,7 +22,7 @@ import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.ui.agency.list.AgencyServiceListFragment;
+import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.health.detail.LoadH5Fragment;
 import lilun.com.pensionlife.ui.health.list.HealthListFragment;
@@ -173,7 +173,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
             String name = elderModule.getName();
             if (name.equals("陪诊服务")) {
                 //跳转到居家服务
-                start(AgencyServiceListFragment.newInstance("陪诊服务", "/服务/居家服务/陪诊服务", 0));
+                start(ProductListFragment.newInstance("陪诊服务", "/服务/居家服务/陪诊服务", 0));
             } else if (name.equals("健康刊物")) {
                 //加载一个url
                 start(LoadH5Fragment.newInstance(name, "http://www.yydaobao.com/"));

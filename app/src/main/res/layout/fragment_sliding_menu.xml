@@ -6,98 +6,124 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:layout_marginStart="@dimen/dp_20"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <lilun.com.pensionlife.widget.CircleImageView
-            android:id="@+id/iv_icon"
-            android:layout_width="@dimen/dp_72"
-            android:layout_height="@dimen/dp_72"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_30" />
-
-        <TextView
-            android:id="@+id/tv_sophisticated"
-            style="@style/tv_normal_ellipsize"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_10"
-            tools:text="游珂" />
-
-        <TextView
-            android:id="@+id/tv_account_data"
-            style="@style/tv_normal_ellipsize"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dp_30"
-            android:background="@drawable/selector_rect_white_to_dark"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_data"
-            android:text="@string/account_data" />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_20"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_account_setting"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_setting"
-            android:text="@string/account_setting"
-            android:visibility="gone" />
+            <lilun.com.pensionlife.widget.CircleImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/dp_72"
+                android:layout_height="@dimen/dp_72"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_30" />
 
-        <TextView
-            android:id="@+id/tv_account_share"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_safe"
-            android:text="@string/account_share"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tv_sophisticated"
+                style="@style/tv_normal_ellipsize"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_10"
+                tools:text="游珂" />
 
-        <TextView
-            android:id="@+id/tv_account_info"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_info"
-            android:text="@string/account_info" />
+            <TextView
+                android:id="@+id/tv_account_data"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp_30"
+                android:background="@drawable/selector_rect_white_to_dark"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_data"
+                android:text="@string/account_data" />
 
-        <TextView
-            android:id="@+id/tv_info_setting"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_info"
-            android:text="个人信息设置" />
+            <TextView
+                android:id="@+id/tv_account_setting"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_setting"
+                android:text="@string/account_setting"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_account_share"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_safe"
+                android:text="@string/account_share"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_account_info"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_info"
+                android:text="@string/account_info" />
+
+            <TextView
+                android:id="@+id/tv_info_setting"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_info"
+                android:text="个人信息设置" />
 
 
-        <TextView
-            android:id="@+id/tv_about_us"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/about_us"
-            android:text="关于我们" />
+            <TextView
+                android:id="@+id/tv_my_order"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/my_order"
+                android:text="我的预约" />
 
 
-        <TextView
-            android:id="@+id/tv_account_safe"
-            style="@style/tv_normal_ellipsize"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/sliding_item_margin_top"
-            android:drawablePadding="@dimen/dp_10"
-            android:drawableStart="@drawable/account_safe"
-            android:text="@string/account_safe"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tv_manage_order"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/manage_order"
+                android:text="订单管理"
+                android:visibility="gone" />
 
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_about_us"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/about_us"
+                android:text="关于我们" />
+
+
+            <TextView
+                android:id="@+id/tv_account_safe"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_safe"
+                android:text="@string/account_safe"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/tv_logout"
