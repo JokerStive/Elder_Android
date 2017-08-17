@@ -1,41 +1,18 @@
 package lilun.com.pensionlife.ui.agency.reservation;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import butterknife.Bind;
-import butterknife.OnClick;
-import cn.qqtheme.framework.picker.DateTimePicker;
-import cn.qqtheme.framework.picker.OptionPicker;
-import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
+import lilun.com.pensionlife.module.bean.AgencyContactExtension;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.Setting;
-import lilun.com.pensionlife.module.utils.ACache;
-import lilun.com.pensionlife.module.utils.RegexUtils;
-import lilun.com.pensionlife.module.utils.RxUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
-import lilun.com.pensionlife.net.NetHelper;
-import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -48,7 +25,7 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
 public class AddServiceInfoFragment extends BaseFragment {
 
     @Bind(R.id.et_occupant_name)
-    EditText etOccupantName;
+    EditText etContactName;
 
     @Bind(R.id.tv_sex)
     TextView tvSex;
@@ -71,7 +48,7 @@ public class AddServiceInfoFragment extends BaseFragment {
 
 
     @Bind(R.id.et_reservation_phone)
-    EditText etReservationPhone;
+    EditText etContactMobile;
 
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
@@ -80,18 +57,8 @@ public class AddServiceInfoFragment extends BaseFragment {
     Button btnConfirm;
 
 
-    private int size = 17;
-    private int selectColor = App.context.getResources().getColor(R.color.red);
-    private String[] optionSex = App.context.getResources().getStringArray(R.array.personal_info_sex);
-    private String[] optionHealthStatus = App.context.getResources().getStringArray(R.array.personal_info_health_status);
-    private String[] optionRelation = App.context.getResources().getStringArray(R.array.personal_info_relation);
-    private String productCategoryId;
-    //    private String productId;
-    private Contact mContact;
-    private List<Setting> expandKeys;
+    private ProductOrder mOrder;
     private boolean canEdit;
-    private String contactId;
-    private String productId;
 
     public static AddServiceInfoFragment newInstance(String productCategoryId) {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
@@ -102,32 +69,11 @@ public class AddServiceInfoFragment extends BaseFragment {
     }
 
 
-    public static AddServiceInfoFragment newInstance(String contactId, boolean canEdit) {
+    public static AddServiceInfoFragment newInstance(ProductOrder order, boolean canEdit) {
         AddServiceInfoFragment fragment = new AddServiceInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("canEdit", canEdit);
-        bundle.putString("contactId", contactId);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-
-    public static AddServiceInfoFragment newInstance(Contact contact, boolean canEdit) {
-        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("canEdit", canEdit);
-        bundle.putSerializable("contact", contact);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-
-    public static AddServiceInfoFragment newInstance(Contact contact, String productCategoryId, boolean canEdit) {
-        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("canEdit", canEdit);
-        bundle.putSerializable("contact", contact);
-        bundle.putString("productCategoryId", productCategoryId);
+        bundle.putSerializable("order", order);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -135,15 +81,8 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        productCategoryId = arguments.getString("productCategoryId");
-        contactId = arguments.getString("contactId");
         canEdit = arguments.getBoolean("canEdit", true);
-        mContact = (Contact) arguments.getSerializable("contact");
-        if (!TextUtils.isEmpty(productCategoryId)) {
-            expandKeys = (List<Setting>) ACache.get().getAsObject(productCategoryId);
-        }
-//        Preconditions.checkNull(productCategoryId);
-//        Preconditions.checkNull(productId);
+        mOrder = (ProductOrder) arguments.getSerializable("order");
     }
 
     @Override
@@ -160,285 +99,41 @@ public class AddServiceInfoFragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
 
-        etOccupantName.setEnabled(canEdit);
+        etContactName.setEnabled(canEdit);
         etHealthDesc.setEnabled(canEdit);
-        etReservationPhone.setEnabled(canEdit);
+        etContactMobile.setEnabled(canEdit);
         etMemo.setEnabled(canEdit);
         btnConfirm.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 
         setInitData();
     }
 
-    @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
-        if (!TextUtils.isEmpty(contactId)) {
-            subscription.add(NetHelper.getApi().getContact(contactId)
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<Contact>(_mActivity) {
-                        @Override
-                        public void _next(Contact contact) {
-                            expandKeys = (List<Setting>) ACache.get().getAsObject(contact.getCategoryId());
-                            mContact = contact;
-                            setInitData();
-                        }
-                    }));
-        }
-    }
-
-
-    public void setProductd(String productId) {
-        this.productId = productId;
-    }
 
     private void setInitData() {
-        if (mContact != null) {
-            etOccupantName.setText(mContact.getName());
+        if (mOrder != null) {
 
-            tvSex.setText(optionSex[mContact.getGender()]);
+            etMemo.setText(mOrder.getDescription());
 
-            tvRelation.setText(mContact.getRelation());
+            Contact contact = mOrder.getContact();
+            if (contact != null) {
+                etContactName.setText(contact.getName());
 
-//            etReservationName.setText(mContact.getCreatorName());
+                etContactMobile.setText(contact.getMobile());
 
+                AgencyContactExtension extend = contact.getExtend();
+                if (extend != null) {
+                    tvSex.setText(extend.getSex());
+                    tvRelation.setText(extend.getRelation());
+                    tvBirthday.setText(extend.getBirthday());
+                    tvHealthStatus.setText(extend.getHealthStatus());
 
-            etReservationPhone.setText(mContact.getMobile());
-
-//            if (expandKeys != null && expandKeys.size() >= 3) {
-//            Map<String, String> extend = mContact.getExtend();
-//            if (extend != null) {
-////                    tvBirthday.setText(extend.get(expandKeys.get(0).getKey()));
-////                    tvHealthStatus.setText(extend.get(expandKeys.get(1).getKey()));
-////                    etHealthDesc.setText(extend.get(expandKeys.get(2).getKey()));
-//
-//                tvBirthday.setText(extend.get("birthday"));
-//                tvHealthStatus.setText(extend.get("healthyDescription"));
-//                etHealthDesc.setText(extend.get("healthyStatus"));
-//            }
-//            }
-
-        }
-    }
-
-
-    @OnClick({R.id.tv_sex, R.id.tv_health_status, R.id.tv_relation, R.id.tv_birthday, R.id.btn_confirm})
-    public void onClick(View view) {
-        if (!canEdit) {
-            return;
-        }
-
-        switch (view.getId()) {
-
-            case R.id.tv_sex:
-                optionPicker(optionSex, tvSex.getText().toString(), tvSex);
-                break;
-
-            case R.id.tv_health_status:
-                optionPicker(optionHealthStatus, tvHealthStatus.getText().toString(), tvHealthStatus);
-                break;
-
-
-            case R.id.tv_relation:
-                optionPicker(optionRelation, tvRelation.getText().toString(), tvRelation);
-                break;
-
-            case R.id.tv_birthday:
-                chooseBirthday();
-                break;
-
-            case R.id.btn_confirm:
-                savePersonalInfo();
-                break;
-        }
-    }
-
-
-    private void savePersonalInfo() {
-        String name = etOccupantName.getText().toString();
-        if (TextUtils.isEmpty(name)) {
-            ToastHelper.get().showWareShort("请输入入住者姓名");
-            return;
-        }
-
-        CharSequence sex = tvSex.getText();
-        if (TextUtils.isEmpty(sex)) {
-            ToastHelper.get().showWareShort("请选择性别");
-            return;
-        }
-
-        CharSequence birthday = tvBirthday.getText();
-//        if (TextUtils.isEmpty(birthday)) {
-//            ToastHelper.get().showWareShort("请选择生日");
-//            return;
-//        }
-
-        CharSequence healthStatus = tvHealthStatus.getText();
-        if (TextUtils.isEmpty(healthStatus)) {
-            ToastHelper.get().showWareShort("请选择健康状况");
-            return;
-        }
-
-        String healthDesc = etHealthDesc.getText().toString();
-
-        CharSequence relation = tvRelation.getText();
-        if (TextUtils.isEmpty(relation)) {
-            ToastHelper.get().showWareShort("请选择您和入住者的关系");
-            return;
-        }
-
-//        String reservationName = etReservationName.getText().toString();
-
-        String reservationPhone = etReservationPhone.getText().toString();
-        if (TextUtils.isEmpty(reservationPhone)) {
-            ToastHelper.get().showWareShort("请输入电话");
-
-            return;
-        } else if (!RegexUtils.checkMobile(reservationPhone)) {
-            ToastHelper.get().showWareShort("电话格式不正确");
-            return;
-        }
-
-        Contact contact = new Contact();
-        contact.setName(name);
-        contact.setGender(sex.equals(optionSex[0]) ? 0 : 1);
-        contact.setRelation(relation.toString());
-        contact.setCategoryId(productCategoryId);
-//        contact.setCreatorName(reservationName);
-        contact.setMobile(reservationPhone);
-        if (expandKeys != null) {
-            Map<String, String> expand = new HashMap<>();
-            Setting setting = expandKeys.get(0);
-            String key = setting.getKey();
-            expand.put(key, birthday.toString());
-            expand.put(expandKeys.get(1).getKey(), healthStatus.toString());
-            expand.put(expandKeys.get(2).getKey(), healthDesc);
-//            contact.setExtend(expand);
-
-            if (mContact != null) {
-                putContact(contact);
-            } else {
-                postContact(contact);
-            }
-        } else {
-            Logger.d("配置项为空");
-        }
-
-
-    }
-
-
-    /**
-     * 更新个人资料
-     */
-    private void putContact(Contact contact) {
-        NetHelper.getApi().putContact(mContact.getId(), contact)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(_mActivity) {
-                    @Override
-                    public void _next(Object o) {
-                        EventBus.getDefault().post(new Event.RefreshContract());
-                        pop();
-                    }
-                });
-    }
-
-    /**
-     * 添加个人信息
-     */
-    private void postContact(Contact contact) {
-        NetHelper.getApi().newContact(contact)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Contact>(_mActivity) {
-                    @Override
-                    public void _next(Contact contact) {
-                        if (!TextUtils.isEmpty(productId)) {
-//                            statReservation(contact);
-                            startWithPop(ReservationFragment.newInstance(productId, contact));
-                        } else {
-                            EventBus.getDefault().post(new Event.RefreshContract());
-                        }
-                        pop();
-//                        ToastHelper.get().showWareShort("新增个人资料成功");
-                    }
-                });
-    }
-
-
-    private void statReservation(Contact contact) {
-        Intent intent = new Intent(_mActivity, ReservationActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("contact", contact);
-        bundle.putString("productCategoryId", productCategoryId);
-        bundle.putString("productId", productId);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, ReservationFragment.requestCode);
-    }
-
-    /**
-     * 生日选择器
-     */
-    private void chooseBirthday() {
-        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
-        picker.setDateRangeStart(1900, 1, 1);
-        if (App.widthDP > 820) {
-            picker.setTextSize(12 * 2);
-            picker.setCancelTextSize(12 * 2);
-            picker.setSubmitTextSize(12 * 2);
-            picker.setTopPadding(15 * 3);
-            picker.setTopHeight(40 * 2);
-        }
-        setPickerConfig(picker);
-        picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
-            String time = year + "-" + month + "-" + day;
-            tvBirthday.setText(time);
-        });
-        picker.show();
-    }
-
-    /**
-     * 显示一个选择器
-     */
-    private void optionPicker(String[] options, String selectItem, TextView view) {
-        OptionPicker picker = new OptionPicker(_mActivity, options);
-        if (App.widthDP > 820) {
-            picker.setTextSize(12 * 2);
-            picker.setCancelTextSize(12 * 2);
-            picker.setSubmitTextSize(12 * 2);
-            picker.setTopPadding(15 * 3);
-            picker.setTopHeight(40 * 2);
-        }
-        picker.setSelectedItem(selectItem);
-        setPickerConfig(picker);
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(int index, String item) {
-                if (view.getId() == R.id.tv_relation) {
-                    if (TextUtils.equals(item, optionRelation[0])) {
-                        //TODO 设置电话
-                        etReservationPhone.setText(User.getMobile());
-                    } else {
-                        etReservationPhone.setText("");
-                    }
+                    etHealthDesc.setText(extend.getHealthyDescription());
                 }
-                view.setText(item);
             }
-        });
-        picker.show();
-    }
 
 
-    /**
-     * 选择器的配置
-     */
-    private void setPickerConfig(WheelPicker picker) {
-        picker.setTextSize(size);
-        picker.setCancelTextSize(size);
-        picker.setSubmitTextSize(size);
-        picker.setLineColor(selectColor);
-        picker.setTextColor(selectColor);
+        }
     }
+
 
 }

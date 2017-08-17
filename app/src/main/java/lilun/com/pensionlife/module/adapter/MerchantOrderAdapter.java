@@ -33,8 +33,8 @@ public class MerchantOrderAdapter extends QuickAdapter<ProductOrder> {
 
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
-        Contact userProfile = order.getContact();
-        helper.setText(R.id.tv_creator, String.format("预约人:%1$s", userProfile == null ? "" : userProfile.getName()));
+        Contact contact = order.getContact();
+        helper.setText(R.id.tv_creator, String.format("预约人:%1$s", contact == null ? "" : contact.getName()));
         helper.setText(R.id.tv_sophisticated, order.getName())
                 .setText(R.id.tv_health_status, StringUtils.getOrderStatusValue(order.getStatus()))
                 .setText(R.id.tv_time, "预约时间：" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0))

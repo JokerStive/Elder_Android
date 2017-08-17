@@ -8,15 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Config;
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pensionlife.module.adapter.ProductCategoryAdapter;
@@ -27,8 +24,6 @@ import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
-import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
-import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.tourism.root.TourismRootFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
@@ -98,8 +93,6 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTvRightText(getString(R.string.all_orders));
-        //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -108,13 +101,6 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
             @Override
             public void onRightClick() {
-                //TODO 商家和个人查看所有订单
-                if (!User.isMerchant()) {
-                    start(OrderListFragment.newInstance(Config.agency_product_categoryId));
-                } else {
-                    Logger.d("商家模式进入");
-                    start(new MerchantOrderListFragment());
-                }
             }
         });
 
@@ -151,13 +137,15 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     @Override
     public void showClassifiesByAgency(List<Organization> organizations) {
         completeRefresh();
-        rvAgency.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(organizations)));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(organizations));
+        rvAgency.setLayoutManager(gridLayoutManager);
         AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
         adapter.setOnItemClickListener((organization -> {
 //            start(AgencyOrganizationListFragment.newInstance(organization.getName(), organization.getId()));
 
         }));
         rvAgency.setAdapter(adapter);
+//        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
 
     }
 

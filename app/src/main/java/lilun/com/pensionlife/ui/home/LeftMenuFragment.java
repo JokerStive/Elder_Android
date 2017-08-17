@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -25,6 +26,8 @@ import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFragment;
+import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
+import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
@@ -47,6 +50,9 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.tv_sophisticated)
     TextView tvName;
 
+    @Bind(R.id.tv_manage_order)
+    TextView tvManageOrder;
+
     @Override
     protected void initPresenter() {
 
@@ -62,10 +68,14 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
         //    ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
+
+        if (User.isMerchant()) {
+            tvManageOrder.setVisibility(View.VISIBLE);
+        }
     }
 
 
-    @OnClick({R.id.tv_logout, R.id.tv_account_data, R.id.tv_account_info,R.id.tv_info_setting,R.id.tv_about_us})
+    @OnClick({R.id.tv_logout, R.id.tv_account_data, R.id.tv_account_info, R.id.tv_info_setting, R.id.tv_about_us, R.id.tv_manage_order, R.id.tv_my_order})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
@@ -77,6 +87,15 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
             case R.id.tv_account_info:
                 startTargetFragment(InformationCenterFragment.newInstance());
+                break;
+
+            case R.id.tv_my_order:
+                startTargetFragment(OrderListFragment.newInstance(Config.agency_product_categoryId));
+                break;
+
+
+            case R.id.tv_manage_order:
+                startTargetFragment(new MerchantOrderListFragment());
                 break;
 
             case R.id.tv_about_us:
@@ -95,8 +114,6 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
             ((HomeFragment) parentFragment).startFragment(targetFragment);
         }
     }
-
-
 
 
     /**

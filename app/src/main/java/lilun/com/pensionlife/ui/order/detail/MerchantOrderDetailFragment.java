@@ -1,7 +1,6 @@
 package lilun.com.pensionlife.ui.order.detail;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,6 @@ import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.merchant.MemoFragment;
 import lilun.com.pensionlife.ui.agency.reservation.AddServiceInfoFragment;
 import lilun.com.pensionlife.ui.tourism.detail.TourismDetailFragment;
-import lilun.com.pensionlife.ui.tourism.info.AddTourismInfoFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -118,13 +116,15 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
 
     private void setInitView() {
         OrganizationProduct product = mOrder.getProduct();
-        tvProductName.setText(product.getName());
-        tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
-        tvName.setText(product.getContext());
-        rbBar.setRating(product.getScore());
-        tvPrice.setText("价格:" + product.getPrice());
+        if (product != null) {
+            tvProductName.setText(product.getName());
+            tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
+            tvName.setText(product.getContext());
+            rbBar.setRating(product.getScore());
+            tvPrice.setText("价格:" + product.getPrice());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage())), R.drawable.icon_def, ivImage);
+            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage())), R.drawable.icon_def, ivImage);
+        }
     }
 
 
@@ -141,24 +141,27 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
 
             //跳转用户资料界面
             case R.id.tv_user_info:
-                String contactId = mOrder.getUserProfileId();
-                if (!TextUtils.isEmpty(contactId)) {
-                    String categoryId = mOrder.getCategoryId();
-                    if (categoryId.equals(Config.tourism_product_categoryId)) {
-                        start(AddTourismInfoFragment.newInstance(mOrder.getContact(), false));
-                    } else {
-                        start(AddServiceInfoFragment.newInstance(mOrder.getContact(),categoryId, false));
-                    }
-                }
+                start(AddServiceInfoFragment.newInstance(mOrder, false));
+//                String contactId = mOrder.getUserProfileId();
+//                if (!TextUtils.isEmpty(contactId)) {
+//                    String categoryId = mOrder.getCategoryId();
+//                    if (categoryId.equals(Config.tourism_product_categoryId)) {
+//                        start(AddTourismInfoFragment.newInstance(mOrder.getContact(), false));
+//                    } else {
+//                    }
+//                }
                 break;
 
             //产品详情界面
             case R.id.ll_product_item:
                 String categoryId = mOrder.getCategoryId();
-                if (!categoryId.equals(Config.tourism_product_categoryId)) {
-                    start(ProductDetailFragment.newInstance(mOrder.getProduct().getId()));
-                } else {
-                    start(TourismDetailFragment.newInstance(mOrder.getProduct().getId()));
+                OrganizationProduct product = mOrder.getProduct();
+                if (product != null) {
+                    if (!categoryId.equals(Config.tourism_product_categoryId)) {
+                        start(ProductDetailFragment.newInstance(mOrder.getProduct().getId()));
+                    } else {
+                        start(TourismDetailFragment.newInstance(mOrder.getProduct().getId()));
+                    }
                 }
                 break;
         }
