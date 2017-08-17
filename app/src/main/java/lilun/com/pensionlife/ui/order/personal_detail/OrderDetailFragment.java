@@ -33,6 +33,8 @@ import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
+import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.CustomTextView;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -220,17 +222,32 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         return statusOperate;
     }
 
-    @OnClick({R.id.tv_cancel_order})
+    @OnClick({R.id.tv_cancel_order, R.id.tv_provider_name, R.id.ll_product_icon})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_cancel_order:
                 operate();
                 break;
+
+            case R.id.tv_provider_name:
+                OrganizationProduct product = mOrder.getProduct();
+                if (product != null) {
+                    String organizationIdSuffix = product.getOrganizationId();
+                    String organizationId = StringUtils.removeSpecialSuffix(organizationIdSuffix);
+                    start(ProviderDetailFragment.newInstance(organizationId));
+                }
+                break;
+
+            case R.id.ll_product_icon:
+                OrganizationProduct product1 = mOrder.getProduct();
+                if (product1 != null) {
+                    start(ProductDetailFragment.newInstance(product1.getId()));
+                }
+                break;
         }
     }
 
     private void operate() {
-        String operate = tvCancelOrder.getText().toString();
         String status = mOrder.getStatus();
         if (status.equals(status_reserved)) {
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
