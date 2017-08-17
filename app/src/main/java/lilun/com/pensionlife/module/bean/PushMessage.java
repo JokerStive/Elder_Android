@@ -28,13 +28,13 @@ public class PushMessage extends DataSupport {
     private String title;
     private String mobile;
     private String address;
-    private String unRead;
+    private boolean unRead;
 
-    public String getUnRead() {
+    public boolean getUnRead() {
         return unRead;
     }
 
-    public void setUnRead(String unRead) {
+    public void setUnRead(boolean unRead) {
         this.unRead = unRead;
     }
 

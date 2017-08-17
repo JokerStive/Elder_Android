@@ -1,10 +1,19 @@
 package lilun.com.pensionlife.ui.activity.activity_detail;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
+import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -46,9 +55,12 @@ public class ActivityChatFragment extends BaseFragment {
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
+    @Bind(R.id.tv_smooth_last_read)
+    TextView tvSmoothLastRead;
 
     @Bind(R.id.isv_input_send)
     InputSendView isvSend;
+    private int unReadCount;
 
 
     public static ActivityChatFragment newInstance(OrganizationActivity activity) {
@@ -68,7 +80,12 @@ public class ActivityChatFragment extends BaseFragment {
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         activity = (OrganizationActivity) arguments.getSerializable("activity");
-
+        unReadCount = DataSupport.where("activityId = ? and unread = 1", activity.getId()).count(PushMessage.class);
+        // 更新数据库 未读标识
+        ContentValues values = new ContentValues();
+        values.put("unread", false);
+        int affected = DataSupport.updateAll(PushMessage.class, values, "activityId = ? and unread = 1", activity.getId());
+        Logger.d("生效个数: " + affected);
         topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
     }
 
@@ -91,6 +108,22 @@ public class ActivityChatFragment extends BaseFragment {
                 pop();
             }
         });
+        if (unReadCount != 0) {
+            tvSmoothLastRead.setVisibility(View.VISIBLE);
+            tvSmoothLastRead.startAnimation(startUnreadAnimotion());
+        } else {
+            tvSmoothLastRead.setVisibility(View.GONE);
+        }
+        tvSmoothLastRead.setText(getString(R.string.num_unread, unReadCount > 99 ? ("...") : (unReadCount + "")));
+        tvSmoothLastRead.setOnClickListener((v) -> {
+            if (chatAdapter != null && chatAdapter.getData() != null && chatAdapter.getData().size() >= unReadCount) {
+                mRecyclerView.smoothScrollToPosition(chatAdapter.getData().size() - unReadCount);
+                tvSmoothLastRead.startAnimation(hideUnreadAnimotion());
+                tvSmoothLastRead.setVisibility(View.GONE);
+            }
+
+
+        });
         titleBar.setOnRightClickListener(new NormalTitleBar.OnRightClickListener() {
             @Override
             public void onRightClick() {
@@ -109,7 +142,8 @@ public class ActivityChatFragment extends BaseFragment {
         chatAdapter = new ChatAdapter(DataSupport.where("activityId = ?", activity.getId()).find(PushMessage.class));
         mRecyclerView.setAdapter(chatAdapter);
         if (chatAdapter.getItemCount() > 0)
-            mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+            mRecyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
+        //  mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -161,6 +195,26 @@ public class ActivityChatFragment extends BaseFragment {
                 .setMessage(str)
                 .setTime(StringUtils.date2String(date));
         MQTTManager.getInstance().publish(topic, ops, pushMessage.getJsonStr());
+    }
+
+    public Animation startUnreadAnimotion() {
+        AnimationSet set = new AnimationSet(false);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.5f, 1f);
+        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+        set.setDuration(500);
+        set.addAnimation(alphaAnimation);
+        set.addAnimation(translateAnimation);
+        return set;
+    }
+
+    public Animation hideUnreadAnimotion() {
+        AnimationSet set = new AnimationSet(false);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
+        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+        set.setDuration(500);
+        set.addAnimation(alphaAnimation);
+        set.addAnimation(translateAnimation);
+        return set;
     }
 
 }

@@ -74,6 +74,8 @@
             android:layout_marginTop="@dimen/dp_4"
             android:background="@color/activity_titlebg">
 
+
+
             <LinearLayout
                 android:id="@+id/ll_text"
                 android:layout_width="match_parent"
@@ -133,7 +135,22 @@
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/selector_agency" />
-
+            <TextView
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:id="@+id/iv_msg_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/bg_msg_bubble"
+                android:gravity="center"
+                android:minHeight="@dimen/dp_20"
+                android:minWidth="@dimen/dp_20"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
         </RelativeLayout>
 
         <TextView

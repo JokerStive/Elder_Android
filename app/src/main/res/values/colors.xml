@@ -55,6 +55,7 @@
     <color name="white_dark">#EDFAFF</color>
     <color name="yellow">#FFD908</color>
     <color name="light_grey">#F3F3F3</color>
+    <color name="unread">#12B7F5</color>
 
 
 </resources>

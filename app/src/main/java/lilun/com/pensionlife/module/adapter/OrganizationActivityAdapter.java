@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
+import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
@@ -26,7 +29,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
  *         email : yk_developer@163.com
  */
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
-    private boolean allowshowIcon = true;
+    private boolean allowshowIcon = false; //小红点角标
 
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
         super(layoutRes, data);
@@ -36,11 +39,36 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
      * @param data
      * @param layoutRes
      * @param layoutType
-     * @param allowshowIcon 是否允许显示参加图标
+     * @param allowshowIcon 是否允许显示小红点角标图标
      */
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, FilterLayoutView.LayoutType layoutType, boolean allowshowIcon) {
         super(layoutRes, data);
         this.allowshowIcon = allowshowIcon;
+    }
+
+    /**
+     * 更新所有未读角标
+     */
+    public void notityUnReadAll() {
+        if (getData() == null) return;
+        List<OrganizationActivity> list = getData();
+        for (int i = 0; i < list.size(); i++) {
+            int count = DataSupport.where("activityId = ? and unRead = ?", list.get(i).getId(), "1").count(PushMessage.class);
+            list.get(i).setUnRead(count);
+        }
+        notifyDataChanged();
+    }
+
+    /**
+     * 改变未一个未读角标
+     *
+     * @param pos
+     */
+    public void notityUnRead(int pos) {
+        if (getData() == null && getData().size() > pos) return;
+        int count = DataSupport.where("activityId = ?", getData().get(pos).getId()).count(PushMessage.class);
+        getData().get(pos).setUnRead(count);
+        notifyItemChanged(pos);
     }
 
 
@@ -51,6 +79,10 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
                 .setText(R.id.tv_creator, activity.getCreatorName())
                 .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4));
         help.getView(R.id.tv_activity_status).setVisibility(View.VISIBLE);
+        help.setVisible(R.id.iv_msg_number, allowshowIcon && activity.getUnRead() != 0);
+        if (allowshowIcon) {
+            help.setText(R.id.iv_msg_number, activity.getUnRead() > 99 ? "..." : activity.getUnRead() + "");
+        }
         //不是周期活动
         if (TextUtils.isEmpty(activity.getRepeatedDesc())) {
             Date start = StringUtils.IOS2DateTime(activity.getStartTime());

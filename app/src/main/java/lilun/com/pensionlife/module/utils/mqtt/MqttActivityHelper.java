@@ -63,6 +63,8 @@ public class MqttActivityHelper {
             PushMessage chatMessage = getPushMessageFromData(messageData);
             if (chatMessage != null) {
                 chatMessage.setActivityId(getActivityId(topic));
+                if (!chatMessage.getFrom().contains(User.getUserId()))
+                    chatMessage.setUnRead(true);
                 chatMessage.save();
                 //处理活动
                 dealActivity(topic, chatMessage);
@@ -171,7 +173,6 @@ public class MqttActivityHelper {
                     EventBus.getDefault().post(new Event.RefreshActivityData());
                     //取消订阅
                     MQTTManager.getInstance().unSubscribe(topic, null, null);
-
                 }
             } else if (PushMessage.VERB_QUIT.equals(pushMessage.getVerb())) {
 

@@ -73,6 +73,21 @@
             android:background="@color/activity_titlebg"
             android:paddingLeft="@dimen/dp_10">
 
+            <TextView
+                android:id="@+id/iv_msg_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/bg_msg_bubble"
+                android:minHeight="@dimen/dp_20"
+                android:minWidth="@dimen/dp_20"
+                android:textColor="@color/white"
+                android:text="2"
+                android:gravity="center"
+                android:textSize="@dimen/sp_12" />
+
             <ImageView
                 android:id="@+id/iv_icon"
                 android:layout_width="@dimen/dp_72"

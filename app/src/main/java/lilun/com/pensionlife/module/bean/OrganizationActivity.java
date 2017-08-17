@@ -79,6 +79,15 @@ public class OrganizationActivity extends BaseBean {
     private List<String> blackList;
     private Account contact;
     private int partnerCount;
+    private int unRead;  //未读
+
+    public int getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(int unRead) {
+        this.unRead = unRead;
+    }
 
     public String getDescription() {
         return description;

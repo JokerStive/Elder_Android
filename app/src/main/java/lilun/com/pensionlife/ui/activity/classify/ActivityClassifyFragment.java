@@ -102,7 +102,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         OrganizationActivityDS data = activityNew.getActCatMsg().getData();
         if (data == null) return;
         CalcCatUnRead(data.getCategoryId());
-
     }
 
     /**
@@ -229,12 +228,15 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     }
 
     private void setAdapter() {
-        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, false);
+        mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, true);
         mContentAdapter.setOnRecyclerViewItemClickListener((view, activityItem) -> {
             start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
+            mContentAdapter.getData().get(activityItem).setUnRead(0);
+            mContentAdapter.notifyItemChanged(activityItem);
 
         });
         mContentAdapter.setEmptyView();
+
         mRecyclerView.setAdapter(mContentAdapter);
         mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
@@ -312,7 +314,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         } else {
             mContentAdapter.addAll(activities);
         }
-
+        mContentAdapter.notityUnReadAll();
         mContentAdapter.notifyDataChangedAfterLoadMore(true);
 
         if (activities.size() < mContentAdapter.getPageSize()) {
