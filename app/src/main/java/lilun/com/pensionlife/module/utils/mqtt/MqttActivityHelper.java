@@ -21,6 +21,7 @@ import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
 import lilun.com.pensionlife.module.bean.PushBaseMsg;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.ActUitls;
+import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment;
 
 /**
  * Created by zp on 2017/8/15.
@@ -76,7 +77,8 @@ public class MqttActivityHelper {
                     e.printStackTrace();
                 }
                 if (!chatMessage.getFrom().contains(User.getUserId())
-                        && ActUitls.isParentTopActivity(User.getLocation(), actOrg)) {
+                        && ActUitls.isParentTopActivity(User.getLocation(), actOrg)
+                        && !ActivityChatFragment.curActId.equals(chatMessage.getActivityId())) {
                     chatMessage.setUnRead(true);
                     chatMessage.save();
                     EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));

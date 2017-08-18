@@ -1,16 +1,20 @@
 package lilun.com.pensionlife.ui.activity.activity_detail;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -43,6 +47,7 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
  */
 
 public class ActivityChatFragment extends BaseFragment {
+    public static String curActId = ""; //记录当前聊天的活动id
     private OrganizationActivity activity;
     ChatAdapter chatAdapter;
 
@@ -72,6 +77,12 @@ public class ActivityChatFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    @Override
     protected void initData() {
 
     }
@@ -81,12 +92,26 @@ public class ActivityChatFragment extends BaseFragment {
         super.getTransferData(arguments);
         activity = (OrganizationActivity) arguments.getSerializable("activity");
         unReadCount = DataSupport.where("activityId = ? and unread = 1", activity.getId()).count(PushMessage.class);
+        curActId = activity.getId();
         // 更新数据库 未读标识
         ContentValues values = new ContentValues();
         values.put("unread", false);
         int affected = DataSupport.updateAll(PushMessage.class, values, "activityId = ? and unread = 1", activity.getId());
         Logger.d("生效个数: " + affected);
         topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        curActId = "";
+
     }
 
     @Override
