@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -64,7 +64,7 @@ public class ProviderDetailFragment extends BaseFragment {
     @Bind(R.id.tv_provider_address)
     TextView tvProviderAddress;
     @Bind(R.id.rb_score)
-    RatingBar rbScore;
+    CustomRatingBar rbScore;
     @Bind(R.id.tv_score)
     TextView tvScore;
     @Bind(R.id.tv_product_price)
@@ -186,7 +186,7 @@ public class ProviderDetailFragment extends BaseFragment {
             tvProviderAddress.setText(extension.getAddress());
 
             //星
-            rbScore.setRating(extension.getScore());
+            rbScore.setCountSelected(extension.getScore());
 
             //文字星
             tvScore.setText((double) extension.getScore() + "");

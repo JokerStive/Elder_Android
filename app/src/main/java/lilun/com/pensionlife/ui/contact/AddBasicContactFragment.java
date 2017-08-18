@@ -65,6 +65,8 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     private int eachLevelCount = 3;
     int curLevel = -1;
     String AddressSepreator = " - ";
+    private boolean isLoseNecessary;
+    private int flag = -1;
 
     public static AddBasicContactFragment newInstance(String productId) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
@@ -73,11 +75,25 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
         fragment.setArguments(args);
         return fragment;
     }
+//
+//    public static AddBasicContactFragment newInstance(Contact contact) {
+//        AddBasicContactFragment fragment = new AddBasicContactFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("contact", contact);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    public static AddBasicContactFragment newInstance(Contact contact) {
+
+    /**
+    *@param contact 需要编辑的信息
+     *
+    */
+    public static AddBasicContactFragment newInstance(Contact contact, int flag) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
         Bundle args = new Bundle();
         args.putSerializable("contact", contact);
+        args.putInt("flag", flag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +102,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mProductId = arguments.getString("productId");
+        flag = arguments.getInt("flag",-1);
         mContact = (Contact) arguments.getSerializable("contact");
 //        Preconditions.checkNull(mProductId);
     }
@@ -104,8 +121,19 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
 
-        etContactMobile.setText(User.getMobile());
+        if (flag == -1) {
+            etContactMobile.setText(User.getMobile());
+            etContactName.setText(User.getName());
+            etContactAddress.setText(User.getAddress());
 
+            String belongsOrganizationId = User.getBelongsOrganizationId();
+            tvChooseAddress.setText(getAddressResultFromId(belongsOrganizationId));
+        }
+
+        //flag=-1(新增信息),flag=0(编辑信息),flag=1(补全信息)
+        if (flag == 1) {
+            ToastHelper.get().showWareShort("请先补全信息");
+        }
 
     }
 
@@ -115,16 +143,20 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
         super.onLazyInitView(savedInstanceState);
         //如果mContact初始化时不为空，就是编辑信息
         if (mContact != null) {
+            mProductId = mContact.getProductId();
+
             etContactName.setText(mContact.getName());
             etContactMobile.setText(mContact.getMobile());
             sbSetDefault.setChecked(mContact.getIndex() == 1);
 
 
             String address = mContact.getAddress();
-            String area = address.substring(0, address.lastIndexOf(AddressSepreator));
-            String local = address.substring(address.lastIndexOf(AddressSepreator) + 2);
-            tvChooseAddress.setText(area);
-            etContactAddress.setText(local);
+            if (address != null) {
+                String area = address.substring(0, address.lastIndexOf(AddressSepreator));
+                String local = address.substring(address.lastIndexOf(AddressSepreator) + 2);
+                tvChooseAddress.setText(area);
+                etContactAddress.setText(local);
+            }
         }
 
     }
@@ -312,15 +344,14 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
             dialog.dismiss();
             tvChooseAddress.performClick();
         } else {
-            tvChooseAddress.setText(getAddressResultFromId());
+            tvChooseAddress.setText(getAddressResultFromId(area.getId()));
             resetInstance();
             dialog.dismiss();
         }
     }
 
-    private String getAddressResultFromId() {
+    private String getAddressResultFromId(String id) {
         StringBuilder resultBuffer = new StringBuilder();
-        String id = area.getId();
         String[] split = id.split("/");
         //从省开始
         for (int i = 3; i < split.length; i++) {

@@ -13,6 +13,16 @@ public class Contact extends BaseBean {
     private String mobile;
     private int zip;
     private String relation;
+    private String productId;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public Contact setProductId(String productId) {
+        this.productId = productId;
+        return this;
+    }
 
     public boolean isDefault() {
         return isDefault;

@@ -26,7 +26,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
-import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
@@ -53,12 +52,10 @@ public class OrderListFragment extends BaseFragment {
     private ArrayList<Integer> normalDrawablesRes = new ArrayList();
     private ArrayList<Integer> selectedDrawablesRes = new ArrayList();
     private String[] status = {"reserved", "assigned", "done", "cancel"};
-    private String productCategoryId;
 
-    public static OrderListFragment newInstance(String productCategoryId) {
+    public static OrderListFragment newInstance() {
         OrderListFragment fragment = new OrderListFragment();
         Bundle args = new Bundle();
-        args.putString("productCategoryId", productCategoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +63,6 @@ public class OrderListFragment extends BaseFragment {
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        productCategoryId = arguments.getString("productCategoryId");
-        Preconditions.checkNull(productCategoryId);
     }
 
     @Override
@@ -107,7 +102,7 @@ public class OrderListFragment extends BaseFragment {
     private void initViewPager() {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (int i = 0; i < statusTitle.length; i++) {
-            OrderPageFragment fragment = OrderPageFragment.newInstance(productCategoryId, status[i]);
+            OrderPageFragment fragment = OrderPageFragment.newInstance(status[i]);
             listFragments.add(fragment);
         }
         mViewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager(), listFragments) {

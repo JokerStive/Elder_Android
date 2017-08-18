@@ -186,6 +186,7 @@ public class ProductDetailFragment extends BaseFragment {
                     @Override
                     public void _next(OrganizationProduct product) {
                         showProductDetail(product);
+//                        get2Rank();
                     }
                 });
 
@@ -375,6 +376,10 @@ public class ProductDetailFragment extends BaseFragment {
      * 预约
      */
     private void takeReservation() {
+        if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
+            ToastHelper.get().showWareShort("不能预约自己创建的服务");
+            return;
+        }
         String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
@@ -418,7 +423,7 @@ public class ProductDetailFragment extends BaseFragment {
     private void callMobile() {
         String mobile = mProduct.getMobile();
         new NormalDialog().createNormal(_mActivity, "是否联系：" + mobile, () -> {
-            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile.replace("-","")));
+            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile.replace("-", "")));
             startActivity(intent);
         });
     }

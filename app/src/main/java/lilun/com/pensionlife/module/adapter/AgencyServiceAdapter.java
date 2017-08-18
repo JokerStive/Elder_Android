@@ -42,7 +42,7 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         }
         help.setText(R.id.tv_product_title, product.getTitle())
 //                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
-                .setText(R.id.tv_score, product.getScore() == 0 ? "5.0" : (double) product.getScore() + "")
+                .setText(R.id.tv_score, (double) product.getScore() + "")
                 .setText(R.id.tv_product_price, new DecimalFormat("######0.00").format(product.getPrice()) + "");
         help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {

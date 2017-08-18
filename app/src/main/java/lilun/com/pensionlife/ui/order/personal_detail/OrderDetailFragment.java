@@ -208,7 +208,10 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
 
-    private int getStatusOperate(String status) {
+    private int
+
+
+    getStatusOperate(String status) {
         int statusOperate = 0;
         if (status.equals(status_reserved)) {
             statusOperate = R.string.operate_cancel;
@@ -253,7 +256,10 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
         } else if (status.equals(status_done)) {
             start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
+        } else if (status.equals(status_assigned)) {
+            changeOrderStatus(status_done, "服务已经完成？");
         }
+
 
 //        if (!TextUtils.isEmpty(operate)) {
 //            //取消订单

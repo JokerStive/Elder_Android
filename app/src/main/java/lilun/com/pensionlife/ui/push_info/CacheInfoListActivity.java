@@ -23,6 +23,7 @@ import lilun.com.pensionlife.module.adapter.CacheInfoAdapter;
 import lilun.com.pensionlife.module.bean.CacheInfo;
 import lilun.com.pensionlife.module.bean.CacheMsg;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -138,10 +139,10 @@ public class CacheInfoListActivity extends BaseActivity {
     private CacheInfo getCacheInfoFromModel(String data) {
         CacheInfo cacheInfo = null;
         JSONObject dataJson = JSON.parseObject(data);
-        CacheMsgClassify msgClassify = new CacheMsgClassify();
+//        CacheMsgClassify msgClassify = new CacheMsgClassify();
 
         //紧急求助
-        if (classify == msgClassify.urgent_help) {
+        if (classify == CacheMsgClassify.urgent_help) {
             cacheInfo = new CacheInfo("姓名：" + dataJson.getString("title"),
                     "位置：" + dataJson.getString("address"),
                     "发生时间：" + dataJson.getString("time"),
@@ -150,7 +151,7 @@ public class CacheInfoListActivity extends BaseActivity {
 
 
         //公告
-        if (classify == msgClassify.announce) {
+        if (classify == CacheMsgClassify.announce) {
             String infoJson = dataJson.getString("data");
             if (infoJson != null) {
                 Information information = JSON.parseObject(infoJson, Information.class);
@@ -158,22 +159,35 @@ public class CacheInfoListActivity extends BaseActivity {
                     cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getContext(), classify);
                 }
             }
+        }
 
 
-            //邻居互助
-            if (classify == msgClassify.normal_help) {
-                String aidJson = dataJson.getString("data");
-                if (aidJson != null) {
-                    OrganizationAid aid = JSON.parseObject(infoJson, OrganizationAid.class);
-                    if (aid != null) {
-                        cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getTitle(), StringUtils.IOS2ToUTC(aid.getCreatedAt(), 6), aid.getMemo(), classify);
-                    }
+        //邻居互助
+        if (classify == CacheMsgClassify.normal_help) {
+            String aidJson = dataJson.getString("data");
+            if (aidJson != null) {
+                OrganizationAid aid = JSON.parseObject(aidJson, OrganizationAid.class);
+                if (aid != null) {
+                    cacheInfo = new CacheInfo(aid.getCreatorName(), aid.getTitle(), StringUtils.IOS2ToUTC(aid.getCreatedAt(), 6), aid.getMemo(), classify);
                 }
             }
         }
 
+
+        //活动
+        if (classify == CacheMsgClassify.activity) {
+            String activityJson = dataJson.getString("data");
+            if (activityJson != null) {
+                OrganizationActivity activity = JSON.parseObject(activityJson, OrganizationActivity.class);
+                if (activity != null) {
+                    cacheInfo = new CacheInfo("活动创建者:"+activity.getCreatorName(), "活动内容:"+activity.getDescription(), "活动开始时间:"+StringUtils.IOS2ToUTC(activity.getCreatedAt(), 6), "活动主题:"+activity.getTitle(), classify);
+                }
+            }
+        }
+
+
         return cacheInfo;
     }
-
-
 }
+
+

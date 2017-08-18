@@ -54,16 +54,19 @@ public class SystemInfoFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.tv_urgent, R.id.tv_announce})
+    @OnClick({R.id.tv_urgent, R.id.tv_announce, R.id.tv_activity})
     public void onClick(View view) {
-        CacheMsgClassify msgClassify = new CacheMsgClassify();
         switch (view.getId()) {
             case R.id.tv_urgent:
-                startCacheInfoList(tvUrgent, msgClassify.urgent_help);
+                startCacheInfoList(tvUrgent, CacheMsgClassify.urgent_help);
                 break;
 
             case R.id.tv_announce:
-                startCacheInfoList(tvAnnounce, msgClassify.announce);
+                startCacheInfoList(tvAnnounce, CacheMsgClassify.announce);
+                break;
+
+            case R.id.tv_activity:
+                startCacheInfoList(tvActivity, CacheMsgClassify.activity);
                 break;
         }
     }
