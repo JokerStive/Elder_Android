@@ -66,7 +66,7 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
      */
     public void notityUnRead(int pos) {
         if (getData() == null && getData().size() > pos) return;
-        int count = DataSupport.where("activityId = ?", getData().get(pos).getId()).count(PushMessage.class);
+        int count = DataSupport.where("activityId = ? and unread = 1", getData().get(pos).getId()).count(PushMessage.class);
         getData().get(pos).setUnRead(count);
         notifyItemChanged(pos);
     }

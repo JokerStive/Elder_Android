@@ -172,4 +172,16 @@ public class Event {
             return actCatMsg;
         }
     }
+
+    public static class NewChatMsg {
+        PushMessage pushMessage;
+
+        public NewChatMsg(PushMessage pushMessage) {
+            this.pushMessage = pushMessage;
+        }
+
+        public PushMessage getPushMessage() {
+            return pushMessage;
+        }
+    }
 }

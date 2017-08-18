@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.ActivityCategoryMsg;
@@ -63,9 +66,23 @@ public class MqttActivityHelper {
             PushMessage chatMessage = getPushMessageFromData(messageData);
             if (chatMessage != null) {
                 chatMessage.setActivityId(getActivityId(topic));
-                if (!chatMessage.getFrom().contains(User.getUserId()))
+                //不是自己发送的消息 且是当前小区可接收到的消息 设置未读，
+
+                String substring = topic.substring(topic.indexOf("/%23activity"));  //获取组织id之后的内容
+                String actOrg = topic.replace(substring, "");//得到组织id
+                try {
+                    actOrg = URLDecoder.decode(actOrg, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                if (!chatMessage.getFrom().contains(User.getUserId())
+                        && ActUitls.isParentTopActivity(User.getLocation(), actOrg)) {
                     chatMessage.setUnRead(true);
-                chatMessage.save();
+                    chatMessage.save();
+                    EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
+                } else
+                    chatMessage.save();
+
                 //处理活动
                 dealActivity(topic, chatMessage);
             }
@@ -194,10 +211,7 @@ public class MqttActivityHelper {
                 }
 
             }
-
-            String tmp = topic.substring(topic.lastIndexOf("activity")).replace("activity/", "");
-            String tmp2 = tmp.substring(0, tmp.lastIndexOf("/"));
-            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage, tmp2));
+            EventBus.getDefault().post(new Event.RefreshChatAddOne(pushMessage, pushMessage.getActivityId()));
         }
     }
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -95,6 +94,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         return fragment;
     }
 
+
     //有新消息到来，需要更新
     @Subscribe
     public void activityNewMessage(Event.ActivityNew activityNew) {
@@ -126,9 +126,10 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             } else if (id.contains(categoryType)) {
                 String tmpCate = categoryId.replace("/" + categoryType, "");
                 String idCate = id.replace("/" + categoryType, "");
-                if (StringUtils.isResisterTopCommunity(idCate, tmpCate)) {
+                if (idCate.contains(tmpCate)) {
                     list.get(i).setUnRead(unReadCategoryCount(list.get(i).getId()));
                     categoryAdapter.notifyItemChanged(i);
+                    break;
                 }
             }
         }
@@ -149,6 +150,22 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             Logger.d("个数:" + total + " " + count);
         }
         return total;
+    }
+
+    @Subscribe
+    public void newChatMsg(Event.NewChatMsg chatMsg) {
+        if (chatMsg == null || chatMsg.getPushMessage() == null
+                || chatMsg.getPushMessage().getActivityId() == null)
+            return;
+        if (mContentAdapter == null || mContentAdapter.getData() == null) return;
+        int count = mContentAdapter.getData().size();
+        List<OrganizationActivity> list = mContentAdapter.getData();
+        for (int i = 0; i < count; i++) {
+            if (list.get(i).getId().equals(chatMsg.getPushMessage().getActivityId())) {
+                mContentAdapter.notityUnRead(i);
+                break;
+            }
+        }
     }
 
     @Subscribe
