@@ -99,7 +99,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             @Override
             public void onRightClick() {
                 //TODO 查看所有订单
-                start(OrderListFragment.newInstance(parentId));
+                start(OrderListFragment.newInstance());
             }
         });
 

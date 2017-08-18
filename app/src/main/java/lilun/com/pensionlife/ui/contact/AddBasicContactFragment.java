@@ -102,7 +102,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mProductId = arguments.getString("productId");
-        flag = arguments.getInt("flag");
+        flag = arguments.getInt("flag",-1);
         mContact = (Contact) arguments.getSerializable("contact");
 //        Preconditions.checkNull(mProductId);
     }

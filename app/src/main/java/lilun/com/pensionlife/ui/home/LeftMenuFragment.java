@@ -16,7 +16,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -90,7 +89,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.tv_my_order:
-                startTargetFragment(OrderListFragment.newInstance(Config.agency_product_categoryId));
+                startTargetFragment(OrderListFragment.newInstance());
                 break;
 
 
