@@ -85,7 +85,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
 
     @Subscribe
-    public void RefreshHelpDetail(Event.RefreshHelpDetail event) {
+    public void RefreshHelpDetail(Event.AfterRank event) {
         getDetail();
     }
 

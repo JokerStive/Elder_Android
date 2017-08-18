@@ -180,7 +180,7 @@ public class CacheInfoListActivity extends BaseActivity {
             if (activityJson != null) {
                 OrganizationActivity activity = JSON.parseObject(activityJson, OrganizationActivity.class);
                 if (activity != null) {
-                    cacheInfo = new CacheInfo("活动创建者:"+activity.getCreatorName(), "活动内容:"+activity.getDescription(), "活动开始时间:"+StringUtils.IOS2ToUTC(activity.getCreatedAt(), 6), "活动主题:"+activity.getTitle(), classify);
+                    cacheInfo = new CacheInfo("活动创建者:" + activity.getCreatorName(), "活动内容:" + activity.getDescription(), "活动开始时间:" + StringUtils.IOS2ToUTC(activity.getCreatedAt(), 6), "活动主题:" + activity.getTitle(), classify);
                 }
             }
         }

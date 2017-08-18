@@ -11,6 +11,10 @@ import java.util.List;
  *         email : yk_developer@163.com
  */
 public class Account implements Serializable {
+
+
+
+
     private static final long serialVersionUID = 1L;
 
     private String id;

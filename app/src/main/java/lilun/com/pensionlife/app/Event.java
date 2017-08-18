@@ -2,7 +2,6 @@ package lilun.com.pensionlife.app;
 
 import lilun.com.pensionlife.module.bean.ActivityCategoryMsg;
 import lilun.com.pensionlife.module.bean.Information;
-import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.bean.PushMessage;
@@ -34,8 +33,8 @@ public class Event {
         }
     }
 
-    //刷新互助详情页面
-    public static class RefreshHelpDetail {
+    //评价完成后
+    public static class AfterRank {
     }
 
 
@@ -164,8 +163,9 @@ public class Event {
 
     public static class ActivityNew {
         ActivityCategoryMsg actCatMsg;
+
         public ActivityNew(ActivityCategoryMsg actCatMsg) {
-            this.actCatMsg  = actCatMsg;
+            this.actCatMsg = actCatMsg;
         }
 
         public ActivityCategoryMsg getActCatMsg() {

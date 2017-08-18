@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -87,6 +88,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private String status_assigned = "assigned";
     private String status_done = "done";
     private String status_cancel = "cancel";
+    private String status_assessed = "assessed";
     private ProductOrder mOrder;
     private String agencyId;
 //    private String mNextStatus;
@@ -221,8 +223,17 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             statusOperate = R.string.rank;
         } else if (status.equals(status_cancel)) {
             statusOperate = -1;
+        } else if (status.equals(status_assessed)) {
+            setHadAssess();
         }
         return statusOperate;
+    }
+
+
+    private void setHadAssess() {
+        tvCancelOrder.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+        tvCancelOrder.setEnabled(false);
+        tvCancelOrder.setText("已经评价");
     }
 
     @OnClick({R.id.tv_cancel_order, R.id.tv_provider_name, R.id.ll_product_icon})
@@ -255,7 +266,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         if (status.equals(status_reserved)) {
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
         } else if (status.equals(status_done)) {
-            start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
+            start(RankFragment.newInstance(Constants.organizationOrder, mOrder.getId()));
         } else if (status.equals(status_assigned)) {
             changeOrderStatus(status_done, "服务已经完成？");
         }
@@ -327,6 +338,12 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
                 callPhone("确定联系商家？");
             }
         }
+    }
+
+
+    @Subscribe
+    public void afterRank(Event.AfterRank afterRank) {
+        setHadAssess();
     }
 
 }

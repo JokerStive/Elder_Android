@@ -24,6 +24,16 @@ public class Rank extends BaseBean{
     private String whatModel;
     private String whatId;
     private String createdAt;
+    private String creatorId;
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public Rank setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+        return this;
+    }
 
     public String getCreatedAt() {
         return createdAt;
