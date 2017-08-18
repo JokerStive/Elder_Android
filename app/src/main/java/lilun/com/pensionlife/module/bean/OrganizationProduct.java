@@ -20,7 +20,7 @@ public class OrganizationProduct extends BaseBean {
      * contextType : string
      * price : 0
      * score : 0
-     * areas : ["string"]
+     * areaIds : ["string"]
      * id : string
      * createdAt : $now
      * updatedAt : $now
@@ -72,7 +72,7 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
-    private List<String> areas;
+    private List<String> areaIds;
 
 
     public String getName() {
@@ -204,12 +204,12 @@ public class OrganizationProduct extends BaseBean {
         this.categoryId = categoryId;
     }
 
-    public List<String> getAreas() {
-        return areas;
+    public List<String> getAreaIds() {
+        return areaIds;
     }
 
-    public void setAreas(List<String> areas) {
-        this.areas = areas;
+    public void setAreaIds(List<String> areaIds) {
+        this.areaIds = areaIds;
     }
 
     public static class ImagesBean {

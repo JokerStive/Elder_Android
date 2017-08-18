@@ -182,7 +182,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderTotalPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
             tvOrderPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
 
-            tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreas())));
+            tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
         }
     }
 
@@ -205,6 +205,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             stringRes = R.string.status_done;
         } else if (status.equals(status_cancel)) {
             stringRes = R.string.status_cancel;
+        }else if (status.equals(status_assessed)) {
+            stringRes = R.string.status_assessed;
         }
         return stringRes;
     }
@@ -214,7 +216,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
 
     getStatusOperate(String status) {
-        int statusOperate = 0;
+        int statusOperate = -1;
         if (status.equals(status_reserved)) {
             statusOperate = R.string.operate_cancel;
         } else if (status.equals(status_assigned)) {
@@ -266,7 +268,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         if (status.equals(status_reserved)) {
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
         } else if (status.equals(status_done)) {
-            start(RankFragment.newInstance(Constants.organizationOrder, mOrder.getId()));
+            start(RankFragment.newInstance(Constants.ProductOrder, mOrder.getId()));
         } else if (status.equals(status_assigned)) {
             changeOrderStatus(status_done, "服务已经完成？");
         }
