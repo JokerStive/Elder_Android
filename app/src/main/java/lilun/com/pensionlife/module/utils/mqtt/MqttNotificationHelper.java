@@ -52,7 +52,7 @@ public class MqttNotificationHelper {
         int classify = -1;
 
         //公告和普通求助
-        if ( mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix))) {
+        if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix))) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
 
 
@@ -118,7 +118,7 @@ public class MqttNotificationHelper {
         }
 
         //现实到notification
-        show(title, content, topic,jsonObject);
+        show(title, content, topic, jsonObject);
 
     }
 
@@ -187,16 +187,15 @@ public class MqttNotificationHelper {
             }
 
 
-
             Bundle bundle = new Bundle();
             bundle.putSerializable("extra", extra);
             intent.putExtras(bundle);
-            PendingIntent pIntent = PendingIntent.getBroadcast(App.context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pIntent = PendingIntent.getBroadcast(App.context, 0, intent, 0);
             builder.setContentIntent(pIntent);
 
 
             Notification build = builder.build();
-            NotificationManager manager =(NotificationManager) App.context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager manager = (NotificationManager) App.context.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(0x01, build);
 
             wakeScreen();

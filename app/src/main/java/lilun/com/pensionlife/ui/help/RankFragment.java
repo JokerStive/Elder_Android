@@ -11,7 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Rank;
@@ -97,9 +96,9 @@ public class RankFragment extends BaseFragment {
                     .subscribe(new RxSubscriber<Object>(_mActivity) {
                         @Override
                         public void _next(Object o) {
-                            if (TextUtils.equals(whatModule, Constants.organizationAid)){
-                                EventBus.getDefault().post(new Event.RefreshHelpDetail());
-                            }
+                            EventBus.getDefault().post(new Event.AfterRank());
+//                            if (TextUtils.equals(whatModule, Constants.organizationAid)){
+//                            }
                             pop();
                         }
                     });

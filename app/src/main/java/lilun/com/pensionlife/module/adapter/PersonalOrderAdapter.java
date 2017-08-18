@@ -50,10 +50,10 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             setOrderStatus(helper, order);
             setNextOperate(helper, order);
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
-            helper  .setVisible(R.id.tv_next_operate,order.getStatus().equals("reserved") || order.getStatus().equals("done"))
+            helper.setVisible(R.id.tv_next_operate, order.getStatus().equals("reserved") || order.getStatus().equals("done"))
                     .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
-                    .setText(R.id.tv_product_area,  String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreas())))
+                    .setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreas())))
                     .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format))
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
@@ -93,6 +93,8 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             tvOrderStatus.setText("该订单已经完成");
         } else if (status.equals("cancel")) {
             tvOrderStatus.setText("该订单已经取消");
+        } else if (status.equals("delay")) {
+            tvOrderStatus.setText("该订单已经被商家延期");
         }
     }
 
