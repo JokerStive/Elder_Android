@@ -127,7 +127,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        activity = (OrganizationActivity) arguments.getSerializable("topic_activity");
+        activity = (OrganizationActivity) arguments.getSerializable("activity");
         Preconditions.checkNull(activity);
         topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
     }

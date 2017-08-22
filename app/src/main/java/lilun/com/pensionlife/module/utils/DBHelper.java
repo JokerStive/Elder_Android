@@ -12,12 +12,24 @@ import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
  */
 
 public class DBHelper {
+    private static DBHelper dbHelper;
+
+    public static DBHelper getDefault() {
+        if (dbHelper == null) {
+            synchronized (DBHelper.class) {
+                if (dbHelper == null) {
+                    dbHelper = new DBHelper();
+                }
+            }
+        }
+        return dbHelper;
+    }
 
     /**
      * MQTT消息已读
      * 删除活动类别数据
      */
-    public static void deleterCategory(String id) {
+    public void deleterCategory(String id) {
         String substring = id.substring(id.indexOf("/#activity-category"));
         String orgId = id.replace(substring, "");
         ArrayList<String> orgIds = User.levelIds(orgId);

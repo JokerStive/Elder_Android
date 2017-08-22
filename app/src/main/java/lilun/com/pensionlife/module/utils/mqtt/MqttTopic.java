@@ -37,7 +37,7 @@ public class MqttTopic {
     public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
     //活动更新
-    public String topic_activity_update = "/%23activity/.update";
+    public String topic_activity_update = "/%23activity/.updated";
 
 
     public String[] getAllTopicWhenInit() {
@@ -51,9 +51,11 @@ public class MqttTopic {
             String aidTopic = levelId + topic_help_suffix;
             String informationTopic = levelId + topic_information_suffix;
             String activityTopic = levelId + topic_activity_suffix;
+            String activityUpdateTopic = levelId + topic_activity_update;
             topics.add(aidTopic);
             topics.add(informationTopic);
             topics.add(activityTopic);
+            topics.add(activityUpdateTopic);
         }
 
         return topics.toArray(new String[topics.size()]);

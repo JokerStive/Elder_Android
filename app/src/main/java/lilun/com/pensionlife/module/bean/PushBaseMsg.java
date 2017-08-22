@@ -11,6 +11,7 @@ import org.litepal.crud.DataSupport;
 public class PushBaseMsg extends DataSupport{
     public static final String MODEL_ORG_ACT = "OrganizationActivity";
     public static final String VERB_ADDED = "added";
+    public static final String VERB_UPDATED = "updated";
     public static final String VERB_HELP = "help";
     public static final String VERB_CHAR = "chat";
     public static final String VERB_KICK = "kick";
@@ -43,6 +44,13 @@ public class PushBaseMsg extends DataSupport{
     public boolean isNewActivity() {
         boolean bool = false;
         if (VERB_ADDED.equals(getVerb()) && MODEL_ORG_ACT.equals(getModel())) {
+            bool = true;
+        }
+        return bool;
+    }//判断是新增活动
+    public boolean isUpdateActivity() {
+        boolean bool = false;
+        if (VERB_UPDATED.equals(getVerb()) && MODEL_ORG_ACT.equals(getModel())) {
             bool = true;
         }
         return bool;

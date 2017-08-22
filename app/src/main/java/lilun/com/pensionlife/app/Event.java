@@ -173,6 +173,18 @@ public class Event {
         }
     }
 
+    public static class ActivityCancel{
+        ActivityCategoryMsg actCatMsg;
+
+        public ActivityCancel(ActivityCategoryMsg actCatMsg) {
+            this.actCatMsg = actCatMsg;
+        }
+
+        public ActivityCategoryMsg getActCatMsg() {
+            return actCatMsg;
+        }
+    }
+
     public static class NewChatMsg {
         PushMessage pushMessage;
 

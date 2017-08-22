@@ -104,6 +104,18 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         CalcCatUnRead(data.getCategoryId());
     }
 
+    @Subscribe
+    public void activityCancel(Event.ActivityCancel activityCancel) {
+        if (activityCancel == null || activityCancel.getActCatMsg() == null) return;
+        OrganizationActivityDS data = activityCancel.getActCatMsg().getData();
+        if (data == null) return;
+        //删除对应数据，更新显示
+        int count = DataSupport.deleteAll(OrganizationActivityDS.class, "actId = ?", data.getActId());
+        if (count != 0) {
+            CalcCatUnRead(data.getCategoryId());
+        }
+    }
+
     /**
      * 查询 categoryId类别 未读条数据
      *
@@ -312,7 +324,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, StringUtils.spanCountByData(activityCategories)));
         categoryAdapter = new ActivityCategoryAdapter(this, activityCategories);
         categoryAdapter.setOnItemClickListener((activityCategory -> {
-            DBHelper.deleterCategory(activityCategory.getId());
+            DBHelper.getDefault().deleterCategory(activityCategory.getId());
             CalcCatUnRead(activityCategory.getId());
             start(ActivityListFragment.newInstance(activityCategory));
         }));

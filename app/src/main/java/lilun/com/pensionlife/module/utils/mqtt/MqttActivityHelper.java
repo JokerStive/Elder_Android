@@ -49,18 +49,24 @@ public class MqttActivityHelper {
         if (pushBaseMsg == null) return;
 
         //判断是新增活动
-        if (pushBaseMsg.isNewActivity()) {
+        if (pushBaseMsg.isNewActivity() || pushBaseMsg.isUpdateActivity()) {
             //是当前小区可收到的活动,存入数据库
+            ActivityCategoryMsg actCatMsg = new Gson().fromJson(messageData.replace("\"id\"", "\"actId\""), new TypeToken<ActivityCategoryMsg>() {
+            }.getType());
+            OrganizationActivityDS data = actCatMsg.getData();
             if (ActUitls.isParentTopActivity(User.getLocation(), topic.replace("/%23activity/.added", ""))) {
-                ActivityCategoryMsg actCatMsg = new Gson().fromJson(messageData.replace("\"id\"", "\"actId\""), new TypeToken<ActivityCategoryMsg>() {
-                }.getType());
                 Logger.d("topic: " + topic);
-                OrganizationActivityDS data = actCatMsg.getData();
                 //自己创建的活动不保存
                 if (data != null && !User.getUserId().equals(data.getCreatorId())) {
                     data.save();
                 }
                 EventBus.getDefault().post(new Event.ActivityNew(actCatMsg));
+            } else if (ActUitls.isParentTopActivity(User.getLocation(), topic.replace("/%23activity/.updated", ""))) {
+                // 活动有更新  在update下  status = 101时 是解散活动,删除对应的数据并更新角标
+                if (data != null && !User.getUserId().equals(data.getCreatorId()) && "101".equals(data.getStatus())) {
+                    EventBus.getDefault().post(new Event.ActivityCancel(actCatMsg));
+                }
+
             }
 
         } else if (pushBaseMsg.isChatInfo()) {
