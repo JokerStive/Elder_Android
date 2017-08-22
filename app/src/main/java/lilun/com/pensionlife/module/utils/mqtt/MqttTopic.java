@@ -36,8 +36,8 @@ public class MqttTopic {
     //紧急求助
     public String urgent_help = "user/" + User.getUserName() + "/.help/10";
 
-    //活动
-    public String topic_activity = "/%23activity/.added";
+    //活动更新
+    public String topic_activity_update = "/%23activity/.update";
 
 
     public String[] getAllTopicWhenInit() {

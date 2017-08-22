@@ -91,7 +91,7 @@ public class MqttNotificationHelper {
 
 
         //5-----活动
-        String topic_activity = mqttTopic.topic_activity;
+        String topic_activity = mqttTopic.topic_activity_suffix;
         if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && isMsgICache(InfoSettingFilter.activity) && topic.contains(topic_activity)) {
             JSONObject activityJson = jsonObject.getJSONObject("data");
             String categoryId = activityJson.getString("categoryId");
@@ -180,7 +180,7 @@ public class MqttNotificationHelper {
             extra.setTopic(topic);
 
             //活动需要跳转活动列表，需要携带categoryId
-            if (topic.contains(mqttTopic.topic_activity)) {
+            if (topic.contains(mqttTopic.topic_activity_suffix)) {
                 JSONObject activityJson = dataJson.getJSONObject("data");
                 String categoryId = activityJson.getString("categoryId");
                 extra.setId(categoryId);

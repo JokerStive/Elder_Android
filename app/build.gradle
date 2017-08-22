@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "lilun.com.pensionlife"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode version['major'].toInteger() * 10000  +
                 version['patch'].toInteger() * 100 +
                 version['build'].toInteger()

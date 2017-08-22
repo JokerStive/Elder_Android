@@ -15,6 +15,7 @@ import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
+import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -45,10 +46,18 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TakePhotoImpl takePhoto = (TakePhotoImpl) getTakePhoto();
-        takePhoto.onActivityResult(requestCode,resultCode,data);
+//        TakePhotoImpl takePhoto = (TakePhotoImpl) getTakePhoto();
+//        takePhoto.onActivityResult(requestCode, resultCode, data);
 //        super.onActivityResult(requestCode, resultCode, data);
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -59,8 +68,7 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
      */
     public TakePhoto getTakePhoto() {
         if (takePhoto == null) {
-            takePhoto = new TakePhotoImpl(this,this);
-//            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
             LubanOptions option = new LubanOptions.Builder()
                     .setMaxHeight(Config.uploadPhotoMaxHeight)
                     .setMaxWidth(Config.uploadPhotoMaxWidth)
@@ -77,6 +85,7 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionManager.handlePermissionsResult(getActivity(), type, invokeParam, this);
+
     }
 
     @Override
@@ -134,4 +143,6 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
 
         return null;
     }
+
 }
+

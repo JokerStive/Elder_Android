@@ -97,7 +97,7 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
                 helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
                 helper.setText(R.id.tv_my_name, name)
                         .setText(R.id.tv_my_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null);
+                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar());
 
                 Glide.with(App.context).load(iconUrl).dontAnimate()
                         .placeholder(R.drawable.icon_def)
@@ -109,7 +109,7 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
                 helper.getView(R.id.rl_their_message).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_their_name, name)
                         .setText(R.id.tv_their_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, null);
+                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, User.getUserAvatar());
                 Glide.with(App.context).load(iconUrl).dontAnimate()
                         .placeholder(R.drawable.icon_def)
                         .error(R.drawable.icon_def)

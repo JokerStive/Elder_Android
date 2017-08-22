@@ -370,7 +370,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         String topic = extra.getTopic();
         if (!TextUtils.isEmpty(topic)) {
             MqttTopic mqttTopic = new MqttTopic();
-            if (topic.contains(mqttTopic.topic_activity)) {
+            if (topic.contains(mqttTopic.topic_activity_suffix)) {
                 String activityCatrgoryId = extra.getId();
                 ActivityCategory activityCategory = new ActivityCategory();
                 activityCategory.setId(activityCatrgoryId);

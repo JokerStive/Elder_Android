@@ -388,5 +388,6 @@
     <string name="info_setting">个人消息设置</string>
     <string name="info_setting_desc">开启后,您将会在锁屏状态下收到推送消息通知,消息内容能够在消息中心中显示;关闭后,您将接收不到对应的系统推送消息</string>
     <string name="num_unread">%1$s条未读消息</string>
+    <string name="permission_grant_creama">您没有照相权限，请在系统设置-应用权限中给予权限</string>
 
 </resources>

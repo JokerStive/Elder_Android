@@ -227,9 +227,9 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
                 //我的状态
                 if (whereKey.equals(App.context.getResources().getStringArray(R.array.activity_filter_status)[0])) {
                     if ("0".equals(whereValue)) {  //降序
-                        partner_number = partnerNumber[1];
-                    } else {  //升序
                         partner_number = partnerNumber[0];
+                    } else {  //升序
+                        partner_number = partnerNumber[1];
                     }
                     timing_status = "";
                 }
