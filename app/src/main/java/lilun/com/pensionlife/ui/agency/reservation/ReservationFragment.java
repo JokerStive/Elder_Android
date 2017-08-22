@@ -1,11 +1,6 @@
 package lilun.com.pensionlife.ui.agency.reservation;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
@@ -46,6 +41,7 @@ import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import retrofit2.Response;
@@ -115,7 +111,7 @@ public class ReservationFragment extends BaseFragment {
     public static int resultCode = 321;
     private String mProductId;
     private OrganizationProduct mProduct;
-    private String mOrderMobile;
+//    private String mOrderMobile;
 
 
     public static ReservationFragment newInstance(String productId, Contact contact) {
@@ -267,7 +263,7 @@ public class ReservationFragment extends BaseFragment {
      * 服务范围
      */
     private void showProductArea() {
-        List<String> areas = mProduct.getAreas();
+        List<String> areas = mProduct.getAreaIds();
         String result = "无";
         if (areas != null) {
             for (int i = 0; i < areas.size(); i++) {
@@ -346,21 +342,21 @@ public class ReservationFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-                        mOrderMobile = productOrder.getMobile();
-                        call();
-                        EventBus.getDefault().post("hasOrder");
-                        setHadOrdered();
-//                        popTo(ProductDetailFragment.class, false);
+//                        mOrderMobile = productOrder.getMobile();
+//                        call();
+                        popTo(ProductDetailFragment.class, false);
+                        EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
+//                        setHadOrdered();
                     }
                 });
     }
 
 
-    private void setHadOrdered() {
-        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
-        tvReservation.setEnabled(false);
-        tvReservation.setText("已经预约");
-    }
+//    private void setHadOrdered() {
+//        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+//        tvReservation.setEnabled(false);
+//        tvReservation.setText("已经预约");
+//    }
 
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
         String orderTime = tvOrderTime.getText().toString();
@@ -504,35 +500,35 @@ public class ReservationFragment extends BaseFragment {
         }
     }
 
-    private void call() {
-        if (!TextUtils.isEmpty(mOrderMobile)) {
-            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
-            if (hasPermission) {
-                callMobile();
-            } else {
-                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
-            }
-        } else {
-            ToastHelper.get().showShort("此服务商没有提供电话");
-        }
-    }
-
-    private void callMobile() {
-        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mOrderMobile.replace("-", "")));
-        startActivity(intent);
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0x11) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ToastHelper.get().showShort("请给予权限");
-            } else {
-                callMobile();
-            }
-        }
-    }
+//    private void call() {
+//        if (!TextUtils.isEmpty(mOrderMobile)) {
+//            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
+//            if (hasPermission) {
+//                callMobile();
+//            } else {
+//                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
+//            }
+//        } else {
+//            ToastHelper.get().showShort("此服务商没有提供电话");
+//        }
+//    }
+//
+//    private void callMobile() {
+//        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mOrderMobile.replace("-", "")));
+//        startActivity(intent);
+//    }
+//
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == 0x11) {
+//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+//                ToastHelper.get().showShort("请给予权限");
+//            } else {
+//                callMobile();
+//            }
+//        }
+//    }
 
 }

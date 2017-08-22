@@ -522,7 +522,8 @@ public class StringUtils {
 
     public static String  getProductArea(List<String>  areas){
         String result = "无";
-        if (areas != null) {
+        if (areas != null && areas.size()!=0) {
+            result ="";
             for (int i = 0; i < areas.size(); i++) {
                 String area = StringUtils.getOrganizationNameFromId(areas.get(i));
                 if (!TextUtils.isEmpty(area)) {

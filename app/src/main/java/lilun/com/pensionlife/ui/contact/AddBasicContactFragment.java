@@ -64,7 +64,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     BaseBean area;
     private int eachLevelCount = 3;
     int curLevel = -1;
-    String AddressSepreator = " - ";
+    String AddressSepreator = "-";
     private boolean isLoseNecessary;
     private int flag = -1;
 
@@ -86,9 +86,8 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
 
 
     /**
-    *@param contact 需要编辑的信息
-     *
-    */
+     * @param contact 需要编辑的信息
+     */
     public static AddBasicContactFragment newInstance(Contact contact, int flag) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
         Bundle args = new Bundle();
@@ -102,7 +101,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mProductId = arguments.getString("productId");
-        flag = arguments.getInt("flag",-1);
+        flag = arguments.getInt("flag", -1);
         mContact = (Contact) arguments.getSerializable("contact");
 //        Preconditions.checkNull(mProductId);
     }
@@ -153,7 +152,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
             String address = mContact.getAddress();
             if (address != null) {
                 String area = address.substring(0, address.lastIndexOf(AddressSepreator));
-                String local = address.substring(address.lastIndexOf(AddressSepreator) + 2);
+                String local = address.substring(address.lastIndexOf(AddressSepreator) + 1);
                 tvChooseAddress.setText(area);
                 etContactAddress.setText(local);
             }
@@ -287,14 +286,14 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     public void requestData(BaseBean baseBean, Response<BaseBean> response, int level, int recyclerIndex, int startIndex, int reqCount) {
         if (baseBean == null) {
             //baseBean为空，表示首次获取数据
-            if (curLevel == -1) {
+            if (area == null) {
                 //cuLevel=0，表示第一层的第一层级
                 getChildLocation("", response, level, recyclerIndex, startIndex, reqCount);
             } else {
                 getChildLocation(area.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);
             }
         } else {
-            if (curLevel == eachLevelCount) {
+            if (level == eachLevelCount) {
                 response.send(level, null, false);
             } else {
                 getChildLocation(baseBean.getId().replace(getString(R.string.common_address), ""), response, level, recyclerIndex, startIndex, reqCount);

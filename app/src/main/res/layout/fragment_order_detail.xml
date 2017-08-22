@@ -47,6 +47,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                style="@style/line_gray"
+                android:background="#dedede" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -193,6 +198,7 @@
                         android:layout_alignLeft="@id/tv_product_price"
                         android:layout_marginBottom="@dimen/dp_10"
                         android:maxLines="1"
+                        android:textColor="#a8a8a8"
                         android:textSize="@dimen/dp_13"
                         tools:text="服务范围:歌乐山天池村" />
 

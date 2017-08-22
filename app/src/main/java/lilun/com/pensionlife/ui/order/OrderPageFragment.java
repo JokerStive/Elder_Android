@@ -113,7 +113,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         String filter;
         if (mStatus.equals("done")) {
 //            filter =  "{\"where\":{\"and\":[{\"creatorId\":\"9183a520-8322-11e7-8053-8988faaa07d2\"},{\"status\":{\"inq\":[\"done\",\"assigned\"]}}]},\"limit\":\"20\",\"skip\":\"0\",\"limit\":\"10\",\"skip\":\"0\"}";
-            filter = "  {\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assigned\"]}}]},\"limit\":\"20\",\"skip\":\"0\"}";
+            filter = "  {\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]},\"limit\":\"20\",\"skip\":\"0\"}";
         } else if (mStatus.equals("assigned")) {
             filter = "  {\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]},\"limit\":\"20\",\"skip\":\"0\"}";
         } else {

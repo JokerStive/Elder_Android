@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -12,6 +13,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.AgencyContactExtension;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
@@ -55,18 +57,22 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     @Bind(R.id.btn_confirm)
     Button btnConfirm;
+    @Bind(R.id.et_contact_address)
+    TextView tvContactAddress;
+    @Bind(R.id.ll_contact_extent)
+    LinearLayout llContactExtent;
 
 
     private ProductOrder mOrder;
     private boolean canEdit;
 
-    public static AddServiceInfoFragment newInstance(String productCategoryId) {
-        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("productCategoryId", productCategoryId);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+//    public static AddServiceInfoFragment newInstance(String productCategoryId) {
+//        AddServiceInfoFragment fragment = new AddServiceInfoFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("productCategoryId", productCategoryId);
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
 
 
     public static AddServiceInfoFragment newInstance(ProductOrder order, boolean canEdit) {
@@ -99,6 +105,7 @@ public class AddServiceInfoFragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
 
+        tvContactAddress.setEnabled(canEdit);
         etContactName.setEnabled(canEdit);
         etHealthDesc.setEnabled(canEdit);
         etContactMobile.setEnabled(canEdit);
@@ -112,7 +119,7 @@ public class AddServiceInfoFragment extends BaseFragment {
     private void setInitData() {
         if (mOrder != null) {
 
-            etMemo.setText(mOrder.getDescription());
+//            etMemo.setText(mOrder.getDescription());
 
             Contact contact = mOrder.getContact();
             if (contact != null) {
@@ -120,14 +127,23 @@ public class AddServiceInfoFragment extends BaseFragment {
 
                 etContactMobile.setText(contact.getMobile());
 
-                AgencyContactExtension extend = contact.getExtend();
-                if (extend != null) {
-                    tvSex.setText(extend.getSex());
-                    tvRelation.setText(extend.getRelation());
-                    tvBirthday.setText(extend.getBirthday());
-                    tvHealthStatus.setText(extend.getHealthStatus());
+                tvContactAddress.setText(contact.getAddress());
 
-                    etHealthDesc.setText(extend.getHealthyDescription());
+                OrganizationProduct product = mOrder.getProduct();
+                if (product != null) {
+                    String categoryId = product.getCategoryId();
+                    if (categoryId.contains("养老机构")) {
+                        llContactExtent.setVisibility(View.VISIBLE);
+                        AgencyContactExtension extend = contact.getExtend();
+                        if (extend != null) {
+                            tvSex.setText(extend.getSex());
+                            tvRelation.setText(extend.getRelation());
+                            tvBirthday.setText(extend.getBirthday());
+                            tvHealthStatus.setText(extend.getHealthStatus());
+
+                            etHealthDesc.setText(extend.getHealthyDescription());
+                        }
+                    }
                 }
             }
 

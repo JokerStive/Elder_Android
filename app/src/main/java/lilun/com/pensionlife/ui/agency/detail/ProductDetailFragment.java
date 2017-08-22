@@ -132,8 +132,9 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Subscribe
     public void refresh(String tx) {
-        if (tx.equals("hasOrder")) {
+        if (tx.contains("hasOrder")) {
             setHadOrdered();
+            call();
         }
     }
 
@@ -294,7 +295,7 @@ public class ProductDetailFragment extends BaseFragment {
      * 服务范围
      */
     private void showProductArea() {
-        List<String> areas = mProduct.getAreas();
+        List<String> areas = mProduct.getAreaIds();
         String result = "无";
         if (areas != null) {
             for (int i = 0; i < areas.size(); i++) {
@@ -451,12 +452,5 @@ public class ProductDetailFragment extends BaseFragment {
         }
     }
 
-//    @Override
-//    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-//        Logger.d("requestCode =  " + reqCode + "----" + "resultCode = " + resultCode);
-//        if (reqCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
-//            setHadOrdered();
-//        }
-//    }
 
 }
