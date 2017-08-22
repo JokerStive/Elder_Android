@@ -64,7 +64,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     BaseBean area;
     private int eachLevelCount = 3;
     int curLevel = -1;
-    String AddressSepreator = " - ";
+    String AddressSepreator = "-";
     private boolean isLoseNecessary;
     private int flag = -1;
 
@@ -152,7 +152,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
             String address = mContact.getAddress();
             if (address != null) {
                 String area = address.substring(0, address.lastIndexOf(AddressSepreator));
-                String local = address.substring(address.lastIndexOf(AddressSepreator) + 2);
+                String local = address.substring(address.lastIndexOf(AddressSepreator) + 1);
                 tvChooseAddress.setText(area);
                 etContactAddress.setText(local);
             }
