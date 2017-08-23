@@ -67,7 +67,6 @@ public interface ApiService {
      */
 
     @GET("Accounts/me")
-
     Observable<Response<Account>> getMe();
 
 
@@ -253,6 +252,15 @@ public interface ApiService {
 
     @GET("OrganizationInformations")
     Observable<Response<List<Information>>> getInformations(@Query("filter") String filter);
+
+
+    /**
+     * 获取某个info信息
+     * //
+     */
+
+    @GET("OrganizationInformations/{id}")
+    Observable<Response<Information>> getInformation(@Path("id") String id);
 
 //========================POST===============================================
 

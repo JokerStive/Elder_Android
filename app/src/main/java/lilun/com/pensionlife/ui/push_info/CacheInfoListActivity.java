@@ -156,7 +156,7 @@ public class CacheInfoListActivity extends BaseActivity {
             if (infoJson != null) {
                 Information information = JSON.parseObject(infoJson, Information.class);
                 if (information != null) {
-                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getContext(), classify);
+                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getId(), classify);
                 }
             }
         }

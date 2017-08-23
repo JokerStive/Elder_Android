@@ -16,30 +16,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_confirm"
-        android:layout_below="@id/titleBar"
-        android:padding="@dimen/dp_10">
+        android:layout_below="@id/titleBar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f4f4f4"
+            android:background="#ffffff"
             android:orientation="vertical">
-
-            <TextView
-                style="@style/tv_small_ellipsize"
-
-                android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/dp_10"
-                android:drawableLeft="@drawable/pension_agency_icon"
-                android:drawablePadding="@dimen/dp_8"
-                android:text="预约者信息" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/home_bg"
                 android:orientation="vertical"
-                android:padding="@dimen/dp_10">
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/tv_small_ellipsize"
+
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:drawableLeft="@drawable/pension_agency_icon"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:text="预约者信息" />
+
+                <View style="@style/line_gray" />
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -50,8 +51,8 @@
                     <TextView
                         style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
-                        android:textSize="@dimen/sp_16"
-                        android:text="@string/name" />
+                        android:text="@string/name"
+                        android:textSize="@dimen/sp_16" />
 
                     <EditText
                         android:id="@+id/et_occupant_name"
@@ -60,8 +61,8 @@
                         android:layout_alignParentRight="true"
                         android:gravity="right"
                         android:hint="请输入入住者姓名"
-                        android:textSize="@dimen/sp_16"
-                        android:padding="@dimen/dp_10" />
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
 
                     <View
                         style="@style/line_gray"
@@ -79,8 +80,8 @@
                     <TextView
                         style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
-                        android:textSize="@dimen/sp_16"
-                        android:text="电话" />
+                        android:text="电话"
+                        android:textSize="@dimen/sp_16" />
 
                     <EditText
                         android:id="@+id/et_reservation_phone"
@@ -88,14 +89,91 @@
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
-                        android:textSize="@dimen/sp_16"
                         android:hint="请输入电话号码"
                         android:inputType="phone"
-                        android:padding="@dimen/dp_10" />
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
 
                     <View
                         style="@style/line_gray"
                         android:layout_below="@id/et_reservation_phone" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    style="@style/tv_small"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="地址" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_90"
+                    android:background="@drawable/home_bg">
+
+                    <TextView
+                        android:id="@+id/tv_contact_address"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp_4"
+                        android:gravity="top"
+                        android:textSize="@dimen/sp_16"
+
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_contact_extent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    style="@style/tv_small_ellipsize"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:drawableLeft="@drawable/pension_agency_icon"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:text="入住者信息" />
+
+
+                <View style="@style/line_gray" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small_ellipsize"
+                        android:layout_centerVertical="true"
+                        android:text="入住者姓名" />
+
+                    <TextView
+                        android:id="@+id/tv_contact_extension_name"
+                        style="@style/tv_small_ellipsize"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_contact_extension_name" />
 
                 </RelativeLayout>
 
@@ -109,196 +187,180 @@
                     <TextView
                         style="@style/tv_small_ellipsize"
                         android:layout_centerVertical="true"
-                        android:textSize="@dimen/sp_16"
-                        android:text="地址" />
+                        android:text="@string/sex" />
 
                     <TextView
-                        android:id="@+id/et_contact_address"
-                        style="@style/tv_normal"
+                        android:id="@+id/tv_sex"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_marginLeft="100dp"
                         android:gravity="right"
-                        android:maxLines="3"
-                        android:textSize="@dimen/sp_16"
+                        android:hint="点击选择性别"
                         android:padding="@dimen/dp_10"
-                        android:text="你大姐覅大方死啊放假is啊放假死啊放假死哦啊飞机送啊飞机萨芬囧撒娇覅送哀家覅就覅哦撒娇覅哦撒娇覅哦啊" />
+                        android:textSize="@dimen/sp_16" />
 
                     <View
                         style="@style/line_gray"
-                        android:layout_below="@id/et_contact_address" />
+                        android:layout_below="@id/tv_sex" />
 
                 </RelativeLayout>
 
 
-                <LinearLayout
-                    android:id="@+id/ll_contact_extent"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        >
-
-                        <TextView
-                            style="@style/tv_small_ellipsize"
-                            android:layout_centerVertical="true"
-                            android:text="@string/sex" />
-
-                        <TextView
-                            android:id="@+id/tv_sex"
-                            style="@style/tv_small_ellipsize"
-                            android:layout_width="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:hint="点击选择性别"
-                            android:textSize="@dimen/sp_16"
-                            android:padding="@dimen/dp_10" />
-
-                        <View
-                            style="@style/line_gray"
-                            android:layout_below="@id/tv_sex" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        >
-
-                        <TextView
-                            style="@style/tv_small_ellipsize"
-                            android:layout_centerVertical="true"
-                            android:text="@string/birthday" />
-
-                        <TextView
-                            android:id="@+id/tv_birthday"
-                            style="@style/tv_small_ellipsize"
-                            android:layout_width="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/sp_16"
-                            android:hint="点击选择出生日期"
-                            android:padding="@dimen/dp_10" />
-
-                        <View
-                            style="@style/line_gray"
-                            android:layout_below="@id/tv_birthday" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        >
-
-                        <TextView
-                            style="@style/tv_small_ellipsize"
-                            android:layout_centerVertical="true"
-                            android:text="@string/health_status" />
-
-                        <TextView
-                            android:id="@+id/tv_health_status"
-                            style="@style/tv_small_ellipsize"
-                            android:layout_width="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/sp_16"
-                            android:hint="点击选择健康状况"
-                            android:padding="@dimen/dp_10" />
-
-                        <View
-                            style="@style/line_gray"
-                            android:layout_below="@id/tv_health_status" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        >
-
-                        <TextView
-                            style="@style/tv_small_ellipsize"
-                            android:layout_centerVertical="true"
-                            android:text="@string/relation" />
-
-                        <TextView
-                            android:id="@+id/tv_relation"
-                            style="@style/tv_small_ellipsize"
-                            android:layout_width="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:hint="选择关系"
-                            android:textSize="@dimen/sp_16"
-                            android:padding="@dimen/dp_10" />
-
-                        <View
-                            style="@style/line_gray"
-                            android:layout_below="@id/tv_relation" />
-                    </RelativeLayout>
-
+                    >
 
                     <TextView
-                        style="@style/tv_small"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:text="个人健康信息填写" />
+                        style="@style/tv_small_ellipsize"
+                        android:layout_centerVertical="true"
+                        android:text="@string/birthday" />
 
-
-                    <RelativeLayout
+                    <TextView
+                        android:id="@+id/tv_birthday"
+                        style="@style/tv_small_ellipsize"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_90"
-                        android:background="@drawable/home_bg">
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择出生日期"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
 
-                        <EditText
-                            android:id="@+id/et_health_desc"
-                            style="@style/et_normal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/dp_4"
-                            android:gravity="top"
-                            android:textSize="@dimen/sp_16"
-                            android:hint="请填写详细的个人健康状况"
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_birthday" />
 
-                            />
-                    </RelativeLayout>
-                </LinearLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small_ellipsize"
+                        android:layout_centerVertical="true"
+                        android:text="@string/health_status" />
+
+                    <TextView
+                        android:id="@+id/tv_health_status"
+                        style="@style/tv_small_ellipsize"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="点击选择健康状况"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_health_status" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <TextView
+                        style="@style/tv_small_ellipsize"
+                        android:layout_centerVertical="true"
+                        android:text="@string/relation" />
+
+                    <TextView
+                        android:id="@+id/tv_relation"
+                        style="@style/tv_small_ellipsize"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:hint="选择关系"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_16" />
+
+                    <View
+                        style="@style/line_gray"
+                        android:layout_below="@id/tv_relation" />
+                </RelativeLayout>
 
 
                 <TextView
-                    style="@style/tv_small_ellipsize"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:drawableLeft="@drawable/pension_agency_icon"
-                    android:drawablePadding="@dimen/dp_8"
-                    android:text="备注"
-                    android:visibility="gone" />
+                    style="@style/tv_small"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="个人健康信息填写" />
 
-                <EditText
-                    android:id="@+id/et_memo"
-                    style="@style/et_normal"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_90"
-                    android:layout_margin="@dimen/dp_4"
-                    android:background="@drawable/shape_rect_white"
-                    android:gravity="top"
-                    android:hint="请填写详细的个人状况"
-                    android:padding="@dimen/dp_10"
-                    android:visibility="gone"
+                    android:background="@drawable/home_bg">
 
-                    />
+                    <EditText
+                        android:id="@+id/et_health_desc"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp_4"
+                        android:gravity="top"
+                        android:textSize="@dimen/sp_16"
 
+                        />
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/tv_small"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="留言" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_90"
+                    android:background="@drawable/home_bg">
+
+                    <TextView
+                        android:id="@+id/tv_memo"
+                        style="@style/et_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp_4"
+                        android:gravity="top"
+                        android:textSize="@dimen/sp_16"
+
+                        />
+                </RelativeLayout>
             </LinearLayout>
+
+
+            <TextView
+                style="@style/tv_small_ellipsize"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_16"
+                android:drawableLeft="@drawable/pension_agency_icon"
+                android:drawablePadding="@dimen/dp_8"
+                android:text="备注"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/et_memo"
+                style="@style/et_normal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_90"
+                android:layout_margin="@dimen/dp_4"
+                android:background="@drawable/shape_rect_white"
+                android:gravity="top"
+                android:hint="请填写详细的个人状况"
+                android:padding="@dimen/dp_10"
+                android:visibility="gone"
+
+                />
+
+
         </LinearLayout>
 
 

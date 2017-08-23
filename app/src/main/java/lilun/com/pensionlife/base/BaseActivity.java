@@ -174,60 +174,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     protected void initEvent() {
     }
 
-    /**
-     * 显示推送过来的消息
-     */
-//    private void showPushMessage(List<PushMessage> pushMessages) {
-//        if (pushMessages == null || pushMessages.size() == 0) {
-//            rvPushInfo.setVisibility(View.GONE);
-//            return;
-//        }
-//
-//        rvPushInfo.setVisibility(View.VISIBLE);
-//        if (pushInfoAdapter == null) {
-//            pushInfoAdapter = new PushInfoAdapter(rvPushInfo, pushMessages);
-//            rvPushInfo.setAdapter(pushInfoAdapter);
-//        } else {
-//            pushInfoAdapter.replaceAll(pushMessages);
-//        }
 
-//    }
-
-    /**
-     * 初始化推送消息栏
-     */
-//    private void initRecyclerView() {
-//        rvPushInfo.setLayoutManager(new OverLayCardLayoutManager());
-//        CardConfig.initConfig(this);
-//        CardConfig.MAX_SHOW_COUNT = 3;
-//
-//        callback = new MyCallBack(rvPushInfo);
-//        callback.setOnItemSwipedListener(() -> {
-//            if (pushInfoAdapter != null && pushInfoAdapter.getItemCount() != 0) {
-//                PushMessage item = pushInfoAdapter.getItem(pushInfoAdapter.getItemCount() - 1);
-//                pushInfoAdapter.remove(item);
-//                if (pushInfoAdapter.getItemCount() == 0) {
-//                    Logger.d("推送栏设置gone");
-//                    rvPushInfo.setVisibility(View.GONE);
-//                }
-//
-////                DataSupport.deleteAll(PushMessage.class, "king = ?", item.getKing());
-//            }
-//        });
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(rvPushInfo);
-//
-//        showPushMessage(getPushMessageFromDatabase());
-//    }
-
-
-    /**
-     * 从数据库中取消息
-     */
-//    public List<PushMessage> getPushMessageFromDatabase() {
-//        List<PushMessage> allMessage = DataSupport.findAll(PushMessage.class);
-//        return allMessage;
-//    }
 
     /**
      * 显示紧急求助弹窗
@@ -255,7 +202,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         }
 
 
-        if (topic.contains(mqttTopic.topic_information_add)) {
+        if (topic.contains(mqttTopic.topic_information_edit)) {
             String infoString = jsonObject.getString("data");
             Information information = JSON.parseObject(infoString, Information.class);
 //             Information Information = gson.fromJson(pushMessage.getData(), Information.class);

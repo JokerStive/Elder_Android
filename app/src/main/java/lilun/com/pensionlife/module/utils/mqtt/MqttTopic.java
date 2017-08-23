@@ -29,7 +29,7 @@ public class MqttTopic {
     public String topic_information_add = "/%23information/.added";
 
     //公告
-    public String topic_information_edit= "/%23information/.updated";
+    public String topic_information_edit = "/%23information/.updated";
 
 
     //登陆
@@ -71,7 +71,7 @@ public class MqttTopic {
      */
     public boolean isTopicBelongCurrentOrganizationLevel(String topic) {
         String substring = topic.substring(0, topic.lastIndexOf("/"));
-        String topicOrganizationId = substring.substring(0,substring.lastIndexOf("/"));
+        String topicOrganizationId = substring.substring(0, substring.lastIndexOf("/"));
         ArrayList<String> levelIds = User.levelIds(false);
         for (String levelId : levelIds) {
             if (TextUtils.equals(levelId, topicOrganizationId)) {

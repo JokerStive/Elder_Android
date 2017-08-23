@@ -22,8 +22,11 @@ import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ScreenUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.net.NetHelper;
+import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.widget.ProgressWebView;
 
@@ -52,7 +55,7 @@ public class AnnounceInfoActivity extends Activity {
     TextView tvExpressCome;
     private int infoCount = 1;
     private AnimationDrawable drawableAnim;
-    private Information information;
+    private Information mInformation;
 
     @Subscribe
     public void refreshUrgentCount(Event.RefreshUrgentInfo event) {
@@ -68,12 +71,27 @@ public class AnnounceInfoActivity extends Activity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        information = (Information) getIntent().getSerializableExtra("organizationInfo");
-        Preconditions.checkNull(information);
-        initView();
+        mInformation = (Information) getIntent().getSerializableExtra("organizationInfo");
+        Preconditions.checkNull(mInformation);
 
+
+        getInfo();
 
         setAppearance();
+    }
+
+    private void getInfo() {
+        String informationId = mInformation.getId();
+        NetHelper.getApi().getInformation(informationId)
+                .compose(RxUtils.applySchedule())
+                .compose(RxUtils.handleResult())
+                .subscribe(new RxSubscriber<Information>(this) {
+                    @Override
+                    public void _next(Information information) {
+                        mInformation = information;
+                        initView();
+                    }
+                });
     }
 
     private void setAppearance() {
@@ -88,15 +106,15 @@ public class AnnounceInfoActivity extends Activity {
         ivExpressIcon.setBackground(drawableAnim);
         start();
 
-        tvExpressTitle.setText(information.getTitle());
-        String createdAt = information.getCreatedAt();
+        tvExpressTitle.setText(mInformation.getTitle());
+        String createdAt = mInformation.getCreatedAt();
         tvExpressTime.setText(StringUtils.IOS2ToUTC(createdAt, 0) + "  " + StringUtils.IOS2ToUTC(createdAt, 3));
         btnAll.setText("查看全部(" + infoCount + ")");
 
-        tvExpressCome.setText("来源：" + information.getCreatorName() + "");
+        tvExpressCome.setText("来源：" + mInformation.getCreatorName() + "");
 
-        int contextType = information.getContextType();
-        String content = information.getContext();
+        int contextType = mInformation.getContextType();
+        String content = mInformation.getContext();
         tvContent.setVisibility(contextType == 5 ? View.VISIBLE : View.GONE);
         progressWebView.setVisibility(contextType == 2 ? View.VISIBLE : View.GONE);
         switch (contextType) {
@@ -106,7 +124,7 @@ public class AnnounceInfoActivity extends Activity {
                 break;
             //json
             case 0:
-                tvContent.setText(information.getContext());
+                tvContent.setText(mInformation.getContext());
                 break;
         }
     }
