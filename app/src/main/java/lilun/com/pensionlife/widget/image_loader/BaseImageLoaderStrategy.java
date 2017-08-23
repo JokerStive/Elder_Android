@@ -10,6 +10,7 @@ import android.widget.ImageView;
 */
 public interface BaseImageLoaderStrategy {
     void loadImage(String url, ImageView imageView);
+    void loadImage(int resId, ImageView imageView);
 
     void loadImage(String url, int placeholder, ImageView imageView);
 

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.orhanobut.logger.Logger;
 
 import org.litepal.crud.DataSupport;
 
@@ -22,7 +23,7 @@ import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
- * 展示互助列表的adapter
+ * 活动列表的adapter
  *
  * @author yk
  *         create at 2017/2/13 11:27
@@ -31,9 +32,11 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivity> {
     private boolean allowshowIcon = false; //小红点角标
 
+
     public OrganizationActivityAdapter(List<OrganizationActivity> data, int layoutRes, SearchTitleBar.LayoutType layoutType) {
         super(layoutRes, data);
     }
+
 
     /**
      * @param data
@@ -115,13 +118,29 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
 
         String fileName = (activity.getIcon() != null && activity.getIcon().size() > 0) ?
                 activity.getIcon().get(0).getFileName() : null;
+        final String url = IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName);
+
         if (TextUtils.isEmpty(fileName))
             help.getView(R.id.iv_icon).setVisibility(View.GONE);
         else {
             help.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
             //活动图片加载
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName),
-                    R.drawable.icon_def, help.getView(R.id.iv_icon));
+            Logger.d("mScrollIdle :" + mScrollIdle);
+            //  String imgTag = (String) help.getView(R.id.iv_icon).getTag();
+            int tag;
+            if (help.getView(R.id.iv_icon).getTag(R.id.img_tag) == null)
+                tag = -1;
+            else tag = (int) help.getView(R.id.iv_icon).getTag(R.id.img_tag);
+            if (tag != help.getAdapterPosition()) {
+                ImageLoaderUtil.instance().loadImage(R.drawable.icon_def, help.getView(R.id.iv_icon));
+            }
+            if (mScrollIdle) {
+                //http://test.j1home.com/api/OrganizationActivities/91da3e60-86f8-11e7-a1c6-556b4bbfef62/download/icon/1503378820208.png?access_token=XkcBrQzoo84KMy6sMQub5DGGsfjcjMu2G0LAPzv0wnjJlPlMcRZ2EAyDSxaUCiju
+                Logger.d("in --> mScrollIdle :" + mScrollIdle);
+                ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, help.getView(R.id.iv_icon));
+            }
+
+            help.getView(R.id.iv_icon).setTag(R.id.img_tag, help.getAdapterPosition());
         }
 
         String time = activity.getStartTime();

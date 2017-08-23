@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -145,6 +146,20 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (mActivityAdapter != null) {
+                    if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+                        mActivityAdapter.setmScrollIdle(true);
+                        mActivityAdapter.notifyDataChanged();
+                    }
+                    else
+                        mActivityAdapter.setmScrollIdle(false);
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -182,6 +197,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         }
 
         mRecyclerView.setAdapter(mActivityAdapter);
+
     }
 
 

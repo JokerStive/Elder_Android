@@ -35,6 +35,9 @@ public class ImageLoaderUtil {
     public void loadImage(String url,  ImageView imageView) {
         mStrategy.loadImage(url, imageView);
     }
+    public void loadImage(int resId,  ImageView imageView) {
+        mStrategy.loadImage(resId, imageView);
+    }
 
     public void setStrategy(BaseImageLoaderStrategy strategy){
         this.mStrategy = strategy;

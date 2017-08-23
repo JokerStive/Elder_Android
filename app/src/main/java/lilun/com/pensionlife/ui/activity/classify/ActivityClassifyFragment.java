@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -266,7 +267,20 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         });
         mContentAdapter.setEmptyView();
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (mContentAdapter != null) {
+                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                        mContentAdapter.setmScrollIdle(true);
+                        mContentAdapter.notifyDataChanged();
+                    } else mContentAdapter.setmScrollIdle(false);
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         mRecyclerView.setAdapter(mContentAdapter);
+
         mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
         mContentAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

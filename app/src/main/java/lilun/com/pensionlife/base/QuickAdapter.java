@@ -12,13 +12,17 @@ import lilun.com.pensionlife.app.App;
 
 /**
  * 添加header、footer快速集成的adapter
- *
+ * mScrollIdle标志 滑动过程中不加载图片，避免出现大量的异步任务，从而线程池拥堵
  * @author yk
  *         create at 2017/2/13 15:48
  *         email : yk_developer@163.com
  */
 public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
+    public boolean mScrollIdle = true;
 
+    public void setmScrollIdle(boolean mScrollIdle) {
+        this.mScrollIdle = mScrollIdle;
+    }
 
     public QuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
