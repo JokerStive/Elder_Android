@@ -3,14 +3,12 @@ package lilun.com.pensionlife.ui.agency.reservation;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.AgencyContactExtension;
@@ -63,8 +61,8 @@ public class AddServiceInfoFragment extends BaseFragment {
     TextView tvContactAddress;
     @Bind(R.id.ll_contact_extent)
     LinearLayout llContactExtent;
-    @Bind(R.id.tv_memo)
-    TextView tvMemo;
+//    @Bind(R.id.tv_memo)
+//    TextView tvMemo;
     @Bind(R.id.tv_contact_extension_name)
     TextView tvContactExtensionName;
 
@@ -127,7 +125,7 @@ public class AddServiceInfoFragment extends BaseFragment {
 
 //            etMemo.setText(mOrder.getDescription());
 
-            tvMemo.setText(mOrder.getDescription());
+//            tvMemo.setText(mOrder.getDescription());
 
             Contact contact = mOrder.getContact();
             if (contact != null) {
@@ -161,17 +159,4 @@ public class AddServiceInfoFragment extends BaseFragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

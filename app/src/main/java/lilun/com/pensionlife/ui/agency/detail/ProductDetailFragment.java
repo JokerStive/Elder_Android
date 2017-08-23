@@ -261,7 +261,14 @@ public class ProductDetailFragment extends BaseFragment {
         tvProductTitle.setText(product.getTitle());
 
         //二级标题
-        tvProductTitleExtra.setText(product.getTitle());
+        String contextType = product.getContextType();
+        if (!TextUtils.isEmpty(contextType) && contextType.equals("2")) {
+            tvProductTitleExtra.setText(product.getSubTitle());
+        } else {
+            String context = product.getContext();
+            tvProductTitleExtra.setText(context);
+        }
+//        tvProductTitleExtra.setText(product.getTitle());
 
         //星
         rbScore.setCountSelected(product.getScore());

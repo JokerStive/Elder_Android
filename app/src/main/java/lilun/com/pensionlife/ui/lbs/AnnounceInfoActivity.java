@@ -120,7 +120,8 @@ public class AnnounceInfoActivity extends Activity {
         switch (contextType) {
             //html
             case 2:
-                progressWebView.loadData(content, "text/html; charset=UTF-8;", null);
+                progressWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
+//                progressWebView.loadData(content, "text/html; charset=UTF-8;", null);
                 break;
             //json
             case 0:

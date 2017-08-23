@@ -99,7 +99,8 @@ public class InfoDetailFragment extends BaseFragment {
         switch (contextType) {
             //html
             case 2:
-                webContentH5.loadData(content, "text/html; charset=UTF-8;", null);
+//                webContentH5.loadDataWithBaseURL("http://test.j1home.com/api/OrganizationInformations/%2F%E5%9C%B0%E7%90%83%E6%9D%91%2F%E4%B8%AD%E5%9B%BD%2F%E9%87%8D%E5%BA%86%2F%E9%87%8D%E5%BA%86%E5%B8%82%2F%E6%BC%94%E7%A4%BA%E5%8C%BA%2F%E6%BC%94%E7%A4%BA%E8%A1%97%E9%81%93%2F%E8%80%83%E8%AF%95%E7%A4%BE%E5%8C%BA1%2F%23information%2F%E7%A4%BE%E5%8C%BA%E5%85%AC%E5%91%8A%2F%E5%AF%84%E5%88%B0%E5%B0%B1%E5%A4%A7%E5%AE%B6%E9%83%BD/downloadPic/1503480658505.png");
+                webContentH5.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
                 break;
             //json
             case 5:

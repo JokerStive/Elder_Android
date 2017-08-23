@@ -58,7 +58,8 @@
                         style="@style/tv_normal"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:maxLines="3"
+                        android:maxLines="1"
+                        android:maxLength="20"
                         android:textColor="#a9a9a9"
                         android:textSize="@dimen/sp_15"
                         tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />

@@ -94,7 +94,8 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         String parent = mClassify.getParent();
         String name = mClassify.getName();
         String parentIdFilter = spliceParentId(parent+"/"+name);
-        filter = "{\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
+        filter = "{\"order\":\"createdAt DESC\",\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
+//        filter = "{\"where\":{\"order\":\"createdAt DESC\",\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
         mPresenter.getDataList(filter, skip);
     }
 
