@@ -68,7 +68,7 @@ public interface ApiService {
 
     @GET("Accounts/me")
 
-    Observable<Response<Object>> getMe();
+    Observable<Response<Account>> getMe();
 
 
     /**

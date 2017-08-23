@@ -273,7 +273,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             ToastHelper.get().showWareShort("手机号格式错误");
                             return;
                         }
-                        if (TextUtils.equals(input.toString(),User.getMobile())) {
+                        if (TextUtils.equals(input.toString(), User.getMobile())) {
                             ToastHelper.get().showWareShort("手机号不能是自己的");
                             return;
                         }
@@ -337,17 +337,23 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
 
     }
 
-    public void updateImage(String id, String imageName, String path) {
-        Logger.d("zp", User.getToken() + "   \n" + id + "     \n" + imageName + "   \n" + path);
-        if (TextUtils.isEmpty(imageName))
-            imageName = "{imageName}";
+    public void updateImage(String id, String path) {
+
         ArrayList<String> paths = new ArrayList<>();
         paths.add(path);
         byte[] pathString = BitmapUtils.bitmapToBytes(path);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
-        NetHelper.getApi()
-                .updateImage(id, imageName, requestBody)
-                .compose(RxUtils.handleResult())
+        NetHelper.getApi().getMe().
+                compose(RxUtils.handleResult())
+                .flatMap((account -> {
+                    String imageName = "{imageName}";
+                    if (account != null && account.getImage() != null && account.getImage().size() > 0) {
+                        imageName = account.getImage().get(0).getFileName();
+                        User.puttUserAvatar(imageName);
+                    }
+                    Logger.d("zp", User.getToken() + "   \n" + id + "   \n" + imageName + "   \n" + path);
+                    return NetHelper.getApi().updateImage(id, imageName, requestBody).compose(RxUtils.applySchedule()).compose(RxUtils.handleResult());
+                }))
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<IconModule>(_mActivity) {
                     @Override
@@ -384,7 +390,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                     } else {
                         path = result.getOriginalPath();
                     }
-                    updateImage(User.getUserId(), User.getUserAvatar(), path);
+                    updateImage(User.getUserId(), path);
                 });
     }
 
@@ -460,5 +466,6 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
 
         response.send(level, data, data != null && data.size() == limitSkip);
     }
+
 
 }
