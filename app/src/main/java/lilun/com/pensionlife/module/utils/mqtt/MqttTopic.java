@@ -26,7 +26,10 @@ public class MqttTopic {
     public String personal_msg = "user/" + User.getUserName() + "/#";
 
     //公告
-    public String topic_information_suffix = "/%23information/.added";
+    public String topic_information_add = "/%23information/.added";
+
+    //公告
+    public String topic_information_edit= "/%23information/.updated";
 
 
     //登陆
@@ -49,11 +52,13 @@ public class MqttTopic {
         }
         for (String levelId : levelIds) {
             String aidTopic = levelId + topic_help_suffix;
-            String informationTopic = levelId + topic_information_suffix;
+            String informationTopicAdd = levelId + topic_information_add;
+            String informationTopicEdit = levelId + topic_information_edit;
             String activityTopic = levelId + topic_activity_suffix;
             String activityUpdateTopic = levelId + topic_activity_update;
             topics.add(aidTopic);
-            topics.add(informationTopic);
+            topics.add(informationTopicAdd);
+            topics.add(informationTopicEdit);
             topics.add(activityTopic);
             topics.add(activityUpdateTopic);
         }

@@ -52,12 +52,16 @@ public class MqttNotificationHelper {
         int classify = -1;
 
         //公告和普通求助
-        if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_suffix))) {
+        if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && (topic.contains(mqttTopic.topic_help_suffix) || topic.contains(mqttTopic.topic_information_add))) {
             JSONObject infoJson = jsonObject.getJSONObject("data");
 
 
             // 1 ----- 公告，展示到通知栏
-            if (isMsgICache(InfoSettingFilter.announce) && topic.contains(mqttTopic.topic_information_suffix)) {
+            if (isMsgICache(InfoSettingFilter.announce) && topic.contains(mqttTopic.topic_information_add)) {
+                Boolean isDraft = infoJson.getBoolean("isDraft");
+                if (isDraft!=null && isDraft) {
+                    return;
+                }
                 String parentId = infoJson.getString("parentId");
                 if (parentId.endsWith("社区公告")) {
                     classify = msgClassify.announce;
