@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.ui.order.detail;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -119,7 +120,13 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
         if (product != null) {
             tvProductName.setText(product.getName());
             tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
-            tvName.setText(product.getContext());
+            String contextType = product.getContextType();
+            String context = product.getContext();
+            if (contextType.equals("2") && context != null) {
+                tvName.setText(Html.fromHtml(context));
+            } else {
+                tvName.setText(context);
+            }
             rbBar.setRating(product.getScore());
             tvPrice.setText("价格:" + product.getPrice());
 

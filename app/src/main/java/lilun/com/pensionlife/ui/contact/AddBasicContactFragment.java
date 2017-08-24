@@ -5,7 +5,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vanzh.library.BaseBean;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Event;
@@ -32,6 +35,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
+import lilun.com.pensionlife.widget.CustomTextView;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.SwitchButton;
 
@@ -57,6 +61,10 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     EditText etContactAddress;
     @Bind(R.id.sb_set_default)
     SwitchButton sbSetDefault;
+    @Bind(R.id.ll_switch)
+    RelativeLayout llSwitch;
+    @Bind(R.id.tv_add_contact)
+    CustomTextView tvAddContact;
     private String mProductId;
     private Contact mContact;
     private int limitSkip = 20;
@@ -134,6 +142,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
             ToastHelper.get().showWareShort("请先补全信息");
         }
 
+        llSwitch.setVisibility(mContact == null ? View.VISIBLE : View.GONE);
     }
 
 
@@ -302,7 +311,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     }
 
 
-    public void getChildLocation(String locationName, DataInterface.Response<BaseBean> response, int level, int recyclerIndex, int skip, int limitSkip) {
+    public void getChildLocation(String locationName, Response<BaseBean> response, int level, int recyclerIndex, int skip, int limitSkip) {
         NetHelper.getApi()
                 .getChildLocation(locationName, skip, limitSkip)
                 .compose(RxUtils.handleResult())
@@ -376,5 +385,19 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     @Override
     public void onConfirm(BaseBean baseBean) {
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }
