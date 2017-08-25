@@ -134,7 +134,7 @@ public class VersionDialogFragment extends DialogFragment {
         progressBar.setVisibility(View.VISIBLE);
         String url = version.getUrl();
         String apkName = url.substring(url.lastIndexOf("/"));
-        DownloadManager.getInstance().download(apkName, new DownLoadCallBack() {
+        DownloadManager.getInstance().download(url, new DownLoadCallBack() {
             @Override
             public void onSuccess(File file) {
                 SystemUtils.installApk(getActivity(), file);
