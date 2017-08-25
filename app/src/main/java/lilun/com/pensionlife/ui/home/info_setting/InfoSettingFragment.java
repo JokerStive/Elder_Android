@@ -2,14 +2,12 @@ package lilun.com.pensionlife.ui.home.info_setting;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.SwitchButton;
 
@@ -106,10 +104,10 @@ public class InfoSettingFragment extends BaseFragment {
         String topic = (String) switchButton.getTag();
         if (isChecked) {
             InfoSettingFilter.addInfoFilter(topic);
-            ToastHelper.get().showNormal("添加---" + topic + "---到本地", Toast.LENGTH_SHORT);
+//            ToastHelper.get().showNormal("添加---" + topic + "---到本地", Toast.LENGTH_SHORT);
         } else {
             InfoSettingFilter.removeInfoFilter(topic);
-            ToastHelper.get().showNormal("移除---" + topic + "---从本地", Toast.LENGTH_SHORT);
+//            ToastHelper.get().showNormal("移除---" + topic + "---从本地", Toast.LENGTH_SHORT);
         }
     }
 
