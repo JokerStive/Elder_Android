@@ -16,7 +16,7 @@ public class InfoSettingFilter {
     public static String help = "一键求助";
     public static String activity = "活动";
     public static String cards = "打牌";
-    public static String dance = "跳舞";
+    public static String dance = "唱歌跳舞";
     public static String walk = "健步";
     public static String ball = "打球";
     public static String tourism = "旅游";
@@ -28,8 +28,6 @@ public class InfoSettingFilter {
         String asString = ACache.get(App.context, cache_key).getAsString(composeKeyWithFilter(filter));
         return !TextUtils.isEmpty(asString);
     }
-
-
 
 
     public static void initInfoFilter() {
