@@ -61,7 +61,7 @@ public class AddServiceInfoFragment extends BaseFragment {
     TextView tvContactAddress;
     @Bind(R.id.ll_contact_extent)
     LinearLayout llContactExtent;
-//    @Bind(R.id.tv_memo)
+    //    @Bind(R.id.tv_memo)
 //    TextView tvMemo;
     @Bind(R.id.tv_contact_extension_name)
     TextView tvContactExtensionName;

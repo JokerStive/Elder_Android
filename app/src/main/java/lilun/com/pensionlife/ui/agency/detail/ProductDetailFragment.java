@@ -303,19 +303,7 @@ public class ProductDetailFragment extends BaseFragment {
      */
     private void showProductArea() {
         List<String> areas = mProduct.getAreaIds();
-        String result = "无";
-        if (areas != null) {
-            for (int i = 0; i < areas.size(); i++) {
-                String area = StringUtils.getOrganizationNameFromId(areas.get(i));
-                if (!TextUtils.isEmpty(area)) {
-                    if (i == 0) {
-                        result = result + area;
-                    } else {
-                        result = result + "、" + area;
-                    }
-                }
-            }
-        }
+        String result = StringUtils.getProductArea(areas);
         tvProductArea.setText(String.format("服务范围: %1$s", result));
     }
 

@@ -352,11 +352,6 @@ public class ReservationFragment extends BaseFragment {
     }
 
 
-//    private void setHadOrdered() {
-//        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
-//        tvReservation.setEnabled(false);
-//        tvReservation.setText("已经预约");
-//    }
 
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
         String orderTime = tvOrderTime.getText().toString();
