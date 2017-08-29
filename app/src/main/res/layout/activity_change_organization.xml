@@ -16,12 +16,11 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
             android:layout_centerVertical="true"
-            android:background="@drawable/delete"
             android:layout_marginLeft="@dimen/dp_10"
-             />
+            android:background="@drawable/delete" />
 
         <LinearLayout
             android:layout_width="@dimen/dp_150"
@@ -32,35 +31,35 @@
             android:orientation="horizontal">
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/tv_near"
                 style="@style/tv_normal_ellipsize"
-                android:padding="@dimen/dp_4"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="附近"
-                android:textSize="@dimen/sp_14"
                 android:background="@drawable/selector_change_near_bg"
-                android:textColor="@color/selector_change_organization_text" />
+                android:gravity="center"
+                android:padding="@dimen/dp_4"
+                android:text="附近"
+                android:textColor="@color/selector_change_organization_text"
+                android:textSize="@dimen/sp_14" />
 
             <TextView
-                android:gravity="center"
-                android:textSize="@dimen/sp_14"
                 android:id="@+id/tv_root"
                 style="@style/tv_normal_ellipsize"
-                android:padding="@dimen/dp_4"
-                android:text="地球村"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/selector_change_root_bg"
-                android:textColor="@color/selector_change_organization_text" />
+                android:gravity="center"
+                android:padding="@dimen/dp_4"
+                android:text="地球村"
+                android:textColor="@color/selector_change_organization_text"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
     </RelativeLayout>
 
-    <View style="@style/line_gray"
-        android:layout_marginTop="@dimen/dp_10"
-        />
+    <View
+        style="@style/line_gray"
+        android:layout_marginTop="@dimen/dp_10" />
 
     <RelativeLayout
         android:layout_width="match_parent"

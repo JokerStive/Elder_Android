@@ -36,7 +36,7 @@
                 <lilun.com.pensionlife.widget.slider.BannerPager
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="218dp" />
+                    android:layout_height="@dimen/dp_218" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                             app:dividerWidth="3dp"
                             app:starCount="5"
                             app:countSelected="0"
-                            app:widthAndHeight="13dp" />
+                            app:widthAndHeight="@dimen/dp_13" />
 
                         <TextView
                             android:layout_gravity="center_vertical"

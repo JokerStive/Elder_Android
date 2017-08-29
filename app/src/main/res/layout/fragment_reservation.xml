@@ -87,7 +87,7 @@
 
             <View
                 style="@style/line_gray"
-                android:layout_height="10dp"
+                android:layout_height="@dimen/dp_10"
                 android:background="#f5f5f9" />
 
             <TextView
@@ -103,7 +103,7 @@
 
             <View
                 style="@style/line_gray"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp_1"
                 android:background="#f5f5f9" />
 
             <RelativeLayout
@@ -137,7 +137,7 @@
 
                 <View
                     style="@style/line_gray"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/dp_1"
                     android:layout_below="@id/name"
                     android:background="#f5f5f9" />
 
@@ -175,7 +175,7 @@
 
                 <View
                     style="@style/line_gray"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/dp_1"
                     android:layout_below="@id/mobile"
                     android:background="#f5f5f9" />
 
@@ -222,7 +222,7 @@
             <View
 
                 style="@style/line_gray"
-                android:layout_height="10dp"
+                android:layout_height="@dimen/dp_10"
                 android:background="#f5f5f9" />
 
             <include
@@ -232,7 +232,7 @@
 
             <View
                 style="@style/line_gray"
-                android:layout_height="17dp"
+                android:layout_height="@dimen/sp_17"
                 android:background="#f5f5f9" />
 
 
@@ -268,7 +268,7 @@
 
                 <View
                     style="@style/line_gray"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/dp_1"
                     android:layout_below="@id/time"
                     android:background="#f5f5f9" />
 
@@ -342,15 +342,15 @@
             android:layout_weight="1"
             android:background="#fafafa"
             android:gravity="center"
-            android:paddingBottom="16dp"
-            android:paddingTop="19dp"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_19"
             android:textColor="#a9a9a9"
             android:textSize="@dimen/sp_17"
             tools:text="价格：998.00" />
 
         <View
             style="@style/line_gray"
-            android:layout_width="1dp"
+            android:layout_width="@dimen/dp_1"
             android:layout_height="match_parent"
             android:background="#f5f5f9" />
 

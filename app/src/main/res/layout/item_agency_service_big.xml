@@ -66,7 +66,7 @@
                 app:dividerWidth="3dp"
                 app:starCount="5"
                 app:countSelected="0"
-                app:widthAndHeight="13dp" />
+                app:widthAndHeight="@dimen/dp_13" />
 
             <TextView
                 android:id="@+id/tv_score"

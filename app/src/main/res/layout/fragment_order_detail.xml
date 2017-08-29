@@ -25,8 +25,8 @@
         android:layout_marginRight="@dimen/dp_30"
         android:layout_marginTop="@dimen/dp_10"
         android:gravity="center"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp"
+        android:paddingBottom="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_15"
         android:text="取消预约"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_16"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_cancel_order"
         android:layout_below="@id/titleBar"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="@dimen/dp_10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,10 +57,10 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="18dp">
+                android:paddingBottom="@dimen/dp_15"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:paddingTop="@dimen/sp_18">
 
 
                 <TextView
@@ -73,7 +73,7 @@
                 <TextView
                     android:id="@+id/tv_order_create_time"
                     style="@style/tv_normal"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_15"
                     tools:text="预约时间: 2017-03-28 20:11:43" />
@@ -81,7 +81,7 @@
                 <TextView
                     android:id="@+id/tv_order_reservation_time"
                     style="@style/tv_normal"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_15"
                     tools:text="服务时间: 2017-04-12 13:48:46" />
@@ -91,19 +91,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="@dimen/dp_13"
                 android:background="#ffffff"
                 android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16">
 
                 <TextView
                     android:id="@+id/tv_contact_mobile"
                     style="@style/tv_normal"
                     android:drawableLeft="@drawable/order_detail_mobile"
-                    android:drawablePadding="10dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:textSize="@dimen/sp_14"
                     tools:text="手机号:18723078926" />
 
@@ -115,9 +115,9 @@
                     android:id="@+id/tv_contact_name"
                     style="@style/tv_normal"
                     android:drawableLeft="@drawable/order_detail_name"
-                    android:drawablePadding="10dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:textColor="#474747"
                     android:textSize="@dimen/sp_14"
                     tools:text="联系人:黄小希" />
@@ -131,9 +131,9 @@
                     android:id="@+id/tv_contact_address"
                     style="@style/tv_normal"
                     android:drawableLeft="@drawable/order_detail_position"
-                    android:drawablePadding="10dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:textColor="#a8a8a8"
                     android:textSize="@dimen/sp_14"
                     tools:text="重庆市-重庆市-北碚区-光荣村50号-光光荣村 小区" />
@@ -144,7 +144,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/dp_16"
                 android:background="#ffffff"
                 android:orientation="vertical">
 
@@ -156,11 +156,11 @@
                     android:drawablePadding="@dimen/dp_5"
                     android:drawableRight="@drawable/add_contact_next"
                     android:gravity="center_vertical"
-                    android:paddingBottom="14dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="14dp"
-                    android:textSize="@dimen/dp_13"
+                    android:paddingBottom="@dimen/dp_14"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:paddingTop="@dimen/dp_14"
+                    android:textSize="@dimen/sp_13"
                     tools:text="合展天池老年护养中心" />
 
                 <RelativeLayout
@@ -168,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#f9f9f9"
-                    android:padding="10dp">
+                    android:padding="@dimen/dp_10">
 
 
                     <ImageView
@@ -207,7 +207,7 @@
                         style="@style/tv_small"
                         android:layout_above="@id/tv_product_area"
                         android:layout_alignLeft="@id/tv_product_area"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="@dimen/dp_20"
                         android:maxLines="1"
                         android:textSize="@dimen/sp_14"
                         tools:text="营养师制定科" />
@@ -226,9 +226,9 @@
 
                 <TextView
                     style="@style/tv_normal"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:text="数量"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
@@ -237,10 +237,10 @@
                     android:id="@+id/tv_order_count"
                     style="@style/tv_normal"
                     android:layout_alignParentRight="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:text="1"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
@@ -249,7 +249,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_order_count"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:background="#dedede" />
 
             </RelativeLayout>
@@ -263,9 +263,9 @@
 
                 <TextView
                     style="@style/tv_normal"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:text="总价"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
@@ -274,10 +274,10 @@
                     android:id="@+id/tv_order_total_price"
                     style="@style/tv_normal"
                     android:layout_alignParentRight="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14"
                     tools:text="￥0.00" />
@@ -286,7 +286,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_order_total_price"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:background="#dedede" />
 
             </RelativeLayout>
@@ -300,9 +300,9 @@
 
                 <TextView
                     style="@style/tv_normal"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:text="应付金额"
                     android:textColor="#333333"
                     android:textSize="@dimen/sp_14" />
@@ -311,10 +311,10 @@
                     android:id="@+id/tv_order_price"
                     style="@style/tv_normal"
                     android:layout_alignParentRight="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:paddingBottom="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
                     android:textColor="#FE620F"
                     android:textSize="@dimen/sp_14"
                     tools:text="￥0.00" />
@@ -323,7 +323,7 @@
                 <View
                     style="@style/line_gray"
                     android:layout_below="@id/tv_order_price"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:background="#dedede" />
 
             </RelativeLayout>

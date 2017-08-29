@@ -89,7 +89,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         titleBar.setVisibility(View.GONE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, UIUtils.dp2px(App.context, 10), App.context.getResources().getColor(R.color.gray)));
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, UIUtils.dp2px(App.context, App.context.getResources().getDimension(R.dimen.dp_10)), App.context.getResources().getColor(R.color.gray)));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {

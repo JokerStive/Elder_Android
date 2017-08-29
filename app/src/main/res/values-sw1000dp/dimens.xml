@@ -1,4 +1,6 @@
 <resources>
+
+    //超大手机 1080*1920 42寸 密度：52.4,3dp =1px . 所有的数据放大4倍
     <!-- Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
@@ -48,6 +50,9 @@
     <dimen name="dp_22">66dp</dimen>
     <dimen name="dp_36">108dp</dimen>
     <dimen name="dp_4">12dp</dimen>
+    <dimen name="dp_1">3dp</dimen>
+    <dimen name="dp_2">6dp</dimen>
+    <dimen name="dp_6">18dp</dimen>
     <dimen name="dp_40">120dp</dimen>
     <dimen name="dp_60">180dp</dimen>
     <dimen name="dp_72">216dp</dimen>
@@ -55,6 +60,9 @@
 
     <dimen name="sp_12">36sp</dimen>
     <dimen name="sp_14">42sp</dimen>
+    <dimen name="sp_15">45sp</dimen>
+
+
     <dimen name="sp_16">48sp</dimen>
     <dimen name="sp_18">54sp</dimen>
     <dimen name="sp_24">72sp</dimen>
@@ -127,9 +135,17 @@
     <dimen name="dp_80">240dp</dimen>
     <dimen name="dp_220">660dp</dimen>
     <dimen name="dp_27">81dp</dimen>
+    <dimen name="dp_15">45dp</dimen>
     <dimen name="dp_300">900dp</dimen>
     <dimen name="sp_48">144sp</dimen>
     <dimen name="add_photo_item_WH">195dp</dimen>
     <dimen name="dp_13">39dp</dimen>
+    <dimen name="sp_17">17sp</dimen>
     <dimen name="dp_5">15dp</dimen>
+    <dimen name="dp_19">57dp</dimen>
+    <dimen name="dp_97">291dp</dimen>
+    <dimen name="sp_13">39sp</dimen>
+    <dimen name="dp_84">252dp</dimen>
+    <dimen name="dp_151">453dp</dimen>
+    <dimen name="dp_218">654dp</dimen>
 </resources>

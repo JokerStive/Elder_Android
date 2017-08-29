@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.UIUtils;
 
@@ -76,7 +77,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
         ids.add(id);
 
         int crumbCount = crumbContainer.getChildCount();
-        int margin = UIUtils.dp2px(content, 10);
+        int margin = UIUtils.dp2px(content, App.context.getResources().getDimension(R.dimen.dp_10));
 
         TextView crumbView = new TextView(content);
         crumbView.setTextColor(Color.WHITE);
@@ -90,7 +91,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
             params.setMargins(0, margin, 0, margin);
         } else {
             crumbView.setBackgroundResource(R.drawable.crumbs);
-            params.setMargins(UIUtils.dp2px(content, 5), margin, 0, margin);
+            params.setMargins(UIUtils.dp2px(content,  App.context.getResources().getDimension(R.dimen.dp_5)), margin, 0, margin);
         }
         crumbView.setLayoutParams(params);
 
