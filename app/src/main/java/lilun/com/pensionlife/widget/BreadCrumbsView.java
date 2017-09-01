@@ -81,7 +81,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
         TextView crumbView = new TextView(content);
         crumbView.setTextColor(Color.WHITE);
-        crumbView.setTextSize(14);
+        crumbView.setTextSize( App.context.getResources().getDimension(R.dimen.sp_14));
         crumbView.setGravity(Gravity.CENTER);
         crumbView.setBackgroundColor(Color.WHITE);
 
