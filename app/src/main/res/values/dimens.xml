@@ -72,5 +72,6 @@
     <dimen name="dp_84">84dp</dimen>
     <dimen name="dp_151">151dp</dimen>
     <dimen name="dp_218">218dp</dimen>
+    <dimen name="dp_146">146dp</dimen>
 
 </resources>

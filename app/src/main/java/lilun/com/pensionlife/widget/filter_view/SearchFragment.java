@@ -84,7 +84,7 @@ public class SearchFragment extends BaseFragment implements View.OnClickListener
         clear.setOnClickListener(this);
         etSearch = (EditText) mRootView.findViewById(R.id.et_search);
         etSearch.setText(oldSerach);
-        if (!TextUtils.isEmpty(oldSerach)){
+        if (!TextUtils.isEmpty(oldSerach)) {
             etSearch.setSelection(oldSerach.length());
         }
         etSearch.requestFocus();
