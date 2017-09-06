@@ -31,6 +31,7 @@ import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.VersionCheck;
@@ -46,6 +47,7 @@ import lilun.com.pensionlife.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pensionlife.ui.help.HelpRootFragment;
 import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
+import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -375,6 +377,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 ActivityCategory activityCategory = new ActivityCategory();
                 activityCategory.setId(activityCatrgoryId);
                 start(ActivityListFragment.newInstance(activityCategory));
+            } else if (topic.contains(mqttTopic.topic_information_edit)) {
+                CacheMsgClassify msgClassify = new CacheMsgClassify();
+                Intent intent = new Intent(_mActivity, CacheInfoListActivity.class);
+                intent.putExtra("title", "社区公告");
+                intent.putExtra("classify", msgClassify.announce);
+                startActivity(intent);
             }
         }
     }

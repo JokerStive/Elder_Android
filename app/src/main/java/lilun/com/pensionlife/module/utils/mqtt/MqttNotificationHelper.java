@@ -101,7 +101,7 @@ public class MqttNotificationHelper {
             String categoryId = activityJson.getString("categoryId");
             String creatorId = activityJson.getString("creatorId");
             String category = categoryId.substring(categoryId.lastIndexOf(".") + 1);
-            if (!TextUtils.isEmpty(categoryId)  && !TextUtils.equals(creatorId,User.getUserId()) && !TextUtils.isEmpty(category) && isMsgICache(category)) {
+            if (!TextUtils.isEmpty(categoryId) && !TextUtils.equals(creatorId, User.getUserId()) && !TextUtils.isEmpty(category) && isMsgICache(category)) {
                 classify = msgClassify.activity;
                 title = "活动";
                 String activityTitle = activityJson.getString("title");
@@ -180,8 +180,8 @@ public class MqttNotificationHelper {
                     .setContentText(content);
 
             //点击通知栏后的操作
-            MqttNotificationExtra extra = new MqttNotificationExtra();
             Intent intent = new Intent(App.context, MqttNotificationReceiver.class);
+            MqttNotificationExtra extra = new MqttNotificationExtra();
             extra.setTopic(topic);
 
             //活动需要跳转活动列表，需要携带categoryId
@@ -195,7 +195,7 @@ public class MqttNotificationHelper {
             Bundle bundle = new Bundle();
             bundle.putSerializable("extra", extra);
             intent.putExtras(bundle);
-            PendingIntent pIntent = PendingIntent.getBroadcast(App.context, 0, intent, 0);
+            PendingIntent pIntent = PendingIntent.getBroadcast(App.context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
             builder.setContentIntent(pIntent);
 
 
