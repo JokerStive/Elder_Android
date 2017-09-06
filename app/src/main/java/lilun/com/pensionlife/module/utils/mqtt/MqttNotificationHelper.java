@@ -99,8 +99,9 @@ public class MqttNotificationHelper {
         if (mqttTopic.isTopicBelongCurrentOrganizationLevel(topic) && isMsgICache(InfoSettingFilter.activity) && topic.contains(topic_activity)) {
             JSONObject activityJson = jsonObject.getJSONObject("data");
             String categoryId = activityJson.getString("categoryId");
+            String creatorId = activityJson.getString("creatorId");
             String category = categoryId.substring(categoryId.lastIndexOf(".") + 1);
-            if (!TextUtils.isEmpty(category) && isMsgICache(category)) {
+            if (!TextUtils.isEmpty(categoryId)  && !TextUtils.equals(creatorId,User.getUserId()) && !TextUtils.isEmpty(category) && isMsgICache(category)) {
                 classify = msgClassify.activity;
                 title = "活动";
                 String activityTitle = activityJson.getString("title");

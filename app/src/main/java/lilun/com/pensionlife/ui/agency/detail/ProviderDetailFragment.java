@@ -141,7 +141,7 @@ public class ProviderDetailFragment extends BaseFragment {
         changeLayoutTextViews.add(tvProviderAttention);
 
         rvAllProduct.setLayoutManager(new GridLayoutManager(App.context, 2));
-        rvAllProduct.addItemDecoration(new ElderModuleClassifyDecoration((int) App.context.getResources().getDimension(R.dimen.dp_10)));
+        rvAllProduct.addItemDecoration(new ElderModuleClassifyDecoration(10));
     }
 
 

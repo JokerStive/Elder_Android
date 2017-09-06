@@ -220,7 +220,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationRanks/count")
-    Observable<Response<Count>> getRanksCount(@Query("filter") String filter);
+    Observable<Response<Count>> getRanksCount(@Query("where") String filter);
 
     /**
      * 获取某个订单

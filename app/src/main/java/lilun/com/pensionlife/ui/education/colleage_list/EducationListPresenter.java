@@ -20,19 +20,19 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class EducationListPresenter extends RxPresenter<EducationListContract.View> implements EducationListContract.Presenter {
 
     @Override
-    public void getColleage(String filter, int skip) {
+    public void getOrganizationEdu(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
                 .getOrganizationsEdus(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<ElderEdusColleage>>() {
                     @Override
-                    public void _next(List<ElderEdusColleage> colleages) {
+                    public void _next(List<ElderEdusColleage> educations) {
                         view.completeRefresh();
                         if (skip == 0)
-                            view.showEdusList(colleages, false);
+                            view.showOrganizationEdu(educations, false);
                         else
-                            view.showEdusList(colleages, true);
+                            view.showOrganizationEdu(educations, true);
                     }
 
                     @Override

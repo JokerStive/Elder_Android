@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.numberKeyBoard.KeyboardUtil;
 import lilun.com.pensionlife.widget.numberKeyBoard.MyKeyBoardView;
@@ -123,11 +122,15 @@ public class FilterPriceView extends LinearLayout {
         String max = etMax.getText().toString();
         intMax = null;
         intMin = null;
-        if (!TextUtils.isEmpty(min) && Preconditions.isNumeric(min)) {
-            intMin = Integer.parseInt(min);
+//        if (!TextUtils.isEmpty(min) && RegexUtils.checkDecimals(min)) {
+//            intMin = (int)Float.parseFloat(min);
+//        }
+//
+        if (!TextUtils.isEmpty(min)) {
+            intMin = (int) Float.parseFloat(min);
         }
-        if (!TextUtils.isEmpty(max) && Preconditions.isNumeric(max)) {
-            intMax = Integer.parseInt(max);
+        if (!TextUtils.isEmpty(max)) {
+            intMax = (int) Float.parseFloat(max);
         }
 
         if (listener != null && (intMin != null || intMax != null)) {
@@ -154,7 +157,7 @@ public class FilterPriceView extends LinearLayout {
             range.clear();
 
         } else {
-           hintKeyBoard();
+            hintKeyBoard();
             clear(true);
         }
 

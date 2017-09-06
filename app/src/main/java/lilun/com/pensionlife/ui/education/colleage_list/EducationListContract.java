@@ -16,13 +16,13 @@ import lilun.com.pensionlife.module.bean.ElderEdusColleage;
  */
 public interface EducationListContract {
     interface View extends IView<Presenter> {
-        void showEdusList(List<ElderEdusColleage> orders, boolean isLoadMore);
+        void showOrganizationEdu(List<ElderEdusColleage> orders, boolean isLoadMore);
 
         void completeRefresh();
     }
 
     interface Presenter extends IPresenter<View> {
-        void getColleage(String filter, int skip);
+        void getOrganizationEdu(String filter, int skip);
         List<List<ConditionOption>> getConditionOptionsList();
     }
 }

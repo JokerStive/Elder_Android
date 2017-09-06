@@ -187,12 +187,12 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
             filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": true},\"name\":{\"like\":\"" + searchStr + "\"}, \"visible\":0}}";
         else if (mElderModule.getName().equals(getString(R.string.net_university)))
             filter = "{\"include\":\"contact\",\"where\":{\"location\":{\"exists\": false},\"name\":{\"like\":\"" + searchStr + "\"}, \"visible\":0}}";
-        mPresenter.getColleage(filter, skip);
+        mPresenter.getOrganizationEdu(filter, skip);
     }
 
 
     @Override
-    public void showEdusList(List<ElderEdusColleage> elderEdusList, boolean isLoadMore) {
+    public void showOrganizationEdu(List<ElderEdusColleage> elderEdusList, boolean isLoadMore) {
 
         skip += elderEdusList.size();
         if (skip == 0) {
