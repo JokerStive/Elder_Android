@@ -282,7 +282,6 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mRecyclerView.setAdapter(mContentAdapter);
 
         mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mContentAdapter.setEnableLoadMore(true);
         mContentAdapter.setOnLoadMoreListener(() -> {
             Logger.d("加载更多");
             getAboutMe(skip);

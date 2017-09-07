@@ -46,11 +46,16 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
     }
 
     public void replaceAll(List<T> elements) {
-        if (getData().size() > 0) {
-            getData().clear();
-        }
-        getData().addAll(elements);
-        notifyDataSetChanged();
+        setNewData(elements);
+//        if (getData().size() > 0) {
+//            getData().clear();
+//        }
+//        getData().addAll(elements);
+//        notifyDataSetChanged();
+//
+//        if (isLoadMoreEnable() && loadMoreEnd();){
+//
+//        }
     }
 
     public void addAll(List<T> elements) {
@@ -67,26 +72,25 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
         if (isLoadMoreEnable()) {
             loadMoreComplete();
         }
-        setIsLoadMoreEnd(elements,defDataCount);
+        setIsLoadMoreEnd(elements, defDataCount);
     }
 
     /**
-    *@param isDefDataCount 每次加载更多是否是默认的数据量
-    */
+     * @param isDefDataCount 每次加载更多是否是默认的数据量
+     */
     public void addAll(List<T> elements, boolean isDefDataCount) {
         getData().addAll(elements);
         notifyDataSetChanged();
         if (isLoadMoreEnable()) {
             loadMoreComplete();
         }
-        if (isDefDataCount){
+        if (isDefDataCount) {
             setIsLoadMoreEnd(elements, Config.defLoadDatCount);
         }
     }
 
     private void setIsLoadMoreEnd(List<T> elements, int defCount) {
         if (elements.size() < defCount) {
-            setEnableLoadMore(false);
             loadMoreEnd();
         }
     }

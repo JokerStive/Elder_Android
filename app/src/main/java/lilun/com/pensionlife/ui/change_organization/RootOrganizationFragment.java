@@ -80,7 +80,6 @@ public class RootOrganizationFragment extends BaseFragment<ChangeOrganizationCon
         recyclerView.addItemDecoration(new ElderModuleClassifyDecoration(10));
 
         adapter = new ChangeOrganizationAdapter(new ArrayList<>());
-        adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(() -> getData(adapter.getItemCount(), false), recyclerView);
         adapter.setOnItemClickListener((baseQuickAdapter, view, position) -> {
             Organization organization = adapter.getData().get(position);

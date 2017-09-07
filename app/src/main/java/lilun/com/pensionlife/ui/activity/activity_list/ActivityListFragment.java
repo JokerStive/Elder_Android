@@ -180,7 +180,6 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private void setRecyclerAdapter(List<OrganizationActivity> activities) {
         mActivityAdapter = getAdapterFromLayoutType(activities);
         mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mActivityAdapter.setEnableLoadMore(true);
         mActivityAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {

@@ -294,11 +294,6 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
         } else {
             mAgencyServiceAdapter.replaceAll(products);
         }
-
-        if (products.size() < Config.defLoadDatCount) {
-            mAgencyServiceAdapter.setEnableLoadMore(false);
-            mAgencyServiceAdapter.loadMoreEnd();
-        }
     }
 
     @Override
