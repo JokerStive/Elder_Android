@@ -227,9 +227,17 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         String max = StringUtils.get_StringNum(maxPartner);
         Integer maxPart = null;
         if (!TextUtils.isEmpty(max)) {
-            maxPart = Integer.parseInt(maxPartner);
+            try {
+                maxPart = Integer.parseInt(maxPartner);
+            } catch (Exception e) {
+                maxPart = 9999;
+            }
         } else maxPart = 0;
-
+        if (maxPart > 9999) {
+            ToastHelper.get().showWareShort(getString(R.string.act_max_partner));
+            inputMaxPartner.setInput(9999 + "");
+            return;
+        }
         OrganizationActivity activity = new OrganizationActivity();
         activity.setCategoryId(mCategoryId);
         activity.setTitle(title);
@@ -334,17 +342,17 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     private void chooseTime() {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.HOUR_24);
         if (App.widthDP > 820) {
-            picker.setTextSize(12 *2);
-            picker.setCancelTextSize(12 *2);
-            picker.setSubmitTextSize(12 *2);
-            picker.setTopPadding(15*3);
-            picker.setTopHeight(40*2);
+            picker.setTextSize(12 * 2);
+            picker.setCancelTextSize(12 * 2);
+            picker.setSubmitTextSize(12 * 2);
+            picker.setTopPadding(15 * 3);
+            picker.setTopHeight(40 * 2);
         }
         picker.setRange(2010, 2099);
 
 
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
-         //   int year = Calendar.getInstance().get(Calendar.YEAR);
+            //   int year = Calendar.getInstance().get(Calendar.YEAR);
             String time = year + "-" + month + "-" + day + " " + hour + ":" + minute;
             if (chooseTime == 0) {
 //                if (etStartTime.getVisibility() == ViewStep2.VISIBLE) {
