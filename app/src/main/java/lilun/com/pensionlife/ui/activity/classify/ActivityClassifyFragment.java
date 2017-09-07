@@ -6,12 +6,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
@@ -26,7 +24,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
@@ -354,21 +351,16 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
             mContentAdapter.addAll(activities,Config.defLoadDatCount);
         }
         mContentAdapter.notityUnReadAll();
-//        mContentAdapter.notifyDataChangedAfterLoadMore(true);
         if (activities.size()<Config.defLoadDatCount){
 //            mContentAdapter.setEnableLoadMore(false);
-            TextView nodata = new TextView(getContext());
-            nodata.setText("-没有更多数据-");
-            nodata.setGravity(Gravity.CENTER);
-            if (App.widthDP > 820)
-                nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
-            mContentAdapter.addFooterView(nodata);
+//            TextView nodata = new TextView(getContext());
+//            nodata.setText("-没有更多数据-");
+//            nodata.setGravity(Gravity.CENTER);
+//            if (App.widthDP > 820)
+//                nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
+//            mContentAdapter.addFooterView(nodata);
         }
 
-//        if (activities.size() < mContentAdapter.getPageSize()) {
-//            mContentAdapter.notifyDataChangedAfterLoadMore(false);
-//
-//        }
     }
 
     @Override

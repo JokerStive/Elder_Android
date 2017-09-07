@@ -6,11 +6,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.vanzh.library.utils.Lists;
@@ -337,14 +335,14 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 //        mActivityAdapter.notifyDataChangedAfterLoadMore(true);//取消正在加载并设置加载更多
 
         //获取的数据比请求数据少，说明没有更多数据
-        if (activities.size() < Config.defLoadDatCount) {
-            TextView nodata = new TextView(getContext());
-            nodata.setText("-没有更多数据-");
-            nodata.setGravity(Gravity.CENTER);
-            if (App.widthDP > 820)
-                nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
-            mActivityAdapter.addFooterView(nodata);
-        }
+//        if (activities.size() < Config.defLoadDatCount) {
+//            TextView nodata = new TextView(getContext());
+//            nodata.setText("-没有更多数据-");
+//            nodata.setGravity(Gravity.CENTER);
+//            if (App.widthDP > 820)
+//                nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
+//            mActivityAdapter.addFooterView(nodata);
+//        }
 
     }
 
