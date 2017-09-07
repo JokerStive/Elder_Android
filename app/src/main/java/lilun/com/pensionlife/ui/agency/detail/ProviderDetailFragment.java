@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -218,18 +219,16 @@ public class ProviderDetailFragment extends BaseFragment {
 
 
     private void showAllProduct(List<OrganizationProduct> products, boolean isLoadMore) {
-        if (!isLoadMore) {
+        if (adapter == null) {
             adapter = new AllProductAdapter(products);
-            adapter.openLoadMore(50, true);
+            adapter.setOnLoadMoreListener(() -> getAllProduct(adapter.getItemCount()), rvAllProduct);
             adapter.setOnItemClickListener(product -> start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK));
             rvAllProduct.setAdapter(adapter);
 
+        } else if (isLoadMore) {
+            adapter.addAll(products,Config.defLoadDatCount);
         } else {
             adapter.replaceAll(products);
-        }
-        adapter.notifyDataChangedAfterLoadMore(true);
-        if (products.size() < adapter.getPageSize()) {
-            adapter.notifyDataChangedAfterLoadMore(false);
         }
     }
 

@@ -45,7 +45,6 @@ public class RankListFragment extends BaseFragment<RankListContract.Presenter> i
     SwipeRefreshLayout swipeLayout;
 
 
-
     private RankAdapter mRankAdapter;
     private String whatModule;
     private String whatId;
@@ -101,8 +100,6 @@ public class RankListFragment extends BaseFragment<RankListContract.Presenter> i
         );
 
 
-
-
     }
 
     @Override
@@ -126,18 +123,16 @@ public class RankListFragment extends BaseFragment<RankListContract.Presenter> i
                 ranks = new ArrayList<>();
             }
             mRankAdapter = new RankAdapter(ranks);
-            rvRank.setAdapter(mRankAdapter);
             mRankAdapter.setOnLoadMoreListener(() -> {
-                //TODO load_more
-            });
+                getReplies(mRankAdapter.getItemCount());
+            }, rvRank);
+            rvRank.setAdapter(mRankAdapter);
         } else if (isLoadMore) {
-            mRankAdapter.addAll(ranks);
+            mRankAdapter.addAll(ranks, true);
         } else {
             mRankAdapter.replaceAll(ranks);
         }
     }
-
-
 
 
     @Override

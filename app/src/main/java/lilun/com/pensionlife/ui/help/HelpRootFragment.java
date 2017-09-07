@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.help;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -31,7 +34,7 @@ import lilun.com.pensionlife.ui.help.help_detail.HelpDetailFragment;
 import lilun.com.pensionlife.ui.help.list.HelpContract;
 import lilun.com.pensionlife.ui.help.list.HelpFragment;
 import lilun.com.pensionlife.ui.help.list.HelpPresenter;
-import lilun.com.pensionlife.widget.NormalItemDecoration;
+import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
 
 /**
@@ -100,7 +103,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.neighbor_help));
         titleBar.setTvRightText("关于我的");
-      //  titleBar.setFragment(this);
+        //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -122,7 +125,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         tvNeedHelp.setOnClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(10));
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
         mSwipeLayout.setOnRefreshListener(this::refreshData);
 
     }
@@ -148,7 +151,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
 
     private void getHelps(int skip) {
-        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"organizationId\":\"" + User.getCurrentOrganizationId() +"/#aid"+"\"}}";
+        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"organizationId\":\"" + User.getCurrentOrganizationId() + "/#aid" + "\"}}";
         mPresenter.getHelps(filter, skip);
     }
 
@@ -158,11 +161,14 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         completeRefresh();
         if (adapter == null) {
             adapter = new CycleAidAdapter(helps);
-            mRecyclerView.setAdapter(adapter);
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            adapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
                 OrganizationAid aid = helps.get(i);
                 start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
             });
+            adapter.setOnLoadMoreListener(() -> getHelps(adapter.getItemCount()), mRecyclerView);
+            mRecyclerView.setAdapter(adapter);
+        } else if (isLoadMore) {
+            adapter.addAll(helps, Config.defLoadDatCount);
         } else {
             adapter.replaceAll(helps);
         }

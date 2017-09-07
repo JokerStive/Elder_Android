@@ -40,6 +40,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -287,9 +288,10 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                     inputSendPopupWindow.showAtLocation(rvQuestionList, Gravity.BOTTOM, 0, 0);
                 }
             });
+            nestedReplyAdapter.setOnLoadMoreListener(() -> mPresenter.replyList(mActivityId, "", nestedReplyAdapter.getItemCount()), rvPartnerList);
             rvQuestionList.setAdapter(nestedReplyAdapter);
         } else if (isLoadMore) {
-            nestedReplyAdapter.addAll(nestedReplies);
+            nestedReplyAdapter.addAll(nestedReplies, Config.defLoadDatCount);
         } else {
             if (nestedReplies.size() >= 3) {
                 nestedReplyAdapter.replaceAll(nestedReplies.subList(0, 3));

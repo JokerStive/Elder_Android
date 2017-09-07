@@ -1,19 +1,19 @@
 package lilun.com.pensionlife.ui.health.list;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.HealthServiceAdapter;
@@ -21,7 +21,7 @@ import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.health.detail.InfoDetailFragment;
-import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
+import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -48,7 +48,6 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
     private HealthServiceAdapter mAdapter;
     private ElderModule mClassify;
-    private int skip = 0;
 
     public static HealthListFragment newInstance(ElderModule classify) {
         HealthListFragment fragment = new HealthListFragment();
@@ -81,19 +80,17 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         titleBar.setTitle(mClassify.getName());
         titleBar.setOnBackClickListener(() -> pop());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
-
-        mSwipeLayout.setOnRefreshListener(() -> refreshData());
-        refreshData();
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
+        mSwipeLayout.setOnRefreshListener(() -> getData(0));
+        getData(0);
     }
 
-    private void refreshData() {
-        mSwipeLayout.setRefreshing(true);
-        skip = 0;
+    private void getData(int skip) {
+        mSwipeLayout.setRefreshing(skip == 0);
         String filter;
         String parent = mClassify.getParent();
         String name = mClassify.getName();
-        String parentIdFilter = spliceParentId(parent+"/"+name);
+        String parentIdFilter = spliceParentId(parent + "/" + name);
         filter = "{\"order\":\"createdAt DESC\",\"where\":{\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
 //        filter = "{\"where\":{\"order\":\"createdAt DESC\",\"visible\":0,\"isCat\":false,\"parentId\":{\"inq\":" + parentIdFilter + "}}}";
         mPresenter.getDataList(filter, skip);
@@ -101,7 +98,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
 
     private String spliceParentId(String name) {
-        int startIndex=3;
+        int startIndex = 3;
         String result = "[";
         String currentOrganizationId = User.getCurrentOrganizationId();
         String[] split = currentOrganizationId.split("/");
@@ -112,9 +109,9 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
                 parentId += "/" + split[j];
             }
             if (i == startIndex) {
-                result += "\"" + parentId + "/#information/" +name + "\"";
+                result += "\"" + parentId + "/#information/" + name + "\"";
             } else {
-                result += "," + "\"" + parentId + "/#information/" +name+ "\"";
+                result += "," + "\"" + parentId + "/#information/" + name + "\"";
             }
         }
         result += "]";
@@ -123,22 +120,17 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
 
     @Override
     public void showDataList(List<Information> list, boolean isLoadMore) {
-        skip += list.size();
-
         if (mAdapter == null) {
             mAdapter = new HealthServiceAdapter(this, list);
-            mAdapter.setEmptyView();
-            mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                @Override
-                public void onItemClick(View view, int i) {
-                    Information information = mAdapter.getData().get(i);
-                    start(InfoDetailFragment.newInstance(information));
-                }
+            mAdapter.setOnItemClickListener((adapter, view, i) -> {
+                Information information = mAdapter.getData().get(i);
+                start(InfoDetailFragment.newInstance(information));
             });
+            mAdapter.setOnLoadMoreListener(() -> getData(mAdapter.getItemCount()), mRecyclerView);
             mRecyclerView.setAdapter(mAdapter);
 
         } else if (isLoadMore) {
-            mAdapter.addAll(list);
+            mAdapter.addAll(list, Config.defLoadDatCount);
         } else
             mAdapter.replaceAll(list);
     }

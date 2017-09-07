@@ -161,15 +161,19 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
     @Override
     protected void initView(LayoutInflater inflater) {
         etSearchName.setOnKeyListener(editOnKeyListener);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new DividerDecoration(getContext(), LinearLayoutManager.VERTICAL, 1, ContextCompat.getColor(getContext(), R.color.help)));
+        mRecyclerView.setAdapter(partnersAdapter);
+
         partnersAdapter = new PartnersAdapter(new ArrayList<>());
         partnersAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        partnersAdapter.openLoadMore(Config.defLoadDatCount, true);
         partnersAdapter.setOnLoadMoreListener(() -> {
             mPresenter.queryPartners(activity.getId(), getFilterIdName(), skip);
-        });
-        partnersAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        }, mRecyclerView);
+        partnersAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int i) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int i) {
                 if (mRecyclerView.isSelected()) {
                     partnersAdapter.dealSelectedStatus(i);
                     partnersAdapter.notifyItemChanged(i);
@@ -285,9 +289,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         ImageLoaderUtil.instance().loadImage(
                 IconUrl.moduleIconUrl(IconUrl.Accounts, activity.getMasterId(), null),
                 R.drawable.icon_def, masterIcon);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(getContext(), LinearLayoutManager.VERTICAL, 1, ContextCompat.getColor(getContext(), R.color.help)));
-        mRecyclerView.setAdapter(partnersAdapter);
+
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -331,15 +333,12 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         if (isFirstLoad) {
             partnersAdapter.replaceAll(accounts);
         } else {
-            partnersAdapter.addAll(accounts);
+            partnersAdapter.addAll(accounts, Config.defLoadDatCount);
         }
-        partnersAdapter.notifyDataChangedAfterLoadMore(true);
         if (skip == 0) {
             nullData.setVisibility(View.VISIBLE);
         } else {
             nullData.setVisibility(View.GONE);
-            if (accounts.size() < partnersAdapter.getPageSize())
-                partnersAdapter.notifyDataChangedAfterLoadMore(false);
             String tmp = getString(R.string.partner_list) + "(" + (partnersAdapter.getData() == null ? 0 : partnersAdapter.getData().size()) + ")";
             tvParentsNum.setText(tmp);
         }

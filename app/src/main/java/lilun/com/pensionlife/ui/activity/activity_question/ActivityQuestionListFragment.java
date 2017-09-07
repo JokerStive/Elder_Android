@@ -135,6 +135,10 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
             }
         });
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new NormalItemDecoration(5));
+
+
         nestedReplyAdapter = new NestedReplyAdapter(this, new ArrayList<>(), isMaster, mActivity.getCreatorName(), new NestedReplyAdapter.AnswerListener() {
             @Override
             public void OnClickAnswer(NestedReply nestedReply, int position) {
@@ -156,12 +160,11 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
         });
         nestedReplyAdapter.setOnLoadMoreListener(() -> {
             getReplyList(skip);
-        });
-        nestedReplyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        nestedReplyAdapter.openLoadMore(Config.defLoadDatCount, true);
+        },mRecyclerView);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new NormalItemDecoration(5));
+        nestedReplyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+
+
 
 
         mRecyclerView.setAdapter(nestedReplyAdapter);
@@ -245,18 +248,14 @@ public class ActivityQuestionListFragment extends BaseFragment<ActivityQuestionL
         if (nestedReplyAdapter == null) {
 
         } else if (isLoadMore) {
-            nestedReplyAdapter.addAll(nestedReplies);
+            nestedReplyAdapter.addAll(nestedReplies,Config.defLoadDatCount);
         } else {
             nestedReplyAdapter.replaceAll(nestedReplies);
         }
-        nestedReplyAdapter.notifyDataChangedAfterLoadMore(true);
         if (skip == 0) {
             nullData.setVisibility(View.VISIBLE);
         } else {
             nullData.setVisibility(View.GONE);
-            if (nestedReplies.size() < nestedReplyAdapter.getPageSize()) {
-                nestedReplyAdapter.notifyDataChangedAfterLoadMore(false);
-            }
         }
     }
 }

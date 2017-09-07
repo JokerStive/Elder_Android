@@ -45,6 +45,7 @@
     <dimen name="avatarSize">150dp</dimen>
     <dimen name="def_height">150dp</dimen>
     <dimen name="dp_066">1.98dp</dimen>
+    <dimen name="dp_1.5">4.5dp</dimen>
     <dimen name="dp_10">30dp</dimen>
     <dimen name="dp_14">42dp</dimen>
     <dimen name="dp_22">66dp</dimen>

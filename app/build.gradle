@@ -121,7 +121,7 @@ dependencies {
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
     //refresh and loadMore recyclerView
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.8'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.27'
     //图片选择压缩裁剪
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     //时间/地址...选择器

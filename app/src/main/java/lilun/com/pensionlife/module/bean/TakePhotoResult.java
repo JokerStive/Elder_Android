@@ -9,11 +9,12 @@ import com.jph.takephoto.model.TImage;
 *create at 2017/2/27 10:43
 *email : yk_developer@163.com
 */
-public class TakePhotoResult extends MultiItemEntity{
+public class TakePhotoResult implements MultiItemEntity{
     public static  final int TYPE_PHOTO=000;
     public static  final int TYPE_ADD=111;
     private String compressPath;
     private TImage.FromType from;
+    private int itemType;
 
     public TImage.FromType getFrom() {
         return from;
@@ -47,12 +48,18 @@ public class TakePhotoResult extends MultiItemEntity{
     public TakePhotoResult(String originalPath, String compressPath, TImage.FromType from, int type) {
         setOriginalPath(originalPath);
         setCompressPath(compressPath);
-        setItemType(type);
+        this.itemType = type;
+//        setItemType(type);
         setFrom(from);
     }
 
     public static TakePhotoResult of(String originalPath, String compressPath, TImage.FromType from, int type){
         return new TakePhotoResult(originalPath, compressPath,from,type);
+    }
+
+    @Override
+    public int getItemType() {
+        return itemType;
     }
 
 //    public enum FromType {

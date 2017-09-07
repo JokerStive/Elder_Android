@@ -27,13 +27,7 @@ import lilun.com.pensionlife.widget.DividerGridItemDecoration;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
-/**
- * 旅游首页V
- *
- * @author yk
- *         create at 2017/4/13 9:39
- *         email : yk_developer@163.com
- */
+
 public class TourismRootFragment extends BaseFragment<TourismRootContract.Presenter> implements TourismRootContract.View {
 
     @Bind(R.id.titleBar)
@@ -114,7 +108,7 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     @Override
     public void showPopularDestination(List<String> destinations) {
         PopularDestinationAdapter destinationAdapter = new PopularDestinationAdapter(destinations);
-        destinationAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+        destinationAdapter.setOnItemClickListener((baseAdapter,view, i) -> {
             String destination = destinationAdapter.getData().get(i);
             start(TourismListFragment.newInstance(categoryId, null, destination));
         });
@@ -125,18 +119,18 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     public void showPopularJourney(List<Tourism> journeys, boolean isLoadMore) {
         if (adapter == null) {
             adapter = new TourismBigAdapter(journeys);
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
                 Tourism tourism = adapter.getData().get(i);
                 start(TourismDetailFragment.newInstance(tourism));
             });
             adapter.setOnLoadMoreListener(() -> {
                 Logger.d("旅游加载更多");
                 getJourneys(adapter.getItemCount());
-            });
+            },rvPopularJourney);
 
             rvPopularJourney.setAdapter(adapter);
         } else if (isLoadMore) {
-            adapter.addAll(journeys);
+            adapter.addAll(journeys,true);
         } else {
             adapter.replaceAll(journeys);
         }
@@ -148,9 +142,7 @@ public class TourismRootFragment extends BaseFragment<TourismRootContract.Presen
     }
 
 
-    /**
-     * 获取旅游
-     */
+
     private void getJourneys(int skip) {
         String filter = "{\"where\":{\"extend.tag\":\"热门\",\"visible\":0,\"categoryId\":\"" + categoryId + "\"}}";
         mPresenter.getPopularJourneys(filter, skip);

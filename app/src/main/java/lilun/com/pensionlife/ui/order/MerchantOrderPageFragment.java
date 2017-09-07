@@ -162,13 +162,13 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
         if (adapter == null) {
             adapter = new MerchantOrderAdapter(orders);
             adapter.setEmptyView();
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            adapter.setOnItemClickListener((ba,view, i) -> {
                 clickOrder = orders.get(i);
                 openDetail();
             });
             adapter.setOnLoadMoreListener(() -> {
                 getMyOrder(adapter.getItemCount());
-            });
+            },mRecyclerView);
 
             adapter.setOnItemClickListener(new MerchantOrderAdapter.OnItemClickListener() {
 
@@ -186,7 +186,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
             });
             mRecyclerView.setAdapter(adapter);
         } else if (isLoadMore) {
-            adapter.addAll(orders);
+            adapter.addAll(orders,Config.defLoadDatCount);
         } else {
             adapter.replaceAll(orders);
         }

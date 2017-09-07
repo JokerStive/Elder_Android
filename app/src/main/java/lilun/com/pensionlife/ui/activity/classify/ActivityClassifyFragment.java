@@ -259,7 +259,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, true);
-        mContentAdapter.setOnRecyclerViewItemClickListener((view, activityItem) -> {
+        mContentAdapter.setOnItemClickListener((baseQuickAdapter,view, activityItem) -> {
             start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
             mContentAdapter.getData().get(activityItem).setUnRead(0);
             mContentAdapter.notifyItemChanged(activityItem);
@@ -282,14 +282,11 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mRecyclerView.setAdapter(mContentAdapter);
 
         mContentAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
-        mContentAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                Logger.d("加载更多");
-                getAboutMe(skip);
-            }
-        });
+        mContentAdapter.setEnableLoadMore(true);
+        mContentAdapter.setOnLoadMoreListener(() -> {
+            Logger.d("加载更多");
+            getAboutMe(skip);
+        },mRecyclerView);
     }
 
 
@@ -307,7 +304,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         }
         skip = 0;
         if (mContentAdapter != null) {
-            mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
+//            mContentAdapter.openLoadMore(Config.defLoadDatCount, true);
             mContentAdapter.removeAllFooterView();
         }
         getAboutMe(skip);
@@ -355,13 +352,12 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         if (isFirstLoad) {
             mContentAdapter.replaceAll(activities);
         } else {
-            mContentAdapter.addAll(activities);
+            mContentAdapter.addAll(activities,Config.defLoadDatCount);
         }
         mContentAdapter.notityUnReadAll();
-        mContentAdapter.notifyDataChangedAfterLoadMore(true);
-
-        if (activities.size() < mContentAdapter.getPageSize()) {
-            mContentAdapter.notifyDataChangedAfterLoadMore(false);
+//        mContentAdapter.notifyDataChangedAfterLoadMore(true);
+        if (activities.size()<Config.defLoadDatCount){
+//            mContentAdapter.setEnableLoadMore(false);
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
             nodata.setGravity(Gravity.CENTER);
@@ -369,6 +365,11 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
                 nodata.setTextSize(getResources().getDimension(R.dimen.sp_14));
             mContentAdapter.addFooterView(nodata);
         }
+
+//        if (activities.size() < mContentAdapter.getPageSize()) {
+//            mContentAdapter.notifyDataChangedAfterLoadMore(false);
+//
+//        }
     }
 
     @Override

@@ -174,11 +174,11 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     }
 
     private void getHelps(int skip) {
-        mSwipeLayout.setRefreshing(true);
+        mSwipeLayout.setRefreshing(skip == 0);
         helpFilter.setOrganizationId(isMain ? "" : User.getCurrentOrganizationId());
 
         String filter = helpFilter.toString();
-        Logger.d("求助列表 filter--"+filter);
+        Logger.d("求助列表 filter--" + filter);
         if (isMain) {
             mPresenter.getAboutMe(filter, skip);
         } else {
@@ -197,10 +197,11 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
         if (mAidAdapter == null) {
             setRecyclerAdapter(helps);
         } else if (isLoadMore) {
-            mAidAdapter.addAll(helps);
+            mAidAdapter.addAll(helps, Config.defLoadDatCount);
         } else {
             mAidAdapter.replaceAll(helps);
         }
+
     }
 
 
@@ -210,11 +211,12 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             mAidAdapter.setOnItemClickListener((aid) -> {
                 start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
             });
+            mAidAdapter.setOnLoadMoreListener(() -> getHelps(mAidAdapter.getItemCount()), mRecyclerView);
             mAidAdapter.setEmptyView();
+            mRecyclerView.setAdapter(mAidAdapter);
         }
 
 
-        mRecyclerView.setAdapter(mAidAdapter);
     }
 
     private OrganizationAidAdapter getAdapterFromLayoutType(List<OrganizationAid> helps) {
@@ -228,7 +230,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
             layoutId = R.layout.item_aid_null;
         }
         adapter = new OrganizationAidAdapter(helps, layoutId, layoutType);
-        adapter.setOnLoadMoreListener(() -> getHelps(adapter.getItemCount()));
+//        adapter.setOnLoadMoreListener(() -> getHelps(adapter.getItemCount()));
         return adapter;
     }
 

@@ -150,11 +150,10 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (mActivityAdapter != null) {
-                    if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                         mActivityAdapter.setmScrollIdle(true);
                         mActivityAdapter.notifyDataChanged();
-                    }
-                    else
+                    } else
                         mActivityAdapter.setmScrollIdle(false);
                 }
                 super.onScrollStateChanged(recyclerView, newState);
@@ -181,16 +180,16 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private void setRecyclerAdapter(List<OrganizationActivity> activities) {
         mActivityAdapter = getAdapterFromLayoutType(activities);
         mActivityAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        mActivityAdapter.openLoadMore(Config.defLoadDatCount, true);
+        mActivityAdapter.setEnableLoadMore(true);
         mActivityAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 getActivityList(skip);
             }
-        });
+        }, mRecyclerView);
         if (mActivityAdapter != null) {
 
-            mActivityAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            mActivityAdapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
                 start(ActivityDetailFragment.newInstance(mActivityAdapter.getItem(i)));
             });
             mActivityAdapter.setEmptyView();
@@ -334,13 +333,12 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         if (isFirstLoad) {
             mActivityAdapter.replaceAll(activities);
         } else {
-            mActivityAdapter.addAll(activities);
+            mActivityAdapter.addAll(activities, Config.defLoadDatCount);
         }
-        mActivityAdapter.notifyDataChangedAfterLoadMore(true);//取消正在加载并设置加载更多
+//        mActivityAdapter.notifyDataChangedAfterLoadMore(true);//取消正在加载并设置加载更多
 
         //获取的数据比请求数据少，说明没有更多数据
-        if (activities.size() < mActivityAdapter.getPageSize()) {
-            mActivityAdapter.notifyDataChangedAfterLoadMore(false);
+        if (activities.size() < Config.defLoadDatCount) {
             TextView nodata = new TextView(getContext());
             nodata.setText("-没有更多数据-");
             nodata.setGravity(Gravity.CENTER);

@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.agency.list;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -137,7 +139,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
         });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, 1, App.context.getResources().getColor(R.color.gray)));
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -240,12 +242,13 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     private void setServiceRecyclerAdapter(List<OrganizationProduct> products) {
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
         if (mAgencyServiceAdapter != null) {
+            mAgencyServiceAdapter.setEmptyView();
+            mAgencyServiceAdapter.setOnLoadMoreListener(() -> getProducts(mAgencyServiceAdapter.getItemCount()), mRecyclerView);
             mAgencyServiceAdapter.setOnItemClickListener((product) -> {
                 start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK);
             });
-            mAgencyServiceAdapter.setEmptyView();
+            mRecyclerView.setAdapter(mAgencyServiceAdapter);
         }
-        mRecyclerView.setAdapter(mAgencyServiceAdapter);
     }
 
     private AgencyServiceAdapter getServiceAdapterFromLayoutType(List<OrganizationProduct> products) {
@@ -258,8 +261,8 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
         }
         if (layoutId != 0) {
             adapter = new AgencyServiceAdapter(products, layoutId);
-            final AgencyServiceAdapter finalAdapter = adapter;
-            adapter.setOnLoadMoreListener(() -> getProducts(finalAdapter.getItemCount()));
+//            final AgencyServiceAdapter finalAdapter = adapter;
+//            adapter.setOnLoadMoreListener(() -> getProducts(finalAdapter.getItemCount()));
         }
         return adapter;
     }
@@ -284,14 +287,17 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
         this.products = products;
         completeRefresh();
-        if (products != null) {
-            if (mAgencyServiceAdapter == null) {
-                setServiceRecyclerAdapter(products);
-            } else if (isLoadMore) {
-                mAgencyServiceAdapter.addAll(products);
-            } else {
-                mAgencyServiceAdapter.replaceAll(products);
-            }
+        if (mAgencyServiceAdapter == null) {
+            setServiceRecyclerAdapter(products);
+        } else if (isLoadMore) {
+            mAgencyServiceAdapter.addAll(products, Config.defLoadDatCount);
+        } else {
+            mAgencyServiceAdapter.replaceAll(products);
+        }
+
+        if (products.size() < Config.defLoadDatCount) {
+            mAgencyServiceAdapter.setEnableLoadMore(false);
+            mAgencyServiceAdapter.loadMoreEnd();
         }
     }
 

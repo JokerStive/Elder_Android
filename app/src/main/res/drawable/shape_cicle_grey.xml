@@ -10,7 +10,7 @@
    <solid
        android:color="@color/gray" />
    <stroke
-       android:width="@dimen/dp_066"
+       android:width="@dimen/dp_1"
        android:color="@android:color/darker_gray" />
    <size android:width="@dimen/dp_14"
        android:height="@dimen/dp_14" />

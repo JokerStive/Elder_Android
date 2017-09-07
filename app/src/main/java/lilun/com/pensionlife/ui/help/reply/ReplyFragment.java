@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AidReplyAdapter;
@@ -158,12 +159,13 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
                 replies = new ArrayList<>();
             }
             mReplyAdapter = new AidReplyAdapter(this, replies, false);
-            rvReply.setAdapter(mReplyAdapter);
             mReplyAdapter.setOnLoadMoreListener(() -> {
                 //TODO load_more
-            });
+                getReplies(mReplyAdapter.getItemCount());
+            }, rvReply);
+            rvReply.setAdapter(mReplyAdapter);
         } else if (isLoadMore) {
-            mReplyAdapter.addAll(replies);
+            mReplyAdapter.addAll(replies, Config.defLoadDatCount);
         } else {
             mReplyAdapter.replaceAll(replies);
         }
@@ -178,9 +180,6 @@ public class ReplyFragment extends BaseFragment<ReplyContract.Presenter> impleme
         EventBus.getDefault().post(new Event.RefreshHelpData());
         pop();
     }
-
-
-
 
 
     @Override

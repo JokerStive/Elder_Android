@@ -46,8 +46,8 @@
             android:layout_weight="1"
             app:module_background="@drawable/selector_education"
             app:module_desc="@string/pension_university"
-            android:layout_marginStart="@dimen/dp_066"
-            android:layout_marginEnd="@dimen/dp_066"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginEnd="@dimen/dp_1"
             app:module_icon="@drawable/help_a_neighbor" />
 
         <lilun.com.pensionlife.widget.recycler_view.NormalModule

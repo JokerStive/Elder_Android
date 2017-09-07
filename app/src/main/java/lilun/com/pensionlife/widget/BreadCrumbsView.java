@@ -81,7 +81,7 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
         TextView crumbView = new TextView(content);
         crumbView.setTextColor(Color.WHITE);
-        crumbView.setTextSize( App.context.getResources().getDimension(R.dimen.sp_14));
+        crumbView.setTextSize(14);
         crumbView.setGravity(Gravity.CENTER);
         crumbView.setBackgroundColor(Color.WHITE);
 
@@ -109,8 +109,8 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
 
     /**
-    *是否有重复的id
-    */
+     *是否有重复的id
+     */
     private boolean hasRepeatId(String targetId) {
         for(String id:ids){
             if (TextUtils.equals(targetId,id)){
@@ -123,8 +123,8 @@ public class BreadCrumbsView extends HorizontalScrollView {
 
 
     /**
-    *获取id列表
-    */
+     *获取id列表
+     */
     public List<String> getIds() {
         return ids;
     }

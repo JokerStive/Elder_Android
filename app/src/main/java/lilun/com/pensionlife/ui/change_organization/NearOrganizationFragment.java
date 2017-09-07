@@ -89,11 +89,11 @@ public class NearOrganizationFragment extends BaseFragment<ChangeOrganizationCon
         completeRefresh();
         if (adapter == null) {
             adapter = new ChangeOrganizationAdapter(organizations);
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
             });
             recyclerView.setAdapter(adapter);
         } else if (isLoadMore) {
-            adapter.addAll(organizations);
+            adapter.addAll(organizations,Config.defLoadDatCount);
         } else {
             adapter.replaceAll(organizations);
         }

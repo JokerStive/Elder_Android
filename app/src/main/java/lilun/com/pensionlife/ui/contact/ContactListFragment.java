@@ -102,7 +102,7 @@ public class ContactListFragment extends BaseFragment {
 
     private void showContacts(List<Contact> contacts) {
         adapter = new ContactListAdapter(contacts);
-        adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+        adapter.setOnItemClickListener((ba,view, i) -> {
             if (!TextUtils.isEmpty(mProductId)) {
                 Contact contact = adapter.getData().get(i);
                 if (TextUtils.isEmpty(contact.getMobile()) || TextUtils.isEmpty(contact.getName()) || TextUtils.isEmpty(contact.getAddress())) {

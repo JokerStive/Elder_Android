@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -165,10 +166,10 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {
                 getMyOrder(personalOrderAdapter.getItemCount());
-            });
+            }, mRecyclerView);
             mRecyclerView.setAdapter(personalOrderAdapter);
         } else if (isLoadMore) {
-            personalOrderAdapter.addAll(orders);
+            personalOrderAdapter.addAll(orders, Config.defLoadDatCount);
         } else {
             personalOrderAdapter.replaceAll(orders);
         }

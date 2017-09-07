@@ -236,18 +236,18 @@ public class TourismListFragment extends BaseFragment<TourismListContract.Presen
         completeRefresh();
         if (adapter == null) {
             adapter = new TourismSmallAdapter(journeys);
-            adapter.setOnRecyclerViewItemClickListener((view, i) -> {
-                Tourism tourism = adapter.getData().get(i);
+            adapter.setOnItemClickListener((baseQuickAdapter, view, position) -> {
+                Tourism tourism = adapter.getData().get(position);
                 start(TourismDetailFragment.newInstance(tourism));
             });
             adapter.setOnLoadMoreListener(() -> {
                 Logger.d("旅游加载更多");
                 getJourneys(adapter.getItemCount());
-            });
+            },rvJourney);
 
             rvJourney.setAdapter(adapter);
         } else if (isLoadMore) {
-            adapter.addAll(journeys);
+            adapter.addAll(journeys,true);
         } else {
             adapter.replaceAll(journeys);
         }

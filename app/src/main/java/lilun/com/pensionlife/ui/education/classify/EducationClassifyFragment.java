@@ -14,20 +14,17 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ElderModuleAdapter;
 import lilun.com.pensionlife.module.adapter.OrganizationEdusAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderModule;
-import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
-import lilun.com.pensionlife.ui.education.colleage_list.EducationListFragment;
-import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
@@ -195,7 +192,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         completeRefresh();
         if (products != null) {
             if (isLoadMore) {
-                mAdapter.addAll(products);
+                mAdapter.addAll(products, Config.defLoadDatCount);
             } else {
                 mAdapter.replaceAll(products);
             }

@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -122,8 +124,14 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
                 start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK);
             });
             mAdapter.setEmptyView();
+            mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    getData(mAdapter.getItemCount());
+                }
+            }, mRecyclerView);
+            mRecyclerView.setAdapter(mAdapter);
         }
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private AgencyServiceAdapter getAdapterFromLayoutType(List<OrganizationProduct> products) {
@@ -166,7 +174,7 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
             if (mAdapter == null) {
                 setRecyclerAdapter(products);
             } else if (isLoadMore) {
-                mAdapter.addAll(products);
+                mAdapter.addAll(products, Config.defLoadDatCount);
             } else {
                 mAdapter.replaceAll(products);
             }

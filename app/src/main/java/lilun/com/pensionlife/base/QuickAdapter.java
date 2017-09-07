@@ -4,20 +4,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 
 /**
  * 添加header、footer快速集成的adapter
  * mScrollIdle标志 滑动过程中不加载图片，避免出现大量的异步任务，从而线程池拥堵
+ *
  * @author yk
  *         create at 2017/2/13 15:48
  *         email : yk_developer@163.com
  */
-public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
+public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder> {
     public boolean mScrollIdle = true;
 
     public void setmScrollIdle(boolean mScrollIdle) {
@@ -27,7 +30,6 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
     public QuickAdapter(int layoutResId, List<T> data) {
         super(layoutResId, data);
     }
-
 
 
     public void setEmptyView() {
@@ -54,6 +56,39 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T> {
     public void addAll(List<T> elements) {
         getData().addAll(elements);
         notifyDataSetChanged();
+        if (isLoadMoreEnable()) {
+            loadMoreComplete();
+        }
+    }
+
+    public void addAll(List<T> elements, int defDataCount) {
+        getData().addAll(elements);
+        notifyDataSetChanged();
+        if (isLoadMoreEnable()) {
+            loadMoreComplete();
+        }
+        setIsLoadMoreEnd(elements,defDataCount);
+    }
+
+    /**
+    *@param isDefDataCount 每次加载更多是否是默认的数据量
+    */
+    public void addAll(List<T> elements, boolean isDefDataCount) {
+        getData().addAll(elements);
+        notifyDataSetChanged();
+        if (isLoadMoreEnable()) {
+            loadMoreComplete();
+        }
+        if (isDefDataCount){
+            setIsLoadMoreEnd(elements, Config.defLoadDatCount);
+        }
+    }
+
+    private void setIsLoadMoreEnd(List<T> elements, int defCount) {
+        if (elements.size() < defCount) {
+            setEnableLoadMore(false);
+            loadMoreEnd();
+        }
     }
 
 

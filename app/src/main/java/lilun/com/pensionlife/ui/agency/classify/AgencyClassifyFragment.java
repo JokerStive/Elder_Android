@@ -157,7 +157,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
 
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
-        adapter.setOnRecyclerViewItemClickListener((view, i) -> {
+        adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
             ProductCategory productCategory = adapter.getData().get(i);
             if (productCategory.getParentId().equals(Config.tourism_product_categoryId)) {
                 start(TourismRootFragment.newInstance(productCategory.getId()));

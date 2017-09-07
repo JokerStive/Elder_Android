@@ -138,7 +138,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
-            mClassifyAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+            mClassifyAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
                 ProductCategory category = mClassifyAdapter.getData().get(i);
                 start(ProductListFragment.newInstance(category.getName(), category.getId(), 0));
             });

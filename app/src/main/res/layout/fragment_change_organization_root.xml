@@ -14,7 +14,7 @@
         <lilun.com.pensionlife.widget.BreadCrumbsView
             android:id="@+id/crumb_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
+            android:layout_height="wrap_content"
             android:background="@color/white" />
 
         <android.support.v4.widget.SwipeRefreshLayout

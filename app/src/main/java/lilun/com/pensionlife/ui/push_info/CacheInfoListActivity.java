@@ -94,7 +94,7 @@ public class CacheInfoListActivity extends BaseActivity {
         recyclerView.addItemDecoration(new NormalItemDecoration(10));
         cacheInfoAdapter = new CacheInfoAdapter(getCacheInfos());
         recyclerView.setAdapter(cacheInfoAdapter);
-        cacheInfoAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+        cacheInfoAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
             CacheInfo item = cacheInfoAdapter.getItem(i);
             if (item.getType() == CacheMsgClassify.announce) {
                 PushAnnounceActivity.start(this, item);
