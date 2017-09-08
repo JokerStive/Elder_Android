@@ -39,7 +39,6 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
             return;
         }
         username = username.replace(" ", "");
-        password = password.replace(" ", "");
         final String finalUsername = username;
         final String finalPassword = password;
         addSubscribe(mModule.login(username, password)
