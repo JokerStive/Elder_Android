@@ -17,7 +17,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.EduCourseAdapter;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
@@ -35,7 +35,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
         implements CourseListContract.View {
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
     List<EdusColleageCourse> dataList = new ArrayList<>();
-    ElderEdusColleage mColleage;
+    OrganizationEdu mColleage;
     private EduCourseAdapter mEduCourseAdapter;
     private String[] filterTitles = {"区域", "价格", "等级"};
     String searchStr = "";
@@ -53,7 +53,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     int skip = 0;
 
 
-    public static CourseListFragment newInstance(ElderEdusColleage colleage) {
+    public static CourseListFragment newInstance(OrganizationEdu colleage) {
         CourseListFragment fragment = new CourseListFragment();
         Bundle args = new Bundle();
         args.putSerializable("Colleage", colleage);
@@ -63,7 +63,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (ElderEdusColleage) arguments.getSerializable("Colleage");
+        mColleage = (OrganizationEdu) arguments.getSerializable("Colleage");
         Preconditions.checkNull(mColleage);
     }
 

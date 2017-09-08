@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import java.util.List;
 
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
@@ -38,8 +38,12 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         if (!checkAccountData(username, password)) {
             return;
         }
-        username = username.replace(" ", "");
-        password = password.replace(" ", "");
+//        if (!RegexUtils.checkMobile(username)){
+//
+//        }
+
+//        username = username.replace(" ", "");
+//        password = password.replace(" ", "");
         final String finalUsername = username;
         final String finalPassword = password;
         addSubscribe(mModule.login(username, password)
@@ -109,6 +113,11 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
     public boolean checkAccountData(String username, String password) {
         if (TextUtils.isEmpty(username)) {
             ToastHelper.get().showWareShort("用户名不能为空");
+            return false;
+        }
+
+        if (!RegexUtils.checkMobile(username)) {
+            ToastHelper.get().showWareShort("手机号码格式有误");
             return false;
         }
 

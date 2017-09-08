@@ -14,7 +14,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.utils.BitmapUtils;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -32,7 +32,7 @@ import lilun.com.pensionlife.widget.slider.BannerPager;
 public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.Presenter>
         implements ColleageDetailContract.View {
 
-    ElderEdusColleage mColleage;
+    OrganizationEdu mColleage;
 
 
     @Bind(R.id.bp_colleage_icon)
@@ -69,7 +69,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
     }
 
 
-    public static ColleageDetailFragment newInstance(ElderEdusColleage colleage) {
+    public static ColleageDetailFragment newInstance(OrganizationEdu colleage) {
         ColleageDetailFragment fragment = new ColleageDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("mElderEdusColleage", colleage);
@@ -79,7 +79,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (ElderEdusColleage) arguments.getSerializable("mElderEdusColleage");
+        mColleage = (OrganizationEdu) arguments.getSerializable("mElderEdusColleage");
         Preconditions.checkNull(mColleage);
     }
 

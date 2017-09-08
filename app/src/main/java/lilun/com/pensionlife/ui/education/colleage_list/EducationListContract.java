@@ -5,7 +5,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 
 /**
  * 老年教育契约类
@@ -16,7 +16,7 @@ import lilun.com.pensionlife.module.bean.ElderEdusColleage;
  */
 public interface EducationListContract {
     interface View extends IView<Presenter> {
-        void showOrganizationEdu(List<ElderEdusColleage> orders, boolean isLoadMore);
+        void showOrganizationEdu(List<OrganizationEdu> orders, boolean isLoadMore);
 
         void completeRefresh();
     }

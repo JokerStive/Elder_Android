@@ -6,42 +6,27 @@
     android:orientation="vertical">
 
 
-    <lilun.com.pensionlife.widget.SearchTitleBar
-        android:id="@+id/searchBar"
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45" />
+        android:layout_height="wrap_content" />
 
-    <lilun.com.pensionlife.widget.filter_view.FilterView
-        android:id="@+id/filter_view"
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/dp_10"
+        android:background="#f1f1f1" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white" />
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_layout"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10">
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
 
-        <ImageView
-            android:id="@+id/null_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/null_data"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
 </LinearLayout>

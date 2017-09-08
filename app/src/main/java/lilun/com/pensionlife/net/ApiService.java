@@ -13,7 +13,7 @@ import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.ElderEdus;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Information;
@@ -337,7 +337,7 @@ public interface ApiService {
      * 获取organization -- 大学
      */
     @GET("OrganizationEdus")
-    Observable<Response<List<ElderEdusColleage>>> getOrganizationsEdus(@Query("filter") String filter);
+    Observable<Response<List<OrganizationEdu>>> getOrganizationsEdus(@Query("filter") String filter);
 
     /**
      * 获取organization -- 大学课程

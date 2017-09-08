@@ -32,7 +32,7 @@ public class EdusColleageCourse extends BaseBean {
     private ArrayList<String> joinerList;
     private ArrayList<IconModule> picture;
     private Account contact;
-    private ElderEdusColleage school;
+    private OrganizationEdu school;
 
 
     public String getName() {
@@ -195,11 +195,11 @@ public class EdusColleageCourse extends BaseBean {
         this.contact = contact;
     }
 
-    public ElderEdusColleage getSchool() {
+    public OrganizationEdu getSchool() {
         return school;
     }
 
-    public void setSchool(ElderEdusColleage school) {
+    public void setSchool(OrganizationEdu school) {
         this.school = school;
     }
 

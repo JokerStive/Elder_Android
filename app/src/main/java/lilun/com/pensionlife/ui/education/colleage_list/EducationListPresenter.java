@@ -4,7 +4,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -25,9 +25,9 @@ public class EducationListPresenter extends RxPresenter<EducationListContract.Vi
                 .getOrganizationsEdus(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ElderEdusColleage>>() {
+                .subscribe(new RxSubscriber<List<OrganizationEdu>>() {
                     @Override
-                    public void _next(List<ElderEdusColleage> educations) {
+                    public void _next(List<OrganizationEdu> educations) {
                         view.completeRefresh();
                         if (skip == 0)
                             view.showOrganizationEdu(educations, false);

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_12"
+    android:paddingTop="@dimen/dp_12">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <lilun.com.pensionlife.widget.CircleImageView
+            android:id="@+id/iv_organizationEdu_icon"
+            app:border_width="@dimen/dp_1"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:src="@drawable/icon_reservation_info" />
+
+        <TextView
+            android:id="@+id/tv_organizationEdu_title"
+            style="@style/tv_normal"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/iv_organizationEdu_icon"
+            android:textSize="@dimen/sp_15"
+            tools:text="山城老年大学" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_12"
+            android:src="@drawable/add_contact_next" />
+    </RelativeLayout>
+
+    <View
+        style="@style/line_gray"
+        android:layout_marginTop="@dimen/dp_12" />
+
+</LinearLayout>

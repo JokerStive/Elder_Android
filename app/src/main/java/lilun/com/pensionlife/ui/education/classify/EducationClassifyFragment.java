@@ -25,6 +25,7 @@ import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
+import lilun.com.pensionlife.ui.education.colleage_list.EducationListFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
@@ -169,7 +170,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private void getServices(int skip) {
         String filter = "{\"\":\"\"}";
-     //   mPresenter.getAboutMe(filter, skip);
+        //   mPresenter.getAboutMe(filter, skip);
         completeRefresh();
     }
 
@@ -179,8 +180,12 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         completeRefresh();
         mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((edusClassify -> {
-            ToastHelper.get().showShort(getString(R.string.building));
+        adapter.setOnItemClickListener((elderModule -> {
+            if (elderModule.getName().equals("老年大学")) {
+                start(EducationListFragment.newInstance(elderModule));
+            } else {
+                ToastHelper.get().showShort(getString(R.string.building));
+            }
         }));
         mClassifyRecycler.setAdapter(adapter);
         getServices(0);
