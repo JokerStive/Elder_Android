@@ -63,7 +63,7 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
     @Override
     public void getCourseDetail(String courseId, String filter) {
         addSubscribe(NetHelper.getApi()
-                .getEduCourses(courseId,filter)
+                .getOneCourse(courseId,filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Course>() {

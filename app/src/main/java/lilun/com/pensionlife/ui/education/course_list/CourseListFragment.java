@@ -19,8 +19,8 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.EduCourseAdapter;
+import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.bean.OrganizationEdu;
-import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -93,7 +93,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
         mEduCourseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OrganizationProduct course = mEduCourseAdapter.getItem(position);
+                Course course = mEduCourseAdapter.getItem(position);
                 //TODO 课程详情 预约
             }
         });
@@ -117,13 +117,13 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     private void getDataList(int skip) {
         String filter = "";
-        mPresenter.getProducts(filter, skip);
+        mPresenter.getCourses(filter, skip);
 
     }
 
 
     @Override
-    public void showCollageCourseList(List<OrganizationProduct> courses, boolean isLoadMore) {
+    public void showCollageCourseList(List<Course> courses, boolean isLoadMore) {
         if (isLoadMore) {
             mEduCourseAdapter.addAll(courses, true);
         } else {

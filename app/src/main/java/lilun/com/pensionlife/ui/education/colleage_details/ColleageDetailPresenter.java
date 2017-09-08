@@ -22,7 +22,7 @@ public class ColleageDetailPresenter extends RxPresenter<ColleageDetailContract.
     public void getColleageCouse(String courseId, String filter, int skip) {
 
         addSubscribe(NetHelper.getApi()
-                .getOrganizationsEdusCourse(courseId,StringUtils.addFilterWithDef(filter, skip))
+                .getCourses(courseId,StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Course>>() {

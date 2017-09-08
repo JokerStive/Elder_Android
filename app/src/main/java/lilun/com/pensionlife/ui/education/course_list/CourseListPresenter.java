@@ -4,7 +4,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -20,19 +20,15 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class CourseListPresenter extends RxPresenter<CourseListContract.View> implements CourseListContract.Presenter {
 
 
-
-
-
-
     @Override
-    public void getProducts(String filter, int skip) {
+    public void getCourses(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getProducts(StringUtils.addFilterWithDef(filter, skip))
+                .getCourses(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationProduct>>() {
+                .subscribe(new RxSubscriber<List<Course>>() {
                     @Override
-                    public void _next(List<OrganizationProduct> products) {
+                    public void _next(List<Course> products) {
                         view.completeRefresh();
                         view.showCollageCourseList(products, skip != 0);
                     }
@@ -46,6 +42,7 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
         );
 
     }
+
     @Override
     public List<List<ConditionOption>> getConditionOptionsList() {
 

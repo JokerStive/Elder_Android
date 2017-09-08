@@ -342,14 +342,13 @@ public interface ApiService {
     /**
 //     * 获取organization -- 大学课程
 //     */
-//    @GET("OrganizationEdus/{id}/courses")
-    Observable<Response<List<Course>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
+    Observable<Response<List<Course>>> getCourses( @Query("filter") String filter);
 
     /**
      * 获取课程详情
      */
     @GET("EduCourses/{id}")
-    Observable<Response<Course>> getEduCourses(@Path("id") String courseId, @Query("filter") String filter);
+    Observable<Response<Course>> getOneCourse(@Path("id") String courseId, @Query("filter") String filter);
 
     /**
      * 我参加的课程 --
