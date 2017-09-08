@@ -197,8 +197,8 @@ public class ProviderDetailFragment extends BaseFragment {
             tvProductPrice.setText(Html.fromHtml(price));
 
             //电话
-            phone = extension.getPhone();
-            mobile = extension.getMobile();
+            phone = TextUtils.isEmpty(extension.getPhone()) ? "暂未提供" : extension.getPhone();
+            mobile = TextUtils.isEmpty(extension.getMobile()) ? "暂未提供" : extension.getPhone();
             if (!TextUtils.isEmpty(phone)) {
                 String mobileDes = "手机号: <font color='#17c5b4'>" + mobile + "</font>";
                 String phoneDes = "座机号: <font color='#17c5b4'>" + phone + "</font>";
@@ -221,12 +221,13 @@ public class ProviderDetailFragment extends BaseFragment {
     private void showAllProduct(List<OrganizationProduct> products, boolean isLoadMore) {
         if (adapter == null) {
             adapter = new AllProductAdapter(products);
-            adapter.setOnLoadMoreListener(() -> getAllProduct(adapter.getItemCount()), rvAllProduct);
-            adapter.setOnItemClickListener(product -> start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK));
+            if (products.size() == Config.defLoadDatCount) {
+                adapter.setOnLoadMoreListener(() -> getAllProduct(adapter.getItemCount()), rvAllProduct);
+            }
+            adapter.setOnItemClickListener(product -> start(ProductDetailFragment.newInstance(product.getId())));
             rvAllProduct.setAdapter(adapter);
-
         } else if (isLoadMore) {
-            adapter.addAll(products,Config.defLoadDatCount);
+            adapter.addAll(products, Config.defLoadDatCount);
         } else {
             adapter.replaceAll(products);
         }

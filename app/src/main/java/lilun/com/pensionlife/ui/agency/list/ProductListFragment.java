@@ -140,6 +140,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
+        setServiceRecyclerAdapter(new ArrayList<>());
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -242,12 +243,15 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     private void setServiceRecyclerAdapter(List<OrganizationProduct> products) {
         mAgencyServiceAdapter = getServiceAdapterFromLayoutType(products);
         if (mAgencyServiceAdapter != null) {
+            mRecyclerView.setAdapter(mAgencyServiceAdapter);
             mAgencyServiceAdapter.setEmptyView();
-            mAgencyServiceAdapter.setOnLoadMoreListener(() -> getProducts(mAgencyServiceAdapter.getItemCount()), mRecyclerView);
             mAgencyServiceAdapter.setOnItemClickListener((product) -> {
                 start(ProductDetailFragment.newInstance(product.getId()), SINGLETASK);
             });
-            mRecyclerView.setAdapter(mAgencyServiceAdapter);
+            mAgencyServiceAdapter.setOnLoadMoreListener(() -> {
+                Logger.d("准备加载更多了");
+                getProducts(mAgencyServiceAdapter.getItemCount());
+            }, mRecyclerView);
         }
     }
 
@@ -261,8 +265,6 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
         }
         if (layoutId != 0) {
             adapter = new AgencyServiceAdapter(products, layoutId);
-//            final AgencyServiceAdapter finalAdapter = adapter;
-//            adapter.setOnLoadMoreListener(() -> getProducts(finalAdapter.getItemCount()));
         }
         return adapter;
     }
@@ -275,7 +277,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
 
 
     private void getProducts(int skip) {
-        mSwipeLayout.setRefreshing(true);
+        mSwipeLayout.setRefreshing(skip == 0);
         Gson gson = new Gson();
 
         String filter = gson.toJson(productFilter);
@@ -287,12 +289,15 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
         this.products = products;
         completeRefresh();
-        if (mAgencyServiceAdapter == null) {
-            setServiceRecyclerAdapter(products);
-        } else if (isLoadMore) {
-            mAgencyServiceAdapter.addAll(products, Config.defLoadDatCount);
-        } else {
-            mAgencyServiceAdapter.replaceAll(products);
+        if (mAgencyServiceAdapter != null) {
+            if (isLoadMore) {
+                Logger.d("加载更多");
+                mAgencyServiceAdapter.addAll(products, Config.defLoadDatCount);
+            } else {
+                Logger.d("刷新");
+
+                mAgencyServiceAdapter.replaceAll(products);
+            }
         }
     }
 

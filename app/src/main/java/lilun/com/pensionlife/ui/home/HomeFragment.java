@@ -378,10 +378,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 activityCategory.setId(activityCatrgoryId);
                 start(ActivityListFragment.newInstance(activityCategory));
             } else if (topic.contains(mqttTopic.topic_information_edit)) {
-                CacheMsgClassify msgClassify = new CacheMsgClassify();
                 Intent intent = new Intent(_mActivity, CacheInfoListActivity.class);
                 intent.putExtra("title", "社区公告");
-                intent.putExtra("classify", msgClassify.announce);
+                intent.putExtra("classify", CacheMsgClassify.announce);
+                startActivity(intent);
+            } else if (topic.equals(mqttTopic.urgent_help)) {
+                Intent intent = new Intent(_mActivity, CacheInfoListActivity.class);
+                intent.putExtra("title", "紧急求助");
+                intent.putExtra("classify", CacheMsgClassify.urgent_help);
                 startActivity(intent);
             }
         }

@@ -47,28 +47,18 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
 
     public void replaceAll(List<T> elements) {
         setNewData(elements);
-//        if (getData().size() > 0) {
-//            getData().clear();
-//        }
-//        getData().addAll(elements);
-//        notifyDataSetChanged();
-//
-//        if (isLoadMoreEnable() && loadMoreEnd();){
-//
-//        }
-    }
-
-    public void addAll(List<T> elements) {
-        getData().addAll(elements);
-        notifyDataSetChanged();
-        if (isLoadMoreEnable()) {
-            loadMoreComplete();
+        if (isLoadMoreEnable() && elements.size()<Config.defLoadDatCount){
+            loadMoreEnd();
         }
     }
 
+
+    public void addAll(List<T> elements) {
+        addData(elements);
+    }
+
     public void addAll(List<T> elements, int defDataCount) {
-        getData().addAll(elements);
-        notifyDataSetChanged();
+        addData(elements);
         if (isLoadMoreEnable()) {
             loadMoreComplete();
         }
@@ -79,8 +69,7 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
      * @param isDefDataCount 每次加载更多是否是默认的数据量
      */
     public void addAll(List<T> elements, boolean isDefDataCount) {
-        getData().addAll(elements);
-        notifyDataSetChanged();
+        addData(elements);
         if (isLoadMoreEnable()) {
             loadMoreComplete();
         }
