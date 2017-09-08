@@ -150,13 +150,13 @@ public class ProductFilter {
         }
 
         public static class PriceBean {
-            private List<Integer> between;
+            private List<Double> between;
 
-            public List<Integer> getBetween() {
+            public List<Double> getBetween() {
                 return between;
             }
 
-            public void setBetween(List<Integer> between) {
+            public void setBetween(List<Double> between) {
                 this.between = between;
             }
         }

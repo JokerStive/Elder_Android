@@ -164,7 +164,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(getContext(), LinearLayoutManager.VERTICAL, 1, ContextCompat.getColor(getContext(), R.color.help)));
-        mRecyclerView.setAdapter(partnersAdapter);
+
 
         partnersAdapter = new PartnersAdapter(new ArrayList<>());
         partnersAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
@@ -184,7 +184,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                 }
             }
         });
-
+        mRecyclerView.setAdapter(partnersAdapter);
         bottonPopupWindow = new BottonPopupWindow(_mActivity);
         bottonPopupWindow.setOnDeleteListener(new View.OnClickListener() {
             @Override
@@ -328,7 +328,6 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
         boolean isFirstLoad = skip == 0;
 
         skip += accounts.size();
-
 
         if (isFirstLoad) {
             partnersAdapter.replaceAll(accounts);
