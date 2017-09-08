@@ -32,7 +32,7 @@ public class CountDownView extends LinearLayout {
 
     public CountDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContent  = context;
+        mContent = context;
         initUI(context);
     }
 
@@ -80,7 +80,7 @@ public class CountDownView extends LinearLayout {
                                     return finalTotalSecs - aLong.intValue() * 1000L;
                                 }
                             })
-                            .take((int) (finalTotalSecs + 1))
+                            .take((finalTotalSecs + 1), TimeUnit.MILLISECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(res -> {
 
