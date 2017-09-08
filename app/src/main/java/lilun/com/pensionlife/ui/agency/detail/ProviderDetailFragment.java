@@ -198,7 +198,7 @@ public class ProviderDetailFragment extends BaseFragment {
 
             //电话
             phone = TextUtils.isEmpty(extension.getPhone()) ? "暂未提供" : extension.getPhone();
-            mobile = TextUtils.isEmpty(extension.getMobile()) ? "暂未提供" : extension.getPhone();
+            mobile = TextUtils.isEmpty(extension.getMobile()) ? "暂未提供" : extension.getMobile();
             if (!TextUtils.isEmpty(phone)) {
                 String mobileDes = "手机号: <font color='#17c5b4'>" + mobile + "</font>";
                 String phoneDes = "座机号: <font color='#17c5b4'>" + phone + "</font>";
