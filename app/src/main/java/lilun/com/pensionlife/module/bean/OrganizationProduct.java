@@ -35,7 +35,7 @@ public class OrganizationProduct extends BaseBean {
      */
 
     private String name;
-    private String subTitle ;
+    private String subTitle;
 
     public String getSubTitle() {
         return subTitle;
@@ -49,7 +49,7 @@ public class OrganizationProduct extends BaseBean {
     private String title;
     private String context;
     private String contextType;
-    private int price;
+    private double price;
     private int score;
     private String id;
     private String createdAt;
@@ -107,11 +107,11 @@ public class OrganizationProduct extends BaseBean {
         this.contextType = contextType;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -14,6 +14,7 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -63,7 +64,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     TextView tvNeedHelp;
     @Bind(R.id.tv_find_help)
     TextView tvFindHelp;
-    private CycleAidAdapter adapter;
+    private CycleAidAdapter mAdapter;
     private String parentId;
 
     public static HelpRootFragment newInstance(String parentId) {
@@ -84,7 +85,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Subscribe
     public void refreshData(Event.RefreshHelpData event) {
         Logger.d("需要刷新help root 页面的湖数据");
-        refreshData();
+        getHelps(0);
     }
 
 
@@ -103,7 +104,6 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.neighbor_help));
         titleBar.setTvRightText("关于我的");
-        //  titleBar.setFragment(this);
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -117,7 +117,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
             @Override
             public void onPositionChanged() {
-                refreshData();
+
             }
         });
 
@@ -126,7 +126,16 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
-        mSwipeLayout.setOnRefreshListener(this::refreshData);
+        mAdapter = new CycleAidAdapter(new ArrayList<>());
+
+
+        mSwipeLayout.setOnRefreshListener(() -> getHelps(0));
+        mAdapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
+            OrganizationAid aid = mAdapter.getItem(i);
+            start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
+        });
+        mAdapter.setOnLoadMoreListener(() -> getHelps(mAdapter.getItemCount()), mRecyclerView);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -134,7 +143,7 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Override
     protected void initEvent() {
         super.initData();
-        refreshData();
+        getHelps(0);
     }
 
     @Override
@@ -144,13 +153,9 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
         replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
     }
 
-    private void refreshData() {
-        mSwipeLayout.setRefreshing(true);
-        getHelps(0);
-    }
-
 
     private void getHelps(int skip) {
+        mSwipeLayout.setRefreshing(skip == 0);
         String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"organizationId\":\"" + User.getCurrentOrganizationId() + "/#aid" + "\"}}";
         mPresenter.getHelps(filter, skip);
     }
@@ -159,18 +164,10 @@ public class HelpRootFragment extends BaseFragment<HelpContract.Presenter> imple
     @Override
     public void showAboutMe(List<OrganizationAid> helps, boolean isLoadMore) {
         completeRefresh();
-        if (adapter == null) {
-            adapter = new CycleAidAdapter(helps);
-            adapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
-                OrganizationAid aid = helps.get(i);
-                start(aid.getKind() == 0 ? AskDetailFragment.newInstance(aid.getId(), User.creatorIsOwn(aid.getCreatorId())) : HelpDetailFragment.newInstance(aid.getId()));
-            });
-            adapter.setOnLoadMoreListener(() -> getHelps(adapter.getItemCount()), mRecyclerView);
-            mRecyclerView.setAdapter(adapter);
-        } else if (isLoadMore) {
-            adapter.addAll(helps, Config.defLoadDatCount);
+        if (isLoadMore) {
+            mAdapter.addAll(helps, Config.defLoadDatCount);
         } else {
-            adapter.replaceAll(helps);
+            mAdapter.replaceAll(helps);
         }
     }
 

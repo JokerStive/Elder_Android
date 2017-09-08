@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +34,11 @@ public class FilterPriceView extends LinearLayout {
     private TextView tvUnit;
     private TextView tvConfirm;
     private OnConfirmListener listener;
-    private Integer intMin;
-    private Integer intMax;
+    private Double intMin;
+    private Double intMax;
     private InputMethodManager imm;
     private String unit;
-    private List<Integer> range = new ArrayList<>();
+    private List<Double> range = new ArrayList<>();
     private TextView tvClear;
     private MyKeyBoardView myKeyBoard;
     private KeyboardUtil keyboardUtil;
@@ -127,10 +128,10 @@ public class FilterPriceView extends LinearLayout {
 //        }
 //
         if (!TextUtils.isEmpty(min)) {
-            intMin = (int) Float.parseFloat(min);
+            intMin = Double.parseDouble(min);
         }
         if (!TextUtils.isEmpty(max)) {
-            intMax = (int) Float.parseFloat(max);
+            intMax = Double.parseDouble(max);
         }
 
         if (listener != null && (intMin != null || intMax != null)) {
@@ -138,20 +139,20 @@ public class FilterPriceView extends LinearLayout {
                 if (intMax > intMin) {
                     range.add(intMin);
                     range.add(intMax);
-                    listener.onConfirm(range, intMin + "-" + intMax, false);
+                    listener.onConfirm(range, filter(intMin) + "-" + filter(intMax), false);
                     hintKeyBoard();
                 } else {
                     ToastHelper.get().showWareShort("输入有误");
                 }
             } else if (intMax != null) {
-                range.add(0);
+                range.add(0.00);
                 range.add(intMax);
-                listener.onConfirm(range, intMax + unit + "以下", false);
+                listener.onConfirm(range, filter(intMax) + unit + "以下", false);
                 hintKeyBoard();
             } else {
                 range.add(intMin);
-                range.add(Integer.MAX_VALUE);
-                listener.onConfirm(range, intMin + unit + "以上", false);
+                range.add(Double.MAX_VALUE);
+                listener.onConfirm(range, filter(intMin) + unit + "以上", false);
                 hintKeyBoard();
             }
             range.clear();
@@ -161,6 +162,11 @@ public class FilterPriceView extends LinearLayout {
             clear(true);
         }
 
+    }
+
+    private String filter(Double target) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(target);
     }
 
     private void hintKeyBoard() {
@@ -203,7 +209,7 @@ public class FilterPriceView extends LinearLayout {
 
 
     public interface OnConfirmListener {
-        void onConfirm(List<Integer> range, String show, boolean isDef);
+        void onConfirm(List<Double> range, String show, boolean isDef);
     }
 
     public void setOnConfirmListener(OnConfirmListener listener) {
