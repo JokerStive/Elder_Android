@@ -53,17 +53,17 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     int skip = 0;
 
 
-    public static CourseListFragment newInstance(OrganizationEdu colleage) {
+    public static CourseListFragment newInstance(OrganizationEdu organizationEdu) {
         CourseListFragment fragment = new CourseListFragment();
         Bundle args = new Bundle();
-        args.putSerializable("Colleage", colleage);
+        args.putSerializable("organizationEdu", organizationEdu);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (OrganizationEdu) arguments.getSerializable("Colleage");
+        mColleage = (OrganizationEdu) arguments.getSerializable("organizationEdu");
         Preconditions.checkNull(mColleage);
     }
 
@@ -82,8 +82,6 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            // mAdapter.setRefreshing(true);
-
             skip = 0;
             getDataList(mColleage.getId(), skip);
         }
