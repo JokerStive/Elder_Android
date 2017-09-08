@@ -230,9 +230,10 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
             try {
                 maxPart = Integer.parseInt(maxPartner);
             } catch (Exception e) {
-                maxPart = 9999;
+                maxPart = 10000;
             }
         } else maxPart = 0;
+
         if (maxPart > 9999) {
             ToastHelper.get().showWareShort(getString(R.string.act_max_partner));
             inputMaxPartner.setInput(9999 + "");
@@ -277,11 +278,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         activity.setOrganizationId(OrganizationChildrenConfig.activity());
         activity.setDescription(require);
         activity.setMaxPartner(maxPart);
-
-
-        if (!TextUtils.isEmpty(max)) {
-            activity.setMaxPartner(Integer.parseInt(maxPartner));
-        }
 
 
         try {
