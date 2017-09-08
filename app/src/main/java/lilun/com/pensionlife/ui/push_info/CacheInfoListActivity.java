@@ -94,7 +94,7 @@ public class CacheInfoListActivity extends BaseActivity {
         recyclerView.addItemDecoration(new NormalItemDecoration(10));
         cacheInfoAdapter = new CacheInfoAdapter(getCacheInfos());
         recyclerView.setAdapter(cacheInfoAdapter);
-        cacheInfoAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
+        cacheInfoAdapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
             CacheInfo item = cacheInfoAdapter.getItem(i);
             if (item.getType() == CacheMsgClassify.announce) {
                 PushAnnounceActivity.start(this, item);
@@ -156,7 +156,7 @@ public class CacheInfoListActivity extends BaseActivity {
             if (infoJson != null) {
                 Information information = JSON.parseObject(infoJson, Information.class);
                 if (information != null) {
-                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.IOS2ToUTC(information.getCreatedAt(), 6), information.getId(), classify);
+                    cacheInfo = new CacheInfo(information.getCreatorName(), information.getTitle(), StringUtils.filterNull(StringUtils.IOS2ToUTC(information.getCreatedAt(), 6)), information.getId(), classify);
                 }
             }
         }
@@ -180,7 +180,7 @@ public class CacheInfoListActivity extends BaseActivity {
             if (activityJson != null) {
                 OrganizationActivity activity = JSON.parseObject(activityJson, OrganizationActivity.class);
                 if (activity != null) {
-                    cacheInfo = new CacheInfo("活动创建者:" + activity.getCreatorName(), "活动内容:" + activity.getDescription(), "活动开始时间:" + StringUtils.IOS2ToUTC(activity.getCreatedAt(), 6), "活动主题:" + activity.getTitle(), classify);
+                    cacheInfo = new CacheInfo("活动创建者:" + activity.getCreatorName(), "活动内容:" + StringUtils.filterNull(activity.getDescription()), "活动开始时间:" + StringUtils.filterNull(StringUtils.IOS2ToUTC(activity.getCreatedAt(), 6)), "活动主题:" + StringUtils.filterNull(activity.getTitle()), classify);
                 }
             }
         }
