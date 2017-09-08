@@ -11,9 +11,7 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.ElderEdus;
-import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Information;
@@ -22,6 +20,7 @@ import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.bean.ProductCategory;
@@ -340,16 +339,16 @@ public interface ApiService {
     Observable<Response<List<OrganizationEdu>>> getOrganizationsEdus(@Query("filter") String filter);
 
     /**
-     * 获取organization -- 大学课程
-     */
-    @GET("OrganizationEdus/{id}/courses")
-    Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
-
-    /**
-     * 获取课程详情
-     */
-    @GET("EduCourses/{id}")
-    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId, @Query("filter") String filter);
+//     * 获取organization -- 大学课程
+//     */
+//    @GET("OrganizationEdus/{id}/courses")
+//    Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
+//
+//    /**
+//     * 获取课程详情
+//     */
+//    @GET("EduCourses/{id}")
+//    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId, @Query("filter") String filter);
 
     /**
      * 我参加的课程 --

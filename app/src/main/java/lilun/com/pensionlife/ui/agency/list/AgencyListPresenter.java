@@ -43,7 +43,7 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
     }
 
     @Override
-    public void getProductAgency(String filter, int skip) {
+    public void getProducts(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
                 .getProducts(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())

@@ -5,7 +5,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 
 /**
  * 老年教育契约类
@@ -16,7 +16,7 @@ import lilun.com.pensionlife.module.bean.EdusColleageCourse;
  */
 public interface CourseListContract {
     interface View extends IView<Presenter> {
-        void showCollgCourseList(List<EdusColleageCourse> orders, boolean isLoadMore);
+        void showCollageCourseList(List<OrganizationProduct> orders, boolean isLoadMore);
 
         void completeRefresh();
 
@@ -25,7 +25,7 @@ public interface CourseListContract {
 
     interface Presenter extends IPresenter<View> {
 
-        void getCollgCourseList(String courseId,String filter, int skip);
+        void getProducts(String filter, int skip);
         List<List<ConditionOption>> getConditionOptionsList();
     }
 }

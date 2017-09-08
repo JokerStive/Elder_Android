@@ -1,13 +1,10 @@
 package lilun.com.pensionlife.ui.education.course_list;
 
-import android.widget.Toast;
-
 import java.util.List;
 
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -26,28 +23,29 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
 
 
 
+
     @Override
-    public void getCollgCourseList(String courseId, String filter, int skip) {
+    public void getProducts(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationsEdusCourse(courseId,StringUtils.addFilterWithDef(filter, skip))
+                .getProducts(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<EdusColleageCourse>>() {
+                .subscribe(new RxSubscriber<List<OrganizationProduct>>() {
                     @Override
-                    public void _next(List<EdusColleageCourse> edusColleageCourses) {
+                    public void _next(List<OrganizationProduct> products) {
                         view.completeRefresh();
-                        view.showCollgCourseList(edusColleageCourses,false);
+                        view.showCollageCourseList(products, skip != 0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                         view.completeRefresh();
-                        Toast.makeText(App.context, "获取课程失败", Toast.LENGTH_SHORT).show();
                     }
-                }));
-    }
+                })
+        );
 
+    }
     @Override
     public List<List<ConditionOption>> getConditionOptionsList() {
 

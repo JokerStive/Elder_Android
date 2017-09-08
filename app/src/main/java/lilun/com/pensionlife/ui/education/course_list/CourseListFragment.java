@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.education.course_list;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,21 +8,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.EduCourseAdapter;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.OrganizationEdu;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
-import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
-import lilun.com.pensionlife.widget.SearchTitleBar;
+import lilun.com.pensionlife.widget.DividerDecoration;
+import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterView;
 
 /**
@@ -31,26 +33,18 @@ import lilun.com.pensionlife.widget.filter_view.FilterView;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class CourseListFragment extends BaseFragment<CourseListContract.Presenter>
-        implements CourseListContract.View {
-    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
-    List<EdusColleageCourse> dataList = new ArrayList<>();
-    OrganizationEdu mColleage;
-    private EduCourseAdapter mEduCourseAdapter;
-    private String[] filterTitles = {"区域", "价格", "等级"};
-    String searchStr = "";
-
-    @Bind(R.id.searchBar)
-    SearchTitleBar searchBar;
+public class CourseListFragment extends BaseFragment<CourseListContract.Presenter> implements CourseListContract.View {
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
     @Bind(R.id.filter_view)
     FilterView filterView;
-    @Bind(R.id.swipe_layout)
-    SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.null_data)
-    ImageView nullData;
-    int skip = 0;
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout mSwipeLayout;
+    private EduCourseAdapter mEduCourseAdapter;
+    private String[] filterTitles = {"区域", "价格", "等级"};
+    private OrganizationEdu mOrganizationEdu;
 
 
     public static CourseListFragment newInstance(OrganizationEdu organizationEdu) {
@@ -63,8 +57,8 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mColleage = (OrganizationEdu) arguments.getSerializable("organizationEdu");
-        Preconditions.checkNull(mColleage);
+        mOrganizationEdu = (OrganizationEdu) arguments.getSerializable("organizationEdu");
+        Preconditions.checkNull(mOrganizationEdu);
     }
 
 
@@ -76,49 +70,40 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_education;
+        return R.layout.layout_course_list;
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            skip = 0;
-            getDataList(mColleage.getId(), skip);
+            getDataList(0);
         }
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        searchBar.setNoNullLayout();
-        searchBar.setFragment(this);
-        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
-            @Override
-            public void onBack() {
-                pop();
-            }
+        titleBar.setTitle("课程分类");
+        titleBar.setOnBackClickListener(this::pop);
 
-            @Override
-            public void onSearch(String str) {
-                searchStr = str;
-
-                getDataList(mColleage.getId(), 0);
-            }
-
-            @Override
-            public void onChangeLayout(SearchTitleBar.LayoutType type) {
-                layoutType = type;
-                if (dataList != null && dataList.size() != 0) {
-                    setRecyclerAdapter(dataList);
-                }
-            }
-        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
+
+        mEduCourseAdapter = new EduCourseAdapter(new ArrayList<>());
+        mEduCourseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                OrganizationProduct course = mEduCourseAdapter.getItem(position);
+                //TODO 课程详情 预约
+            }
+        });
+        mEduCourseAdapter.setOnLoadMoreListener(() -> getDataList(mEduCourseAdapter.getItemCount()), mRecyclerView);
+
+        mRecyclerView.setAdapter(mEduCourseAdapter);
+
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
-                        skip = 0;
-                        getDataList(mColleage.getId(), skip);
+                        getDataList(0);
                     }
                 }
         );
@@ -126,92 +111,25 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     }
 
 
-    private void setRecyclerAdapter(List<EdusColleageCourse> data) {
-        mEduCourseAdapter = getAdapterFromLayoutType(data);
-        if (mEduCourseAdapter != null) {
-            mEduCourseAdapter.setOnItemClickListener((item) -> {
-                start(CourseDetailFragment.newInstance(item));
-            });
-            mEduCourseAdapter.setEmptyView();
-        }
-        mRecyclerView.setAdapter(mEduCourseAdapter);
-    }
-
-    private EduCourseAdapter getAdapterFromLayoutType(List<EdusColleageCourse> data) {
-        EduCourseAdapter adapter = null;
-        int layoutId = 0;
-        if (layoutType == SearchTitleBar.LayoutType.BIG) {
-            layoutId = R.layout.item_colleage_big;
-        } else if (layoutType == SearchTitleBar.LayoutType.SMALL) {
-            layoutId = R.layout.item_colleage_small;
-        }
-        adapter = new EduCourseAdapter(data, layoutId);
-        return adapter;
-    }
-
     private void initFilter() {
-//        List<ViewStep2> pops = new ArrayList<>();
-//
-//        //除了区域以外的条件弹窗
-//        List<List<ConditionOption>> optionsList = mPresenter.getConditionOptionsList();
-//        for (int i = 0; i < optionsList.size(); i++) {
-//            RecyclerView recyclerView = new RecyclerView(App.context);
-//            recyclerView.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
-//            NormalFilterAdapter adapter = new NormalFilterAdapter(optionsList.get(i));
-//            final int finalI = i + 1;
-//            adapter.setOnItemClickListener((position, option) -> {
-//                filterView.setTabText(position == 0 ? Arrays.asList(filterTitles).get(finalI) : option.getVal(), position == 0);
-//                //TODO 条件的map加入条件
-//            });
-//            recyclerView.setAdapter(adapter);
-//            pops.add(recyclerView);
-//        }
-//
-//
-//        //TODO 区域
-//
-//        AreaFilter areaFilter = new AreaFilter(mContent);
-//        pops.add(0, areaFilter);
-//
-//
-//        filterView.setTitlesAndPops(Arrays.asList(filterTitles), pops, mSwipeLayout);
+
     }
 
-    private void getDataList(String schoolId, int skip) {
-        String filter = "{\"where\":{\"name\":{\"like\":\"" + searchStr + "\"}}}";
-        mPresenter.getCollgCourseList(schoolId, filter, skip);
+    private void getDataList(int skip) {
+        String filter = "";
+        mPresenter.getProducts(filter, skip);
 
     }
 
 
     @Override
-    public void showCollgCourseList(List<EdusColleageCourse> courses, boolean isLoadMore) {
-        skip += courses.size();
-        if (skip == 0) {
-            nullData.setVisibility(View.VISIBLE);
-        } else
-            nullData.setVisibility(View.GONE);
-
-        if (mEduCourseAdapter == null) {
-//            mEduCourseAdapter = new EduCourseAdapter(this, courses);
-//
-//            mRecyclerView.setAdapter(mEduCourseAdapter);
-//            mEduCourseAdapter.setOnItemClickListener((item) -> {
-//                   start(CourseDetailFragment.newInstance(item));
-//            });
-//
-//            mEduCourseAdapter.setOnLoadMoreListener(() -> {
-//                getDataList(mColleage.getId(), skip);
-//            });
-            dataList.addAll(courses);
-            setRecyclerAdapter(dataList);
-        } else if (isLoadMore) {
-            dataList.addAll(courses);
+    public void showCollageCourseList(List<OrganizationProduct> courses, boolean isLoadMore) {
+        if (isLoadMore) {
+            mEduCourseAdapter.addAll(courses, true);
         } else {
-            dataList.clear();
-            dataList.addAll(courses);
+            mEduCourseAdapter.replaceAll(courses);
         }
-        mEduCourseAdapter.notifyDataSetChanged();
+
     }
 
 

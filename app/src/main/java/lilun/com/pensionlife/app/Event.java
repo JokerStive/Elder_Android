@@ -173,7 +173,7 @@ public class Event {
         }
     }
 
-    public static class ActivityCancel{
+    public static class ActivityCancel {
         ActivityCategoryMsg actCatMsg;
 
         public ActivityCancel(ActivityCategoryMsg actCatMsg) {

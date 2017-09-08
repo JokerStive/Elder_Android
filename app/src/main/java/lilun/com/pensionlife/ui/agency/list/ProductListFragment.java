@@ -282,7 +282,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
 
         String filter = gson.toJson(productFilter);
         Logger.d("product--filter = " + filter);
-        mPresenter.getProductAgency(filter, skip);
+        mPresenter.getProducts(filter, skip);
     }
 
     @Override

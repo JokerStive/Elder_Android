@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 import lilun.com.pensionlife.base.BaseBean;
 
-/**
- * Created by zp on 2017/2/23.
- */
+
+
 
 public class EdusColleageCourse extends BaseBean {
     public static int TYPE = 2;
