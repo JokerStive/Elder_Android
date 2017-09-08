@@ -13,7 +13,7 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.utils.BitmapUtils;
@@ -127,7 +127,7 @@ public class ColleageDetailFragment extends BaseFragment<ColleageDetailContract.
     }
 
     @Override
-    public void showColleageCouseList(List<EdusColleageCourse> courseList) {
+    public void showColleageCouseList(List<Course> courseList) {
 
     }
 

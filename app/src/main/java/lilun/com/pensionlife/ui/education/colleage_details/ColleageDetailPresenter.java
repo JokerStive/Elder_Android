@@ -6,7 +6,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.RxPresenter;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -25,9 +25,9 @@ public class ColleageDetailPresenter extends RxPresenter<ColleageDetailContract.
                 .getOrganizationsEdusCourse(courseId,StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<EdusColleageCourse>>() {
+                .subscribe(new RxSubscriber<List<Course>>() {
                     @Override
-                    public void _next(List<EdusColleageCourse> edusColleageCourses) {
+                    public void _next(List<Course> edusColleageCourses) {
                         view.showColleageCouseList(edusColleageCourses);
                     }
 

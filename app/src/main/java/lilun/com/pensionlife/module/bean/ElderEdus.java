@@ -256,8 +256,8 @@ public class ElderEdus extends BaseBean {
     }
 
 
-    public EdusColleageCourse toEdusColleageCourse() {
-        EdusColleageCourse course = new EdusColleageCourse();
+    public Course toEdusColleageCourse() {
+        Course course = new Course();
         course.setId(id);
         course.setName(title);
         course.setPicture(icon);

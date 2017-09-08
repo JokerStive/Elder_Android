@@ -5,7 +5,7 @@ import android.widget.Toast;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
@@ -66,9 +66,9 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
                 .getEduCourses(courseId,filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<EdusColleageCourse>() {
+                .subscribe(new RxSubscriber<Course>() {
                     @Override
-                    public void _next(EdusColleageCourse edusColleageCourse) {
+                    public void _next(Course edusColleageCourse) {
                         view.showCourseDetail(edusColleageCourse);
                     }
 

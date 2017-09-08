@@ -4,7 +4,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Course;
 
 /**
  * Created by zp on 2017/2/23.
@@ -13,7 +13,7 @@ import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 public interface ColleageDetailContract {
 
     interface View extends IView<Presenter> {
-        void showColleageCouseList(List<EdusColleageCourse> orders);
+        void showColleageCouseList(List<Course> orders);
     }
 
     interface Presenter extends IPresenter<View> {
