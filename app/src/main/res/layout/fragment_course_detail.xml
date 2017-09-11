@@ -1,81 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="#eeeeee">
 
-    <android.support.v4.widget.NestedScrollView
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        app:title="课程详情" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom_menu"
+        android:layout_below="@id/titleBar"
+        android:layout_marginBottom="@dimen/dp_10">
 
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/max_photo_height">
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:orientation="vertical"
+                android:weightSum="1">
 
-                <lilun.com.pensionlife.widget.slider.BannerPager
-                    android:id="@+id/bp_course_icon"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="wrap_content"
+                    <lilun.com.pensionlife.widget.slider.BannerPager
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_218" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="#aa0000"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_8"
+                        android:paddingLeft="@dimen/dp_16"
+                        android:paddingRight="@dimen/dp_16"
+                        android:paddingTop="@dimen/dp_8">
+
+                        <TextView
+                            android:id="@+id/tv_course_title"
+                            style="@style/tv_normal"
+                            android:textColor="#ffffff"
+                            android:textSize="@dimen/sp_17"
+                            tools:text="2017秋季古典音乐一班" />
+
+                        <TextView
+                            android:id="@+id/tv_course_xueqi"
+                            style="@style/tv_normal"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:textColor="#ffffff"
+                            android:textSize="@dimen/sp_13"
+                            tools:text="学期:2017-08-10--2017-" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="29dp"
-                    android:background="@drawable/back_with_circle" />
-            </RelativeLayout>
+                    android:background="#ffffff"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_16"
+                    android:paddingLeft="@dimen/dp_13"
+                    android:paddingRight="@dimen/dp_13"
+                    android:paddingTop="@dimen/dp_16">
 
 
+                    <TextView
+                        android:id="@+id/tv_course_price"
+                        style="@style/tv_normal"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:textColor="#ff1100"
+                        android:textSize="@dimen/sp_17"
+                        tools:text="180元" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_course_stock"
+                            style="@style/tv_normal"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:textColor="#999999"
+                            android:textSize="@dimen/sp_12"
+                            tools:text="报名人数: 35" />
+
+                        <TextView
+                            android:id="@+id/tv_course_remain"
+                            style="@style/tv_normal"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:textColor="#999999"
+                            android:textSize="@dimen/sp_12"
+                            tools:text="剩余名额: 30" />
+
+                        <TextView
+                            android:id="@+id/tv_course_teacher"
+                            style="@style/tv_normal"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:drawableLeft="@drawable/course_teacher"
+                            android:drawablePadding="@dimen/dp_2"
+                            android:textColor="#999999"
+                            android:textSize="@dimen/sp_12"
+                            tools:text="授课老师:张老师" />
+
+                    </LinearLayout>
 
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="#eeeeee"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_course_startTime"
+                        style="@style/tv_normal"
+                        android:layout_width="match_parent"
+                        android:background="#ffffff"
+                        android:drawableLeft="@drawable/course_start_time"
+                        android:drawablePadding="@dimen/dp_16"
+                        android:maxLines="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_16"
+                        android:textColor="#979797"
+                        android:textSize="@dimen/sp_15"
+                        tools:text="上课时间：每周三下午14：20-17：00" />
+
+
+                    <TextView
+                        android:id="@+id/tv_course_classRoom"
+                        style="@style/tv_normal"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:background="#ffffff"
+                        android:drawableLeft="@drawable/course_class_room"
+                        android:drawablePadding="@dimen/dp_16"
+                        android:maxLines="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_16"
+                        android:textColor="#979797"
+                        android:textSize="@dimen/sp_15"
+                        tools:text="上课教室：301" />
+
+
+                    <TextView
+                        android:id="@+id/tv_course_address"
+                        style="@style/tv_normal"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:background="#ffffff"
+                        android:drawableLeft="@drawable/course_address"
+                        android:drawablePadding="@dimen/dp_16"
+                        android:maxLines="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_16"
+                        android:textColor="#979797"
+                        android:textSize="@dimen/sp_15"
+                        tools:text="上课教室：301" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <LinearLayout
+        android:id="@+id/ll_bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_product_detail_bottom_bg"
         android:orientation="horizontal">
 
+
         <TextView
-            android:id="@+id/tv_colleage_name"
+            android:id="@+id/tv_bottom_price"
+            style="@style/tv_normal"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginBottom="@dimen/dp_4"
             android:layout_weight="1"
-            android:gravity="left|center"
-            android:paddingLeft="@dimen/dp_10"
-            android:text="课程列表"
-            android:textSize="@dimen/tv_size" />
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:textColor="#a9a9a9"
+            android:textSize="@dimen/sp_12"
+            tools:text="价格：998" />
 
         <TextView
-            android:id="@+id/tv_service_provider"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginBottom="@dimen/dp_4"
-            android:layout_marginRight="@dimen/dp_22"
-            android:layout_marginTop="@dimen/dp_4"
-            android:background="@drawable/shape_rect_red_corner_5"
+            android:id="@+id/tv_reservation"
+            style="@style/tv_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#108ee9"
             android:gravity="center"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_22"
-            android:paddingStart="@dimen/dp_22"
-            android:text="@string/service_provider"
-            android:textColor="@color/white"
-            android:textSize="@dimen/tv_size" />
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:text="立即预约"
+            android:textColor="#ffffff"
 
+            android:textSize="@dimen/sp_18" />
 
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

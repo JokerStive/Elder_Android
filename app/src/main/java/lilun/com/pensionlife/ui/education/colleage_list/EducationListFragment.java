@@ -14,9 +14,13 @@ import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.CollageAdapter;
-import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.ElderModule;
+import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.RxUtils;
+import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.net.NetHelper;
+import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.education.course_list.CourseListFragment;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -28,8 +32,7 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class EducationListFragment extends BaseFragment<EducationListContract.Presenter>
-        implements EducationListContract.View {
+public class EducationListFragment extends BaseFragment {
 
     ElderModule mElderModule;
     @Bind(R.id.titleBar)
@@ -59,8 +62,6 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
     @Override
     protected void initPresenter() {
-        mPresenter = new EducationListPresenter();
-        mPresenter.bindView(this);
     }
 
     @Override
@@ -84,8 +85,9 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
         mCollageAdapter = new CollageAdapter(new ArrayList<>());
         mCollageAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OrganizationEdu collage = mCollageAdapter.getItem(position);
-            start(CourseListFragment.newInstance(collage));
+            Organization collage = mCollageAdapter.getItem(position);
+            assert collage != null;
+            start(CourseListFragment.newInstance(collage.getId()));
         });
         mCollageAdapter.setOnLoadMoreListener(() -> {
             getDataList(mCollageAdapter.getItemCount());
@@ -104,18 +106,28 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
 
     private void getDataList(int skip) {
         mSwipeLayout.setRefreshing(skip == 0);
-        String filter = "{\"where\":{\"location\":{\"exists\": true},\"visible\":0}}";
-//        String filter = "";
-//        if (mElderModule.getName().equals(getString(R.string.pension_university)))
-//        else if (mElderModule.getName().equals(getString(R.string.net_university)))
-//            filter = "{\"where\":{\"location\":{\"exists\": true},\"visible\":0}}";
-        mPresenter.getOrganizationEdu(filter, skip);
+        NetHelper.getApi()
+                .getOrganizations("", StringUtils.addFilterWithDef(null, skip))
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Organization>>() {
+                    @Override
+                    public void _next(List<Organization> organizations) {
+                        completeRefresh();
+                        showCollages(organizations, skip != 0);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        completeRefresh();
+                        super.onError(e);
+                    }
+                });
     }
 
 
-    @Override
-    public void showOrganizationEdu(List<OrganizationEdu> collages, boolean isLoadMore) {
-        completeRefresh();
+    public void showCollages(List<Organization> collages, boolean isLoadMore) {
+
         if (isLoadMore) {
             mCollageAdapter.addAll(collages, true);
         } else {
@@ -123,7 +135,6 @@ public class EducationListFragment extends BaseFragment<EducationListContract.Pr
         }
     }
 
-    @Override
     public void completeRefresh() {
         if (mSwipeLayout != null && mSwipeLayout.isRefreshing()) {
             mSwipeLayout.setRefreshing(false);

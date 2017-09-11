@@ -8,11 +8,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.bean.AgencyContactExtension;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.ContactExtendKey;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -140,15 +142,15 @@ public class AddServiceInfoFragment extends BaseFragment {
                     String categoryId = product.getCategoryId();
                     if (categoryId.contains("养老机构")) {
                         llContactExtent.setVisibility(View.VISIBLE);
-                        AgencyContactExtension extend = contact.getExtend();
+                        HashMap<String, String> extend = contact.getExtend();
                         if (extend != null) {
-                            tvContactExtensionName.setText(extend.getReservationName());
-                            tvSex.setText(extend.getSex());
-                            tvRelation.setText(extend.getRelation());
-                            tvBirthday.setText(extend.getBirthday());
-                            tvHealthStatus.setText(extend.getHealthStatus());
+                            tvContactExtensionName.setText(extend.get(ContactExtendKey.reservationName));
+                            tvSex.setText(extend.get(ContactExtendKey.sex));
+                            tvRelation.setText(extend.get(ContactExtendKey.relation));
+                            tvBirthday.setText(extend.get(ContactExtendKey.birthday));
+                            tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
 
-                            etHealthDesc.setText(extend.getHealthyDescription());
+                            etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
                         }
                     }
                 }

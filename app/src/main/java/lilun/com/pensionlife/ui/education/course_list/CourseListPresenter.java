@@ -1,10 +1,12 @@
 package lilun.com.pensionlife.ui.education.course_list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.Course;
+import lilun.com.pensionlife.module.bean.Option;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -23,12 +25,12 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
     @Override
     public void getCourses(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getCourses(StringUtils.addFilterWithDef(filter, skip))
+                .getProducts(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Course>>() {
+                .subscribe(new RxSubscriber<List<OrganizationProduct>>() {
                     @Override
-                    public void _next(List<Course> products) {
+                    public void _next(List<OrganizationProduct> products) {
                         view.completeRefresh();
                         view.showCollageCourseList(products, skip != 0);
                     }
@@ -44,35 +46,18 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
     }
 
     @Override
-    public List<List<ConditionOption>> getConditionOptionsList() {
+    public List<ConditionOption> getConditionOptionsList() {
+        List<ConditionOption> conditionOptionList = new ArrayList<>();
 
-//        String where_price = "price";
-//        String where_area = "level";
-//
-//
-//        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
-//        String[] level = App.context.getResources().getStringArray(R.array.education_level);
-//
-//        List<List<ConditionOption>> optionsList = new ArrayList<>();
-//
-//
-//        //价格可选项
-//        List<ConditionOption> priceOptions = new ArrayList<>();
-//        for (String price : prices) {
-//            ConditionOption conditionOption = new ConditionOption(where_price, price);
-//            priceOptions.add(conditionOption);
-//        }
-//        optionsList.add(priceOptions);
-//
-//
-//        List<ConditionOption> areaOptions = new ArrayList<>();
-//        for (String area : level) {
-//            ConditionOption conditionOption = new ConditionOption(where_area, area);
-//            areaOptions.add(conditionOption);
-//        }
-//        optionsList.add(areaOptions);
+        List<Option> kindOptions = new ArrayList<>();
+        Option optionDESC = new Option("createAt DESC", "升序排序");
+        Option optionHelp = new Option("createAt ", "降序排序");
+        kindOptions.add(optionDESC);
+        kindOptions.add(optionHelp);
+        ConditionOption conditionOptionOrder = new ConditionOption("order", "时间", kindOptions);
 
-        return null;
+        conditionOptionList.add(conditionOptionOrder);
+        return conditionOptionList;
     }
 
 }

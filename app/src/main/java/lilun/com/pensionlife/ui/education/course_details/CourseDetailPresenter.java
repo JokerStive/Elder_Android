@@ -5,7 +5,7 @@ import android.widget.Toast;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
-import lilun.com.pensionlife.module.bean.Course;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
@@ -63,13 +63,13 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
     @Override
     public void getCourseDetail(String courseId, String filter) {
         addSubscribe(NetHelper.getApi()
-                .getOneCourse(courseId,filter)
+                .getProduct(courseId,filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Course>() {
+                .subscribe(new RxSubscriber<OrganizationProduct>() {
                     @Override
-                    public void _next(Course edusColleageCourse) {
-                        view.showCourseDetail(edusColleageCourse);
+                    public void _next(OrganizationProduct course) {
+                        view.showCourseDetail(course);
                     }
 
                     @Override

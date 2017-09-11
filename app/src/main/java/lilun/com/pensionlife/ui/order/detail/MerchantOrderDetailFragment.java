@@ -127,7 +127,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             } else {
                 tvName.setText(context);
             }
-            rbBar.setRating(product.getScore());
+            rbBar.setRating(product.getRank());
             tvPrice.setText("价格:" + product.getPrice());
 
             ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage())), R.drawable.icon_def, ivImage);
@@ -149,14 +149,6 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             //跳转用户资料界面
             case R.id.tv_user_info:
                 start(AddServiceInfoFragment.newInstance(mOrder, false));
-//                String contactId = mOrder.getUserProfileId();
-//                if (!TextUtils.isEmpty(contactId)) {
-//                    String categoryId = mOrder.getCategoryId();
-//                    if (categoryId.equals(Config.tourism_product_categoryId)) {
-//                        start(AddTourismInfoFragment.newInstance(mOrder.getContact(), false));
-//                    } else {
-//                    }
-//                }
                 break;
 
             //产品详情界面

@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,8 +32,8 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.bean.AgencyContactExtension;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.ContactExtendKey;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -294,26 +295,26 @@ public class ReservationFragment extends BaseFragment {
         tvContactAddress.setText(mContact.getAddress());
 
         String categoryId = mProduct.getCategoryId();
-//        AgencyContactExtension extend = mContact.getExtend();
+        HashMap<String, String> extend = mContact.getExtend();
         if (categoryId.contains("养老机构")) {
             llAgancyExtension.setVisibility(View.VISIBLE);
 
-//            if (extend != null) {
-//
-//                String relation = extend.getRelation();
-//                String reservationName = extend.getReservationName();
-//                String sex = extend.getSex();
-//                String birthday = extend.getBirthday();
-//                String healthStatus = extend.getHealthStatus();
-//                String healthyDescription = extend.getHealthyDescription();
-//
-//                tvContactExtensionRelation.setText(relation);
-//                tvContactExtensionName.setText(reservationName);
-//                tvContactExtensionSex.setText(sex);
-//                tvContactExtensionBirthday.setText(birthday);
-//                tvContactExtensionHealthStatus.setText(healthStatus);
-//                tvContactExtensionHealthDesc.setText(healthyDescription);
-//            }
+            if (extend != null) {
+
+                String relation = extend.get(ContactExtendKey.relation);
+                String reservationName = extend.get(ContactExtendKey.reservationName);
+                String sex = extend.get(ContactExtendKey.sex);
+                String birthday = extend.get(ContactExtendKey.birthday);
+                String healthStatus = extend.get(ContactExtendKey.healthStatus);
+                String healthyDescription = extend.get(ContactExtendKey.healthyDescription);
+
+                tvContactExtensionRelation.setText(relation);
+                tvContactExtensionName.setText(reservationName);
+                tvContactExtensionSex.setText(sex);
+                tvContactExtensionBirthday.setText(birthday);
+                tvContactExtensionHealthStatus.setText(healthStatus);
+                tvContactExtensionHealthDesc.setText(healthyDescription);
+            }
 
 
         }
@@ -352,7 +353,6 @@ public class ReservationFragment extends BaseFragment {
     }
 
 
-
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
         String orderTime = tvOrderTime.getText().toString();
         String orderMemo = tvOrderMemo.getText().toString();
@@ -361,14 +361,16 @@ public class ReservationFragment extends BaseFragment {
 
     private Contact newContactModel() {
         Contact contact = new Contact();
-        AgencyContactExtension extension = new AgencyContactExtension();
-        extension.setRelation(tvContactExtensionRelation.getText().toString());
-        extension.setReservationName(tvContactExtensionName.getText().toString());
-        extension.setSex(tvContactExtensionSex.getText().toString());
-        extension.setBirthday(tvContactExtensionBirthday.getText().toString());
-        extension.setHealthStatus(tvContactExtensionHealthStatus.getText().toString());
-        extension.setHealthyDescription(tvContactExtensionHealthDesc.getText().toString());
+        HashMap<String, String> extension = new HashMap<>();
+//        AgencyContactExtension extension = new AgencyContactExtension();
+        extension.put(ContactExtendKey.relation, tvContactExtensionRelation.getText().toString());
+        extension.put(ContactExtendKey.reservationName, tvContactExtensionName.getText().toString());
+        extension.put(ContactExtendKey.sex, tvContactExtensionSex.getText().toString());
+        extension.put(ContactExtendKey.birthday, tvContactExtensionBirthday.getText().toString());
+        extension.put(ContactExtendKey.healthStatus, tvContactExtensionHealthStatus.getText().toString());
+        extension.put(ContactExtendKey.healthyDescription, tvContactExtensionHealthDesc.getText().toString());
         contact.setExtend(extension);
+        contact.setIndex(mContact.getIndex());
         return contact;
     }
 

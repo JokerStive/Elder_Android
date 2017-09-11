@@ -13,55 +13,37 @@ import lilun.com.pensionlife.base.BaseBean;
  */
 public class OrganizationProduct extends BaseBean {
 
-    /**
-     * name : string
-     * title : string
-     * context : string
-     * contextType : string
-     * price : 0
-     * score : 0
-     * areaIds : ["string"]
-     * id : string
-     * createdAt : $now
-     * updatedAt : $now
-     * creatorId : string
-     * creatorName : string
-     * updatorId : string
-     * updatorName : string
-     * organizationId : string
-     * visible : 0
-     * image : {}
-     * categoryId : string
-     */
-
+    private String id;
     private String name;
+    private String title;
     private String subTitle;
+    private String context;
+    private String contextType;
+    private Double price;
+    private String unit;
+    private int stock;
+    private int sold;
+    private int rank;
+    private String tag;
 
-    public String getSubTitle() {
-        return subTitle;
+    public int getRank() {
+        return rank;
     }
 
-    public OrganizationProduct setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
+    public OrganizationProduct setRank(int rank) {
+        this.rank = rank;
         return this;
     }
 
-    private String title;
-    private String context;
-    private String contextType;
-    private double price;
-    private int score;
-    private String id;
+    private String extend;
+    private String startTime;
+    private String endTIme;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private String organizationId;
-    private List<IconModule> image;
-    private String categoryId;
-    private String mobile;
 
     public String getMobile() {
         return mobile;
@@ -72,8 +54,21 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
+    private String organizationId;
+    private String categoryId;
+    private List<String> phone;
+    private List<String> orderType;
+    private List<IconModule> image;
     private List<String> areaIds;
+    private String mobile;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -89,6 +84,14 @@ public class OrganizationProduct extends BaseBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public String getContext() {
@@ -107,28 +110,69 @@ public class OrganizationProduct extends BaseBean {
         this.contextType = contextType;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getScore() {
-        return score;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
-    public String getId() {
-        return id;
+    public int getStock() {
+        return stock;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
+
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getExtend() {
+        return extend;
+    }
+
+    public void setExtend(String extend) {
+        this.extend = extend;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTIme() {
+        return endTIme;
+    }
+
+    public void setEndTIme(String endTIme) {
+        this.endTIme = endTIme;
     }
 
     public String getCreatedAt() {
@@ -187,15 +231,6 @@ public class OrganizationProduct extends BaseBean {
         this.organizationId = organizationId;
     }
 
-
-    public List<IconModule> getImage() {
-        return image;
-    }
-
-    public void setImage(List<IconModule> image) {
-        this.image = image;
-    }
-
     public String getCategoryId() {
         return categoryId;
     }
@@ -204,14 +239,35 @@ public class OrganizationProduct extends BaseBean {
         this.categoryId = categoryId;
     }
 
+    public List<String> getPhone() {
+        return phone;
+    }
+
+    public void setPhone(List<String> phone) {
+        this.phone = phone;
+    }
+
+    public List<String> getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(List<String> orderType) {
+        this.orderType = orderType;
+    }
+
+    public List<IconModule> getImage() {
+        return image;
+    }
+
+    public void setImage(List<IconModule> images) {
+        this.image = images;
+    }
+
     public List<String> getAreaIds() {
         return areaIds;
     }
 
     public void setAreaIds(List<String> areaIds) {
         this.areaIds = areaIds;
-    }
-
-    public static class ImagesBean {
     }
 }

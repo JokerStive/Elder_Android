@@ -271,10 +271,10 @@ public class ProductDetailFragment extends BaseFragment {
 //        tvProductTitleExtra.setText(product.getTitle());
 
         //星
-        rbScore.setCountSelected(product.getScore());
+        rbScore.setCountSelected(product.getRank());
 
         //星文字
-        tvScore.setText((double) product.getScore() + "");
+        tvScore.setText((double) product.getRank() + "");
 
         //价格
         tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()) + "/次");
@@ -383,15 +383,46 @@ public class ProductDetailFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
                     @Override
                     public void _next(List<Contact> contacts) {
-                        if (contacts.size() > 0) {
-                            //显示 预约者信息列表
-                            start(ContactListFragment.newInstance(mProduct.getId()));
-                        } else {
-                            //新增基础信息界面
-                            start(AddBasicContactFragment.newInstance(mProduct.getId()));
-                        }
+                        checkContact(contacts);
                     }
                 });
+    }
+
+    /**
+     * 检查预约资料
+     */
+    private void checkContact(List<Contact> contacts) {
+        if (contacts.size() > 0) {
+            //显示 预约者信息列表
+            Contact defContact = getDefaultContact(contacts);
+            if (defContact == null) {
+                //没有默认信息，就进去信息列表
+                start(ContactListFragment.newInstance(mProduct.getId()));
+            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
+                defContact.setProductId(mProductId);
+                //必要信息不完善
+                start(AddBasicContactFragment.newInstance(defContact, 1));
+            } else {
+                //有默认信息，并且必要信息完整，直接预约界面
+                start(ReservationFragment.newInstance(mProductId, defContact));
+            }
+        } else {
+            //新增基础信息界面
+            start(AddBasicContactFragment.newInstance(mProduct.getId()));
+        }
+    }
+
+    /**
+     * 获取默认信息
+     */
+    private Contact getDefaultContact(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            int index = contact.getIndex();
+            if (index == 1) {
+                return contact;
+            }
+        }
+        return null;
     }
 
     /**

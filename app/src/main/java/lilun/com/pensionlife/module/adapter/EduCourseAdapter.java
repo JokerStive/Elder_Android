@@ -10,22 +10,22 @@ import java.util.List;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
-import lilun.com.pensionlife.module.bean.Course;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 大学-课程adapter
  */
-public class EduCourseAdapter extends QuickAdapter<Course> {
+public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
 
-    public EduCourseAdapter(List<Course> data) {
+    public EduCourseAdapter(List<OrganizationProduct> data) {
         super(R.layout.item_course, data);
     }
 
 
     @Override
-    protected void convert(BaseViewHolder help, Course course) {
+    protected void convert(BaseViewHolder help, OrganizationProduct course) {
         int totalCount = course.getSold() + course.getStock();
         String priceFormat = new DecimalFormat("######0.00").format(course.getPrice());
         String price = "合计: <font color='#ff9d09'>" + "¥" + priceFormat + "</font>";
@@ -50,7 +50,7 @@ public class EduCourseAdapter extends QuickAdapter<Course> {
 
 
         //图片
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, course.getId(), StringUtils.getFirstIconNameFromIcon(course.getImages()));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, course.getId(), StringUtils.getFirstIconNameFromIcon(course.getImage()));
         ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_icon));
 
     }

@@ -11,7 +11,6 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
-import lilun.com.pensionlife.module.bean.Course;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.IconModule;
@@ -339,16 +338,16 @@ public interface ApiService {
     @GET("OrganizationEdus")
     Observable<Response<List<OrganizationEdu>>> getOrganizationsEdus(@Query("filter") String filter);
 
-    /**
-//     * 获取organization -- 大学课程
+//    /**
+////     * 获取organization -- 大学课程
+////     */
+//    Observable<Response<List<Course>>> getCourses( @Query("filter") String filter);
+//
+//    /**
+//     * 获取课程详情
 //     */
-    Observable<Response<List<Course>>> getCourses( @Query("filter") String filter);
-
-    /**
-     * 获取课程详情
-     */
-    @GET("EduCourses/{id}")
-    Observable<Response<Course>> getOneCourse(@Path("id") String courseId, @Query("filter") String filter);
+//    @GET("EduCourses/{id}")
+//    Observable<Response<Course>> getOneCourse(@Path("id") String courseId, @Query("filter") String filter);
 
     /**
      * 我参加的课程 --
