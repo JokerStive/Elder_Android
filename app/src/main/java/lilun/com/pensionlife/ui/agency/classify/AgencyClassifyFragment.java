@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -18,10 +17,8 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AgencyClassifyAdapter;
 import lilun.com.pensionlife.module.adapter.ProductCategoryAdapter;
 import lilun.com.pensionlife.module.bean.Organization;
-import lilun.com.pensionlife.module.bean.ProductCategory;
-import lilun.com.pensionlife.module.bean.Setting;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
-import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.tourism.root.TourismRootFragment;
@@ -151,18 +148,18 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
 
     @Override
-    public void showClassifiesByService(List<ProductCategory> productCategories, String categoryId) {
+    public void showClassifiesByService(List<OrganizationProductCategory> productCategories, String categoryId) {
         completeRefresh();
-        cacheExpendKeys(productCategories);
+//        cacheExpendKeys(productCategories);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
 
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
-            ProductCategory productCategory = adapter.getData().get(i);
-            if (productCategory.getParentId().equals(Config.tourism_product_categoryId)) {
-                start(TourismRootFragment.newInstance(productCategory.getId()));
+            OrganizationProductCategory OrganizationProductCategory = adapter.getData().get(i);
+            if (OrganizationProductCategory.getParentId().equals(Config.tourism_product_categoryId)) {
+                start(TourismRootFragment.newInstance(OrganizationProductCategory.getId()));
             } else {
-                start(ProductListFragment.newInstance(productCategory.getName(), productCategory.getId(), 0));
+                start(ProductListFragment.newInstance(OrganizationProductCategory.getName(), OrganizationProductCategory.getId(), 0));
             }
         });
         show(gridLayoutManager, adapter, categoryId);
@@ -179,15 +176,15 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         }
     }
 
-    private void cacheExpendKeys(List<ProductCategory> productCategories) {
-        for (ProductCategory productCategory : productCategories) {
-            String categoryId = productCategory.getId();
-            if (!ACache.get().isExit(categoryId)) {
-                List<Setting> settings = productCategory.getSetting();
-                ACache.get().put(categoryId, (Serializable) settings);
-            }
-        }
-    }
+//    private void cacheExpendKeys(List<OrganizationProductCategory> productCategories) {
+//        for (OrganizationProductCategory OrganizationProductCategory : productCategories) {
+//            String categoryId = OrganizationProductCategory.getId();
+//            if (!ACache.get().isExit(categoryId)) {
+//                List<Setting> settings = OrganizationProductCategory.getSetting();
+//                ACache.get().put(categoryId, (Serializable) settings);
+//            }
+//        }
+//    }
 
 
     @Override

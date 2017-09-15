@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/extension_sex"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="性别                "
+
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <TextView
+            android:id="@+id/tv_contact_extension_sex"
+            style="@style/tv_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/extension_sex"
+            android:drawableRight="@drawable/add_contact_next"
+            android:hint="选择性别"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="1dp"
+            android:layout_below="@id/extension_sex"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/extension_birthday"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="出生日期        "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <TextView
+            android:id="@+id/tv_contact_extension_birthday"
+            style="@style/tv_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/extension_birthday"
+            android:drawableRight="@drawable/add_contact_next"
+            android:hint="选择出生日期"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="1dp"
+            android:layout_below="@id/extension_birthday"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/extension_health_status"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="健康状况        "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <TextView
+            android:id="@+id/tv_contact_extension_health_status"
+            style="@style/tv_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/extension_health_status"
+            android:drawableRight="@drawable/add_contact_next"
+            android:hint="选择健康状况"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="1dp"
+            android:layout_below="@id/extension_health_status"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/extension_health_politic_status"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="政治面貌        "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <TextView
+            android:id="@+id/tv_contact_extension_politic_status"
+            style="@style/tv_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/extension_health_politic_status"
+            android:drawableRight="@drawable/add_contact_next"
+            android:hint="选择政治面貌"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="1dp"
+            android:layout_below="@id/extension_health_politic_status"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/extension_post_work"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="原工作单位     "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <EditText
+            android:id="@+id/et_contact_post_work"
+            style="@style/et_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/extension_post_work"
+            android:hint="工作单位"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="1dp"
+            android:layout_below="@id/extension_post_work"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line_gray"
+        android:layout_height="@dimen/sp_17"
+        android:background="#f5f5f9" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/emergency"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="紧急联系人    "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <EditText
+            android:id="@+id/et_contact_emergency_name"
+            style="@style/et_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/emergency"
+            android:hint="请填写紧急联系人姓名"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="@dimen/dp_1"
+            android:layout_below="@id/emergency"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_16">
+
+
+        <TextView
+            android:id="@+id/emergency_phone"
+            style="@style/tv_normal_ellipsize"
+            android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:text="联系人电话    "
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <EditText
+            android:id="@+id/et_emergency_phone"
+            style="@style/et_normal"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toRightOf="@id/emergency_phone"
+            android:hint="请填写紧急联系人带年华"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_17" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_height="@dimen/dp_1"
+            android:layout_below="@id/emergency_phone"
+            android:background="#f5f5f9" />
+
+    </RelativeLayout>
+
+</LinearLayout>

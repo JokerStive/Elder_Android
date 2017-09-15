@@ -22,11 +22,12 @@ import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
-import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.bean.Register;
+import lilun.com.pensionlife.module.bean.Semester;
 import lilun.com.pensionlife.module.bean.TokenInfo;
 import lilun.com.pensionlife.module.bean.Tourism;
 import okhttp3.MultipartBody;
@@ -124,8 +125,8 @@ public interface ApiService {
      * 获取ProductCategory数据
      */
 
-    @GET("ProductCategories")
-    Observable<Response<List<ProductCategory>>> getProductCategories(@Query("filter") String filter);
+    @GET("OrganizationProductCategories")
+    Observable<Response<List<OrganizationProductCategory>>> getOrgProductCategories(@Query("filter") String filter);
 
 
     /**
@@ -142,6 +143,31 @@ public interface ApiService {
 
     @GET("OrganizationProducts")
     Observable<Response<List<OrganizationProduct>>> getProducts(@Query("filter") String filter);
+
+
+    /**
+     * 大学列表
+     */
+
+    @GET("OrganizationProducts/aggregate")
+    Observable<Response<List<Organization>>> getColleges(@Query("filter") String filter);
+
+
+    /**
+     * 获取productCategory
+     */
+
+    @GET("OrganizationProductCategories")
+    Observable<Response<List<OrganizationProductCategory>>> getOrganizationProductCategories(@Query("filter") String filter);
+
+
+    /**
+     * 获取学期列表
+     */
+
+    @GET("OrganizationEduSemesters/ActivitySemester")
+    Observable<Response<List<Semester>>> getSemesters(@Query("filter") String filter);
+
 
     /**
      * 获取product

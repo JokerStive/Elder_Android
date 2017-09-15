@@ -41,6 +41,25 @@ public class User {
     public static final String firstHelperPhone = "firstHelperPhone";
     public static final String loginTime = "loginTime";
     public static final String address = "address";
+    public static final String certificateLicense = "certificateLicense";
+
+
+    public static ArrayList<String> getCertificateLicense() {
+        return (ArrayList<String>) ACache.get().getAsObject(certificateLicense);
+    }
+
+    public static void putCertificateLicense(ArrayList<String> list) {
+        ACache.get().put(certificateLicense, list);
+    }
+
+    public static void addCertificateLicense(String productId) {
+        ArrayList<String> certificateLicense = getCertificateLicense();
+        if (certificateLicense == null) {
+            certificateLicense = new ArrayList<>();
+        }
+        certificateLicense.add(productId);
+        putCertificateLicense(certificateLicense);
+    }
 
 
     public static String getLoginTime() {

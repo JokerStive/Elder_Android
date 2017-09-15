@@ -17,6 +17,16 @@
                 android:id="@+id/titleBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv_college_introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_27"
+                android:src="@drawable/college_introduction" />
+
         </RelativeLayout>
 
         <lilun.com.pensionlife.widget.filter_view.FilterView

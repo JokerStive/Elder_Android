@@ -1,11 +1,12 @@
 package lilun.com.pensionlife.module.adapter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import android.text.Html;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
@@ -33,25 +34,25 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
         help.setText(R.id.tv_course_title, course.getName())
                 .setText(R.id.tv_course_allow_count, "报名人数:" + totalCount)
                 .setText(R.id.tv_course_stock, "剩余人数:" + course.getStock())
-                .setText(R.id.tv_course_price, price);
+                .setText(R.id.tv_course_price, Html.fromHtml(price));
 
 
         //扩展属性
-        String extend = course.getExtend();
-        JSONObject extendJson = JSON.parseObject(extend);
-        if (extendJson != null) {
-            String teacher = extendJson.getString("teacher");
-            String time = extendJson.getString("time");
-            String address = extendJson.getString("address");
+        Map<String, String> extend = course.getExtend();
+        if (extend != null) {
+            String teacher = extend.get("teacher");
+            String time = extend.get("classTime");
+            String address = extend.get("classPlace");
             help.setText(R.id.tv_course_teacher, "授课老师:" + StringUtils.filterNull(teacher))
-                    .setText(R.id.tv_course_time, "上课时间:" + StringUtils.filterNull(time))
-                    .setText(R.id.tv_course_address, "上课地址:" + StringUtils.filterNull(address));
+                    .setText(R.id.tv_course_time, "上课时间 : " + StringUtils.filterNull(time))
+                    .setText(R.id.tv_course_address, "上课地址 : " + StringUtils.filterNull(address));
         }
 
 
         //图片
+
         String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, course.getId(), StringUtils.getFirstIconNameFromIcon(course.getImage()));
-        ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_course_icon));
 
     }
 

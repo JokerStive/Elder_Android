@@ -14,7 +14,7 @@
         android:id="@+id/iv_course_icon"
         android:layout_width="@dimen/dp_60"
         android:layout_height="@dimen/dp_60"
-        app:riv_corner_radius="30dip"
+        app:riv_corner_radius="5dip"
         tools:src="@drawable/help_a_neighbor_off" />
 
     <TextView
@@ -32,6 +32,7 @@
     <TextView
         android:id="@+id/tv_course_teacher"
         style="@style/tv_normal"
+        android:drawableLeft="@drawable/course_list_teacher"
         android:layout_alignLeft="@id/tv_course_title"
         android:layout_below="@id/tv_course_title"
         android:layout_marginTop="@dimen/dp_6"
@@ -89,6 +90,7 @@
         android:background="#f5f5f9" />
 
     <TextView
+        android:drawableLeft="@drawable/course_list_time"
         android:id="@+id/tv_course_time"
         style="@style/tv_normal"
         android:layout_alignLeft="@id/tv_course_title"
@@ -102,6 +104,7 @@
         tools:text="上课时间:每周三下午14：20-17：00" />
 
     <TextView
+        android:drawableLeft="@drawable/course_list_address"
         android:id="@+id/tv_course_address"
         style="@style/tv_normal"
         android:layout_alignLeft="@id/tv_course_title"

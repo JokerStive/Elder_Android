@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.ui.education.course_list;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 课程列表筛选器
  *
@@ -9,10 +11,11 @@ package lilun.com.pensionlife.ui.education.course_list;
  */
 public class CourseListFilter {
 
+
     public CourseListFilter(String organizationId) {
         where = new WhereBean();
         where.setOrganizationId(organizationId);
-        setOrder("createAt DESC");
+        setOrder("createdAt DESC");
     }
 
     /**
@@ -47,13 +50,24 @@ public class CourseListFilter {
 
         private String organizationId;
         private String orgCategoryId;
+        @SerializedName("extend.termId")
+        private String termId;
+
+        public String getTermId() {
+            return termId;
+        }
+
+        public WhereBean setTermId(String termId) {
+            this.termId = termId;
+            return this;
+        }
 
         public String getOrganizationId() {
             return organizationId;
         }
 
         public void setOrganizationId(String organizationId) {
-            this.organizationId = organizationId;
+            this.organizationId = organizationId+ "/#product";
         }
 
         public String getOrgCategoryId() {

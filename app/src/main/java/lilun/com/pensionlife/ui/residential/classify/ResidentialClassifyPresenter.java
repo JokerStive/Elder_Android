@@ -5,7 +5,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.RxPresenter;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -23,19 +23,19 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
 
     @Override
     public void getClassifies() {
-        List<ProductCategory> productCategories = (List<ProductCategory>) ACache.get().getAsObject("familyProductClassify");
+        List<OrganizationProductCategory> productCategories = (List<OrganizationProductCategory>) ACache.get().getAsObject("familyProductClassify");
         if (productCategories != null && productCategories.size() != 0) {
             view.showClassifies(productCategories);
             return;
         }
         String filter = "{\"where\":{\"parentId\":\"" + Config.residential_product_categoryId + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
-                .getProductCategories(filter)
+                .getOrgProductCategories(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ProductCategory>>() {
+                .subscribe(new RxSubscriber<List<OrganizationProductCategory>>() {
                     @Override
-                    public void _next(List<ProductCategory> productCategories) {
+                    public void _next(List<OrganizationProductCategory> productCategories) {
                         ACache.get().put("familyProductClassify", (Serializable) productCategories);
                         view.showClassifies(productCategories);
                     }

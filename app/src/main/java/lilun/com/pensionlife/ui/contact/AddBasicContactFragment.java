@@ -75,12 +75,14 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     String AddressSepreator = "-";
     private boolean isLoseNecessary;
     private int flag = -1;
+    private onAddBasicContactListener mListener;
 
-    public static AddBasicContactFragment newInstance(String productId) {
+    public AddBasicContactFragment newInstance(String productId, onAddBasicContactListener listener) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
         Bundle args = new Bundle();
         args.putString("productId", productId);
         fragment.setArguments(args);
+        this.mListener = listener;
         return fragment;
     }
 //
@@ -92,6 +94,14 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
 //        return fragment;
 //    }
 
+
+    public interface onAddBasicContactListener {
+        void onAddBasicContact(Contact contact);
+    }
+
+    public void setOnAddBasicContactListener(onAddBasicContactListener listener) {
+        this.mListener = listener;
+    }
 
     /**
      * @param contact 需要编辑的信息
@@ -278,8 +288,9 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
 
     private void next() {
         //只有当mProductId不为空的时候，表示下一个动作是去预约界面
-        if (!TextUtils.isEmpty(mProductId)) {
-            statReservation(mContact);
+        if (!TextUtils.isEmpty(mProductId) && mListener != null) {
+            pop();
+            mListener.onAddBasicContact(mContact);
         } else {
             EventBus.getDefault().post(new Event.RefreshContract());
             pop();

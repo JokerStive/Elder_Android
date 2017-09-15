@@ -116,6 +116,9 @@ public class LoginModule implements LoginContract.Module {
         //商家跑单人员
         User.putBusinessId(getBusinessId(account.getRoles()));
 
+        //认证协议
+        User.putCertificateLicense(account.getCertificateLicense());
+
     }
 
     private String getBusinessId(List<String> roles) {

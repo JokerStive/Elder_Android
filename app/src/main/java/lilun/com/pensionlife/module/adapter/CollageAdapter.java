@@ -23,10 +23,13 @@ public class CollageAdapter extends QuickAdapter<Organization> {
 
     @Override
     protected void convert(BaseViewHolder help, Organization organization) {
-        help.setText(R.id.tv_organizationEdu_title, organization.getName());
+        String organizationId = organization.getId();
+        String removeSpecialSuffix = StringUtils.removeSpecialSuffix(organizationId);
+        String name = removeSpecialSuffix.substring(removeSpecialSuffix.lastIndexOf("/")+1);
+        help.setText(R.id.tv_organizationEdu_title, name);
 
 
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, organization.getId(), StringUtils.getFirstIconNameFromIcon(organization.getIcon()));
+        String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, removeSpecialSuffix, StringUtils.getFirstIconNameFromIcon(organization.getIcon()));
         ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_organizationEdu_icon));
 
     }

@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.bean;
 
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pensionlife.base.BaseBean;
 
@@ -21,10 +22,21 @@ public class OrganizationProduct extends BaseBean {
     private String contextType;
     private Double price;
     private String unit;
+    private String licenseGgreement;
+
+    public String getLicenseGgreement() {
+        return licenseGgreement;
+    }
+
+    public OrganizationProduct setLicenseGgreement(String licenseGgreement) {
+        this.licenseGgreement = licenseGgreement;
+        return this;
+    }
+
     private int stock;
     private int sold;
     private int rank;
-    private String tag;
+    private Map<String, String> tag;
 
     public int getRank() {
         return rank;
@@ -35,7 +47,7 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
-    private String extend;
+    private Map<String,String> extend;
     private String startTime;
     private String endTIme;
     private String createdAt;
@@ -56,7 +68,7 @@ public class OrganizationProduct extends BaseBean {
 
     private String organizationId;
     private String categoryId;
-    private List<String> phone;
+    private String phone;
     private List<String> orderType;
     private List<IconModule> image;
     private List<String> areaIds;
@@ -143,19 +155,19 @@ public class OrganizationProduct extends BaseBean {
     }
 
 
-    public String getTag() {
+    public Map<String, String> getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(Map<String, String> tag) {
         this.tag = tag;
     }
 
-    public String getExtend() {
+    public Map<String,String> getExtend() {
         return extend;
     }
 
-    public void setExtend(String extend) {
+    public void setExtend(Map<String,String> extend) {
         this.extend = extend;
     }
 
@@ -239,11 +251,11 @@ public class OrganizationProduct extends BaseBean {
         this.categoryId = categoryId;
     }
 
-    public List<String> getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(List<String> phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.CollageAdapter;
 import lilun.com.pensionlife.module.bean.ElderModule;
@@ -79,6 +80,7 @@ public class EducationListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle("老年大学");
+        titleBar.setOnBackClickListener(this::pop);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
@@ -87,11 +89,13 @@ public class EducationListFragment extends BaseFragment {
         mCollageAdapter.setOnItemClickListener((adapter, view, position) -> {
             Organization collage = mCollageAdapter.getItem(position);
             assert collage != null;
-            start(CourseListFragment.newInstance(collage.getId()));
+            String id = StringUtils.removeSpecialSuffix(collage.getId());
+            start(CourseListFragment.newInstance(id));
         });
         mCollageAdapter.setOnLoadMoreListener(() -> {
             getDataList(mCollageAdapter.getItemCount());
         }, mRecyclerView);
+
 
         mRecyclerView.setAdapter(mCollageAdapter);
 
@@ -106,8 +110,9 @@ public class EducationListFragment extends BaseFragment {
 
     private void getDataList(int skip) {
         mSwipeLayout.setRefreshing(skip == 0);
+        String filter = "{\"visible\":0,\"limit\":" + Config.defLoadDatCount + ",\"skip\":" + skip + ",\"where\":{\"tag.kind\":\"college\"}, \"aggregate\": { \"group\": { \"id\": \"$organizationId\" } } }";
         NetHelper.getApi()
-                .getOrganizations("", StringUtils.addFilterWithDef(null, skip))
+                .getColleges(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Organization>>() {

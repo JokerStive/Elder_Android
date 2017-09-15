@@ -397,7 +397,7 @@ public class ProductDetailFragment extends BaseFragment {
             Contact defContact = getDefaultContact(contacts);
             if (defContact == null) {
                 //没有默认信息，就进去信息列表
-                start(ContactListFragment.newInstance(mProduct.getId()));
+                start(ContactListFragment.newInstance(mProduct.getId(), 0));
             } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
                 defContact.setProductId(mProductId);
                 //必要信息不完善
@@ -408,7 +408,12 @@ public class ProductDetailFragment extends BaseFragment {
             }
         } else {
             //新增基础信息界面
-            start(AddBasicContactFragment.newInstance(mProduct.getId()));
+            AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();
+            Bundle args = new Bundle();
+            args.putString("productId", mProductId);
+            addBasicContactFragment.setArguments(args);
+            addBasicContactFragment.setOnAddBasicContactListener(contact -> start(ReservationFragment.newInstance(mProductId, contact)));
+            start(addBasicContactFragment);
         }
     }
 
