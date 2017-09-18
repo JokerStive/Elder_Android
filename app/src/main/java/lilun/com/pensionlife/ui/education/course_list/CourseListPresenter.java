@@ -53,7 +53,7 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
                 .getOrganizationProductCategories(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<OrganizationProductCategory>>() {
+                .subscribe(new RxSubscriber<List<OrganizationProductCategory>>(getActivity()) {
                     @Override
                     public void _next(List<OrganizationProductCategory> categories) {
                         view.getCategorySuccess(categories);

@@ -81,6 +81,16 @@
 
 
             <TextView
+                android:id="@+id/tv_contact_setting"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/account_info"
+                android:text="预约资料管理" />
+
+
+            <TextView
                 android:id="@+id/tv_my_order"
                 style="@style/tv_normal_ellipsize"
                 android:layout_width="match_parent"

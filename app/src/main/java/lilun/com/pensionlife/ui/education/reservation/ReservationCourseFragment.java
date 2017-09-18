@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -229,32 +229,26 @@ public class ReservationCourseFragment extends BaseFragment {
 
         tvProductPrice.setText("￥" + new DecimalFormat("######0.00").format(mProduct.getPrice()) + "");
 
-        showProductArea();
+        tvPrice.setText(Html.fromHtml("价格: <font color='#fe620f'>" + new DecimalFormat("######0.00").format(mProduct.getPrice()) + "元" + "</font>"));
+
+        tvProductArea.setText(showSemester(mProduct.getExtend()));
     }
 
 
-    /**
-     * 服务范围
-     */
-    private void showProductArea() {
-        List<String> areas = mProduct.getAreaIds();
-        String result = "无";
-        if (areas != null) {
-            for (int i = 0; i < areas.size(); i++) {
-                String area = StringUtils.getOrganizationNameFromId(areas.get(i));
-                if (!TextUtils.isEmpty(area)) {
-                    if (i == 0) {
-                        result = result + area;
-                    } else {
-                        result = result + "、" + area;
-                    }
-                }
+    private String showSemester(Map<String, String> extend) {
+        //显示学期
+        String semester = "无";
+        if (extend != null) {
+            String termStartDate = extend.get("termStartDate");
+            String termEndDate = extend.get("termEndDate");
+            if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+                semester = "开始时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "\n"
+                        + "结束时间：" + StringUtils.IOS2ToUTC(termEndDate, 5);
             }
         }
-        tvProductArea.setText(String.format("服务范围: %1$s", result));
-
-        tvPrice.setText(Html.fromHtml("价格: <font color='#fe620f'>" + new DecimalFormat("######0.00").format(mProduct.getPrice()) + "元" + "</font>"));
+        return semester;
     }
+
 
     /**
      * 显示个人资料
@@ -380,6 +374,7 @@ public class ReservationCourseFragment extends BaseFragment {
             return false;
         } else if (!RegexUtils.checkMobile(etContactExtensionPostWork.getText().toString())) {
             ToastHelper.get().showWareShort("紧急联系人电话有误");
+            return false;
         }
 
         return true;

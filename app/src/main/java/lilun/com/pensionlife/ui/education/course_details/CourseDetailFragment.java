@@ -195,7 +195,7 @@ public class CourseDetailFragment extends BaseFragment {
             String termStartDate = extend.get("termStartDate");
             String termEndDate = extend.get("termEndDate");
             if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
-                String semesterText = "学期" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
+                String semesterText = "学期：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
                 tvCourseXueqi.setText(semesterText);
             }
 

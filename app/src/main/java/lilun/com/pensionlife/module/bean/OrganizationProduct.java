@@ -73,6 +73,16 @@ public class OrganizationProduct extends BaseBean {
     private List<IconModule> image;
     private List<String> areaIds;
     private String mobile;
+    private String orgCategoryId;
+
+    public String getOrgCategoryId() {
+        return orgCategoryId;
+    }
+
+    public OrganizationProduct setOrgCategoryId(String orgCategoryId) {
+        this.orgCategoryId = orgCategoryId;
+        return this;
+    }
 
     public String getId() {
         return id;

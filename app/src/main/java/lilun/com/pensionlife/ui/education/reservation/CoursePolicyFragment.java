@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.ui.education.reservation;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,10 +81,10 @@ public class CoursePolicyFragment extends BaseFragment {
         titleBar.setOnBackClickListener(this::pop);
 
         String agreePolicy = "同意<font color='#108ee9'>《在线报名须知》</font>";
-        tvAgreePolicy.setText(agreePolicy);
+        tvAgreePolicy.setText(Html.fromHtml(agreePolicy));
         tvAgreePolicy.setOnClickListener(v -> tvAgreePolicy.setSelected(!tvAgreePolicy.isSelected()));
 
-        wbPolicyContent.loadData(mProductPolicy, null, "utf-8");
+        wbPolicyContent.loadDataWithBaseURL(null, mProductPolicy, "text/html", "utf-8", null);
 
         tvReservation.setOnClickListener(new View.OnClickListener() {
             @Override

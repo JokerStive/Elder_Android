@@ -66,6 +66,10 @@ public class ContactListFragment extends BaseFragment {
         return fragment;
     }
 
+    public static ContactListFragment newInstance() {
+        return new ContactListFragment();
+    }
+
     @Override
     protected void getTransferData(Bundle arguments) {
         mProductId = arguments.getString("productId");
@@ -107,8 +111,10 @@ public class ContactListFragment extends BaseFragment {
     private void showContacts(List<Contact> contacts) {
         adapter = new ContactListAdapter(contacts);
         adapter.setOnItemClickListener((ba, view, i) -> {
+            Contact contact = adapter.getData().get(i);
+
+            //携带产品id  预约流程
             if (!TextUtils.isEmpty(mProductId)) {
-                Contact contact = adapter.getData().get(i);
                 if (TextUtils.isEmpty(contact.getMobile()) || TextUtils.isEmpty(contact.getName()) || TextUtils.isEmpty(contact.getAddress())) {
                     contact.setProductId(mProductId);
                     //必要信息不完善
@@ -116,6 +122,11 @@ public class ContactListFragment extends BaseFragment {
                 } else {
                     statReservation(contact);
                 }
+            }
+
+            // 纯粹的个人信息管理
+            else {
+                start(AddBasicContactFragment.newInstance(contact, 1));
             }
         });
         adapter.setOnItemClickListener(new ContactListAdapter.OnItemClickListener() {

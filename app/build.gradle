@@ -145,5 +145,6 @@ dependencies {
     //边框角度imageVie
     compile 'com.makeramen:roundedimageview:2.3.0'
 
+
 }
 
