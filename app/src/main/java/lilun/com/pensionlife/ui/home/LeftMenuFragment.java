@@ -107,7 +107,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.tv_contact_setting:
-                start(ContactListFragment.newInstance());
+                startTargetFragment(ContactListFragment.newInstance());
                 break;
         }
     }
