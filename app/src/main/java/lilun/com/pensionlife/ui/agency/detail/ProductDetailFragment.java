@@ -277,7 +277,7 @@ public class ProductDetailFragment extends BaseFragment {
         tvScore.setText((double) product.getScore() + "");
 
         //价格
-        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()) + "/次");
+        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()));
 
         //服务方式
         tvProductType.setText("服务方式: 线下服务");

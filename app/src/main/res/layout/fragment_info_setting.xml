@@ -63,7 +63,7 @@
                 <TextView
                     style="@style/tv_small"
                     android:layout_centerVertical="true"
-                    android:text="一键求助" />
+                    android:text="紧急求助" />
 
                 <lilun.com.pensionlife.widget.SwitchButton
                     android:id="@+id/sb_help"

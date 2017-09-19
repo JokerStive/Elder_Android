@@ -27,7 +27,7 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
     ContextItem item = new ContextItem();
 
     public HealthServiceAdapter(BaseFragment fragment, List<Information> data) {
-        super(R.layout.item_module_second, data);
+        super(R.layout.item_health, data);
     }
 
     @Override
@@ -43,12 +43,15 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
                 e.printStackTrace();
             }
         }
-        help.setText(R.id.tv_item_title, info.getTitle())
-                .setText(R.id.tv_item_address, item.getAddress())
-        ;
-
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
-        ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
+        help.setText(R.id.tv_item_title, info.getTitle());
+        help.setText(R.id.tv_item_time, StringUtils.up2thisTime(info.getCreatedAt()));
+        if (help.getAdapterPosition() == 0 && null != StringUtils.getFirstIconNameFromIcon(info.getImage())) {
+            help.setVisible(R.id.iv_icon, true);
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
+            ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
+        } else {
+            help.setVisible(R.id.iv_icon, false);
+        }
 
     }
 

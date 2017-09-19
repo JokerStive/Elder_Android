@@ -204,7 +204,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 startPensionAgency();
                 break;
 
-            // 一键求助
+            // 紧急求助
             case R.id.iv_help:
                 startHelp();
                 break;
@@ -311,7 +311,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     /**
-     * 一键求助
+     * 紧急求助
      */
     private void startHelp() {
         String phone = PreUtils.getString("firstHelperPhone", "");

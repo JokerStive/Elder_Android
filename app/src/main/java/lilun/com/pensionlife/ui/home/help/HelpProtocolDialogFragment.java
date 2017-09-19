@@ -15,7 +15,7 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.utils.PreUtils;
 
 /**
- * 一键求助协议dialog
+ * 紧急求助协议dialog
  *
  * @author yk
  *         create at 2017/1/24 16:05

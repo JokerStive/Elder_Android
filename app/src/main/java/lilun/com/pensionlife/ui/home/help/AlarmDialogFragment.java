@@ -24,6 +24,7 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.BaiduLocation;
 import lilun.com.pensionlife.module.utils.PreUtils;
+import lilun.com.pensionlife.module.utils.StartOtherUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
@@ -112,32 +113,9 @@ public class AlarmDialogFragment extends DialogFragment {
 
     }
 
-//    private OrganizationAid newAid() {
-//        OrganizationAid aid = new OrganizationAid();
-//        aid.setKind(2);
-//        aid.setPrice(10);
-//        aid.setTitle("紧急求助");
-//        Logger.d("当前aid的经纬度==地址" + currentLongitude + "---" + currentLatitude + "---" + currentAddress);
-//        if (currentLongitude != 0 && currentLatitude != 0 && !TextUtils.isEmpty(currentAddress)) {
-//            aid.setMemo(currentLongitude + "/" + currentLatitude);
-//            aid.setAddress(currentAddress);
-//        }
-//        aid.setMobile(User.getMobile());
-//        return aid;
-//    }
 
     private void postAid() {
-//        NetHelper.getApi()
-//                .newOrganizationAid(organizationAid)
-//                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<OrganizationAid>() {
-//                    @Override
-//                    public void _next(OrganizationAid organizationAid) {
-//                        ToastHelper.get().showShort("发送成功");
-//                        dismiss();
-//                    }
-//                });
+        String phone = PreUtils.getString("firstHelperPhone", "");
         String topic = "user/" + PreUtils.getString("firstHelperPhone", "") + "/.help/10";
         PushMessage pushMessage = new PushMessage();
         pushMessage.setVerb(PushMessage.VERB_HELP)
@@ -152,10 +130,8 @@ public class AlarmDialogFragment extends DialogFragment {
 
 
         MQTTManager.getInstance().publish(topic, 2, pushMessage.getJsonStr());
+        StartOtherUtils.cellPhone(getActivity(), phone);
         dismiss();
-//        String message = User.getName() + "向您紧急求助，他/她现在的位置在 " + currentAddress
-//                + ",联系电话：" + User.getMobile() + "，请尽快联系。";
-//        sendSmsWithBody(App.context, PreUtils.getString("firstHelperPhone", ""), message);
     }
 
     @Override
