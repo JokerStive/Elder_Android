@@ -13,7 +13,7 @@ import lilun.com.pensionlife.module.utils.ACache;
  */
 public class InfoSettingFilter {
     public static String announce = "公告";
-    public static String help = "紧急求助";
+    public static String help = "一键求助";
     public static String activity = "活动";
     public static String cards = "打牌";
     public static String dance = "唱歌跳舞";

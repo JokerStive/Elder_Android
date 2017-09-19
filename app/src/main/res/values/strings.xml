@@ -391,5 +391,6 @@
     <string name="num_unread">%1$s条未读消息</string>
     <string name="permission_grant_creama">您没有照相权限，请在系统设置-应用权限中给予权限</string>
     <string name="act_max_partner">允许参与最大人数为 9999</string>
+    <string name="location_permission">需要获取位置权限</string>
 
 </resources>

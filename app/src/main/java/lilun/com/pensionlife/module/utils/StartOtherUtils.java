@@ -23,7 +23,7 @@ public class StartOtherUtils {
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
-            ToastHelper.get(context).showWareShort("调用失败");
+            ToastHelper.get(context).showWareShort("启动拨号失败");
         }
     }
 }
