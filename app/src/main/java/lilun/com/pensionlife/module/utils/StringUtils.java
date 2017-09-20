@@ -391,9 +391,9 @@ public class StringUtils {
      * @return
      */
     public static boolean isMobileNo(String mobiles) {
-        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(1[39]\\d{9})");
-        Matcher m = p.matcher(mobiles);
-        return m.matches();
+        //   Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(1[39]\\d{9})");
+        String regex = "^(010\\d{8})|(0[2-9]\\d{9})|(1[3-9]\\d{9})$";
+        return Pattern.matches(regex, mobiles);
     }
 
     /**
@@ -403,9 +403,8 @@ public class StringUtils {
      * @return
      */
     public static boolean isMobileNumber(String mobiles) {
-        Pattern p = Pattern.compile("^(1[39]\\d{9})");
-        Matcher m = p.matcher(mobiles);
-        return m.matches();
+        String regex = "^1[3-9]\\d{9}$";
+        return Pattern.matches(regex, mobiles);
     }
 
     /**
@@ -452,7 +451,7 @@ public class StringUtils {
             String str = IOS2ToUTC(strTime, 6);
             Date cur = new Date();
             if (str.contains((cur.getYear() + 1900) + "-"))
-                str = str.replace(((cur.getYear() + 1900)+ "-"), "");
+                str = str.replace(((cur.getYear() + 1900) + "-"), "");
             return str;
         }
         if (hours != 0) return hours + "小时前";
