@@ -385,13 +385,13 @@ public class StringUtils {
     }
 
     /**
-     * 验证手机号码+座机号码
+     * 验证手机号码+座机号码  2017 9.1更新  http://www.cnblogs.com/zengxiangzhan/p/phone.html
      *
      * @param mobiles
      * @return
      */
     public static boolean isMobileNo(String mobiles) {
-        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-9]\\d{8})");
+        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(1[39]\\d{9})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
@@ -403,7 +403,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isMobileNumber(String mobiles) {
-        Pattern p = Pattern.compile("^(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-9]\\d{8})");
+        Pattern p = Pattern.compile("^(1[39]\\d{9})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
