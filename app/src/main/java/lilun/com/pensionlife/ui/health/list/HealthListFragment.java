@@ -80,7 +80,7 @@ public class HealthListFragment extends BaseFragment<HealthListContact.Presenter
         titleBar.setTitle(mClassify.getName());
         titleBar.setOnBackClickListener(() -> pop());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
+     //   mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
         mSwipeLayout.setOnRefreshListener(() -> getData(0));
         getData(0);
     }

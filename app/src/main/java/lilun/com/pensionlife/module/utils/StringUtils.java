@@ -153,6 +153,8 @@ public class StringUtils {
                     format = new SimpleDateFormat("MM.dd");
                 } else if (mode == 5) {
                     format = new SimpleDateFormat("yyyy-MM-dd");
+                } else if (mode == 6) {
+                    format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 } else
                     format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 ret = format.format(new Date(dateTime.getMillis() + 28800 * 1000));
@@ -389,7 +391,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isMobileNo(String mobiles) {
-        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
+        Pattern p = Pattern.compile("^(010\\d{8})|(0[2-9]\\d{9})|(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-9]\\d{8})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
@@ -401,7 +403,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isMobileNumber(String mobiles) {
-        Pattern p = Pattern.compile("^(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-35-9]\\d{8})");
+        Pattern p = Pattern.compile("^(13\\d{9})|(14[57]\\d{8})|(15[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(17[0-35-9]\\d{8})|(18[0-9]\\d{8})");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
@@ -446,10 +448,27 @@ public class StringUtils {
         days = ms / (1000 * 60 * 60 * 24);
         hours = ms / (1000 * 60 * 60);
         mins = ms / (1000 * 60);
-        if (days != 0) return days + "天前";
+        if (days != 0) {
+            String str = IOS2ToUTC(strTime, 6);
+            Date cur = new Date();
+            if (str.contains((cur.getYear() + 1900) + "-"))
+                str = str.replace(((cur.getYear() + 1900)+ "-"), "");
+            return str;
+        }
         if (hours != 0) return hours + "小时前";
         if (mins >= 5) return mins + "分钟前";
         return "刚刚";
+    }
+
+    /**
+     * 当前年判断
+     *
+     * @param strTime
+     * @return
+     */
+    public static boolean curYear(String strTime) {
+
+        return false;
     }
 
     /**
@@ -520,10 +539,10 @@ public class StringUtils {
     }
 
 
-    public static String  getProductArea(List<String>  areas){
+    public static String getProductArea(List<String> areas) {
         String result = "无";
-        if (areas != null && areas.size()!=0) {
-            result ="";
+        if (areas != null && areas.size() != 0) {
+            result = "";
             for (int i = 0; i < areas.size(); i++) {
                 String area = StringUtils.getOrganizationNameFromId(areas.get(i));
                 if (!TextUtils.isEmpty(area)) {
