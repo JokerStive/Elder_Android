@@ -79,5 +79,8 @@
     <dimen name="dp_151">151dp</dimen>
     <dimen name="dp_218">218dp</dimen>
     <dimen name="dp_146">146dp</dimen>
+    <dimen name="sp_22">22sp</dimen>
+    <dimen name="dp_180">180dp</dimen>
+    <dimen name="dp_18">18dp</dimen>
 
 </resources>

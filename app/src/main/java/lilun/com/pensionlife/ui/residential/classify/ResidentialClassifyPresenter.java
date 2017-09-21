@@ -28,7 +28,7 @@ public class ResidentialClassifyPresenter extends RxPresenter<ResidentialClassif
             view.showClassifies(productCategories);
             return;
         }
-        String filter = "{\"where\":{\"parentId\":\"" + Config.residential_product_categoryId + "\"},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"visible\":0,\"parentId\":\"" + Config.residential_product_categoryId + "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getOrgProductCategories(filter)
                 .compose(RxUtils.handleResult())

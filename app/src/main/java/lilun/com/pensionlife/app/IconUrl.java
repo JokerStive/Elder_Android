@@ -13,7 +13,7 @@ public class IconUrl {
 
     public static String ElderModules = "ElderModules";
     public static String OrganizationActivityCategories = "OrganizationActivityCategories";
-    public static String ProductCategories = "ProductCategories";
+    public static String OrganizationProductCategories = "OrganizationProductCategories";
     public static String OrganizationAids = "OrganizationAids";
     public static String OrganizationActivities = "OrganizationActivities";
     public static String OrganizationProducts = "OrganizationProducts";

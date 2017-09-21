@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_classify_bg"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_180"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_elder_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_def" />
+
+    <TextView
+        android:id="@+id/tv_elder_title"
+        style="@style/tv_normal"
+        android:layout_marginLeft="@dimen/dp_13"
+        android:layout_marginTop="@dimen/dp_20"
+        android:textSize="@dimen/sp_22"
+        tools:text="老年大学" />
+
+    <TextView
+        android:id="@+id/tv_elder_desc"
+        style="@style/tv_normal"
+        android:layout_below="@id/tv_elder_title"
+        android:layout_marginLeft="@dimen/dp_13"
+        android:layout_marginTop="@dimen/dp_13"
+        android:textColor="#aaaaaa"
+        android:textSize="@dimen/sp_14"
+        tools:text="老牛亦解韶光贵,和谐一家" />
+
+
+</RelativeLayout>

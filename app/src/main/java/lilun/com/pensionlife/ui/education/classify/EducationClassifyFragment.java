@@ -1,10 +1,11 @@
 package lilun.com.pensionlife.ui.education.classify;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,9 +15,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.adapter.ElderModuleAdapter;
+import lilun.com.pensionlife.module.adapter.EducationClassifyAdapter;
 import lilun.com.pensionlife.module.adapter.OrganizationEdusAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ElderEdus;
@@ -26,8 +28,8 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.ui.education.colleage_list.EducationListFragment;
+import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
-import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
 
 /**
@@ -127,7 +129,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
         //求助列表
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
+        mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#000000")));
 
 
         //刷新
@@ -178,15 +180,16 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
     @Override
     public void showClassifies(List<ElderModule> elderModules) {
         completeRefresh();
-        mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
-        ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
-        adapter.setOnItemClickListener((elderModule -> {
+        mClassifyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        EducationClassifyAdapter adapter = new EducationClassifyAdapter(elderModules);
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            ElderModule elderModule = (ElderModule) adapter1.getData().get(position);
             if (elderModule.getName().equals("老年大学")) {
                 start(EducationListFragment.newInstance(elderModule));
             } else {
                 ToastHelper.get().showShort(getString(R.string.building));
             }
-        }));
+        });
         mClassifyRecycler.setAdapter(adapter);
         getServices(0);
     }

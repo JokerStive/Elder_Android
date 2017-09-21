@@ -183,6 +183,14 @@ public class StringUtils {
         return ret;
     }
 
+    public static String currentTimeToGTM() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String date = df.format(new Date());
+        String gtmTime = StringUtils.localToGTM(date);
+        return localToGTM(gtmTime);
+    }
+
+
     /***
      * 东八区时间 转换为 0区时间  转mongoDB 时间
      *
@@ -195,7 +203,7 @@ public class StringUtils {
         SimpleDateFormat format;
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         Date result_date;
-        long result_time = 0;
+        long result_time;
 
         try {
             format.setTimeZone(TimeZone.getDefault());
@@ -529,10 +537,10 @@ public class StringUtils {
     }
 
 
-    public static String  getProductArea(List<String>  areas){
+    public static String getProductArea(List<String> areas) {
         String result = "无";
-        if (areas != null && areas.size()!=0) {
-            result ="";
+        if (areas != null && areas.size() != 0) {
+            result = "";
             for (int i = 0; i < areas.size(); i++) {
                 String area = StringUtils.getOrganizationNameFromId(areas.get(i));
                 if (!TextUtils.isEmpty(area)) {

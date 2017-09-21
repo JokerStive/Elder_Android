@@ -203,10 +203,10 @@ public class CourseDetailFragment extends BaseFragment {
 
 
         //价格
-        tvCoursePrice.setText(new DecimalFormat("######0.00").format(product.getPrice()));
+        tvCoursePrice.setText("¥" + new DecimalFormat("######0.00").format(product.getPrice()));
 
         //底部价格
-        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
+        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + "¥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
 
     }
 

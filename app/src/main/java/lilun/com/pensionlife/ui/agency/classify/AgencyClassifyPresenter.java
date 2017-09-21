@@ -62,7 +62,7 @@ public class AgencyClassifyPresenter extends RxPresenter<AgencyClassifyContract.
             return;
         }
 
-        String filter = "{\"where\":{\"parentId\":\"" + categoryId+ "\"},\"order\":\"orderId\"}";
+        String filter = "{\"where\":{\"visible\":0,\"parentId\":\"" + categoryId+ "\"},\"order\":\"orderId\"}";
         addSubscribe(NetHelper.getApi()
                 .getOrgProductCategories(filter)
                 .compose(RxUtils.handleResult())

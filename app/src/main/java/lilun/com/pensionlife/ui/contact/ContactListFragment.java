@@ -126,7 +126,7 @@ public class ContactListFragment extends BaseFragment {
 
             // 纯粹的个人信息管理
             else {
-                start(AddBasicContactFragment.newInstance(contact, 1));
+                start(AddBasicContactFragment.newInstance(contact, 0));
             }
         });
         adapter.setOnItemClickListener(new ContactListAdapter.OnItemClickListener() {

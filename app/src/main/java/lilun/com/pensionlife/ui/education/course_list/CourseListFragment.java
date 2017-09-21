@@ -31,6 +31,8 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.Semester;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.ui.education.colleage_details.CollegeDetailFragment;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -114,6 +116,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
             @Override
             public void onClick(View v) {
                 //大学简介
+                start(CollegeDetailFragment.newInstance(mOrganizationId));
             }
         });
 
@@ -290,9 +293,11 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
      * 获取班级（产品）列表
      */
     private void getDataList(int skip) {
+        String gtmTime = StringUtils.currentTimeToGTM();
+        mFilter.getWhere().setTime(gtmTime);
         Gson gson = new Gson();
         String filter = gson.toJson(mFilter);
-        Logger.d("courseFilter ----- " + filter);
+        Logger.d("班级 filter ----- " + filter);
         mSwipeLayout.setRefreshing(skip == 0);
         mPresenter.getCourses(filter, skip);
     }
@@ -301,8 +306,10 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
      * 获取分类列表
      */
     private void getCategories() {
+        String gtmTime = StringUtils.currentTimeToGTM();
         String initParentId = mOrganizationId + "/教育服务/其他教育服务/老年教育服务";
-        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "\",\"tag.kind\":\"major\"}}";
+        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "\",\"tag.kind\":\"major\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
+        Logger.d("获取班级分类 filter ----- " + categoryFilter);
         mPresenter.getCourseCategories(categoryFilter, 0);
     }
 
@@ -311,12 +318,10 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
      * 获取学期列表
      */
     private void getSemesters() {
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-//        String date = df.format(new Date());
-//        String gtmTime = StringUtils.localToGTM(date);
+        String gtmTime = StringUtils.currentTimeToGTM();
         String organizationId = mOrganizationId + "/#semester";
-//        String filter = "{\"where\":{\"organization\":\"" + organizationId + "\",\"startTime\":{\"lte\":\"" + gtmTime + "\"},\"endTime\":{\"gte\":\"" + gtmTime + "\"}}}";
-        String filter = "{\"where\":{\"organization\":\"" + organizationId + "\"}}";
+        String filter = "{\"where\":{\"organizationId\":\"" + organizationId + "\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
+        Logger.d("获取学期 filter ----- " + filter);
         mPresenter.getSemesters(filter);
     }
 
