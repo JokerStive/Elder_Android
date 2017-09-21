@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.antfortune.freeline.util.AppUtils;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
