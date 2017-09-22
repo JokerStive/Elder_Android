@@ -186,8 +186,7 @@ public class StringUtils {
     public static String currentTimeToGTM() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String date = df.format(new Date());
-        String gtmTime = StringUtils.localToGTM(date);
-        return localToGTM(gtmTime);
+        return localToGTM(date);
     }
 
 

@@ -164,7 +164,7 @@ public class CollegeDetailFragment extends BaseFragment {
                 requestPermission(Manifest.permission.CALL_PHONE, 0X11);
             }
         } else {
-            ToastHelper.get().showShort("此服务商没有提供电话");
+            ToastHelper.get().showShort("未提供电话");
         }
     }
 
