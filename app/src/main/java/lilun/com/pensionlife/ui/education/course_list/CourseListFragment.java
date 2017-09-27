@@ -185,13 +185,13 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
 
             //如果是课程就直接刷新数据
-            String kind = mCurrentClickCategory.getTag().get("kind");
-            if (kind.equals("course")) {
-                filterView.setTabText(mCurrentClickCategory.getTitle(), false);
-                mFilter.getWhere().setOrgCategoryId(mCurrentClickCategory.getId());
-                getDataList(0);
-                return;
-            }
+//            String kind = mCurrentClickCategory.getTag().get("kind");
+//            if (kind.equals("course")) {
+//                filterView.setTabText(mCurrentClickCategory.getTitle(), false);
+//                mFilter.getWhere().setOrgCategoryId(mCurrentClickCategory.getId());
+//                getDataList(0);
+//                return;
+//            }
 
 
             mCurrentClickPosition = position;
@@ -224,7 +224,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
             if (!mCurrentClickCategory.hasSubItem()) {
                 String categoryId = mCurrentClickCategory.getId();
-                String filter = "{\"where\":{\"parentId\":\"" + categoryId + "\",\"organizationId\":\"" + mOrganizationId + "/#category"+ "\"}}";
+                String filter = "{\"where\":{\"parentId\":\"" + categoryId + "\",\"organizationId\":\"" + mOrganizationId + "/#category" + "\"}}";
                 mPresenter.getCourseCategories(filter, 0);
             } else {
                 expandSome();
@@ -250,12 +250,13 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Semester semester = (Semester) adapter.getData().get(position);
-                filterView.setTabText("学期筛选", position == 0);
+                filterView.setTabText(semester.getName(), position == 0);
                 mFilter.getWhere().setTermId(position == 0 ? null : semester.getId());
                 getDataList(0);
             }
         });
 
+        semesterView.setAdapter(semesterAdapter);
         pops.add(semesterView);
 
 
@@ -308,7 +309,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private void getCategories() {
         String gtmTime = StringUtils.currentTimeToGTM();
         String initParentId = mOrganizationId + "/教育服务/其他教育服务/老年教育服务";
-        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "/#category"+"\",\"tag.kind\":\"major\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
+        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "/#category" + "\",\"tag.kind\":\"major\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
         Logger.d("获取班级分类 filter ----- " + categoryFilter);
         mPresenter.getCourseCategories(categoryFilter, 0);
     }
@@ -346,13 +347,20 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
     @Override
     public void getCategorySuccess(List<OrganizationProductCategory> categories) {
-        if (mCurrentClickCategory != null && categories.size() > 0) {
-            //把展开的position存起来
-            expandSome();
-            for (OrganizationProductCategory category : categories) {
-                category.setLevel(mCurrentClickCategory.getLevel() + 1);
-                mCurrentClickCategory.addSubItem(category);
-                categoryExpandAdapter.addData(mCurrentClickPosition + 1, category);
+        if (mCurrentClickCategory != null) {
+            if (categories.size() > 0) {
+                //把展开的position存起来
+                expandSome();
+                for (OrganizationProductCategory category : categories) {
+                    category.setLevel(mCurrentClickCategory.getLevel() + 1);
+                    mCurrentClickCategory.addSubItem(category);
+                    categoryExpandAdapter.addData(mCurrentClickPosition + 1, category);
+                }
+            } else {
+                //如果没有孩子类别了，直接刷新数据
+                filterView.setTabText(mCurrentClickCategory.getTitle(), false);
+                mFilter.getWhere().setOrgCategoryId(mCurrentClickCategory.getId());
+                getDataList(0);
             }
         } else {
             categoryExpandAdapter.addData(categories);

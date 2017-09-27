@@ -220,7 +220,10 @@ public class CourseDetailFragment extends BaseFragment {
 
 
             //上课时间
-            tvCourseStartTime.setText("上课时间：" + StringUtils.filterNull((String) extend.get("classStartTime")));
+            String classStartTime = StringUtils.filterNull((String) extend.get("classStartTime"));
+            String classEndTime = StringUtils.filterNull((String) extend.get("classEndTime"));
+
+            tvCourseStartTime.setText("上课时间：" + classStartTime + "-" + classEndTime);
 
 
             //上课教室
