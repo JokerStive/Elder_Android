@@ -47,7 +47,7 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
-    private Map<String,String> extend;
+    private Map<String,Object> extend;
     private String startTime;
     private String endTIme;
     private String createdAt;
@@ -173,11 +173,11 @@ public class OrganizationProduct extends BaseBean {
         this.tag = tag;
     }
 
-    public Map<String,String> getExtend() {
+    public Map<String,Object> getExtend() {
         return extend;
     }
 
-    public void setExtend(Map<String,String> extend) {
+    public void setExtend(Map<String,Object> extend) {
         this.extend = extend;
     }
 

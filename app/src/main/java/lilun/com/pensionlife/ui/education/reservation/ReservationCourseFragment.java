@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -235,12 +236,12 @@ public class ReservationCourseFragment extends BaseFragment {
     }
 
 
-    private String showSemester(Map<String, String> extend) {
+    private String showSemester(Map<String, Object> extend) {
         //显示学期
         String semester = "无";
         if (extend != null) {
-            String termStartDate = extend.get("termStartDate");
-            String termEndDate = extend.get("termEndDate");
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
             if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
                 semester = "开始时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "\n"
                         + "结束时间：" + StringUtils.IOS2ToUTC(termEndDate, 5);
@@ -315,9 +316,8 @@ public class ReservationCourseFragment extends BaseFragment {
 
 
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
-//        String orderTime = tvOrderTime.getText().toString();
-//        String orderMemo = tvOrderMemo.getText().toString();
-        return NetHelper.getApi().createOrder(productId, contactId, null, null);
+        String date2String = StringUtils.date2String(new Date());
+        return NetHelper.getApi().createOrder(productId, contactId, date2String, null);
     }
 
     private Contact newContactModel() {
@@ -362,18 +362,17 @@ public class ReservationCourseFragment extends BaseFragment {
             return false;
         }
 
-        if (TextUtils.isEmpty(etContactExtensionPostWork.getText())) {
+        if (TextUtils.isEmpty(etContactEmergencyName.getText())) {
             ToastHelper.get().showWareShort("请输入紧急联系人姓名");
             return false;
         }
 
 
-        if (TextUtils.isEmpty(etContactExtensionPostWork.getText())) {
+        if (TextUtils.isEmpty(etEmergencyPhone.getText())) {
             ToastHelper.get().showWareShort("请输入紧急联系人电话");
-
             return false;
-        } else if (!RegexUtils.checkMobile(etContactExtensionPostWork.getText().toString())) {
-            ToastHelper.get().showWareShort("紧急联系人电话有误");
+        } else if (!RegexUtils.checkMobile(etEmergencyPhone.getText().toString())) {
+            ToastHelper.get().showWareShort("紧急联系人电话格式有误");
             return false;
         }
 

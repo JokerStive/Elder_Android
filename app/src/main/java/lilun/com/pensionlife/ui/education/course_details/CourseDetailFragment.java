@@ -36,6 +36,7 @@ import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.reservation.CoursePolicyFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
@@ -71,6 +72,9 @@ public class CourseDetailFragment extends BaseFragment {
     TextView tvReservation;
     private String mProductId;
     private OrganizationProduct mProduct;
+
+    //不能预约 0-已经预约  1-时间冲突
+    private int can_not_order_flag = -1;
 
 
     public static CourseDetailFragment newInstance(String productId) {
@@ -119,7 +123,7 @@ public class CourseDetailFragment extends BaseFragment {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         getProduct();
-        getIsOrder();
+//        getIsOrder();
     }
 
 
@@ -131,28 +135,62 @@ public class CourseDetailFragment extends BaseFragment {
                     @Override
                     public void _next(OrganizationProduct product) {
                         showProductDetail(product);
+                        getIsOrder(product);
                     }
                 });
 
     }
 
 
-    private void getIsOrder() {
-        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
-        NetHelper.getApi()
-                .getOrdersOfProduct(mProductId, filter)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
-                    @Override
-                    public void _next(List<ProductOrder> orders) {
-                        if (orders.size() != 0) {
-                            setHadOrdered();
+    private void getIsOrder(OrganizationProduct product) {
+        Map<String, Object> extend = product.getExtend();
+        if (extend != null) {
+            String classStartTime = null2empty((String) extend.get("classStartTime"));
+            String classEndTime = null2empty((String) extend.get("classEndTime"));
+            String termStartDate = null2empty((String) extend.get("termStartDate"));
+            String termEndDate = null2empty((String) extend.get("termEndDate"));
+
+            if (!TextUtils.isEmpty(classStartTime) && !TextUtils.isEmpty(classEndTime) && !TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+
+            }
+            String filter = " {\"where\":{\n" +
+                    "      \"or\":[{\"productInfo.tag.kind\": \"college\",\n" +
+                    "        \"productInfo.extend.classStartTime\":{\"gte\":\"" + classStartTime + "\"},\n" +
+                    "        \"productInfo.extend.classEndTime\":{\"lte\":\"" + classEndTime + "\"},\n" +
+                    "        \"productInfo.extend.termStartDate\":{\"gte\":\"" + termStartDate + "\"},\n" +
+                    "        \"productInfo.extend.termEndDate\":{\"lte\":\"" + termEndDate + "\"}\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"productInfo.id\":\"" + mProductId + "\",\n" +
+                    "          \"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}\n" +
+                    "        }]\n" +
+                    "    }}";
+            NetHelper.getApi()
+                    .getOrdersOfProduct(mProductId, filter)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                        @Override
+                        public void _next(List<ProductOrder> orders) {
+                            if (orders.size() > 0) {
+                                can_not_order_flag = 1;
+                                for (ProductOrder order : orders) {
+                                    if (order.getProduct().getId().equals(mProductId)) {
+                                        can_not_order_flag = 0;
+                                        setHadOrdered();
+                                    }
+                                }
+                            }
                         }
-                    }
-                });
+                    });
+        }
+//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
     }
 
+
+    private String null2empty(String s) {
+        return TextUtils.isEmpty(s) ? "" : s;
+    }
 
     private void showProductDetail(OrganizationProduct product) {
 
@@ -175,25 +213,25 @@ public class CourseDetailFragment extends BaseFragment {
         tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() - product.getSold() + ""));
 
 
-        Map<String, String> extend = product.getExtend();
+        Map<String, Object> extend = product.getExtend();
         if (extend != null) {
             //授课老师
-            tvCourseTeacher.setText("授课老师：" + StringUtils.filterNull(extend.get("teacher")));
+            tvCourseTeacher.setText("授课老师：" + StringUtils.filterNull((String) extend.get("teacher")));
 
 
             //上课时间
-            tvCourseStartTime.setText("上课时间：" + StringUtils.filterNull(extend.get("classTime")));
+            tvCourseStartTime.setText("上课时间：" + StringUtils.filterNull((String) extend.get("classStartTime")));
 
 
             //上课教室
-            tvCourseClassRoom.setText("上课教室：" + StringUtils.filterNull(extend.get("classRoom")));
+            tvCourseClassRoom.setText("上课教室：" + StringUtils.filterNull((String) extend.get("classRoom")));
 
             //上课地点
-            tvCourseAddress.setText("上课地点：" + StringUtils.filterNull(extend.get("classPlace")));
+            tvCourseAddress.setText("上课地点：" + StringUtils.filterNull((String) extend.get("classPlace")));
 
             //显示学期
-            String termStartDate = extend.get("termStartDate");
-            String termEndDate = extend.get("termEndDate");
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
             if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
                 String semesterText = "学期：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
                 tvCourseXueqi.setText(semesterText);
@@ -203,10 +241,10 @@ public class CourseDetailFragment extends BaseFragment {
 
 
         //价格
-        tvCoursePrice.setText("¥" + new DecimalFormat("######0.00").format(product.getPrice()));
+        tvCoursePrice.setText("¥" + new DecimalFormat("######0.00").format(product.getPrice()) + " 元");
 
         //底部价格
-        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + "¥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
+        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + "¥ " + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
 
     }
 
@@ -239,7 +277,16 @@ public class CourseDetailFragment extends BaseFragment {
 
             case R.id.tv_reservation:
                 //立即预约
-                takeReservation();
+                if (can_not_order_flag == 1) {
+                    new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            takeReservation();
+                        }
+                    });
+                } else if (can_not_order_flag == -1) {
+                    takeReservation();
+                }
                 break;
         }
     }
@@ -252,6 +299,10 @@ public class CourseDetailFragment extends BaseFragment {
         if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
             ToastHelper.get().showWareShort("不能预约自己创建的课程");
             return;
+        }
+
+        if (can_not_order_flag == 1) {
+
         }
 
         //检查协议

@@ -31,5 +31,17 @@
         android:textSize="@dimen/sp_14"
         tools:text="老牛亦解韶光贵,和谐一家" />
 
+    <View
+        android:layout_alignParentBottom="true"
+        android:layout_height="0.5dp"
+        android:layout_width="match_parent"
+        style="@style/line_gray"/>
+
+    <View
+        android:layout_alignParentRight="true"
+        android:layout_height="match_parent"
+        android:layout_width="0.5dp"
+        style="@style/line_gray"/>
+
 
 </RelativeLayout>

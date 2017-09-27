@@ -28,8 +28,11 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class EducationClassifyAdapter extends QuickAdapter<ElderModule> {
 
 
-    private int height = (int) App.context.getResources().getDimension(R.dimen.dp_180);
+    private int defaultHeight = (int) App.context.getResources().getDimension(R.dimen.dp_180);
+    private int height = defaultHeight;
     //    private int height = 180;
+
+
     //    private float textSize = UIUtils.sp2px(App.context, App.context.getResources().getDimension(R.dimen.sp_22));
     private float textSize = 22;
 
@@ -42,7 +45,7 @@ public class EducationClassifyAdapter extends QuickAdapter<ElderModule> {
     protected void convert(BaseViewHolder helper, ElderModule elderModule) {
         int adapterPosition = helper.getAdapterPosition();
         if (adapterPosition > 0) {
-            height = height / 2;
+            height = defaultHeight / 2;
 //            textSize = App.context.getResources().getDimension(R.dimen.dp_18);
             textSize = 18;
         }

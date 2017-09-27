@@ -29,7 +29,7 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
     protected void convert(BaseViewHolder help, OrganizationProduct course) {
         int totalCount = course.getSold() + course.getStock();
         String priceFormat = new DecimalFormat("######0.00").format(course.getPrice());
-        String price = "合计: <font color='#ff9d09'>" + "¥" + priceFormat + "</font>";
+        String price = "合计: <font color='#ff4400'>" + "¥" + priceFormat + "</font>";
 
         help.setText(R.id.tv_course_title, course.getName())
                 .setText(R.id.tv_course_allow_count, "报名人数:" + totalCount)
@@ -38,11 +38,11 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
 
 
         //扩展属性
-        Map<String, String> extend = course.getExtend();
+        Map<String, Object> extend = course.getExtend();
         if (extend != null) {
-            String teacher = extend.get("teacher");
-            String time = extend.get("classTime");
-            String address = extend.get("classPlace");
+            String teacher = (String) extend.get("teacher");
+            String time = (String) extend.get("classTime");
+            String address = (String) extend.get("classPlace");
             help.setText(R.id.tv_course_teacher, "授课老师:" + StringUtils.filterNull(teacher))
                     .setText(R.id.tv_course_time, "上课时间 : " + StringUtils.filterNull(time))
                     .setText(R.id.tv_course_address, "上课地址 : " + StringUtils.filterNull(address));

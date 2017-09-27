@@ -78,12 +78,12 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         }
     }
 
-    private String showSemester(Map<String, String> extend) {
+    private String showSemester(Map<String, Object> extend) {
         //显示学期
         String semester = "无";
         if (extend != null) {
-            String termStartDate = extend.get("termStartDate");
-            String termEndDate = extend.get("termEndDate");
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
             if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
                 semester = "学期时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
             }

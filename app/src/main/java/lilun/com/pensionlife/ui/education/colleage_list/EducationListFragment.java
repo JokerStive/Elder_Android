@@ -100,9 +100,7 @@ public class EducationListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mCollageAdapter);
 
         mSwipeLayout.setOnRefreshListener(() -> {
-                    if (mPresenter != null) {
-                        getDataList(0);
-                    }
+                    getDataList(0);
                 }
         );
     }

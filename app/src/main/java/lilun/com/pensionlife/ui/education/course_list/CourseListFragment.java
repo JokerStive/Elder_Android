@@ -120,7 +120,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
             }
         });
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
 
         mEduCourseAdapter = new EduCourseAdapter(new ArrayList<>());
@@ -224,7 +224,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 
             if (!mCurrentClickCategory.hasSubItem()) {
                 String categoryId = mCurrentClickCategory.getId();
-                String filter = "{\"where\":{\"parentId\":\"" + categoryId + "\",\"organizationId\":\"" + mOrganizationId + "\"}}";
+                String filter = "{\"where\":{\"parentId\":\"" + categoryId + "\",\"organizationId\":\"" + mOrganizationId + "/#category"+ "\"}}";
                 mPresenter.getCourseCategories(filter, 0);
             } else {
                 expandSome();
@@ -308,7 +308,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private void getCategories() {
         String gtmTime = StringUtils.currentTimeToGTM();
         String initParentId = mOrganizationId + "/教育服务/其他教育服务/老年教育服务";
-        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "\",\"tag.kind\":\"major\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
+        String categoryFilter = "{\"where\":{\"parentId\":\"" + initParentId + "\",\"organizationId\":\"" + mOrganizationId + "/#category"+"\",\"tag.kind\":\"major\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
         Logger.d("获取班级分类 filter ----- " + categoryFilter);
         mPresenter.getCourseCategories(categoryFilter, 0);
     }
