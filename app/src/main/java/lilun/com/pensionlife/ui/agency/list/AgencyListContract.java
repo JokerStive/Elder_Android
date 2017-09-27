@@ -22,8 +22,7 @@ public interface AgencyListContract {
     }
 
     interface Presenter extends IPresenter<View> {
-        void getOrganizationAgency(String organizationId,String filter,int skip);
-        void getProductAgency(String filter,int skip);
+        void getProducts(String filter, int skip);
         List<ConditionOption> getConditionOptionsList(String whereKey);
     }
 

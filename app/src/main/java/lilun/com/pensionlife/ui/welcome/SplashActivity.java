@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
-        Observable.timer(1, TimeUnit.SECONDS)
+           Observable.timer(1, TimeUnit.SECONDS)
                 .compose(RxUtils.applySchedule())
                 .subscribe(aLong -> {
                     start();

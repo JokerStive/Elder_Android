@@ -2,7 +2,7 @@ package lilun.com.pensionlife.ui.education.course_details;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 
 /**
  * Created by zp on 2017/3/2.
@@ -14,7 +14,7 @@ public class CourseDetailContract {
 
         void showQuitCourse();
 
-        void showCourseDetail(EdusColleageCourse orders);
+        void showCourseDetail(OrganizationProduct orders);
     }
 
     interface Presenter extends IPresenter<View> {

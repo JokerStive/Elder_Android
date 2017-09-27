@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,8 +12,6 @@ import java.util.List;
  *         email : yk_developer@163.com
  */
 public class Account implements Serializable {
-
-
 
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +27,18 @@ public class Account implements Serializable {
     private Boolean emailVerified;
     private String status;
     private List<IconModule> image;
+    private ArrayList<String> certificateLicense;
     private String visibility;
+
+    public ArrayList<String> getCertificateLicense() {
+        return certificateLicense;
+    }
+
+    public Account setCertificateLicense(ArrayList<String> certificateLicense) {
+        this.certificateLicense = certificateLicense;
+        return this;
+    }
+
     private String location;
     /**
      * profile : {}

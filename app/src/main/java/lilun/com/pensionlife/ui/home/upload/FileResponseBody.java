@@ -3,6 +3,7 @@ package lilun.com.pensionlife.ui.home.upload;
 
 import java.io.IOException;
 
+import lilun.com.pensionlife.app.Config;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -45,7 +46,7 @@ public class FileResponseBody extends ResponseBody {
 //                e.printStackTrace();
 //            }
 //        }
-        return  21291990;
+        return Config.apkTotalSize;
     }
 
     @Override

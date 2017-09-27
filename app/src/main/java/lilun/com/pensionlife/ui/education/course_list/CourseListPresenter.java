@@ -1,13 +1,14 @@
 package lilun.com.pensionlife.ui.education.course_list;
 
-import android.widget.Toast;
-
+import java.util.ArrayList;
 import java.util.List;
 
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Option;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
+import lilun.com.pensionlife.module.bean.Semester;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -23,61 +24,84 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class CourseListPresenter extends RxPresenter<CourseListContract.View> implements CourseListContract.Presenter {
 
 
-
-
-
     @Override
-    public void getCollgCourseList(String courseId, String filter, int skip) {
+    public void getCourses(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
-                .getOrganizationsEdusCourse(courseId,StringUtils.addFilterWithDef(filter, skip))
+                .getProducts(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<EdusColleageCourse>>() {
+                .subscribe(new RxSubscriber<List<OrganizationProduct>>() {
                     @Override
-                    public void _next(List<EdusColleageCourse> edusColleageCourses) {
+                    public void _next(List<OrganizationProduct> products) {
                         view.completeRefresh();
-                        view.showCollgCourseList(edusColleageCourses,false);
+                        view.showCollageCourseList(products, skip != 0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                         view.completeRefresh();
-                        Toast.makeText(App.context, "获取课程失败", Toast.LENGTH_SHORT).show();
                     }
-                }));
+                })
+        );
+
     }
 
     @Override
-    public List<List<ConditionOption>> getConditionOptionsList() {
+    public void getCourseCategories(String filter, int skip) {
+        addSubscribe(NetHelper.getApi()
+                .getOrganizationProductCategories(StringUtils.addFilterWithDef(filter, skip))
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<OrganizationProductCategory>>(getActivity()) {
+                    @Override
+                    public void _next(List<OrganizationProductCategory> categories) {
+                        view.getCategorySuccess(categories);
+                    }
 
-//        String where_price = "price";
-//        String where_area = "level";
-//
-//
-//        String[] prices = App.context.getResources().getStringArray(R.array.product_price_option);
-//        String[] level = App.context.getResources().getStringArray(R.array.education_level);
-//
-//        List<List<ConditionOption>> optionsList = new ArrayList<>();
-//
-//
-//        //价格可选项
-//        List<ConditionOption> priceOptions = new ArrayList<>();
-//        for (String price : prices) {
-//            ConditionOption conditionOption = new ConditionOption(where_price, price);
-//            priceOptions.add(conditionOption);
-//        }
-//        optionsList.add(priceOptions);
-//
-//
-//        List<ConditionOption> areaOptions = new ArrayList<>();
-//        for (String area : level) {
-//            ConditionOption conditionOption = new ConditionOption(where_area, area);
-//            areaOptions.add(conditionOption);
-//        }
-//        optionsList.add(areaOptions);
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                })
+        );
+    }
 
-        return null;
+    @Override
+    public List<ConditionOption> getConditionOptionsList() {
+        List<ConditionOption> conditionOptionList = new ArrayList<>();
+
+        List<Option> kindOptions = new ArrayList<>();
+        Option optionDef = new Option("createAt DESC", "时间排序");
+        Option optionDESC = new Option("createAt DESC", "升序排序");
+        Option optionHelp = new Option("createAt ", "降序排序");
+        kindOptions.add(optionDef);
+        kindOptions.add(optionDESC);
+        kindOptions.add(optionHelp);
+        ConditionOption conditionOptionOrder = new ConditionOption("order", "时间", kindOptions);
+
+        conditionOptionList.add(conditionOptionOrder);
+        return conditionOptionList;
+    }
+
+    @Override
+    public void getSemesters(String filter) {
+        addSubscribe(NetHelper.getApi()
+                .getSemesters(StringUtils.addFilterWithDef(filter, 0))
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Semester>>() {
+                    @Override
+                    public void _next(List<Semester> semesters) {
+                        view.getSemesterSuccess(semesters);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                })
+        );
     }
 
 }

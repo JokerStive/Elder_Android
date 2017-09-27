@@ -13,11 +13,12 @@ public class IconUrl {
 
     public static String ElderModules = "ElderModules";
     public static String OrganizationActivityCategories = "OrganizationActivityCategories";
-    public static String ProductCategories = "ProductCategories";
+    public static String OrganizationProductCategories = "OrganizationProductCategories";
     public static String OrganizationAids = "OrganizationAids";
     public static String OrganizationActivities = "OrganizationActivities";
     public static String OrganizationProducts = "OrganizationProducts";
     public static String Organizations = "Organizations";
+    public static String OrganizationEdus = "OrganizationEdus";
     public static String Accounts = "Accounts";
     public static String OrganizationInformations = "OrganizationInformations";
 
@@ -33,59 +34,10 @@ public class IconUrl {
         return ConfigUri.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
-
-    //    public static String elderModule(String elderModuleId, String iconName) {
-//        return Config.BASE_URL + "ElderModules/" + encodeURL(elderModuleId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
-//
-//    public static String activityCategory(String activityCategoryId, String iconName) {
-//        return Config.BASE_URL + "OrganizationActivityCategories/" + encodeURL(activityCategoryId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
-//
-//    public static String productCategory(String productCategoryId, String iconName) {
-//        return Config.BASE_URL + "ProductCategories/" + encodeURL(productCategoryId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
-//    public static String organizationAid(String organizationAidId, String iconName) {
-////        Logger.d("加载aid图片地址 = " + Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?pictureName=" + iconName + "&access_token=" + User.getToken());
-////        if (TextUtils.isEmpty(iconName)) {
-////            return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?access_token=" + User.getToken();
-////        } else {
-////            return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadDefaultPicture?pictureName=" + iconName + "&access_token=" + User.getToken();
-////
-////        }
-//
-//        return Config.BASE_URL + "OrganizationAids/" + encodeURL(organizationAidId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
-//    public static String organizationActivies(String activityId, String iconName) {
-//        return Config.BASE_URL + "OrganizationActivities/" + encodeURL(activityId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-////
-////
-//    public static String organizationProduct(String productId, String iconName) {
-////        Logger.d("加载aid图片地址 = " + Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName=" + iconName + "&access_token=" + User.getToken());
-////        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadDefaultimages/?pictureName=" + iconName + "&access_token=" + User.getToken();
-//        return Config.BASE_URL + "OrganizationProducts/" + encodeURL(productId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-////
-////
-//    public static String organization(String organizationId, String iconName) {
-//        return Config.BASE_URL + "Organizations/" + encodeURL(organizationId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-//
     public static String account(String account, String accountId) {
         return ConfigUri.BASE_URL + account + "/" + encodeURL(accountId) + "/download/image/{imageName}?access_token=" + User.getToken();
     }
 
-    //
-//    public static String information(String informationId, String iconName) {
-//        return Config.BASE_URL + "OrganizationInformations/" + encodeURL(informationId) + "/downloadIcon/" + iconName + "?access_token=" + User.getToken();
-//    }
-////
-////
     public static String organizationEdus(String organizationId, String iconName) {
         return ConfigUri.BASE_URL + "OrganizationEdus/" + encodeURL(organizationId) + "/download/image/" + iconName + "?access_token=" + User.getToken();
     }

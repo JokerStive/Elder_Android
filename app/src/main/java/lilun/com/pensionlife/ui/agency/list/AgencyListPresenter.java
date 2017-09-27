@@ -6,7 +6,6 @@ import java.util.List;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
 import lilun.com.pensionlife.module.bean.Option;
-import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -21,29 +20,9 @@ import lilun.com.pensionlife.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> implements AgencyListContract.Presenter {
-    @Override
-    public void getOrganizationAgency(String organizationId, String filter, int skip) {
-        addSubscribe(NetHelper.getApi()
-                .getOrganizations(organizationId, StringUtils.addFilterWithDef(filter, skip))
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Organization>>() {
-                    @Override
-                    public void _next(List<Organization> organizations) {
-                        view.showOrganizations(organizations, skip != 0);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        view.completeRefresh();
-                    }
-                })
-        );
-    }
 
     @Override
-    public void getProductAgency(String filter, int skip) {
+    public void getProducts(String filter, int skip) {
         addSubscribe(NetHelper.getApi()
                 .getProducts(StringUtils.addFilterWithDef(filter, skip))
                 .compose(RxUtils.handleResult())

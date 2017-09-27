@@ -21,6 +21,8 @@ public class Config {
 
     public static final int uploadPhotoMaxSize = 2048000;
 
+    public static final int apkTotalSize = 21291990;
+
     public static final int list_decoration = 5;
 
     public static final String agency_product_categoryId = "服务/养老机构";

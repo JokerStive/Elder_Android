@@ -141,6 +141,11 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //数据库调试使用
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+
+    //边框角度imageVie
+    compile 'com.makeramen:roundedimageview:2.3.0'
+
+
     compile 'pub.devrel:easypermissions:1.0.0'
 }
 

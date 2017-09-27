@@ -9,7 +9,7 @@ import lilun.com.pensionlife.base.BaseBean;
  * Created by zp on 2017/2/22.
  */
 
-public class ElderEdusColleage extends BaseBean {
+public class OrganizationEdu extends BaseBean {
     /**
      * id : abda4c00-fcb1-11e6-afb3-df901ad9891f
      * name : 华南理工大学
@@ -39,7 +39,7 @@ public class ElderEdusColleage extends BaseBean {
         return contact;
     }
 
-    public ElderEdusColleage setContact(Account contact) {
+    public OrganizationEdu setContact(Account contact) {
         this.contact = contact;
         return this;
     }

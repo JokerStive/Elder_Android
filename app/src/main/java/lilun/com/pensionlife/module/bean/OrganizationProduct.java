@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.bean;
 
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pensionlife.base.BaseBean;
 
@@ -13,55 +14,48 @@ import lilun.com.pensionlife.base.BaseBean;
  */
 public class OrganizationProduct extends BaseBean {
 
-    /**
-     * name : string
-     * title : string
-     * context : string
-     * contextType : string
-     * price : 0
-     * score : 0
-     * areaIds : ["string"]
-     * id : string
-     * createdAt : $now
-     * updatedAt : $now
-     * creatorId : string
-     * creatorName : string
-     * updatorId : string
-     * updatorName : string
-     * organizationId : string
-     * visible : 0
-     * image : {}
-     * categoryId : string
-     */
-
+    private String id;
     private String name;
+    private String title;
     private String subTitle;
+    private String context;
+    private String contextType;
+    private Double price;
+    private String unit;
+    private String licenseGgreement;
 
-    public String getSubTitle() {
-        return subTitle;
+    public String getLicenseGgreement() {
+        return licenseGgreement;
     }
 
-    public OrganizationProduct setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
+    public OrganizationProduct setLicenseGgreement(String licenseGgreement) {
+        this.licenseGgreement = licenseGgreement;
         return this;
     }
 
-    private String title;
-    private String context;
-    private String contextType;
-    private double price;
-    private int score;
-    private String id;
+    private int stock;
+    private int sold;
+    private int rank;
+    private Map<String, String> tag;
+
+    public int getRank() {
+        return rank;
+    }
+
+    public OrganizationProduct setRank(int rank) {
+        this.rank = rank;
+        return this;
+    }
+
+    private Map<String,Object> extend;
+    private String startTime;
+    private String endTIme;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private String organizationId;
-    private List<IconModule> image;
-    private String categoryId;
-    private String mobile;
 
     public String getMobile() {
         return mobile;
@@ -72,8 +66,31 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
+    private String organizationId;
+    private String categoryId;
+    private String phone;
+    private List<String> orderType;
+    private List<IconModule> image;
     private List<String> areaIds;
+    private String mobile;
+    private String orgCategoryId;
 
+    public String getOrgCategoryId() {
+        return orgCategoryId;
+    }
+
+    public OrganizationProduct setOrgCategoryId(String orgCategoryId) {
+        this.orgCategoryId = orgCategoryId;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -89,6 +106,14 @@ public class OrganizationProduct extends BaseBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public String getContext() {
@@ -107,28 +132,69 @@ public class OrganizationProduct extends BaseBean {
         this.contextType = contextType;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getScore() {
-        return score;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
-    public String getId() {
-        return id;
+    public int getStock() {
+        return stock;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
+
+
+    public Map<String, String> getTag() {
+        return tag;
+    }
+
+    public void setTag(Map<String, String> tag) {
+        this.tag = tag;
+    }
+
+    public Map<String,Object> getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Map<String,Object> extend) {
+        this.extend = extend;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTIme() {
+        return endTIme;
+    }
+
+    public void setEndTIme(String endTIme) {
+        this.endTIme = endTIme;
     }
 
     public String getCreatedAt() {
@@ -187,15 +253,6 @@ public class OrganizationProduct extends BaseBean {
         this.organizationId = organizationId;
     }
 
-
-    public List<IconModule> getImage() {
-        return image;
-    }
-
-    public void setImage(List<IconModule> image) {
-        this.image = image;
-    }
-
     public String getCategoryId() {
         return categoryId;
     }
@@ -204,14 +261,35 @@ public class OrganizationProduct extends BaseBean {
         this.categoryId = categoryId;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public List<String> getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(List<String> orderType) {
+        this.orderType = orderType;
+    }
+
+    public List<IconModule> getImage() {
+        return image;
+    }
+
+    public void setImage(List<IconModule> images) {
+        this.image = images;
+    }
+
     public List<String> getAreaIds() {
         return areaIds;
     }
 
     public void setAreaIds(List<String> areaIds) {
         this.areaIds = areaIds;
-    }
-
-    public static class ImagesBean {
     }
 }

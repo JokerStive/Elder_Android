@@ -4,7 +4,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 
 /**
 *居家服务分类契约类
@@ -14,7 +14,7 @@ import lilun.com.pensionlife.module.bean.ProductCategory;
 */
 public interface ResidentialClassifyContract {
     interface View extends IView<Presenter> {
-        void showClassifies(List<ProductCategory> productCategories);
+        void showClassifies(List<OrganizationProductCategory> productCategories);
 //        void showAboutMe(List<OrganizationProduct> products, boolean isLoadMore);
         void completeRefresh();
     }

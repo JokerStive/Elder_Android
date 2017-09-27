@@ -25,6 +25,7 @@ import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
+import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
@@ -39,13 +40,14 @@ public class ContactListFragment extends BaseFragment {
 
     private ContactListAdapter adapter;
     private String mProductId;
+    private int mFlag = -1;
 //    private OrganizationProduct mProduct;
 
     @OnClick({R.id.tv_add_contact})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_add_contact:
-                start(AddBasicContactFragment.newInstance(""));
+                start(new AddBasicContactFragment());
                 break;
         }
     }
@@ -55,17 +57,23 @@ public class ContactListFragment extends BaseFragment {
         getContact();
     }
 
-    public static ContactListFragment newInstance(String productId) {
+    public static ContactListFragment newInstance(String productId, int flag) {
         ContactListFragment fragment = new ContactListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("productId", productId);
+        bundle.putInt("flag", flag);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public static ContactListFragment newInstance() {
+        return new ContactListFragment();
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
         mProductId = arguments.getString("productId");
+        mFlag = arguments.getInt("flag");
     }
 
     @Override
@@ -102,9 +110,11 @@ public class ContactListFragment extends BaseFragment {
 
     private void showContacts(List<Contact> contacts) {
         adapter = new ContactListAdapter(contacts);
-        adapter.setOnItemClickListener((ba,view, i) -> {
+        adapter.setOnItemClickListener((ba, view, i) -> {
+            Contact contact = adapter.getData().get(i);
+
+            //携带产品id  预约流程
             if (!TextUtils.isEmpty(mProductId)) {
-                Contact contact = adapter.getData().get(i);
                 if (TextUtils.isEmpty(contact.getMobile()) || TextUtils.isEmpty(contact.getName()) || TextUtils.isEmpty(contact.getAddress())) {
                     contact.setProductId(mProductId);
                     //必要信息不完善
@@ -112,6 +122,11 @@ public class ContactListFragment extends BaseFragment {
                 } else {
                     statReservation(contact);
                 }
+            }
+
+            // 纯粹的个人信息管理
+            else {
+                start(AddBasicContactFragment.newInstance(contact, 0));
             }
         });
         adapter.setOnItemClickListener(new ContactListAdapter.OnItemClickListener() {
@@ -135,7 +150,11 @@ public class ContactListFragment extends BaseFragment {
 
 
     private void statReservation(Contact contact) {
-        startWithPop(ReservationFragment.newInstance(mProductId, contact));
+        if (mFlag == 0) {
+            startWithPop(ReservationFragment.newInstance(mProductId, contact));
+        } else if (mFlag == 1) {
+            startWithPop(ReservationCourseFragment.newInstance(mProductId, contact));
+        }
     }
 
     /**

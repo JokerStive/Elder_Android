@@ -12,7 +12,7 @@ import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ProductCategoryAdapter;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
@@ -131,7 +131,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
 
     @Override
-    public void showClassifies(List<ProductCategory> productCategories) {
+    public void showClassifies(List<OrganizationProductCategory> productCategories) {
         completeRefresh();
         if (mClassifyAdapter == null) {
 //            int spanCount = spanCountByData(productCategories);
@@ -139,7 +139,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             mClassifyRecycler.setLayoutManager(manager);
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
-                ProductCategory category = mClassifyAdapter.getData().get(i);
+                OrganizationProductCategory category = mClassifyAdapter.getData().get(i);
                 start(ProductListFragment.newInstance(category.getName(), category.getId(), 0));
             });
             mClassifyRecycler.setAdapter(mClassifyAdapter);

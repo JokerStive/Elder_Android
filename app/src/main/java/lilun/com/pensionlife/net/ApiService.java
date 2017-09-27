@@ -11,9 +11,7 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
 import lilun.com.pensionlife.module.bean.ElderEdus;
-import lilun.com.pensionlife.module.bean.ElderEdusColleage;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Information;
@@ -22,12 +20,14 @@ import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
+import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
-import lilun.com.pensionlife.module.bean.ProductCategory;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.bean.Register;
+import lilun.com.pensionlife.module.bean.Semester;
 import lilun.com.pensionlife.module.bean.TokenInfo;
 import lilun.com.pensionlife.module.bean.Tourism;
 import okhttp3.MultipartBody;
@@ -125,8 +125,8 @@ public interface ApiService {
      * 获取ProductCategory数据
      */
 
-    @GET("ProductCategories")
-    Observable<Response<List<ProductCategory>>> getProductCategories(@Query("filter") String filter);
+    @GET("OrganizationProductCategories")
+    Observable<Response<List<OrganizationProductCategory>>> getOrgProductCategories(@Query("filter") String filter);
 
 
     /**
@@ -143,6 +143,31 @@ public interface ApiService {
 
     @GET("OrganizationProducts")
     Observable<Response<List<OrganizationProduct>>> getProducts(@Query("filter") String filter);
+
+
+    /**
+     * 大学列表
+     */
+
+    @GET("OrganizationProducts/aggregate")
+    Observable<Response<List<Organization>>> getColleges(@Query("filter") String filter);
+
+
+    /**
+     * 获取productCategory
+     */
+
+    @GET("OrganizationProductCategories")
+    Observable<Response<List<OrganizationProductCategory>>> getOrganizationProductCategories(@Query("filter") String filter);
+
+
+    /**
+     * 获取学期列表
+     */
+
+    @GET("OrganizationEduSemesters/ActivitySemester")
+    Observable<Response<List<Semester>>> getSemesters(@Query("filter") String filter);
+
 
     /**
      * 获取product
@@ -337,19 +362,18 @@ public interface ApiService {
      * 获取organization -- 大学
      */
     @GET("OrganizationEdus")
-    Observable<Response<List<ElderEdusColleage>>> getOrganizationsEdus(@Query("filter") String filter);
+    Observable<Response<List<OrganizationEdu>>> getOrganizationsEdus(@Query("filter") String filter);
 
-    /**
-     * 获取organization -- 大学课程
-     */
-    @GET("OrganizationEdus/{id}/courses")
-    Observable<Response<List<EdusColleageCourse>>> getOrganizationsEdusCourse(@Path("id") String courseId, @Query("filter") String filter);
-
-    /**
-     * 获取课程详情
-     */
-    @GET("EduCourses/{id}")
-    Observable<Response<EdusColleageCourse>> getEduCourses(@Path("id") String courseId, @Query("filter") String filter);
+//    /**
+////     * 获取organization -- 大学课程
+////     */
+//    Observable<Response<List<Course>>> getCourses( @Query("filter") String filter);
+//
+//    /**
+//     * 获取课程详情
+//     */
+//    @GET("EduCourses/{id}")
+//    Observable<Response<Course>> getOneCourse(@Path("id") String courseId, @Query("filter") String filter);
 
     /**
      * 我参加的课程 --

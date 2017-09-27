@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -182,8 +183,27 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderTotalPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
             tvOrderPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
 
-            tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
+            String orgCategoryId = product.getOrgCategoryId();
+            if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
+                tvProductArea.setText(showSemester(product.getExtend()));
+            } else {
+                tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
+            }
         }
+    }
+
+
+    private String showSemester(Map<String, Object> extend) {
+        //显示学期
+        String semester = "无";
+        if (extend != null) {
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
+            if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+                semester = "学期时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
+            }
+        }
+        return semester;
     }
 
 
@@ -205,7 +225,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             stringRes = R.string.status_done;
         } else if (status.equals(status_cancel)) {
             stringRes = R.string.status_cancel;
-        }else if (status.equals(status_assessed)) {
+        } else if (status.equals(status_assessed)) {
             stringRes = R.string.status_assessed;
         }
         return stringRes;

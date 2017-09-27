@@ -227,7 +227,7 @@
 
             <include
                 android:id="@+id/agency_contact_extension"
-                layout="@layout/agency_product_extension"
+                layout="@layout/contact_agency_extend"
                 android:visibility="gone" />
 
             <View

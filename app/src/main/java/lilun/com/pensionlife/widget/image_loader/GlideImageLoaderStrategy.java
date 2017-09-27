@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
+
 /**
  * glide策略
  *
@@ -20,8 +23,8 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
     @Override
     public void loadImage(String url, ImageView imageView) {
         Glide.with(imageView.getContext()).load(url).dontAnimate()
-                .placeholder(imageView.getBackground())
-                .error(imageView.getBackground())
+                .placeholder(App.context.getResources().getDrawable(R.drawable.icon_def))
+                .error(App.context.getResources().getDrawable(R.drawable.icon_error))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
     }

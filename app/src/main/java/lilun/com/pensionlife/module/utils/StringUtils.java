@@ -185,6 +185,13 @@ public class StringUtils {
         return ret;
     }
 
+    public static String currentTimeToGTM() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String date = df.format(new Date());
+        return localToGTM(date);
+    }
+
+
     /***
      * 东八区时间 转换为 0区时间  转mongoDB 时间
      *
@@ -197,7 +204,7 @@ public class StringUtils {
         SimpleDateFormat format;
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         Date result_date;
-        long result_time = 0;
+        long result_time;
 
         try {
             format.setTimeZone(TimeZone.getDefault());
@@ -288,6 +295,15 @@ public class StringUtils {
      */
     public static String addFilterWithDef(String filter, int skip) {
         String head;
+//        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
+//            head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
+//            filter = head;
+//        } else {
+//            head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
+//            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
+//        }
+
+
         if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
             head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = head;

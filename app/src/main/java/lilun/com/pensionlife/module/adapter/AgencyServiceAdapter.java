@@ -32,7 +32,7 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
     @Override
     protected void convert(BaseViewHolder help, OrganizationProduct product) {
         CustomRatingBar ratingBar = help.getView(R.id.rb_score);
-        ratingBar.setCountSelected(product.getScore());
+        ratingBar.setCountSelected(product.getRank());
 
         String contextType = product.getContextType();
         if (!TextUtils.isEmpty(contextType) && contextType.equals("2")) {
@@ -42,7 +42,7 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         }
         help.setText(R.id.tv_product_title, product.getTitle())
 //                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
-                .setText(R.id.tv_score, (double) product.getScore() + "")
+                .setText(R.id.tv_score, (double) product.getRank() + "")
                 .setText(R.id.tv_product_price, new DecimalFormat("######0.00").format(product.getPrice()) + "");
         help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {

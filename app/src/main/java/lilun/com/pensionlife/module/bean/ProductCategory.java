@@ -1,25 +1,30 @@
+/*
 package lilun.com.pensionlife.module.bean;
 
 import java.util.List;
 
 import lilun.com.pensionlife.base.BaseBean;
 
+*/
 /**
 *产品服务(那些老年教育，那些养老机构)分类模型
 *@author yk
 *create at 2017/2/13 9:26
 *email : yk_developer@163.com
-*/
+*//*
+
 public class ProductCategory extends BaseBean{
 
-    /**
+    */
+/**
      * id : string
      * name : string （名称）
      * orderId : 0 (排序号)
      * description : string（显示的描述信息）
      * parentId : string（所属那个类别）
      * icon : string （图标地址）
-     */
+     *//*
+
 
     private String id;
     private String name;
@@ -86,3 +91,4 @@ public class ProductCategory extends BaseBean{
         this.icon = icon;
     }
 }
+*/

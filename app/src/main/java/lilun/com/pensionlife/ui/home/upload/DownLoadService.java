@@ -39,12 +39,12 @@ public class DownLoadService extends Service {
         DownloadManager.getInstance().download(url, new DownLoadCallBack() {
             @Override
             public void onSuccess(File file) {
-                SystemUtils.installApk(App.context,file);
+                SystemUtils.installApk(App.context, file);
             }
 
             @Override
             public void onProgress(int progress, int total) {
-                notification.updateProgress(100,progress,total);
+                notification.updateProgress(100, progress, total);
             }
 
             @Override

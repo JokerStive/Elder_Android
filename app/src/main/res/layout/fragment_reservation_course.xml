@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="立即预约" />
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom_menu"
+        android:layout_below="@id/titleBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="10dp"
+                android:background="#f5f5f9" />
+
+            <RelativeLayout
+                android:id="@+id/rl_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/sp_15">
+
+                <ImageView
+                    android:id="@+id/iv_product_image"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_80"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon_def" />
+
+
+                <TextView
+                    android:id="@+id/tv_product_area"
+                    style="@style/tv_normal"
+                    android:layout_below="@id/tv_product_title"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_toRightOf="@id/iv_product_image"
+                    android:maxLines="2"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="服务范围:重庆路小区" />
+
+
+                <TextView
+                    android:id="@+id/tv_product_price"
+                    style="@style/tv_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/tv_product_title"
+                    android:maxLines="2"
+                    android:textColor="#fe620f"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="￥998.00" />
+
+                <TextView
+                    android:id="@+id/tv_product_title"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_toLeftOf="@id/tv_product_price"
+                    android:layout_toRightOf="@id/iv_product_image"
+                    android:maxLines="2"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="为您提供以房养老业务供以以房养老业务" />
+
+            </RelativeLayout>
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="@dimen/dp_10"
+                android:background="#f5f5f9" />
+
+            <TextView
+                style="@style/tv_normal"
+                android:layout_width="match_parent"
+                android:drawableLeft="@drawable/icon_reservation_info"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_16"
+                android:text="预约信息"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_15" />
+
+            <View
+                style="@style/line_gray"
+                android:layout_height="@dimen/dp_1"
+                android:background="#f5f5f9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_16">
+
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_width="wrap_content"
+                    android:paddingBottom="@dimen/dp_16"
+                    android:paddingTop="@dimen/dp_16"
+                    android:text="姓名                "
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17" />
+
+                <TextView
+                    android:id="@+id/tv_contact_name"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_toRightOf="@id/name"
+                    android:maxLines="1"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17"
+                    tools:text="测试员乐乐" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_below="@id/name"
+                    android:background="#f5f5f9" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_16">
+
+
+                <TextView
+                    android:id="@+id/mobile"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_width="wrap_content"
+                    android:paddingBottom="@dimen/dp_16"
+                    android:paddingTop="@dimen/dp_16"
+                    android:text="联系方式        "
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17" />
+
+                <TextView
+                    android:id="@+id/tv_contact_mobile"
+                    style="@style/tv_normal"
+                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_toRightOf="@id/mobile"
+                    android:maxLines="1"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17"
+                    tools:text="187****3056" />
+
+                <View
+                    style="@style/line_gray"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_below="@id/mobile"
+                    android:background="#f5f5f9" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_16">
+
+
+                <TextView
+                    android:id="@+id/address"
+                    style="@style/tv_normal_ellipsize"
+                    android:layout_width="wrap_content"
+                    android:paddingBottom="@dimen/dp_16"
+                    android:paddingTop="@dimen/dp_16"
+                    android:text="详细地址        "
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17" />
+
+                <EditText
+                    android:id="@+id/tv_contact_address"
+                    style="@style/et_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/address"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_toRightOf="@id/address"
+                    android:enabled="false"
+                    android:hint="请填写详细地址"
+                    android:maxLength="60"
+                    android:paddingBottom="@dimen/dp_16"
+                    android:paddingTop="@dimen/dp_16"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_17" />
+
+
+            </RelativeLayout>
+
+
+            <View
+
+                style="@style/line_gray"
+                android:layout_height="@dimen/dp_10"
+                android:background="#f5f5f9" />
+
+            <include
+                android:id="@+id/agency_contact_extension"
+                layout="@layout/contact_course_extend" />
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_product_detail_bottom_bg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/tv_normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="#fafafa"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_19"
+            android:textColor="#a9a9a9"
+            android:textSize="@dimen/sp_17"
+            tools:text="价格：998.00" />
+
+        <View
+            style="@style/line_gray"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:background="#f5f5f9" />
+
+
+        <TextView
+            android:id="@+id/tv_reservation"
+            style="@style/tv_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#108ee9"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:text="确认预约"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_17" />
+
+    </LinearLayout>
+</RelativeLayout>

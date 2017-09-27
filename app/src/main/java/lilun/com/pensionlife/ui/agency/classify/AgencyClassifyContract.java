@@ -5,7 +5,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.Organization;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 
 /**
 *养老机构分类C
@@ -16,7 +16,7 @@ import lilun.com.pensionlife.module.bean.ProductCategory;
 public interface AgencyClassifyContract {
     interface View extends IView<Presenter> {
         void showClassifiesByAgency(List<Organization> organizations);
-        void showClassifiesByService(List<ProductCategory> productCategories,String categoryId);
+        void showClassifiesByService(List<OrganizationProductCategory> productCategories, String categoryId);
 //        void showAgencies(List<OrganizationProduct> products,boolean isLoadMore);
         void completeRefresh();
     }

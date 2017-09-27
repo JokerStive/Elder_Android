@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.adapter;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
@@ -35,11 +37,6 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     }
 
 
-//    @Override
-//    public int getItemCount() {
-//        return Integer.MAX_VALUE;
-//    }
-
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
         OrganizationProduct product = order.getProduct();
@@ -53,7 +50,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             helper.setVisible(R.id.tv_next_operate, order.getStatus().equals("reserved") || order.getStatus().equals("done"))
                     .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
-                    .setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())))
+
                     .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format))
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
@@ -66,11 +63,32 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                         if (listener != null) {
                             listener.nextOperate(order);
                         }
-                    })
+                    });
 
-            ;
+            String orgCategoryId = product.getOrgCategoryId();
+            if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
+                //是课程订单,显示学期
+                String semester = showSemester(product.getExtend());
+                helper.setText(R.id.tv_product_area, semester);
+
+            } else {
+                helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
+            }
 
         }
+    }
+
+    private String showSemester(Map<String, Object> extend) {
+        //显示学期
+        String semester = "无";
+        if (extend != null) {
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
+            if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+                semester = "学期时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
+            }
+        }
+        return semester;
     }
 
     private void setNextOperate(BaseViewHolder helper, ProductOrder order) {

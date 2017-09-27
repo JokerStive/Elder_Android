@@ -1,12 +1,20 @@
 package lilun.com.pensionlife.ui.education.course_details;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -14,231 +22,364 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.bean.EdusColleageCourse;
+import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.IconModule;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.module.utils.StartOtherUtils;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.ui.education.classify.EducationClassifyFragment;
-import lilun.com.pensionlife.ui.education.colleage_details.ColleageDetailFragment;
-import lilun.com.pensionlife.widget.CircleImageView;
+import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.net.NetHelper;
+import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
+import lilun.com.pensionlife.ui.contact.ContactListFragment;
+import lilun.com.pensionlife.ui.education.reservation.CoursePolicyFragment;
+import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
+import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
-/**
- * 大学课程详情
- * Created by zp on 2017/2/23.
- */
+public class CourseDetailFragment extends BaseFragment {
 
-public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Presenter>
-        implements CourseDetailContract.View {
+    @Bind(R.id.titleBar)
+    NormalTitleBar titleBar;
+    @Bind(R.id.banner)
+    BannerPager banner;
+    @Bind(R.id.tv_course_title)
+    TextView tvCourseTitle;
+    @Bind(R.id.tv_course_xueqi)
+    TextView tvCourseXueqi;
+    @Bind(R.id.tv_course_price)
+    TextView tvCoursePrice;
+    @Bind(R.id.tv_course_stock)
+    TextView tvCourseStock;
+    @Bind(R.id.tv_course_remain)
+    TextView tvCourseRemain;
+    @Bind(R.id.tv_course_teacher)
+    TextView tvCourseTeacher;
+    @Bind(R.id.tv_course_startTime)
+    TextView tvCourseStartTime;
+    @Bind(R.id.tv_course_classRoom)
+    TextView tvCourseClassRoom;
+    @Bind(R.id.tv_course_address)
+    TextView tvCourseAddress;
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout swipeLayout;
+    @Bind(R.id.tv_bottom_price)
+    TextView tvBottomPrice;
+    @Bind(R.id.tv_reservation)
+    TextView tvReservation;
+    private String mProductId;
+    private OrganizationProduct mProduct;
 
-    EdusColleageCourse mCourse;
-    private boolean isJoin;
-    private boolean retNeedRef = false;
-
-
-    @Bind(R.id.bp_course_icon)
-    BannerPager bgCourseIcon;
-    @Bind(R.id.tv_course_name)
-    TextView tvCourseName;
-    @Bind(R.id.tv_connect_phone)
-    TextView tvConnectPhone;
-    @Bind(R.id.tv_connect_person)
-    TextView tvConnectPerson;
-    @Bind(R.id.cig_connect_icon)
-    CircleImageView tvConnectIcon;
-    @Bind(R.id.tv_course_sign_date)
-    TextView tvSignDate;
-    @Bind(R.id.tv_course_during_date)
-    TextView tvDuringDate;
-    @Bind(R.id.tv_course_start_end_time)
-    TextView tvStartEndTime;
-    @Bind(R.id.tv_course_plan)
-    TextView tvCoursePlan;
-    @Bind(R.id.tv_course_desp)
-    TextView tvCourseDesp;
-    @Bind(R.id.tv_colleage_name)
-    TextView tvCoulleageName;
-    @Bind(R.id.tv_service_provider)
-    TextView tvServiceProvider;
+    //不能预约 0-已经预约  1-时间冲突
+    private int can_not_order_flag = -1;
 
 
-//    @Bind(R.id.join_in)
-//    Button btJoinIn;
-//    @Bind(R.id.cancle)
-//    Button btCancel;
-//    @Bind(R.id.other_status)
-//    Button btOtherStatus;
-
-
-    @OnClick({R.id.tv_connect_phone, R.id.iv_back, R.id.tv_service_provider})
-    public void onClick(View view) {
-        switch (view.getId()) {
-//            case R.id.join_in:
-//                mPresenter.joinCourse(mCourse.getId(), "");
-//                break;
-//            case R.id.cancle:
-//                mPresenter.quitCourse(mCourse.getId(), "");
-//                break;
-            case R.id.tv_connect_phone:
-                if (mCourse != null && mCourse.getContact() != null)
-                    StartOtherUtils.cellPhone(_mActivity, mCourse.getContact().getMobile());
-                break;
-            case R.id.iv_back:
-                pop();
-                break;
-            case R.id.tv_service_provider:
-                ColleageDetailFragment fragment = findFragment(ColleageDetailFragment.class);
-                if (fragment != null) {
-                    popTo(ColleageDetailFragment.class, false);
-                } else {
-                    start(ColleageDetailFragment.newInstance(mCourse.getSchool()));
-                }
-                break;
-        }
-    }
-
-
-    public static CourseDetailFragment newInstance(EdusColleageCourse course) {
+    public static CourseDetailFragment newInstance(String productId) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("course", course);
+        args.putSerializable("productId", productId);
         fragment.setArguments(args);
         return fragment;
     }
 
+    @Subscribe
+    public void refresh(String tx) {
+        if (tx.contains("hasOrder")) {
+            setHadOrdered();
+        }
+    }
+
+
     @Override
     protected void getTransferData(Bundle arguments) {
-        mCourse = (EdusColleageCourse) arguments.getSerializable("course");
-        Preconditions.checkNull(mCourse);
-
+        mProductId = arguments.getString("productId");
+        Preconditions.checkNull(mProductId);
     }
 
     @Override
     protected void initPresenter() {
-        mPresenter = new CourseDetailPresenter();
-        mPresenter.bindView(this);
+
     }
 
     @Override
     protected int getLayoutId() {
+
         return R.layout.fragment_course_detail;
     }
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        //显示图片
+
+        titleBar.setOnBackClickListener(this::pop);
+
+        swipeLayout.setEnabled(false);
+    }
+
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        getProduct();
+//        getIsOrder();
+    }
+
+
+    private void getProduct() {
+        NetHelper.getApi().getProduct(mProductId, null)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationProduct>(getActivity()) {
+                    @Override
+                    public void _next(OrganizationProduct product) {
+                        showProductDetail(product);
+                        getIsOrder(product);
+                    }
+                });
+
+    }
+
+
+    private void getIsOrder(OrganizationProduct product) {
+        Map<String, Object> extend = product.getExtend();
+        if (extend != null) {
+            String classStartTime = null2empty((String) extend.get("classStartTime"));
+            String classEndTime = null2empty((String) extend.get("classEndTime"));
+            String termStartDate = null2empty((String) extend.get("termStartDate"));
+            String termEndDate = null2empty((String) extend.get("termEndDate"));
+
+            if (!TextUtils.isEmpty(classStartTime) && !TextUtils.isEmpty(classEndTime) && !TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+
+            }
+            String filter = " {\"where\":{\n" +
+                    "      \"or\":[{\"productInfo.tag.kind\": \"college\",\n" +
+                    "        \"productInfo.extend.classStartTime\":{\"gte\":\"" + classStartTime + "\"},\n" +
+                    "        \"productInfo.extend.classEndTime\":{\"lte\":\"" + classEndTime + "\"},\n" +
+                    "        \"productInfo.extend.termStartDate\":{\"gte\":\"" + termStartDate + "\"},\n" +
+                    "        \"productInfo.extend.termEndDate\":{\"lte\":\"" + termEndDate + "\"}\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"productInfo.id\":\"" + mProductId + "\",\n" +
+                    "          \"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}\n" +
+                    "        }]\n" +
+                    "    }}";
+            NetHelper.getApi()
+                    .getOrdersOfProduct(mProductId, filter)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                        @Override
+                        public void _next(List<ProductOrder> orders) {
+                            if (orders.size() > 0) {
+                                can_not_order_flag = 1;
+                                for (ProductOrder order : orders) {
+                                    if (order.getProduct().getId().equals(mProductId)) {
+                                        can_not_order_flag = 0;
+                                        setHadOrdered();
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
+    }
+
+
+    private String null2empty(String s) {
+        return TextUtils.isEmpty(s) ? "" : s;
+    }
+
+    private void showProductDetail(OrganizationProduct product) {
+
+        this.mProduct = product;
+
+
+        //图片
+        showBanner(product);
+
+
+        //标题
+        tvCourseTitle.setText(product.getTitle());
+
+
+        //报名人数
+        tvCourseStock.setText("报名人数：" + StringUtils.filterNull(product.getStock() + ""));
+
+
+        //剩余名额
+        tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() - product.getSold() + ""));
+
+
+        Map<String, Object> extend = product.getExtend();
+        if (extend != null) {
+            //授课老师
+            tvCourseTeacher.setText("授课老师：" + StringUtils.filterNull((String) extend.get("teacher")));
+
+
+            //上课时间
+            String classStartTime = StringUtils.filterNull((String) extend.get("classStartTime"));
+            String classEndTime = StringUtils.filterNull((String) extend.get("classEndTime"));
+
+            tvCourseStartTime.setText("上课时间：" + classStartTime + "-" + classEndTime);
+
+
+            //上课教室
+            tvCourseClassRoom.setText("上课教室：" + StringUtils.filterNull((String) extend.get("classRoom")));
+
+            //上课地点
+            tvCourseAddress.setText("上课地点：" + StringUtils.filterNull((String) extend.get("classPlace")));
+
+            //显示学期
+            String termStartDate = (String) extend.get("termStartDate");
+            String termEndDate = (String) extend.get("termEndDate");
+            if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
+                String semesterText = "学期：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
+                tvCourseXueqi.setText(semesterText);
+            }
+
+        }
+
+
+        //价格
+        tvCoursePrice.setText("¥" + new DecimalFormat("######0.00").format(product.getPrice()) + " 元");
+
+        //底部价格
+        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + "¥ " + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
+
+    }
+
+
+    private void showBanner(OrganizationProduct product) {
         List<String> urls = new ArrayList<>();
-        if (mCourse.getPicture() != null) {
-            for (IconModule iconModule : mCourse.getPicture()) {
-                String url = IconUrl.eduCourses(mCourse.getId(), iconModule.getFileName());
+        if (product.getImage() != null) {
+            for (IconModule iconModule : product.getImage()) {
+                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), iconModule.getFileName());
                 urls.add(url);
             }
         } else {
-            String url = IconUrl.organizationEdus(mCourse.getId(), null);
+            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null);
             urls.add(url);
         }
-        bgCourseIcon.setData(urls);
-        tvCourseName.setText(mCourse.getName());
-
-        tvServiceProvider.setVisibility(View.GONE);
-        isJoin = false;
-
-
-        String filter = "{\"include\":[\"contact\",\"school\"]}";
-        mPresenter.getCourseDetail(mCourse.getId(), filter);
-
+        banner.setData(urls);
     }
 
 
-    @Override
-    public void showJoinCourse() {
-//        isJoin = true;
-//        btJoinIn.setVisibility(ViewStep2.GONE);
-//        btCancel.setVisibility(ViewStep2.VISIBLE);
-//
-//        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-//        InforPopupWindow.newInstance(_mActivity, uri, "恭喜你报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
-//        retNeedRef = !retNeedRef;
+    private void setHadOrdered() {
+        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+        tvReservation.setEnabled(false);
+        tvReservation.setText("已经预约");
     }
 
-    @Override
-    public void showQuitCourse() {
-//        isJoin = false;
-//        btJoinIn.setVisibility(ViewStep2.VISIBLE);
-//        btCancel.setVisibility(ViewStep2.GONE);
-//        String uri = IconUrl.account(User.getUserId(), BitmapUtils.picName(mCourse.getPicture()));
-//        InforPopupWindow.newInstance(_mActivity, uri, "取消报名成功！").showAtLocation(btJoinIn, Gravity.CENTER, 0, 0);
-//        retNeedRef = !retNeedRef;
+
+    @OnClick({R.id.tv_reservation})
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.tv_reservation:
+                //立即预约
+                if (can_not_order_flag == 1) {
+                    new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            takeReservation();
+                        }
+                    });
+                } else if (can_not_order_flag == -1) {
+                    takeReservation();
+                }
+                break;
+        }
     }
 
-    @Override
-    public void showCourseDetail(EdusColleageCourse orders) {
-        mCourse = orders;
-        if (orders.getJoinerList() != null && orders.getJoinerList().size() > 0) {
-            for (int i = 0; i < orders.getJoinerList().size(); i++) {
-                if (User.getUserId().equals(orders.getJoinerList().get(i))) {
-                    isJoin = true;
-                    break;
+
+    /**
+     * 预约
+     */
+    private void takeReservation() {
+        if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
+            ToastHelper.get().showWareShort("不能预约自己创建的课程");
+            return;
+        }
+
+        if (can_not_order_flag == 1) {
+
+        }
+
+        //检查协议
+        boolean needAgreePolicy = !TextUtils.isEmpty(mProduct.getLicenseGgreement());
+        ArrayList<String> certificateLicenses = User.getCertificateLicense();
+        if (certificateLicenses != null) {
+            for (String productId : certificateLicenses) {
+                if (TextUtils.equals(mProductId, productId)) {
+                    needAgreePolicy = false;
                 }
             }
         }
-        tvCoursePlan.setText(orders.getPlan());
-        tvCourseDesp.setText(orders.getContent());
-        if (orders.getContact() != null) {
-            tvConnectPhone.setText(getString(R.string.connect_phone_, orders.getContact().getMobile()));
-            tvConnectPerson.setText(getString(R.string.connect_person_, orders.getContact().getUsername()));
-            // if (!TextUtils.isEmpty(BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
-//            ImageLoaderUtil.instance().loadImage(
-//                    IconUrl.moduleIconUrl(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())),
-//                    R.drawable.icon_def,tvConnectIcon);
-//                Glide.with(this)
-//                        .load(IconUrl.account(orders.getContact().getId(), BitmapUtils.picName((ArrayList<IconModule>) orders.getContact().getPicture())))
-//                        .into(tvConnectIcon);
+        //去签订协议界面
+        if (needAgreePolicy) {
+            start(CoursePolicyFragment.newInstance(mProductId, mProduct.getLicenseGgreement()));
+            return;
         }
 
-        String signDateStr = StringUtils.IOS2ToUTC(orders.getStartSingnDate(), 0) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndSingnDate(), 0);
-        String duringDateStr = StringUtils.IOS2ToUTC(orders.getStartDate(), 0) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndDate(), 0);
-        String startEndTimeStr = StringUtils.IOS2ToUTC(orders.getStartCourseTime(), 1) + " ~ " + StringUtils.IOS2ToUTC(orders.getEndCourseTime(), 1);
 
-        tvSignDate.setText(getString(R.string.course_sign_date_, signDateStr));
-        tvDuringDate.setText(getString(R.string.course_during_date_, duringDateStr));
-        tvStartEndTime.setText(getString(R.string.course_start_end_time_, startEndTimeStr));
-        tvServiceProvider.setVisibility(View.VISIBLE);
-        if (orders.getSchool() != null) {
-            tvCoulleageName.setText(orders.getSchool().getName());
-        }
-//        if (StringUtils.IOS2DateTime(mCourse.getStartSingnDate()).isAfterNow()) {
-//            btOtherStatus.setVisibility(ViewStep2.VISIBLE);
-//            btJoinIn.setVisibility(ViewStep2.GONE);
-//            btCancel.setVisibility(ViewStep2.GONE);
-//            btOtherStatus.setText("报名未开始");
-//        } else if (StringUtils.IOS2DateTime(mCourse.getEndSingnDate()).isBeforeNow()) {
-//            btOtherStatus.setVisibility(ViewStep2.VISIBLE);
-//            btJoinIn.setVisibility(ViewStep2.GONE);
-//            btCancel.setVisibility(ViewStep2.GONE);
-//            btOtherStatus.setText("报名已结束");
-//        } else {
-//            btOtherStatus.setVisibility(ViewStep2.GONE);
-//            if (isJoin) {
-//                btJoinIn.setVisibility(ViewStep2.GONE);
-//                btCancel.setVisibility(ViewStep2.VISIBLE);
-//            } else {
-//                btJoinIn.setVisibility(ViewStep2.VISIBLE);
-//                btCancel.setVisibility(ViewStep2.GONE);
-//            }
-//        }
+        String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
+        NetHelper.getApi().getContacts(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
+                    @Override
+                    public void _next(List<Contact> contacts) {
+                        checkContact(contacts);
+                    }
+                });
     }
 
-    @Override
-    public void onDestroy() {
-        if (retNeedRef) {
-            EducationClassifyFragment fragment = findFragment(EducationClassifyFragment.class);
-            if (fragment != null) {
-                fragment.refreshData();
+
+    /**
+     * 检查预约资料
+     */
+    private void checkContact(List<Contact> contacts) {
+        if (contacts.size() > 0) {
+            //显示 预约者信息列表
+            Contact defContact = getDefaultContact(contacts);
+            if (defContact == null) {
+                //没有默认信息，就进去信息列表
+                start(ContactListFragment.newInstance(mProduct.getId(), 1));
+            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
+                defContact.setProductId(mProductId);
+                //必要信息不完善
+                start(AddBasicContactFragment.newInstance(defContact, 1));
+            } else {
+                //有默认信息，并且必要信息完整，直接预约界面
+                start(ReservationCourseFragment.newInstance(mProductId, defContact));
+            }
+        } else {
+            //新增基础信息界面
+            AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();
+            Bundle args = new Bundle();
+            args.putString("productId", mProductId);
+            addBasicContactFragment.setArguments(args);
+            addBasicContactFragment.setOnAddBasicContactListener(contact -> start(ReservationCourseFragment.newInstance(mProductId, contact)));
+            start(addBasicContactFragment);
+        }
+    }
+
+
+    /**
+     * 获取默认信息
+     */
+    private Contact getDefaultContact(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            int index = contact.getIndex();
+            if (index == 1) {
+                return contact;
             }
         }
-        super.onDestroy();
+        return null;
     }
+
 }
 

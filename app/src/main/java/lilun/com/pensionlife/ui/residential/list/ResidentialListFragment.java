@@ -18,7 +18,7 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AgencyServiceAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
@@ -47,17 +47,17 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     @Bind(R.id.filter_view)
     FilterView filterView;
 
-    private ProductCategory productCategory;
+    private OrganizationProductCategory organizationProductCategory;
     private AgencyServiceAdapter mAdapter;
     private boolean mIsMerchant;
     private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
     private List<OrganizationProduct> products;
 
 
-    public static ResidentialListFragment newInstance(ProductCategory productCategory) {
+    public static ResidentialListFragment newInstance(OrganizationProductCategory organizationProductCategory) {
         ResidentialListFragment fragment = new ResidentialListFragment();
         Bundle args = new Bundle();
-        args.putSerializable("productCategory", productCategory);
+        args.putSerializable("OrganizationProductCategory", organizationProductCategory);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +66,8 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     @Override
     protected void getTransferData(Bundle arguments) {
         mIsMerchant = !User.isCustomer();
-        productCategory = (ProductCategory) arguments.getSerializable("productCategory");
-        Preconditions.checkNull(productCategory);
+        organizationProductCategory = (OrganizationProductCategory) arguments.getSerializable("OrganizationProductCategory");
+        Preconditions.checkNull(organizationProductCategory);
     }
 
     @Override
@@ -158,9 +158,9 @@ public class ResidentialListFragment extends BaseFragment<ResidentialListContrac
     private void getData(int skip) {
         String filter;
         if (mIsMerchant) {
-            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
+            filter = "{\"where\":{\"categoryId\":\"" + organizationProductCategory.getId() + "\",\"creatorId\":\"" + User.getUserId() + "\"}}";
         } else {
-            filter = "{\"where\":{\"categoryId\":\"" + productCategory.getId() + "\",\"areaIds\":[" + User.getCurrentOrganizationId() + "]}}";
+            filter = "{\"where\":{\"categoryId\":\"" + organizationProductCategory.getId() + "\",\"areaIds\":[" + User.getCurrentOrganizationId() + "]}}";
         }
         mPresenter.getResidentialServices(filter, skip);
     }

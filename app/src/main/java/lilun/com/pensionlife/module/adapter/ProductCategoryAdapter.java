@@ -11,7 +11,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
-import lilun.com.pensionlife.module.bean.ProductCategory;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
@@ -21,31 +21,31 @@ import lilun.com.pensionlife.module.utils.StringUtils;
  *         create at 2017/2/13 11:14
  *         email : yk_developer@163.com
  */
-public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
+public class ProductCategoryAdapter extends QuickAdapter<OrganizationProductCategory> {
     private BaseFragment fragment;
     private int color;
 //    private OnItemClickListener listener;
 
-    public ProductCategoryAdapter(BaseFragment fragment, List<ProductCategory> data,int color) {
+    public ProductCategoryAdapter(BaseFragment fragment, List<OrganizationProductCategory> data,int color) {
         super(R.layout.item_elder_module, data);
         this.fragment = fragment;
         this.color = color;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ProductCategory productCategory) {
-        helper.setText(R.id.tv_module_name, productCategory.getName())
+    protected void convert(BaseViewHolder helper, OrganizationProductCategory OrganizationProductCategory) {
+        helper.setText(R.id.tv_module_name, OrganizationProductCategory.getName())
                 .setBackgroundColor(R.id.ll_module_background, color);
 //                .setOnClickListener(R.id.ll_module_background, v -> {
 //                    if (listener != null) {
-//                        listener.onItemClick(productCategory);
+//                        listener.onItemClick(OrganizationProductCategory);
 //                    }
 //                });
 
 
-        if (productCategory.getIcon()!=null) {
-            String firstIconName = StringUtils.getFirstIconNameFromIcon(productCategory.getIcon());
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ProductCategories,productCategory.getId(),firstIconName,"");
+        if (OrganizationProductCategory.getIcon()!=null) {
+            String firstIconName = StringUtils.getFirstIconNameFromIcon(OrganizationProductCategory.getIcon());
+            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProductCategories,OrganizationProductCategory.getId(),firstIconName,"");
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }
@@ -55,7 +55,7 @@ public class ProductCategoryAdapter extends QuickAdapter<ProductCategory> {
 //    }
 //
 //    public interface OnItemClickListener {
-//        void onItemClick(ProductCategory productCategory);
+//        void onItemClick(OrganizationProductCategory OrganizationProductCategory);
 //    }
 
 

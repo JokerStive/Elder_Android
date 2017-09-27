@@ -1,24 +1,11 @@
 package lilun.com.pensionlife.module.utils.mqtt;
 
 
-import android.text.TextUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.PushMessage;
-import lilun.com.pensionlife.module.utils.GsonUtils;
 
 /**
  * 使用EventBus分发事件
@@ -44,6 +31,7 @@ public class MQTTCallbackBus implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
+
     }
 
 
