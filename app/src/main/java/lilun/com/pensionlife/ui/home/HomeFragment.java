@@ -1,6 +1,8 @@
 package lilun.com.pensionlife.ui.home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -53,6 +55,8 @@ import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 首页V
@@ -62,7 +66,7 @@ import me.relex.circleindicator.CircleIndicator;
  *         email : yk_developer@163.com
  *         2017/6/30 进入主页后，发送请求获取最近版本，判断是否弹出升级框，使用外部浏览器下载新版本；
  */
-public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, HomeContract.View {
+public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, EasyPermissions.PermissionCallbacks, HomeContract.View {
 
     @Bind(R.id.iv_activities)
     ImageView ivActivities;
@@ -179,6 +183,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter.needChangeToDefOrganization();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
     @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
             R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government
 
@@ -204,9 +214,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 startPensionAgency();
                 break;
 
-            // 一键求助
+            // 紧急求助
             case R.id.iv_help:
-                startHelp();
+                //  startHelp();
+                locationPermission();
                 break;
 
             //老年教育
@@ -311,7 +322,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     /**
-     * 一键求助
+     * 紧急求助
      */
     private void startHelp() {
         String phone = PreUtils.getString("firstHelperPhone", "");
@@ -393,5 +404,33 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     public void startFragment(BaseFragment targetFragment) {
         start(targetFragment);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        //    startHelp();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        new NormalDialog().createNormal(getActivity(), "您没有给予定位权限，可能导致功能不全，要继续么？", new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                startHelp();
+            }
+        });
+    }
+
+    private static final int RC_CAMERA_AND_LOCATION = 124;
+
+
+    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
+    public void locationPermission() {
+        if (EasyPermissions.hasPermissions(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            startHelp();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.location_permission),
+                    RC_CAMERA_AND_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
     }
 }
