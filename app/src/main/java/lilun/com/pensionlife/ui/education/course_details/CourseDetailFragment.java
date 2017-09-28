@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -153,18 +158,46 @@ public class CourseDetailFragment extends BaseFragment {
             if (!TextUtils.isEmpty(classStartTime) && !TextUtils.isEmpty(classEndTime) && !TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
 
             }
-            String filter = " {\"where\":{\n" +
-                    "      \"or\":[{\"productInfo.tag.kind\": \"college\",\n" +
-                    "        \"productInfo.extend.classStartTime\":{\"gte\":\"" + classStartTime + "\"},\n" +
-                    "        \"productInfo.extend.classEndTime\":{\"lte\":\"" + classEndTime + "\"},\n" +
-                    "        \"productInfo.extend.termStartDate\":{\"gte\":\"" + termStartDate + "\"},\n" +
-                    "        \"productInfo.extend.termEndDate\":{\"lte\":\"" + termEndDate + "\"}\n" +
+            String filter = "{\"where\":{\n" +
+                    "  \"or\":[\n" +
+                    "    {\n" +
+                    "      \"status\":{\"neq\":\"cancel\"},\n" +
+                    "      \"productInfo.tag.kind\": \"college\",\n" +
+                    "      \"or\":[\n" +
+                    "        {\n" +
+                    "          \"and\":[\n" +
+                    "            {\"productInfo.extend.classStartTime\":{\"lte\":\"" + classStartTime + "\"}},\n" +
+                    "            {\"productInfo.extend.classEndTime\":{\"gte\":\"" + classEndTime + "\"}}\n" +
+                    "          ]},\n" +
+                    "        {\n" +
+                    "          \"and\":[\n" +
+                    "          {\"productInfo.extend.classStartTime\":{\"lte\":\"" + classStartTime + "\"}},\n" +
+                    "          {\"productInfo.extend.classEndTime\":{\"gte\":\"" + classEndTime + "\"}}\n" +
+                    "        ]}\n" +
+                    "      ],\n" +
+                    "      \"or\":[\n" +
+                    "        {\n" +
+                    "          \"and\":[\n" +
+                    "            {\"productInfo.extend.termStartDate\":{\"lte\":\"" + termStartDate + "\"}},\n" +
+                    "            {\"productInfo.extend.termEndDate\":{\"gte\":\"" + termEndDate + "\"}}\n" +
+                    "          ]\n" +
                     "        },\n" +
                     "        {\n" +
-                    "          \"productInfo.id\":\"" + mProductId + "\",\n" +
-                    "          \"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}\n" +
-                    "        }]\n" +
-                    "    }}";
+                    "          \"and\":[\n" +
+                    "            {\"productInfo.extend.termStartDate\":{\"lte\":\"" + termStartDate + "\"}},\n" +
+                    "            {\"productInfo.extend.termEndDate\":{\"gte\":\"" + termEndDate + "\"}}\n" +
+                    "          ]\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "\n" +
+                    "    \n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"productInfo.id\": \"" + mProductId + "\",\n" +
+                    "      \"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}}";
             NetHelper.getApi()
                     .getOrdersOfProduct(mProductId, filter)
                     .compose(RxUtils.handleResult())
@@ -220,8 +253,8 @@ public class CourseDetailFragment extends BaseFragment {
 
 
             //上课时间
-            String classStartTime = StringUtils.filterNull((String) extend.get("classStartTime"));
-            String classEndTime = StringUtils.filterNull((String) extend.get("classEndTime"));
+            String classStartTime = StringUtils.filterNull(IOS2ToUTC((String) extend.get("classStartTime")));
+            String classEndTime = StringUtils.filterNull(IOS2ToUTC((String) extend.get("classEndTime")));
 
             tvCourseStartTime.setText("上课时间：" + classStartTime + "-" + classEndTime);
 
@@ -251,6 +284,21 @@ public class CourseDetailFragment extends BaseFragment {
 
     }
 
+
+    public  String IOS2ToUTC(String isoTime1) {
+        String ret = "";
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] +"+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            DateTime dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            ret = format.format(new Date(dateTime.getMillis() ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
 
     private void showBanner(OrganizationProduct product) {
         List<String> urls = new ArrayList<>();
