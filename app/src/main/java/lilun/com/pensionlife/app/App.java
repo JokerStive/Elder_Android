@@ -1,8 +1,8 @@
 package lilun.com.pensionlife.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -31,7 +31,7 @@ import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
  *         create at 2017/2/4 13:40
  *         email : yk_developer@163.com
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     public static Context context;
     public static int widthDP = 0;
     public static Date loginDate = null;
@@ -73,6 +73,7 @@ public class App extends Application {
     }
 
 
+
     public static void resetMQTT() {
         Logger.i("尝试重链接mqtt");
         MQTTManager mqttManager = MQTTManager.getInstance();
@@ -81,7 +82,7 @@ public class App extends Application {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("mqtt 连接成功");
-//                    loginDate = new Date();
+//                    loginDate = new Da te();
                     initSub();
                     pushLogin();
                 }
