@@ -48,6 +48,23 @@ public class StringUtils {
         return format.format(new Date(dateTime.getMillis() + 28800 * 1000));
     }
 
+
+    public  static  String IOS2ToUTCNot8(String isoTime1) {
+        String ret = "";
+        try {
+            String[] ss = isoTime1.split("\\.");
+            String isoTime = ss[0] +"+08:00";
+            DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
+            DateTime dateTime = parser2.parseDateTime(isoTime);
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            ret = format.format(new Date(dateTime.getMillis() ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+
     /**
      * 转换为东八区时间
      *

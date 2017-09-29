@@ -282,18 +282,24 @@ public class CourseDetailFragment extends BaseFragment {
         //底部价格
         tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + "¥ " + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
 
+
+        //报名满额
+        if (product.getStock() <= 0) {
+            canNotOrderStatus("已经满员");
+        }
+
     }
 
 
-    public  String IOS2ToUTC(String isoTime1) {
+    public String IOS2ToUTC(String isoTime1) {
         String ret = "";
         try {
             String[] ss = isoTime1.split("\\.");
-            String isoTime = ss[0] +"+08:00";
+            String isoTime = ss[0] + "+08:00";
             DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
             DateTime dateTime = parser2.parseDateTime(isoTime);
             SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            ret = format.format(new Date(dateTime.getMillis() ));
+            ret = format.format(new Date(dateTime.getMillis()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -316,9 +322,14 @@ public class CourseDetailFragment extends BaseFragment {
 
 
     private void setHadOrdered() {
+        canNotOrderStatus("已经预约");
+
+    }
+
+    private void canNotOrderStatus(String showStr) {
         tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
         tvReservation.setEnabled(false);
-        tvReservation.setText("已经预约");
+        tvReservation.setText(showStr);
     }
 
 
