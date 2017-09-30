@@ -159,9 +159,9 @@ public class CourseDetailFragment extends BaseFragment {
 
             }
             String filter = "{\"where\":{\n" +
+                    "  \"status\":{\"neq\":\"cancel\"}," +
                     "  \"or\":[\n" +
                     "    {\n" +
-                    "      \"status\":{\"neq\":\"cancel\"},\n" +
                     "      \"productInfo.tag.kind\": \"college\",\n" +
                     "      \"or\":[\n" +
                     "        {\n" +
@@ -199,7 +199,7 @@ public class CourseDetailFragment extends BaseFragment {
                     "  ]\n" +
                     "}}";
             NetHelper.getApi()
-                    .getOrdersOfProduct(mProductId, filter)
+                    .getOrders(filter)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
                     .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
@@ -239,11 +239,11 @@ public class CourseDetailFragment extends BaseFragment {
 
 
         //报名人数
-        tvCourseStock.setText("报名人数：" + StringUtils.filterNull(product.getStock() + ""));
+        tvCourseStock.setText("报名人数：" + StringUtils.filterNull(product.getStock() + product.getSold() + ""));
 
 
         //剩余名额
-        tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() - product.getSold() + ""));
+        tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() + ""));
 
 
         Map<String, Object> extend = product.getExtend();
