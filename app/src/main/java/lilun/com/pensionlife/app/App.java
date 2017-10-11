@@ -73,6 +73,7 @@ public class App extends MultiDexApplication {
     }
 
 
+
     public static void resetMQTT() {
         Logger.i("尝试重链接mqtt");
         MQTTManager mqttManager = MQTTManager.getInstance();
@@ -81,7 +82,7 @@ public class App extends MultiDexApplication {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Logger.i("mqtt 连接成功");
-//                    loginDate = new Date();
+//                    loginDate = new Da te();
                     initSub();
                     pushLogin();
                 }
