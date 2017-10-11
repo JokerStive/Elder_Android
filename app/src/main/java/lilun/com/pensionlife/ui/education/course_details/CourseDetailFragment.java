@@ -160,6 +160,7 @@ public class CourseDetailFragment extends BaseFragment {
             }
             String filter = "{\"where\":{\n" +
                     "  \"status\":{\"neq\":\"cancel\"}," +
+                    "  \"creatorId\":\"" + User.getUserId() + "\"," +
                     "  \"or\":[\n" +
                     "    {\n" +
                     "      \"productInfo.tag.kind\": \"college\",\n" +
@@ -339,6 +340,15 @@ public class CourseDetailFragment extends BaseFragment {
 
             case R.id.tv_reservation:
                 //立即预约
+                if (mProduct == null) {
+                    return;
+                }
+                if (mProduct.getCreatorId().equals(User.getUserId())) {
+                    ToastHelper.get().showWareShort("自己商品不可以预约");
+                    return;
+                }
+
+
                 if (can_not_order_flag == 1) {
                     new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
                         @Override
