@@ -262,6 +262,7 @@ public class OrganizationProduct extends BaseBean {
     }
 
     public String getPhone() {
+
         return phone;
     }
 

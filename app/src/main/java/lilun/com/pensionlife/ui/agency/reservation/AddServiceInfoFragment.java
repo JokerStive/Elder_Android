@@ -139,7 +139,8 @@ public class AddServiceInfoFragment extends BaseFragment {
 
                 OrganizationProduct product = mOrder.getProduct();
                 if (product != null) {
-                    String categoryId = product.getCategoryId();
+                    String categoryId = product.getOrgCategoryId();
+
                     if (categoryId.contains("养老机构")) {
                         llContactExtent.setVisibility(View.VISIBLE);
                         HashMap<String, String> extend = contact.getExtend();

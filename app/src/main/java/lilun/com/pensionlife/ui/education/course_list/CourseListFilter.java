@@ -35,7 +35,6 @@ public class CourseListFilter {
     }
 
 
-
     public static class WhereBean {
         /**
          * orgCategoryId :
@@ -56,6 +55,7 @@ public class CourseListFilter {
 
         private String orgCategoryId;
         private String organizationId;
+        private Boolean isDraft = false;
         @SerializedName("extend.termId")
         private String termId; // FIXME check this code
         private StartTimeBean startTime;
@@ -74,7 +74,7 @@ public class CourseListFilter {
         }
 
         public void setOrganizationId(String organizationId) {
-            this.organizationId = organizationId+ "/#product";
+            this.organizationId = organizationId + "/#product";
         }
 
         public String getTermId() {
@@ -100,7 +100,6 @@ public class CourseListFilter {
         public void setEndTime(EndTimeBean endTime) {
             this.endTime = endTime;
         }
-
 
 
         public static class StartTimeBean {
@@ -136,7 +135,7 @@ public class CourseListFilter {
         }
     }
 
-//
+    //
     public CourseListFilter(String organizationId) {
         where = new WhereBean();
         where.setOrganizationId(organizationId);

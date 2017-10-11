@@ -93,7 +93,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_second_module;
+        return R.layout.fragment_education_classify;
     }
 
 
