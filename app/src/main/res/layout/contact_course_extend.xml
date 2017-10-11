@@ -273,7 +273,7 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_toRightOf="@id/emergency_phone"
-            android:hint="请填写紧急联系人带年华"
+            android:hint="请填写紧急联系人电话"
             android:inputType="phone"
             android:maxLines="1"
             android:textColor="#333333"

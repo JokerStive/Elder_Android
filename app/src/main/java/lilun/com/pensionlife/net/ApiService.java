@@ -271,6 +271,17 @@ public interface ApiService {
 
 
     /**
+     * 获取某一个product的订单列表数据
+     */
+
+//    @GET("ProductOrders")
+//    Observable<Response<List<ProductOrder>>> getOrders( @Query("filter") String filter);
+
+
+
+
+
+    /**
      * //     * 获取information集合数据
      * //
      */

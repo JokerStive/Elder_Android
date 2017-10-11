@@ -159,9 +159,10 @@ public class CourseDetailFragment extends BaseFragment {
 
             }
             String filter = "{\"where\":{\n" +
+                    "  \"status\":{\"neq\":\"cancel\"}," +
+                    "  \"creatorId\":\"" + User.getUserId() + "\"," +
                     "  \"or\":[\n" +
                     "    {\n" +
-                    "      \"status\":{\"neq\":\"cancel\"},\n" +
                     "      \"productInfo.tag.kind\": \"college\",\n" +
                     "      \"or\":[\n" +
                     "        {\n" +
@@ -199,7 +200,7 @@ public class CourseDetailFragment extends BaseFragment {
                     "  ]\n" +
                     "}}";
             NetHelper.getApi()
-                    .getOrdersOfProduct(mProductId, filter)
+                    .getOrders(filter)
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
                     .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
@@ -239,11 +240,11 @@ public class CourseDetailFragment extends BaseFragment {
 
 
         //报名人数
-        tvCourseStock.setText("报名人数：" + StringUtils.filterNull(product.getStock() + ""));
+        tvCourseStock.setText("报名人数：" + StringUtils.filterNull(product.getStock() + product.getSold() + ""));
 
 
         //剩余名额
-        tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() - product.getSold() + ""));
+        tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() + ""));
 
 
         Map<String, Object> extend = product.getExtend();
@@ -282,18 +283,24 @@ public class CourseDetailFragment extends BaseFragment {
         //底部价格
         tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + "¥ " + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
 
+
+        //报名满额
+        if (product.getStock() <= 0) {
+            canNotOrderStatus("已经满员");
+        }
+
     }
 
 
-    public  String IOS2ToUTC(String isoTime1) {
+    public String IOS2ToUTC(String isoTime1) {
         String ret = "";
         try {
             String[] ss = isoTime1.split("\\.");
-            String isoTime = ss[0] +"+08:00";
+            String isoTime = ss[0] + "+08:00";
             DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
             DateTime dateTime = parser2.parseDateTime(isoTime);
             SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            ret = format.format(new Date(dateTime.getMillis() ));
+            ret = format.format(new Date(dateTime.getMillis()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -316,9 +323,14 @@ public class CourseDetailFragment extends BaseFragment {
 
 
     private void setHadOrdered() {
+        canNotOrderStatus("已经预约");
+
+    }
+
+    private void canNotOrderStatus(String showStr) {
         tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
         tvReservation.setEnabled(false);
-        tvReservation.setText("已经预约");
+        tvReservation.setText(showStr);
     }
 
 
@@ -328,6 +340,15 @@ public class CourseDetailFragment extends BaseFragment {
 
             case R.id.tv_reservation:
                 //立即预约
+                if (mProduct == null) {
+                    return;
+                }
+                if (mProduct.getCreatorId().equals(User.getUserId())) {
+                    ToastHelper.get().showWareShort("自己商品不可以预约");
+                    return;
+                }
+
+
                 if (can_not_order_flag == 1) {
                     new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
                         @Override

@@ -24,7 +24,7 @@
         android:id="@+id/fl_module_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dp_10"
+
         >
 
         <android.support.v4.widget.SwipeRefreshLayout

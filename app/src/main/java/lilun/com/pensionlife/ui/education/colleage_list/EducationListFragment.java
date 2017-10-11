@@ -7,12 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.CollageAdapter;
 import lilun.com.pensionlife.module.bean.ElderModule;
@@ -108,7 +110,11 @@ public class EducationListFragment extends BaseFragment {
 
     private void getDataList(int skip) {
         mSwipeLayout.setRefreshing(skip == 0);
-        String filter = "{\"visible\":0,\"limit\":" + Config.defLoadDatCount + ",\"skip\":" + skip + ",\"where\":{\"tag.kind\":\"college\"}, \"aggregate\": { \"group\": { \"id\": \"$organizationId\" } } }";
+        CollegeFilter collegeFilter = new CollegeFilter();
+        Gson gson = new Gson();
+        String filter = gson.toJson(collegeFilter);
+        Logger.d("大学filter - "+filter);
+//        String filter = "{\"visible\":0,\"limit\":" + Config.defLoadDatCount + ",\"skip\":" + skip + ",\"where\":{\"tag.kind\":\"college\"}, \"aggregate\": { \"group\": { \"id\": \"$organizationId\" } } }";
         NetHelper.getApi()
                 .getColleges(filter)
                 .compose(RxUtils.handleResult())
