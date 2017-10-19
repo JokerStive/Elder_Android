@@ -256,8 +256,9 @@ public class CourseDetailFragment extends BaseFragment {
             //上课时间
             String classStartTime = StringUtils.filterNull(IOS2ToUTC((String) extend.get("classStartTime")));
             String classEndTime = StringUtils.filterNull(IOS2ToUTC((String) extend.get("classEndTime")));
-
-            tvCourseStartTime.setText("上课时间：" + classStartTime + "-" + classEndTime);
+            List<String> classWeekName = (List<String>) extend.get("classWeekName");
+            String weekString = getWeekString(classWeekName);
+            tvCourseStartTime.setText("上课时间：" + weekString + "  " + classStartTime + "-" + classEndTime);
 
 
             //上课教室
@@ -289,6 +290,21 @@ public class CourseDetailFragment extends BaseFragment {
             canNotOrderStatus("已经满员");
         }
 
+    }
+
+    private String getWeekString(List<String> classWeekNames) {
+        String result = "";
+        if (classWeekNames != null && classWeekNames.size() > 0) {
+            result = "星期";
+            for (int i = 0; i < classWeekNames.size(); i++) {
+                String classWeekName = classWeekNames.get(i);
+                if (classWeekName.contains("星期")) {
+                    String classWeekNameNum = classWeekName.substring(classWeekName.lastIndexOf("星期") + 2);
+                    result = result + " " + classWeekNameNum;
+                }
+            }
+        }
+        return result;
     }
 
 

@@ -295,7 +295,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
      */
     private void getDataList(int skip) {
         String gtmTime = StringUtils.currentTimeToGTM();
-        mFilter.getWhere().setTime(gtmTime);
+        mFilter.setTime(gtmTime);
         Gson gson = new Gson();
         String filter = gson.toJson(mFilter);
         Logger.d("班级 filter ----- " + filter);
