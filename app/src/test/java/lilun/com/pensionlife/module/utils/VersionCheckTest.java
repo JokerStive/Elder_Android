@@ -40,6 +40,12 @@ public class VersionCheckTest {
         nowVersion = "21.2.22.1";
         retVersion = "22.1.11.2";
         assertEquals(false, VersionCheck.compareVersion(nowVersion, retVersion));
+        nowVersion = "1.2.0";
+        retVersion = "1.1.9";
+        assertEquals(false, VersionCheck.compareVersion(nowVersion, retVersion));
+        nowVersion = "1.2.0";
+        retVersion = "10.1.9";
+        assertEquals(true, VersionCheck.compareVersion(nowVersion, retVersion));
     }
 
 }

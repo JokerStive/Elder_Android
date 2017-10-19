@@ -13,21 +13,14 @@ public class VersionCheck {
         if (!Pattern.matches("^[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}", retVersion)) return false;
         String[] appVersionArray = appVersion.split("\\.");
         String[] retVersionArray = retVersion.split("\\.");
+        if (appVersionArray.length != retVersionArray.length) return false;
 
-        if (appVersionArray.length > 0 && retVersionArray.length > 0) {
-            if (Integer.valueOf(retVersionArray[0]) > Integer.valueOf(appVersionArray[0]))
+        for (int i = 0; i < appVersionArray.length; i++) {
+            if (Integer.valueOf(retVersionArray[i]) > Integer.valueOf(appVersionArray[i]))
                 return true;
+            else if(Integer.valueOf(retVersionArray[i]) < Integer.valueOf(appVersionArray[i]))
+                return false;
         }
-        if (appVersionArray.length > 1 && retVersionArray.length > 1)
-            if (Integer.valueOf(retVersionArray[1]) > Integer.valueOf(appVersionArray[1]))
-                return true;
-        if (appVersionArray.length > 2 && retVersionArray.length > 2)
-            if (Integer.valueOf(retVersionArray[2]) > Integer.valueOf(appVersionArray[2]))
-                return true;
-        if (appVersionArray.length > 3 && retVersionArray.length > 3)
-            if (Integer.valueOf(retVersionArray[3]) > Integer.valueOf(appVersionArray[3]))
-                return true;
-
         return checkResult;
     }
 }
