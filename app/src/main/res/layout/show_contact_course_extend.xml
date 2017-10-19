@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:id="@+id/contact_course_extend"
     android:orientation="vertical">
 
 
@@ -32,7 +33,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_toRightOf="@id/extension_sex"
-            android:drawableRight="@drawable/add_contact_next"
             android:hint="选择性别"
             android:maxLines="1"
             android:textColor="#333333"
@@ -72,7 +72,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_toRightOf="@id/extension_birthday"
-            android:drawableRight="@drawable/add_contact_next"
             android:hint="选择出生日期"
             android:maxLines="1"
             android:textColor="#333333"
@@ -112,7 +111,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_toRightOf="@id/extension_health_status"
-            android:drawableRight="@drawable/add_contact_next"
             android:hint="选择健康状况"
             android:maxLines="1"
             android:textColor="#333333"
@@ -152,7 +150,6 @@
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_toRightOf="@id/extension_health_politic_status"
-            android:drawableRight="@drawable/add_contact_next"
             android:hint="选择政治面貌"
             android:maxLines="1"
             android:textColor="#333333"

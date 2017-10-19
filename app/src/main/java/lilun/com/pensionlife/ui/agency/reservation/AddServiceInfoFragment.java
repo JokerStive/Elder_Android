@@ -47,9 +47,6 @@ public class AddServiceInfoFragment extends BaseFragment {
     @Bind(R.id.et_health_desc)
     EditText etHealthDesc;
 
-    @Bind(R.id.et_memo)
-    EditText etMemo;
-
 
     @Bind(R.id.et_reservation_phone)
     EditText etContactMobile;
@@ -63,10 +60,24 @@ public class AddServiceInfoFragment extends BaseFragment {
     TextView tvContactAddress;
     @Bind(R.id.ll_contact_extent)
     LinearLayout llContactExtent;
-    //    @Bind(R.id.tv_memo)
-//    TextView tvMemo;
+    @Bind(R.id.contact_course_extend)
+    LinearLayout llContactCourseExtend;
     @Bind(R.id.tv_contact_extension_name)
     TextView tvContactExtensionName;
+    @Bind(R.id.tv_contact_extension_sex)
+    TextView tvContactExtensionSex;
+    @Bind(R.id.tv_contact_extension_birthday)
+    TextView tvContactExtensionBirthday;
+    @Bind(R.id.tv_contact_extension_health_status)
+    TextView tvContactExtensionHealthStatus;
+    @Bind(R.id.tv_contact_extension_politic_status)
+    TextView tvContactExtensionPoliticStatus;
+    @Bind(R.id.et_contact_post_work)
+    EditText etContactPostWork;
+    @Bind(R.id.et_contact_emergency_name)
+    EditText etContactEmergencyName;
+    @Bind(R.id.et_emergency_phone)
+    EditText etEmergencyPhone;
 
 
     private ProductOrder mOrder;
@@ -115,7 +126,6 @@ public class AddServiceInfoFragment extends BaseFragment {
         etContactName.setEnabled(canEdit);
         etHealthDesc.setEnabled(canEdit);
         etContactMobile.setEnabled(canEdit);
-        etMemo.setEnabled(canEdit);
         btnConfirm.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 
         setInitData();
@@ -139,19 +149,32 @@ public class AddServiceInfoFragment extends BaseFragment {
 
                 OrganizationProduct product = mOrder.getProduct();
                 if (product != null) {
-                    String categoryId = product.getCategoryId();
+                    String categoryId = product.getOrgCategoryId();
+                    HashMap<String, String> extend = contact.getExtend();
+                    if (extend == null) {
+                        return;
+                    }
                     if (categoryId.contains("养老机构")) {
                         llContactExtent.setVisibility(View.VISIBLE);
-                        HashMap<String, String> extend = contact.getExtend();
-                        if (extend != null) {
-                            tvContactExtensionName.setText(extend.get(ContactExtendKey.reservationName));
-                            tvSex.setText(extend.get(ContactExtendKey.sex));
-                            tvRelation.setText(extend.get(ContactExtendKey.relation));
-                            tvBirthday.setText(extend.get(ContactExtendKey.birthday));
-                            tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
+                        llContactCourseExtend.setVisibility(View.GONE);
 
-                            etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
-                        }
+                        tvContactExtensionName.setText(extend.get(ContactExtendKey.reservationName));
+                        tvRelation.setText(extend.get(ContactExtendKey.relation));
+                        tvSex.setText(extend.get(ContactExtendKey.sex));
+                        tvBirthday.setText(extend.get(ContactExtendKey.birthday));
+                        tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
+                        etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
+                    } else if (categoryId.contains("教育服务")) {
+                        llContactExtent.setVisibility(View.GONE);
+                        llContactCourseExtend.setVisibility(View.VISIBLE);
+
+                        tvContactExtensionSex.setText(extend.get(ContactExtendKey.sex));
+                        tvContactExtensionBirthday.setText(extend.get(ContactExtendKey.birthday));
+                        tvContactExtensionHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
+                        tvContactExtensionPoliticStatus.setText(extend.get(ContactExtendKey.politicStatus));
+                        etContactPostWork.setText(extend.get(ContactExtendKey.postOfWorked));
+                        etEmergencyPhone.setText(extend.get(ContactExtendKey.contactNumber));
+                        etContactEmergencyName.setText(extend.get(ContactExtendKey.emergencyContact));
                     }
                 }
             }

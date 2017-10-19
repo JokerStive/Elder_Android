@@ -13,7 +13,7 @@
     <string name="change_organization_search">请输入您要查询的</string>
 
 
-    <!--一键求助-->
+    <!--紧急求助-->
     <string name="first_help_desc">请指定第一救助人，我们将会对指定的第一救助人发出额外短信通知</string>
     <string name="family">家人</string>
     <string name="neigh">隔壁邻居</string>
@@ -29,7 +29,7 @@
     <string name="agree">同意</string>
     <string name="refuse">拒绝</string>
 
-    <string name="help_protocol">在使用一键求助前，您必须知晓和同意：一键求助功能是邻里互助的一部分，是社区邻里自愿参加的互助行为，系统并不能保证大家第一时间获得救助，以及救助的效果，对于救助不及时或者手机系统问题等一律免责，您必须同意此协议，方可使用一键求助</string>
+    <string name="help_protocol">在使用紧急求助前，您必须知晓和同意：紧急求助功能是邻里互助的一部分，是社区邻里自愿参加的互助行为，系统并不能保证大家第一时间获得救助，以及救助的效果，对于救助不及时或者手机系统问题等一律免责，您必须同意此协议，方可使用紧急求助</string>
 
     <!--个人中心-->
     <string name="account_data">个人资料</string>
@@ -391,5 +391,6 @@
     <string name="num_unread">%1$s条未读消息</string>
     <string name="permission_grant_creama">您没有照相权限，请在系统设置-应用权限中给予权限</string>
     <string name="act_max_partner">允许参与最大人数为 9999</string>
+    <string name="location_permission">需要获取位置权限</string>
 
 </resources>

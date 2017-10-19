@@ -57,6 +57,7 @@ import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
+import rx.Observable;
 
 /**
  * 产品详情页
@@ -219,6 +220,8 @@ public class ProductDetailFragment extends BaseFragment {
         String filter = "{\"limit\":\"2\",\"order\":\"createdAt DESC\",\"where\":{\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + mProductId + "\"}}";
         NetHelper.getApi()
                 .getRanks(filter)
+
+
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Rank>>() {
@@ -232,6 +235,13 @@ public class ProductDetailFragment extends BaseFragment {
 
     private void getRankCount() {
         String filter = "{\"whatId\":\"" + mProductId + "\"}";
+        Observable.just("")
+                .subscribe(new RxSubscriber<String>() {
+                    @Override
+                    public void _next(String s) {
+
+                    }
+                });
         NetHelper.getApi()
                 .getRanksCount(filter)
                 .compose(RxUtils.handleResult())
@@ -277,7 +287,7 @@ public class ProductDetailFragment extends BaseFragment {
         tvScore.setText((double) product.getRank() + "");
 
         //价格
-        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()) + "/次");
+        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice())+product.getUnit());
 
         //服务方式
         tvProductType.setText("服务方式: 线下服务");

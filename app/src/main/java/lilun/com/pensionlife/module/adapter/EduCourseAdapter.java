@@ -41,10 +41,11 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
         Map<String, Object> extend = course.getExtend();
         if (extend != null) {
             String teacher = (String) extend.get("teacher");
-            String time = (String) extend.get("classTime");
+            String classStartTime = StringUtils.filterNull(StringUtils.IOS2ToUTCNot8((String) extend.get("classStartTime")));
+            String classEndTime = StringUtils.filterNull(StringUtils.IOS2ToUTCNot8((String) extend.get("classEndTime")));
             String address = (String) extend.get("classPlace");
             help.setText(R.id.tv_course_teacher, "授课老师:" + StringUtils.filterNull(teacher))
-                    .setText(R.id.tv_course_time, "上课时间 : " + StringUtils.filterNull(time))
+                    .setText(R.id.tv_course_time, "上课时间 : " + StringUtils.filterNull(classStartTime+"-"+classEndTime))
                     .setText(R.id.tv_course_address, "上课地址 : " + StringUtils.filterNull(address));
         }
 

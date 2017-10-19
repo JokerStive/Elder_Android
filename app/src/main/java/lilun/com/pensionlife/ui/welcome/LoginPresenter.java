@@ -117,7 +117,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
         }
 
         if (!RegexUtils.checkMobile(username)) {
-            ToastHelper.get().showWareShort("手机号码格式有误");
+            ToastHelper.get().showWareShort("手机号格式错误");
             return false;
         }
 

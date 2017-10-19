@@ -16,7 +16,7 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
-* 一键求助计数器
+* 紧急求助计数器
 *@author yk
 *create at 2017/1/23 13:53
 *email : yk_developer@163.com

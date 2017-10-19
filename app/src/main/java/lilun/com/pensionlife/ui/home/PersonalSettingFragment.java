@@ -262,7 +262,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
 
     private void settingOfFirstPhone() {
         if (TextUtils.isEmpty(PreUtils.getString("firstHelperPhone", ""))) {
-            ToastHelper.get().showWareShort("您需要先在首页--一键求助模块下设置联系人电话");
+            ToastHelper.get().showWareShort("您需要先在首页--紧急求助模块下设置联系人电话");
             return;
         }
         new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话", true,
