@@ -306,7 +306,7 @@ public class ProductDetailFragment extends BaseFragment {
         phone = TextUtils.isEmpty(product.getPhone()) ? "暂未提供" : product.getPhone();
         mobile = TextUtils.isEmpty(product.getMobile()) ? "暂未提供" : product.getMobile();
         tvProductMobile.setText(Html.fromHtml("手机号: <font color='#17c5c3'>" +mobile + "</font>"));
-        tvProductMobile.setText(Html.fromHtml("座机号: <font color='#17c5c3'>" + phone + "</font>"));
+        tvProductPhone.setText(Html.fromHtml("座机号: <font color='#17c5c3'>" + phone + "</font>"));
 
         //内容
         wbProductContent.getSettings().setJavaScriptEnabled(true);
@@ -360,7 +360,7 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_mobile,R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
+    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone,R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
         switch (v.getId()) {
 
