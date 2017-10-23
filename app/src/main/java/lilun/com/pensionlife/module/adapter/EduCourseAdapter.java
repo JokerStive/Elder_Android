@@ -41,11 +41,12 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
         Map<String, Object> extend = course.getExtend();
         if (extend != null) {
             String teacher = (String) extend.get("teacher");
+            List<String> classWeekName = (List<String>) extend.get("classWeekName");
             String classStartTime = StringUtils.filterNull(StringUtils.IOS2ToUTCNot8((String) extend.get("classStartTime")));
             String classEndTime = StringUtils.filterNull(StringUtils.IOS2ToUTCNot8((String) extend.get("classEndTime")));
             String address = (String) extend.get("classPlace");
             help.setText(R.id.tv_course_teacher, "授课老师:" + StringUtils.filterNull(teacher))
-                    .setText(R.id.tv_course_time, "上课时间 : " + StringUtils.filterNull(classStartTime+"-"+classEndTime))
+                    .setText(R.id.tv_course_time, "上课时间 : " + getWeekString(classWeekName) + " " + StringUtils.filterNull(classStartTime + "-" + classEndTime))
                     .setText(R.id.tv_course_address, "上课地址 : " + StringUtils.filterNull(address));
         }
 
@@ -55,6 +56,21 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
         String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, course.getId(), StringUtils.getFirstIconNameFromIcon(course.getImage()));
         ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_course_icon));
 
+    }
+
+    private String getWeekString(List<String> classWeekNames) {
+        String result = "";
+        if (classWeekNames != null && classWeekNames.size() > 0) {
+            result = "星期";
+            for (int i = 0; i < classWeekNames.size(); i++) {
+                String classWeekName = classWeekNames.get(i);
+                if (classWeekName.contains("星期")) {
+                    String classWeekNameNum = classWeekName.substring(classWeekName.lastIndexOf("星期") + 2);
+                    result = result + " " + classWeekNameNum;
+                }
+            }
+        }
+        return result;
     }
 
 

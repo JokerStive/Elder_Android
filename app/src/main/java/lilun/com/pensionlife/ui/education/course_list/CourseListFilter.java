@@ -226,6 +226,17 @@ public class CourseListFilter {
         private String kind = "college"; // FIXME check this code
         private String orgCategoryId;
         private String organizationId;
+        private boolean isDraft = false;
+
+        public boolean isDraft() {
+            return isDraft;
+        }
+
+        public WhereBean setDraft(boolean draft) {
+            isDraft = draft;
+            return this;
+        }
+
         @SerializedName("extend.termId")
         private String termId; // FIXME check this code
         private List<Object> and = new ArrayList<>();
