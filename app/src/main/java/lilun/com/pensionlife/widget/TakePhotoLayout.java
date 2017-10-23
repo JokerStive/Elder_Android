@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jph.takephoto.model.TImage;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,25 +63,36 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
 
     private void initAdapter() {
         List<TakePhotoResult> results = new ArrayList<>();
-        TakePhotoResult result = new TakePhotoResult(null, null, TImage.FromType.CAMERA,TakePhotoResult.TYPE_ADD);
+        TakePhotoResult result = new TakePhotoResult(null, null, TImage.FromType.CAMERA, TakePhotoResult.TYPE_ADD);
         results.add(result);
         adapter = new TakePhotoAdapter(results);
-        adapter.setOnItemClickListener(result1 -> {
-            if (result1.getItemType() == TakePhotoResult.TYPE_ADD) {
-                if (fragmentManager != null) {
-                    if (adapter.getItemCount() - 1 < Config.uploadPhotoCount) {
-                        fragment = TakePhotoDialogFragment.newInstance();
-                        fragment.setOnResultListener(TakePhotoLayout.this);
-                        fragment.show(fragmentManager, null);
-                    } else {
-                        ToastHelper.get().showWareShort(String.format("最多只能上传%1$s张图片", Config.uploadPhotoCount));
-                    }
+        adapter.setOnItemClickListener(new TakePhotoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int type, TakePhotoResult result) {
+                switch (type) {
+                    case TakePhotoResult.TYPE_ADD:
+                        openPhotoChooseFragment();
+                        break;
+
+                    case TakePhotoResult.TYPE_PHOTO:
+                        //加载清晰图
+                        break;
                 }
-            } else {
-                Logger.d("图片查看");
             }
         });
 
+    }
+
+    private void openPhotoChooseFragment() {
+        if (fragmentManager != null) {
+            if (adapter.getItemCount() - 1 < Config.uploadPhotoCount) {
+                fragment = TakePhotoDialogFragment.newInstance();
+                fragment.setOnResultListener(TakePhotoLayout.this);
+                fragment.show(fragmentManager, null);
+            } else {
+                ToastHelper.get().showWareShort(String.format("最多只能上传%1$s张图片", Config.uploadPhotoCount));
+            }
+        }
     }
 
     private void init() {
@@ -100,7 +110,7 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
 
     public void showPhotos(List<TakePhotoResult> results) {
         if (adapter != null) {
-            adapter.addAll(results);
+            adapter.addData(results);
         }
     }
 
@@ -123,10 +133,10 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
             List<TakePhotoResult> data = adapter.getData();
             if (data != null && data.size() > 1) {
                 ArrayList<String> iconPath = new ArrayList<>();
-                    for (TakePhotoResult result : data) {
-                        if (result.getItemType()==TakePhotoResult.TYPE_PHOTO && !TextUtils.isEmpty(result.getCompressPath())){
-                            iconPath.add(result.getCompressPath());
-                        }
+                for (TakePhotoResult result : data) {
+                    if (result.getItemType() == TakePhotoResult.TYPE_PHOTO && !TextUtils.isEmpty(result.getCompressPath())) {
+                        iconPath.add(result.getCompressPath());
+                    }
                 }
                 return iconPath;
             }

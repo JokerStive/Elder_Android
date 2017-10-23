@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="@dimen/add_photo_item_WH"
+        android:layout_height="@dimen/add_photo_item_WH"
+        tools:src="@drawable/prompt" />
+
+    <ImageView
+        android:id="@+id/iv_remove_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/iv_photo"
+        android:background="@drawable/delete"
+        android:padding="@dimen/dp_10"
+        android:visibility="gone" />
+
+</RelativeLayout>
