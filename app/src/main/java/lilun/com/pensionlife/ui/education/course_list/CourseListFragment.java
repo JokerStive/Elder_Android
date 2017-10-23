@@ -124,6 +124,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
 
         mEduCourseAdapter = new EduCourseAdapter(new ArrayList<>());
+        mEduCourseAdapter.setEmptyView();
         mEduCourseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

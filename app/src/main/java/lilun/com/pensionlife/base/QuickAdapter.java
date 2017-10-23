@@ -47,7 +47,7 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
 
     public void replaceAll(List<T> elements) {
         setNewData(elements);
-        if (isLoadMoreEnable() && elements.size()<Config.defLoadDatCount){
+        if (isLoadMoreEnable() && elements.size() < Config.defLoadDatCount) {
             loadMoreEnd();
         }
     }
