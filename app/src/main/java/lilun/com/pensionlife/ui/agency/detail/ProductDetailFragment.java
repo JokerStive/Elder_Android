@@ -477,7 +477,7 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void call() {
-        if (!TextUtils.isEmpty(clickMobile)) {
+        if (!clickMobile.equals("暂未提供")) {
             boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission) {
                 callMobile();
