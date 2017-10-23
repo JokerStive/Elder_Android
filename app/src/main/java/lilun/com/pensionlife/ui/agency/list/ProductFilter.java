@@ -53,7 +53,7 @@ public class ProductFilter {
         }
 
         public PriceBean price;
-        private String categoryId;
+        private String orgCategoryId;
         private Integer score;
         private String creatorId;
         private String organizationId;
@@ -68,12 +68,12 @@ public class ProductFilter {
             this.areaIds = areaIds;
         }
 
-        public String getCategoryId() {
-            return categoryId;
+        public String getOrgCategoryId() {
+            return orgCategoryId;
         }
 
-        public WhereBean setCategoryId(String categoryId) {
-            this.categoryId = categoryId;
+        public WhereBean setOrgCategoryId(String orgCategoryId) {
+            this.orgCategoryId = orgCategoryId;
             return this;
         }
 

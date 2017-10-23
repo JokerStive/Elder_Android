@@ -67,7 +67,7 @@ public class OrganizationProduct extends BaseBean {
     }
 
     private String organizationId;
-    private String categoryId;
+//    private String categoryId;
     private String phone;
     private List<String> orderType;
     private List<IconModule> image;
@@ -251,14 +251,6 @@ public class OrganizationProduct extends BaseBean {
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getPhone() {

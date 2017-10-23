@@ -104,6 +104,7 @@
                         <TextView
                             style="@style/tv_small_ellipsize"
                             android:text="¥"
+                            android:visibility="gone"
                             android:textColor="#FF9D09"
                             android:textSize="@dimen/sp_15" />
 

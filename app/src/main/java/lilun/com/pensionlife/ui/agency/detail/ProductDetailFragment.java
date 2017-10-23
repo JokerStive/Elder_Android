@@ -22,7 +22,6 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -293,7 +292,13 @@ public class ProductDetailFragment extends BaseFragment {
         tvScore.setText((double) product.getRank() + "");
 
         //价格
-        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice())+product.getUnit());
+        Double price = product.getPrice();
+        String formatPriceToFree = StringUtils.formatPrice(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ?"¥"+ formatPriceToFree + product.getUnit() : StringUtils.formatPriceToFree(price);
+        tvProductPrice.setText(topPriceResult);
+        //底部价格
+        String buttonPriceResult = !TextUtils.isEmpty(formatPriceToFree) ?formatPriceToFree : StringUtils.formatPriceToFree(price);
+        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" +buttonPriceResult + "</font>"));
 
         //服务方式
         tvProductType.setText("服务方式: 线下服务");
@@ -305,20 +310,20 @@ public class ProductDetailFragment extends BaseFragment {
         //电话
         phone = TextUtils.isEmpty(product.getPhone()) ? "暂未提供" : product.getPhone();
         mobile = TextUtils.isEmpty(product.getMobile()) ? "暂未提供" : product.getMobile();
-        tvProductMobile.setText(Html.fromHtml("手机号: <font color='#17c5c3'>" +mobile + "</font>"));
+        tvProductMobile.setText(Html.fromHtml("手机号: <font color='#17c5c3'>" + mobile + "</font>"));
         tvProductPhone.setText(Html.fromHtml("座机号: <font color='#17c5c3'>" + phone + "</font>"));
 
         //内容
         wbProductContent.getSettings().setJavaScriptEnabled(true);
         wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
 
-        //底部价格
-        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + product.getPrice() + "</font>"));
+
 
     }
 
-    private String formatMobile(String mobile){
-        return TextUtils.isEmpty(mobile)?"暂未提供":mobile;}
+    private String formatMobile(String mobile) {
+        return TextUtils.isEmpty(mobile) ? "暂未提供" : mobile;
+    }
 
     /**
      * 服务范围
@@ -360,7 +365,7 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone,R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
+    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
         switch (v.getId()) {
 

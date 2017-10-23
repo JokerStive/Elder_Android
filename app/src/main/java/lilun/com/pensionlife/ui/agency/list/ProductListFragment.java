@@ -227,7 +227,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
             productFilter.where.setOrganizationId(OrganizationChildrenConfig.product(mCategoryId));
             productFilter.where.setAreaIds(null);
         } else {
-            productFilter.where.setCategoryId(mCategoryId);
+            productFilter.where.setOrgCategoryId(mCategoryId);
             productFilter.where.getAreaIds().setInq(User.levelIds(true));
 //            if (mCategoryId.contains(Constants.service_residentail)) {
             //如果居家服务，就要服务区域是当前组织的层级id

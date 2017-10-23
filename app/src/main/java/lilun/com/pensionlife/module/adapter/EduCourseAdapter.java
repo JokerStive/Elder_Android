@@ -1,10 +1,10 @@
 package lilun.com.pensionlife.module.adapter;
 
 import android.text.Html;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +28,14 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
     @Override
     protected void convert(BaseViewHolder help, OrganizationProduct course) {
         int totalCount = course.getSold() + course.getStock();
-        String priceFormat = new DecimalFormat("######0.00").format(course.getPrice());
-        String price = "合计: <font color='#ff4400'>" + "¥" + priceFormat + "</font>";
+        Double price = course.getPrice();
+        String formatPriceToFree = StringUtils.formatPrice(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree : StringUtils.formatPriceToFree(price);
 
         help.setText(R.id.tv_course_title, course.getName())
                 .setText(R.id.tv_course_allow_count, "报名人数:" + totalCount)
                 .setText(R.id.tv_course_stock, "剩余人数:" + course.getStock())
-                .setText(R.id.tv_course_price, Html.fromHtml(price));
+                .setText(R.id.tv_course_price, Html.fromHtml("合计: <font color='#ff4400'>" + topPriceResult + "</font>"));
 
 
         //扩展属性

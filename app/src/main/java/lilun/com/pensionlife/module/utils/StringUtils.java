@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,15 +50,15 @@ public class StringUtils {
     }
 
 
-    public  static  String IOS2ToUTCNot8(String isoTime1) {
+    public static String IOS2ToUTCNot8(String isoTime1) {
         String ret = "";
         try {
             String[] ss = isoTime1.split("\\.");
-            String isoTime = ss[0] +"+08:00";
+            String isoTime = ss[0] + "+08:00";
             DateTimeFormatter parser2 = ISODateTimeFormat.dateTimeNoMillis();
             DateTime dateTime = parser2.parseDateTime(isoTime);
             SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            ret = format.format(new Date(dateTime.getMillis() ));
+            ret = format.format(new Date(dateTime.getMillis()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -595,5 +596,19 @@ public class StringUtils {
         }
 
         return result;
+    }
+
+
+    public static  String formatPrice(Double price) {
+        String result = null;
+        if (price!=null && price!=0){
+            result = new DecimalFormat("######0.00").format(price);
+
+        }
+        return result;
+    }
+
+    public static  String formatPriceToFree(Double price) {
+        return price==null ||  price==0?"免费":null;
     }
 }

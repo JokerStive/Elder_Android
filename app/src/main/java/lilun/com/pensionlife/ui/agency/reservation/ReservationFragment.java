@@ -294,7 +294,7 @@ public class ReservationFragment extends BaseFragment {
 
         tvContactAddress.setText(mContact.getAddress());
 
-        String categoryId = mProduct.getCategoryId();
+        String categoryId = mProduct.getOrgCategoryId();
         HashMap<String, String> extend = mContact.getExtend();
         if (categoryId.contains("养老机构")) {
             llAgancyExtension.setVisibility(View.VISIBLE);
@@ -328,7 +328,7 @@ public class ReservationFragment extends BaseFragment {
             return;
         }
 
-        String categoryId = mProduct.getCategoryId();
+        String categoryId = mProduct.getOrgCategoryId();
         if (!checkContactComplete(categoryId)) {
             return;
         }

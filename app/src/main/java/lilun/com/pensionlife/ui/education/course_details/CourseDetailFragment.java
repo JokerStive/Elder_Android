@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -279,10 +278,14 @@ public class CourseDetailFragment extends BaseFragment {
 
 
         //价格
-        tvCoursePrice.setText("¥" + new DecimalFormat("######0.00").format(product.getPrice()) + " 元");
+        Double price = product.getPrice();
+        String formatPriceToFree = StringUtils.formatPrice(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree+"元" : StringUtils.formatPriceToFree(price);
+        tvCoursePrice.setText(topPriceResult);
 
         //底部价格
-        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + "¥ " + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"));
+        String buttonPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree : StringUtils.formatPriceToFree(price);
+        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + buttonPriceResult+ "</font>"));
 
 
         //报名满额

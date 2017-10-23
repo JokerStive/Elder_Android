@@ -131,7 +131,7 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     public ArrayList<String> getData() {
         if (adapter != null) {
             List<TakePhotoResult> data = adapter.getData();
-            if (data != null && data.size() > 1) {
+            if (data.size() > 1) {
                 ArrayList<String> iconPath = new ArrayList<>();
                 for (TakePhotoResult result : data) {
                     if (result.getItemType() == TakePhotoResult.TYPE_PHOTO && !TextUtils.isEmpty(result.getCompressPath())) {

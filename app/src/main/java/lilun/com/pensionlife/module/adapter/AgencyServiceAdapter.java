@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
@@ -40,10 +39,15 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         } else {
             help.setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()));
         }
+
+        Double price = product.getPrice();
+        String formatPrice = StringUtils.formatPrice(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPrice) ?"¥"+ formatPrice + product.getUnit() : StringUtils.formatPriceToFree(price);
         help.setText(R.id.tv_product_title, product.getTitle())
-//                .setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()))
                 .setText(R.id.tv_score, (double) product.getRank() + "")
-                .setText(R.id.tv_product_price, new DecimalFormat("######0.00").format(product.getPrice()) + "");
+                .setText(R.id.tv_product_price, topPriceResult);
+
+
         help.setOnClickListener(R.id.ll_bg, v -> {
             if (listener != null) {
                 listener.onItemClick(product);

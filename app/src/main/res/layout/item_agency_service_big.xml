@@ -88,6 +88,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:visibility="gone"
                 style="@style/tv_small_ellipsize"
                 android:text="¥"
                 android:textColor="#41b9d4"
