@@ -138,14 +138,14 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
         String filter;
         String status = ",";
         if (mStatus.equals("done")) {
-            status = status + "\"status\":{\"inq\":[\"done\",\"assessed \"]}}";
+            status = status + "\"status\":{\"inq\":[\"done\",\"assessed\"]}}";
         } else {
             status = status + "\"status\":\"" + mStatus + "\"}";
         }
         if (!TextUtils.isEmpty(productId)) {
             filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\"" + status + "}";
         } else {
-            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"assigneeId\":\"" + User.getUserId() + "\"" + status + "}";
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"assigneeId\":\"" +  User.getUserId() + "\"" + status + "}";
         }
         mPresenter.getMyOrders(filter, skip);
 

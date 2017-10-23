@@ -152,17 +152,48 @@
                         tools:text="服务范围：重庆、四川" />
 
 
-                    <TextView
-                        android:id="@+id/tv_product_mobile"
-                        style="@style/tv_normal_ellipsize"
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="@dimen/dp_2"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:drawableRight="@drawable/call"
-                        android:gravity="center_vertical"
-                        android:maxLines="1"
-                        android:textSize="@dimen/sp_16"
-                        tools:text="13569687542" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5">
+
+                        <TextView
+                            android:id="@+id/tv_1"
+                            style="@style/tv_normal_ellipsize"
+                            android:layout_width="wrap_content"
+                            android:text="服务热线："
+                            android:textColor="#666666"
+                            android:textSize="@dimen/sp_16" />
+
+
+                        <TextView
+                            android:id="@+id/tv_product_mobile"
+                            style="@style/tv_normal_ellipsize"
+                            android:layout_width="wrap_content"
+                            android:layout_toRightOf="@id/tv_1"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:drawableRight="@drawable/call"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textSize="@dimen/sp_16"
+                            tools:text="手机号：13569687542" />
+
+                        <TextView
+                            android:id="@+id/tv_product_phone"
+                            style="@style/tv_normal_ellipsize"
+                            android:layout_width="wrap_content"
+                            android:layout_alignLeft="@id/tv_product_mobile"
+                            android:layout_below="@id/tv_product_mobile"
+                            android:layout_marginTop="@dimen/dp_8"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:drawableRight="@drawable/call"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textSize="@dimen/sp_16"
+                            tools:text="座机号：13569687542" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <View
