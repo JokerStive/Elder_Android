@@ -209,6 +209,13 @@ public class StringUtils {
     }
 
 
+    public static String currentTime() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String date = df.format(new Date());
+        return date;
+    }
+
+
     /***
      * 东八区时间 转换为 0区时间  转mongoDB 时间
      *

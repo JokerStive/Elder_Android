@@ -57,6 +57,7 @@ import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
+import rx.Observable;
 
 /**
  * 产品详情页
@@ -97,6 +98,9 @@ public class ProductDetailFragment extends BaseFragment {
     @Bind(R.id.tv_product_mobile)
     TextView tvProductMobile;
 
+    @Bind(R.id.tv_product_phone)
+    TextView tvProductPhone;
+
     @Bind(R.id.wb_product_content)
     WebView wbProductContent;
 
@@ -121,6 +125,9 @@ public class ProductDetailFragment extends BaseFragment {
 
     private String mProductId;
     private OrganizationProduct mProduct;
+    private String clickMobile;
+    private String mobile;
+    private String phone;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -219,6 +226,8 @@ public class ProductDetailFragment extends BaseFragment {
         String filter = "{\"limit\":\"2\",\"order\":\"createdAt DESC\",\"where\":{\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + mProductId + "\"}}";
         NetHelper.getApi()
                 .getRanks(filter)
+
+
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Rank>>() {
@@ -232,6 +241,13 @@ public class ProductDetailFragment extends BaseFragment {
 
     private void getRankCount() {
         String filter = "{\"whatId\":\"" + mProductId + "\"}";
+        Observable.just("")
+                .subscribe(new RxSubscriber<String>() {
+                    @Override
+                    public void _next(String s) {
+
+                    }
+                });
         NetHelper.getApi()
                 .getRanksCount(filter)
                 .compose(RxUtils.handleResult())
@@ -277,7 +293,7 @@ public class ProductDetailFragment extends BaseFragment {
         tvScore.setText((double) product.getRank() + "");
 
         //价格
-        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice()));
+        tvProductPrice.setText(new DecimalFormat("######0.00").format(product.getPrice())+product.getUnit());
 
         //服务方式
         tvProductType.setText("服务方式: 线下服务");
@@ -286,8 +302,11 @@ public class ProductDetailFragment extends BaseFragment {
         showProductArea();
 
 
-        //服务电话
-        tvProductMobile.setText(Html.fromHtml("服务热线: <font color='#17c5c3'>" + product.getMobile() + "</font>"));
+        //电话
+        phone = TextUtils.isEmpty(product.getPhone()) ? "暂未提供" : product.getPhone();
+        mobile = TextUtils.isEmpty(product.getMobile()) ? "暂未提供" : product.getMobile();
+        tvProductMobile.setText(Html.fromHtml("手机号: <font color='#17c5c3'>" +mobile + "</font>"));
+        tvProductMobile.setText(Html.fromHtml("座机号: <font color='#17c5c3'>" + phone + "</font>"));
 
         //内容
         wbProductContent.getSettings().setJavaScriptEnabled(true);
@@ -297,6 +316,9 @@ public class ProductDetailFragment extends BaseFragment {
         tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + product.getPrice() + "</font>"));
 
     }
+
+    private String formatMobile(String mobile){
+        return TextUtils.isEmpty(mobile)?"暂未提供":mobile;}
 
     /**
      * 服务范围
@@ -338,7 +360,7 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
+    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_mobile,R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -351,9 +373,12 @@ public class ProductDetailFragment extends BaseFragment {
                 //立即预约
                 takeReservation();
                 break;
-
             case R.id.tv_product_mobile:
-                call();
+                connectProvider(1);
+                break;
+
+            case R.id.tv_product_phone:
+                connectProvider(2);
                 break;
 
             case R.id.tv_all_rank:
@@ -366,6 +391,19 @@ public class ProductDetailFragment extends BaseFragment {
                 allRankAboutThisProduct();
                 break;
         }
+    }
+
+
+    private void connectProvider(int flag) {
+        switch (flag) {
+            case 1:
+                clickMobile = mobile;
+                break;
+            case 2:
+                clickMobile = phone;
+                break;
+        }
+        call();
     }
 
     /**
@@ -439,8 +477,7 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void call() {
-        String mobile = mProduct.getMobile();
-        if (!TextUtils.isEmpty(mobile)) {
+        if (!TextUtils.isEmpty(clickMobile)) {
             boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
             if (hasPermission) {
                 callMobile();
@@ -453,9 +490,8 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
     private void callMobile() {
-        String mobile = mProduct.getMobile();
-        new NormalDialog().createNormal(_mActivity, "是否联系：" + mobile, () -> {
-            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mobile.replace("-", "")));
+        new NormalDialog().createNormal(_mActivity, "是否联系：" + clickMobile, () -> {
+            Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + clickMobile.replace("-", "")));
             startActivity(intent);
         });
     }

@@ -136,13 +136,16 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
         String filter;
-//        if (User.isCustomer()) {
-//            filter = "{\"include\":[\"product\",\"assignee\"],\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
-//        } else
-        if (!TextUtils.isEmpty(productId)) {
-            filter = "{\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+        String status = ",";
+        if (mStatus.equals("done")) {
+            status = status + "\"status\":{\"inq\":[\"done\",\"assessed\"]}}";
         } else {
-            filter = "{\"where\":{\"creatorId\":{\"neq\":\""+User.getUserId()+"\"},\"assigneeId\":\"" + User.getUserId() + "\",\"status\":\"" + mStatus + "\"}}";
+            status = status + "\"status\":\"" + mStatus + "\"}";
+        }
+        if (!TextUtils.isEmpty(productId)) {
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\"" + status + "}";
+        } else {
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"assigneeId\":\"" +  User.getUserId() + "\"" + status + "}";
         }
         mPresenter.getMyOrders(filter, skip);
 
@@ -162,13 +165,13 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
         if (adapter == null) {
             adapter = new MerchantOrderAdapter(orders);
             adapter.setEmptyView();
-            adapter.setOnItemClickListener((ba,view, i) -> {
+            adapter.setOnItemClickListener((ba, view, i) -> {
                 clickOrder = orders.get(i);
                 openDetail();
             });
             adapter.setOnLoadMoreListener(() -> {
                 getMyOrder(adapter.getItemCount());
-            },mRecyclerView);
+            }, mRecyclerView);
 
             adapter.setOnItemClickListener(new MerchantOrderAdapter.OnItemClickListener() {
 
@@ -186,7 +189,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
             });
             mRecyclerView.setAdapter(adapter);
         } else if (isLoadMore) {
-            adapter.addAll(orders,Config.defLoadDatCount);
+            adapter.addAll(orders, Config.defLoadDatCount);
         } else {
             adapter.replaceAll(orders);
         }

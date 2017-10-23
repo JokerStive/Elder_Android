@@ -107,6 +107,7 @@ public class CollegeDetailFragment extends BaseFragment {
             mobile = extension.getMobile();
             phone = extension.getPhone();
 
+
             //显示简介
             if (!TextUtils.isEmpty(context)) {
                 wbCollegeContext.loadDataWithBaseURL(null, context, "text/html", "utf-8", null);
@@ -116,14 +117,17 @@ public class CollegeDetailFragment extends BaseFragment {
             tvCollegeAddress.setText("学校地址：" + StringUtils.filterNull(address));
 
             //电话
-            String mobileDes = "手机号码: <font color='#17c5b4'>" + mobile + "</font>";
-            String phoneDes = "座机电话: <font color='#17c5b4'>" + phone + "</font>";
+            String mobileDes = "手机号码: <font color='#17c5b4'>" + formatMobile(mobile) + "</font>";
+            String phoneDes = "座机电话: <font color='#17c5b4'>" + formatMobile(phone) + "</font>";
             tvCollegePhone.setText(Html.fromHtml(phoneDes));
             tvCollegeMobile.setText(Html.fromHtml(mobileDes));
 
         }
     }
 
+
+    private String formatMobile(String mobile){
+       return TextUtils.isEmpty(mobile)?"暂未提供":mobile;}
 
     @OnClick({R.id.tv_college_mobile, R.id.tv_college_phone})
     public void onClick(View v) {
