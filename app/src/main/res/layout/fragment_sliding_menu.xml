@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/sliding_item_margin_top"
                 android:drawablePadding="@dimen/dp_10"
-                android:drawableStart="@drawable/account_info"
+                android:drawableStart="@drawable/icon_info_setting"
                 android:text="个人信息设置" />
 
 
@@ -87,7 +87,7 @@
                 android:layout_marginTop="@dimen/sliding_item_margin_top"
                 android:drawablePadding="@dimen/dp_10"
                 android:drawableStart="@drawable/contact_setting"
-                android:text="预约资料管理" />
+                android:text="服务地址设置" />
 
 
             <TextView

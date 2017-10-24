@@ -44,7 +44,7 @@ public class MerchantOrderListFragment extends BaseFragment {
     NormalTitleBar titleBar;
 
 
-    private String[] statusTitle = {"已预约", "已受理", "已延期", "已完成", "已取消"};
+    private String[] statusTitle = {"待处理", "已受理", "延期中", "已完成", "已取消"};
     private String[] status = {"reserved", "assigned", "delay", "done", "cancel"};
     private String productId;
 
