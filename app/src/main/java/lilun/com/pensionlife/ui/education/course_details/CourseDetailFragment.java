@@ -28,8 +28,8 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.IconModule;
+import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
-import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -139,85 +139,33 @@ public class CourseDetailFragment extends BaseFragment {
                     @Override
                     public void _next(OrganizationProduct product) {
                         showProductDetail(product);
-                        getIsOrder(product);
+                        getIsOrder();
                     }
                 });
 
     }
 
 
-    private void getIsOrder(OrganizationProduct product) {
-        Map<String, Object> extend = product.getExtend();
-        if (extend != null) {
-            String classStartTime = null2empty((String) extend.get("classStartTime"));
-            String classEndTime = null2empty((String) extend.get("classEndTime"));
-            String termStartDate = null2empty((String) extend.get("termStartDate"));
-            String termEndDate = null2empty((String) extend.get("termEndDate"));
+    private void getIsOrder() {
+        NetHelper.getApi()
+                .getOrderLimit(mProductId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrderLimit>() {
 
-            if (!TextUtils.isEmpty(classStartTime) && !TextUtils.isEmpty(classEndTime) && !TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
-
-            }
-            String filter = "{\"where\":{\n" +
-                    "  \"status\":{\"neq\":\"cancel\"}," +
-                    "  \"creatorId\":\"" + User.getUserId() + "\"," +
-                    "  \"or\":[\n" +
-                    "    {\n" +
-                    "      \"productInfo.tag.kind\": \"college\",\n" +
-                    "      \"or\":[\n" +
-                    "        {\n" +
-                    "          \"and\":[\n" +
-                    "            {\"productInfo.extend.classStartTime\":{\"lte\":\"" + classStartTime + "\"}},\n" +
-                    "            {\"productInfo.extend.classEndTime\":{\"gte\":\"" + classEndTime + "\"}}\n" +
-                    "          ]},\n" +
-                    "        {\n" +
-                    "          \"and\":[\n" +
-                    "          {\"productInfo.extend.classStartTime\":{\"lte\":\"" + classStartTime + "\"}},\n" +
-                    "          {\"productInfo.extend.classEndTime\":{\"gte\":\"" + classEndTime + "\"}}\n" +
-                    "        ]}\n" +
-                    "      ],\n" +
-                    "      \"or\":[\n" +
-                    "        {\n" +
-                    "          \"and\":[\n" +
-                    "            {\"productInfo.extend.termStartDate\":{\"lte\":\"" + termStartDate + "\"}},\n" +
-                    "            {\"productInfo.extend.termEndDate\":{\"gte\":\"" + termEndDate + "\"}}\n" +
-                    "          ]\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"and\":[\n" +
-                    "            {\"productInfo.extend.termStartDate\":{\"lte\":\"" + termStartDate + "\"}},\n" +
-                    "            {\"productInfo.extend.termEndDate\":{\"gte\":\"" + termEndDate + "\"}}\n" +
-                    "          ]\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "\n" +
-                    "    \n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"productInfo.id\": \"" + mProductId + "\",\n" +
-                    "      \"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}}";
-            NetHelper.getApi()
-                    .getOrders(filter)
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
-                        @Override
-                        public void _next(List<ProductOrder> orders) {
-                            if (orders.size() > 0) {
-                                can_not_order_flag = 1;
-                                for (ProductOrder order : orders) {
-                                    if (order.getProduct().getId().equals(mProductId)) {
-                                        can_not_order_flag = 0;
-                                        setHadOrdered();
-                                    }
-                                }
-                            }
+                    @Override
+                    public void _next(OrderLimit orderLimit) {
+                        boolean ordered = orderLimit.isOrdered();
+                        boolean isLimit = orderLimit.isIsLimit();
+                        if (ordered) {
+                            setHadOrdered();
+                        } else if (isLimit) {
+                            //冲突
+                            can_not_order_flag = 1;
                         }
-                    });
-        }
-//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
+                    }
+                });
+
     }
 
 
@@ -280,12 +228,12 @@ public class CourseDetailFragment extends BaseFragment {
         //价格
         Double price = product.getPrice();
         String formatPriceToFree = StringUtils.formatPrice(price);
-        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree+"元" : StringUtils.formatPriceToFree(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree + "元" : StringUtils.formatPriceToFree(price);
         tvCoursePrice.setText(topPriceResult);
 
         //底部价格
         String buttonPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree : StringUtils.formatPriceToFree(price);
-        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + buttonPriceResult+ "</font>"));
+        tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + buttonPriceResult + "</font>"));
 
 
         //报名满额
@@ -364,6 +312,11 @@ public class CourseDetailFragment extends BaseFragment {
                 }
                 if (mProduct.getCreatorId().equals(User.getUserId())) {
                     ToastHelper.get().showWareShort("自己商品不可以预约");
+                    return;
+                }
+
+                if (mProduct.getDraft() != null && mProduct.getDraft()) {
+                    ToastHelper.get().showWareShort("该课程无法预约，请刷新页面后重试");
                     return;
                 }
 

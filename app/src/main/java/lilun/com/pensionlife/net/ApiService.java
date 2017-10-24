@@ -16,6 +16,7 @@ import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.NestedReply;
+import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
@@ -167,6 +168,15 @@ public interface ApiService {
 
     @GET("OrganizationEduSemesters/ActivitySemester")
     Observable<Response<List<Semester>>> getSemesters(@Query("filter") String filter);
+
+
+
+    /**
+     * 检查当前订单限制
+     */
+
+    @GET("ProductOrders/orderLimit")
+    Observable<Response<OrderLimit>> getOrderLimit(@Query("productID") String productID);
 
 
     /**

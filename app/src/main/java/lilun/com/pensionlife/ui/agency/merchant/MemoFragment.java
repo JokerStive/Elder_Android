@@ -29,6 +29,7 @@ import lilun.com.pensionlife.module.bean.MerchantMemo;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 
@@ -219,11 +220,11 @@ public class MemoFragment extends BaseFragment {
         int day = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.MONTH_DAY, DateTimePicker.NONE);
         if (App.widthDP > 820) {
-            picker.setTextSize(12 *2);
-            picker.setCancelTextSize(12 *2);
-            picker.setSubmitTextSize(12 *2);
-            picker.setTopPadding(15*3);
-            picker.setTopHeight(40*2);
+            picker.setTextSize(12 * 2);
+            picker.setCancelTextSize(12 * 2);
+            picker.setSubmitTextSize(12 * 2);
+            picker.setTopPadding(15 * 3);
+            picker.setTopHeight(40 * 2);
         }
         setPickerConfig(picker);
         picker.setDateRangeStart(month, day);
@@ -242,11 +243,11 @@ public class MemoFragment extends BaseFragment {
     private void callSituationChoose() {
         OptionPicker picker = new OptionPicker(_mActivity, callSituationDesc);
         if (App.widthDP > 820) {
-            picker.setTextSize(12 *2);
-            picker.setCancelTextSize(12 *2);
-            picker.setSubmitTextSize(12 *2);
-            picker.setTopPadding(15*3);
-            picker.setTopHeight(40*2);
+            picker.setTextSize(12 * 2);
+            picker.setCancelTextSize(12 * 2);
+            picker.setSubmitTextSize(12 * 2);
+            picker.setTopPadding(15 * 3);
+            picker.setTopHeight(40 * 2);
         }
         picker.setSelectedItem(tvCallSituation.getText().toString());
         setPickerConfig(picker);
@@ -275,6 +276,11 @@ public class MemoFragment extends BaseFragment {
      * 存储备注
      */
     public void saveMemo() {
+        String status = mOrder.getStatus();
+        if (status.equals("done") || status.equals("assessed") || status.equals("cancel")) {
+            ToastHelper.get().showWareShort("该状态下的订单不可以修改备注");
+            return;
+        }
         String memo = etMemo.getText().toString();
         MerchantMemo order = new MerchantMemo();
         order.setCallStatus(callStatus);

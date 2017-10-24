@@ -21,7 +21,18 @@ public class OrganizationProduct extends BaseBean {
     private String context;
     private String contextType;
     private Double price;
+    private Boolean isDraft;
     private String unit;
+
+    public Boolean getDraft() {
+        return isDraft;
+    }
+
+    public OrganizationProduct setDraft(Boolean draft) {
+        isDraft = draft;
+        return this;
+    }
+
     private String licenseGgreement;
 
     public String getLicenseGgreement() {
