@@ -37,8 +37,8 @@ import lilun.com.pensionlife.module.adapter.ProductRankAdapter;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.IconModule;
+import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
-import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -127,6 +127,7 @@ public class ProductDetailFragment extends BaseFragment {
     private String clickMobile;
     private String mobile;
     private String phone;
+    private boolean productIsLimit =false;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -200,19 +201,37 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
     private void getIsOrder() {
-        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
         NetHelper.getApi()
-                .getOrdersOfProduct(mProductId, filter)
+                .getOrderLimit(mProductId)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+                .subscribe(new RxSubscriber<OrderLimit>() {
+
                     @Override
-                    public void _next(List<ProductOrder> orders) {
-                        if (orders.size() != 0) {
+                    public void _next(OrderLimit orderLimit) {
+                        boolean ordered = orderLimit.isOrdered();
+                        boolean isLimit = orderLimit.isIsLimit();
+                        if (ordered) {
                             setHadOrdered();
+                        } else if (isLimit) {
+                            productIsLimit = true;
                         }
                     }
                 });
+
+//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
+//        NetHelper.getApi()
+//                .getOrdersOfProduct(mProductId, filter)
+//                .compose(RxUtils.handleResult())
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
+//                    @Override
+//                    public void _next(List<ProductOrder> orders) {
+//                        if (orders.size() != 0) {
+//                            setHadOrdered();
+//                        }
+//                    }
+//                });
     }
 
     private void setHadOrdered() {
@@ -418,6 +437,17 @@ public class ProductDetailFragment extends BaseFragment {
         if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
             ToastHelper.get().showWareShort("不能预约自己创建的服务");
             return;
+        }
+
+        if (productIsLimit){
+                new NormalDialog().createNormal(_mActivity, "该产品的服务时间与您预约过的产品时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
+                    @Override
+                    public void onPositiveClick() {
+                        takeReservation();
+                    }
+                });
+        }else {
+            takeReservation();
         }
         String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
