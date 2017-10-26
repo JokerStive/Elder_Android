@@ -372,7 +372,7 @@ public class ProductDetailFragment extends BaseFragment {
 //            llRank.setVisibility(View.VISIBLE);
 //            ProductRankAdapter adapter = new ProductRankAdapter(ranks);
 //            rvRank.setAdapter(adapter);
-//        }
+//        }..
 
         llRank.setVisibility(View.VISIBLE);
         ProductRankAdapter adapter = new ProductRankAdapter(ranks);
@@ -449,12 +449,16 @@ public class ProductDetailFragment extends BaseFragment {
             new NormalDialog().createNormal(_mActivity, "该产品的服务时间与您预约过的产品时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
                 @Override
                 public void onPositiveClick() {
-                    takeReservation();
+                    getContacts();
                 }
             });
         } else {
-            takeReservation();
+            getContacts();
         }
+
+    }
+
+    private void getContacts() {
         String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
