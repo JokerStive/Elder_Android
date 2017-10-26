@@ -127,7 +127,7 @@ public class ProductDetailFragment extends BaseFragment {
     private String clickMobile;
     private String mobile;
     private String phone;
-    private boolean productIsLimit =false;
+    private boolean productIsLimit = false;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -313,11 +313,11 @@ public class ProductDetailFragment extends BaseFragment {
         //价格
         Double price = product.getPrice();
         String formatPriceToFree = StringUtils.formatPrice(price);
-        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ?"¥"+ formatPriceToFree + product.getUnit() : StringUtils.formatPriceToFree(price);
+        String topPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? "¥" + formatPriceToFree + product.getUnit() : StringUtils.formatPriceToFree(price);
         tvProductPrice.setText(topPriceResult);
         //底部价格
-        String buttonPriceResult = !TextUtils.isEmpty(formatPriceToFree) ?formatPriceToFree : StringUtils.formatPriceToFree(price);
-        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" +buttonPriceResult + "</font>"));
+        String buttonPriceResult = !TextUtils.isEmpty(formatPriceToFree) ? formatPriceToFree : StringUtils.formatPriceToFree(price);
+        tvBottomPrice.setText(Html.fromHtml("价格:<font color='#ff5000'>" + buttonPriceResult + "</font>"));
 
         //服务方式
         tvProductType.setText("服务方式: 线下服务");
@@ -335,7 +335,6 @@ public class ProductDetailFragment extends BaseFragment {
         //内容
         wbProductContent.getSettings().setJavaScriptEnabled(true);
         wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
-
 
 
     }
@@ -369,18 +368,25 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void show2Rank(List<Rank> ranks) {
-        if (ranks.size() != 0) {
-            llRank.setVisibility(View.VISIBLE);
-            ProductRankAdapter adapter = new ProductRankAdapter(ranks);
-            rvRank.setAdapter(adapter);
-        }
+//        if (ranks.size() != 0) {
+//            llRank.setVisibility(View.VISIBLE);
+//            ProductRankAdapter adapter = new ProductRankAdapter(ranks);
+//            rvRank.setAdapter(adapter);
+//        }
+
+        llRank.setVisibility(View.VISIBLE);
+        ProductRankAdapter adapter = new ProductRankAdapter(ranks);
+        adapter.setEmptyView();
+        rvRank.setAdapter(adapter);
     }
 
 
     private void showRankCount(int count) {
-        if (count > 0) {
-            tvRankCount.setText(String.format("评价 （ %1$s ）", count));
-        }
+//        if (count > 0) {
+//            tvRankCount.setText(String.format("评价 （ %1$s ）", count));
+//
+//        }
+        tvRankCount.setText(String.format("评价 （ %1$s ）", count));
     }
 
 
@@ -439,14 +445,14 @@ public class ProductDetailFragment extends BaseFragment {
             return;
         }
 
-        if (productIsLimit){
-                new NormalDialog().createNormal(_mActivity, "该产品的服务时间与您预约过的产品时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
-                    @Override
-                    public void onPositiveClick() {
-                        takeReservation();
-                    }
-                });
-        }else {
+        if (productIsLimit) {
+            new NormalDialog().createNormal(_mActivity, "该产品的服务时间与您预约过的产品时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
+                @Override
+                public void onPositiveClick() {
+                    takeReservation();
+                }
+            });
+        } else {
             takeReservation();
         }
         String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";

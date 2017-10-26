@@ -127,6 +127,7 @@ public class RankListFragment extends BaseFragment<RankListContract.Presenter> i
                 getReplies(mRankAdapter.getItemCount());
             }, rvRank);
             rvRank.setAdapter(mRankAdapter);
+            mRankAdapter.setEmptyView();
         } else if (isLoadMore) {
             mRankAdapter.addAll(ranks, true);
         } else {
