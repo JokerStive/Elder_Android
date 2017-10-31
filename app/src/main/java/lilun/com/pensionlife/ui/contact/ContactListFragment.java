@@ -27,6 +27,7 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 
@@ -132,7 +133,10 @@ public class ContactListFragment extends BaseFragment {
         adapter.setOnItemClickListener(new ContactListAdapter.OnItemClickListener() {
             @Override
             public void onDelete(Contact contact) {
-                deleteContact(contact);
+                new NormalDialog().createNormal(_mActivity, "是否删除", () -> {
+                    deleteContact(contact);
+                });
+
             }
 
             @Override

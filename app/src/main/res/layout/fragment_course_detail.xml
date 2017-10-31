@@ -196,6 +196,69 @@
                         tools:text="上课教室：301" />
 
 
+
+                    <TextView
+                        android:id="@+id/tv_course_apply_time"
+                        style="@style/tv_normal"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:background="#ffffff"
+                        android:drawableLeft="@drawable/course_address"
+                        android:drawablePadding="@dimen/dp_16"
+                        android:maxLines="1"
+                        android:paddingBottom="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingRight="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_16"
+                        android:textColor="#979797"
+                        android:textSize="@dimen/sp_15"
+                        tools:text="报名时间" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_10">
+
+                    <TextView
+                        style="@style/tv_normal_ellipsize"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="服务内容"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/sp_18" />
+
+
+                    <TextView
+                        style="@style/tv_normal_ellipsize"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:gravity="center_horizontal"
+                        android:maxLines="1"
+                        android:text="———— ● CONTENT ● ————"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/sp_11" />
+
+                    <WebView
+                        android:id="@+id/wb_course_content"
+                        style="@style/tv_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:textColor="#666666"
+                        android:textSize="@dimen/sp_16"
+                        tools:text="下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了下水道堵了" />
+
+
                 </LinearLayout>
 
 

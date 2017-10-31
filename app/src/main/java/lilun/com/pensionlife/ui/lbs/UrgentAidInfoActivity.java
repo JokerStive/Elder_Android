@@ -79,6 +79,7 @@ public class UrgentAidInfoActivity extends Activity {
         EventBus.getDefault().register(this);
 
         aid = (OrganizationAid) getIntent().getSerializableExtra("aid");
+        infoCount  =getIntent().getIntExtra("count",1);
         Preconditions.checkNull(aid);
         initView();
     }

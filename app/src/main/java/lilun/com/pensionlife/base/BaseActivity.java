@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,7 +27,6 @@ import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.callback.MyCallBack;
 import lilun.com.pensionlife.module.utils.RxUtils;
-import lilun.com.pensionlife.module.utils.SystemUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
@@ -54,8 +54,8 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     private MyCallBack callback;
     protected CompositeSubscription subscription = new CompositeSubscription();
     private RxProgressDialog dialog;
-    private int pushAidInfoCunt = 0;
-    private int pushInfoCunt = 0;
+    protected int pushAidInfoCunt = 0;
+    protected int pushInfoCunt = 0;
 
     //用于监听弹出软键盘的Enter事件；
     public View.OnKeyListener editOnKeyListener = new View.OnKeyListener() {
@@ -135,6 +135,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshPushMessage(Event.BoardMsg data) {
+        Logger.d("推送需要展示一个dialog--");
         showBoardMsg(data.topic, data.data);
     }
 
@@ -175,7 +176,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
     }
 
 
-
     /**
      * 显示紧急求助弹窗
      */
@@ -183,20 +183,14 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         MqttTopic mqttTopic = new MqttTopic();
         JSONObject jsonObject = JSON.parseObject(data);
         if (topic.equals(mqttTopic.urgent_help)) {
+            pushAidInfoCunt++;
             OrganizationAid aid = new OrganizationAid();
             aid.setAddress(jsonObject.getString("address"));
             aid.setMobile(jsonObject.getString("mobile"));
             aid.setCreatedAt(jsonObject.getString("time"));
             aid.setCreatorName(jsonObject.getString("title"));
             aid.setMemo(jsonObject.getString("location"));
-            if (pushAidInfoCunt == 0 && !SystemUtils.isTopActivity(UrgentAidInfoActivity.class.getName())) {
-                pushAidInfoCunt++;
-                Intent intent = new Intent(this, UrgentAidInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("aid", aid);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 123);
-            }
+            showPushAidDialog(aid);
             EventBus.getDefault().post(new Event.RefreshUrgentInfo());
 
         }
@@ -205,19 +199,41 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         if (topic.contains(mqttTopic.topic_information_edit)) {
             String infoString = jsonObject.getString("data");
             Information information = JSON.parseObject(infoString, Information.class);
-//             Information Information = gson.fromJson(pushMessage.getData(), Information.class);
-            if (pushInfoCunt == 0 && !SystemUtils.isTopActivity(Information.class.getName())) {
+            if (pushInfoCunt == 0) {
                 pushInfoCunt++;
-                Intent intent = new Intent(this, AnnounceInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("organizationInfo", information);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 123);
+                showPushInformationDialog(information);
             }
-            EventBus.getDefault().post(new Event.RefreshUrgentInfo());
+//            else {
+//                Logger.d("刷新公告数据"+information.getName());
+//            }
+            EventBus.getDefault().postSticky(new Event.RefreshPushInformation(information.getId()));
         }
     }
 
+    private void showPushAidDialog(OrganizationAid aid) {
+        Intent intent = new Intent(this, UrgentAidInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("count", pushAidInfoCunt);
+        bundle.putSerializable("aid", aid);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 123);
+    }
+
+    private void showPushInformationDialog(Information information) {
+        Intent intent = new Intent(this, AnnounceInfoActivity.class);
+        Bundle bundle = new Bundle();
+//        bundle.putInt("count", pushInfoCunt);
+        bundle.putString("informationId", information.getId());
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 123);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

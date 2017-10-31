@@ -455,7 +455,6 @@ public class ProductDetailFragment extends BaseFragment {
         } else {
             getContacts();
         }
-
     }
 
     private void getContacts() {

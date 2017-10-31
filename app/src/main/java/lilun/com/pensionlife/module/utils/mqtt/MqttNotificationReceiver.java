@@ -24,7 +24,7 @@ public class MqttNotificationReceiver extends BroadcastReceiver {
         if (extra != null) {
             Intent newIntent = new Intent(context, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(newIntent);
-            EventBus.getDefault().postSticky(extra);
+            EventBus.getDefault().post(extra);
         }
     }
 

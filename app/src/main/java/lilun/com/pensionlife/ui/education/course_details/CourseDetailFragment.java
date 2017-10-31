@@ -7,6 +7,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.IconUrl;
@@ -74,6 +77,10 @@ public class CourseDetailFragment extends BaseFragment {
     TextView tvBottomPrice;
     @Bind(R.id.tv_reservation)
     TextView tvReservation;
+    @Bind(R.id.tv_course_apply_time)
+    TextView tvCourseApplyTime;
+    @Bind(R.id.wb_course_content)
+    WebView wbCourseContent;
     private String mProductId;
     private OrganizationProduct mProduct;
 
@@ -193,6 +200,19 @@ public class CourseDetailFragment extends BaseFragment {
         //剩余名额
         tvCourseRemain.setText("剩余名额：" + StringUtils.filterNull(product.getStock() + ""));
 
+
+        //报名开始时间和结束时间
+        String startTime = product.getStartTime();
+        String endTIme = product.getEndTIme();
+        if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTIme)) {
+            String applyText = "报名开始、结束时间：" + StringUtils.IOS2ToUTC(startTime, 5) + "--" + StringUtils.IOS2ToUTC(endTIme, 5);
+            tvCourseApplyTime.setText(applyText);
+        }
+
+
+        //课程内容
+        wbCourseContent.getSettings().setJavaScriptEnabled(true);
+        wbCourseContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
 
         Map<String, Object> extend = product.getExtend();
         if (extend != null) {
@@ -422,5 +442,18 @@ public class CourseDetailFragment extends BaseFragment {
         return null;
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }
 

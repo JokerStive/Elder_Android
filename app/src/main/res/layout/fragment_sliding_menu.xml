@@ -77,7 +77,7 @@
                 android:layout_marginTop="@dimen/sliding_item_margin_top"
                 android:drawablePadding="@dimen/dp_10"
                 android:drawableStart="@drawable/icon_info_setting"
-                android:text="个人信息设置" />
+                android:text="个人消息设置" />
 
 
             <TextView

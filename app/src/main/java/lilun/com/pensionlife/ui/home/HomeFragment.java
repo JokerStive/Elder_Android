@@ -378,7 +378,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
 
-    @Subscribe(sticky = true)
+    @Subscribe
     public void mqttNotificationOperate(MqttNotificationExtra extra) {
         String topic = extra.getTopic();
         if (!TextUtils.isEmpty(topic)) {

@@ -320,9 +320,8 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
      * 获取学期列表
      */
     private void getSemesters() {
-        String gtmTime = StringUtils.currentTimeToGTM();
         String organizationId = mOrganizationId + "/#semester";
-        String filter = "{\"where\":{\"organizationId\":\"" + organizationId + "\",\"and\":[{\"or\":[{\"startTime\":{\"lte\":\"" + gtmTime + "\"}},{\"startTime\":{\"$exists\":false}}]},{\"or\":[{\"endTime\":{\"gte\":\"" + gtmTime + "\"}},{\"endTime\":{\"$exists\":false}}]}]}}";
+        String filter = "{\"where\":{\"organizationId\":\"" + organizationId + "\"}}";
         Logger.d("获取学期 filter ----- " + filter);
         mPresenter.getSemesters(filter);
     }

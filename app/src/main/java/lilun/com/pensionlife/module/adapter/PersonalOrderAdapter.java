@@ -30,7 +30,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     private OnItemClickListener listener;
-    private SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public PersonalOrderAdapter(List<ProductOrder> data) {
         super(R.layout.item_personal_order, data);
@@ -51,7 +51,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                     .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
 
-                    .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format))
+                    .setText(R.id.tv_reservation_time, "服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format))
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
                         if (listener != null) {
@@ -103,7 +103,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     private void setOrderStatus(BaseViewHolder helper, ProductOrder order) {
         TextView tvOrderStatus = helper.getView(R.id.tv_order_status);
         String status = order.getStatus();
-        if (status.equals("reserved") || status.equals("delay")) {
+        if (status.equals("reserved")) {
             tvOrderStatus.setText("等待商家处理");
         } else if (status.equals("assigned")) {
             tvOrderStatus.setText("商家已经受理");
@@ -112,7 +112,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         } else if (status.equals("cancel")) {
             tvOrderStatus.setText("该订单已经取消");
         } else if (status.equals("delay")) {
-            tvOrderStatus.setText("该订单已经被商家延期");
+            tvOrderStatus.setText("延期中");
         }
     }
 

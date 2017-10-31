@@ -128,6 +128,16 @@ public class Event {
 
     }
 
+
+    //刷新紧急消息条数
+    public static class RefreshPushInformation {
+        public String infoId;
+
+        public RefreshPushInformation(String infoId) {
+            this.infoId = infoId;
+        }
+    }
+
     //刷新紧急消息条数
     public static class AnnounceH5 {
         public Information information;

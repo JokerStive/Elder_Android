@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -21,7 +23,6 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
-import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ScreenUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -53,14 +54,15 @@ public class AnnounceInfoActivity extends Activity {
     Button btnAll;
     @Bind(R.id.tv_express_come)
     TextView tvExpressCome;
-    private int infoCount = 1;
+    private int infoCount = 0;
     private AnimationDrawable drawableAnim;
-    private Information mInformation;
+    private String mInformationid;
 
-    @Subscribe
-    public void refreshUrgentCount(Event.RefreshUrgentInfo event) {
+    @Subscribe(sticky = true)
+    public void refreshUrgentCount(Event.RefreshPushInformation pushInformation) {
+        Logger.d("开始刷新公告数据",pushInformation.infoId);
         infoCount++;
-        btnAll.setText("查看全部(" + infoCount + ")");
+        getInfo(pushInformation.infoId);
     }
 
 
@@ -71,25 +73,23 @@ public class AnnounceInfoActivity extends Activity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        mInformation = (Information) getIntent().getSerializableExtra("organizationInfo");
-        Preconditions.checkNull(mInformation);
-
-
-        getInfo();
+//        mInformationid = getIntent().getStringExtra("informationId");
+//        Preconditions.checkNull(mInformationid);
+//
+//
+//        getInfo(mInformationid);
 
         setAppearance();
     }
 
-    private void getInfo() {
-        String informationId = mInformation.getId();
-        NetHelper.getApi().getInformation(informationId)
+    private void getInfo(String infoId) {
+        NetHelper.getApi().getInformation(infoId)
                 .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
                 .subscribe(new RxSubscriber<Information>(this) {
                     @Override
                     public void _next(Information information) {
-                        mInformation = information;
-                        initView();
+                        initView(information);
                     }
                 });
     }
@@ -101,20 +101,20 @@ public class AnnounceInfoActivity extends Activity {
     }
 
 
-    protected void initView() {
+    protected void initView(Information information) {
         drawableAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.anim_express);
         ivExpressIcon.setBackground(drawableAnim);
         start();
 
-        tvExpressTitle.setText(mInformation.getTitle());
-        String createdAt = mInformation.getCreatedAt();
+        tvExpressTitle.setText(information.getTitle());
+        String createdAt = information.getCreatedAt();
         tvExpressTime.setText(StringUtils.IOS2ToUTC(createdAt, 0) + "  " + StringUtils.IOS2ToUTC(createdAt, 3));
         btnAll.setText("查看全部(" + infoCount + ")");
 
-        tvExpressCome.setText("来源：" + mInformation.getCreatorName() + "");
+        tvExpressCome.setText("来源：" + information.getCreatorName() + "");
 
-        int contextType = mInformation.getContextType();
-        String content = mInformation.getContext();
+        int contextType = information.getContextType();
+        String content = information.getContext();
         tvContent.setVisibility(contextType == 5 ? View.VISIBLE : View.GONE);
         progressWebView.setVisibility(contextType == 2 ? View.VISIBLE : View.GONE);
         switch (contextType) {
@@ -125,7 +125,7 @@ public class AnnounceInfoActivity extends Activity {
                 break;
             //json
             case 0:
-                tvContent.setText(mInformation.getContext());
+                tvContent.setText(information.getContext());
                 break;
         }
     }

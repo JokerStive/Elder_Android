@@ -143,8 +143,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderStatus.setText(Html.fromHtml("订单状态: <font color='#fe620f'>" + App.context.getString(status) + "</font>"));
         }
 
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), format));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), 7));
         tvOrderReservationTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format));
 
         //联系人信息
