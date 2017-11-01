@@ -88,6 +88,7 @@ public class EducationListFragment extends BaseFragment {
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
 
         mCollageAdapter = new CollageAdapter(new ArrayList<>());
+        mCollageAdapter.setEmptyView();
         mCollageAdapter.setOnItemClickListener((adapter, view, position) -> {
             Organization collage = mCollageAdapter.getItem(position);
             assert collage != null;
@@ -113,7 +114,7 @@ public class EducationListFragment extends BaseFragment {
         CollegeFilter collegeFilter = new CollegeFilter();
         Gson gson = new Gson();
         String filter = gson.toJson(collegeFilter);
-        Logger.d("大学filter - "+filter);
+        Logger.d("大学filter - " + filter);
 //        String filter = "{\"visible\":0,\"limit\":" + Config.defLoadDatCount + ",\"skip\":" + skip + ",\"where\":{\"tag.kind\":\"college\"}, \"aggregate\": { \"group\": { \"id\": \"$organizationId\" } } }";
         NetHelper.getApi()
                 .getColleges(filter)
