@@ -31,6 +31,8 @@ public class Config {
 
     public static final String tourism_product_categoryId = "服务/旅游";
 
+    public static final String course_product_categoryId = "/教育服务/其他教育服务/老年教育服务";
+
 
     public static String announce_root = "公告";
 

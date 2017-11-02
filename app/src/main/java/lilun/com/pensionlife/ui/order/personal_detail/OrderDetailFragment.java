@@ -25,6 +25,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
@@ -37,6 +38,8 @@ import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
+import lilun.com.pensionlife.ui.education.colleage_details.CollegeDetailFragment;
+import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.CustomTextView;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -184,7 +187,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvOrderPrice.setText(Html.fromHtml("￥" + new DecimalFormat("######0.00").format(product.getPrice())));
 
             String orgCategoryId = product.getOrgCategoryId();
-            if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
+            if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains(Config.course_product_categoryId)) {
                 tvProductArea.setText(showSemester(product.getExtend()));
             } else {
                 tvProductArea.setText(String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
@@ -268,16 +271,27 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             case R.id.tv_provider_name:
                 OrganizationProduct product = mOrder.getProduct();
                 if (product != null) {
+                    String orgCategoryId = product.getOrgCategoryId();
                     String organizationIdSuffix = product.getOrganizationId();
                     String organizationId = StringUtils.removeSpecialSuffix(organizationIdSuffix);
-                    start(ProviderDetailFragment.newInstance(organizationId));
+                    if (orgCategoryId.contains(Config.course_product_categoryId)) {
+                        start(CollegeDetailFragment.newInstance(organizationId));
+                    } else {
+                        start(ProviderDetailFragment.newInstance(organizationId));
+                    }
                 }
                 break;
 
             case R.id.ll_product_icon:
                 OrganizationProduct product1 = mOrder.getProduct();
                 if (product1 != null) {
-                    start(ProductDetailFragment.newInstance(product1.getId()));
+                    String id = product1.getId();
+                    String orgCategoryId = product1.getOrgCategoryId();
+                    if (orgCategoryId.contains(Config.course_product_categoryId)) {
+                        start(CourseDetailFragment.newInstance(id));
+                    } else {
+                        start(ProductDetailFragment.newInstance(id));
+                    }
                 }
                 break;
         }
@@ -293,29 +307,6 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             changeOrderStatus(status_done, "服务已经完成？");
         }
 
-
-//        if (!TextUtils.isEmpty(operate)) {
-//            //取消订单
-//            if (operate.equals(getString(R.string.operate_cancel))) {
-//                changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-//            }
-//
-//            //受理订单
-//            if (operate.equals(getString(R.string.operate_assigned))) {
-//                changeOrderStatus(status_assigned, getAlartMsg(R.string.operate_assigned));
-//            }
-//
-//            //完成订单
-//            if (operate.equals(getString(R.string.operate_done))) {
-//                changeOrderStatus(status_done, "确定已经给顾客服务过了吗？不然会收到差评的哟！");
-//            }
-//
-//
-//            //评价
-//            if (operate.equals(getString(R.string.rank))) {
-//                start(RankFragment.newInstance(Constants.organizationProduct, mOrder.getProductId()));
-//            }
-//        }
     }
 
     private void changeOrderStatus(String status, String msg) {
