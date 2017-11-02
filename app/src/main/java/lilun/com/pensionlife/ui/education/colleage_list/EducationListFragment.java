@@ -87,7 +87,9 @@ public class EducationListFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
 
-        mCollageAdapter = new CollageAdapter(new ArrayList<>());
+        mCollageAdapter = new
+
+                CollageAdapter(new ArrayList<>());
         mCollageAdapter.setEmptyView();
         mCollageAdapter.setOnItemClickListener((adapter, view, position) -> {
             Organization collage = mCollageAdapter.getItem(position);
