@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.adapter;
 
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -10,7 +11,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.Information;
@@ -47,14 +47,14 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
         }
         help.setText(R.id.tv_item_title, info.getTitle());
         help.setText(R.id.tv_item_time, StringUtils.up2thisTime(info.getCreatedAt()));
-        if (help.getAdapterPosition() == 0 && null != StringUtils.getFirstIconNameFromIcon(info.getImage())) {
+        if (help.getAdapterPosition() == 0 && !TextUtils.isEmpty(StringUtils.getFirstIcon(info.getImage()))) {
             help.setVisible(R.id.v_line, false);
             help.setTextColor(R.id.tv_item_title, ContextCompat.getColor(mContext, R.color.white));
             help.setBackgroundColor(R.id.ll_content, ContextCompat.getColor(mContext, R.color.black_transparent_198));
             help.setVisible(R.id.tv_item_time, false);
 
             help.setVisible(R.id.iv_icon, true);
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationInformations, info.getId(), StringUtils.getFirstIconNameFromIcon(info.getImage()));
+            String iconUrl = StringUtils.getFirstIcon(info.getImage());
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
 
         } else {

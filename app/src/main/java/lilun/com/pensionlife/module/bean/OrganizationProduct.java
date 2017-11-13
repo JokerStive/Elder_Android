@@ -81,7 +81,7 @@ public class OrganizationProduct extends BaseBean {
 //    private String categoryId;
     private String phone;
     private List<String> orderType;
-    private List<IconModule> image;
+    private List<String> image;
     private List<String> areaIds;
     private String mobile;
     private String orgCategoryId;
@@ -281,11 +281,11 @@ public class OrganizationProduct extends BaseBean {
         this.orderType = orderType;
     }
 
-    public List<IconModule> getImage() {
+    public List<String> getImage() {
         return image;
     }
 
-    public void setImage(List<IconModule> images) {
+    public void setImage(List<String> images) {
         this.image = images;
     }
 

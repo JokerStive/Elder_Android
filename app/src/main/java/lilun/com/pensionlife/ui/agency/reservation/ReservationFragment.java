@@ -30,7 +30,6 @@ import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.ContactExtendKey;
@@ -249,7 +248,7 @@ public class ReservationFragment extends BaseFragment {
 
     private void showProduct() {
         //产品第一张图
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mProduct.getId(), StringUtils.getFirstIconNameFromIcon(mProduct.getImage()));
+        String iconUrl = StringUtils.getFirstIcon(mProduct.getImage());
         ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, ivProductImage);
 
         tvProductTitle.setText(mProduct.getTitle());

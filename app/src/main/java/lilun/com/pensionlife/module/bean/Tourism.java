@@ -32,7 +32,7 @@ public class Tourism extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> images;
+    private List<String> images;
     private String categoryId;
     private List<String> areasList;
 
@@ -174,11 +174,11 @@ public class Tourism extends BaseBean {
     }
 
 
-    public List<IconModule> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<IconModule> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

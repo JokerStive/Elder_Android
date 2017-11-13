@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
-import com.orhanobut.logger.Logger;
 import com.vanzh.library.BaseBean;
 import com.vanzh.library.BottomDialog;
 import com.vanzh.library.DataInterface;
@@ -36,10 +35,8 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Area;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.utils.BitmapUtils;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -56,8 +53,6 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.TakePhotoDialogFragment;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import me.yokeyword.fragmentation.SupportActivity;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -339,32 +334,34 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
 
     public void updateImage(String id, String path) {
 
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add(path);
-        byte[] pathString = BitmapUtils.bitmapToBytes(path);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
-        NetHelper.getApi().getMe().
-                compose(RxUtils.handleResult())
-                .flatMap((account -> {
-                    String imageName = "{imageName}";
-                    if (account != null && account.getImage() != null && account.getImage().size() > 0) {
-                        imageName = account.getImage().get(0).getFileName();
-                        User.puttUserAvatar(imageName);
-                    }
-                    Logger.d("zp", User.getToken() + "   \n" + id + "   \n" + imageName + "   \n" + path);
-                    return NetHelper.getApi().updateImage(id, imageName, requestBody).compose(RxUtils.applySchedule()).compose(RxUtils.handleResult());
-                }))
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<IconModule>(_mActivity) {
-                    @Override
-                    public void _next(IconModule icon) {
-                        ToastHelper.get().showShort("修改头像成功");
-                        User.puttUserAvatar(icon.getFileName());
-                        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
-                        EventBus.getDefault().post(new Event.AccountSettingChange());
-
-                    }
-                });
+        // TODO
+//        ArrayList<String> paths = new ArrayList<>();
+//        paths.add(path);
+//        byte[] pathString = BitmapUtils.bitmapToBytes(path);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
+//        NetHelper.getApi().getMe().
+//                compose(RxUtils.handleResult())
+//                .flatMap((account -> {
+//                    String imageName = "{imageName}";
+//                    if (account != null && account.getImage() != null && account.getImage().size() > 0) {
+//                        // TODO
+//                        imageName = account.getImage().get(0).getFileName();
+//                        User.puttUserAvatar(imageName);
+//                    }
+//                    Logger.d("zp", User.getToken() + "   \n" + id + "   \n" + imageName + "   \n" + path);
+//                    return NetHelper.getApi().updateImage(id, imageName, requestBody).compose(RxUtils.applySchedule()).compose(RxUtils.handleResult());
+//                }))
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<IconModule>(_mActivity) {
+//                    @Override
+//                    public void _next(IconModule icon) {
+//                        ToastHelper.get().showShort("修改头像成功");
+//                        User.puttUserAvatar(icon.getFileName());
+//                        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
+//                        EventBus.getDefault().post(new Event.AccountSettingChange());
+//
+//                    }
+//                });
     }
 
     @Override

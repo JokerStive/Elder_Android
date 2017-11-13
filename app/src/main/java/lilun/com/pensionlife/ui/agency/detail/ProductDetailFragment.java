@@ -36,7 +36,6 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ProductRankAdapter;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.Rank;
@@ -355,8 +354,7 @@ public class ProductDetailFragment extends BaseFragment {
     private void showBanner(OrganizationProduct product) {
         List<String> urls = new ArrayList<>();
         if (product.getImage() != null) {
-            for (IconModule iconModule : product.getImage()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), iconModule.getFileName());
+            for (String url : product.getImage()) {
                 urls.add(url);
             }
         } else {

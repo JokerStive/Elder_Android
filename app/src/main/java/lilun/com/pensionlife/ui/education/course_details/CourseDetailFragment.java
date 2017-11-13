@@ -30,7 +30,6 @@ import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -133,6 +132,8 @@ public class CourseDetailFragment extends BaseFragment {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+
+
         getProduct();
 //        getIsOrder();
     }
@@ -204,7 +205,7 @@ public class CourseDetailFragment extends BaseFragment {
         //报名开始时间和结束时间
         String startTime = product.getStartTime();
         String endTIme = product.getEndTIme();
-        if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTIme)) {
+        if (!TextUtils.isEmpty(startTime) || !TextUtils.isEmpty(endTIme)) {
             String applyText = "报名开始、结束时间：" + StringUtils.IOS2ToUTC(startTime, 5) + "--" + StringUtils.IOS2ToUTC(endTIme, 5);
             tvCourseApplyTime.setText(applyText);
         }
@@ -297,8 +298,7 @@ public class CourseDetailFragment extends BaseFragment {
     private void showBanner(OrganizationProduct product) {
         List<String> urls = new ArrayList<>();
         if (product.getImage() != null) {
-            for (IconModule iconModule : product.getImage()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), iconModule.getFileName());
+            for (String url : product.getImage()) {
                 urls.add(url);
             }
         } else {

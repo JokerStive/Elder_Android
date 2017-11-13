@@ -1,7 +1,6 @@
 package lilun.com.pensionlife.module.bean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * MQTT消息新建活动 存于数据库
@@ -34,7 +33,7 @@ public class OrganizationActivityDS extends PushBaseMsg {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private ArrayList<IconModule> icon;
+    private ArrayList<String> icon;
 //    private List<String> partnerList;
 //    private List<String> blackList;
     private Account contact;
@@ -222,11 +221,11 @@ public class OrganizationActivityDS extends PushBaseMsg {
         this.organizationId = organizationId;
     }
 
-    public ArrayList<IconModule> getIcon() {
+    public ArrayList<String> getIcon() {
         return icon;
     }
 
-    public void setIcon(ArrayList<IconModule> icon) {
+    public void setIcon(ArrayList<String> icon) {
         this.icon = icon;
     }
 

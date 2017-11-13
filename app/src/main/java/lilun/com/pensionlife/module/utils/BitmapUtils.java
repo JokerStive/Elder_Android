@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.module.bean.IconModule;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -136,27 +134,27 @@ public class BitmapUtils {
     /**
      * 从模型中的picture字段获取单张pictureName
      */
-    public static String picName(ArrayList<IconModule> pictureName) {
-        if (pictureName != null && pictureName.size() > 0) {
-            return pictureName.get(0).getFileName();
-        }
-        return "";
-    }
+//    public static String picName(ArrayList<IconModule> pictureName) {
+//        if (pictureName != null && pictureName.size() > 0) {
+//            return pictureName.get(0).getFileName();
+//        }
+//        return "";
+//    }
 
     /**
      * 从模型中的picture字段获取多张张pictureName
-     */
-    public static List<String> picNames(String pictureName) {
-        List<String> picNames = new ArrayList<>();
-        if (pictureName != null) {
-            List<IconModule> imgList = StringUtils.string2IconModule(pictureName);
-            for (IconModule img : imgList) {
-                picNames.add(img.getFileName());
-            }
-            return picNames;
-        }
-        return picNames;
-    }
+//     */
+//    public static List<String> picNames(String pictureName) {
+//        List<String> picNames = new ArrayList<>();
+//        if (pictureName != null) {
+//            List<IconModule> imgList = StringUtils.string2IconModule(pictureName);
+//            for (IconModule img : imgList) {
+//                picNames.add(img.getFileName());
+//            }
+//            return picNames;
+//        }
+//        return picNames;
+//    }
 
 
     /**

@@ -49,7 +49,6 @@ import lilun.com.pensionlife.module.adapter.NestedReplyAdapter;
 import lilun.com.pensionlife.module.adapter.PartnersIconAdapter;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
 import lilun.com.pensionlife.module.bean.ActivityEvaluate;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.NestedReply;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
@@ -233,9 +232,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         });
         ArrayList<String> images = new ArrayList<>();
         if (activity.getIcon() != null)
-            for (IconModule tmp : activity.getIcon())
-                images.add(IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), tmp.getFileName()));
-        bpActivityImages.setData(images);
+            bpActivityImages.setData(images);
 
         rvQuestionList.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvQuestionList.addItemDecoration(new NormalItemDecoration(17));

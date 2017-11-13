@@ -12,10 +12,8 @@ import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ElderModule;
-import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -59,7 +57,7 @@ public class EducationClassifyAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules, elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()), "icon");
+            String iconUrl = elderModule.getIcon().get(0);
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_elder_icon));
         }
     }

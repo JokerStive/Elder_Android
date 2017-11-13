@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -42,7 +41,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //是否有图片需要加载
         if (layoutType != SearchTitleBar.LayoutType.NULL) {
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationAids, aid.getId(), StringUtils.getFirstIconNameFromIcon(aid.getImage())), R.drawable.icon_def, help.getView(R.id.iv_icon));
+            ImageLoaderUtil.instance().loadImage(aid.getImage().get(0), R.drawable.icon_def, help.getView(R.id.iv_icon));
         }
 
 
@@ -54,7 +53,7 @@ public class OrganizationAidAdapter extends QuickAdapter<OrganizationAid> {
 
         //补贴
         TextView tvItemPrice = help.getView(R.id.tv_aid_price);
-        tvItemPrice.setText(aid.getPrice()+"元补贴");
+        tvItemPrice.setText(aid.getPrice() + "元补贴");
 
         //参与者和时间
         TextView time_joinerCount = help.getView(R.id.tv_time_joinCount);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ElderModule;
@@ -65,7 +64,7 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.ElderModules, elderModule.getId() + "", StringUtils.getFirstIconNameFromIcon(elderModule.getIcon()), "icon");
+            String iconUrl = StringUtils.getFirstIcon(elderModule.getIcon());
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
         }
     }
@@ -84,7 +83,6 @@ public class ElderModuleAdapter extends QuickAdapter<ElderModule> {
     public interface OnItemClickListener {
         void onItemClick(ElderModule elderModule);
     }
-
 
 
     private int getColor(String parent) {

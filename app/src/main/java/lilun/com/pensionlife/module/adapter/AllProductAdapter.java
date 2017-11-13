@@ -6,10 +6,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
-import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -38,7 +36,7 @@ public class AllProductAdapter extends QuickAdapter<OrganizationProduct> {
                 .setText(R.id.tv_product_title_extra,product.getName())
         .setText(R.id.tv_product_price,new DecimalFormat("######0.00").format(product.getPrice()) + "");
 
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage()));
+        String iconUrl = product.getImage().get(0);
         ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
     }
 

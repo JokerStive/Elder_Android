@@ -102,7 +102,7 @@ public class LoginModule implements LoginContract.Module {
 
         //
         if (null != account.getImage() && account.getImage().size() > 0)
-            User.puttUserAvatar(account.getImage().get(0).getFileName());
+            User.puttUserAvatar(StringUtils.getFirstIcon(account.getImage()));
 
 
         //手机号

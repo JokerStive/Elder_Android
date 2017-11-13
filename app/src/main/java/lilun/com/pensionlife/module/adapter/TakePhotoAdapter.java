@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.module.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
+import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 
 /**
  * 展示photo的adapter
@@ -39,13 +41,13 @@ public class TakePhotoAdapter extends BaseMultiItemQuickAdapter<TakePhotoResult,
                         }
                         break;
 
-                    case R.id.iv_photo:
+                    case R.id.image:
                         if (listener != null) {
                             listener.onItemClick(TakePhotoResult.TYPE_PHOTO, getItem(position));
                         }
                         break;
 
-                    case R.id.iv_remove_photo:
+                    case R.id.delete:
                         remove(position);
                         break;
                 }
@@ -63,13 +65,28 @@ public class TakePhotoAdapter extends BaseMultiItemQuickAdapter<TakePhotoResult,
                 break;
 
             case TakePhotoResult.TYPE_PHOTO:
-                ImageView ivPhoto = helper.getView(R.id.iv_photo);
+                ImageView ivPhoto = helper.getView(R.id.image);
                 showImageFromResult(result, ivPhoto);
-                helper.addOnClickListener(R.id.iv_photo);
-                helper.addOnClickListener(R.id.iv_remove_photo);
+                helper.addOnClickListener(R.id.image);
+                helper.addOnClickListener(R.id.delete);
                 break;
         }
 
+    }
+
+
+    public void setProgress(RecyclerView recyclerView,int position, double progress) {
+        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView,position + 1, R.id.container);
+        if (qiNiuUploadView!=null){
+            qiNiuUploadView.setProgress(progress);
+        }
+    }
+
+    public void setStatus(RecyclerView recyclerView,int position,int status) {
+        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView,position + 1, R.id.container);
+        if (qiNiuUploadView!=null){
+            qiNiuUploadView.setStatus(status);
+        }
     }
 
 

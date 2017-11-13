@@ -2,9 +2,6 @@ package lilun.com.pensionlife.module.utils;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -26,7 +23,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.IconModule;
 
 /**
  * Created by yk on 2017/1/6.
@@ -305,15 +301,15 @@ public class StringUtils {
         }
     }
 
-    public static List<IconModule> string2IconModule(String imgString) {
-        if (imgString != null) {
-            Gson gson = new Gson();
-            return gson.fromJson(imgString, new TypeToken<List<IconModule>>() {
-            }.getType());
-        }
-
-        return null;
-    }
+//    public static List<IconModule> string2IconModule(String imgString) {
+//        if (imgString != null) {
+//            Gson gson = new Gson();
+//            return gson.fromJson(imgString, new TypeToken<List<IconModule>>() {
+//            }.getType());
+//        }
+//
+//        return null;
+//    }
 
     /**
      * 获取列表数据时候，一定要添加的头部、0filter信息
@@ -372,12 +368,8 @@ public class StringUtils {
     /**
      * 从module的icon字段获取第一张icon的名称
      */
-    public static String getFirstIconNameFromIcon(List<IconModule> iconModules) {
-        if (iconModules != null && iconModules.size() != 0) {
-            return iconModules.get(0).getFileName();
-        } else {
-            return null;
-        }
+    public static String getFirstIcon(List<String> iconModules) {
+      return  iconModules.get(0);
     }
 
 
@@ -599,16 +591,16 @@ public class StringUtils {
     }
 
 
-    public static  String formatPrice(Double price) {
+    public static String formatPrice(Double price) {
         String result = null;
-        if (price!=null && price!=0){
+        if (price != null && price != 0) {
             result = new DecimalFormat("######0.00").format(price);
 
         }
         return result;
     }
 
-    public static  String formatPriceToFree(Double price) {
-        return price==null ||  price==0?"免费":null;
+    public static String formatPriceToFree(Double price) {
+        return price == null || price == 0 ? "免费" : null;
     }
 }

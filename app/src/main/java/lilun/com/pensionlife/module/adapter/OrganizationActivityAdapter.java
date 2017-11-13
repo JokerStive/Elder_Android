@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
@@ -116,11 +115,9 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         help.setText(R.id.tv_time_joinCount, context.getString(R.string.targart_partin_, numPeople));
 
 
-        String fileName = (activity.getIcon() != null && activity.getIcon().size() > 0) ?
-                activity.getIcon().get(0).getFileName() : null;
-        final String url = IconUrl.moduleIconUrlOfActivity(IconUrl.OrganizationActivities, activity.getId(), fileName);
+        final String url = StringUtils.getFirstIcon(activity.getIcon());
 
-        if (TextUtils.isEmpty(fileName))
+        if (TextUtils.isEmpty(url))
             help.getView(R.id.iv_icon).setVisibility(View.GONE);
         else {
             help.getView(R.id.iv_icon).setVisibility(View.VISIBLE);

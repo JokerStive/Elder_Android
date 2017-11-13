@@ -50,7 +50,7 @@ public class Information extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> image;
+    private List<String> image;
 
     public String getId() {
         return id;
@@ -188,11 +188,11 @@ public class Information extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconModule> getImage() {
+    public List<String>getImage() {
         return image;
     }
 
-    public void setImage(List<IconModule> image) {
+    public void setImage(List<String>image) {
         this.image = image;
     }
 

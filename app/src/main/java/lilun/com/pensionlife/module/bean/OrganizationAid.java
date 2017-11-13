@@ -72,13 +72,13 @@ public class OrganizationAid extends DataSupport implements Serializable {
         return this;
     }
 
-    public List<IconModule> image;
+    public List<String> image;
 
-    public List<IconModule> getImage() {
+    public List<String> getImage() {
         return image;
     }
 
-    public OrganizationAid setImage(List<IconModule> image) {
+    public OrganizationAid setImage(List<String> image) {
         this.image = image;
         return this;
     }

@@ -39,7 +39,7 @@ public class Organization extends BaseBean {
      */
 
     private boolean isInherited;
-    private List<IconModule> icon;
+    private List<String> icon;
 
     private Provider extension;
 
@@ -81,11 +81,11 @@ public class Organization extends BaseBean {
         this.isInherited = isInherited;
     }
 
-    public List<IconModule> getIcon() {
+    public List<String> getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconModule> icon) {
+    public void setIcon(List<String> icon) {
         this.icon = icon;
     }
 

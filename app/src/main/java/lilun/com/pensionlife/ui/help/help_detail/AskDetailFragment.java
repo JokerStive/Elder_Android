@@ -27,7 +27,6 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AidReplyAdapter;
 import lilun.com.pensionlife.module.bean.AidDetail;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -195,8 +194,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         //显示aid图片
         List<String> urls = new ArrayList<>();
         if (mAid.getImage() != null) {
-            for (IconModule iconModule : mAid.getImage()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), iconModule.getFileName());
+            for (String url : mAid.getImage()) {
                 urls.add(url);
             }
         } else {
@@ -215,7 +213,7 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
         if (price == 0) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText("（"+price+"元补贴）");
+            tvPrice.setText("（" + price + "元补贴）");
         }
 
         //显示发起人和头像

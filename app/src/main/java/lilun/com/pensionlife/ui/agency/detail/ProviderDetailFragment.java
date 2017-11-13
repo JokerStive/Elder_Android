@@ -29,7 +29,6 @@ import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AllProductAdapter;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.Provider;
@@ -292,8 +291,7 @@ public class ProviderDetailFragment extends BaseFragment {
     private void showBanner(Organization provider) {
         List<String> urls = new ArrayList<>();
         if (provider.getIcon() != null) {
-            for (IconModule iconModule : provider.getIcon()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.Organizations, provider.getId(), iconModule.getFileName(), "icon");
+            for (String url : provider.getIcon()) {
                 urls.add(url);
             }
         } else {

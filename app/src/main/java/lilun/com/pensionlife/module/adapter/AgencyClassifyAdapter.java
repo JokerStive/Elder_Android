@@ -8,11 +8,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.Organization;
-import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
  * 分类模块adapter
@@ -49,7 +47,7 @@ public class AgencyClassifyAdapter extends QuickAdapter<Organization> {
 
 
         if (organization.getIcon() != null) {
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.Organizations, organization.getId() , StringUtils.getFirstIconNameFromIcon(organization.getIcon()),"");
+            String iconUrl = organization.getIcon().get(0);
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }

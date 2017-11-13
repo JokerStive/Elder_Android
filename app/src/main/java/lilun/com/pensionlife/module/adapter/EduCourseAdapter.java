@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -54,7 +53,7 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
 
         //图片
 
-        String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, course.getId(), StringUtils.getFirstIconNameFromIcon(course.getImage()));
+        String iconUrl = StringUtils.getFirstIcon(course.getImage());
         ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_course_icon));
 
     }

@@ -5,11 +5,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ElderEdus;
-import lilun.com.pensionlife.module.utils.BitmapUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -29,7 +27,7 @@ public class OrganizationEdusAdapter extends QuickAdapter<ElderEdus> {
     protected void convert(BaseViewHolder help, ElderEdus edu) {
         help.setText(R.id.tv_item_title, edu.getTitle())
                 .setText(R.id.tv_item_address, edu.getAddress())
-                .setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(),0))
+                .setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(), 0))
                 .setOnClickListener(R.id.ll_module_background, v -> {
                     if (listener != null) {
                         listener.onItemClick(edu);
@@ -39,7 +37,7 @@ public class OrganizationEdusAdapter extends QuickAdapter<ElderEdus> {
 //            help.setText(R.id.tv_item_time, StringUtils.IOS2ToUTC(edu.getStartDate(),0));
 //        }
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.eduCourses(edu.getId(), BitmapUtils.picName(edu.getPicture())),
+        ImageLoaderUtil.instance().loadImage(edu.getPicture().get(0),
                 R.drawable.icon_def, help.getView(R.id.iv_icon));
 //        Glide.with(fragment)
 //                .load(IconUrl.eduCourses(edu.getId(), BitmapUtils.picName(edu.getImage())))

@@ -125,6 +125,15 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     }
 
 
+    public void setProgress(int position, double progress) {
+        adapter.setProgress(rvPhotoContainer, position, progress);
+    }
+
+    public void setStatus(int position, int status) {
+        adapter.setStatus(rvPhotoContainer, position, status);
+    }
+
+
     /**
      * 获取图片地址集合
      */

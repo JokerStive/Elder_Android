@@ -26,7 +26,6 @@ import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Tourism;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -165,8 +164,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
         //展示product图片
         List<String> urls = new ArrayList<>();
         if (mTourism.getImages() != null) {
-            for (IconModule iconModule : mTourism.getImages()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, mTourism.getId(), iconModule.getFileName());
+            for (String url : mTourism.getImages()) {
                 urls.add(url);
             }
         } else {

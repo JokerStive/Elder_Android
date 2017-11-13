@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.jph.takephoto.model.TImage;
@@ -25,7 +24,6 @@ import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
 import lilun.com.pensionlife.module.utils.RxUtils;
-import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.CircleImageView;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -64,7 +62,8 @@ public class RegisterAvatorFragment extends BaseTakePhotoFragment<RegisterContra
             } else {
                 String imageName = "";
                 if (account.getImage() != null && account.getImage().size() > 0) {
-                    imageName = account.getImage().get(0).getFileName();
+                    // TODO
+//                    imageName = account.getImage().get(0).getFileName();
                 }
                 mPresenter.updateImage(User.getUserId(), imageName, path);
             }

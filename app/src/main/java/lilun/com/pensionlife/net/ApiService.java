@@ -13,7 +13,6 @@ import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderModule;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.NestedReply;
 import lilun.com.pensionlife.module.bean.OrderLimit;
@@ -26,6 +25,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.bean.ProductOrder;
+import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.bean.Register;
 import lilun.com.pensionlife.module.bean.Semester;
@@ -69,6 +69,13 @@ public interface ApiService {
 
     @GET("Accounts/me")
     Observable<Response<Account>> getMe();
+
+
+    /**
+     * 获取上传图片的token
+     */
+    @GET("{modelName}/{modelId}/upload/{tag}")
+    Observable<Response<QINiuToken>> getUploadToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
 
 
     /**
@@ -168,7 +175,6 @@ public interface ApiService {
 
     @GET("OrganizationEduSemesters/ActivitySemester")
     Observable<Response<List<Semester>>> getSemesters(@Query("filter") String filter);
-
 
 
     /**
@@ -286,9 +292,6 @@ public interface ApiService {
 
 //    @GET("ProductOrders")
 //    Observable<Response<List<ProductOrder>>> getOrders( @Query("filter") String filter);
-
-
-
 
 
     /**
@@ -708,5 +711,5 @@ public interface ApiService {
      */
     @Multipart
     @PUT("Accounts/{id}/update/image/{imageName}")
-    Observable<Response<IconModule>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
+    Observable<Response<String>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
 }

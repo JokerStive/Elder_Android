@@ -5,22 +5,14 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.orhanobut.logger.Logger;
 
-import org.litepal.crud.DataSupport;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
-import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
-import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
  * 分类模块adapter
@@ -79,9 +71,7 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
 
 
         if (activityCategory.getIcon() != null) {
-            String firstIconName = StringUtils.getFirstIconNameFromIcon(activityCategory.getIcon());
-            String iconUrl = IconUrl.moduleIconUrl(IconUrl.OrganizationActivityCategories, activityCategory.getId(), firstIconName, "");
-            //  ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_module_icon));
+            String iconUrl = activityCategory.getIcon().get(0);
             Glide.with(App.context).load(iconUrl).dontAnimate()
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)

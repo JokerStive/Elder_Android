@@ -43,13 +43,13 @@ public class OrganizationProductCategory extends AbstractExpandableItem<Organiza
     private String parentId;
     private String organizationId;
     private int visible;
-    private List<IconModule> icon;
+    private List<String> icon;
 
-    public List<IconModule> getIcon() {
+    public List<String> getIcon() {
         return icon;
     }
 
-    public OrganizationProductCategory setIcon(List<IconModule> icon) {
+    public OrganizationProductCategory setIcon(List<String> icon) {
         this.icon = icon;
         return this;
     }

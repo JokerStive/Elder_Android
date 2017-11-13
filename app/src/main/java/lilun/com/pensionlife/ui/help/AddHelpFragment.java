@@ -15,8 +15,6 @@ import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +27,19 @@ import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
+import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.utils.BitmapUtils;
-import lilun.com.pensionlife.module.utils.GsonUtils;
+import lilun.com.pensionlife.module.utils.QINiuEngine;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.widget.InputView;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.TakePhotoLayout;
-import okhttp3.MultipartBody;
 import rx.Observable;
 
 /**
@@ -197,7 +196,13 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      * 新建一个求助信息
      */
     private void createHelp() {
-//        String priority = tvPriorityValue.getText().toString();
+//        List<String> data = getPhotoData();
+//        for (int i = 0; i < data.size(); i++) {
+//            takePhotoLayout.setProgress(i, 100 - i * 10);
+//        }
+
+//
+//
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
 
@@ -217,45 +222,136 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 }
             }
 
-
-//            if (!TextUtils.isEmpty(priority) && helpPriority != null) {
-//                if (priority.equals(helpPriority[0])) {
-//                    mPriority = 0;
-//                } else if (priority.equals(helpPriority[1])) {
-//                    mPriority = 1;
-//                } else if (priority.equals(helpPriority[2])) {
-//                    mPriority = 2;
-//                } else if (priority.equals(helpPriority[3])) {
-//                    mPriority = 10;
-//                }
-//            } else {
-//                ToastHelper.get().showWareShort("请选择求助类型");
+//
+//            testQINiu(getOrganizationAid());
+//
+//            OrganizationAid aid = getOrganizationAid();
+//            List<String> data = getPhotoData();
+//            try {
+//                JSONObject aidJsonObject = GsonUtils.objectToJSONObject(aid);
+//                MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, data);
+//                NetHelper.getApi()
+//                        .newAidAndIcons(multipartBody)
+//                        .compose(RxUtils.handleResult())
+//                        .compose(RxUtils.applySchedule())
+//                        .subscribe(new RxSubscriber<Object>(_mActivity) {
+//                            @Override
+//                            public void _next(Object o) {
+//                                Logger.d("求助发布成功");
+//                                pop();
+//                                Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
+//                                EventBus.getDefault().post(refreshHelpData);
+//                            }
+//                        });
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
 //            }
+//
 
-            OrganizationAid aid = getOrganizationAid();
-            List<String> data = getPhotoData();
-            try {
-                JSONObject aidJsonObject = GsonUtils.objectToJSONObject(aid);
-                MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, data);
-                NetHelper.getApi()
-                        .newAidAndIcons(multipartBody)
-                        .compose(RxUtils.handleResult())
-                        .compose(RxUtils.applySchedule())
-                        .subscribe(new RxSubscriber<Object>(_mActivity) {
-                            @Override
-                            public void _next(Object o) {
-                                Logger.d("求助发布成功");
-                                pop();
-                                Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
-                                EventBus.getDefault().post(refreshHelpData);
-                            }
-                        });
+            newAid(getOrganizationAid());
+        }
+    }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+    /**
+     * 创建模型
+     */
+    private void newAid(OrganizationAid aid) {
+        NetHelper.getApi()
+                .newOrganizationAid(aid)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
+                    @Override
+                    public void _next(OrganizationAid organizationAid) {
+                        getToken(organizationAid.getId());
+                    }
+                });
+
+    }
+
+    /**
+     * 获取token
+     */
+    private void getToken(String id) {
+        ArrayList<String> photoPath = getPhotoData();
+        if (photoPath.size() > 0) {
+            NetHelper.getApi().
+                    getUploadToken("OrganizationAids", id, "image")
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<QINiuToken>() {
+                        @Override
+                        public void _next(QINiuToken qiNiuToken) {
+                            uploadImages(id, qiNiuToken, photoPath);
+                        }
+                    });
+        }
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImages(String id, QINiuToken qiNiuToken, ArrayList<String> photoPath) {
+        QINiuEngine engine = new QINiuEngine(photoPath);
+        for (int i = 0; i < photoPath.size(); i++) {
+            String path = photoPath.get(i);
+            startUpload(id, qiNiuToken, engine, path, i);
+        }
+    }
+
+    private void startUpload(String id, QINiuToken qiNiuToken, final QINiuEngine enger, String path, int finalI) {
+        enger.uploadImages(path, qiNiuToken.getToken(), "OrganizationAid", id, "image", new QINiuEngine.UploadCallBack() {
+            @Override
+            public void onUploadSuccess(String filePath) {
+                takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_SUCCESS);
+                Logger.i("第" + (finalI + 1) + "张上传成功----");
+                if (enger.needUploadAgain()) {
+                    uploadAgain(enger, id, qiNiuToken);
+                } else {
+                    Logger.i("所有图片张上传成功----");
+                    popAndRefreshData();
+                }
             }
 
-        }
+            @Override
+            public void onUploadFail(String filePath, String failInfo) {
+                Logger.i("第" + finalI + 1 + "张上传失败----" + failInfo);
+                takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_FALSE);
+                if (enger.needUploadAgain()) {
+                    uploadAgain(enger, id, qiNiuToken);
+                }
+            }
+
+            @Override
+            public void onUploadProgress(String filePath, double percent) {
+                Logger.i("第" + finalI + 1 + "张上传进度----" + percent);
+                takePhotoLayout.setProgress(finalI, percent);
+            }
+        });
+    }
+
+    private void uploadAgain(QINiuEngine engine, String id, QINiuToken qiNiuToken) {
+        new NormalDialog().createNormal(_mActivity, "需要重新上传吗还是放弃", new NormalDialog.OnPositiveListener() {
+            @Override
+            public void onPositiveClick() {
+                ArrayList<String> needUploadFilePaths = engine.uploadAgain();
+                for (int i = 0; i < needUploadFilePaths.size(); i++) {
+                    startUpload(id, qiNiuToken, engine, needUploadFilePaths.get(i), i);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 退出并且刷新界面
+     */
+    private void popAndRefreshData() {
+        pop();
+        Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
+        EventBus.getDefault().post(refreshHelpData);
     }
 
 

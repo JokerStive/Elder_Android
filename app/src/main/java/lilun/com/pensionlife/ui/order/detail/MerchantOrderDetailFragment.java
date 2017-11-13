@@ -16,7 +16,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Config;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
@@ -130,7 +129,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             rbBar.setRating(product.getRank());
             tvPrice.setText("价格:" + product.getPrice());
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), StringUtils.getFirstIconNameFromIcon(product.getImage())), R.drawable.icon_def, ivImage);
+            ImageLoaderUtil.instance().loadImage(StringUtils.getFirstIcon(product.getImage()), R.drawable.icon_def, ivImage);
         }
     }
 

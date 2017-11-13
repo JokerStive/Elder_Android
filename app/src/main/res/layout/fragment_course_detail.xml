@@ -203,7 +203,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/dp_1"
                         android:background="#ffffff"
-                        android:drawableLeft="@drawable/course_address"
+                        android:drawableLeft="@drawable/start_time"
                         android:drawablePadding="@dimen/dp_16"
                         android:maxLines="1"
                         android:paddingBottom="@dimen/dp_16"

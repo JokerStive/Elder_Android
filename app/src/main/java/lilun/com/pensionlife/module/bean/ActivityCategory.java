@@ -23,7 +23,7 @@ public class ActivityCategory extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String organizationId;
-    private List<IconModule> icon;
+    private List<String> icon;
     private int unRead;
 
     public int getUnRead() {
@@ -122,11 +122,11 @@ public class ActivityCategory extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconModule> getIcon() {
+    public List<String> getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconModule> icon) {
+    public void setIcon(List<String> icon) {
         this.icon = icon;
     }
 }

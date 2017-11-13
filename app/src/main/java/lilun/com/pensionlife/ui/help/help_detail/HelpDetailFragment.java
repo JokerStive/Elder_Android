@@ -28,7 +28,6 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AidJoinerAdapter;
 import lilun.com.pensionlife.module.bean.AidDetail;
-import lilun.com.pensionlife.module.bean.IconModule;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -218,8 +217,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
         //显示图片
         List<String> urls = new ArrayList<>();
         if (mAid.getImage() != null) {
-            for (IconModule iconModule : mAid.getImage()) {
-                String url = IconUrl.moduleIconUrl(IconUrl.OrganizationAids, mAid.getId(), iconModule.getFileName());
+            for (String url : mAid.getImage()) {
                 urls.add(url);
             }
         } else {

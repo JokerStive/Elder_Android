@@ -24,7 +24,7 @@ public class ElderEdus extends BaseBean {
     private String id;
     private String createdAt;
     private String updatedAt;
-    private ArrayList<IconModule> icon;
+    private ArrayList<String> icon;
 
 
     private String title;
@@ -119,7 +119,7 @@ public class ElderEdus extends BaseBean {
         this.updatedAt = updatedAt;
     }
 
-    public ArrayList<IconModule> getPicture() {
+    public ArrayList<String> getPicture() {
         return icon;
     }
 
@@ -243,7 +243,7 @@ public class ElderEdus extends BaseBean {
         this.partners = partners;
     }
 
-    public void setPicture(ArrayList<IconModule> picture) {
+    public void setPicture(ArrayList<String> picture) {
         this.icon = picture;
     }
 

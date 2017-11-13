@@ -21,7 +21,7 @@ public class ElderModule extends BaseBean {
     private String service;
     private ServiceConfigBean serviceConfig;
     private int id;
-    private List<IconModule> icon;
+    private List<String> icon;
 
     public String getName() {
         return name;
@@ -79,11 +79,11 @@ public class ElderModule extends BaseBean {
         this.id = id;
     }
 
-    public List<IconModule> getIcon() {
+    public List<String> getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconModule> icon) {
+    public void setIcon(List<String> icon) {
         this.icon = icon;
     }
 

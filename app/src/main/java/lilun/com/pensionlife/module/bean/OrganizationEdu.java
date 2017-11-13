@@ -32,7 +32,7 @@ public class OrganizationEdu extends BaseBean {
     private String contactId;
     private String createdAt;
     private String updatedAt;
-    private ArrayList<IconModule> image;
+    private ArrayList<String> image;
     private Account contact;
 
     public Account getContact() {
@@ -116,11 +116,11 @@ public class OrganizationEdu extends BaseBean {
         this.updatedAt = updatedAt;
     }
 
-    public ArrayList<IconModule> getImage() {
+    public ArrayList<String> getImage() {
         return image;
     }
 
-    public void setImage(ArrayList<IconModule> image) {
+    public void setImage(ArrayList<String> image) {
         this.image = image;
     }
 
