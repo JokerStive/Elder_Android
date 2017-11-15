@@ -328,6 +328,13 @@ public interface ApiService {
 
 
     /**
+     * 更新aid
+     */
+    @PUT("OrganizationAids/{id}")
+    Observable<Response<Object>> putOrganizationAid(@Path("id") String aidId, @Body OrganizationAid aid);
+
+
+    /**
      * 新增一个reply
      */
     @POST("OrganizationReplies")

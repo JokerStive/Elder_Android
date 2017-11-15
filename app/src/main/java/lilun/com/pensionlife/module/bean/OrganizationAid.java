@@ -60,6 +60,17 @@ public class OrganizationAid extends DataSupport implements Serializable {
     public String updatorName;
     private String organizationId;
     public Integer visible;
+
+    public Boolean getDraft() {
+        return isDraft;
+    }
+
+    public OrganizationAid setDraft(Boolean draft) {
+        isDraft = draft;
+        return this;
+    }
+
+    public Boolean isDraft;
     public List<String> tags;
     public List<String> partnerList;
 

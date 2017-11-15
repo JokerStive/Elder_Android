@@ -105,6 +105,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     private String[] helpPriority = App.context.getResources().getStringArray(R.array.help_priority);
     private String[] helpKind = new String[]{"问邻居", "邻居帮"};
     private QinNiuPop pop;
+    private String mAidId;
 
     public static AddHelpFragment newInstance() {
         return new AddHelpFragment();
@@ -200,13 +201,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      * 新建一个求助信息
      */
     private void createHelp() {
-//        List<String> data = getPhotoData();
-//        for (int i = 0; i < data.size(); i++) {
-//            takePhotoLayout.setProgress(i, 100 - i * 10);
-//        }
-
-//
-//
         String title = inputTopic.getInput();
         String address = inputAddress.getInput();
 
@@ -226,33 +220,6 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 }
             }
 
-//
-//            testQINiu(getOrganizationAid());
-//
-//            OrganizationAid aid = getOrganizationAid();
-//            List<String> data = getPhotoData();
-//            try {
-//                JSONObject aidJsonObject = GsonUtils.objectToJSONObject(aid);
-//                MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, data);
-//                NetHelper.getApi()
-//                        .newAidAndIcons(multipartBody)
-//                        .compose(RxUtils.handleResult())
-//                        .compose(RxUtils.applySchedule())
-//                        .subscribe(new RxSubscriber<Object>(_mActivity) {
-//                            @Override
-//                            public void _next(Object o) {
-//                                Logger.d("求助发布成功");
-//                                pop();
-//                                Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
-//                                EventBus.getDefault().post(refreshHelpData);
-//                            }
-//                        });
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-
             newAid(getOrganizationAid());
         }
     }
@@ -269,6 +236,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
                     @Override
                     public void _next(OrganizationAid organizationAid) {
+                        mAidId = organizationAid.getId();
                         getToken(organizationAid.getId());
                     }
                 });
@@ -315,14 +283,9 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                     uploadAgain(enger, id, qiNiuToken);
                 }
 
-                if (enger.isAllSuccess()){
+                if (enger.isAllSuccess()) {
                     popAndRefreshData();
                 }
-
-//                else {
-//                    Logger.i("所有图片张上传成功----");
-////                    popAndRefreshData();
-//                }
             }
 
             @Override
@@ -361,12 +324,25 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     }
 
     /**
-     * 退出并且刷新界面
+     * 修改aid的状态，退出并且刷新界面
      */
     private void popAndRefreshData() {
-        pop();
-        Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
-        EventBus.getDefault().post(refreshHelpData);
+        OrganizationAid organizationAid = new OrganizationAid();
+        organizationAid.setDraft(false);
+        NetHelper.getApi()
+                .putOrganizationAid(mAidId, organizationAid)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(_mActivity) {
+                    @Override
+                    public void _next(Object o) {
+                        pop();
+                        Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
+                        EventBus.getDefault().post(refreshHelpData);
+                    }
+                });
+
+
     }
 
 
@@ -379,6 +355,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setMemo(etContent.getText().toString());
         organizationAid.setKind(mKind);
         organizationAid.setMobile(inputMobile.getInput());
+        organizationAid.setDraft(true);
         //如果提供了补贴
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
             organizationAid.setPrice(Double.parseDouble(inputPrice.getInput()));

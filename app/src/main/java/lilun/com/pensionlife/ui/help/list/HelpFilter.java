@@ -13,7 +13,7 @@ public class HelpFilter {
 
     @Override
     public String toString() {
-        return "{\"order\":\"createdAt DESC\",\"where\":{\"title\":{\"like\":\"" + title + "\"}" + organizationId + kind + priority + status + "}}";
+        return "{\"order\":\"createdAt DESC\",\"where\":{\"isDraft\":false,\"title\":{\"like\":\"" + title + "\"}" + organizationId + kind + priority + status + "}}";
     }
 
     private String title = "";
