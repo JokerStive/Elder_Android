@@ -28,6 +28,7 @@ public class QiNiuUploadView extends RelativeLayout {
     private ImageView mDelete;
     //    private FrameLayout mCover;
     private int status;
+    private ImageView mError;
 
     public QiNiuUploadView(Context context) {
         super(context);
@@ -43,6 +44,7 @@ public class QiNiuUploadView extends RelativeLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.qiniu_upload_view, this);
         mImageView = (QiNiuUploadImageView) view.findViewById(R.id.image);
         mDelete = (ImageView) view.findViewById(R.id.delete);
+        mError = (ImageView) view.findViewById(R.id.error);
 //        mCover = (FrameLayout) view.findViewById(R.id.cover);
 
         setStatus(LOCAL_SHOW);
@@ -54,25 +56,25 @@ public class QiNiuUploadView extends RelativeLayout {
 
             //本地显示的时候
             case LOCAL_SHOW:
-//                mCover.setVisibility(GONE);
-//                setProgress(100);
                 mDelete.setVisibility(VISIBLE);
+                mError.setVisibility(GONE);
                 break;
 
             case UPLOADING:
-//                mCover.setVisibility(GONE);
                 mDelete.setVisibility(GONE);
+                mError.setVisibility(GONE);
                 break;
 
             case UPLOAD_SUCCESS:
                 setProgress(100);
-//                mCover.setVisibility(GONE);
                 mDelete.setVisibility(GONE);
+                mError.setVisibility(GONE);
                 break;
 
             case UPLOAD_FALSE:
                 mImageView.setProgress(0);
                 mDelete.setVisibility(GONE);
+                mError.setVisibility(VISIBLE);
                 break;
         }
     }

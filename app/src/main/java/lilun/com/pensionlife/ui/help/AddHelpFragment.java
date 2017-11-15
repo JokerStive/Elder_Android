@@ -3,6 +3,7 @@ package lilun.com.pensionlife.ui.help;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -37,8 +38,8 @@ import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.widget.InputView;
-import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
+import lilun.com.pensionlife.widget.QinNiuPop;
 import lilun.com.pensionlife.widget.TakePhotoLayout;
 import rx.Observable;
 
@@ -83,6 +84,8 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     @Bind(R.id.rl_choice_kind)
     RelativeLayout rlChoiceKind;
     @Bind(R.id.tv_priority)
+
+
     TextView tvPriority;
 
     @Bind(R.id.tv_priority_value)
@@ -101,6 +104,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     private int mPriority = 0;
     private String[] helpPriority = App.context.getResources().getStringArray(R.array.help_priority);
     private String[] helpKind = new String[]{"问邻居", "邻居帮"};
+    private QinNiuPop pop;
 
     public static AddHelpFragment newInstance() {
         return new AddHelpFragment();
@@ -306,18 +310,24 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
             @Override
             public void onUploadSuccess(String filePath) {
                 takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_SUCCESS);
-                Logger.i("第" + (finalI + 1) + "张上传成功----");
+                Logger.i("第" + (finalI) + "张上传成功----");
                 if (enger.needUploadAgain()) {
                     uploadAgain(enger, id, qiNiuToken);
-                } else {
-                    Logger.i("所有图片张上传成功----");
+                }
+
+                if (enger.isAllSuccess()){
                     popAndRefreshData();
                 }
+
+//                else {
+//                    Logger.i("所有图片张上传成功----");
+////                    popAndRefreshData();
+//                }
             }
 
             @Override
             public void onUploadFail(String filePath, String failInfo) {
-                Logger.i("第" + finalI + 1 + "张上传失败----" + failInfo);
+                Logger.i("第" + finalI + "张上传失败----" + failInfo);
                 takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_FALSE);
                 if (enger.needUploadAgain()) {
                     uploadAgain(enger, id, qiNiuToken);
@@ -326,23 +336,28 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
 
             @Override
             public void onUploadProgress(String filePath, double percent) {
-                Logger.i("第" + finalI + 1 + "张上传进度----" + percent);
+                Logger.i("第" + finalI + "张上传进度----" + percent);
                 takePhotoLayout.setProgress(finalI, percent);
             }
         });
     }
 
     private void uploadAgain(QINiuEngine engine, String id, QINiuToken qiNiuToken) {
-        new NormalDialog().createNormal(_mActivity, "需要重新上传吗还是放弃", new NormalDialog.OnPositiveListener() {
-            @Override
-            public void onPositiveClick() {
+        if (pop == null) {
+            pop = new QinNiuPop(_mActivity);
+            pop.setOnPushListener(v -> {
+                pop.dismiss();
+                popAndRefreshData();
+            });
+            pop.setOnUploadListener(v -> {
+                pop.dismiss();
                 ArrayList<String> needUploadFilePaths = engine.uploadAgain();
                 for (int i = 0; i < needUploadFilePaths.size(); i++) {
                     startUpload(id, qiNiuToken, engine, needUploadFilePaths.get(i), i);
                 }
-            }
-        });
-
+            });
+        }
+        pop.showAtLocation(titleBar, Gravity.CENTER, 0, 0);
     }
 
     /**
