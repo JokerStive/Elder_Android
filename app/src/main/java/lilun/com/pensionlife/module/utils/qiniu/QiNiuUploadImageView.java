@@ -7,9 +7,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * Created by Admin on 2017/11/7.
- */
+
 public class QiNiuUploadImageView extends ImageView {
     private Paint mPaint;
     private int mProgress;

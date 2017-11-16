@@ -75,16 +75,16 @@ public class TakePhotoAdapter extends BaseMultiItemQuickAdapter<TakePhotoResult,
     }
 
 
-    public void setProgress(RecyclerView recyclerView,int position, double progress) {
-        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView,position + 1, R.id.container);
-        if (qiNiuUploadView!=null){
+    public void setProgress(RecyclerView recyclerView, int position, double progress) {
+        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
+        if (qiNiuUploadView != null) {
             qiNiuUploadView.setProgress(progress);
         }
     }
 
-    public void setStatus(RecyclerView recyclerView,int position,int status) {
-        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView,position + 1, R.id.container);
-        if (qiNiuUploadView!=null){
+    public void setStatus(RecyclerView recyclerView, int position, int status) {
+        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
+        if (qiNiuUploadView != null) {
             qiNiuUploadView.setStatus(status);
         }
     }
@@ -93,7 +93,8 @@ public class TakePhotoAdapter extends BaseMultiItemQuickAdapter<TakePhotoResult,
     private void showImageFromResult(TakePhotoResult result, ImageView targetImageView) {
         String path = result.getOriginalPath();
         Logger.d("图片的位置" + path);
-        Glide.with(App.context).load(path)
+        Glide.with(App.context)
+                .load(path)
                 .error(R.drawable.avatar)
                 .centerCrop()
                 .into(targetImageView);
