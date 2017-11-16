@@ -131,10 +131,10 @@
                 android:layout_height="10dp" />
 
             <RelativeLayout
+                android:id="@+id/rl_extend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <include
-
                     layout="@layout/show_contact_course_extend"/>
 
 

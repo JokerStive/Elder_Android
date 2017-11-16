@@ -445,6 +445,11 @@ public class ReservationFragment extends BaseFragment {
     private void chooseBirthday() {
         DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
         picker.setDateRangeStart(1900, 1, 1);
+        Calendar cal = Calendar.getInstance();
+        int endYear = cal.get(Calendar.YEAR);
+        int endMonth = cal.get(Calendar.MONTH);
+        int endDay = cal.get(Calendar.DATE);
+        picker.setDateRangeEnd(endYear, endMonth, endDay);
         if (App.widthDP > 820) {
             picker.setTextSize(12 * 2);
             picker.setCancelTextSize(12 * 2);
