@@ -10,12 +10,14 @@ import android.widget.TextView;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.module.utils.UIUtils;
+
 /**
-*图片上传失败弹框
-*@author yk
-*create at 2017/11/14 11:40
-*email : yk_developer@163.com
-*/
+ * 图片上传失败弹框
+ *
+ * @author yk
+ *         create at 2017/11/14 11:40
+ *         email : yk_developer@163.com
+ */
 public class QinNiuPop extends PopupWindow {
 
     TextView directPush, continueUpload;
@@ -69,14 +71,4 @@ public class QinNiuPop extends PopupWindow {
     public void setOnUploadListener(View.OnClickListener cancelListener) {
         continueUpload.setOnClickListener(cancelListener);
     }
-//
-//    /**
-//     * 是否显示出删除的按钮
-//     * @param show
-//     */
-//    public void isShowDelete(boolean show) {
-//        if (show)
-//            delete.setVisibility(View.VISIBLE);
-//        else delete.setVisibility(View.GONE);
-//    }
 }

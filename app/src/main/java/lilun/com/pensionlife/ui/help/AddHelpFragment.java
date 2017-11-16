@@ -30,7 +30,7 @@ import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.utils.QINiuEngine;
+import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;

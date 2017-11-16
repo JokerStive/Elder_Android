@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.widget.CircleProgressView;
 
 /**
  * 七牛上传显示的view
@@ -29,6 +30,7 @@ public class QiNiuUploadView extends RelativeLayout {
     //    private FrameLayout mCover;
     private int status;
     private ImageView mError;
+    private CircleProgressView progressView;
 
     public QiNiuUploadView(Context context) {
         super(context);
@@ -45,6 +47,8 @@ public class QiNiuUploadView extends RelativeLayout {
         mImageView = (QiNiuUploadImageView) view.findViewById(R.id.image);
         mDelete = (ImageView) view.findViewById(R.id.delete);
         mError = (ImageView) view.findViewById(R.id.error);
+        progressView = (CircleProgressView) view.findViewById(R.id.progressBar);
+
 //        mCover = (FrameLayout) view.findViewById(R.id.cover);
 
         setStatus(LOCAL_SHOW);
@@ -58,23 +62,28 @@ public class QiNiuUploadView extends RelativeLayout {
             case LOCAL_SHOW:
                 mDelete.setVisibility(VISIBLE);
                 mError.setVisibility(GONE);
+                progressView.setVisibility(GONE);
                 break;
 
             case UPLOADING:
                 mDelete.setVisibility(GONE);
                 mError.setVisibility(GONE);
+                progressView.setVisibility(VISIBLE);
+                progressView.runProgressAnim(2500);
                 break;
 
             case UPLOAD_SUCCESS:
                 setProgress(100);
                 mDelete.setVisibility(GONE);
                 mError.setVisibility(GONE);
+                progressView.setVisibility(GONE);
                 break;
 
             case UPLOAD_FALSE:
                 mImageView.setProgress(0);
                 mDelete.setVisibility(GONE);
                 mError.setVisibility(VISIBLE);
+                progressView.setVisibility(GONE);
                 break;
         }
     }
@@ -83,6 +92,7 @@ public class QiNiuUploadView extends RelativeLayout {
         if (mStatus != UPLOADING) {
             setStatus(UPLOADING);
         }
+        progressView.setProgress((int) progress);
         mImageView.setProgress((int) progress);
     }
 

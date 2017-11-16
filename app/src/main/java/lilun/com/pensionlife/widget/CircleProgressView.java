@@ -1,4 +1,3 @@
-/*
 package lilun.com.pensionlife.widget;
 
 import android.animation.ValueAnimator;
@@ -15,20 +14,17 @@ import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ProgressBar;
 
-import com.amitshekhar.utils.Utils;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.module.utils.UIUtils;
 
-*/
 /**
  * Author White
  * Date 2017/4/23
  * Time 14:38
- *//*
-
+ */
 
 public class CircleProgressView extends ProgressBar {
 
@@ -43,162 +39,110 @@ public class CircleProgressView extends ProgressBar {
     private static final int PROGRESS_STYLE_FILL_IN = 1;
     private static final int PROGRESS_STYLE_FILL_IN_ARC = 2;
 
-    */
-/**
+    /**
      * 已完成进度条大小
-     *//*
-
+     */
     private int mReachBarSize = UIUtils.dp2px(getContext(), 2);
-    */
-/**
+    /**
      * 未完成进度条大小
-     *//*
-
+     */
     private int mNormalBarSize = UIUtils.dp2px(getContext(), 2);
-    */
-/**
+    /**
      * 已完成进度颜色
-     *//*
-
+     */
     private int mReachBarColor = Color.parseColor("#108ee9");
-    */
-/**
+    /**
      * 未完成进度颜色
-     *//*
-
+     */
     private int mNormalBarColor = Color.parseColor("#FFD3D6DA");
-    */
-/**
+    /**
      * 进度值字体大小
-     *//*
-
+     */
     private int mTextSize = UIUtils.sp2px(getContext(), 14);
-    */
-/**
+    /**
      * 进度的值字体颜色
-     *//*
-
+     */
     private int mTextColor = Color.parseColor("#108ee9");
-    */
-/**
+    /**
      * 进度值字体倾斜角度
-     *//*
-
+     */
     private float mTextSkewX;
-    */
-/**
+    /**
      * 进度值前缀
-     *//*
-
+     */
     private String mTextSuffix = "%";
-    */
-/**
+    /**
      * 进度值后缀
-     *//*
-
+     */
     private String mTextPrefix = "";
-    */
-/**
+    /**
      * 是否显示进度值
-     *//*
-
+     */
     private boolean mTextVisible = true;
-    */
-/**
+    /**
      * 画笔是否使用圆角边界，normalStyle下生效
-     *//*
-
+     */
     private boolean mReachCapRound;
-    */
-/**
+    /**
      * 半径
-     *//*
-
+     */
     private int mRadius = UIUtils.dp2px(getContext(), 20);
-    */
-/**
+    /**
      * 起始角度
-     *//*
-
+     */
     private int mStartArc;
-    */
-/**
+    /**
      * 内部背景填充颜色
-     *//*
-
+     */
     private int mInnerBackgroundColor;
-    */
-/**
+    /**
      * 进度风格
-     *//*
-
+     */
     private int mProgressStyle = PROGRESS_STYLE_NORMAL;
-    */
-/**
+    /**
      * 内部圆与外部圆间距
-     *//*
-
+     */
     private int mInnerPadding = UIUtils.dp2px(getContext(), 1);
-    */
-/**
+    /**
      * 外部圆环颜色
-     *//*
-
+     */
     private int mOuterColor;
-    */
-/**
+    /**
      * 是否需要绘制内部背景
-     *//*
-
+     */
     private boolean needDrawInnerBackground;
-    */
-/**
+    /**
      * 外部圆环绘制区域
-     *//*
-
+     */
     private RectF rectF;
-    */
-/**
+    /**
      * 内部圆环绘制区域
-     *//*
-
+     */
     private RectF rectInner;
-    */
-/**
+    /**
      * 外层圆环宽度
-     *//*
-
+     */
     private int mOuterSize = UIUtils.dp2px(getContext(), 1);
 
-    */
-/**
+    /**
      * 绘制进度值字体画笔
-     *//*
-
+     */
     private Paint mTextPaint;
-    */
-/**
+    /**
      * 绘制未完成进度画笔
-     *//*
-
+     */
     private Paint mNormalPaint;
-    */
-/**
+    /**
      * 绘制已完成进度画笔
-     *//*
-
+     */
     private Paint mReachPaint;
-    */
-/**
+    /**
      * 内部背景画笔
-     *//*
-
+     */
     private Paint mInnerBackgroundPaint;
-    */
-/**
+    /**
      * 外部圆环画笔
-     *//*
-
+     */
     private Paint mOutPaint;
 
 
@@ -221,11 +165,9 @@ public class CircleProgressView extends ProgressBar {
     }
 
 
-    */
-/**
+    /**
      * 初始化画笔
-     *//*
-
+     */
     private void initPaint() {
         mTextPaint = new Paint();
         mTextPaint.setColor(mTextColor);
@@ -378,11 +320,9 @@ public class CircleProgressView extends ProgressBar {
         }
     }
 
-    */
-/**
+    /**
      * 绘制PROGRESS_STYLE_FILL_IN_ARC圆形
-     *//*
-
+     */
     private void drawFillInArcCircle(Canvas canvas) {
         canvas.save();
         canvas.translate(mRealWidth / 2, mRealHeight / 2);
@@ -401,11 +341,9 @@ public class CircleProgressView extends ProgressBar {
         canvas.restore();
     }
 
-    */
-/**
+    /**
      * 绘制PROGRESS_STYLE_FILL_IN圆形
-     *//*
-
+     */
     private void drawFillInCircle(Canvas canvas) {
         canvas.save();
         canvas.translate(mRealWidth / 2, mRealHeight / 2);
@@ -432,11 +370,9 @@ public class CircleProgressView extends ProgressBar {
         }
     }
 
-    */
-/**
+    /**
      * 绘制PROGRESS_STYLE_NORMAL圆形
-     *//*
-
+     */
     private void drawNormalCircle(Canvas canvas) {
         canvas.save();
         canvas.translate(mRealWidth / 2, mRealHeight / 2);
@@ -463,34 +399,28 @@ public class CircleProgressView extends ProgressBar {
         canvas.restore();
     }
 
-    */
-/**
+    /**
      * 动画进度(0-当前进度)
      *
      * @param duration 动画时长
-     *//*
-
+     */
     public void runProgressAnim(long duration) {
         setProgressInTime(0, duration);
     }
 
-    */
-/**
+    /**
      * @param progress 进度值
      * @param duration 动画播放时间
-     *//*
-
+     */
     public void setProgressInTime(final int progress, final long duration) {
         setProgressInTime(progress, getProgress(), duration);
     }
 
-    */
-/**
+    /**
      * @param startProgress 起始进度
-     * @param progress 进度值
-     * @param duration 动画播放时间
-     *//*
-
+     * @param progress      进度值
+     * @param duration      动画播放时间
+     */
     public void setProgressInTime(int startProgress, final int progress, final long duration) {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(startProgress, progress);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -760,4 +690,4 @@ public class CircleProgressView extends ProgressBar {
     private static final String INNER_PADDING = "innerPadding";
     private static final String OUTER_COLOR = "outerColor";
     private static final String OUTER_SIZE = "outerSize";
-}*/
+}

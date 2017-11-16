@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.module.utils;
+package lilun.com.pensionlife.module.utils.qiniu;
 
 import android.util.Log;
 
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.module.bean.QINiuToken;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 
