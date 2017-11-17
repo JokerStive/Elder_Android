@@ -98,7 +98,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
         super.getTransferData(arguments);
         mTourism = (Tourism) arguments.getSerializable("mTourism");
         tourismId = arguments.getString("tourismId");
-//        categoryId = mTourism.getOrgCategoryId();
+//        categoryId = mTourism.getCategoryId();
     }
 
     @Override

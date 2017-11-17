@@ -159,7 +159,7 @@ public class ServiceDetailFragment extends BaseFragment implements View.OnClickL
         tvProviderName.setText(agencyName);
 
         //居家服务屏蔽预约
-        if (mProduct.getOrgCategoryId().contains(Config.residential_product_categoryId)) {
+        if (mProduct.getCategoryId().contains(Config.residential_product_categoryId)) {
             tvReservation.setVisibility(View.GONE);
         }
 
@@ -255,7 +255,7 @@ tor);
      *//*
 
     private void reservation() {
-        String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getOrgCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\",\"index\":\"1\"}}";
+        String filter = "{\"where\":{\"categoryId\":\"" + mProduct.getCategoryId() + "\",\"creatorId\":\"" + User.getUserId() + "\",\"index\":\"1\"}}";
         NetHelper.getApi().getContacts(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -265,11 +265,11 @@ tor);
                         if (contacts.size() > 0) {
                             Contact contact = contacts.get(0);
                             statReservation(contact);
-//                            ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getOrgCategoryId(), mProduct.getId(), contact);
+//                            ReservationFragment fragment = ReservationFragment.newInstance(mProduct.getCategoryId(), mProduct.getId(), contact);
 //                            startForResult(fragment, ReservationFragment.requestCode);
                         } else {
                             //添加个人资料界面
-                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getOrgCategoryId());
+                            AddServiceInfoFragment fragment = AddServiceInfoFragment.newInstance(mProduct.getCategoryId());
                             fragment.setProductd(mProduct.getId());
                             start(fragment);
                         }
@@ -282,7 +282,7 @@ tor);
         Intent intent = new Intent(_mActivity, ReservationActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("contact", contact);
-        bundle.putString("productCategoryId", mProduct.getOrgCategoryId());
+        bundle.putString("productCategoryId", mProduct.getCategoryId());
         bundle.putString("productId", mProduct.getId());
         intent.putExtras(bundle);
         startActivityForResult(intent, ReservationFragment.requestCode);

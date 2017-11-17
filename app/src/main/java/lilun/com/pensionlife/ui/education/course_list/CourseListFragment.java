@@ -189,7 +189,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
 //            String kind = mCurrentClickCategory.getTag().get("kind");
 //            if (kind.equals("course")) {
 //                filterView.setTabText(mCurrentClickCategory.getTitle(), false);
-//                mFilter.getWhere().setOrgCategoryId(mCurrentClickCategory.getId());
+//                mFilter.getWhere().setCategoryId(mCurrentClickCategory.getId());
 //                getDataList(0);
 //                return;
 //            }

@@ -294,7 +294,7 @@ public class ReservationCourseFragment extends BaseFragment {
             return;
         }
 
-//        String categoryId = mProduct.getOrgCategoryId();
+//        String categoryId = mProduct.getCategoryId();
         if (!checkContactComplete()) {
             return;
         }

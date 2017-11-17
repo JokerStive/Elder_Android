@@ -153,7 +153,7 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
 
             //产品详情界面
             case R.id.ll_product_item:
-                String categoryId = mOrder.getOrgCategoryId();
+                String categoryId = mOrder.getCategoryId();
                 OrganizationProduct product = mOrder.getProduct();
                 if (product != null) {
                     if (!categoryId.equals(Config.tourism_product_categoryId)) {
