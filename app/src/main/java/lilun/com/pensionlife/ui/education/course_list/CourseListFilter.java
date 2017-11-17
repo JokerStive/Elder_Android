@@ -64,11 +64,11 @@ public class CourseListFilter {
 //        private StartTimeBean startTime;
 //        private EndTimeBean endTime;
 //
-//        public String getCategoryId() {
+//        public String getOrgCategoryId() {
 //            return orgCategoryId;
 //        }
 //
-//        public void setCategoryId(String orgCategoryId) {
+//        public void setOrgCategoryId(String orgCategoryId) {
 //            this.orgCategoryId = orgCategoryId;
 //        }
 //
