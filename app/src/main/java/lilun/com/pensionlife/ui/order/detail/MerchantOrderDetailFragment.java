@@ -124,10 +124,15 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
             String contextType = product.getContextType();
             String context = product.getContext();
-            if (contextType.equals("2") && context != null) {
-                tvName.setText(Html.fromHtml(context));
-            } else {
-                tvName.setText(context);
+            if (!TextUtils.isEmpty(contextType)) {
+                if (contextType.equals("2") && context != null) {
+                    tvName.setText(Html.fromHtml(context));
+                } else {
+                    tvName.setText(context);
+                }
+            }else {
+                ToastHelper.get().showWareShort("订单产品快照异常");
+                return;
             }
             rbBar.setRating(product.getRank());
             tvPrice.setText("价格:" + product.getPrice());
