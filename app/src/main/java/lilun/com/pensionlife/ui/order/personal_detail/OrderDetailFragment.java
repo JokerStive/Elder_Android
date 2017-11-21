@@ -26,7 +26,6 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
-import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -40,7 +39,6 @@ import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.education.colleage_details.CollegeDetailFragment;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
-import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.CustomTextView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -244,9 +242,13 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             statusOperate = R.string.operate_cancel;
         } else if (status.equals(status_assigned)) {
             statusOperate = R.string.operate_done;
-        } else if (status.equals(status_done)) {
-            statusOperate = R.string.rank;
-        } else if (status.equals(status_cancel)) {
+        }
+
+//        else if (status.equals(status_done)) {
+//            statusOperate = R.string.rank;
+//        }
+
+        else if (status.equals(status_cancel)) {
             statusOperate = -1;
         } else if (status.equals(status_assessed)) {
             setHadAssess();
@@ -301,9 +303,13 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
         String status = mOrder.getStatus();
         if (status.equals(status_reserved)) {
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-        } else if (status.equals(status_done)) {
-            start(RankFragment.newInstance(Constants.ProductOrder, mOrder.getId()));
-        } else if (status.equals(status_assigned)) {
+        }
+
+//        else if (status.equals(status_done)) {
+//            start(RankFragment.newInstance(Constants.ProductOrder, mOrder.getId()));
+//        }
+
+        else if (status.equals(status_assigned)) {
             changeOrderStatus(status_done, "服务已经完成？");
         }
 

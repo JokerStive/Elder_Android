@@ -21,7 +21,6 @@ import java.util.List;
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
@@ -33,7 +32,6 @@ import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.UIUtils;
-import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
@@ -192,7 +190,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
             @Override
             public void evaluation(String replyId) {
-                start(RankFragment.newInstance(Constants.organizationAid, mAidId));
+//                start(RankFragment.newInstance(Constants.organizationAid, mAidId));
             }
         });
         mReplyAdapter.addHeaderView(mHeadView);

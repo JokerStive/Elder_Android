@@ -23,10 +23,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
-import lilun.com.pensionlife.ui.help.RankFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -185,7 +183,7 @@ public class OrderListFragment extends BaseFragment {
     }
 
     public void startRank(String productId) {
-        start(RankFragment.newInstance(Constants.organizationProduct, productId));
+//        start(RankFragment.newInstance(Constants.organizationProduct, productId));
     }
 
 

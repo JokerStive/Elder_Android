@@ -5,11 +5,12 @@ import java.util.List;
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
-*信息模型
-*@author yk
-*create at 2017/3/2 11:24
-*email : yk_developer@163.com
-*/
+ * 信息模型
+ *
+ * @author yk
+ *         create at 2017/3/2 11:24
+ *         email : yk_developer@163.com
+ */
 public class Information extends BaseBean {
 
     /**
@@ -188,11 +189,11 @@ public class Information extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<String>getImage() {
+    public List<String> getImage() {
         return image;
     }
 
-    public void setImage(List<String>image) {
+    public void setImage(List<String> image) {
         this.image = image;
     }
 

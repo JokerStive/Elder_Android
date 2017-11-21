@@ -38,6 +38,7 @@ import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -49,6 +50,7 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
+import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailFragment;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.DividerDecoration;
@@ -110,6 +112,9 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Bind(R.id.tv_rank_count)
     TextView tvRankCount;
+
+    @Bind(R.id.tv_order_detail)
+    TextView tvOrderDetail;
 
     @Bind(R.id.rv_rank)
     RecyclerView rvRank;
@@ -179,8 +184,8 @@ public class ProductDetailFragment extends BaseFragment {
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         getProduct();
-        get2Rank();
-        getRankCount();
+//        get2Rank();
+//        getRankCount();
         getIsOrder();
     }
 
@@ -217,34 +222,19 @@ public class ProductDetailFragment extends BaseFragment {
                         }
                     }
                 });
-
-//        String filter = "{\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"or\":[{\"status\":\"reserved\"},{\"status\":\"assigned\"}]}}";
-//        NetHelper.getApi()
-//                .getOrdersOfProduct(mProductId, filter)
-//                .compose(RxUtils.handleResult())
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<List<ProductOrder>>(_mActivity) {
-//                    @Override
-//                    public void _next(List<ProductOrder> orders) {
-//                        if (orders.size() != 0) {
-//                            setHadOrdered();
-//                        }
-//                    }
-//                });
     }
 
     private void setHadOrdered() {
         tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
         tvReservation.setEnabled(false);
         tvReservation.setText("已经预约");
+        tvOrderDetail.setVisibility(View.VISIBLE);
     }
 
     private void get2Rank() {
         String filter = "{\"limit\":\"2\",\"order\":\"createdAt DESC\",\"where\":{\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + mProductId + "\"}}";
         NetHelper.getApi()
                 .getRanks(filter)
-
-
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Rank>>() {
@@ -366,12 +356,6 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void show2Rank(List<Rank> ranks) {
-//        if (ranks.size() != 0) {
-//            llRank.setVisibility(View.VISIBLE);
-//            ProductRankAdapter adapter = new ProductRankAdapter(ranks);
-//            rvRank.setAdapter(adapter);
-//        }..
-
         llRank.setVisibility(View.VISIBLE);
         ProductRankAdapter adapter = new ProductRankAdapter(ranks);
         adapter.setEmptyView();
@@ -380,15 +364,11 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void showRankCount(int count) {
-//        if (count > 0) {
-//            tvRankCount.setText(String.format("评价 （ %1$s ）", count));
-//
-//        }
         tvRankCount.setText(String.format("评价 （ %1$s ）", count));
     }
 
 
-    @OnClick({R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
+    @OnClick({R.id.tv_order_detail, R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
         switch (v.getId()) {
 
@@ -418,6 +398,11 @@ public class ProductDetailFragment extends BaseFragment {
                 //查看所有评价
                 allRankAboutThisProduct();
                 break;
+
+            case R.id.tv_order_detail:
+                //查看订单详情
+                transferOrderDetail();
+                break;
         }
     }
 
@@ -433,6 +418,29 @@ public class ProductDetailFragment extends BaseFragment {
         }
         call();
     }
+
+
+    /**
+     * 查看订单详情
+     */
+    private void transferOrderDetail() {
+        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"creatorId\":\"\",\"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}}}";
+        NetHelper.getApi().getOrdersOfProduct(mProductId, filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<ProductOrder>>(getActivity()) {
+                    @Override
+                    public void _next(List<ProductOrder> orders) {
+                        if (orders.size() > 0) {
+                            String orderId = orders.get(0).getId();
+                            start(OrderDetailFragment.newInstance(orderId));
+                        } else {
+                            ToastHelper.get().showWareShort("没有找到该产品对应的订单");
+                        }
+                    }
+                });
+    }
+
 
     /**
      * 预约

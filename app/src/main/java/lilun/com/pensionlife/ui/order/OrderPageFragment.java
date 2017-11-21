@@ -3,7 +3,6 @@ package lilun.com.pensionlife.ui.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -157,10 +156,10 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
                             mPresenter.changeOrderStatus(order.getId(), "cancel");
                         });
                     } else if (order.getStatus().equals("done")) {
-                        Fragment parentFragment = getParentFragment();
-                        if (parentFragment instanceof OrderListFragment) {
-                            ((OrderListFragment) parentFragment).startRank(order.getProductId());
-                        }
+//                        Fragment parentFragment = getParentFragment();
+//                        if (parentFragment instanceof OrderListFragment) {
+//                            ((OrderListFragment) parentFragment).startRank(order.getProductId());
+//                        }
                     }
                 }
             });
