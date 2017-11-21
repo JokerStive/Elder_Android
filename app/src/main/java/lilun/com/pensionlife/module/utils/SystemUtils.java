@@ -8,7 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 import com.orhanobut.logger.Logger;
@@ -16,6 +18,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.util.List;
 
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.app.App;
 
 /**
@@ -106,11 +109,17 @@ public class SystemUtils {
         return versionName;
     }
 
-    public static void installApk(Context context, File file) {
-        Uri uri = Uri.fromFile(file);
+    public static void installApk(Context context, File apkFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // 第二个参数，即第一步中配置的authorities
+            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", apkFile);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        }
         context.startActivity(intent);
     }
 }

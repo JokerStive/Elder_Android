@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -63,10 +64,10 @@ public abstract class FileCallback implements Callback<ResponseBody> {
         byte[] buf = new byte[2048 * 10];
         int len;
         try {
-            File dir = new File(destFileDir);
-            if (!dir.exists()) {// 如果文件不存在新建一个
-                dir.mkdirs();
-            }
+            File dir = App.context. getExternalFilesDir("upload_apk");
+//            if (!dir.exists()) {// 如果文件不存在新建一个
+//                dir.mkdirs();
+//            }
             in = response.body().byteStream();
             File file = new File(dir, destFileName);
             out = new FileOutputStream(file);
@@ -78,14 +79,21 @@ public abstract class FileCallback implements Callback<ResponseBody> {
             unSubscribe();// 取消订阅
             return file;
         } finally {
-            in.close();
-            out.close();
+            if (in != null) {
+                {
+                    in.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
+            }
         }
     }
 
     /**
      * 订阅文件下载进度
      */
+
     private void subscribeLoadProgress() {
         rxSubscriptions.add(RxBus.getDefault()
                 .toObservable(DownloadInfo.class)
