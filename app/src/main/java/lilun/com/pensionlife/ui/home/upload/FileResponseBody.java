@@ -3,7 +3,6 @@ package lilun.com.pensionlife.ui.home.upload;
 
 import java.io.IOException;
 
-import lilun.com.pensionlife.app.Config;
 import okhttp3.MediaType;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -33,6 +32,7 @@ public class FileResponseBody extends ResponseBody {
 
     @Override
     public long contentLength() {
+
 //        if (total <= 0) {
 //            InputStream inputStream = originalResponse.body().byteStream();
 //            try {
@@ -44,9 +44,11 @@ public class FileResponseBody extends ResponseBody {
 //                Logger.d("总长度 ---" + total);
 //            } catch (IOException e) {
 //                e.printStackTrace();
+
+
 //            }
 //        }
-        return Config.apkTotalSize;
+        return originalResponse.body().contentLength();
     }
 
     @Override

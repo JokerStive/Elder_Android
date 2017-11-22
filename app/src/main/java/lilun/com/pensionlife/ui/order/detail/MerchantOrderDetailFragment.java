@@ -2,6 +2,7 @@ package lilun.com.pensionlife.ui.order.detail;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.merchant.MemoFragment;
 import lilun.com.pensionlife.ui.agency.reservation.AddServiceInfoFragment;
@@ -121,10 +123,15 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
             tvHealthStatus.setText(StringUtils.getOrderStatusValue(mOrder.getStatus()));
             String contextType = product.getContextType();
             String context = product.getContext();
-            if (contextType.equals("2") && context != null) {
-                tvName.setText(Html.fromHtml(context));
-            } else {
-                tvName.setText(context);
+            if (!TextUtils.isEmpty(contextType)) {
+                if (contextType.equals("2") && context != null) {
+                    tvName.setText(Html.fromHtml(context));
+                } else {
+                    tvName.setText(context);
+                }
+            }else {
+                ToastHelper.get().showWareShort("订单产品快照异常");
+                return;
             }
             rbBar.setRating(product.getRank());
             tvPrice.setText("价格:" + product.getPrice());
@@ -152,7 +159,11 @@ public class MerchantOrderDetailFragment extends BaseFragment<MerchantOrderDetai
 
             //产品详情界面
             case R.id.ll_product_item:
-                String categoryId = mOrder.getCategoryId();
+                String categoryId = mOrder.getOrgCategoryId();
+                if (TextUtils.isEmpty(categoryId)) {
+                    ToastHelper.get().showWareShort("该产品脏数据");
+                    return;
+                }
                 OrganizationProduct product = mOrder.getProduct();
                 if (product != null) {
                     if (!categoryId.equals(Config.tourism_product_categoryId)) {

@@ -75,6 +75,7 @@ public class MerchantOrderListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
+        titleBar.setTitle("订单管理");
 //        searchBar.isChangeLayout(false);
 //        searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
 //            @Override

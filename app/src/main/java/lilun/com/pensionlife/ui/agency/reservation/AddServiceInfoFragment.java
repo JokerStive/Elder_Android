@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -79,6 +80,9 @@ public class AddServiceInfoFragment extends BaseFragment {
     @Bind(R.id.et_emergency_phone)
     EditText etEmergencyPhone;
 
+    @Bind(R.id.rl_extend)
+    RelativeLayout rlExtend;
+
 
     private ProductOrder mOrder;
     private boolean canEdit;
@@ -134,7 +138,7 @@ public class AddServiceInfoFragment extends BaseFragment {
 
     private void setInitData() {
         if (mOrder != null) {
-
+            rlExtend.setVisibility(View.GONE);
 //            etMemo.setText(mOrder.getDescription());
 
 //            tvMemo.setText(mOrder.getDescription());
@@ -155,6 +159,7 @@ public class AddServiceInfoFragment extends BaseFragment {
                         return;
                     }
                     if (categoryId.contains("养老机构")) {
+                        rlExtend.setVisibility(View.VISIBLE);
                         llContactExtent.setVisibility(View.VISIBLE);
                         llContactCourseExtend.setVisibility(View.GONE);
 
@@ -165,6 +170,7 @@ public class AddServiceInfoFragment extends BaseFragment {
                         tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
                         etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
                     } else if (categoryId.contains("教育服务")) {
+                        rlExtend.setVisibility(View.VISIBLE);
                         llContactExtent.setVisibility(View.GONE);
                         llContactCourseExtend.setVisibility(View.VISIBLE);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="lilun.com.pensionlife"
     android:installLocation="auto">
 
@@ -176,6 +177,21 @@
 
         <receiver android:name=".module.utils.mqtt.MqttNotificationReceiver" />
 
+
+        <!--//7.0以上系统共享空间-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_file_paths"
+                tools:replace="name,resource" />
+        </provider>
+
     </application>
+
 
 </manifest>

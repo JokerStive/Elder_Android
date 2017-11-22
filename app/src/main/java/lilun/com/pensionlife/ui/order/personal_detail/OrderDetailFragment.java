@@ -289,6 +289,10 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
                 if (product1 != null) {
                     String id = product1.getId();
                     String orgCategoryId = product1.getOrgCategoryId();
+                    if (TextUtils.isEmpty(orgCategoryId)) {
+                        ToastHelper.get().showWareShort("产品脏数据");
+                        return;
+                    }
                     if (orgCategoryId.contains(Config.course_product_categoryId)) {
                         start(CourseDetailFragment.newInstance(id));
                     } else {

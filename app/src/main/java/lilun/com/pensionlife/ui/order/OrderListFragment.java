@@ -87,6 +87,7 @@ public class OrderListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
+        titleBar.setTitle("我的预约");
 
 
         initViewPager();

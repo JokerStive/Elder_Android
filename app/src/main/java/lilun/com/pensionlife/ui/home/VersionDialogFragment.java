@@ -137,6 +137,7 @@ public class VersionDialogFragment extends DialogFragment {
         DownloadManager.getInstance().download(url, new DownLoadCallBack() {
             @Override
             public void onSuccess(File file) {
+                Logger.d("准备安装app--" + file.getAbsolutePath());
                 SystemUtils.installApk(getActivity(), file);
                 dismiss();
             }

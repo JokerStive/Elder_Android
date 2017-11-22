@@ -37,6 +37,8 @@
     <TextView
         android:id="@+id/tv_aid_title"
         style="@style/tv_normal_ellipsize"
+        android:layout_width="match_parent"
+        android:maxLines="1"
         android:layout_below="@id/tv_reservation"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_20"
@@ -102,6 +104,8 @@
             android:layout_marginTop="@dimen/dp_16" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:maxLines="1"
             android:id="@+id/tv_environment_title"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/dp_16"
@@ -132,6 +136,8 @@
             android:layout_marginTop="@dimen/dp_16" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:maxLines="1"
             android:id="@+id/tv_content_title"
             style="@style/tv_normal_ellipsize"
             android:layout_marginTop="@dimen/dp_16"
@@ -155,6 +161,8 @@
         android:layout_marginTop="@dimen/dp_16" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:maxLines="1"
         android:id="@+id/tv_joiner_title"
         style="@style/tv_normal_ellipsize"
         android:layout_alignLeft="@id/tv_aid_title"

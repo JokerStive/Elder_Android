@@ -26,7 +26,7 @@ public class ProductOrder extends BaseBean {
      * product : {}
      * productId : string
      * assigneeId : string
-     * categoryId : string
+     * orgCategoryId : string
      * canceledById : string
      * rankId : string
      * createdAt : $now
@@ -51,7 +51,7 @@ public class ProductOrder extends BaseBean {
     private OrganizationProduct productInfo ;
     private String productId;
     private String assigneeId;
-    private String categoryId;
+    private String orgCategoryId;
     private String canceledById;
     private String rankId;
     private String createdAt;
@@ -179,12 +179,12 @@ public class ProductOrder extends BaseBean {
         return this;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getOrgCategoryId() {
+        return orgCategoryId;
     }
 
-    public ProductOrder setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public ProductOrder setOrgCategoryId(String orgCategoryId) {
+        this.orgCategoryId = orgCategoryId;
         return this;
     }
 
