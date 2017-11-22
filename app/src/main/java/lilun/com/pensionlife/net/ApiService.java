@@ -74,7 +74,7 @@ public interface ApiService {
     /**
      * 获取上传图片的token
      */
-    @GET("{modelName}/{modelId}/upload/{tag}")
+    @POST("{modelName}/{modelId}/upload/{tag}")
     Observable<Response<QINiuToken>> getUploadToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
 
 

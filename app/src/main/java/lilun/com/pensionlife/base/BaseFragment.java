@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ import lilun.com.pensionlife.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -52,7 +54,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
             return false;
         }
     };
-    private EasyPermissions.PermissionCallbacks callbacks;
+    private PermissionListener callbacks;
 
 
     /**
@@ -141,13 +143,33 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
      */
 
 
-    protected void requestPermisssion(String permission, EasyPermissions.PermissionCallbacks callbacks) {
+    public interface PermissionListener {
+        void onPermissionGranted();
+
+        void onPermissionDenied();
+    }
+
+    protected void requestPermission(String permission, PermissionListener callbacks) {
         this.callbacks = callbacks;
-        if (EasyPermissions.hasPermissions(getActivity(), permission)) {
-            callbacks.onPermissionsGranted(0, null);
-        } else {
-            EasyPermissions.requestPermissions(this, "确实权限", 100, permission);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            callbacks.onPermissionGranted();
+            return;
         }
+
+        if (EasyPermissions.hasPermissions(getActivity(), permission)) {
+            callbacks.onPermissionDenied();
+        } else {
+            ArrayList<String> permissions = new ArrayList<>();
+            permissions.add(permission);
+            boolean somePermissionPermanentlyDenied = EasyPermissions.somePermissionPermanentlyDenied(this, permissions);
+            if (somePermissionPermanentlyDenied) {
+                new AppSettingsDialog.Builder(this).build().show();
+            } else {
+                EasyPermissions.requestPermissions(this, "系统需要确认这个权限", 100, permission);
+            }
+        }
+
+
     }
 
 
@@ -160,18 +182,18 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         if (callbacks != null) {
-            callbacks.onPermissionsDenied(requestCode, perms);
+            callbacks.onPermissionDenied();
         }
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         if (callbacks != null) {
-            callbacks.onPermissionsGranted(requestCode, perms);
+            callbacks.onPermissionGranted();
         }
     }
 
-        protected boolean hasPermission(String permission) {
+    protected boolean hasPermission(String permission) {
         int sdkInt = Build.VERSION.SDK_INT;
         if (sdkInt < 23) {
             return true;

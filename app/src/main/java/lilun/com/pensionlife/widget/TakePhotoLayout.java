@@ -22,6 +22,7 @@ import lilun.com.pensionlife.module.adapter.TakePhotoAdapter;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
 import lilun.com.pensionlife.module.callback.TakePhotoClickListener;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 
 /**
  * 通用添加展示图片
@@ -125,12 +126,16 @@ public class TakePhotoLayout extends SwipeRefreshLayout implements TakePhotoClic
     }
 
 
-    public void setProgress(int position, double progress) {
-        adapter.setProgress(rvPhotoContainer, position, progress);
-    }
+//    public void setProgress(int position, double progress) {
+//        adapter.setProgress(rvPhotoContainer, position, progress);
+//    }
+//
+//    public void setStatus(int position, int status) {
+//        adapter.setStatus(rvPhotoContainer, position, status);
+//    }
 
-    public void setStatus(int position, int status) {
-        adapter.setStatus(rvPhotoContainer, position, status);
+    public QiNiuUploadView getView(int position) {
+        return adapter.getView(rvPhotoContainer, position);
     }
 
 

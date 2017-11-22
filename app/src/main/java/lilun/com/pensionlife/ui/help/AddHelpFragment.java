@@ -3,7 +3,6 @@ package lilun.com.pensionlife.ui.help;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,10 +28,10 @@ import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
 import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
@@ -256,7 +254,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                     .subscribe(new RxSubscriber<QINiuToken>() {
                         @Override
                         public void _next(QINiuToken qiNiuToken) {
-                            uploadImages(id, qiNiuToken, photoPath);
+                            uploadImages(qiNiuToken);
                         }
                     });
         }
@@ -265,63 +263,21 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
     /**
      * 上传图片
      */
-    private void uploadImages(String id, QINiuToken qiNiuToken, ArrayList<String> photoPath) {
-        QINiuEngine engine = new QINiuEngine(photoPath);
-        for (int i = 0; i < photoPath.size(); i++) {
-            String path = photoPath.get(i);
-            startUpload(id, qiNiuToken, engine, path, i);
-        }
-    }
-
-    private void startUpload(String id, QINiuToken qiNiuToken, final QINiuEngine enger, String path, int finalI) {
-        enger.uploadImages(path, qiNiuToken.getToken(), "OrganizationAid", id, "image", new QINiuEngine.UploadCallBack() {
+    private void uploadImages(QINiuToken qiNiuToken) {
+        ArrayList<String> photoData = getPhotoData();
+        QINiuEngine engine = new QINiuEngine(_mActivity,photoData.size(), null, new QINiuEngine.UploadListener() {
             @Override
-            public void onUploadSuccess(String filePath) {
-                takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_SUCCESS);
-                Logger.i("第" + (finalI) + "张上传成功----");
-                if (enger.needUploadAgain()) {
-                    uploadAgain(enger, id, qiNiuToken);
-                }
-
-                if (enger.isAllSuccess()) {
-                    popAndRefreshData();
-                }
-            }
-
-            @Override
-            public void onUploadFail(String filePath, String failInfo) {
-                Logger.i("第" + finalI + "张上传失败----" + failInfo);
-                takePhotoLayout.setStatus(finalI, QiNiuUploadView.UPLOAD_FALSE);
-                if (enger.needUploadAgain()) {
-                    uploadAgain(enger, id, qiNiuToken);
-                }
-            }
-
-            @Override
-            public void onUploadProgress(String filePath, double percent) {
-                Logger.i("第" + finalI + "张上传进度----" + percent);
-                takePhotoLayout.setProgress(finalI, percent);
+            public void onAllSuccess() {
+                popAndRefreshData();
             }
         });
+        for (int i = 0; i < photoData.size(); i++) {
+            String path = photoData.get(i);
+            QiNiuUploadView view = takePhotoLayout.getView(i);
+            engine.upload(path, i, view);
+        }
     }
 
-    private void uploadAgain(QINiuEngine engine, String id, QINiuToken qiNiuToken) {
-        if (pop == null) {
-            pop = new QinNiuPop(_mActivity);
-            pop.setOnPushListener(v -> {
-                pop.dismiss();
-                popAndRefreshData();
-            });
-            pop.setOnUploadListener(v -> {
-                pop.dismiss();
-                ArrayList<String> needUploadFilePaths = engine.uploadAgain();
-                for (int i = 0; i < needUploadFilePaths.size(); i++) {
-                    startUpload(id, qiNiuToken, engine, needUploadFilePaths.get(i), i);
-                }
-            });
-        }
-        pop.showAtLocation(titleBar, Gravity.CENTER, 0, 0);
-    }
 
     /**
      * 修改aid的状态，退出并且刷新界面

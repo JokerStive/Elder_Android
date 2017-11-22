@@ -75,19 +75,24 @@ public class TakePhotoAdapter extends BaseMultiItemQuickAdapter<TakePhotoResult,
     }
 
 
-    public void setProgress(RecyclerView recyclerView, int position, double progress) {
-        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
-        if (qiNiuUploadView != null) {
-            qiNiuUploadView.setProgress(progress);
-        }
+//    public void setProgress(RecyclerView recyclerView, int position, double progress) {
+//        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
+//        if (qiNiuUploadView != null) {
+//            qiNiuUploadView.setProgress(progress);
+//        }
+//    }
+//
+//    public void setStatus(RecyclerView recyclerView, int position, int status) {
+//        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
+//        if (qiNiuUploadView != null) {
+//            qiNiuUploadView.setStatus(status);
+//        }
+//    }
+
+    public QiNiuUploadView getView(RecyclerView recyclerView, int position){
+        return  (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
     }
 
-    public void setStatus(RecyclerView recyclerView, int position, int status) {
-        QiNiuUploadView qiNiuUploadView = (QiNiuUploadView) getViewByPosition(recyclerView, position + 1, R.id.container);
-        if (qiNiuUploadView != null) {
-            qiNiuUploadView.setStatus(status);
-        }
-    }
 
 
     private void showImageFromResult(TakePhotoResult result, ImageView targetImageView) {

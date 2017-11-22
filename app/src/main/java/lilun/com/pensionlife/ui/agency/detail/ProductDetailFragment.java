@@ -2,10 +2,8 @@ package lilun.com.pensionlife.ui.agency.detail;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -528,12 +526,28 @@ public class ProductDetailFragment extends BaseFragment {
 
     private void call() {
         if (!clickMobile.equals("暂未提供")) {
-            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
-            if (hasPermission) {
-                callMobile();
-            } else {
-                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
-            }
+            new NormalDialog().createNormal(_mActivity, "是否联系：" + clickMobile, () -> {
+                requestPermission(Manifest.permission.CALL_PHONE, new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + clickMobile.replace("-", "")));
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        ToastHelper.get().showShort("您拒接了该权限");
+                    }
+                });
+
+            });
+
+//            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
+//            if (hasPermission) {
+//                callMobile();
+//            } else {
+//                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
+//            }
         } else {
             ToastHelper.get().showShort("此服务商没有提供电话");
         }
@@ -547,17 +561,17 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0x11) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ToastHelper.get().showShort("请给予权限");
-            } else {
-                callMobile();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == 0x11) {
+//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+//                ToastHelper.get().showShort("请给予权限");
+//            } else {
+//                callMobile();
+//            }
+//        }
+//    }
 
 
     @Override
