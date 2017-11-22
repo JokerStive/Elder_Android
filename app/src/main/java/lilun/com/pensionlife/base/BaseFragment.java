@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
@@ -14,12 +15,15 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.widget.NormalDialog;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import pub.devrel.easypermissions.EasyPermissions;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -27,7 +31,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by yk on 2017/1/5.
  * fragment基类
  */
-public abstract class BaseFragment<T extends IPresenter> extends SupportFragment {
+public abstract class BaseFragment<T extends IPresenter> extends SupportFragment implements EasyPermissions.PermissionCallbacks {
     private final String TAG = "fragment";
     protected Context mContent;
     protected View mRootView;
@@ -48,6 +52,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
             return false;
         }
     };
+    private EasyPermissions.PermissionCallbacks callbacks;
 
 
     /**
@@ -136,7 +141,37 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
      */
 
 
-    protected boolean hasPermission(String permission) {
+    protected void requestPermisssion(String permission, EasyPermissions.PermissionCallbacks callbacks) {
+        this.callbacks = callbacks;
+        if (EasyPermissions.hasPermissions(getActivity(), permission)) {
+            callbacks.onPermissionsGranted(0, null);
+        } else {
+            EasyPermissions.requestPermissions(this, "确实权限", 100, permission);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (callbacks != null) {
+            callbacks.onPermissionsDenied(requestCode, perms);
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        if (callbacks != null) {
+            callbacks.onPermissionsGranted(requestCode, perms);
+        }
+    }
+
+        protected boolean hasPermission(String permission) {
         int sdkInt = Build.VERSION.SDK_INT;
         if (sdkInt < 23) {
             return true;
