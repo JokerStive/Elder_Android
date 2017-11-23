@@ -48,6 +48,7 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
+import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailFragment;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.CustomRatingBar;
@@ -144,6 +145,7 @@ public class ProductDetailFragment extends BaseFragment {
         if (tx.contains("hasOrder")) {
             setHadOrdered();
             call();
+            start(OrderListFragment.newInstance());
         }
     }
 
@@ -542,12 +544,6 @@ public class ProductDetailFragment extends BaseFragment {
 
             });
 
-//            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
-//            if (hasPermission) {
-//                callMobile();
-//            } else {
-//                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
-//            }
         } else {
             ToastHelper.get().showShort("此服务商没有提供电话");
         }

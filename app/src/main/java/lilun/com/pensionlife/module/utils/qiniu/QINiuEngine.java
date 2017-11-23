@@ -1,6 +1,8 @@
 package lilun.com.pensionlife.module.utils.qiniu;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Gravity;
 
@@ -12,9 +14,11 @@ import com.qiniu.android.storage.UploadOptions;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.widget.QinNiuPop;
 
 /**
@@ -33,6 +37,7 @@ public class QINiuEngine {
     private int needOperateCount = 0;
     private OperateStatistics operateStatistics;
     private QinNiuPop pop;
+    private String format = ".png";
 
     public QINiuEngine(Activity activity, int needOperateCount, String token, UploadListener listener) {
         this.needOperateCount = needOperateCount;
@@ -80,13 +85,34 @@ public class QINiuEngine {
 
             }
         };
-        uploadManager.put(operate.filePath, operate.key, token, upCompletionHandler, options);
+        //库压缩成JPG格式，转成PNG再上传
+        byte[] bytes = fileToPNGByteData(operate.filePath);
+        if (bytes != null) {
+            uploadManager.put(bytes, operate.key, token, upCompletionHandler, options);
+        }
+//        uploadManager.put(operate.filePath, operate.key, token, upCompletionHandler, options);
     }
 
     public void upload(String filePath, int index, QiNiuUploadView view) {
         Operate operate = new Operate(filePath, index, view);
         operateStatistics.addStatistic(operate);
         upload(operate);
+    }
+
+
+    private byte[] fileToPNGByteData(String filePath) {
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //库已经压缩，这里不在压缩，只转格式
+        int options = 100;
+        boolean compress = bitmap.compress(Bitmap.CompressFormat.PNG, options, baos);
+        if (compress) {
+            return baos.toByteArray();
+        } else {
+            ToastHelper.get().showWareShort("格式转换失败");
+        }
+
+        return null;
     }
 
     private void uploadAgain() {
@@ -110,7 +136,7 @@ public class QINiuEngine {
     public void continueUpload() {
         List<Operate> operates = operateStatistics.operates;
         needOperateCount = 0;
-        operateStatistics.hasOperatedCount=0;
+        operateStatistics.hasOperatedCount = 0;
         for (int i = 0; i < operates.size(); i++) {
             Operate operate = operates.get(i);
             if (operate.status == QiNiuUploadView.UPLOAD_FALSE) {
@@ -170,7 +196,7 @@ public class QINiuEngine {
             this.view = view;
             this.filePath = filePath;
             this.index = index;
-            this.key = index + ".png";
+            this.key = index + format;
         }
     }
 

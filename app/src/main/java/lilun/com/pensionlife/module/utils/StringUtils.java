@@ -369,7 +369,11 @@ public class StringUtils {
      * 从module的icon字段获取第一张icon的名称
      */
     public static String getFirstIcon(List<String> iconModules) {
-      return  iconModules.get(0);
+        String result = null;
+        if (iconModules != null && iconModules.size() > 0) {
+            result = iconModules.get(0);
+        }
+        return result;
     }
 
 

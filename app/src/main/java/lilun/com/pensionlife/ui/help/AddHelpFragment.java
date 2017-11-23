@@ -265,7 +265,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
      */
     private void uploadImages(QINiuToken qiNiuToken) {
         ArrayList<String> photoData = getPhotoData();
-        QINiuEngine engine = new QINiuEngine(_mActivity,photoData.size(), null, new QINiuEngine.UploadListener() {
+        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
             @Override
             public void onAllSuccess() {
                 popAndRefreshData();

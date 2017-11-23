@@ -152,6 +152,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         completeRefresh();
 //        cacheExpendKeys(productCategories);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
 
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
@@ -163,7 +164,6 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
             }
         });
         show(gridLayoutManager, adapter, categoryId);
-        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
     }
 
     private void show(GridLayoutManager gridLayoutManager, ProductCategoryAdapter adapter, String categoryId) {

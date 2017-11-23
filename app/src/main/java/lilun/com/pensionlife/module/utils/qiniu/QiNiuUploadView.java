@@ -92,7 +92,7 @@ public class QiNiuUploadView extends RelativeLayout {
         if (mStatus != UPLOADING) {
             setStatus(UPLOADING);
         }
-        progressView.setProgress((int) progress);
+        progressView.setProgress((int) progress * 100);
         mImageView.setProgress((int) progress);
     }
 
