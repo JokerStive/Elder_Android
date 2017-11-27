@@ -67,14 +67,9 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        //    ImageLoaderUtil.instance().loadImage(IconUrl
-        // .moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
         ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
 
-        if (User.isMerchant()) {
-            tvManageOrder.setVisibility(View.VISIBLE);
-        }
     }
 
 
