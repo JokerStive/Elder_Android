@@ -30,6 +30,16 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
     }
 
     @Override
+    public void loadImageWithoutCache(String url, ImageView imageView) {
+        Glide.with(imageView.getContext()).load(url).dontAnimate()
+                .placeholder(App.context.getResources().getDrawable(R.drawable.icon_def))
+                .error(App.context.getResources().getDrawable(R.drawable.icon_error))
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+    }
+
+    @Override
     public void loadImage(int resId, ImageView imageView) {
         Glide.with(imageView.getContext()).load(resId).dontAnimate()
                 .placeholder(imageView.getBackground())

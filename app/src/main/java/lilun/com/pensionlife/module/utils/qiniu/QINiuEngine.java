@@ -85,8 +85,7 @@ public class QINiuEngine {
 
             }
         };
-        //库压缩成JPG格式，转成PNG再上传
-        byte[] bytes = fileToPNGByteData(operate.filePath);
+        byte[] bytes = fileToJPGByteData(operate.filePath);
         if (bytes != null) {
             uploadManager.put(bytes, operate.key, token, upCompletionHandler, options);
         }
@@ -100,16 +99,15 @@ public class QINiuEngine {
     }
 
 
-    private byte[] fileToPNGByteData(String filePath) {
+    private byte[] fileToJPGByteData(String filePath) {
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        //库已经压缩，这里不在压缩，只转格式
         int options = 100;
-        boolean compress = bitmap.compress(Bitmap.CompressFormat.PNG, options, baos);
+        boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);
         if (compress) {
             return baos.toByteArray();
         } else {
-            ToastHelper.get().showWareShort("格式转换失败");
+            ToastHelper.get().showWareShort("转换失败");
         }
 
         return null;
