@@ -2,8 +2,6 @@ package lilun.com.pensionlife.widget.recycler_view;
 
 import android.support.v7.widget.GridLayoutManager;
 
-import lilun.com.pensionlife.module.utils.LogUtils;
-
 /**
  * recyclerView的layoutManager自动填充
  *
@@ -26,10 +24,10 @@ public class AutoExtendSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
 
     @Override
     public int getSpanSize(int position) {
-        LogUtils.d("余数 = "+remainder+"---"+"当前position = "+position);
-        if (remainder!=0 && position>=dataSize-remainder){
-            return spanCount/remainder;
-        }
-        return 1;
+//        Logger.d("余数 = "+remainder+"---"+"当前position = "+position);
+//        if (remainder!=0 && position>=dataSize-remainder){
+//            return spanCount/remainder;
+//        }
+        return 3;
     }
 }

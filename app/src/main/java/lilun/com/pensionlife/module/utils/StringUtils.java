@@ -605,6 +605,6 @@ public class StringUtils {
     }
 
     public static String formatPriceToFree(Double price) {
-        return price == null || price == 0 ? "免费" : null;
+        return price == null || price == 0 ? "0.00" : null;
     }
 }

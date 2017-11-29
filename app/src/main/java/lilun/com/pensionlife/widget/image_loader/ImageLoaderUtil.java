@@ -42,6 +42,10 @@ public class ImageLoaderUtil {
         mStrategy.loadImage(resId, imageView);
     }
 
+    public void loadImageWithoutCache(String url,  ImageView imageView){
+        mStrategy.loadImageWithoutCache(url, imageView);
+    }
+
     public void setStrategy(BaseImageLoaderStrategy strategy){
         this.mStrategy = strategy;
     }
