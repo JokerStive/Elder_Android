@@ -132,7 +132,7 @@ public class QINiuEngine {
             }
         };
         //库压缩成JPG格式，转成PNG再上传
-        byte[] bytes = fileToPNGByteData(filePath);
+        byte[] bytes = fileToJPGByteData(filePath);
         if (bytes != null) {
             cpvUpload.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(updateKey))
