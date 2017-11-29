@@ -31,12 +31,29 @@
             android:layout_weight="1"
             android:text="@string/account_ivatar_str" />
 
-        <lilun.com.pensionlife.widget.CircleImageView
-            android:id="@+id/civ_account_avatar"
-            android:layout_width="@dimen/dp_72"
-            android:layout_height="@dimen/dp_72"
-            android:layout_margin="@dimen/dp_10"
-            android:src="@drawable/icon_def" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <lilun.com.pensionlife.widget.CircleImageView
+                android:id="@+id/civ_account_avatar"
+                android:layout_width="@dimen/dp_72"
+                android:layout_height="@dimen/dp_72"
+                android:layout_margin="@dimen/dp_10"
+                android:src="@drawable/icon_def" />
+
+            <lilun.com.pensionlife.widget.CircleProgressView
+                android:id="@+id/cpv_upload"
+                android:layout_width="@dimen/dp_72"
+                android:layout_height="@dimen/dp_72"
+                android:layout_margin="@dimen/dp_10"
+                apps:progressNormalColor="@color/white"
+                apps:progressReachColor="@color/red"
+                apps:progressTextColor="@color/red"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="wrap_content"

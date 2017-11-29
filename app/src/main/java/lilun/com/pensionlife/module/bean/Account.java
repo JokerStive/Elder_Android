@@ -26,7 +26,7 @@ public class Account implements Serializable {
     private String realm;
     private Boolean emailVerified;
     private String status;
-    private List<String> image;
+    private String image;
     private ArrayList<String> certificateLicense;
     private String visibility;
 
@@ -192,11 +192,11 @@ public class Account implements Serializable {
         this.status = status;
     }
 
-    public List<String> getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(List<String> image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

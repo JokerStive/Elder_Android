@@ -77,6 +77,11 @@ public interface ApiService {
     @POST("{modelName}/{modelId}/upload/{tag}")
     Observable<Response<QINiuToken>> getUploadToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
 
+    /**
+     * 获取更新图片的token
+     */
+    @PUT("{modelName}/{modelId}/update/{tag}")
+    Observable<Response<QINiuToken>> getUpdateToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
 
     /**
      * 获取位置
@@ -459,10 +464,15 @@ public interface ApiService {
 
     /**
      * 新建一个活动
-     * 包含图片
      */
     @POST("OrganizationActivities")
-    Observable<Response<OrganizationActivity>> newActivity(@Body MultipartBody body);
+    Observable<Response<OrganizationActivity>> newActivity(@Body OrganizationActivity orgActivity);
+
+    /**
+     * 更新一个活动
+     */
+    @PUT("OrganizationActivities/{id}")
+    Observable<Response<OrganizationActivity>> updateActivity(@Path("id") String activityId, @Body OrganizationActivity orgActivity);
 
 
     /**

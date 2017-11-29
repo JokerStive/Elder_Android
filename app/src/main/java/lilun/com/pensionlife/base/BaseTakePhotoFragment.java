@@ -3,8 +3,10 @@ package lilun.com.pensionlife.base;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -21,6 +23,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.util.ArrayList;
 
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.module.callback.TakePhotoClickListener;
 import lilun.com.pensionlife.widget.TakePhotoLayout;
@@ -30,7 +33,6 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
     private TakePhoto takePhoto;
     private InvokeParam invokeParam;
     protected T mPresenter;
-    private Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));
     private TakePhotoLayout takePhotoLayout;
 
     @Override
@@ -53,30 +55,27 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        TakePhotoImpl takePhoto = (TakePhotoImpl) getTakePhoto();
-//        takePhoto.onActivityResult(requestCode, resultCode, data);
-//        super.onActivityResult(requestCode, resultCode, data);
-        getTakePhoto().onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
     }
 
 
     /**
      * 获取TakePhoto实例
-     *
+     * 同一个Fragment 进行第二次压缩时必须重新配置。因为回调时清除了配置 clearParams();
      * @return
      */
     public TakePhoto getTakePhoto() {
         if (takePhoto == null) {
             takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
-            LubanOptions option = new LubanOptions.Builder()
-                    .setMaxHeight(Config.uploadPhotoMaxHeight)
-                    .setMaxWidth(Config.uploadPhotoMaxWidth)
-                    .setMaxSize(Config.uploadPhotoMaxSize)
-                    .create();
-            CompressConfig config = CompressConfig.ofLuban(option);
-            takePhoto.onEnableCompress(config, true);
         }
+        LubanOptions option = new LubanOptions.Builder()
+                .setMaxHeight(Config.uploadPhotoMaxHeight)
+                .setMaxWidth(Config.uploadPhotoMaxWidth)
+                .setMaxSize(Config.uploadPhotoMaxSize)
+                .create();
+        CompressConfig config = CompressConfig.ofLuban(option);
+        takePhoto.onEnableCompress(config, true);
         return takePhoto;
     }
 
@@ -102,7 +101,12 @@ public abstract class BaseTakePhotoFragment<T extends IPresenter> extends BaseFr
     public void onCameraClick() {
         File file;
         file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-        Uri uri = Uri.fromFile(file);
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
+        } else {
+            uri = FileProvider.getUriForFile(_mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+        }
         Logger.d("拍照图片的存储地址" + uri.getAuthority());
         getTakePhoto().onPickFromCapture(uri);
     }

@@ -35,6 +35,11 @@
                 android:background="@drawable/selector_click_trans_to_dark_corners_5"
                 app:border_color="@color/transparent"
                 app:border_width="0dp" />
+            <lilun.com.pensionlife.widget.CircleProgressView
+                android:id="@+id/cpv_upload"
+                android:layout_width="396px"
+                android:layout_height="396px"
+                android:visibility="gone"/>
         </RelativeLayout>
 
 

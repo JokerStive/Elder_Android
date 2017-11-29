@@ -26,6 +26,7 @@ import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFragment;
+import lilun.com.pensionlife.ui.home.personal_setting.PersonalActivity;
 import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
@@ -67,9 +68,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        //    ImageLoaderUtil.instance().loadImage(IconUrl
-        // .moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, ivAvatar);
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
         tvName.setText(User.getName());
 
         if (User.isMerchant()) {

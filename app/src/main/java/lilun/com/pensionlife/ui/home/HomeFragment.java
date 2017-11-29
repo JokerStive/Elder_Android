@@ -26,7 +26,6 @@ import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
@@ -49,6 +48,7 @@ import lilun.com.pensionlife.ui.health.classify.HealthClassifyFragment;
 import lilun.com.pensionlife.ui.help.HelpRootFragment;
 import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
+import lilun.com.pensionlife.ui.home.personal_setting.PersonalSettingFragment;
 import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
@@ -118,7 +118,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     //============更新用户头像
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showNewSetting(Event.AccountSettingChange account) {
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             }, getString(R.string.cancel), false);
         }
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 

@@ -70,8 +70,8 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
                 });
 
 
-        if (activityCategory.getIcon() != null) {
-            String iconUrl = activityCategory.getIcon().get(0);
+        if (activityCategory.getIcon() != null && activityCategory.getIcon().size() > 0) {
+            String iconUrl = activityCategory.getIcon().get(0).getFileName();
             Glide.with(App.context).load(iconUrl).dontAnimate()
                     .placeholder(R.drawable.icon_def)
                     .error(R.drawable.icon_def)

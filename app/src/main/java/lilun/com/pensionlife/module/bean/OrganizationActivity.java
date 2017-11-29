@@ -78,6 +78,7 @@ public class OrganizationActivity extends BaseBean {
     private List<String> partnerList;
     private List<String> blackList;
     private Account contact;
+    private boolean isDraft;     //是否为草稿
     private int partnerCount;
     private int unRead;  //未读
 
@@ -316,34 +317,11 @@ public class OrganizationActivity extends BaseBean {
         this.blackList = blackList;
     }
 
-    public static int TYPE = 1;
+    public boolean getIsDraft() {
+        return isDraft;
+    }
 
-    public ElderEdus toElderEdus() {
-        ElderEdus edus = new ElderEdus();
-        edus.setType(TYPE);
-        edus.setTitle(title);
-        edus.setAddress(address);
-
-        edus.setLocation(location);
-        edus.setPriority(priority);
-        edus.setStartDate(startTime);
-        edus.setDruation(druation);
-        edus.setRepeatedType(repeatedType);
-        edus.setRepeatedCount(repeatedCount);
-        edus.setMaxPartner(maxPartner);
-        edus.setId(id);
-        edus.setMasterId(masterId);
-        edus.setCategoryId(categoryId);
-        edus.setCreatedAt(createdAt);
-        edus.setUpdatedAt(updatedAt);
-        edus.setCreatorId(creatorId);
-        edus.setCreatorName(creatorName);
-        edus.setUpdatorId(updatorId);
-        edus.setUpdatorName(updatorName);
-        edus.setOrganizationId(organizationId);
-        edus.setPicture(icon);
-        edus.setPartners(partnerList);
-        edus.setContact(contact);
-        return edus;
+    public void setIsDraft(boolean isDraft) {
+        this.isDraft = isDraft;
     }
 }

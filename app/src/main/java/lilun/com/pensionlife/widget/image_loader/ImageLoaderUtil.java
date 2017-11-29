@@ -31,6 +31,9 @@ public class ImageLoaderUtil {
     public void loadImage(String url, int placeholder, ImageView imageView) {
         mStrategy.loadImage(imageView.getContext(), url, placeholder, imageView);
     }
+    public void loadAvator(String url, int placeholder, ImageView imageView) {
+        mStrategy.loadAvator(imageView.getContext(), url, placeholder, imageView);
+    }
 
     public void loadImage(String url,  ImageView imageView) {
         mStrategy.loadImage(url, imageView);

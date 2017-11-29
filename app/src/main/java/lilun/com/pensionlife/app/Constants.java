@@ -27,4 +27,7 @@ public class Constants {
 
     //注册时未选择居住地址时的默认地址
     public static final String unSettingLocation = "/地球村/中国/重庆/重庆市/演示区/演示街道/演示社区";
+
+    //七牛图片base uri
+    public static final String fileBaseUri ="http://file.j1home.com/";
 }

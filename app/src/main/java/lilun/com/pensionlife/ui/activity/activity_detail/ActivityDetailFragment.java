@@ -230,9 +230,9 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
             }
         });
-        ArrayList<String> images = new ArrayList<>();
+
         if (activity.getIcon() != null)
-            bpActivityImages.setData(images);
+            bpActivityImages.setData(activity.getIcon());
 
         rvQuestionList.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvQuestionList.addItemDecoration(new NormalItemDecoration(17));

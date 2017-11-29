@@ -3,9 +3,12 @@ package lilun.com.pensionlife.module.utils.qiniu;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 
+import com.orhanobut.logger.Logger;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.widget.CircleProgressView;
 import lilun.com.pensionlife.widget.QinNiuPop;
 
 /**
@@ -97,6 +101,46 @@ public class QINiuEngine {
         Operate operate = new Operate(filePath, index, view);
         operateStatistics.addStatistic(operate);
         upload(operate);
+    }
+
+    /**
+     * 上传单张图片
+     * @param filePath  文件路径
+     * @param filename  文件名
+     * @param updateKey 更新使用的key，若第一次上传设为空
+     * @param cpvUpload 圆形上传进度view
+     */
+    public void uploadOnlyOne(String filePath, String filename, String updateKey, CircleProgressView cpvUpload) {
+
+        UploadOptions options = new UploadOptions(null, null, false, new UpProgressHandler() {
+            @Override
+            public void progress(String key, double percent) {
+                cpvUpload.setProgress((int) (percent * 100));
+            }
+        }, null);
+        UpCompletionHandler upCompletionHandler = new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                cpvUpload.setVisibility(View.GONE);
+                if (info.isOK()) {
+                    Logger.d(info.statusCode + ":上传成功");
+                    if (listener != null) {
+                        listener.onAllSuccess();
+                    }
+                } else {
+                    ToastHelper.get().showWareShort(info.statusCode + ":上传失败，请稍后再试");
+                }
+            }
+        };
+        //库压缩成JPG格式，转成PNG再上传
+        byte[] bytes = fileToPNGByteData(filePath);
+        if (bytes != null) {
+            cpvUpload.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(updateKey))
+                uploadManager.put(bytes, filename + format, token, upCompletionHandler, options);
+            else
+                uploadManager.put(bytes, updateKey, token, upCompletionHandler, options);
+        }
     }
 
 

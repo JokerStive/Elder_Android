@@ -117,7 +117,7 @@ public class SystemUtils {
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             // 第二个参数，即第一步中配置的authorities
-            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", apkFile);
+            Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileprovider", apkFile);
             intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
         }
         context.startActivity(intent);

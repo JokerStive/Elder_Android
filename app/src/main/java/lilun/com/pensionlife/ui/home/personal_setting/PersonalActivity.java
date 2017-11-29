@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.ui.home;
+package lilun.com.pensionlife.ui.home.personal_setting;
 
 import android.view.KeyEvent;
 
@@ -6,6 +6,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.ui.activity.activity_detail.ActivityPartnersListFragment;
+import lilun.com.pensionlife.ui.home.personal_setting.PersonalSettingFragment;
 
 public class PersonalActivity extends BaseActivity {
 

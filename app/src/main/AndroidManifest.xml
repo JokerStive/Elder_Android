@@ -34,11 +34,11 @@
     <!-- SD卡读取权限，用户写入离线定位数据-->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
-
+    <!--android:hardwareAccelerated 开启后加载圆形图片不会出现黑框-->
     <application
         android:name="lilun.com.pensionlife.app.App"
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -164,7 +164,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
 
-        <activity android:name="lilun.com.pensionlife.ui.home.PersonalActivity" />
+        <activity android:name="lilun.com.pensionlife.ui.home.personal_setting.PersonalActivity" />
         //mqtt service
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
@@ -178,10 +178,11 @@
         <receiver android:name=".module.utils.mqtt.MqttNotificationReceiver" />
 
 
-        <!--//7.0以上系统共享空间-->
+        <!--//7.0以上系统共享空间 authorities里的fileprovider必须小写，是takephotot库导致，
+            其使用小写的fileprovider来判断，写错会导致拍照、剪切功能不正常，甚至崩溃 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="name,authorities,exported,grantUriPermissions">

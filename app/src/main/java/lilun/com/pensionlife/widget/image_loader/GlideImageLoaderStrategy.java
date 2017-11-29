@@ -84,4 +84,14 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .error(placeholder)
                 .into(imageView);
     }
+
+    public void loadAvator(final Context ctx, final String url, int placeholder, ImageView imageView) {
+        Glide.with(ctx).load(url).dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(placeholder)
+                .error(placeholder)
+                .override(400, 400)
+                .into(imageView);
+    }
 }

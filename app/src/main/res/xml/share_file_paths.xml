@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <root-path name="name" path="" />
+<paths>
+    <!--此 name 不能修改，因为takephoto库 4.0.3版本 TUriParse工具类99行 使用camera_photos字符来处理共享空间，修改后可能导致崩溃或功能不正常 -->
+
+    <root-path name="camera_photos" path="" />
 </paths>

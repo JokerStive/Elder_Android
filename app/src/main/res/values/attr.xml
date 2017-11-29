@@ -30,10 +30,14 @@
     </declare-styleable>
 
 
-    //圆形imageView
+    <!--圆形imageView-->
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
+        <attr name="border_overlay" format="boolean" />
+        <!-- {@deprecated Use civ_circlebackground_color instead.} -->
+        <attr name="fill_color" format="color" />
+        <attr name="circle_background_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="AlarmView">

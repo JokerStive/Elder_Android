@@ -202,7 +202,9 @@ public final class LogInterceptor implements Interceptor {
                 if (contentLength != 0) {
                     logger.log("");
 //                    logger.log("<-- " + java.net.URLDecoder.decode(request.url().toString(), "UTF-8"));
-                    logger.log("<-- " +  java.net.URLDecoder.decode(request.url().toString(), "UTF-8")+ buffer.clone().readString(charset));
+                    if (!(request.url().toString().endsWith(".png") || request.url().toString().endsWith(".jpg")
+                            || request.url().toString().endsWith(".jpeg")))
+                        logger.log("<-- " + java.net.URLDecoder.decode(request.url().toString(), "UTF-8")  +"\n" + buffer.clone().readString(charset));
                 }
 
 //                logger.log("----------End:" + tookMs + "ms----------");

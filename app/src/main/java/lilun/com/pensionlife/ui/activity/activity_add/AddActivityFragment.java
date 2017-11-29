@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.activity.activity_add;
 
+import android.annotation.NonNull;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -15,8 +16,6 @@ import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,26 +30,29 @@ import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
+import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
-import lilun.com.pensionlife.module.utils.BitmapUtils;
-import lilun.com.pensionlife.module.utils.GsonUtils;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
+import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
+import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.widget.CommonButton;
 import lilun.com.pensionlife.widget.InputView;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.TakePhotoLayout;
-import okhttp3.MultipartBody;
 import rx.Observable;
 
 /**
  * 新建活动V
+ * 2017-11-27 11:02:09 更改流程 1.新建活动对象，将其作为草稿，通过 newActivity()接口 保存于后台；
+ *                             2.上传图片至七牛服务器，若全部成功，更新后台草稿标志；
+ *                             3.刷新数据；
  *
  * @author yk
  *         create at 2017/3/13 11:18
@@ -61,9 +63,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
 
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
-
-//    @Bind(R.id.rv_activity_classify)
-//    RecyclerView rvActivityClassify;
 
     @Bind(R.id.rl_choice_type)
     RelativeLayout rlChoiceType;
@@ -85,9 +84,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
 
     @Bind(R.id.input_maxPartner)
     InputView inputMaxPartner;
-
-//    @Bind(R.id.input_location)
-//    InputView inputLocation;
 
     @Bind(R.id.btn_add_activity)
     CommonButton btnAddActivity;
@@ -115,6 +111,8 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     MaterialDialog typeDalog;
     int typeIndex = 0;
     boolean isrepeat = true;
+    private String mActId = "";
+    private String mTopic; //MQTT通知topic
 
     public static AddActivityFragment newInstance(ArrayList<ActivityCategory> activityCategories) {
         AddActivityFragment fragment = new AddActivityFragment();
@@ -183,47 +181,15 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         rlChoiceType.setOnClickListener(this);
     }
 
-
-    private void addActivity() {
-        if (TextUtils.isEmpty(mCategoryId)) {
-            ToastHelper.get().showWareShort("请选择活动类别");
-            return;
-        }
-
-        int intDuration = 0;
+    @NonNull
+    private OrganizationActivity newActivity() {
+        OrganizationActivity activity = new OrganizationActivity();
         String title = inputTitle.getInput();
-
         String address = inputAddress.getInput();
-
         String startTime = tvStartTime.getText().toString();
         String endTime = tvEndTime.getText().toString();
-
-
         String maxPartner = inputMaxPartner.getInput();
-
         String require = inputRequire.getInput();
-
-//        String location = inputLocation.getInput();
-//
-//        String repeatedType = inputRepeatType.getInput();
-
-
-//        TODO 输入检查
-        if (TextUtils.isEmpty(title)) {
-            showNotEmpty(R.string.activity_title);
-            return;
-        }
-
-        if (TextUtils.isEmpty(address)) {
-            showNotEmpty(R.string.activity_address);
-            return;
-        }
-        if (TextUtils.isEmpty(require)) {
-            showNotEmpty(R.string.activity_desp);
-            return;
-        }
-
-
         String max = StringUtils.get_StringNum(maxPartner);
         Integer maxPart = null;
         if (!TextUtils.isEmpty(max)) {
@@ -234,72 +200,153 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
             }
         } else maxPart = 0;
 
-        if (maxPart > 9999) {
+        activity.setCategoryId(mCategoryId);
+        activity.setTitle(title);
+        activity.setAddress(address);
+        if (isrepeat) {
+            activity.setRepeatedDesc(inputCyclialGap.getInput().trim());
+            activity.setStartTime(null);
+            activity.setEndTime(null);
+        } else {
+            activity.setRepeatedDesc(null);
+            String startTimeISO = startTime + ":00";
+            String endTimeISO = endTime + ":00";
+            activity.setStartTime(startTimeISO);
+            activity.setEndTime(endTimeISO);
+        }
+        activity.setDruation(0);
+        activity.setOrganizationId(OrganizationChildrenConfig.activity());
+        activity.setDescription(require);
+        activity.setMaxPartner(maxPart);
+        activity.setIsDraft(true);
+        return activity;
+    }
+
+    //  输入检查并提交
+    private void checkInputAndCommit(@NonNull OrganizationActivity orgActivity) {
+
+        if (TextUtils.isEmpty(orgActivity.getCategoryId())) {
+            ToastHelper.get().showWareShort("请选择活动类别");
+            return;
+        }
+
+        if (TextUtils.isEmpty(orgActivity.getTitle())) {
+            showNotEmpty(R.string.activity_title);
+            return;
+        }
+
+        if (TextUtils.isEmpty(orgActivity.getAddress())) {
+            showNotEmpty(R.string.activity_address);
+            return;
+        }
+        if (TextUtils.isEmpty(orgActivity.getDescription())) {
+            showNotEmpty(R.string.activity_desp);
+            return;
+        }
+
+        if (orgActivity.getMaxPartner() > 9999) {
             ToastHelper.get().showWareShort(getString(R.string.act_max_partner));
             inputMaxPartner.setInput(9999 + "");
             return;
         }
-        OrganizationActivity activity = new OrganizationActivity();
-        activity.setCategoryId(mCategoryId);
-        activity.setTitle(title);
-        activity.setAddress(address);
+
         if (isrepeat) {
             if (TextUtils.isEmpty(inputCyclialGap.getInput())) {
                 showNotEmpty(R.string.activity_repeat);
                 return;
             }
-            activity.setRepeatedDesc(inputCyclialGap.getInput().trim());
         } else {
 
-            if (TextUtils.isEmpty(startTime)) {
+            if (TextUtils.isEmpty(orgActivity.getStartTime())) {
                 showNotEmpty(R.string.activity_time);
                 return;
             }
 
 
-            if (TextUtils.isEmpty(endTime)) {
+            if (TextUtils.isEmpty(orgActivity.getEndTime())) {
                 showNotEmpty(R.string.activity_end_time);
                 return;
             }
-            String startTimeISO = startTime + ":00";
-            activity.setStartTime(startTimeISO);
-            String endTimeISO = endTime + ":00";
-            activity.setEndTime(endTimeISO);
-            if (StringUtils.string2Date(startTimeISO).before(new Date())) {
+
+            if (StringUtils.string2Date(orgActivity.getStartTime()).before(new Date())) {
                 ToastHelper.get(getContext()).showWareShort("开始时间应大于现在");
                 return;
             }
-            if (StringUtils.string2Date(startTimeISO).getTime() - StringUtils.string2Date(endTimeISO).getTime() >= 0) {
+            if (StringUtils.string2Date(orgActivity.getStartTime()).getTime() - StringUtils.string2Date(orgActivity.getEndTime()).getTime() >= 0) {
                 ToastHelper.get(getContext()).showWareShort("结束时间应大于开始时间");
                 return;
             }
         }
-        activity.setDruation(intDuration);
-        activity.setOrganizationId(OrganizationChildrenConfig.activity());
-        activity.setDescription(require);
-        activity.setMaxPartner(maxPart);
+        //此处提交的是草稿
+        NetHelper.getApi()
+                .newActivity(orgActivity)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
+                    @Override
+                    public void _next(OrganizationActivity activity) {
+                        mTopic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+                        mActId = activity.getId();
+                        getToken(mActId);
+                    }
+                });
+    }
 
-
-        try {
-            JSONObject aidJsonObject = GsonUtils.objectToJSONObject(activity);
-            MultipartBody multipartBody = BitmapUtils.filesToMultipartBody(aidJsonObject, getPhotoData());
-            NetHelper.getApi()
-                    .newActivityIcons(multipartBody)
+    /**
+     * 获取token
+     */
+    private void getToken(String id) {
+        ArrayList<String> photoPath = getPhotoData();
+        if (photoPath.size() > 0) {
+            NetHelper.getApi().
+                    getUploadToken("OrganizationActivities", id, "icon")
                     .compose(RxUtils.handleResult())
                     .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<OrganizationActivity>(_mActivity) {
+                    .subscribe(new RxSubscriber<QINiuToken>() {
                         @Override
-                        public void _next(OrganizationActivity activity) {
-                            String topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
-                            MQTTManager.getInstance().subscribe(topic, 2);
-                            EventBus.getDefault().post(new Event.RefreshActivityData());
-                            pop();
+                        public void _next(QINiuToken qiNiuToken) {
+                            uploadImages(qiNiuToken);
                         }
                     });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImages(QINiuToken qiNiuToken) {
+        ArrayList<String> photoData = getPhotoData();
+        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
+            @Override
+            public void onAllSuccess() {
+                popAndRefreshData();
+            }
+        });
+        for (int i = 0; i < photoData.size(); i++) {
+            String path = photoData.get(i);
+            QiNiuUploadView view = takePhotoLayout.getView(i);
+            engine.upload(path, i, view);
+        }
+    }
+
+    /**
+     * 更新后台服务草稿数据为正式数据
+     */
+    private void popAndRefreshData() {
+        OrganizationActivity orgActivity = new OrganizationActivity();
+        orgActivity.setIsDraft(false);
+        NetHelper.getApi()
+                .updateActivity(mActId, orgActivity)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<OrganizationActivity>() {
+                    @Override
+                    public void _next(OrganizationActivity organizationActivity) {
+                        MQTTManager.getInstance().subscribe(mTopic, 2);
+                        EventBus.getDefault().post(new Event.RefreshActivityData());
+                        pop();
+                    }
+                });
     }
 
     private void showNotEmpty(int string) {
@@ -310,13 +357,8 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_activity:
-                addActivity();
+                checkInputAndCommit(newActivity());
                 break;
-
-//            case R.id.input_repeat_type:
-//                //定期类型
-//                chooseRepeatedType();
-//                break;
 
             case R.id.tv_start_time:
                 // 选择活动开始时间
@@ -366,42 +408,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     }
 
 
-    /**
-     * 选择活动持续时长
-     */
-//    private void chooseDuration() {
-//        if (durationArray == null) {
-//            durationArray = getResources().getStringArray(R.array.activity_duration);
-//        }
-//        MaterialDialog d = new MaterialDialog.Builder(_mActivity)
-//                .items(durationArray)
-//                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-//                    inputDuration.setInput(durationArray[which]);
-//                    return true;
-//                })
-//                .positiveText(R.string.choose)
-//                .show();
-//    }
-
-
-//    /**
-//     * 选择求助信息的优先级
-//     */
-//    private void chooseRepeatedType() {
-//        if (repeatedTypeArray == null) {
-//            repeatedTypeArray = getResources().getStringArray(R.array.activity_repeatedType);
-//        }
-//        MaterialDialog d = new MaterialDialog.Builder(_mActivity)
-//                .items(repeatedTypeArray)
-//
-//                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-//                    inputRepeatType.setInput(repeatedTypeArray[which]);
-//                    return true;
-//                })
-//                .positiveText(R.string.choose)
-//                .show();
-//
-//    }
     private void chooseActivityType() {
         ArrayList<String> list = new ArrayList<>();
         for (ActivityCategory tmp : activityCategories)

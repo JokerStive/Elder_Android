@@ -1,9 +1,12 @@
-package lilun.com.pensionlife.ui.home;
+package lilun.com.pensionlife.ui.home.personal_setting;
 
 import android.app.FragmentManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,8 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
+import com.orhanobut.logger.Logger;
 import com.vanzh.library.BaseBean;
 import com.vanzh.library.BottomDialog;
 import com.vanzh.library.DataInterface;
@@ -22,6 +27,7 @@ import com.vanzh.library.OnAddressSelectedListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +35,14 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
+import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -43,11 +50,13 @@ import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
+import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.welcome.LoginModule;
 import lilun.com.pensionlife.widget.AddressGuidePopupWindow;
 import lilun.com.pensionlife.widget.CircleImageView;
+import lilun.com.pensionlife.widget.CircleProgressView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.TakePhotoDialogFragment;
@@ -57,10 +66,12 @@ import rx.Observable;
 
 /**
  * 居住地址是系统默认的演示社区，HomeFragment弹框进入该页面设置居住地址及头像-->本页面显示提示标签
+ * 2017-11-29 09:42:00 图片上传服务器更新为七牛服务器，没有用户头像时使用上传图片token,有图片时使用更新图片token
  * Created by zp on 2017/6/5.
  */
 
-public class PersonalSettingFragment extends BaseTakePhotoFragment implements DataInterface<BaseBean>, OnAddressSelectedListener {
+public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSettingContract.Persenter>
+        implements DataInterface<BaseBean>, OnAddressSelectedListener, PersonalSettingContract.View {
     private static final String IN_TYPE = "IN_TYPE";
     public static final int UN_SETTING = 1;  // 居住地址是演示社区
     public static final int HAS_SETTING = 0;  //
@@ -70,12 +81,15 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     private TakePhotoDialogFragment fragment;
     BottomDialog dialog;
     BaseBean area, distrect;
+    private boolean hasAvator;   //是否有头像地址
     int[] skipArray = new int[6];
 
     @Bind(R.id.title_bar)
     NormalTitleBar titleBar;
     @Bind(R.id.civ_account_avatar)
-    CircleImageView civAccountAvatar;
+    CircleImageView civAvator;
+    @Bind(R.id.cpv_upload)
+    CircleProgressView cpvUpload;
     @Bind(R.id.tv_nickname)
     TextView tvNickName;
     @Bind(R.id.tv_belong_area)
@@ -97,6 +111,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
     ViewTreeObserver viewTreeObserver;
     ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
     private int limitSkip = 20;
+    private String imagePath;
 
     @OnClick({R.id.ll_account_avatar, R.id.ll_nickname, R.id.ll_belong_area, R.id.ll_belong_stress, R.id.ll_first_help_phone})
     public void onClick(View v) {
@@ -145,7 +160,8 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
 
     @Override
     protected void initPresenter() {
-
+        mPresenter = new PersonalSettingPersenter();
+        mPresenter.bindView(this);
     }
 
     @Override
@@ -162,6 +178,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
             else pop();
         });
         tvNickName.setText(User.getName());
+        hasAvator = !TextUtils.isEmpty(User.getUserAvatar());
         String[] split = User.getBelongsOrganizationId().replace(getString(R.string.common_address), "").split("/");
         if (split.length > 4) {
             areaStr = split[0] + "/" + split[1] + "/" + split[2];
@@ -174,7 +191,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         String helpPhone = PreUtils.getString("firstHelperPhone", "");
         tvFirstHelpPhone.setText(TextUtils.isEmpty(helpPhone) ? "未设置" : helpPhone);
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
+        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, civAvator);
 
         //绘制完成
         viewTreeObserver = llBelongArea.getViewTreeObserver();
@@ -273,7 +290,6 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                             return;
                         }
 
-
                         //该功能在10106上实现
                         if (BuildConfig.VERSION_CODE >= 10106) {
                             Account postAccount = new Account();
@@ -329,44 +345,33 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
                         }
                     }
                 });
-
     }
 
-    public void updateImage(String id, String path) {
+    @Override
+    public void onCameraClick() {
+        File file;
+        file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
+        } else {
+            uri = FileProvider.getUriForFile(_mActivity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+        }
+        CropOptions options = new CropOptions.Builder()
+                .setAspectX(800)
+                .setOutputX(800)
+                .create();
 
-        // TODO
-//        ArrayList<String> paths = new ArrayList<>();
-//        paths.add(path);
-//        byte[] pathString = BitmapUtils.bitmapToBytes(path);
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
-//        NetHelper.getApi().getMe().
-//                compose(RxUtils.handleResult())
-//                .flatMap((account -> {
-//                    String imageName = "{imageName}";
-//                    if (account != null && account.getImage() != null && account.getImage().size() > 0) {
-//                        // TODO
-//                        imageName = account.getImage().get(0).getFileName();
-//                        User.puttUserAvatar(imageName);
-//                    }
-//                    Logger.d("zp", User.getToken() + "   \n" + id + "   \n" + imageName + "   \n" + path);
-//                    return NetHelper.getApi().updateImage(id, imageName, requestBody).compose(RxUtils.applySchedule()).compose(RxUtils.handleResult());
-//                }))
-//                .compose(RxUtils.applySchedule())
-//                .subscribe(new RxSubscriber<IconModule>(_mActivity) {
-//                    @Override
-//                    public void _next(IconModule icon) {
-//                        ToastHelper.get().showShort("修改头像成功");
-//                        User.puttUserAvatar(icon.getFileName());
-//                        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, civAccountAvatar);
-//                        EventBus.getDefault().post(new Event.AccountSettingChange());
-//
-//                    }
-//                });
+        getTakePhoto().onPickFromCaptureWithCrop(uri,options);
     }
 
     @Override
     public void onAlbumClick() {
-        getTakePhoto().onPickMultiple(1);
+        CropOptions options = new CropOptions.Builder()
+                .setAspectX(800)
+                .setOutputX(800)
+                .create();
+        getTakePhoto().onPickMultipleWithCrop(1, options);
     }
 
     @Override
@@ -375,19 +380,17 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         for (TImage tImage : tResult.getImages()) {
             TakePhotoResult result1 = TakePhotoResult.of(tImage.getOriginalPath(), tImage.getCompressPath(), tImage.getFromType(), TakePhotoResult.TYPE_PHOTO);
             results.add(result1);
+            imagePath = results.get(0).getCompressPath();
+            break;
         }
+
         Observable.just("")
                 .compose(RxUtils.applySchedule())
                 .subscribe(s -> {
-                    TakePhotoResult result = results.get(0);
-
-                    String path;
-                    if (result.getFrom() == TImage.FromType.CAMERA) {
-                        path = result.getOriginalPath();
-                    } else {
-                        path = result.getOriginalPath();
-                    }
-                    updateImage(User.getUserId(), path);
+                    if (hasAvator) {
+                        mPresenter.getUpdateToken("Accounts", User.getUserId(), "image");
+                    } else
+                        mPresenter.getUploadToken("Accounts", User.getUserId(), "image");
                 });
     }
 
@@ -464,5 +467,33 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment implements Da
         response.send(level, data, data != null && data.size() == limitSkip);
     }
 
+    @Override
+    public void uploadImages(QINiuToken qiNiuToken) {
+
+        QINiuEngine engine = new QINiuEngine(_mActivity, 1, qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
+            @Override
+            public void onAllSuccess() {
+                //未设置过头像，则显示，重新获取个人数据，再显示头像
+                ToastHelper.get().showShort("更新图片成功");
+                if (hasAvator) {
+                    ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, civAvator);
+                    EventBus.getDefault().post(new Event.AccountSettingChange());
+                } else
+                    mPresenter.getMe();
+            }
+        });
+        String updateKey = null;
+        if (hasAvator) updateKey = User.getUserAvatar().replace(Constants.fileBaseUri, "");
+        engine.uploadOnlyOne(imagePath, User.getUserId(), updateKey, cpvUpload);
+    }
+
+
+    @Override
+    public void showNewAvator(Account account) {
+        User.puttUserAvatar(account.getImage());
+        hasAvator = !TextUtils.isEmpty(account.getImage());
+        ImageLoaderUtil.instance().loadAvator(account.getImage(), R.drawable.icon_def, civAvator);
+        EventBus.getDefault().post(new Event.AccountSettingChange());
+    }
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
+import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.utils.BitmapUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -22,26 +23,24 @@ import okhttp3.RequestBody;
 
 public class RegisterAvatorPresenter extends RxPresenter<RegisterContract.ViewAvator>
         implements RegisterContract.PresenterAvator {
+    /**
+     * 获取上传图片token
+     *
+     * @param modelName
+     * @param modelId
+     * @param tag
+     */
     @Override
-    public void updateImage(String id, String imageName, String path) {
-        Log.d("zp", User.getToken() + "   \n" + id + "     \n" + imageName + "   \n" + path);
-        if (TextUtils.isEmpty(imageName))
-            imageName = "{imageName}";
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add(path);
-        byte[] pathString = BitmapUtils.bitmapToBytes(path);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), pathString);
-        addSubscribe(NetHelper.getApi()
-                .updateImage(id, imageName, requestBody)
+    public void getUploadToken(String modelName, String modelId, String tag) {
+        NetHelper.getApi()
+                .getUploadToken(modelName, modelId, tag)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
+                .subscribe(new RxSubscriber<QINiuToken>() {
                     @Override
-                    public void _next(Object o) {
-                        Log.d("zp", "上传图片返回");
-                        dissDialog();
-                        view.successOfUpdateImage();
+                    public void _next(QINiuToken qiNiuToken) {
+                        view.uploadImages(qiNiuToken);
                     }
-                }));
+                });
     }
 }
