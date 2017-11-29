@@ -41,7 +41,7 @@ public class QINiuEngine {
     private int needOperateCount = 0;
     private OperateStatistics operateStatistics;
     private QinNiuPop pop;
-    private String format = ".png";
+    private String format = ".jpg";
 
     public QINiuEngine(Activity activity, int needOperateCount, String token, UploadListener listener) {
         this.needOperateCount = needOperateCount;
@@ -131,7 +131,7 @@ public class QINiuEngine {
                 }
             }
         };
-        //库压缩成JPG格式，转成PNG再上传
+        //库压缩成JPG格式
         byte[] bytes = fileToJPGByteData(filePath);
         if (bytes != null) {
             cpvUpload.setVisibility(View.VISIBLE);
