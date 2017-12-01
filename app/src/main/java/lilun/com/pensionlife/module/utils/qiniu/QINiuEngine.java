@@ -104,6 +104,7 @@ public class QINiuEngine {
 
     /**
      * 上传单张图片
+     *
      * @param filePath  文件路径
      * @param filename  文件名
      * @param updateKey 更新使用的key，若第一次上传设为空
@@ -157,6 +158,7 @@ public class QINiuEngine {
         return null;
     }
 
+    //
     private void uploadAgain() {
         if (pop == null) {
             pop = new QinNiuPop(activity);
@@ -238,6 +240,9 @@ public class QINiuEngine {
             this.view = view;
             this.filePath = filePath;
             this.index = index;
+            if (index <= 10) {
+                index = Integer.parseInt("0" + index);
+            }
             this.key = index + format;
         }
     }
