@@ -1,6 +1,5 @@
 package lilun.com.pensionlife.ui.home.personal_setting;
 
-import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.QINiuToken;
@@ -39,7 +38,7 @@ public class PersonalSettingPersenter extends RxPresenter<PersonalSettingContrac
     @Override
     public void getUploadToken(String modelName, String modelId, String tag) {
         NetHelper.getApi()
-                .getUploadToken(modelName, modelId, tag)
+                .getPostFileToken(modelName, modelId, tag)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<QINiuToken>() {

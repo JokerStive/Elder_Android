@@ -58,8 +58,8 @@ public class BannerPager extends RelativeLayout {
         indictor = (CircleIndicator) view.findViewById(R.id.indicator);
     }
 
-    public void setData(List<String> oldUrls) {
-        List<String> urls = sortUrls(oldUrls);
+    public void setData(List<String> urls) {
+//        List<String> urls = sortUrls(oldUrls);
         List<ImageView> items = new ArrayList<>();
         if (urls.size() == 0) {
             ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
@@ -89,8 +89,8 @@ public class BannerPager extends RelativeLayout {
     }
 
     /**
-    *对图片的下载地址排序，也是垃圾代码
-    */
+     * 对图片的下载地址排序，也是垃圾代码
+     */
     private List<String> sortUrls(List<String> oldUrls) {
         ArrayList<String> result = null;
         Map<Integer, String> resultMather;
@@ -124,17 +124,16 @@ public class BannerPager extends RelativeLayout {
     private String getUrlFileNameIndex(String url) {
         String result;
         result = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+        result = result.substring(0, 2);
         Logger.i("图片index--" + result);
         return result;
     }
 
     public class ViewPagerAdapter extends PagerAdapter {
         private List<ImageView> views;
-        private Context context;
 
         public ViewPagerAdapter(List<ImageView> views, Context context) {
             this.views = views;
-            this.context = context;
         }
 
         @Override

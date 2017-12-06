@@ -19,7 +19,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
-import com.orhanobut.logger.Logger;
 import com.vanzh.library.BaseBean;
 import com.vanzh.library.BottomDialog;
 import com.vanzh.library.DataInterface;
@@ -470,7 +469,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
     @Override
     public void uploadImages(QINiuToken qiNiuToken) {
 
-        QINiuEngine engine = new QINiuEngine(_mActivity, 1, qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
+        QINiuEngine engine = new QINiuEngine(_mActivity, 1, qiNiuToken, new QINiuEngine.UploadListener() {
             @Override
             public void onAllSuccess() {
                 //未设置过头像，则显示，重新获取个人数据，再显示头像

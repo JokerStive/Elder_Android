@@ -1,21 +1,10 @@
 package lilun.com.pensionlife.ui.register;
 
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
-
-import java.util.ArrayList;
-
-import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.QINiuToken;
-import lilun.com.pensionlife.module.utils.BitmapUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * Created by zp on 2017/4/14.
@@ -33,7 +22,7 @@ public class RegisterAvatorPresenter extends RxPresenter<RegisterContract.ViewAv
     @Override
     public void getUploadToken(String modelName, String modelId, String tag) {
         NetHelper.getApi()
-                .getUploadToken(modelName, modelId, tag)
+                .getPostFileToken(modelName, modelId, tag)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<QINiuToken>() {

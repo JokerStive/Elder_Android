@@ -109,7 +109,7 @@ public class RegisterAvatorFragment extends BaseTakePhotoFragment<RegisterContra
 
     @Override
     public void uploadImages(QINiuToken qiNiuToken) {
-        QINiuEngine qiNiuEngine = new QINiuEngine(_mActivity, 1, qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
+        QINiuEngine qiNiuEngine = new QINiuEngine(_mActivity, 1, qiNiuToken, new QINiuEngine.UploadListener() {
             @Override
             public void onAllSuccess() {
                 finishRegister();

@@ -23,6 +23,16 @@ public class Event {
     public static class TokenFailure {
     }
 
+
+    //服务器升级不可用
+    public static class ServiceUnable {
+        public String errorString;
+
+        public ServiceUnable(String errorString) {
+            this.errorString = errorString;
+        }
+    }
+
     //刷新邻居互助分类、列表页面数据
     public static class RefreshHelpData {
         public OrganizationAid aid;

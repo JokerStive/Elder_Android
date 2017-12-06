@@ -16,7 +16,6 @@ import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
-import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
 import lilun.com.pensionlife.widget.recycler_view.AutoExtendSpanSizeLookup;
@@ -84,7 +83,6 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle(getString(R.string.residential_service));
-//        titleBar.setTvRightText(getString(R.string.all_orders));
         titleBar.setTitleBarClickListener(new TitleBarClickCallBack() {
             @Override
             public void onBackClick() {
@@ -98,15 +96,13 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
             @Override
             public void onRightClick() {
-                //TODO 查看所有订单
-                start(OrderListFragment.newInstance());
             }
         });
 
 
         replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
 
-        mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
+
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -134,16 +130,20 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
     public void showClassifies(List<OrganizationProductCategory> productCategories) {
         completeRefresh();
         if (mClassifyAdapter == null) {
-//            int spanCount = spanCountByData(productCategories);
-            GridLayoutManager manager = new GridLayoutManager(_mActivity, 3);
-            manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 3));
-            mClassifyRecycler.setLayoutManager(manager);
+
+            GridLayoutManager manager = new GridLayoutManager(_mActivity, 6);
+            manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), 6));
+
+            mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
+
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
             mClassifyAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
                 OrganizationProductCategory category = mClassifyAdapter.getData().get(i);
                 start(ProductListFragment.newInstance(category.getName(), category.getId(), 0));
             });
             mClassifyRecycler.setAdapter(mClassifyAdapter);
+
+            mClassifyRecycler.setLayoutManager(manager);
         } else {
             mClassifyAdapter.replaceAll(productCategories);
         }

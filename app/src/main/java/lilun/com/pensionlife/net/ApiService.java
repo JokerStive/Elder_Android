@@ -74,8 +74,25 @@ public interface ApiService {
     /**
      * 获取上传图片的token
      */
+    @FormUrlEncoded
     @POST("{modelName}/{modelId}/upload/{tag}")
-    Observable<Response<QINiuToken>> getUploadToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
+    Observable<Response<QINiuToken>> getPostFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList);
+
+
+
+    /**
+     * 获取上传图片的token
+     */
+    @FormUrlEncoded
+    @PUT("{modelName}/{modelId}/upload/{tag}")
+    Observable<Response<QINiuToken>> getPutFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList,@Field("isRefilename")  boolean isRefilename);
+
+
+    /**
+     * 获取上传图片的token
+     */
+    @POST("{modelName}/{modelId}/upload/{tag}")
+    Observable<Response<QINiuToken>> getPostFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
 
     /**
      * 获取更新图片的token

@@ -34,8 +34,8 @@ public class IconUrl {
         return ConfigUri.BASE_URL + module + "/" + encodeURL(moduleId) + "/download/icon/" + iconName + "?access_token=" + User.getToken();
     }
 
-    public static String account(String account, String accountId) {
-        return ConfigUri.BASE_URL + account + "/" + encodeURL(accountId) + "/download/image/{imageName}?access_token=" + User.getToken();
+    public static String account(String accountId) {
+        return ConfigUri.BASE_URL + Accounts + "/" + encodeURL(accountId) + "/download/image?access_token=" + User.getToken();
     }
 
     public static String organizationEdus(String organizationId, String iconName) {
@@ -45,6 +45,9 @@ public class IconUrl {
     public static String eduCourses(String organizationId, String iconName) {
         return ConfigUri.BASE_URL + "EduCourses/" + encodeURL(organizationId) + "/picture/" + iconName + "?access_token=" + User.getToken();
     }
+
+
+
 
     /**
      * url转义

@@ -151,8 +151,8 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
     public void showClassifiesByService(List<OrganizationProductCategory> productCategories, String categoryId) {
         completeRefresh();
 //        cacheExpendKeys(productCategories);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, spanCountByData(productCategories), LinearLayoutManager.VERTICAL, false);
-        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(), spanCountByData(productCategories)));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(_mActivity, 6, LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(productCategories.size(),6));
 
         ProductCategoryAdapter adapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.agency));
         adapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
@@ -168,11 +168,11 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
 
     private void show(GridLayoutManager gridLayoutManager, ProductCategoryAdapter adapter, String categoryId) {
         if (categoryId.equals(Config.agency_product_categoryId)) {
-            rvAgency.setLayoutManager(gridLayoutManager);
             rvAgency.setAdapter(adapter);
+            rvAgency.setLayoutManager(gridLayoutManager);
         } else if (categoryId.equals(Config.tourism_product_categoryId)) {
-            rvServer.setLayoutManager(gridLayoutManager);
             rvServer.setAdapter(adapter);
+            rvServer.setLayoutManager(gridLayoutManager);
         }
     }
 

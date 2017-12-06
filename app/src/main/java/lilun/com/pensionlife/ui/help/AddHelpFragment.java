@@ -26,8 +26,8 @@ import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
-import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
+import lilun.com.pensionlife.module.bean.TokenParams;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -234,55 +234,106 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .subscribe(new RxSubscriber<OrganizationAid>(_mActivity) {
                     @Override
                     public void _next(OrganizationAid organizationAid) {
-                        mAidId = organizationAid.getId();
-                        getToken(organizationAid.getId());
+                        Boolean isDraft = organizationAid.isDraft;
+                        if (isDraft) {
+                            mAidId = organizationAid.getId();
+                            uploadImages();
+                        } else {
+                            popAndRefresh();
+                        }
                     }
                 });
 
     }
 
-    /**
-     * 获取token
-     */
-    private void getToken(String id) {
-        ArrayList<String> photoPath = getPhotoData();
-        if (photoPath.size() > 0) {
-            NetHelper.getApi().
-                    getUploadToken("OrganizationAids", id, "image")
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<QINiuToken>() {
-                        @Override
-                        public void _next(QINiuToken qiNiuToken) {
-                            uploadImages(qiNiuToken);
-                        }
-                    });
-        }
-    }
+//    /**
+//     * 获取token
+//     */
+//    private void getToken() {
+//        ArrayList<String> photoPath = getPhotoData();
+//        if (photoPath.size() > 0) {
+//            ArrayList<String> fileNames = createFileNames(photoPath);
+//            NetHelper.getApi().
+//                    getPostFileToken("OrganizationAids", mAidId, "image", fileNames)
+//                    .compose(RxUtils.handleResult())
+//                    .compose(RxUtils.applySchedule())
+//                    .subscribe(new RxSubscriber<QINiuToken>() {
+//                        @Override
+//                        public void _next(QINiuToken qiNiuToken) {
+//                            uploadImages(qiNiuToken);
+//                        }
+//                    });
+//        }
+//    }
+//
+//    private ArrayList<String> createFileNames(ArrayList<String> photoPath) {
+//        ArrayList<String> fileNames = new ArrayList<>();
+//        for (int i = 0; i < photoPath.size(); i++) {
+//            String fileName = i + QINiuEngine.format;
+//            fileNames.add(fileName);
+//        }
+//        return fileNames;
+//    }
 
     /**
      * 上传图片
      */
-    private void uploadImages(QINiuToken qiNiuToken) {
-        ArrayList<String> photoData = getPhotoData();
-        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
-            @Override
-            public void onAllSuccess() {
-                popAndRefreshData();
-            }
-        });
-        for (int i = 0; i < photoData.size(); i++) {
-            String path = photoData.get(i);
+    private void uploadImages() {
+        TokenParams tokenParams = createTokenParam();
+        ArrayList<String> filePaths = getPhotoData();
+        ArrayList<QiNiuUploadView> views = getQiNiuUploadViews(filePaths);
+        QINiuEngine engine = new QINiuEngine(_mActivity, tokenParams, filePaths, views, this::putDataAndPop);
+        engine.postMultipleFile();
+//        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken, new QINiuEngine.UploadListener() {
+//            @Override
+//            public void onAllSuccess() {
+//                putDataAndPop();
+//            }
+//
+//            @Override
+//            public void tokenInvalid(ArrayList<String> uploadFileNames) {
+//                NetHelper.getApi().
+//                        getPutFileToken("OrganizationAids", mAidId, "image", uploadFileNames, true)
+//                        .compose(RxUtils.handleResult())
+//                        .compose(RxUtils.applySchedule())
+//                        .subscribe(new RxSubscriber<QINiuToken>() {
+//                            @Override
+//                            public void _next(QINiuToken qiNiuToken) {
+//                                engine.continueUpload(qiNiuToken);
+//                            }
+//                        });
+//            }
+//        });
+//        for (int i = 0; i < photoData.size(); i++) {
+//            String path = photoData.get(i);
+//            QiNiuUploadView view = takePhotoLayout.getView(i);
+//            engine.upload(path, i, view);
+//        }
+    }
+
+    private ArrayList<QiNiuUploadView> getQiNiuUploadViews(ArrayList<String> filePaths) {
+        ArrayList<QiNiuUploadView> views = new ArrayList<>();
+        for (int i = 0; i < filePaths.size(); i++) {
             QiNiuUploadView view = takePhotoLayout.getView(i);
-            engine.upload(path, i, view);
+            views.add(view);
         }
+        return views;
+    }
+
+    @NonNull
+    private TokenParams createTokenParam() {
+        TokenParams tokenParams = new TokenParams();
+        tokenParams.setModelName("OrganizationAids");
+        tokenParams.setModelId(mAidId);
+        tokenParams.setTag("image");
+        return tokenParams;
     }
 
 
     /**
      * 修改aid的状态，退出并且刷新界面
      */
-    private void popAndRefreshData() {
+    private void putDataAndPop() {
         OrganizationAid organizationAid = new OrganizationAid();
         organizationAid.setDraft(false);
         NetHelper.getApi()
@@ -292,13 +343,17 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 .subscribe(new RxSubscriber<Object>(_mActivity) {
                     @Override
                     public void _next(Object o) {
-                        pop();
-                        Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
-                        EventBus.getDefault().post(refreshHelpData);
+                        popAndRefresh();
                     }
                 });
 
 
+    }
+
+    private void popAndRefresh() {
+        pop();
+        Event.RefreshHelpData refreshHelpData = new Event.RefreshHelpData();
+        EventBus.getDefault().post(refreshHelpData);
     }
 
 
@@ -311,7 +366,7 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         organizationAid.setMemo(etContent.getText().toString());
         organizationAid.setKind(mKind);
         organizationAid.setMobile(inputMobile.getInput());
-        organizationAid.setDraft(true);
+        organizationAid.setDraft(getPhotoData() != null && getPhotoData().size() != 0);
         //如果提供了补贴
         if (!TextUtils.isEmpty(inputPrice.getInput())) {
             organizationAid.setPrice(Double.parseDouble(inputPrice.getInput()));

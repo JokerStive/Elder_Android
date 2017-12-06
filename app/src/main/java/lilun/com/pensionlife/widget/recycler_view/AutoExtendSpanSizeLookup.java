@@ -18,6 +18,9 @@ public class AutoExtendSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
         this.dataSize = dataSize;
         this.spanCount = spanCount;
         remainder = dataSize%spanCount;
+        if (remainder==dataSize){
+            remainder =  dataSize%(spanCount/2);
+        }
     }
 
 
@@ -25,9 +28,10 @@ public class AutoExtendSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
     @Override
     public int getSpanSize(int position) {
 //        Logger.d("余数 = "+remainder+"---"+"当前position = "+position);
-//        if (remainder!=0 && position>=dataSize-remainder){
-//            return spanCount/remainder;
-//        }
-        return 3;
+        int result = 2;
+        if (remainder!=0 && position>=dataSize-remainder){
+            result =  spanCount/remainder;
+        }
+        return result;
     }
 }

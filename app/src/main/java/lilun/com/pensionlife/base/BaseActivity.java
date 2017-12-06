@@ -35,6 +35,7 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.lbs.AnnounceInfoActivity;
 import lilun.com.pensionlife.ui.lbs.UrgentAidInfoActivity;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportActivity;
 import rx.Subscription;
@@ -111,6 +112,12 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         finish();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void serviceUnable(Event.ServiceUnable serviceUnable) {
+        new NormalDialog().createShowMessage(this, serviceUnable.errorString, () -> {
+        });
+    }
+
     @Subscribe
     public void permissionDenied(Event.PermissionDenied event) {
 //        Logger.d("prepare http me");
@@ -125,12 +132,6 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
                 });
 
     }
-
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void refreshPushMessage(Event.RefreshPushMessage event) {
-//        showPushMessage(getPushMessageFromDatabase());
-//    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)

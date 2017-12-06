@@ -32,6 +32,6 @@ public class CycleAidAdapter extends QuickAdapter<OrganizationAid> {
         holder.setText(R.id.tv_creator_name, creatorName);
         holder.setText(R.id.tv_title, aid.getTitle());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, aid.getCreatorId(), null), R.drawable.icon_def, holder.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadImage(IconUrl.account(aid.getCreatorId()), holder.getView(R.id.iv_icon));
     }
 }

@@ -1,10 +1,14 @@
 package lilun.com.pensionlife.module.utils;
 
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSONObject;
 import com.orhanobut.logger.Logger;
 
-import java.io.IOException;
+import org.greenrobot.eventbus.EventBus;
 
-import lilun.com.pensionlife.module.bean.Error;
+import lilun.com.pensionlife.app.Event;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.net.ApiException;
 import retrofit2.Response;
 import rx.Observable;
@@ -27,25 +31,60 @@ public class RxUtils {
             if (tResponse.isSuccessful()) {
                 return dataObservable(tResponse.body());
             } else {
-                String error_message = "错误异常数据";
-                int error_code = 110;
-                try {
-                    error_message = tResponse.errorBody().string();
-                    Error error = GsonUtils.string2Error(error_message);
-                    if (error != null) {
-                        Error.ErrorBean errorBean = error.getError();
-                        if (errorBean != null) {
-                            error_code = errorBean.getStatus();
-                            error_message = errorBean.getMessage();
-                        }
-                    }else {
-                        Logger.d(error_message);
+                int code = tResponse.code();
+
+                //401并且不是登陆
+                if (code == 401 && !TextUtils.isEmpty(User.getToken())) {
+                    if (!tResponse.raw().request().url().toString().contains("Accounts/me")) {
+                        Logger.d("出现了401需要去检查");
+                        EventBus.getDefault().post(new Event.PermissionDenied());
+                    } else {
+                        Logger.d("Accounts/me检查也是410，跳转登录界面");
+                        PreUtils.putString(User.token, "");
+                        EventBus.getDefault().post(new Event.TokenFailure());
                     }
-                } catch (IOException e) {
+                }
+
+                String errorString = "错误的结构有误";
+                try {
+                    errorString = tResponse.errorBody().string();
+                    JSONObject jsonObject = JSONObject.parseObject(errorString);
+                    JSONObject error = jsonObject.getJSONObject("error");
+                    errorString = error.getString("message");
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                //503不可用
+                if (code == 503) {
+                    EventBus.getDefault().post(new Event.ServiceUnable(errorString));
+                }
+
+
+
+
+//                int error_code = 110;
+//                try {
+//                    errorString = tResponse.errorBody().string();
+//                    JSONObject jsonObject = JSONObject.parseObject(errorString);
+//                    String message = jsonObject.get("message").toString();
+//                    JSONObject jsonObject = new JSONObject();
+//                    jsonObject.
+//                    Error error = GsonUtils.string2Error(error_message);
+//                    if (error != null) {
+//                        Error.ErrorBean errorBean = error.getError();
+//                        if (errorBean != null) {
+//                            error_code = errorBean.getStatus();
+//                            error_message = errorBean.getMessage();
+//                        }
+//                    }else {
+//                        Logger.d(error_message);
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 tResponse.errorBody().close();
-                return Observable.error(new ApiException(error_code, error_message));
+                return Observable.error(new ApiException(code, errorString));
             }
 
         });

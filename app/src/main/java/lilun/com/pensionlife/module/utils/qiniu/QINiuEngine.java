@@ -21,7 +21,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import lilun.com.pensionlife.module.bean.QINiuToken;
+import lilun.com.pensionlife.module.bean.TokenParams;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.net.NetHelper;
+import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.widget.CircleProgressView;
 import lilun.com.pensionlife.widget.QinNiuPop;
 
@@ -34,16 +39,39 @@ import lilun.com.pensionlife.widget.QinNiuPop;
  */
 public class QINiuEngine {
 
-    private String token;
+    private TokenParams tokenParams;
+    private ArrayList<String> postFileTokenFileNames;
+    private ArrayList<String> filePaths;
+    private QINiuToken token;
+    private long tokenInvalidTime;
     private Activity activity;
     private UploadManager uploadManager;
     private UploadListener listener;
     private int needOperateCount = 0;
     private OperateStatistics operateStatistics;
     private QinNiuPop pop;
-    private String format = ".jpg";
+    public static String format = ".jpg";
 
-    public QINiuEngine(Activity activity, int needOperateCount, String token, UploadListener listener) {
+    public QINiuEngine(Activity activity, TokenParams tokenParams, ArrayList<String> filePaths, ArrayList<QiNiuUploadView> qiNiuUploadViews, UploadListener listener) {
+        this.tokenParams = tokenParams;
+        this.filePaths = filePaths;
+        this.needOperateCount = filePaths.size();
+        this.listener = listener;
+        this.activity = activity;
+        operateStatistics = new OperateStatistics();
+        uploadManager = new UploadManager();
+
+        if (this.filePaths == null || qiNiuUploadViews == null || this.filePaths.size() != qiNiuUploadViews.size()) {
+            throw new RuntimeException("传入的数据异常");
+        }
+
+        init(qiNiuUploadViews);
+
+
+    }
+
+
+    public QINiuEngine(Activity activity, int needOperateCount, QINiuToken token, UploadListener listener) {
         this.needOperateCount = needOperateCount;
         this.listener = listener;
         this.activity = activity;
@@ -52,8 +80,87 @@ public class QINiuEngine {
         uploadManager = new UploadManager();
     }
 
+    private void init(ArrayList<QiNiuUploadView> qiNiuUploadViews) {
+        postFileTokenFileNames = new ArrayList<>();
+        for (int i = 0; i < filePaths.size(); i++) {
 
-    public void upload(Operate operate) {
+            //初始化文件名
+            String currentTimeMillis = System.currentTimeMillis() + "";
+            String fileName = i + currentTimeMillis;
+            postFileTokenFileNames.add(fileName);
+
+            //
+            String filePath = filePaths.get(i);
+            QiNiuUploadView qiNiuUploadView = qiNiuUploadViews.get(i);
+            Operate operate = new Operate(filePath, fileName, qiNiuUploadView);
+            operateStatistics.addStatistic(operate);
+
+        }
+    }
+
+
+    /**
+     * 获取七牛post文件的token
+     */
+    private void getPostFileToken(GetTokenCallback callback) {
+        NetHelper.getApi().
+                getPostFileToken(tokenParams.getModelName(), tokenParams.getModelId(), tokenParams.getTag(), postFileTokenFileNames)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<QINiuToken>() {
+                    @Override
+                    public void _next(QINiuToken qiNiuToken) {
+                        setToken(qiNiuToken);
+                        callback.onGetToken();
+                    }
+                });
+    }
+
+    private void setToken(QINiuToken qiNiuToken) {
+        this.token = qiNiuToken;
+        tokenInvalidTime = System.currentTimeMillis() + qiNiuToken.getTtl() * 1000;
+    }
+
+    /**
+     * 获取七牛put文件的token
+     */
+    private void getPutFileToken(GetTokenCallback callback) {
+        NetHelper.getApi().
+                getPutFileToken(tokenParams.getModelName(), tokenParams.getModelId(), tokenParams.getTag(), getUploadFileNames(), true)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<QINiuToken>() {
+                    @Override
+                    public void _next(QINiuToken qiNiuToken) {
+                        setToken(qiNiuToken);
+                        callback.onGetToken();
+                    }
+                });
+    }
+
+    public interface GetTokenCallback {
+        void onGetToken();
+    }
+
+
+    /**
+     * 上传多张图片
+     */
+    public void postMultipleFile() {
+        getPostFileToken(this::postMultiple);
+    }
+
+    /**
+     * 上传多张图片
+     */
+    private void postMultiple() {
+        for (Operate operate : operateStatistics.operates) {
+            uploadWithOperate(operate);
+        }
+    }
+
+
+    private void uploadWithOperate(Operate operate) {
         UploadOptions options = new UploadOptions(null, null, false,
                 new UpProgressHandler() {
                     public void progress(String key, double percent) {
@@ -74,6 +181,7 @@ public class QINiuEngine {
                     operate.view.setStatus(QiNiuUploadView.UPLOAD_SUCCESS);
                     operate.status = QiNiuUploadView.UPLOAD_SUCCESS;
                 } else {
+                    Logger.e(info.toString());
                     operate.view.setStatus(QiNiuUploadView.UPLOAD_FALSE);
                     operate.status = QiNiuUploadView.UPLOAD_FALSE;
                 }
@@ -91,16 +199,15 @@ public class QINiuEngine {
         };
         byte[] bytes = fileToJPGByteData(operate.filePath);
         if (bytes != null) {
-            uploadManager.put(bytes, operate.key, token, upCompletionHandler, options);
+            uploadManager.put(bytes, operate.key, token.getToken(), upCompletionHandler, options);
         }
-//        uploadManager.put(operate.filePath, operate.key, token, upCompletionHandler, options);
     }
 
-    public void upload(String filePath, int index, QiNiuUploadView view) {
-        Operate operate = new Operate(filePath, index, view);
-        operateStatistics.addStatistic(operate);
-        upload(operate);
+
+    private boolean isTokenInvalid() {
+        return System.currentTimeMillis() > tokenInvalidTime;
     }
+
 
     /**
      * 上传单张图片
@@ -137,9 +244,9 @@ public class QINiuEngine {
         if (bytes != null) {
             cpvUpload.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(updateKey))
-                uploadManager.put(bytes, filename + format, token, upCompletionHandler, options);
+                uploadManager.put(bytes, filename + format, token.getToken(), upCompletionHandler, options);
             else
-                uploadManager.put(bytes, updateKey, token, upCompletionHandler, options);
+                uploadManager.put(bytes, updateKey, token.getToken(), upCompletionHandler, options);
         }
     }
 
@@ -158,7 +265,6 @@ public class QINiuEngine {
         return null;
     }
 
-    //
     private void uploadAgain() {
         if (pop == null) {
             pop = new QinNiuPop(activity);
@@ -170,14 +276,37 @@ public class QINiuEngine {
             });
             pop.setOnUploadListener(v -> {
                 pop.dismiss();
-                continueUpload();
+                if (isTokenInvalid()) {
+                    refreshTokenFirst();
+                } else {
+                    continueUpload();
+                }
+
             });
         }
         pop.showAtLocation(operateStatistics.operates.get(0).view, Gravity.CENTER, 0, 0);
     }
 
+    private void refreshTokenFirst() {
+        getPutFileToken(this::continueUpload);
+    }
 
-    public void continueUpload() {
+
+    private ArrayList<String> getUploadFileNames() {
+        ArrayList<String> uploadFileNames = new ArrayList<>();
+        for (int i = 0; i < operateStatistics.operates.size(); i++) {
+            Operate operate = operateStatistics.operates.get(i);
+            if (operate.status == QiNiuUploadView.UPLOAD_FALSE) {
+                uploadFileNames.add(operate.key);
+            } else {
+                uploadFileNames.add("null");
+            }
+        }
+        return uploadFileNames;
+    }
+
+
+    private void continueUpload() {
         List<Operate> operates = operateStatistics.operates;
         needOperateCount = 0;
         operateStatistics.hasOperatedCount = 0;
@@ -185,7 +314,7 @@ public class QINiuEngine {
             Operate operate = operates.get(i);
             if (operate.status == QiNiuUploadView.UPLOAD_FALSE) {
                 needOperateCount++;
-                upload(operate);
+                uploadWithOperate(operate);
             }
         }
     }
@@ -193,7 +322,6 @@ public class QINiuEngine {
 
     public interface UploadListener {
         void onAllSuccess();
-
     }
 
     class OperateStatistics {
@@ -233,17 +361,12 @@ public class QINiuEngine {
         public String filePath;
         public int status = QiNiuUploadView.LOCAL_SHOW;
         public QiNiuUploadView view;
-        public int index;
         public String key;
 
-        public Operate(String filePath, int index, QiNiuUploadView view) {
+        public Operate(String filePath, String fileName, QiNiuUploadView view) {
             this.view = view;
             this.filePath = filePath;
-            this.index = index;
-            if (index <= 10) {
-                index = Integer.parseInt("0" + index);
-            }
-            this.key = index + format;
+            this.key = fileName;
         }
     }
 

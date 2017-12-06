@@ -110,4 +110,8 @@ public class ToastHelper {
     public void showWareShort(CharSequence text) {
         showWare(text, Toast.LENGTH_SHORT);
     }
+
+    public void showWareLong(CharSequence text) {
+        showWare(text, Toast.LENGTH_LONG);
+    }
 }

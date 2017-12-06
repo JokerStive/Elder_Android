@@ -1,7 +1,7 @@
 package lilun.com.pensionlife.ui.activity.activity_add;
 
-import android.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,8 +30,8 @@ import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
-import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.TakePhotoResult;
+import lilun.com.pensionlife.module.bean.TokenParams;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -51,8 +51,8 @@ import rx.Observable;
 /**
  * 新建活动V
  * 2017-11-27 11:02:09 更改流程 1.新建活动对象，将其作为草稿，通过 newActivity()接口 保存于后台；
- *                             2.上传图片至七牛服务器，若全部成功，更新后台草稿标志；
- *                             3.刷新数据；
+ * 2.上传图片至七牛服务器，若全部成功，更新后台草稿标志；
+ * 3.刷新数据；
  *
  * @author yk
  *         create at 2017/3/13 11:18
@@ -277,6 +277,8 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
                 return;
             }
         }
+
+        orgActivity.setIsDraft(getPhotoData()!=null);
         //此处提交的是草稿
         NetHelper.getApi()
                 .newActivity(orgActivity)
@@ -287,52 +289,91 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
                     public void _next(OrganizationActivity activity) {
                         mTopic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
                         mActId = activity.getId();
-                        getToken(mActId);
+                        if (!activity.getIsDraft()){
+                            popAndRefreshData();
+                        }else {
+                            uploadImages();
+                        }
                     }
                 });
     }
 
-    /**
-     * 获取token
-     */
-    private void getToken(String id) {
-        ArrayList<String> photoPath = getPhotoData();
-        if (photoPath.size() > 0) {
-            NetHelper.getApi().
-                    getUploadToken("OrganizationActivities", id, "icon")
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<QINiuToken>() {
-                        @Override
-                        public void _next(QINiuToken qiNiuToken) {
-                            uploadImages(qiNiuToken);
-                        }
-                    });
-        }
-    }
+//    /**
+//     * 获取token
+//     */
+//    private void getToken(String id) {
+//        ArrayList<String> photoPath = getPhotoData();
+//        if (photoPath.size() > 0) {
+//            ArrayList<String> fileNames = createFileNames(photoPath);
+//            NetHelper.getApi().
+//                    getPostFileToken("OrganizationActivities", id, "icon", fileNames)
+//                    .compose(RxUtils.handleResult())
+//                    .compose(RxUtils.applySchedule())
+//                    .subscribe(new RxSubscriber<QINiuToken>() {
+//                        @Override
+//                        public void _next(QINiuToken qiNiuToken) {
+//                            uploadImages(qiNiuToken);
+//                        }
+//                    });
+//        }
+//    }
+//
+//
+//    private ArrayList<String> createFileNames(ArrayList<String> photoPath) {
+//        ArrayList<String> fileNames = new ArrayList<>();
+//        for (int i = 0; i < photoPath.size(); i++) {
+//            String fileName = i+QINiuEngine.format;
+//            fileNames.add(fileName);
+//        }
+//        return fileNames;
+//    }
 
     /**
      * 上传图片
      */
-    private void uploadImages(QINiuToken qiNiuToken) {
-        ArrayList<String> photoData = getPhotoData();
-        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
-            @Override
-            public void onAllSuccess() {
-                popAndRefreshData();
-            }
-        });
-        for (int i = 0; i < photoData.size(); i++) {
-            String path = photoData.get(i);
-            QiNiuUploadView view = takePhotoLayout.getView(i);
-            engine.upload(path, i, view);
-        }
+    private void uploadImages() {
+        TokenParams tokenParams = createTokenParam();
+        ArrayList<String> filePaths = getPhotoData();
+        ArrayList<QiNiuUploadView> views = getQiNiuUploadViews(filePaths);
+        QINiuEngine engine = new QINiuEngine(_mActivity, tokenParams, filePaths, views, this::putDataAndPop);
+        engine.postMultipleFile();
+//        ArrayList<String> photoData = getPhotoData();
+//        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
+//            @Override
+//            public void onAllSuccess() {
+//                popAndRefreshData();
+//            }
+//        });
+//        for (int i = 0; i < photoData.size(); i++) {
+//            String path = photoData.get(i);
+//            QiNiuUploadView view = takePhotoLayout.getView(i);
+//            engine.upload(path, i, view);
+//        }
     }
+
+    private ArrayList<QiNiuUploadView> getQiNiuUploadViews(ArrayList<String> filePaths) {
+        ArrayList<QiNiuUploadView> views = new ArrayList<>();
+        for (int i = 0; i < filePaths.size(); i++) {
+            QiNiuUploadView view = takePhotoLayout.getView(i);
+            views.add(view);
+        }
+        return views;
+    }
+
+    @NonNull
+    private TokenParams createTokenParam() {
+        TokenParams tokenParams = new TokenParams();
+        tokenParams.setModelName("OrganizationActivities");
+        tokenParams.setModelId(mActId);
+        tokenParams.setTag("icon");
+        return tokenParams;
+    }
+
 
     /**
      * 更新后台服务草稿数据为正式数据
      */
-    private void popAndRefreshData() {
+    private void putDataAndPop() {
         OrganizationActivity orgActivity = new OrganizationActivity();
         orgActivity.setIsDraft(false);
         NetHelper.getApi()
@@ -342,11 +383,15 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
                 .subscribe(new RxSubscriber<OrganizationActivity>() {
                     @Override
                     public void _next(OrganizationActivity organizationActivity) {
-                        MQTTManager.getInstance().subscribe(mTopic, 2);
-                        EventBus.getDefault().post(new Event.RefreshActivityData());
-                        pop();
+                        popAndRefreshData();
                     }
                 });
+    }
+
+    private void popAndRefreshData() {
+        MQTTManager.getInstance().subscribe(mTopic, 2);
+        EventBus.getDefault().post(new Event.RefreshActivityData());
+        pop();
     }
 
     private void showNotEmpty(int string) {
