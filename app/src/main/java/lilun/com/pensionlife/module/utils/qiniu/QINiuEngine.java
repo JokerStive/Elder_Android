@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -164,7 +163,7 @@ public class QINiuEngine {
         UploadOptions options = new UploadOptions(null, null, false,
                 new UpProgressHandler() {
                     public void progress(String key, double percent) {
-                        Log.i("qiniu", key + ": " + percent);
+                        Logger.i("第"+operate.key+"张上传进度"+ key + ": " + percent);
                         operate.view.setProgress(percent);
                     }
                 }, null);

@@ -48,6 +48,7 @@ public class QiNiuUploadView extends RelativeLayout {
         mDelete = (ImageView) view.findViewById(R.id.delete);
         mError = (ImageView) view.findViewById(R.id.error);
         progressView = (CircleProgressView) view.findViewById(R.id.progressBar);
+        progressView.setMax(100);
 
 //        mCover = (FrameLayout) view.findViewById(R.id.cover);
 
@@ -92,7 +93,7 @@ public class QiNiuUploadView extends RelativeLayout {
         if (mStatus != UPLOADING) {
             setStatus(UPLOADING);
         }
-        progressView.setProgress((int) progress * 100);
+        progressView.setProgress((int) (progress * 100));
         mImageView.setProgress((int) progress);
     }
 
