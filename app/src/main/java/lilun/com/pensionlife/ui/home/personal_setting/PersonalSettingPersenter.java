@@ -44,7 +44,7 @@ public class PersonalSettingPersenter extends RxPresenter<PersonalSettingContrac
                 .subscribe(new RxSubscriber<QINiuToken>() {
                     @Override
                     public void _next(QINiuToken qiNiuToken) {
-                        view.uploadImages(qiNiuToken);
+                        view.uploadImages(qiNiuToken,null);
                     }
                 });
     }
@@ -57,15 +57,16 @@ public class PersonalSettingPersenter extends RxPresenter<PersonalSettingContrac
      * @param tag
      */
     @Override
-    public void getUpdateToken(String modelName, String modelId, String tag) {
+    public void getUpdateToken(String modelName, String modelId, String tag,String fileName) {
+
         NetHelper.getApi()
-                .getUpdateToken(modelName, modelId, tag)
+                .getUpdateToken(modelName, modelId, tag,fileName)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<QINiuToken>() {
                     @Override
                     public void _next(QINiuToken qiNiuToken) {
-                        view.uploadImages(qiNiuToken);
+                        view.uploadImages(qiNiuToken,fileName);
                     }
                 });
     }

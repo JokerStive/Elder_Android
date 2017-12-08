@@ -125,7 +125,7 @@ public class QINiuEngine {
      */
     private void getPutFileToken(GetTokenCallback callback) {
         NetHelper.getApi().
-                getPutFileToken(tokenParams.getModelName(), tokenParams.getModelId(), tokenParams.getTag(), getUploadFileNames(), true)
+                getPutFileToken(tokenParams.getModelName(), tokenParams.getModelId(), tokenParams.getTag(), getUploadFileNames())
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<QINiuToken>() {
@@ -164,7 +164,7 @@ public class QINiuEngine {
                 new UpProgressHandler() {
                     public void progress(String key, double percent) {
                         Logger.i("第"+operate.key+"张上传进度"+ key + ": " + percent);
-                        operate.view.setProgress(percent);
+                        operate.view.setProgress((int) (percent * 100));
                     }
                 }, null);
 
@@ -212,11 +212,11 @@ public class QINiuEngine {
      * 上传单张图片
      *
      * @param filePath  文件路径
-     * @param filename  文件名
+//     * @param filename  文件名
      * @param updateKey 更新使用的key，若第一次上传设为空
      * @param cpvUpload 圆形上传进度view
      */
-    public void uploadOnlyOne(String filePath, String filename, String updateKey, CircleProgressView cpvUpload) {
+    public void uploadOnlyOne(String filePath, String updateKey, CircleProgressView cpvUpload) {
 
         UploadOptions options = new UploadOptions(null, null, false, new UpProgressHandler() {
             @Override
@@ -242,10 +242,12 @@ public class QINiuEngine {
         byte[] bytes = fileToJPGByteData(filePath);
         if (bytes != null) {
             cpvUpload.setVisibility(View.VISIBLE);
-            if (TextUtils.isEmpty(updateKey))
-                uploadManager.put(bytes, filename + format, token.getToken(), upCompletionHandler, options);
-            else
-                uploadManager.put(bytes, updateKey, token.getToken(), upCompletionHandler, options);
+            updateKey = TextUtils.isEmpty(updateKey)?System.currentTimeMillis()+format:updateKey;
+            uploadManager.put(bytes, updateKey, token.getToken(), upCompletionHandler, options);
+//            if (TextUtils.isEmpty(updateKey))
+//                uploadManager.put(bytes, filename + format, token.getToken(), upCompletionHandler, options);
+//            else
+//                uploadManager.put(bytes, updateKey, token.getToken(), upCompletionHandler, options);
         }
     }
 

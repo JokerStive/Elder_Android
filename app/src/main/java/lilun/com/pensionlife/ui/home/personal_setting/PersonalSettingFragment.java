@@ -34,8 +34,8 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
+import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseTakePhotoFragment;
 import lilun.com.pensionlife.module.bean.Account;
@@ -190,7 +190,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
         String helpPhone = PreUtils.getString("firstHelperPhone", "");
         tvFirstHelpPhone.setText(TextUtils.isEmpty(helpPhone) ? "未设置" : helpPhone);
 
-        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, civAvator);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
 
         //绘制完成
         viewTreeObserver = llBelongArea.getViewTreeObserver();
@@ -361,7 +361,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
                 .setOutputX(800)
                 .create();
 
-        getTakePhoto().onPickFromCaptureWithCrop(uri,options);
+        getTakePhoto().onPickFromCaptureWithCrop(uri, options);
     }
 
     @Override
@@ -387,9 +387,12 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
                 .compose(RxUtils.applySchedule())
                 .subscribe(s -> {
                     if (hasAvator) {
-                        mPresenter.getUpdateToken("Accounts", User.getUserId(), "image");
-                    } else
+                        String fileName = System.currentTimeMillis() + QINiuEngine.format;
+                        mPresenter.getUpdateToken("Accounts", User.getUserId(), "image", fileName);
+                    } else {
+
                         mPresenter.getUploadToken("Accounts", User.getUserId(), "image");
+                    }
                 });
     }
 
@@ -467,23 +470,27 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
     }
 
     @Override
-    public void uploadImages(QINiuToken qiNiuToken) {
+    public void uploadImages(QINiuToken qiNiuToken, String fileName) {
 
         QINiuEngine engine = new QINiuEngine(_mActivity, 1, qiNiuToken, new QINiuEngine.UploadListener() {
             @Override
             public void onAllSuccess() {
                 //未设置过头像，则显示，重新获取个人数据，再显示头像
                 ToastHelper.get().showShort("更新图片成功");
-                if (hasAvator) {
-                    ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, civAvator);
-                    EventBus.getDefault().post(new Event.AccountSettingChange());
-                } else
-                    mPresenter.getMe();
+                User.puttUserAvatar(IconUrl.account(User.getUserId()));
+//                mPresenter.getMe();
+//                if (hasAvator) {
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
+                EventBus.getDefault().post(new Event.AccountSettingChange());
+//                } else
+//                    mPresenter.getMe();
             }
         });
-        String updateKey = null;
-        if (hasAvator) updateKey = User.getUserAvatar().replace(Constants.fileBaseUri, "");
-        engine.uploadOnlyOne(imagePath, User.getUserId(), updateKey, cpvUpload);
+//        String updateKey = System.currentTimeMillis() + QINiuEngine.format;
+//        if (hasAvator){
+//            updateKey = User.getUserAvatar().replace(Constants.fileBaseUri, "");
+//        }
+        engine.uploadOnlyOne(imagePath, fileName, cpvUpload);
     }
 
 
@@ -491,7 +498,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
     public void showNewAvator(Account account) {
         User.puttUserAvatar(account.getImage());
         hasAvator = !TextUtils.isEmpty(account.getImage());
-        ImageLoaderUtil.instance().loadAvator(account.getImage(), R.drawable.icon_def, civAvator);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
         EventBus.getDefault().post(new Event.AccountSettingChange());
     }
 

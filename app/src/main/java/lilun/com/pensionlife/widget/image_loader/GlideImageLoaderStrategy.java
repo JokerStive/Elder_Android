@@ -9,6 +9,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.IconUrl;
 
 /**
  * glide策略
@@ -95,12 +96,11 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .into(imageView);
     }
 
-    public void loadAvator(final Context ctx, final String url, int placeholder, ImageView imageView) {
-        Glide.with(ctx).load(url).dontAnimate()
+    public void loadAvatar(Context ctx,  String accountId, ImageView imageView) {
+        Glide.with(ctx).load(IconUrl.account(accountId)).dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .placeholder(placeholder)
-                .error(placeholder)
+                .error(R.drawable.icon_error)
                 .override(400, 400)
                 .into(imageView);
     }

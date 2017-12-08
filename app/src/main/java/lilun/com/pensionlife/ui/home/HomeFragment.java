@@ -118,7 +118,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     //============更新用户头像
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showNewSetting(Event.AccountSettingChange account) {
-        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             }, getString(R.string.cancel), false);
         }
 
-        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
 

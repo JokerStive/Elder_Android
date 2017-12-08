@@ -85,7 +85,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @PUT("{modelName}/{modelId}/upload/{tag}")
-    Observable<Response<QINiuToken>> getPutFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList,@Field("isRefilename")  boolean isRefilename);
+    Observable<Response<QINiuToken>> getPutFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList);
 
 
     /**
@@ -97,8 +97,9 @@ public interface ApiService {
     /**
      * 获取更新图片的token
      */
+    @FormUrlEncoded
     @PUT("{modelName}/{modelId}/update/{tag}")
-    Observable<Response<QINiuToken>> getUpdateToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag);
+    Observable<Response<QINiuToken>> getUpdateToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") String fileName);
 
     /**
      * 获取位置

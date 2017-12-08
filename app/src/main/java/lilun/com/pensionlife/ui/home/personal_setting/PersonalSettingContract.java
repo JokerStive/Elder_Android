@@ -16,7 +16,7 @@ public class PersonalSettingContract {
          * 执行上传图片动作
          * @param qiNiuToken 七牛的上传/更新图片的token
          */
-        void uploadImages(QINiuToken qiNiuToken);
+        void uploadImages(QINiuToken qiNiuToken,String fileName);
 
         /**
          * 更新显示头像
@@ -44,6 +44,6 @@ public class PersonalSettingContract {
         /**
          * 获取七牛更新token
          */
-        void getUpdateToken(String modelName, String modelId, String tag);
+        void getUpdateToken(String modelName, String modelId, String tag,String fileName);
     }
 }
