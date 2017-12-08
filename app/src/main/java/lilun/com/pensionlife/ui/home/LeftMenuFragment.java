@@ -17,7 +17,6 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Account;
@@ -68,7 +67,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        ImageLoaderUtil.instance().loadAvator(User.getUserAvatar(), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
         tvName.setText(User.getName());
 
     }
@@ -173,6 +172,6 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showNewSetting(Event.AccountSettingChange account) {
         tvName.setText(User.getName());
-        ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar()), R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
     }
 }

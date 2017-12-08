@@ -115,7 +115,7 @@ public class RegisterAvatorFragment extends BaseTakePhotoFragment<RegisterContra
                 finishRegister();
             }
         });
-        qiNiuEngine.uploadOnlyOne(path, User.getUserId(), null, cpvUpload);
+        qiNiuEngine.uploadOnlyOne(path, null, cpvUpload);
     }
 
     public void finishRegister() {
@@ -140,7 +140,7 @@ public class RegisterAvatorFragment extends BaseTakePhotoFragment<RegisterContra
                 .setAspectX(800)
                 .setOutputX(800)
                 .create();
-        getTakePhoto().onPickFromCaptureWithCrop(uri,options);
+        getTakePhoto().onPickFromCaptureWithCrop(uri, options);
 
     }
 
