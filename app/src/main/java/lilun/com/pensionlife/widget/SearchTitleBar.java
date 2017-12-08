@@ -101,6 +101,14 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
         this.listener = listener;
     }
 
+
+    public void setLayoutTypeIcon(LayoutType layerType) {
+        if (LayoutType.BIG == layerType) layoutTypeIndex = 1;
+        else if (LayoutType.SMALL == layerType) layoutTypeIndex = 0;
+        else layoutTypeIndex = 2;
+        ivChangeLayout.setImageResource(layoutTypeIcon[layoutTypeIndex]);
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

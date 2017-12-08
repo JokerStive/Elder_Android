@@ -190,8 +190,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
-            R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government
-
+            R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government,
+            R.id.iv_get_prize
     })
     public void onClick(View v) {
         switch (v.getId()) {
@@ -254,6 +254,9 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     ToastHelper.get().showWareShort("该账户没有地球村的所属组织");
                 }
                 break;
+           case  R.id.iv_get_prize:
+               ToastHelper.get().showShort("兑奖");
+               break;
         }
 
     }

@@ -41,8 +41,10 @@ import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
 
 /**
  * 分类活动V
- * 获取的数据为：未参加的且不是我创建的且不是已完结的
- *
+ * 获取的数据为：
+ * 2017-12-08 10:05:42 更新 https://oa.liluntech.com/issues/9195
+ *  1\社区活动发布对于已经开始活动应该能够在分类中显示 ,目前在分类中看不到.
+ 2\社区活动自己发布的活动应该能够在分类中显示 ,目前在分类中看不到.
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
@@ -115,6 +117,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     protected void initView(LayoutInflater inflater) {
         searchBar.setNoNullLayout();
         searchBar.setFragment(this);
+        searchBar.setLayoutTypeIcon(SearchTitleBar.LayoutType.BIG);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
@@ -283,10 +286,13 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         String localtime = format.format(new Date());
         //未开始    现在时间<开始时间
         activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
-        join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+        //join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
+        join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
 
+//        String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
+//                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
-                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
+                ",\"or\":[{\"startTime\":{\"$exists\":false}}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 
