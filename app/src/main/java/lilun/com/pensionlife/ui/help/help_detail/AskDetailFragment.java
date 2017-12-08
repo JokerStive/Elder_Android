@@ -218,8 +218,9 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
         //显示发起人和头像
         tvCreator.setText(String.format(getString(R.string.format_creator), mAid.getCreatorName()));
-        String url = IconUrl.account(mAid.getCreatorId());
-        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivAvatar);
+//        String url = IconUrl.account(mAid.getCreatorId());
+//        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(detail.getAid().getCreatorId(), ivAvatar);
 
 
         //显示内容

@@ -478,18 +478,10 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
                 //未设置过头像，则显示，重新获取个人数据，再显示头像
                 ToastHelper.get().showShort("更新图片成功");
                 User.puttUserAvatar(IconUrl.account(User.getUserId()));
-//                mPresenter.getMe();
-//                if (hasAvator) {
                 ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
                 EventBus.getDefault().post(new Event.AccountSettingChange());
-//                } else
-//                    mPresenter.getMe();
             }
         });
-//        String updateKey = System.currentTimeMillis() + QINiuEngine.format;
-//        if (hasAvator){
-//            updateKey = User.getUserAvatar().replace(Constants.fileBaseUri, "");
-//        }
         engine.uploadOnlyOne(imagePath, fileName, cpvUpload);
     }
 

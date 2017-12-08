@@ -32,7 +32,6 @@ import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.PartnersAdapter;
@@ -286,9 +285,7 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
                 if (TextUtils.isEmpty(searchKey)) tvSearchName.setVisibility(View.GONE);
             }
         });
-        ImageLoaderUtil.instance().loadImage(
-                IconUrl.moduleIconUrl(IconUrl.Accounts, activity.getMasterId(), null),
-                R.drawable.icon_def, masterIcon);
+        ImageLoaderUtil.instance().loadAvatar(activity.getMasterId(), masterIcon);
 
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {

@@ -42,7 +42,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.NestedReplyAdapter;
@@ -381,7 +380,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
                 cdvTime.setText(getString(R.string.activity_has_started));
 
-                ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, civAccountAvatar);
+
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(),  civAccountAvatar);
 
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {

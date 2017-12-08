@@ -36,9 +36,8 @@ public class PartnersAdapter extends QuickAdapter<Account> {
         if (selectedStatus) helper.getView(R.id.iv_selected).setVisibility(View.VISIBLE);
         else helper.getView(R.id.iv_selected).setVisibility(View.GONE);
 
-        ImageLoaderUtil.instance().loadImage(
-                IconUrl.moduleIconUrl(IconUrl.Accounts, account.getId(), null),
-                R.drawable.icon_def, helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadAvatar(
+                account.getId(), helper.getView(R.id.iv_avatar));
     }
 
     public void setShowSelectedStatus(boolean show) {
