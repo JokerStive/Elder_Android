@@ -240,8 +240,7 @@ public class HelpDetailFragment extends BaseFragment<HelpDetailContract.Presente
 
         //显示发起人
         tvCreator.setText(String.format(getString(R.string.format_creator), mAid.getCreatorName()));
-        String url = IconUrl.account(mAid.getCreatorId());
-        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivAvatar);
+        ImageLoaderUtil.instance().loadAvatar(detail.getAid().getCreatorId(), ivAvatar);
 
 
         //设置地址和电话

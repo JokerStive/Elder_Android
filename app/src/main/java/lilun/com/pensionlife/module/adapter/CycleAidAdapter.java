@@ -5,7 +5,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
@@ -32,6 +31,6 @@ public class CycleAidAdapter extends QuickAdapter<OrganizationAid> {
         holder.setText(R.id.tv_creator_name, creatorName);
         holder.setText(R.id.tv_title, aid.getTitle());
 
-        ImageLoaderUtil.instance().loadImage(IconUrl.account(aid.getCreatorId()), holder.getView(R.id.iv_icon));
+        ImageLoaderUtil.instance().loadAvatar(aid.getCreatorId(), holder.getView(R.id.iv_icon));
     }
 }

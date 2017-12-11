@@ -11,7 +11,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.NestedReply;
@@ -54,7 +53,8 @@ public class NestedReplyAdapter extends QuickAdapter<NestedReply> {
                     .setText(R.id.tv_creator, StringUtils.up2thisTime(question.getCreatedAt()))
                     .setText(R.id.tv_content, StringUtils.filterNull(question.getContent()));
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, question.getCreatorId(), null), R.drawable.icon_def, helper.getView(R.id.iv_avatar));
+            ImageLoaderUtil.instance().loadAvatar(question.getCreatorId(),helper.getView(R.id.iv_avatar));
+//            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, question.getCreatorId(), null), R.drawable.icon_def, helper.getView(R.id.iv_avatar));
         }
 
         TextView tvCrartorReply = helper.getView(R.id.tv_creator_reply);
