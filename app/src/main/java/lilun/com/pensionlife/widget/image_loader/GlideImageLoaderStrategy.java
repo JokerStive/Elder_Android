@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Looper;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
@@ -27,6 +29,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .placeholder(App.context.getResources().getDrawable(R.drawable.icon_def))
                 .error(App.context.getResources().getDrawable(R.drawable.icon_error))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .thumbnail(0.1f)
                 .into(imageView);
     }
 
@@ -96,12 +99,13 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .into(imageView);
     }
 
-    public void loadAvatar(Context ctx,  String accountId, ImageView imageView) {
-        Glide.with(ctx).load(IconUrl.account(accountId)).dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
+    public void loadAvatar(Context ctx, String accountId, ImageView imageView, boolean isupdate) {
+        DrawableRequestBuilder<String> override = Glide.with(ctx).load(IconUrl.account(accountId)).dontAnimate()
+                .placeholder(R.drawable.icon_def)
                 .error(R.drawable.icon_error)
-                .override(400, 400)
-                .into(imageView);
+                .override(400, 400);
+//        override.signature(new StringSignature(System.currentTimeMillis() / (60 * 60 * 1000) + ""));
+         override.signature(new StringSignature(System.currentTimeMillis()  + ""));
+        override.into(imageView);
     }
 }

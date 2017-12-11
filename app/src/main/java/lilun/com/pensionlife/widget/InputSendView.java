@@ -27,7 +27,6 @@ public class InputSendView extends LinearLayout {
     private final String sendText;
     Context context;
     OnSendListener listener;
-    LinearLayout ll_layout;
     AppCompatEditText input;
     AppCompatButton send;
 
@@ -36,7 +35,7 @@ public class InputSendView extends LinearLayout {
         this.context = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.InputSendView);
         inputBackgrand = array.getResourceId(R.styleable.InputSendView_input_backgrand, R.drawable.shape_rect_write_strock_corner_5);
-        sendBackgrandOff = array.getResourceId(R.styleable.InputSendView_send_backgrand_off, R.drawable.shape_rect_write_corner);
+        sendBackgrandOff = array.getResourceId(R.styleable.InputSendView_send_backgrand_off, R.drawable.shape_rect_gray_corner_5);
         sendBackgrandOn = array.getResourceId(R.styleable.InputSendView_send_backgrand_on, R.drawable.shape_rect_red_corner_5);
         inputHint = array.getString(R.styleable.InputSendView_input_hint);
         sendText = array.getString(R.styleable.InputSendView_send_text);
@@ -45,7 +44,6 @@ public class InputSendView extends LinearLayout {
 
     private void initUI(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_input_send, this);
-        ll_layout = (LinearLayout) view.findViewById(R.id.ll_layout);
         input = (AppCompatEditText) view.findViewById(R.id.acet_input);
         send = (AppCompatButton) view.findViewById(R.id.acbt_send);
 
@@ -74,8 +72,9 @@ public class InputSendView extends LinearLayout {
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() == 0) {
                     send.setBackgroundDrawable(ContextCompat.getDrawable(context, sendBackgrandOff));
-                } else
+                } else {
                     send.setBackgroundDrawable(ContextCompat.getDrawable(context, sendBackgrandOn));
+                }
             }
         });
 
@@ -83,7 +82,7 @@ public class InputSendView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(input.getText().toString().trim())) {
-                    ToastHelper.get(context).showWareShort("您未输入内容");
+                    ToastHelper.get(context).showShort("您未输入内容");
                     return;
                 }
 

@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="@dimen/dp_22"
                     android:layout_toRightOf="@id/tv_choice_type_str"
-                    android:hint="@string/choice_type"
+                    android:hint="@string/pls_choice_type"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:textColor="@color/gray2" />
@@ -137,7 +137,6 @@
                         android:id="@+id/rbtn_repeat"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:checked="true"
                         android:text="周期活动"
                         android:textColor="@color/gray2"
                         android:textSize="@dimen/dp_14" />
@@ -150,6 +149,7 @@
                         android:layout_marginLeft="@dimen/dp_20"
                         android:text="单次活动"
                         android:textColor="@color/gray2"
+                        android:checked="true"
                         android:textSize="@dimen/dp_14" />
 
 
@@ -298,11 +298,21 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <lilun.com.pensionlife.widget.CommonButton
-        android:id="@+id/btn_add_activity"
-        style="@style/btn_normal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dp_10"
-        android:background="@drawable/selector_activity"
-        android:text="新建活动" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_less"
+        android:padding="@dimen/dp_4">
+
+        <TextView
+            android:id="@+id/tv_add_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="@drawable/selector_activity_cornes_5"
+            android:gravity="center"
+            android:text="@string/finished_and_commit"
+            android:textColor="@color/white" />
+    </FrameLayout>
 </LinearLayout>

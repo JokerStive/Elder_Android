@@ -3,35 +3,49 @@
     android:id="@+id/ll_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:minHeight="@dimen/dp_50"
-    android:paddingLeft="@dimen/dp_4">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_2">
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/acet_input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/dp_40"
-        android:layout_margin="@dimen/dp_4"
-        android:layout_weight="1"
-        android:background="@drawable/shape_rect_write_strock_corner_5"
-        android:gravity="left|bottom"
-        android:hint="@string/say_something_hint"
-        android:maxLines="4"
-        android:textSize="@dimen/sp_14"
-        android:paddingLeft="@dimen/dp_1" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_066"
+        android:background="@color/gray_less" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/acbt_send"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/dp_40"
-        android:maxHeight="@dimen/dp_50"
-        android:layout_margin="@dimen/dp_4"
-        android:background="@drawable/shape_rect_write_corner"
-        android:padding="@dimen/dp_10"
-        android:text="@string/send"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14" />
+        android:gravity="bottom"
+        android:minHeight="@dimen/dp_50"
+        android:padding="@dimen/dp_4">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/acet_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_light_grey_corner_5"
+            android:hint="@string/say_something_hint"
+            android:maxLines="4"
+            android:minHeight="@dimen/dp_40"
+            android:textSize="@dimen/sp_14" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/acbt_send"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_marginRight="@dimen/dp_4"
+                android:background="@drawable/shape_rect_gray_corner_5"
+                android:text="@string/send"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

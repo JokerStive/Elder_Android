@@ -1,6 +1,8 @@
 package lilun.com.pensionlife.widget;
 
 import android.app.Activity;
+import android.view.View;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -60,13 +62,36 @@ public class NormalDialog {
                 .show();
     }
 
-    public void createEditMessage(Activity activity, String title, boolean cancelOnOutSide, MaterialDialog.InputCallback inputCallBack) {
-        new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+    public void createEditMessage(Activity activity, String title, String data, boolean cancelOnOutSide, MaterialDialog.InputCallback inputCallBack) {
+        MaterialDialog dialog = new com.afollestad.materialdialogs.MaterialDialog.Builder(activity)
+                .customView(R.layout.dialog_edit_info, true)
                 .canceledOnTouchOutside(cancelOnOutSide)
                 .title(title)
-                .input("", "", false, inputCallBack)
                 .positiveText(R.string.confirm)
-                .show();
+                .onPositive((dialog2, which) -> {
+                    String inputdata = ((EditText) dialog2.getView().findViewById(R.id.et_data)).getText().toString();
+                    inputCallBack.onInput(dialog2, inputdata);
+
+                })
+                .negativeText(R.string.cancel)
+                .onNegative((dialog1, which) -> {
+                    dialog1.dismiss();
+                })
+                .build();
+
+        EditText editView = (EditText) dialog.getView().findViewById(R.id.et_data);
+        editView.setText(data);
+        editView.setSelection(data.length());
+        dialog.getView().findViewById(R.id.iv_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editView.setText("");
+            }
+        });
+        dialog.getWindow().setWindowAnimations(R.style.dialog_animator);
+        dialog.show();
+
+
     }
 
     public void createCheckDialog(Activity activity, String title, boolean cancelOnOutSide, MaterialDialog.SingleButtonCallback posback) {

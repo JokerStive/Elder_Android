@@ -3,6 +3,7 @@ package lilun.com.pensionlife.ui.activity.activity_detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.Space;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatButton;
@@ -42,7 +43,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.NestedReplyAdapter;
@@ -85,6 +85,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     ImageView ivMenu;
     @Bind(R.id.tv_title_name)
     TextView tvTitleName;
+    @Bind(R.id.space)
+    View space;
     @Bind(R.id.srl_swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
     @Bind(R.id.nsv_scrollview)
@@ -231,8 +233,15 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             }
         });
 
-        if (activity.getIcon() != null)
+        if (activity.getIcon() != null) {
             bpActivityImages.setData(activity.getIcon());
+        } else {
+            bpActivityImages.setVisibility(View.GONE);
+            titleBar.setAlpha(1);
+            ivBack.setAlpha(0);
+            tvTitleName.setVisibility(View.GONE);
+            space.setVisibility(View.VISIBLE);
+        }
 
         rvQuestionList.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvQuestionList.addItemDecoration(new NormalItemDecoration(17));
@@ -381,7 +390,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
                 cdvTime.setText(getString(R.string.activity_has_started));
 
-                ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), null), R.drawable.icon_def, civAccountAvatar);
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAccountAvatar);
 
                 hasStart = OrganizationActivity.FINISHED;
             } else if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {

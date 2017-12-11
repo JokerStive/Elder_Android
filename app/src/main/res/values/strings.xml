@@ -153,7 +153,7 @@
     <string name="activity_time">开始时间</string>
     <string name="activity_end_time">结束时间</string>
     <string name="activity_repeat_type">周期活动类型</string>
-    <string name="activity_repeat">周期类型</string>
+    <string name="activity_repeat">活动期限</string>
     <string name="activity_repeat_">定期活动：%1$s</string>
     <string name="activity_require">加入要求</string>
     <string name="activity_content">活动描述</string>
@@ -238,7 +238,7 @@
     <string name="activity_time_">活动时间：%1$s</string>
     <string name="originator_person_">发起人：%1$s</string>
     <string name="participation_request">参与要求</string>
-    <string name="activity_address">活动地址</string>
+    <string name="activity_address">活动地点</string>
     <string name="activity_address_">活动地址：%1$s</string>
     <string name="course">课程</string>
 
@@ -258,11 +258,12 @@
     <string name="single">单次</string>
     <string name="cyclical">周期</string>
     <string name="detail">查看详情</string>
-    <string name="choice_type">选择类型</string>
-    <string name="activity_cyclical">活动周期</string>
+    <string name="choice_type">类型选择</string>
+    <string name="pls_choice_type">请选择类型</string>
+    <string name="activity_cyclical">周期活动</string>
     <string name="cyclical_gap_hint">（例：每周一下午14:30）</string>
 
-    <string name="activity_content_require">请输入活动详情与参与要求</string>
+    <string name="activity_content_require">请输入活动详情描述和参与要求</string>
     <string name="partin_info">温馨提示：邀请人数不填，则为不限人数</string>
     <string name="has_joined">已加入</string>
     <string name="unjoined">未加入</string>
@@ -392,5 +393,6 @@
     <string name="permission_grant_creama">您没有照相权限，请在系统设置-应用权限中给予权限</string>
     <string name="act_max_partner">允许参与最大人数为 9999</string>
     <string name="location_permission">需要获取位置权限</string>
+    <string name="finished_and_commit">填好了，提交</string>
 
 </resources>

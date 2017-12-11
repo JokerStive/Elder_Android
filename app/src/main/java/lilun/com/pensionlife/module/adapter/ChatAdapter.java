@@ -20,6 +20,7 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 聊天界面adapter
@@ -97,23 +98,14 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
                 helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
                 helper.setText(R.id.tv_my_name, name)
                         .setText(R.id.tv_my_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, User.getUserId(), User.getUserAvatar());
-
-                Glide.with(App.context).load(iconUrl).dontAnimate()
-                        .placeholder(R.drawable.icon_def)
-                        .error(R.drawable.icon_def)
-                        .into((ImageView) helper.getView(R.id.civ_my_ivatar));
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), helper.getView(R.id.civ_my_ivatar));
 
             } else {
                 helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
                 helper.getView(R.id.rl_their_message).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_their_name, name)
                         .setText(R.id.tv_their_message, pushMessage.getMessage());
-                String iconUrl = IconUrl.moduleIconUrl(IconUrl.Accounts, id, User.getUserAvatar());
-                Glide.with(App.context).load(iconUrl).dontAnimate()
-                        .placeholder(R.drawable.icon_def)
-                        .error(R.drawable.icon_def)
-                        .into((ImageView) helper.getView(R.id.civ_their_ivatar));
+                ImageLoaderUtil.instance().loadAvatar(id, helper.getView(R.id.civ_their_ivatar));
             }
         } else {
             helper.getView(R.id.rl_my_message).setVisibility(View.GONE);

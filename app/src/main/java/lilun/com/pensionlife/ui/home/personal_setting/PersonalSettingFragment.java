@@ -228,10 +228,14 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
     }
 
     private void settingOfNickName() {
-        new NormalDialog().createEditMessage(_mActivity, "修改昵称", true,
+        new NormalDialog().createEditMessage(_mActivity, "修改昵称", User.getName(), true,
                 new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        if (TextUtils.isEmpty(input)) {
+                            ToastHelper.get().showWareShort("昵称不能为空");
+                            return;
+                        }
                         Account account = new Account();
                         account.setName(input.toString());
                         NetHelper.getApi()
@@ -276,7 +280,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
             ToastHelper.get().showWareShort("您需要先在首页--紧急求助模块下设置联系人电话");
             return;
         }
-        new NormalDialog().createEditMessage(_mActivity, "请输入新紧急救助人电话", true,
+        new NormalDialog().createEditMessage(_mActivity, "修改紧急救助人电话", PreUtils.getString("firstHelperPhone", ""), true,
                 new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -478,18 +482,11 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
                 //未设置过头像，则显示，重新获取个人数据，再显示头像
                 ToastHelper.get().showShort("更新图片成功");
                 User.puttUserAvatar(IconUrl.account(User.getUserId()));
-//                mPresenter.getMe();
-//                if (hasAvator) {
-                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
+
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator, true);
                 EventBus.getDefault().post(new Event.AccountSettingChange());
-//                } else
-//                    mPresenter.getMe();
             }
         });
-//        String updateKey = System.currentTimeMillis() + QINiuEngine.format;
-//        if (hasAvator){
-//            updateKey = User.getUserAvatar().replace(Constants.fileBaseUri, "");
-//        }
         engine.uploadOnlyOne(imagePath, fileName, cpvUpload);
     }
 

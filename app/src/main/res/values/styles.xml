@@ -256,5 +256,9 @@
         <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
+    <style name="dialog_animator">
+        <item name="android:windowEnterAnimation">@anim/dialog_photo_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_photo_out</item>
+    </style>
 
 </resources>

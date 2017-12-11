@@ -42,7 +42,6 @@ import lilun.com.pensionlife.module.utils.qiniu.QINiuEngine;
 import lilun.com.pensionlife.module.utils.qiniu.QiNiuUploadView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import lilun.com.pensionlife.widget.CommonButton;
 import lilun.com.pensionlife.widget.InputView;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.TakePhotoLayout;
@@ -85,8 +84,8 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     @Bind(R.id.input_maxPartner)
     InputView inputMaxPartner;
 
-    @Bind(R.id.btn_add_activity)
-    CommonButton btnAddActivity;
+    @Bind(R.id.tv_add_activity)
+    TextView tvAddActivity;
 
     @Bind(R.id.take_photo)
     TakePhotoLayout takePhotoLayout;
@@ -110,7 +109,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     private int chooseTime = 0;
     MaterialDialog typeDalog;
     int typeIndex = 0;
-    boolean isrepeat = true;
+    boolean isrepeat = false;
     private String mActId = "";
     private String mTopic; //MQTT通知topic
 
@@ -157,10 +156,11 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
 
 
         //周期活动控制
-        rgRepeatType.check(R.id.rbtn_repeat);
-        inputCyclialGap.setVisibility(View.VISIBLE);
-        rlStartTime.setVisibility(View.GONE);
-        rlEndTime.setVisibility(View.GONE);
+        rgRepeatType.check(R.id.rbtn_once);
+        isrepeat = rgRepeatType.getCheckedRadioButtonId() != R.id.rbtn_once;
+        inputCyclialGap.setVisibility(View.GONE);
+        rlStartTime.setVisibility(View.VISIBLE);
+        rlEndTime.setVisibility(View.VISIBLE);
         rgRepeatType.setOnCheckedChangeListener((group, checkedId) -> {
             //选择周期活动
             inputCyclialGap.setVisibility(checkedId == R.id.rbtn_once ? View.GONE : View.VISIBLE);
@@ -176,7 +176,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         });
 
         tvStartTime.setOnClickListener(this);
-        btnAddActivity.setOnClickListener(this);
+        tvAddActivity.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
         rlChoiceType.setOnClickListener(this);
     }
@@ -298,35 +298,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
                 });
     }
 
-//    /**
-//     * 获取token
-//     */
-//    private void getToken(String id) {
-//        ArrayList<String> photoPath = getPhotoData();
-//        if (photoPath.size() > 0) {
-//            ArrayList<String> fileNames = createFileNames(photoPath);
-//            NetHelper.getApi().
-//                    getPostFileToken("OrganizationActivities", id, "icon", fileNames)
-//                    .compose(RxUtils.handleResult())
-//                    .compose(RxUtils.applySchedule())
-//                    .subscribe(new RxSubscriber<QINiuToken>() {
-//                        @Override
-//                        public void _next(QINiuToken qiNiuToken) {
-//                            uploadImages(qiNiuToken);
-//                        }
-//                    });
-//        }
-//    }
-//
-//
-//    private ArrayList<String> createFileNames(ArrayList<String> photoPath) {
-//        ArrayList<String> fileNames = new ArrayList<>();
-//        for (int i = 0; i < photoPath.size(); i++) {
-//            String fileName = i+QINiuEngine.format;
-//            fileNames.add(fileName);
-//        }
-//        return fileNames;
-//    }
 
     /**
      * 上传图片
@@ -337,18 +308,6 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
         ArrayList<QiNiuUploadView> views = getQiNiuUploadViews(filePaths);
         QINiuEngine engine = new QINiuEngine(_mActivity, tokenParams, filePaths, views, this::putDataAndPop);
         engine.postMultipleFile();
-//        ArrayList<String> photoData = getPhotoData();
-//        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken.getToken(), new QINiuEngine.UploadListener() {
-//            @Override
-//            public void onAllSuccess() {
-//                popAndRefreshData();
-//            }
-//        });
-//        for (int i = 0; i < photoData.size(); i++) {
-//            String path = photoData.get(i);
-//            QiNiuUploadView view = takePhotoLayout.getView(i);
-//            engine.upload(path, i, view);
-//        }
     }
 
     private ArrayList<QiNiuUploadView> getQiNiuUploadViews(ArrayList<String> filePaths) {
@@ -401,7 +360,7 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_add_activity:
+            case R.id.tv_add_activity:
                 checkInputAndCommit(newActivity());
                 break;
 

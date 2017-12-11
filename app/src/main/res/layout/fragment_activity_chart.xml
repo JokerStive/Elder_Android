@@ -30,7 +30,7 @@
         <lilun.com.pensionlife.widget.InputSendView
             android:id="@+id/isv_input_send"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <TextView

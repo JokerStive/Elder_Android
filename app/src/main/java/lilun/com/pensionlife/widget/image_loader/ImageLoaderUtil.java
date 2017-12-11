@@ -34,7 +34,10 @@ public class ImageLoaderUtil {
     }
 
     public void loadAvatar(String accountId, ImageView imageView) {
-        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView);
+        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, false);
+    }
+    public void loadAvatar(String accountId, ImageView imageView, boolean isupdate) {
+        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, isupdate);
     }
 
     public void loadImage(String url, ImageView imageView) {

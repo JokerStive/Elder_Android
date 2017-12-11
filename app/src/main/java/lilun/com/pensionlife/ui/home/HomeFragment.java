@@ -65,6 +65,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  *         create at 2017/2/6 16:48
  *         email : yk_developer@163.com
  *         2017/6/30 进入主页后，发送请求获取最近版本，判断是否弹出升级框，使用外部浏览器下载新版本；
+ *         问卷星：http://www.wjx.cn/jq/3795229.aspx?sojumpparm=userid
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, EasyPermissions.PermissionCallbacks, HomeContract.View {
 

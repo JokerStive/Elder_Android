@@ -68,7 +68,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     private OrganizationActivityAdapter mActivityAdapter;
     private ActivityCategory mCategory;
 
-    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.SMALL;
     private String searchStr = "";
     private String join_status = "";
     private String partnerNumber[] = {",\"order\":\"partnerCount DESC\"", ",\"order\":\"partnerCount ASC\""};
@@ -117,7 +117,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
     protected void initView(LayoutInflater inflater) {
         searchBar.setNoNullLayout();
         searchBar.setFragment(this);
-        searchBar.setLayoutTypeIcon(SearchTitleBar.LayoutType.BIG);
+        searchBar.setLayoutTypeIcon(SearchTitleBar.LayoutType.SMALL);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
             public void onBack() {
@@ -292,7 +292,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
 //        String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
 //                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
-                ",\"or\":[{\"startTime\":{\"$exists\":false}}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
+                 ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 

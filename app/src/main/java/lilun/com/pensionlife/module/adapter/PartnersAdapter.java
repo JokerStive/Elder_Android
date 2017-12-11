@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
@@ -36,9 +36,7 @@ public class PartnersAdapter extends QuickAdapter<Account> {
         if (selectedStatus) helper.getView(R.id.iv_selected).setVisibility(View.VISIBLE);
         else helper.getView(R.id.iv_selected).setVisibility(View.GONE);
 
-        ImageLoaderUtil.instance().loadImage(
-                IconUrl.moduleIconUrl(IconUrl.Accounts, account.getId(), null),
-                R.drawable.icon_def, helper.getView(R.id.iv_avatar));
+        ImageLoaderUtil.instance().loadAvatar(account.getId(), helper.getView(R.id.iv_avatar));
     }
 
     public void setShowSelectedStatus(boolean show) {
