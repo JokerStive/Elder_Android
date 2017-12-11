@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.ui.WebActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
@@ -59,6 +61,12 @@ public class AnnouncementItemFragment extends BaseFragment {
                 ACache.get().put(information.getId() + "h5", context);
                 Intent intent = new Intent(_mActivity, AnnounceDetailActivity.class);
                 intent.putExtra("infoId", information.getId());
+                getActivity().startActivity(intent);
+            } else if (information.getContextType() == 3 && !TextUtils.isEmpty(context)) {
+
+                Intent intent = new Intent(_mActivity, WebActivity.class);
+                intent.putExtra("url", information.getContext() + "?sojumpparm=" + User.getUserId());
+                intent.putExtra("title", information.getTitle());
                 getActivity().startActivity(intent);
             }
         });

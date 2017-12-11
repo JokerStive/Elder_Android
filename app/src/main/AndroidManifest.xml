@@ -165,6 +165,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <activity android:name="lilun.com.pensionlife.ui.home.personal_setting.PersonalActivity" />
+        <activity android:name=".ui.WebActivity" />
         //mqtt service
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

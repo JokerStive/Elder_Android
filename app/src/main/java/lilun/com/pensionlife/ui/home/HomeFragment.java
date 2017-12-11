@@ -38,6 +38,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.module.utils.mqtt.MqttNotificationExtra;
 import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
+import lilun.com.pensionlife.ui.WebActivity;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pensionlife.ui.agency.classify.AgencyClassifyFragment;
@@ -68,6 +69,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  *         问卷星：http://www.wjx.cn/jq/3795229.aspx?sojumpparm=userid
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, EasyPermissions.PermissionCallbacks, HomeContract.View {
+    private boolean hasPrize = false;
 
     @Bind(R.id.iv_activities)
     ImageView ivActivities;
@@ -108,6 +110,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Bind(R.id.indicator)
     CircleIndicator indicator;
+
+    @Bind(R.id.iv_get_prize)
+    ImageView ivGetPrize;
+
 
 
     @Subscribe
@@ -256,7 +262,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 }
                 break;
            case  R.id.iv_get_prize:
-               ToastHelper.get().showShort("兑奖");
+               Intent intent = new Intent(getContext(), WebActivity.class);
+               intent.putExtra("url", "http://192.168.3.239:9005/Lotterys/myLottery?token=ilYqeeLYBWB6D269WMFqN20iCGGh96CbsuvwVPxkuvkepNNC3WJ4v3EoCOCtb2TC&accountId=a882a250-f71b-11e6-9bfd-15b36ba8952f&sweepstakesId=21151fb0-dcc5-11e7-bc1e-e5a307c8e1db");
+               intent.putExtra("title", "兑奖详情");
+               startActivity(intent);
                break;
         }
 
@@ -342,9 +351,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void showInformation(List<Information> infos) {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (Information announcement : infos) {
+            if (announcement.getContextType() == 3) {
+                hasPrize = true;
+            }
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
+        if (hasPrize) ivGetPrize.setVisibility(View.VISIBLE);
+        else ivGetPrize.setVisibility(View.GONE);
         viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
         indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
