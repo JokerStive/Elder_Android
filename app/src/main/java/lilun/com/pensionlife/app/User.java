@@ -42,6 +42,7 @@ public class User {
     public static final String loginTime = "loginTime";
     public static final String address = "address";
     public static final String certificateLicense = "certificateLicense";
+    public static final String prizedraw = "prizedraw"; //兑奖信息
 
 
     public static ArrayList<String> getCertificateLicense() {
@@ -284,6 +285,15 @@ public class User {
     public static String getAddress() {
         return PreUtils.getString(address, "");
     }
+
+    public static void putPrizedraw(String prize) {
+        PreUtils.putString(prizedraw, prize);
+    }
+
+    public static String getPrizedraw() {
+        return PreUtils.getString(prizedraw, "");
+    }
+
 
 
     /**

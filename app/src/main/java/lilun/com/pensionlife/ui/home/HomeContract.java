@@ -6,6 +6,7 @@ import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.QuestionNaire;
 
 /**
  * 首页契约类
@@ -19,6 +20,7 @@ public interface HomeContract {
         void showInformation(List<Information> informations);
         void changeOrganizationSuccess(int clickId);
         void showVersionInfo(AppVersion version);
+        void saveQuestionNaire(QuestionNaire questionNaire);
     }
 
     interface Presenter extends IPresenter<View> {
@@ -30,5 +32,7 @@ public interface HomeContract {
         void changeBelongOrganization(String organizationId, int clickId);
 
         void getVersionInfo(String appName, String versionName);
+
+        void getQuestionNaire();
     }
 }

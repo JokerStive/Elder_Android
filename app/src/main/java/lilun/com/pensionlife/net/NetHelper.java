@@ -53,6 +53,17 @@ public class NetHelper {
         }
         return apis;
     }
+    public static ApiService getQuestionnaireApi() {
+        initOkhttpClient();
+        if (apis == null) {
+            apis = new Retrofit.Builder()
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build().create(ApiService.class);
+        }
+        return apis;
+    }
 
     private static void initOkhttpClient() {
         if (okHttpClient == null) {

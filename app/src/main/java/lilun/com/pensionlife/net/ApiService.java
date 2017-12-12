@@ -2,6 +2,7 @@ package lilun.com.pensionlife.net;
 
 import java.util.List;
 
+import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.ActivityDetail;
@@ -24,6 +25,7 @@ import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
+import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.Rank;
@@ -747,4 +749,11 @@ public interface ApiService {
     @Multipart
     @PUT("Accounts/{id}/update/image/{imageName}")
     Observable<Response<String>> updateImage(@Path("id") String id, @Path("imageName") String imageName, @Part("file\"; filename=\"avatar.png") RequestBody file);
+
+    /**
+     * 获取问卷答题兑奖时间
+     * @return
+     */
+    @GET(ConfigUri.QUESTION_NAIRE)
+    Observable<Response<QuestionNaire>> getQuestionNaire();
 }

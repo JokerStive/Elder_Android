@@ -12,18 +12,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
@@ -32,8 +35,10 @@ import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.PreUtils;
+import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.module.utils.mqtt.MqttNotificationExtra;
@@ -69,8 +74,6 @@ import pub.devrel.easypermissions.EasyPermissions;
  *         问卷星：http://www.wjx.cn/jq/3795229.aspx?sojumpparm=userid
  */
 public class HomeFragment extends BaseFragment<HomeContract.Presenter> implements View.OnClickListener, EasyPermissions.PermissionCallbacks, HomeContract.View {
-    private boolean hasPrize = false;
-
     @Bind(R.id.iv_activities)
     ImageView ivActivities;
 
@@ -150,6 +153,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             }, getString(R.string.cancel), false);
         }
 
+        if (TextUtils.isEmpty(User.getPrizedraw()))
+            mPresenter.getQuestionNaire();
+        else {
+            QuestionNaire prizedraw = new Gson().fromJson(User.getPrizedraw(), QuestionNaire.class);
+            showQuestionNaire(prizedraw);
+        }
+
         ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
@@ -197,8 +207,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     }
 
     @OnClick({R.id.iv_icon, R.id.iv_activities, R.id.iv_help_each, R.id.iv_agency, R.id.iv_help, R.id.iv_education,
-            R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government,
-            R.id.iv_get_prize
+            R.id.iv_health_service, R.id.iv_residential_service, R.id.iv_message, R.id.tv_position, R.id.iv_government
     })
     public void onClick(View v) {
         switch (v.getId()) {
@@ -261,12 +270,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                     ToastHelper.get().showWareShort("该账户没有地球村的所属组织");
                 }
                 break;
-           case  R.id.iv_get_prize:
-               Intent intent = new Intent(getContext(), WebActivity.class);
-               intent.putExtra("url", "http://192.168.3.239:9005/Lotterys/myLottery?token=ilYqeeLYBWB6D269WMFqN20iCGGh96CbsuvwVPxkuvkepNNC3WJ4v3EoCOCtb2TC&accountId=a882a250-f71b-11e6-9bfd-15b36ba8952f&sweepstakesId=21151fb0-dcc5-11e7-bc1e-e5a307c8e1db");
-               intent.putExtra("title", "兑奖详情");
-               startActivity(intent);
-               break;
         }
 
     }
@@ -351,14 +354,10 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void showInformation(List<Information> infos) {
         List<BaseFragment> listFragments = new ArrayList<>();
         for (Information announcement : infos) {
-            if (announcement.getContextType() == 3) {
-                hasPrize = true;
-            }
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
-        if (hasPrize) ivGetPrize.setVisibility(View.VISIBLE);
-        else ivGetPrize.setVisibility(View.GONE);
+
         viewPager.setAdapter(new ViewPagerFragmentAdapter(_mActivity.getSupportFragmentManager(), listFragments));
         indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -395,6 +394,40 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
     }
 
+    @Override
+    public void saveQuestionNaire(QuestionNaire questionNaire) {
+        User.putPrizedraw(new Gson().toJson(questionNaire));
+        showQuestionNaire(questionNaire);
+    }
+
+    public void showQuestionNaire(QuestionNaire questionNaire) {
+        if (questionNaire == null || questionNaire.getPrizedraw() == null) return;
+        Date startDate = StringUtils.string2Date(questionNaire.getPrizedraw().getStartTime());
+        Date endDate = StringUtils.string2Date(questionNaire.getPrizedraw().getEndTime());
+        if (startDate == null || endDate == null) return;
+
+
+        if (new Date().getTime() < startDate.getTime() || new Date().getTime() > endDate.getTime())
+            ivGetPrize.setVisibility(View.GONE);
+        else {
+            ivGetPrize.setVisibility(View.VISIBLE);
+            //               String url = "http://192.168.3.239:9005/Lotterys/myLottery" +
+//                       "?token=ilYqeeLYBWB6D269WMFqN20iCGGh96CbsuvwVPxkuvkepNNC3WJ4v3EoCOCtb2TC" +
+//                       "&accountId=a882a250-f71b-11e6-9bfd-15b36ba8952f" +
+//                       "&sweepstakesId=21151fb0-dcc5-11e7-bc1e-e5a307c8e1db";
+            ivGetPrize.setOnClickListener(v -> {
+                String url = ConfigUri.LOTTERY_BASE_URL + "/Lotterys/myLottery" +
+                        "?token=" + User.getToken() +
+                        "&accountId=" + User.getUserId() +
+                        "&sweepstakesId=" + questionNaire.getPrizedraw().getId();
+
+                Intent intent = new Intent(getContext(), WebActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", "兑奖详情");
+                startActivity(intent);
+            });
+        }
+    }
 
     @Subscribe
     public void mqttNotificationOperate(MqttNotificationExtra extra) {

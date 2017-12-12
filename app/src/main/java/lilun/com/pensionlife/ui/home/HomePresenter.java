@@ -2,8 +2,6 @@ package lilun.com.pensionlife.ui.home;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-
 import java.util.List;
 
 import lilun.com.pensionlife.app.User;
@@ -12,6 +10,7 @@ import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
@@ -99,6 +98,20 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
 //        }
 //        view.showVersionInfo(version);
 
+    }
+
+    @Override
+    public void getQuestionNaire() {
+        NetHelper.getQuestionnaireApi()
+                .getQuestionNaire()
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<QuestionNaire>() {
+                    @Override
+                    public void _next(QuestionNaire questionNaire) {
+                        view.saveQuestionNaire(questionNaire);
+                    }
+                });
     }
 }
 
