@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -137,6 +136,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter.bindView(this);
         mPresenter.getInformation();
         mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
+        mPresenter.getQuestionNaire();
     }
 
 
@@ -152,14 +152,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 start(PersonalSettingFragment.newInstance(PersonalSettingFragment.UN_SETTING));
             }, getString(R.string.cancel), false);
         }
-
-        if (TextUtils.isEmpty(User.getPrizedraw()))
-            mPresenter.getQuestionNaire();
-        else {
-            QuestionNaire prizedraw = new Gson().fromJson(User.getPrizedraw(), QuestionNaire.class);
-            showQuestionNaire(prizedraw);
-        }
-
         ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
 
         tvPosition.setText(User.getCurrentOrganizationName());
@@ -396,7 +388,6 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void saveQuestionNaire(QuestionNaire questionNaire) {
-        User.putPrizedraw(new Gson().toJson(questionNaire));
         showQuestionNaire(questionNaire);
     }
 
