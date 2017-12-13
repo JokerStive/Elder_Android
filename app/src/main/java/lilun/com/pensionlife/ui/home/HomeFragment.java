@@ -410,7 +410,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 String url = ConfigUri.LOTTERY_BASE_URL + "/Lotterys/myLottery" +
                         "?token=" + User.getToken() +
                         "&accountId=" + User.getUserId() +
-                        "&sweepstakesId=" + questionNaire.getPrizedraw().getId();
+                        "&sweepstakesId=" + questionNaire.getPrizedraw().getId()+
+                        "&sIP=" + ConfigUri.BASE_URL.replace("/api/","");
 
                 Intent intent = new Intent(getContext(), WebActivity.class);
                 intent.putExtra("url", url);
