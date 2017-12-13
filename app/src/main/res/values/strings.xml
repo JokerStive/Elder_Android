@@ -7,7 +7,6 @@
     <string name="not_complete">功能暂未开放,敬请期待</string>
 
 
-
     <!--切换社区-->
     <string name="change_organization">切换社区</string>
     <string name="change_organization_search">请输入您要查询的</string>
@@ -58,11 +57,11 @@
     <!--新建求助-->
     <string name="priority">优&#160;先&#160;级</string>
     <string name="topic">主&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;题</string>
-    <string name="kind">类&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;型</string>
-    <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址</string>
+    <string name="kind">类型选择</string>
+    <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;点</string>
     <string name="price">补&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;贴</string>
     <string name="memo">内&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;容</string>
-    <string name="aid_mobile">电&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;话</string>
+    <string name="aid_mobile">电话号码</string>
     <string name="choose_priority">点击选择优先级</string>
     <string name="normal_priority">一般</string>
     <string name="build">新建</string>
@@ -169,16 +168,13 @@
     <string name="join">参加</string>
     <string name="quit">退出</string>
 
-   ===================================================================
+    ===================================================================
 
     <!--居家服务-->
     <string name="residential_service">居家服务</string>
     <string name="price_format">%1$d元</string>
     <string name="new_service">发布服务</string>
     <string name="all_orders">所有订单</string>
-
-
-
 
 
     <!--我的订单-->
@@ -213,7 +209,7 @@
     <string name="register">注册</string>
     <string name="mobile_number">电话号码</string>
     <string name="password">密码</string>
-    <string name="password_again" >确认密码</string>
+    <string name="password_again">确认密码</string>
     <string name="show">显示</string>
     <string name="choose">选择</string>
 
@@ -225,7 +221,6 @@
     <string name="course_start_end_time_">上课时间：%1$s</string>
     <string name="join_in">报名</string>
     <string name="cancle">取消</string>
-
 
 
     <!--评价-->
@@ -276,7 +271,6 @@
     <string name="forget_password_">忘记密码？</string>
     <string name="user_name">姓名</string>
     <string name="register_code">验证码</string>
-
 
 
     ===============================旅游

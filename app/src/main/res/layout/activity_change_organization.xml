@@ -38,7 +38,7 @@
                 android:background="@drawable/selector_change_near_bg"
                 android:gravity="center"
                 android:padding="@dimen/dp_4"
-                android:text="附近"
+                android:text="就近"
                 android:textColor="@color/selector_change_organization_text"
                 android:textSize="@dimen/sp_14" />
 
