@@ -10,6 +10,7 @@ import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
@@ -115,13 +116,14 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
             return false;
         }
 
-//        if (!RegexUtils.checkMobile(username)) {
-//            ToastHelper.get().showWareShort("手机号格式错误");
-//            return false;
-//        }
+        if (!RegexUtils.checkMobile(username)) {
+            ToastHelper.get().showWareShort("手机号格式错误");
+            return false;
+        }
 
         if (TextUtils.isEmpty(password)) {
             ToastHelper.get().showWareShort("密码不能为空");
+
             return false;
         }
 
