@@ -81,7 +81,11 @@ public class AnnouncementItemFragment extends BaseFragment {
     }
 
     private void loadImage() {
-        String url = StringUtils.getFirstIcon(information.getImage());
-        ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
+        if (information.getContextType() == 3) {
+            ImageLoaderUtil.instance().loadImage(information.getCover(), R.drawable.icon_def, ivIcon);
+        } else {
+            String url = StringUtils.getFirstIcon(information.getImage());
+            ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
+        }
     }
 }

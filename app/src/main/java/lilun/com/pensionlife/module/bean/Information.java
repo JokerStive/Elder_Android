@@ -52,6 +52,7 @@ public class Information extends BaseBean {
     private String updatorName;
     private String organizationId;
     private List<String> image;
+    private String cover;
 
     public String getId() {
         return id;
@@ -197,6 +198,12 @@ public class Information extends BaseBean {
         this.image = image;
     }
 
-    public static class PictureBean {
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }
