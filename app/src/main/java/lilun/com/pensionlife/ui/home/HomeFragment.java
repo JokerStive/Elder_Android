@@ -402,7 +402,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             ivGetPrize.setVisibility(View.GONE);
         else {
             ivGetPrize.setVisibility(View.VISIBLE);
-            //               String url = "http://192.168.3.239:9005/Lotterys/myLottery" +
+//                           String url = "http://192.168.3.239:9005/Lotterys/myLottery" +
 //                       "?token=ilYqeeLYBWB6D269WMFqN20iCGGh96CbsuvwVPxkuvkepNNC3WJ4v3EoCOCtb2TC" +
 //                       "&accountId=a882a250-f71b-11e6-9bfd-15b36ba8952f" +
 //                       "&sweepstakesId=21151fb0-dcc5-11e7-bc1e-e5a307c8e1db";

@@ -45,6 +45,7 @@ import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
  * 2017-12-08 10:05:42 更新 https://oa.liluntech.com/issues/9195
  *  1\社区活动发布对于已经开始活动应该能够在分类中显示 ,目前在分类中看不到.
  2\社区活动自己发布的活动应该能够在分类中显示 ,目前在分类中看不到.
+ 活动结束后能显示一周    https://oa.liluntech.com/issues/9188
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
@@ -283,16 +284,18 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         // TODO 关联organizationId
         //{"where":{"categoryId":"/地球村/中国/重庆/重庆市/南岸区/铜元局街道/A小区/#topic_activity-category.旅游","status":"checking","and":[{"masterId":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}},{"partnerList":{"neq":"2c690650-3483-11e7-90b6-8f0c1da0aab2"}}],"or":[{"repeatedDesc":{"like": ""}},{"startTime":{"gt":"2017-05-09 15:54:22"}}],"title":{"like":""}},"order":"createdAt DESC","limit":"20","skip":"0"}
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String localtime = format.format(new Date());
-        //未开始    现在时间<开始时间
-        activity_status = "\"startTime\":{\"gt\":\"" + localtime + "\"}";
+        Date tmplocal = new Date();
+        tmplocal.setTime(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+        String localtime = format.format(tmplocal);
+        //未开始    现在时间-7 < 结束时间
+        activity_status = "\"endTime\":{\"gte\":\"" + localtime + "\"}";
         //join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
         join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
 
 //        String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
 //                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
-                 ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
+                ",\"or\":[{\"endTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";
         mPresenter.getOrganizationActivities(filter, skip);
     }
 
