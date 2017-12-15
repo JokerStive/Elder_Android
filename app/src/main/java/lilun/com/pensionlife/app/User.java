@@ -43,6 +43,8 @@ public class User {
     public static final String address = "address";
     public static final String certificateLicense = "certificateLicense";
     public static final String prizedraw = "prizedraw"; //兑奖信息
+    //头像更新次数，缓存时使用
+    private static long changeAvatorCount = 0;
 
 
     public static ArrayList<String> getCertificateLicense() {
@@ -375,6 +377,14 @@ public class User {
         }
         result += "]";
         return result;
+    }
+
+    public static void setChangeAvatorCount() {
+        changeAvatorCount++;
+    }
+
+    public static long getChangeAvatorCount() {
+        return changeAvatorCount;
     }
 }
 

@@ -2,9 +2,7 @@ package lilun.com.pensionlife.module.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.json.JSONArray;
@@ -14,8 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.PushMessage;
@@ -29,12 +25,10 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
  */
 public class ChatAdapter extends QuickAdapter<PushMessage> {
 
-
+    final String sg = System.currentTimeMillis() / (1000 * 60 * 60) + "" + User.getChangeAvatorCount();//缓存时间1小时
     public ChatAdapter(List<PushMessage> data) {
         super(R.layout.item_chat, data);
-
     }
-
 
     @Override
     protected void convert(BaseViewHolder helper, PushMessage pushMessage) {
@@ -98,14 +92,14 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
                 helper.getView(R.id.rl_their_message).setVisibility(View.GONE);
                 helper.setText(R.id.tv_my_name, name)
                         .setText(R.id.tv_my_message, pushMessage.getMessage());
-                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), helper.getView(R.id.civ_my_ivatar));
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), helper.getView(R.id.civ_my_ivatar), sg);
 
             } else {
                 helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
                 helper.getView(R.id.rl_their_message).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_their_name, name)
                         .setText(R.id.tv_their_message, pushMessage.getMessage());
-                ImageLoaderUtil.instance().loadAvatar(id, helper.getView(R.id.civ_their_ivatar));
+                ImageLoaderUtil.instance().loadAvatar(id, helper.getView(R.id.civ_their_ivatar), sg);
             }
         } else {
             helper.getView(R.id.rl_my_message).setVisibility(View.GONE);

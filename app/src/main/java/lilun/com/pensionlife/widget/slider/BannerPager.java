@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -73,10 +74,12 @@ public class BannerPager extends RelativeLayout {
         for (int i = 0; i < urls.size(); i++) {
             ImageView item = (ImageView) LayoutInflater.from(App.context).inflate(R.layout.image_view, null);
             Glide.with(getContext()).load(urls.get(i)).dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .error(R.drawable.icon_def)
                     .thumbnail(0.1f)
                     .fitCenter()
                     .into(item);
+
             items.add(item);
         }
 

@@ -481,9 +481,11 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
             public void onAllSuccess() {
                 //未设置过头像，则显示，重新获取个人数据，再显示头像
                 ToastHelper.get().showShort("更新图片成功");
-                User.puttUserAvatar(IconUrl.account(User.getUserId()));
 
-                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator, true);
+                User.puttUserAvatar(IconUrl.account(User.getUserId()));
+                User.setChangeAvatorCount();
+
+                ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAvator);
                 EventBus.getDefault().post(new Event.AccountSettingChange());
             }
         });

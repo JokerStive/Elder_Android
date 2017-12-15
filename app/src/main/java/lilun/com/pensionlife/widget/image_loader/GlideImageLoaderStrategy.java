@@ -2,6 +2,7 @@ package lilun.com.pensionlife.widget.image_loader;
 
 import android.content.Context;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -99,13 +100,23 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy {
                 .into(imageView);
     }
 
-    public void loadAvatar(Context ctx, String accountId, ImageView imageView, boolean isupdate) {
+    /**
+     * @param ctx
+     * @param accountId
+     * @param imageView
+     * @param signature 缓存签名 为空不用缓存(采用时间段缓存策略)
+     */
+    public void loadAvatar(Context ctx, String accountId, ImageView imageView, String signature) {
         DrawableRequestBuilder<String> override = Glide.with(ctx).load(IconUrl.account(accountId)).dontAnimate()
-                .placeholder(R.drawable.icon_def)
+                .thumbnail(0.1f)
                 .error(R.drawable.icon_error)
                 .override(400, 400);
-//        override.signature(new StringSignature(System.currentTimeMillis() / (60 * 60 * 1000) + ""));
-         override.signature(new StringSignature(System.currentTimeMillis()  + ""));
+        if (!TextUtils.isEmpty(signature)) {
+            override.signature(new StringSignature(signature));
+        } else {
+            override.diskCacheStrategy(DiskCacheStrategy.NONE);
+            override.skipMemoryCache(true);
+        }
         override.into(imageView);
     }
 }

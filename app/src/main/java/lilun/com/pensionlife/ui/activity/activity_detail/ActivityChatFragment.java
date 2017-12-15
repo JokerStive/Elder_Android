@@ -169,13 +169,13 @@ public class ActivityChatFragment extends BaseFragment {
         if (chatAdapter.getItemCount() > 0)
             mRecyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
         //  mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (chatAdapter.getItemCount() > 0)
-                    mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-            }
-        });
+//        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                if (chatAdapter.getItemCount() > 0)
+//                    mRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+//            }
+//        });
         isvSend.setOnSendListener(new InputSendView.OnSendListener() {
             @Override
             public void send(String sendStr) {
