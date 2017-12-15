@@ -182,11 +182,10 @@
 
         <lilun.com.pensionlife.widget.BounceView
             android:id="@+id/iv_get_prize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_40"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/get_prize_icon"
             android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

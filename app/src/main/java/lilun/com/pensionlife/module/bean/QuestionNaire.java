@@ -32,8 +32,10 @@ public class QuestionNaire extends BaseBean {
         private String title;
         private String startTime;
         private String endTime;
+       private String image;
 
-        public String getId() {
+
+       public String getId() {
             return id;
         }
 
@@ -64,5 +66,13 @@ public class QuestionNaire extends BaseBean {
         public void setEndTime(String endTime) {
             this.endTime = endTime;
         }
+
+       public String getImage() {
+           return image;
+       }
+
+       public void setImage(String image) {
+           this.image = image;
+       }
     }
 }
