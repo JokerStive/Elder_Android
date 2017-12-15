@@ -57,6 +57,7 @@ import lilun.com.pensionlife.ui.home.personal_setting.PersonalSettingFragment;
 import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pensionlife.widget.BounceView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
@@ -114,7 +115,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     CircleIndicator indicator;
 
     @Bind(R.id.iv_get_prize)
-    ImageView ivGetPrize;
+    BounceView ivGetPrize;
 
 
 
@@ -416,6 +417,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             });
         }
     }
+
 
     @Subscribe
     public void mqttNotificationOperate(MqttNotificationExtra extra) {
