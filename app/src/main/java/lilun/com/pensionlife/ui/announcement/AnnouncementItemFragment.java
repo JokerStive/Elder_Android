@@ -13,7 +13,6 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.utils.ACache;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.ui.WebActivity;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -81,11 +80,7 @@ public class AnnouncementItemFragment extends BaseFragment {
     }
 
     private void loadImage() {
-        if (information.getContextType() == 3) {
-            ImageLoaderUtil.instance().loadImage(information.getCover(), R.drawable.icon_def, ivIcon);
-        } else {
-            String url = StringUtils.getFirstIcon(information.getImage());
-            ImageLoaderUtil.instance().loadImage(url, R.drawable.icon_def, ivIcon);
-        }
+//        String url = StringUtils.getFirstIcon(information.getImage());
+        ImageLoaderUtil.instance().loadImage(information.getCover(), ivIcon);
     }
 }

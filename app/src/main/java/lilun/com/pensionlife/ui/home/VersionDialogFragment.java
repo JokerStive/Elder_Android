@@ -21,10 +21,12 @@ import com.orhanobut.logger.Logger;
 
 import java.io.File;
 
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.utils.SystemUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.ui.home.upload.DownLoadCallBack;
 import lilun.com.pensionlife.ui.home.upload.DownLoadService;
 import lilun.com.pensionlife.ui.home.upload.DownNotification;
@@ -102,9 +104,12 @@ public class VersionDialogFragment extends DialogFragment {
 
     private void startLoad(AppVersion version) {
         Logger.d("url ---" + version.getUrl());
-        if (version.getForced()) {
+        String minVersion = version.getMinVersion();
+        boolean isFocus = VersionCheck.compareVersion(BuildConfig.VERSION_NAME, minVersion);
+        if (isFocus || version.getForced()) {
             startLoadApk(version);
         } else {
+
             startLoadApkBackground(version);
         }
 

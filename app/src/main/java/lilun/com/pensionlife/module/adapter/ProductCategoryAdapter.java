@@ -11,7 +11,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
-import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
  * 产品分类模块adapter
@@ -44,7 +43,7 @@ public class ProductCategoryAdapter extends QuickAdapter<OrganizationProductCate
 
         if (OrganizationProductCategory.getIcon() != null) {
 //            String firstIconName = StringUtils.getFirstIconNameFromIcon(OrganizationProductCategory.getIcon());
-            String iconUrl = StringUtils.getFirstIcon(OrganizationProductCategory.getIcon());
+            String iconUrl = OrganizationProductCategory.getIcon();
             Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
         }
     }

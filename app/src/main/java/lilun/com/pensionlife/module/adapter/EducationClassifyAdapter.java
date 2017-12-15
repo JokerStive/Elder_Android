@@ -57,7 +57,7 @@ public class EducationClassifyAdapter extends QuickAdapter<ElderModule> {
 
 
         if (elderModule.getIcon() != null) {
-            String iconUrl = elderModule.getIcon().get(0);
+            String iconUrl = elderModule.getIcon();
             ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, helper.getView(R.id.iv_elder_icon));
         }
     }
