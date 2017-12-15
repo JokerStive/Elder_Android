@@ -123,7 +123,6 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
 
         if (TextUtils.isEmpty(password)) {
             ToastHelper.get().showWareShort("密码不能为空");
-
             return false;
         }
 

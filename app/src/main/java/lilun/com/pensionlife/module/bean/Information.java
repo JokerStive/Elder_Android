@@ -49,6 +49,17 @@ public class Information extends BaseBean {
     private String creatorId;
     private String creatorName;
     private String updatorId;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public Information setCover(String cover) {
+        this.cover = cover;
+        return this;
+    }
+
+    private String cover;
     private String updatorName;
     private String organizationId;
     private List<String> image;

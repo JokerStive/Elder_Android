@@ -4,7 +4,6 @@ import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,13 +42,13 @@ public class OrganizationProductCategory extends AbstractExpandableItem<Organiza
     private String parentId;
     private String organizationId;
     private int visible;
-    private List<String> icon;
+    private String icon;
 
-    public List<String> getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public OrganizationProductCategory setIcon(List<String> icon) {
+    public OrganizationProductCategory setIcon(String icon) {
         this.icon = icon;
         return this;
     }

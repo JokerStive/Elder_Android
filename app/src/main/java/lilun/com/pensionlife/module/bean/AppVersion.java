@@ -10,6 +10,17 @@ import java.io.Serializable;
 public class AppVersion implements Serializable {
     String name;
     String version;
+    String minVersion;
+
+    public String getMinVersion() {
+        return minVersion;
+    }
+
+    public AppVersion setMinVersion(String minVersion) {
+        this.minVersion = minVersion;
+        return this;
+    }
+
     String url;
     String description;
     boolean forced;
