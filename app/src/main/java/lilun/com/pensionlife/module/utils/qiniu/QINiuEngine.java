@@ -160,11 +160,12 @@ public class QINiuEngine {
 
 
     private void uploadWithOperate(Operate operate) {
+        operate.view.setStatus(QiNiuUploadView.UPLOADING);
         UploadOptions options = new UploadOptions(null, null, false,
                 new UpProgressHandler() {
                     public void progress(String key, double percent) {
-                        Logger.i("第"+operate.key+"张上传进度"+ key + ": " + percent);
-                        operate.view.setProgress((int) (percent * 100));
+                        Logger.i("尼玛进度" + percent);
+                        operate.view.setProgress(percent);
                     }
                 }, null);
 
@@ -177,10 +178,11 @@ public class QINiuEngine {
 
                 //每一张操作
                 if (info.isOK()) {
+                    Logger.d("图片上传成功");
                     operate.view.setStatus(QiNiuUploadView.UPLOAD_SUCCESS);
                     operate.status = QiNiuUploadView.UPLOAD_SUCCESS;
                 } else {
-                    Logger.e(info.toString());
+                    Logger.e("图片上传失败" + info.error);
                     operate.view.setStatus(QiNiuUploadView.UPLOAD_FALSE);
                     operate.status = QiNiuUploadView.UPLOAD_FALSE;
                 }
@@ -204,7 +206,8 @@ public class QINiuEngine {
 
 
     private boolean isTokenInvalid() {
-        return System.currentTimeMillis() > tokenInvalidTime;
+        boolean b = System.currentTimeMillis() > tokenInvalidTime;
+        return b;
     }
 
 
@@ -212,7 +215,7 @@ public class QINiuEngine {
      * 上传单张图片
      *
      * @param filePath  文件路径
-//     * @param filename  文件名
+     *                  //     * @param filename  文件名
      * @param updateKey 更新使用的key，若第一次上传设为空
      * @param cpvUpload 圆形上传进度view
      */
@@ -242,7 +245,7 @@ public class QINiuEngine {
         byte[] bytes = fileToJPGByteData(filePath);
         if (bytes != null) {
             cpvUpload.setVisibility(View.VISIBLE);
-            updateKey = TextUtils.isEmpty(updateKey)?System.currentTimeMillis()+format:updateKey;
+            updateKey = TextUtils.isEmpty(updateKey) ? System.currentTimeMillis() + format : updateKey;
             uploadManager.put(bytes, updateKey, token.getToken(), upCompletionHandler, options);
 //            if (TextUtils.isEmpty(updateKey))
 //                uploadManager.put(bytes, filename + format, token.getToken(), upCompletionHandler, options);

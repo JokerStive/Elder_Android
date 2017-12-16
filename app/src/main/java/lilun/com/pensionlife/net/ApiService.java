@@ -86,7 +86,7 @@ public interface ApiService {
      * 获取上传图片的token
      */
     @FormUrlEncoded
-    @PUT("{modelName}/{modelId}/upload/{tag}")
+    @PUT("{modelName}/{modelId}/update/{tag}")
     Observable<Response<QINiuToken>> getPutFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList);
 
 
