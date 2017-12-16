@@ -87,7 +87,8 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
 
     public void add(T element) {
         getData().add(element);
-        notifyDataSetChanged();
+     //   notifyDataSetChanged();
+        notifyItemChanged(getData().size() - 1);
     }
 
     public void remove(T element) {

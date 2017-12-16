@@ -57,6 +57,7 @@ import lilun.com.pensionlife.ui.home.personal_setting.PersonalSettingFragment;
 import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
+import lilun.com.pensionlife.widget.BounceView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import me.relex.circleindicator.CircleIndicator;
@@ -114,7 +115,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     CircleIndicator indicator;
 
     @Bind(R.id.iv_get_prize)
-    ImageView ivGetPrize;
+    BounceView ivGetPrize;
 
 
 
@@ -402,17 +403,14 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             ivGetPrize.setVisibility(View.GONE);
         else {
             ivGetPrize.setVisibility(View.VISIBLE);
-//                           String url = "http://192.168.3.239:9005/Lotterys/myLottery" +
-//                       "?token=ilYqeeLYBWB6D269WMFqN20iCGGh96CbsuvwVPxkuvkepNNC3WJ4v3EoCOCtb2TC" +
-//                       "&accountId=a882a250-f71b-11e6-9bfd-15b36ba8952f" +
-//                       "&sweepstakesId=21151fb0-dcc5-11e7-bc1e-e5a307c8e1db";
+            ImageLoaderUtil.instance().loadImage(questionNaire.getPrizedraw().getImage(), ivGetPrize);
             ivGetPrize.setOnClickListener(v -> {
                 String url = ConfigUri.LOTTERY_BASE_URL + "/Lotterys/myLottery" +
                         "?token=" + User.getToken() +
                         "&accountId=" + User.getUserId() +
                         "&organizationActivityId=" + questionNaire.getPrizedraw().getId()+
                         "&sIP=" + ConfigUri.BASE_URL.replace("/api/","");
-
+                Logger.d(url);
                 Intent intent = new Intent(getContext(), WebActivity.class);
                 intent.putExtra("url", url);
                 intent.putExtra("title", "兑奖详情");
@@ -420,6 +418,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             });
         }
     }
+
 
     @Subscribe
     public void mqttNotificationOperate(MqttNotificationExtra extra) {

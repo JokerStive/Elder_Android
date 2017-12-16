@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
@@ -10,11 +11,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseActivity;
-import lilun.com.pensionlife.ui.home.HomeFragment;
+import lilun.com.pensionlife.ui.contact.ContactListActivity;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -124,7 +124,9 @@ public class WebActivity extends BaseActivity {
          */
         @JavascriptInterface
         public void callAndroid() {
-            Toast.makeText(context, "显示地址", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), ContactListActivity.class);
+            startActivity(intent);
+            //   Toast.makeText(context, "显示地址", Toast.LENGTH_LONG).show();
         }
     }
 

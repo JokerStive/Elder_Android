@@ -34,10 +34,16 @@ public class ImageLoaderUtil {
     }
 
     public void loadAvatar(String accountId, ImageView imageView) {
-        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, false);
+        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, "");
     }
-    public void loadAvatar(String accountId, ImageView imageView, boolean isupdate) {
-        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, isupdate);
+
+    /**
+     * @param accountId
+     * @param imageView
+     * @param signature 缓存签名 为空不用缓存(采用时间段缓存策略)
+     */
+    public void loadAvatar(String accountId, ImageView imageView, String signature) {
+        mStrategy.loadAvatar(imageView.getContext(), accountId, imageView, signature);
     }
 
     public void loadImage(String url, ImageView imageView) {

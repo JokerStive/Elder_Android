@@ -16,7 +16,13 @@ public interface BaseImageLoaderStrategy {
     void loadImage(String url, int placeholder, ImageView imageView);
 
     void loadImage(Context context, String url, int placeholder, ImageView imageView);
-    void loadAvatar(Context context, String accountId, ImageView imageView, boolean isupdate);
+    /**
+     * @param context
+     * @param accountId
+     * @param imageView
+     * @param signature 缓存签名 为空不用缓存(采用时间段缓存策略)
+     */
+    void loadAvatar(Context context, String accountId, ImageView imageView, String signature);
 
     //清除硬盘缓存
     void clearDiskCache(final Context context);
