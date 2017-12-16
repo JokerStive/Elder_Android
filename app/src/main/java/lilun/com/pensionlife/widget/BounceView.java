@@ -55,24 +55,31 @@ public class BounceView extends android.support.v7.widget.AppCompatImageView {
     }
 
     float tranx, trany;
-
+    private boolean isClickState;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                isClickState = true;
                 startX = (int) (event.getRawX());
                 startY = (int) (event.getRawY());
             case MotionEvent.ACTION_MOVE:
-                moveView(event.getRawX() - startX + tranx, event.getRawY() - startY + trany);
-                invalidate();
+                if ((event.getRawX() - startX) > 20 || (event.getRawY() - startY) > 20) {
+                    isClickState = false;
+                    moveView(event.getRawX() - startX + tranx, event.getRawY() - startY + trany);
+                    invalidate();
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 tranx = getTranslationX();
                 trany = getTranslationY();
+                if (isClickState)
+                    performClick();
         }
         return true;
     }
+
 
     public void moveView(float dx, float dy) {
         float tx, ty;
