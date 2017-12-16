@@ -33,7 +33,7 @@ public class AnnouncementPresenter extends RxPresenter<AnnouncementContract.View
 
     @Override
     public void initTimer() {
-        addSubscribe(Observable.interval(0, 2000, TimeUnit.MILLISECONDS)
+        addSubscribe(Observable.interval(0, 4000, TimeUnit.MILLISECONDS)
                 .compose(RxUtils.applySchedule())
                 .subscribe(aLong -> {
 //                    Logger.d(getClass().getName() + "定时器");

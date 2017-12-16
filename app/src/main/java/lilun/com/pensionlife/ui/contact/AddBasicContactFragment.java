@@ -140,7 +140,9 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
 
         if (flag == -1) {
             etContactMobile.setText(User.getMobile());
-            etContactName.setText(User.getName());
+            boolean nameIsMobile = RegexUtils.checkMobile(User.getName());
+            String contactName = nameIsMobile?"": User.getName();
+            etContactName.setText(contactName);
             etContactAddress.setText(User.getAddress());
 
             String belongsOrganizationId = User.getBelongsOrganizationId();

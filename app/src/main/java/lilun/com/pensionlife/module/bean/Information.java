@@ -49,10 +49,13 @@ public class Information extends BaseBean {
     private String creatorId;
     private String creatorName;
     private String updatorId;
+
+
+
+    private String cover;
     private String updatorName;
     private String organizationId;
     private List<String> image;
-    private String cover;
 
     public String getId() {
         return id;

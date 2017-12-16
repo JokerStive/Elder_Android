@@ -105,28 +105,6 @@
             </RelativeLayout>
 
 
-            <lilun.com.pensionlife.widget.InputView
-                android:id="@+id/input_topic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                app:et_max_length="20"
-                app:input_title="@string/topic" />
-
-            <lilun.com.pensionlife.widget.InputView
-                android:id="@+id/input_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                app:input_title="@string/address" />
-
-            <lilun.com.pensionlife.widget.InputView
-                android:id="@+id/input_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                app:input_title="@string/aid_mobile" />
-
 
             <RelativeLayout
                 android:id="@+id/rl_choice_priority"
@@ -162,7 +140,38 @@
                     style="@style/line_gray"
                     android:layout_below="@id/tv_priority"
                     android:layout_marginTop="@dimen/dp_8" />
+
+
             </RelativeLayout>
+
+
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/input_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                app:input_title="@string/aid_mobile" />
+
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/input_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                app:et_max_length="20"
+                app:input_title="@string/topic" />
+
+            <lilun.com.pensionlife.widget.InputView
+                android:id="@+id/input_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                app:input_title="@string/address" />
+
+
+
+
 
             <lilun.com.pensionlife.widget.InputView
                 android:id="@+id/input_price"

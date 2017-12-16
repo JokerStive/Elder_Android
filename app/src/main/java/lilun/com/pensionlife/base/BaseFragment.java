@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.widget.NormalDialog;
+import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -39,6 +40,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     protected View mRootView;
     protected T mPresenter;
     protected Subscription subscribe;
+    private RxProgressDialog dialog;
     protected CompositeSubscription subscription = new CompositeSubscription();
 
     /**
@@ -63,6 +65,9 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     public void editViewEnterButton() {
 
     }
+
+
+
 
 
     @Override
@@ -305,5 +310,23 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     public void pop() {
         hideSoftInput();
         super.pop();
+    }
+
+
+
+    public void showDialog() {
+        if (dialog == null) {
+            dialog = new RxProgressDialog(_mActivity);
+        }
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    public void dismissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 }

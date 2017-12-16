@@ -72,8 +72,8 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
 
         List<Option> kindOptions = new ArrayList<>();
         Option optionNull = new Option("", "不限");
-        Option optionAsk = new Option("0", "邻居问");
         Option optionHelp = new Option("1", "帮邻居");
+        Option optionAsk = new Option("0", "问邻居");
         kindOptions.add(optionNull);
         kindOptions.add(optionAsk);
         kindOptions.add(optionHelp);
@@ -81,10 +81,10 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
 
 
         List<Option> statusOptions = new ArrayList<>();
-        Option statusOptionNull = new Option("", "不限");
+        Option statusOptionNull = new Option("", "状态");
         Option statusOption0 = new Option("0", "新建");
         Option statusOption1 = new Option("1", "已回复");
-        Option statusOption2 = new Option("2", "已解决");
+        Option statusOption2 = new Option("2", "已完成");
         statusOptions.add(statusOptionNull);
         statusOptions.add(statusOption0);
         statusOptions.add(statusOption1);

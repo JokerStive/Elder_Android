@@ -37,9 +37,7 @@ public class QiNiuUploadImageView extends ImageView {
                 , mPaint);// 绘制上半部分的半透明矩形区域（左上，右下，画笔）
 
         mPaint.setColor(Color.parseColor("#00000000"));// 全透明
-        canvas.drawRect(0, getHeight() - getHeight() * mProgress
-                ,
-                getWidth(), getHeight(), mPaint);// 绘制下半部分的全透明矩形区域
+        canvas.drawRect(0, getHeight() - getHeight() * mProgress,getWidth(), getHeight(), mPaint);// 绘制下半部分的全透明矩形区域
     }
 
     public void

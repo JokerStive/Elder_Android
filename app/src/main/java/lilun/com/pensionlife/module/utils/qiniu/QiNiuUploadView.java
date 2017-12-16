@@ -70,7 +70,7 @@ public class QiNiuUploadView extends RelativeLayout {
                 mDelete.setVisibility(GONE);
                 mError.setVisibility(GONE);
                 progressView.setVisibility(VISIBLE);
-                progressView.runProgressAnim(2500);
+//                progressView.runProgressAnim(2500);
                 break;
 
             case UPLOAD_SUCCESS:
@@ -94,7 +94,7 @@ public class QiNiuUploadView extends RelativeLayout {
             setStatus(UPLOADING);
         }
         progressView.setProgress((int) (progress * 100));
-        mImageView.setProgress((int) progress);
+        mImageView.setProgress(1-(int) progress);
     }
 
 

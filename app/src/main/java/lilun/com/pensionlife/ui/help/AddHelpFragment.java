@@ -282,7 +282,12 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
         TokenParams tokenParams = createTokenParam();
         ArrayList<String> filePaths = getPhotoData();
         ArrayList<QiNiuUploadView> views = getQiNiuUploadViews(filePaths);
-        QINiuEngine engine = new QINiuEngine(_mActivity, tokenParams, filePaths, views, this::putDataAndPop);
+        QINiuEngine engine = new QINiuEngine(_mActivity, tokenParams, filePaths, views, new QINiuEngine.UploadListener() {
+            @Override
+            public void onAllSuccess() {
+                putDataAndPop();
+            }
+        });
         engine.postMultipleFile();
 //        QINiuEngine engine = new QINiuEngine(_mActivity, photoData.size(), qiNiuToken, new QINiuEngine.UploadListener() {
 //            @Override

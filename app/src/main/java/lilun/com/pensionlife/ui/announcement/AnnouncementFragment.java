@@ -102,6 +102,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         mPresenter.getAnnounce(parentId);
+
     }
 
 //    private void initIndicator() {
@@ -116,7 +117,6 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     public void setVpCurrentPosition() {
-
         if (currentPosition++ == announces.size()) {
             viewPager.setCurrentItem(0, false);
         } else {
@@ -126,7 +126,11 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     public void showAnnounce(List<Information> announces) {
+
         this.announces = announces;
+        if (announces!=null && announces.size()>0){
+            mPresenter.initTimer();
+        }
         Logger.d(parentId + "的公告条数为" + announces.size());
 
         List<BaseFragment> listFragments = new ArrayList<>();
