@@ -49,7 +49,7 @@ import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
-import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailFragment;
+import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailActivity;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.DividerDecoration;
@@ -424,7 +424,7 @@ public class ProductDetailFragment extends BaseFragment {
      * 查看订单详情
      */
     private void transferOrderDetail() {
-        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"creatorId\":\"\",\"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}}}";
+        String filter = "{\"order\":\"createdAt DESC\",\"where\":{\"creatorId\":\"" + User.getUserId() + "\",\"status\":{\"inq\":[\"reserved\",\"assigned\",\"delay\"]}}}";
         NetHelper.getApi().getOrdersOfProduct(mProductId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -433,7 +433,10 @@ public class ProductDetailFragment extends BaseFragment {
                     public void _next(List<ProductOrder> orders) {
                         if (orders.size() > 0) {
                             String orderId = orders.get(0).getId();
-                            start(OrderDetailFragment.newInstance(orderId));
+                            Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+                            intent.putExtra("orderId", orderId);
+                            startActivity(intent);
+//                            start(OrderDetailFragment.newInstance(orderId));
                         } else {
                             ToastHelper.get().showWareShort("没有找到该产品对应的订单");
                         }
@@ -527,6 +530,9 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void call() {
+        if (TextUtils.isEmpty(clickMobile)){
+            clickMobile = mobile;
+        }
         if (!clickMobile.equals("暂未提供")) {
             new NormalDialog().createNormal(_mActivity, "是否联系：" + clickMobile, () -> {
                 requestPermission(Manifest.permission.CALL_PHONE, new PermissionListener() {

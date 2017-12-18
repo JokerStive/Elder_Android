@@ -29,6 +29,7 @@ import lilun.com.pensionlife.ui.health.list.HealthListFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
+import lilun.com.pensionlife.widget.recycler_view.AutoExtendSpanSizeLookup;
 
 /**
  * 健康服务V
@@ -167,8 +168,13 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
     @Override
     public void showClassifies(List<ElderModule> elderModules) {
         completeRefresh();
-        mClassifyRecycler.setLayoutManager(new GridLayoutManager(_mActivity, spanCountByData(elderModules)));
+
+        GridLayoutManager manager = new GridLayoutManager(_mActivity, 6);
+        manager.setSpanSizeLookup(new AutoExtendSpanSizeLookup(elderModules.size(), 6));
+
+
         ElderModuleAdapter adapter = new ElderModuleAdapter(this, elderModules);
+
         adapter.setOnItemClickListener((elderModule -> {
             String name = elderModule.getName();
             if (name.equals("陪诊服务")) {
@@ -184,6 +190,7 @@ public class HealthClassifyFragment extends BaseFragment<HealthClassifyContract.
 
         }));
         mClassifyRecycler.setAdapter(adapter);
+        mClassifyRecycler.setLayoutManager(manager);
         getServices(0);
     }
 

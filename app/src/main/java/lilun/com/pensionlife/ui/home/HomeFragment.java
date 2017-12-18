@@ -116,7 +116,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Bind(R.id.iv_get_prize)
     BounceView ivGetPrize;
-
+    private int currentPosition;
+    private List<Information> announces;
 
 
     @Subscribe
@@ -191,6 +192,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     public void onResume() {
         super.onResume();
         mPresenter.needChangeToDefOrganization();
+        mPresenter.startTimer();
     }
 
     @Override
@@ -344,9 +346,13 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
 
     @Override
-    public void showInformation(List<Information> infos) {
+    public void showInformation(List<Information> infoss) {
+        this.announces = infoss;
         List<BaseFragment> listFragments = new ArrayList<>();
-        for (Information announcement : infos) {
+        if (announces != null && announces.size() > 0) {
+//            mPresenter.startTimer();
+        }
+        for (Information announcement : announces) {
             AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
             listFragments.add(fragment);
         }
@@ -356,9 +362,22 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                currentPosition = position;
             }
         });
 
+    }
+
+    @Override
+    public void setVpCurrentPosition() {
+        if (announces != null) {
+            Logger.d("binner");
+            if (currentPosition++ == announces.size()) {
+                viewPager.setCurrentItem(0, false);
+            } else {
+                viewPager.setCurrentItem(currentPosition, true);
+            }
+        }
     }
 
     @Override
@@ -408,8 +427,8 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 String url = ConfigUri.LOTTERY_BASE_URL + "/Lotterys/myLottery" +
                         "?token=" + User.getToken() +
                         "&accountId=" + User.getUserId() +
-                        "&organizationActivityId=" + questionNaire.getPrizedraw().getId()+
-                        "&sIP=" + ConfigUri.BASE_URL.replace("/api/","");
+                        "&organizationActivityId=" + questionNaire.getPrizedraw().getId() +
+                        "&sIP=" + ConfigUri.BASE_URL.replace("/api/", "");
                 Logger.d(url);
                 Intent intent = new Intent(getContext(), WebActivity.class);
                 intent.putExtra("url", url);
@@ -474,5 +493,12 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             EasyPermissions.requestPermissions(this, getString(R.string.location_permission),
                     RC_CAMERA_AND_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
         }
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.stopTimer();
     }
 }

@@ -21,9 +21,14 @@ public interface HomeContract {
         void changeOrganizationSuccess(int clickId);
         void showVersionInfo(AppVersion version);
         void saveQuestionNaire(QuestionNaire questionNaire);
+        void setVpCurrentPosition();
     }
 
     interface Presenter extends IPresenter<View> {
+
+        void startTimer();
+
+        void stopTimer();
 
         void getInformation();
 

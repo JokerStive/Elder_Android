@@ -3,6 +3,7 @@ package lilun.com.pensionlife.ui.home;
 import android.text.TextUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
@@ -15,6 +16,8 @@ import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import rx.Observable;
+import rx.Subscription;
 
 /**
  * 首页P
@@ -24,6 +27,9 @@ import lilun.com.pensionlife.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class HomePresenter extends RxPresenter<HomeContract.View> implements HomeContract.Presenter {
+
+    private Subscription timerSubscribe;
+
     @Override
     public void getInformation() {
         String parentIdFilter;
@@ -112,6 +118,26 @@ public class HomePresenter extends RxPresenter<HomeContract.View> implements Hom
                         view.saveQuestionNaire(questionNaire);
                     }
                 });
+    }
+
+
+    @Override
+    public void startTimer() {
+        timerSubscribe = Observable.interval(0, 3000, TimeUnit.MILLISECONDS)
+                .compose(RxUtils.applySchedule())
+                .subscribe(aLong -> {
+                    if (view != null) {
+                        view.setVpCurrentPosition();
+                    }
+                });
+
+    }
+
+    @Override
+    public void stopTimer() {
+        if (timerSubscribe != null) {
+            timerSubscribe.unsubscribe();
+        }
     }
 }
 

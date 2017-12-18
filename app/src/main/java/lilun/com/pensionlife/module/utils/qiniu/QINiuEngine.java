@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCancellationSignal;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
@@ -50,6 +51,7 @@ public class QINiuEngine {
     private OperateStatistics operateStatistics;
     private QinNiuPop pop;
     public static String format = ".jpg";
+    private boolean isCancelled = false;
 
     public QINiuEngine(Activity activity, TokenParams tokenParams, ArrayList<String> filePaths, ArrayList<QiNiuUploadView> qiNiuUploadViews, UploadListener listener) {
         this.tokenParams = tokenParams;
@@ -167,7 +169,12 @@ public class QINiuEngine {
                         Logger.i("尼玛进度" + percent);
                         operate.view.setProgress(percent);
                     }
-                }, null);
+                }, new UpCancellationSignal() {
+            @Override
+            public boolean isCancelled() {
+                return false;
+            }
+        });
 
         UpCompletionHandler upCompletionHandler = new UpCompletionHandler() {
 
@@ -202,6 +209,10 @@ public class QINiuEngine {
         if (bytes != null) {
             uploadManager.put(bytes, operate.key, token.getToken(), upCompletionHandler, options);
         }
+    }
+
+    private boolean cancel() {
+        return isCancelled;
     }
 
 

@@ -126,11 +126,11 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     public void showAnnounce(List<Information> announces) {
-
+        mPresenter.initTimer();
         this.announces = announces;
-        if (announces!=null && announces.size()>0){
-            mPresenter.initTimer();
-        }
+//        if (announces!=null && announces.size()>0){
+//            mPresenter.startTimer();
+//        }
         Logger.d(parentId + "的公告条数为" + announces.size());
 
         List<BaseFragment> listFragments = new ArrayList<>();
@@ -150,7 +150,7 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
         });
 
 
-//        mPresenter.initTimer();
+
     }
 
 

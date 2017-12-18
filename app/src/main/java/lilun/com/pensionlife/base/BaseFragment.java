@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -25,7 +24,6 @@ import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
-import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -162,16 +160,16 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         }
 
         if (EasyPermissions.hasPermissions(getActivity(), permission)) {
-            callbacks.onPermissionDenied();
+            callbacks.onPermissionGranted();
         } else {
-            ArrayList<String> permissions = new ArrayList<>();
-            permissions.add(permission);
-            boolean somePermissionPermanentlyDenied = EasyPermissions.somePermissionPermanentlyDenied(this, permissions);
-            if (somePermissionPermanentlyDenied) {
-                new AppSettingsDialog.Builder(this).build().show();
-            } else {
-                EasyPermissions.requestPermissions(this, "系统需要确认这个权限", 100, permission);
-            }
+//            ArrayList<String> permissions = new ArrayList<>();
+//            permissions.add(permission);
+            EasyPermissions.requestPermissions(this, "系统需要确认这个权限", 100, permission);
+//            boolean somePermissionPermanentlyDenied = EasyPermissions.somePermissionPermanentlyDenied(this, permissions);
+//            if (somePermissionPermanentlyDenied) {
+//                new AppSettingsDialog.Builder(this).build().show();
+//            } else {
+//            }
         }
 
 

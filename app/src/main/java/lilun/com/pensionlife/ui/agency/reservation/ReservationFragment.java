@@ -332,6 +332,7 @@ public class ReservationFragment extends BaseFragment {
                     public void _next(ProductOrder productOrder) {
 //                        mOrderMobile = productOrder.getMobile();
 //                        call();
+//                        start(OrderListFragment.newInstance());
                         popTo(ProductDetailFragment.class, false);
                         EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
 //                        setHadOrdered();
