@@ -90,10 +90,17 @@ public class ContactListFragment extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setOnBackClickListener(this::pop);
+        titleBar.setOnBackClickListener(this::goBack);
 
         rvInfo.setLayoutManager(new LinearLayoutManager(App.context, LinearLayoutManager.VERTICAL, false));
         rvInfo.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, UIUtils.dp2px(App.context, 10), App.context.getResources().getColor(R.color.gray)));
+    }
+
+    private void goBack() {
+        pop();
+        if (getActivity() instanceof ContactListActivity) {
+            getActivity().finish();
+        }
     }
 
     private void getContact() {
