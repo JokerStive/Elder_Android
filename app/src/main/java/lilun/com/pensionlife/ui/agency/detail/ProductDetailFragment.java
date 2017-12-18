@@ -12,7 +12,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,6 +54,7 @@ import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
+import lilun.com.pensionlife.widget.ProgressWebView;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 import rx.Observable;
 
@@ -101,7 +101,7 @@ public class ProductDetailFragment extends BaseFragment {
     TextView tvProductPhone;
 
     @Bind(R.id.wb_product_content)
-    WebView wbProductContent;
+    ProgressWebView wbProductContent;
 
     @Bind(R.id.tv_bottom_price)
     TextView tvBottomPrice;
@@ -285,7 +285,7 @@ public class ProductDetailFragment extends BaseFragment {
 
         //二级标题
         String contextType = product.getContextType();
-        if (!TextUtils.isEmpty(contextType) && contextType.equals("2")) {
+        if (!TextUtils.isEmpty(contextType) && (contextType.equals("3") || contextType.equals("2"))) {
             tvProductTitleExtra.setText(product.getSubTitle());
         } else {
             String context = product.getContext();
@@ -322,8 +322,10 @@ public class ProductDetailFragment extends BaseFragment {
         tvProductPhone.setText(Html.fromHtml("座机号: <font color='#17c5c3'>" + phone + "</font>"));
 
         //内容
-        wbProductContent.getSettings().setJavaScriptEnabled(true);
-        wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
+        wbProductContent.noProgress();
+        wbProductContent.loadUrl(product.getContext());
+//        wbProductContent.getSettings().setJavaScriptEnabled(true);
+//        wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
 
 
     }
@@ -530,7 +532,7 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     private void call() {
-        if (TextUtils.isEmpty(clickMobile)){
+        if (TextUtils.isEmpty(clickMobile)) {
             clickMobile = mobile;
         }
         if (!clickMobile.equals("暂未提供")) {

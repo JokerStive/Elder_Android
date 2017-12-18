@@ -231,7 +231,7 @@
                         android:textColor="#999999"
                         android:textSize="@dimen/sp_11" />
 
-                    <WebView
+                    <lilun.com.pensionlife.widget.ProgressWebView
                         android:id="@+id/wb_product_content"
                         style="@style/tv_normal"
                         android:layout_width="match_parent"

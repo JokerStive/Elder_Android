@@ -1,8 +1,5 @@
 package lilun.com.pensionlife.module.adapter;
 
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
@@ -11,6 +8,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.Organization;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -47,8 +45,7 @@ public class AgencyClassifyAdapter extends QuickAdapter<Organization> {
 
 
         if (organization.getIcon() != null) {
-            String iconUrl = organization.getIcon().get(0);
-            Glide.with(fragment).load(iconUrl).into((ImageView) helper.getView(R.id.iv_module_icon));
+            ImageLoaderUtil.instance().loadImage(organization.getIcon(),helper.getView(R.id.iv_module_icon));
         }
     }
 

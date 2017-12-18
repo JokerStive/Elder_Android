@@ -371,7 +371,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
     @Override
     public void setVpCurrentPosition() {
         if (announces != null) {
-            Logger.d("binner");
+//            Logger.d("binner");
             if (currentPosition++ == announces.size()) {
                 viewPager.setCurrentItem(0, false);
             } else {

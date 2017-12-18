@@ -33,7 +33,7 @@ public class AgencyServiceAdapter extends QuickAdapter<OrganizationProduct> {
         ratingBar.setCountSelected(product.getRank());
 
         String contextType = product.getContextType();
-        if (!TextUtils.isEmpty(contextType) && contextType.equals("2")) {
+        if (!TextUtils.isEmpty(contextType) && (contextType.equals("3") || contextType.equals("2"))) {
             help.setText(R.id.tv_product_title_extra, product.getSubTitle());
         } else {
             help.setText(R.id.tv_product_title_extra, StringUtils.filterNull(product.getContext()));

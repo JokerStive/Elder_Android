@@ -27,6 +27,11 @@ public class ProgressWebView extends WebView {
 
     }
 
+    public void noProgress() {
+        mProgressBar.setVisibility(INVISIBLE);
+    }
+
+
     public class WebChromeClient extends android.webkit.WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {

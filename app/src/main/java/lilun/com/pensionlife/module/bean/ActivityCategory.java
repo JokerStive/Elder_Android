@@ -1,10 +1,5 @@
 package lilun.com.pensionlife.module.bean;
 
-import android.graphics.drawable.Icon;
-
-import java.io.Serializable;
-import java.util.List;
-
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
@@ -134,30 +129,5 @@ public class ActivityCategory extends BaseBean {
         this.icon = icon;
     }
     
-    public static class IconBean implements Serializable{
 
-        /**
-         * description : 老有所乐
-         * fileName : secondBannerActivityPos1.jpg
-         */
-
-        private String description;
-        private String fileName;
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-    }
 }
