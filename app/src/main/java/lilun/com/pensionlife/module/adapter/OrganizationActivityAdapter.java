@@ -16,6 +16,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.utils.DateTimeUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
@@ -147,9 +148,9 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
             help.setText(R.id.iv_is_repeat, context.getApplicationContext().getString(R.string.cyclical));
         } else {
             if (activity.getStartTime() != null)
-                activityTime += StringUtils.IOS2ToUTC(activity.getStartTime(), 3);
+                activityTime += DateTimeUtils.dateToSmartTime(activity.getStartTime());
             if (activity.getEndTime() != null)
-                activityTime = activityTime + "~" + StringUtils.IOS2ToUTC(activity.getEndTime(), 3);
+                activityTime = activityTime + " —— " + DateTimeUtils.dateToSmartTime(activity.getEndTime());
             help.setText(R.id.iv_is_repeat, context.getApplicationContext().getString(R.string.single));
         }
         help.setText(R.id.tv_activity_time, context.getString(R.string.activity_time_, activityTime));

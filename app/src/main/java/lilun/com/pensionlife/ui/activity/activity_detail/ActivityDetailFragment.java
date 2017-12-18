@@ -3,7 +3,6 @@ package lilun.com.pensionlife.ui.activity.activity_detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.Space;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatButton;
@@ -53,6 +52,7 @@ import lilun.com.pensionlife.module.bean.NestedReply;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
 import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.utils.DateTimeUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
@@ -380,7 +380,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             llactvActStart.setVisibility(View.GONE);
             cdvTime.setVisibility(View.GONE);
         } else {
-            actvActTime.setText(getString(R.string.activity_time_, StringUtils.IOS2ToUTC(activity.getStartTime())));
+            actvActTime.setText(getString(R.string.activity_time_, DateTimeUtils.dateToSmartTime(activity.getStartTime()))
+                    + " —— " + DateTimeUtils.dateToSmartTime(activity.getEndTime()));
 
 
             llactvActStart.setVisibility(View.VISIBLE);
@@ -388,7 +389,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             if (activity.getEndTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getEndTime()))) {
                 //活动结束
                 //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
-                cdvTime.setText(getString(R.string.activity_has_started));
+                cdvTime.setText(getString(R.string.activity_has_finished));
 
                 ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAccountAvatar);
 
