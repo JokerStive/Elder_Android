@@ -14,7 +14,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.OrganizationChildrenConfig;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.AllProductAdapter;
@@ -42,6 +40,7 @@ import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
+import lilun.com.pensionlife.widget.ProgressWebView;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
 /**
@@ -80,7 +79,7 @@ public class ProviderDetailFragment extends BaseFragment {
     @Bind(R.id.tv_provider_attention)
     TextView tvProviderAttention;
     @Bind(R.id.wb_provider_attention)
-    WebView wbProviderAttention;
+    ProgressWebView wbProviderAttention;
     @Bind(R.id.rv_all_product)
     RecyclerView rvAllProduct;
     @Bind(R.id.swipe_layout)
@@ -208,8 +207,10 @@ public class ProviderDetailFragment extends BaseFragment {
             //商家介紹
             String context = extension.getContext();
             if (!TextUtils.isEmpty(context)) {
-                wbProviderAttention.getSettings().setJavaScriptEnabled(true);
-                wbProviderAttention.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
+                wbProviderAttention.noProgress();
+                wbProviderAttention.loadUrl(context);
+//                wbProviderAttention.getSettings().setJavaScriptEnabled(true);
+//                wbProviderAttention.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
             }
         }
 
@@ -290,14 +291,8 @@ public class ProviderDetailFragment extends BaseFragment {
 
     private void showBanner(Organization provider) {
         List<String> urls = new ArrayList<>();
-        if (provider.getIcon() != null) {
-            for (String url : provider.getIcon()) {
-                urls.add(url);
-            }
-        } else {
-            String url = IconUrl.moduleIconUrl(IconUrl.Organizations, provider.getId(), "icon");
-            urls.add(url);
-        }
+        String iconUrl = provider.getIcon();
+        urls.add(iconUrl);
         banner.setData(urls);
     }
 

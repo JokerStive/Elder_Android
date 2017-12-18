@@ -1,10 +1,5 @@
 package lilun.com.pensionlife.module.bean;
 
-import android.graphics.drawable.Icon;
-
-import java.io.Serializable;
-import java.util.List;
-
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
@@ -27,7 +22,7 @@ public class ActivityCategory extends BaseBean {
     private String updatorName;
     private String organizationId;
     // FIXME: 2017/11/27 此处需要更新为String对象，因后台未改，因此暂用IconBean
-    private List<IconBean> icon;  
+    private String icon;
     private int unRead;
 
     public int getUnRead() {
@@ -126,38 +121,13 @@ public class ActivityCategory extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconBean> getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconBean> icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
     
-    public static class IconBean implements Serializable{
 
-        /**
-         * description : 老有所乐
-         * fileName : secondBannerActivityPos1.jpg
-         */
-
-        private String description;
-        private String fileName;
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-    }
 }

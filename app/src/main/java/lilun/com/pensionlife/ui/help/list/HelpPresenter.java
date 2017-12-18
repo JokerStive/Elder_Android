@@ -75,8 +75,8 @@ public class HelpPresenter extends RxPresenter<HelpContract.View> implements Hel
         Option optionHelp = new Option("1", "帮邻居");
         Option optionAsk = new Option("0", "问邻居");
         kindOptions.add(optionNull);
-        kindOptions.add(optionAsk);
         kindOptions.add(optionHelp);
+        kindOptions.add(optionAsk);
         ConditionOption conditionOptionKind = new ConditionOption(kind, "类型", kindOptions);
 
 

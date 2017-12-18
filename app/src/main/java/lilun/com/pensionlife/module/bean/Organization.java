@@ -1,7 +1,5 @@
 package lilun.com.pensionlife.module.bean;
 
-import java.util.List;
-
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
@@ -39,7 +37,7 @@ public class Organization extends BaseBean {
      */
 
     private boolean isInherited;
-    private List<String> icon;
+    private  String icon;
 
     private Provider extension;
 
@@ -81,11 +79,11 @@ public class Organization extends BaseBean {
         this.isInherited = isInherited;
     }
 
-    public List<String> getIcon() {
+    public  String  getIcon() {
         return icon;
     }
 
-    public void setIcon(List<String> icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 
