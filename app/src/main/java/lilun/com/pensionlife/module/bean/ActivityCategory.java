@@ -27,7 +27,7 @@ public class ActivityCategory extends BaseBean {
     private String updatorName;
     private String organizationId;
     // FIXME: 2017/11/27 此处需要更新为String对象，因后台未改，因此暂用IconBean
-    private List<IconBean> icon;  
+    private String icon;
     private int unRead;
 
     public int getUnRead() {
@@ -126,11 +126,11 @@ public class ActivityCategory extends BaseBean {
         this.organizationId = organizationId;
     }
 
-    public List<IconBean> getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(List<IconBean> icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
     

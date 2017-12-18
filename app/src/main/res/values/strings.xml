@@ -247,8 +247,8 @@
     <string name="finished">已结束</string>
     <string name="has_partin">已参加:%1$s人</string>
     <string name="has_sign_up">已报名:%1$s人</string>
-    <string name="sign_up">加入活动</string>
-    <string name="sign_up_back">退出活动</string>
+    <string name="sign_up">加入</string>
+    <string name="sign_up_back">退出</string>
     <string name="targart_partin_">参与人数：%1$s</string>
     <string name="single">单次</string>
     <string name="cyclical">周期</string>

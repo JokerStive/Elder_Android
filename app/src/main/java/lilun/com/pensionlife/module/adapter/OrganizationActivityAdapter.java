@@ -88,8 +88,8 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         }
         //不是周期活动
         if (TextUtils.isEmpty(activity.getRepeatedDesc())) {
-            Date start = StringUtils.IOS2DateTime(activity.getStartTime());
-            Date end = StringUtils.IOS2DateTime(activity.getEndTime());
+            Date start = StringUtils.IOS2ToUTCDate(activity.getStartTime());
+            Date end = StringUtils.IOS2ToUTCDate(activity.getEndTime());
 
             if (start != null && start.after(new Date()))  //未进行
                 help.getView(R.id.tv_activity_status).setVisibility(View.GONE);

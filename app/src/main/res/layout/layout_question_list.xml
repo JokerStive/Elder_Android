@@ -56,7 +56,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
             android:layout_weight="1"
-            android:background="@drawable/shape_rect_write_strock"
+            android:background="@drawable/shape_rect_light_grey_corner_5"
             android:hint="@string/question_hint"
             android:maxLines="4"
             android:textSize="@dimen/sp_14"/>
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_4"
-            android:background="@drawable/shape_rect_write_corner"
+            android:background="@drawable/shape_rect_gray_corner_5"
             android:text="@string/send"
             android:padding="@dimen/dp_8"
             android:textColor="@color/white"

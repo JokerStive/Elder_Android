@@ -13,6 +13,7 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 分类模块adapter
@@ -69,14 +70,14 @@ public class ActivityCategoryAdapter extends QuickAdapter<ActivityCategory> {
                     }
                 });
 
-
-        if (activityCategory.getIcon() != null && activityCategory.getIcon().size() > 0) {
-            String iconUrl = activityCategory.getIcon().get(0).getFileName();
-            Glide.with(App.context).load(iconUrl).dontAnimate()
-                    .placeholder(R.drawable.icon_def)
-                    .error(R.drawable.icon_def)
-                    .into((ImageView) helper.getView(R.id.iv_module_icon));
-        }
+        ImageLoaderUtil.instance().loadImage(activityCategory.getIcon(),helper.getView(R.id.iv_module_icon));
+//        if (activityCategory.getIcon() != null && activityCategory.getIcon().size() > 0) {
+//            String iconUrl = activityCategory.getIcon().get(0).getFileName();
+//            Glide.with(App.context).load(iconUrl).dontAnimate()
+//                    .placeholder(R.drawable.icon_def)
+//                    .error(R.drawable.icon_def)
+//                    .into((ImageView) helper.getView(R.id.iv_module_icon));
+//        }
     }
 
 

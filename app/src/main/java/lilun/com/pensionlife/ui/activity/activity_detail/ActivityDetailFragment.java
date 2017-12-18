@@ -166,6 +166,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private String topic;
     private int qos = 2;
     private PopupMenu menu;
+    private boolean openScollAlpha = false; //滑动title改变透明度
 
     public static ActivityDetailFragment newInstance(OrganizationActivity activity) {
         ActivityDetailFragment fragment = new ActivityDetailFragment();
@@ -198,9 +199,21 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setAlpha(0);
-        ivBack.setAlpha(1);
-        tvTitleName.setAlpha(1);
+        tvTitleName.setText(activity.getTitle());
+        titleBar.setTitle(activity.getTitle());
+        if (activity.getIcon() != null && activity.getIcon().size() > 0) {
+            openScollAlpha = true;
+            titleBar.setAlpha(0);
+            ivBack.setAlpha(1);
+            tvTitleName.setAlpha(1);
+        } else {
+            openScollAlpha = false;
+            tvTitleName.setVisibility(View.GONE);
+        }
+        if (findFragment(ActivityChatFragment.class) != null) {
+            ivMenu.setVisibility(View.VISIBLE);
+        } else
+            ivMenu.setVisibility(View.GONE);
         titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
             @Override
             public void onBackClick() {
@@ -213,6 +226,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         nsvScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (!openScollAlpha) return;
                 float value = UIUtils.dp2px(_mActivity, 80);
                 int delY = scrollY - oldScrollY;
                 //   Log.d("zp ", scrollY + "  " + oldScrollY + "  " + value);
@@ -294,7 +308,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                     inputSendPopupWindow.showAtLocation(rvQuestionList, Gravity.BOTTOM, 0, 0);
                 }
             });
-            nestedReplyAdapter.setOnLoadMoreListener(() -> mPresenter.replyList(mActivityId, "", nestedReplyAdapter.getItemCount()), rvPartnerList);
+           // nestedReplyAdapter.setEnableLoadMore(false);
+           // nestedReplyAdapter.setOnLoadMoreListener(() -> mPresenter.replyList(mActivityId, "", nestedReplyAdapter.getItemCount()), rvPartnerList);
             rvQuestionList.setAdapter(nestedReplyAdapter);
         } else if (isLoadMore) {
             nestedReplyAdapter.addAll(nestedReplies, Config.defLoadDatCount);
@@ -390,7 +405,6 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                 //活动结束
                 //   actvStart.setText(getString(R.string.activity_start_, getString(R.string.activity_has_finished)));
                 cdvTime.setText(getString(R.string.activity_has_finished));
-
                 ImageLoaderUtil.instance().loadAvatar(User.getUserId(), civAccountAvatar);
 
                 hasStart = OrganizationActivity.FINISHED;
@@ -450,7 +464,16 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         } else {
             //未报名
             if (!isSignUp) {
-                acbtSignUp.setText(getString(R.string.sign_up));
+                if (hasStart == OrganizationActivity.STARTED)
+                    acbtSignUp.setText("报名结束");
+                else if (hasStart == OrganizationActivity.FINISHED)
+                    acbtSignUp.setText("活动结束");
+                else {
+                    if (hasfull) {
+                        acbtSignUp.setText("名额已满");
+                    } else
+                        acbtSignUp.setText(getString(R.string.sign_up));
+                }
                 acbtQuestionChat.setText(R.string.question);
                 return;
             }
@@ -683,18 +706,18 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     private void dealSignUp() {
 
         if (getString(R.string.sign_up).equals(acbtSignUp.getText().toString().trim())) {
-            if (hasStart == OrganizationActivity.FINISHED) {
-                showDialog(getString(R.string.activity_has_finished));
-                return;
-            }
-            if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
-                showDialog(getString(R.string.activity_has_started));
-                return;
-            }
-            if (hasfull) {
-                showDialog(getString(R.string.activity_has_people_full));
-                return;
-            }
+//            if (hasStart == OrganizationActivity.FINISHED) {
+//                showDialog(getString(R.string.activity_has_finished));
+//                return;
+//            }
+//            if (activity.getStartTime() != null && new Date().after(StringUtils.IOS2ToUTCDate(activity.getStartTime()))) {
+//                showDialog(getString(R.string.activity_has_started));
+//                return;
+//            }
+//            if (hasfull) {
+//                showDialog(getString(R.string.activity_has_people_full));
+//                return;
+//            }
             if (activity.getBlackList().contains(User.getUserId())) {
                 showDialog(getString(R.string.you_not_allow_join));
                 return;
