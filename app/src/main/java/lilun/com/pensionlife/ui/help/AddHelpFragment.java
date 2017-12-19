@@ -218,6 +218,12 @@ public class AddHelpFragment extends BaseTakePhotoFragment implements View.OnCli
                 }
             }
 
+            if (TextUtils.isEmpty(etContent.getText().toString())) {
+                ToastHelper.get().showWareShort("请输入内容");
+                return;
+            }
+
+
             newAid(getOrganizationAid());
         }
     }

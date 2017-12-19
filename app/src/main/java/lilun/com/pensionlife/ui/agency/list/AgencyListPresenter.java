@@ -49,8 +49,8 @@ public class AgencyListPresenter extends RxPresenter<AgencyListContract.View> im
 
         List<Option> kindOptions = new ArrayList<>();
         Option option0 = new Option(null, "智能排序");
-        Option option1 = new Option("0", "一星");
-        Option option2 = new Option("1", "二星");
+        Option option1 = new Option("1", "一星");
+        Option option2 = new Option("2", "二星");
         Option option3 = new Option("3", "三星");
         Option option4 = new Option("4", "四星");
         Option option5 = new Option("5", "五星");
