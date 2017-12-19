@@ -30,8 +30,8 @@ public class SearchTitleBar extends RelativeLayout implements View.OnClickListen
     private ImageView ivChangeLayout;
     private String lastSearchStr;
     private int layoutTypeIndex = 0;
-    private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.SMALL, LayoutType.BIG, LayoutType.NULL};
-    private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_small, R.drawable.layout_type_big, R.drawable.layout_type_null};
+    private LayoutType[] layoutTypes = new LayoutType[]{LayoutType.BIG, LayoutType.SMALL,LayoutType.NULL};
+    private int[] layoutTypeIcon = new int[]{R.drawable.layout_type_big,R.drawable.layout_type_small , R.drawable.layout_type_null};
     private boolean noNullLayout;
     private BaseFragment fragment;
     private RelativeLayout rl;

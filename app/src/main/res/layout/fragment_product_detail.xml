@@ -360,7 +360,7 @@
             style="@style/tv_normal"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/price"
+            android:drawableTop="@drawable/show_order_detail"
             android:gravity="center"
             android:paddingTop="@dimen/dp_10"
             android:text="查看订单详情"

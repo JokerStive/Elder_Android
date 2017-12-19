@@ -14,7 +14,7 @@
         android:id="@+id/iv_module_icon"
         android:layout_width="@dimen/module_icon_height"
         android:layout_height="@dimen/module_icon_height"
-        tools:src="@drawable/announcement_def"
+        tools:src="@drawable/icon_def"
         android:scaleType="centerInside"
         />
     <TextView

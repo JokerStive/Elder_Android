@@ -47,15 +47,14 @@ public class HealthServiceAdapter extends QuickAdapter<Information> {
         }
         help.setText(R.id.tv_item_title, info.getTitle());
         help.setText(R.id.tv_item_time, StringUtils.up2thisTime(info.getCreatedAt()));
-        if (help.getAdapterPosition() == 0 && !TextUtils.isEmpty(StringUtils.getFirstIcon(info.getImage()))) {
+        if (help.getAdapterPosition() == 0 && !TextUtils.isEmpty(info.getCover())) {
             help.setVisible(R.id.v_line, false);
             help.setTextColor(R.id.tv_item_title, ContextCompat.getColor(mContext, R.color.white));
             help.setBackgroundColor(R.id.ll_content, ContextCompat.getColor(mContext, R.color.black_transparent_198));
             help.setVisible(R.id.tv_item_time, false);
 
             help.setVisible(R.id.iv_icon, true);
-            String iconUrl = StringUtils.getFirstIcon(info.getImage());
-            ImageLoaderUtil.instance().loadImage(iconUrl, R.drawable.icon_def, help.getView(R.id.iv_icon));
+            ImageLoaderUtil.instance().loadImage(info.getCover(), R.drawable.icon_def, help.getView(R.id.iv_icon));
 
         } else {
             help.setVisible(R.id.v_line, true);

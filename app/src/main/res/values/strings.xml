@@ -188,6 +188,7 @@
     <string name="status_done">已完成</string>
     <string name="status_cancel">已取消</string>
     <string name="status_assessed">已评价</string>
+    <string name="status_delayed">已延期</string>
     <string name="operate_assigned">受理订单</string>
     <string name="operate_done">完成订单</string>
     <string name="operate_cancel">取消订单</string>

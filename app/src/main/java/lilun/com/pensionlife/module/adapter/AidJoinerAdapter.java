@@ -9,8 +9,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
@@ -43,12 +41,12 @@ public class AidJoinerAdapter extends QuickAdapter<OrganizationReply> {
         if (TextUtils.isEmpty(answerId)) {
             tvAgree.setVisibility(View.VISIBLE);
         } else {
-            if (answerId.equals(reply.getId()) && TextUtils.isEmpty(rankId)) {
-                tvAgree.setVisibility(View.VISIBLE);
-                tvAgree.setText(App.context.getString(R.string.evaluation));
-            } else {
-                tvAgree.setVisibility(View.GONE);
-            }
+            tvAgree.setVisibility(View.GONE);
+//            if (answerId.equals(reply.getId()) && TextUtils.isEmpty(rankId)) {
+//                tvAgree.setVisibility(View.VISIBLE);
+//                tvAgree.setText(App.context.getString(R.string.evaluation));
+//            } else {
+//            }
         }
 
 

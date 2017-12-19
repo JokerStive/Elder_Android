@@ -64,7 +64,7 @@
                 android:layout_width="0.0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="2.0"
-                android:background="@drawable/announcement_def">
+                android:background="@drawable/icon_def">
 
                 <android.support.v4.view.ViewPager
                     android:id="@id/viewpager"

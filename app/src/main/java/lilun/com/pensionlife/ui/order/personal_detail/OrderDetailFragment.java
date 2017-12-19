@@ -91,6 +91,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private String status_done = "done";
     private String status_cancel = "cancel";
     private String status_assessed = "assessed";
+    private String status_delay = "delay";
     private ProductOrder mOrder;
     private String agencyId;
 //    private String mNextStatus;
@@ -228,6 +229,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             stringRes = R.string.status_cancel;
         } else if (status.equals(status_assessed)) {
             stringRes = R.string.status_assessed;
+        } else if (status.equals(status_delay)) {
+            stringRes = R.string.status_delayed;
         }
         return stringRes;
     }
