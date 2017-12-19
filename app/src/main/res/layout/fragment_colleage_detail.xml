@@ -47,7 +47,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shape_cicle"
-                    android:src="@drawable/announcement_def"
+                    android:src="@drawable/icon_def"
                     android:text="@string/join_in" />
             </RelativeLayout>
 

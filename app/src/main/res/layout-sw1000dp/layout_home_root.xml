@@ -67,7 +67,7 @@
             <RelativeLayout
             android:layout_width="match_parent"
                 android:layout_height="@dimen/info_bar_height"
-                android:background="@drawable/announcement_def">
+                android:background="@drawable/icon_def">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"

@@ -32,7 +32,7 @@
                     android:id="@+id/fl_announcement_container"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/info_bar_height"
-                    android:background="@drawable/announcement_def" />
+                   />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rg_classify"
