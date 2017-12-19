@@ -102,6 +102,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:src="@drawable/get_prize_icon"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>
