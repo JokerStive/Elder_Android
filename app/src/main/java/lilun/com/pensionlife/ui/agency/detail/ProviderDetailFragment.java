@@ -205,12 +205,15 @@ public class ProviderDetailFragment extends BaseFragment {
             }
 
             //商家介紹
-            String context = extension.getContext();
-            if (!TextUtils.isEmpty(context)) {
-                wbProviderAttention.noProgress();
-                wbProviderAttention.loadUrl(context);
-//                wbProviderAttention.getSettings().setJavaScriptEnabled(true);
-//                wbProviderAttention.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
+            String contextType = extension.getContextType();
+            if (TextUtils.isEmpty(contextType)) {
+                return;
+            }
+            wbProviderAttention.noProgress();
+            if (contextType.equals("2")) {
+                wbProviderAttention.loadDataWithBaseURL("", extension.getContext(), "text/html", "UTF-8", "");
+            } else if (contextType.equals("3")) {
+                wbProviderAttention.loadUrl(extension.getContext());
             }
         }
 

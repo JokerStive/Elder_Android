@@ -323,11 +323,11 @@ public class ProductDetailFragment extends BaseFragment {
 
         //内容
         wbProductContent.noProgress();
-        wbProductContent.loadUrl(product.getContext());
-//        wbProductContent.getSettings().setJavaScriptEnabled(true);
-//        wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
-
-
+        if (contextType.equals("2")){
+            wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
+        }else if(contextType.equals("3")){
+            wbProductContent.loadUrl(product.getContext());
+        }
     }
 
     private String formatMobile(String mobile) {

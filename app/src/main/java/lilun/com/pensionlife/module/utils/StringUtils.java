@@ -597,7 +597,7 @@ public class StringUtils {
 
     public static String formatPrice(Double price) {
         String result = null;
-        if (price != null && price != 0) {
+        if (price != null ) {
             result = new DecimalFormat("######0.00").format(price);
 
         }
