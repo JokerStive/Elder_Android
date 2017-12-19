@@ -209,8 +209,8 @@ public class AddActivityFragment extends BaseTakePhotoFragment implements View.O
             activity.setEndTime(null);
         } else {
             activity.setRepeatedDesc(null);
-            String startTimeISO = startTime + ":00";
-            String endTimeISO = endTime + ":00";
+            String startTimeISO = TextUtils.isEmpty(startTime) ? startTime : startTime + ":00";
+            String endTimeISO = TextUtils.isEmpty(endTime) ? endTime : endTime + ":00";
             activity.setStartTime(startTimeISO);
             activity.setEndTime(endTimeISO);
         }

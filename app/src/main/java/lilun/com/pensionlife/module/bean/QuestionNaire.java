@@ -33,6 +33,7 @@ public class QuestionNaire extends BaseBean {
         private String startTime;
         private String endTime;
        private String image;
+       private String prizedrawURL;
 
 
        public String getId() {
@@ -74,5 +75,13 @@ public class QuestionNaire extends BaseBean {
        public void setImage(String image) {
            this.image = image;
        }
-    }
+
+       public String getPrizedrawURL() {
+           return prizedrawURL;
+       }
+
+       public void setPrizedrawURL(String prizedrawURL) {
+           this.prizedrawURL = prizedrawURL;
+       }
+   }
 }
