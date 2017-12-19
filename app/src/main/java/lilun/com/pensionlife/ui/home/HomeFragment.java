@@ -424,7 +424,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
             ivGetPrize.setVisibility(View.VISIBLE);
             ImageLoaderUtil.instance().loadImage(questionNaire.getPrizedraw().getImage(), ivGetPrize);
             ivGetPrize.setOnClickListener(v -> {
-                String url = ConfigUri.LOTTERY_BASE_URL + "/Lotterys/myLottery" +
+                String url = questionNaire.getPrizedraw().getPrizedrawURL() +
                         "?token=" + User.getToken() +
                         "&accountId=" + User.getUserId() +
                         "&organizationActivityId=" + questionNaire.getPrizedraw().getId() +
