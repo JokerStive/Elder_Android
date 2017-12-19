@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/activity_titlebg"
-        app:title="新建活动" />
+        app:title="发起活动" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
