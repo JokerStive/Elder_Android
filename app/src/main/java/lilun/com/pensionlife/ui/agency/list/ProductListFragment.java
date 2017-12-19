@@ -65,8 +65,9 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     private int mType;
     private SearchTitleBar.LayoutType layoutType;
     private List<OrganizationProduct> products;
-    //    private String[] filterTitle = new String[]{"区域", "价格", "星级"};
     private ProductFilter productFilter = new ProductFilter();
+    private Double minRang;
+    private Double maxRang;
 
 
     /**
@@ -109,7 +110,8 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
     @Override
     protected void initView(LayoutInflater inflater) {
         searchBar.isChangeLayout(User.isCustomer());
-        layoutType = User.isCustomer() ? SearchTitleBar.LayoutType.SMALL : SearchTitleBar.LayoutType.SMALL;
+        layoutType = SearchTitleBar.LayoutType.SMALL;
+        searchBar.setLayoutTypeIcon(layoutType);
         searchBar.setNoNullLayout();
         searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
@@ -198,9 +200,9 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
                 filterView.hint();
                 return;
             } else if (range != null) {
-                ProductFilter.WhereBean.PriceBean price = new ProductFilter.WhereBean.PriceBean();
-                price.setBetween(range);
-                productFilter.where.setPrice(price);
+                minRang = range.get(0);
+                maxRang = range.get(1);
+
             }
             filterView.setTabText(show, isDef);
             refreshProductWithFilter();
@@ -277,25 +279,42 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
 
 
     private void getProducts(int skip) {
+        if (minRang != null  && maxRang!=null) {
+            ProductFilter.WhereBean.PriceBean price = new ProductFilter.WhereBean.PriceBean();
+            price.getBetween().add(minRang);
+            price.getBetween().add(minRang);
+            productFilter.where.setPrice(price);
+        }
+
         mSwipeLayout.setRefreshing(skip == 0);
         Gson gson = new Gson();
 
         String filter = gson.toJson(productFilter);
-        Logger.d("product--filter = " + filter);
         mPresenter.getProducts(filter, skip);
+//        if (minRang != null) {
+//
+//        }
+//
+//        if (maxRang != null) {
+//
+//        }
     }
 
     @Override
     public void showProducts(List<OrganizationProduct> products, boolean isLoadMore) {
+//        if (minRang != null) {
+//
+//        }
+//
+//        if (maxRang != null) {
+//
+//        }
         this.products = products;
         completeRefresh();
         if (mAgencyServiceAdapter != null) {
             if (isLoadMore) {
-                Logger.d("加载更多");
                 mAgencyServiceAdapter.addAll(products, Config.defLoadDatCount);
             } else {
-                Logger.d("刷新");
-
                 mAgencyServiceAdapter.replaceAll(products);
             }
         }

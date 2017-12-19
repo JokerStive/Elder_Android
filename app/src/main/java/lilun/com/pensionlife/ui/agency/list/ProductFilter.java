@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.agency.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -163,7 +164,7 @@ public class ProductFilter {
         }
 
         public static class PriceBean {
-            private List<Double> between;
+            private List<Double> between = new ArrayList<>();
 
             public List<Double> getBetween() {
                 return between;
