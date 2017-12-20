@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
@@ -42,7 +41,8 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         OrganizationProduct product = order.getProduct();
         if (product != null) {
 
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, helper.getView(R.id.iv_product_icon));
+            String url = StringUtils.getFirstIcon(order.getProduct().getImage());
+            ImageLoaderUtil.instance().loadImage(url, helper.getView(R.id.iv_product_icon));
 
             setOrderStatus(helper, order);
             setNextOperate(helper, order);

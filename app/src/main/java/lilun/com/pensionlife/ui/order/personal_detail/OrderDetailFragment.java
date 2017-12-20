@@ -27,7 +27,6 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.Event;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
@@ -176,7 +175,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
             tvProviderName.setText(StringUtils.filterNull(agencyName));
 
             //产品图
-            ImageLoaderUtil.instance().loadImage(IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null), R.drawable.icon_def, ivProductIcon);
+            String url = StringUtils.getFirstIcon(order.getProduct().getImage());
+            ImageLoaderUtil.instance().loadImage(url, ivProductIcon);
 
             //产品名称
             tvProductTitle.setText(product.getTitle());
