@@ -65,7 +65,7 @@ public class BounceView extends android.support.v7.widget.AppCompatImageView {
                 startX = (int) (event.getRawX());
                 startY = (int) (event.getRawY());
             case MotionEvent.ACTION_MOVE:
-                if ((event.getRawX() - startX) > 20 || (event.getRawY() - startY) > 20) {
+                if (Math.abs(event.getRawX() - startX) > 40 || Math.abs(event.getRawY() - startY) > 40) {
                     isClickState = false;
                     moveView(event.getRawX() - startX + tranx, event.getRawY() - startY + trany);
                     invalidate();

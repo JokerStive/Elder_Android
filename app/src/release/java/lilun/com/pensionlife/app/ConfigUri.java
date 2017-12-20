@@ -6,7 +6,7 @@ package lilun.com.pensionlife.app;
  */
 public class ConfigUri {
     //===  目前测试调试正式环境使用
-    public static final String BASE_URL = "https://transfer.j1home.com/api/";
+    public static final String BASE_URL = "http://transfer.j1home.com/api/";
  //   public static final String BASE_URL = "https://api.j1home.com/api/";
 
     public static final String MQTT_URL = "tcp://mqtt.j1home.com:1883";
@@ -14,5 +14,5 @@ public class ConfigUri {
     /**
      * 抽奖信息请求url
      */
-    public static final String QUESTION_NAIRE = "http://file.j1home.com/questionnaire2.html";
+    public static final String QUESTION_NAIRE = "http://file.j1home.com/questionnaire.html";
 }
