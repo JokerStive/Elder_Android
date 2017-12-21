@@ -25,6 +25,7 @@ public class AnnouncementItemFragment extends BaseFragment {
 
     private ImageView ivIcon;
     private Information information;
+    private int contextType=0;
 
     public static AnnouncementItemFragment newInstance(Information information) {
         AnnouncementItemFragment fragment = new AnnouncementItemFragment();
@@ -55,8 +56,12 @@ public class AnnouncementItemFragment extends BaseFragment {
         ivIcon = (ImageView) mRootView.findViewById(R.id.iv_advantage);
 
         ivIcon.setOnClickListener(v -> {
+            contextType = information.getContextType();
+            if(contextType==0){
+                return;
+            }
             String context = information.getContext();
-            if (information.getContextType() == 2 && !TextUtils.isEmpty(context)) {
+            if (contextType == 2 && !TextUtils.isEmpty(context)) {
                 ACache.get().put(information.getId() + "h5", context);
                 Intent intent = new Intent(_mActivity, AnnounceDetailActivity.class);
                 intent.putExtra("infoId", information.getId());

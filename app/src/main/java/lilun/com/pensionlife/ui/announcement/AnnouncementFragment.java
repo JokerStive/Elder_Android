@@ -126,28 +126,32 @@ public class AnnouncementFragment extends BaseFragment<AnnouncementContract.Pres
 
     @Override
     public void showAnnounce(List<Information> announces) {
-        mPresenter.initTimer();
-        this.announces = announces;
-//        if (announces!=null && announces.size()>0){
-//            mPresenter.startTimer();
-//        }
-        Logger.d(parentId + "的公告条数为" + announces.size());
 
-        List<BaseFragment> listFragments = new ArrayList<>();
-        for (Information announcement : announces) {
-            AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
-            listFragments.add(fragment);
-        }
-        viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity().getSupportFragmentManager(), listFragments));
-        if (listFragments.size() > 1) {
-            indicator.setViewPager(viewPager);
-        }
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                currentPosition = position;
+        this.announces = announces;
+//        if (announces.size() == 0) {
+//            Information announce = new Information();
+//            announces.add(announce);
+//        }
+        if (announces!=null && announces.size()>0){
+            mPresenter.initTimer();
+            Logger.d(parentId + "的公告条数为" + announces.size());
+            List<BaseFragment> listFragments = new ArrayList<>();
+            for (Information announcement : announces) {
+                AnnouncementItemFragment fragment = AnnouncementItemFragment.newInstance(announcement);
+                listFragments.add(fragment);
             }
-        });
+            viewPager.setAdapter(new ViewPagerFragmentAdapter(getActivity().getSupportFragmentManager(), listFragments));
+            if (listFragments.size() > 1) {
+                indicator.setViewPager(viewPager);
+            }
+            viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    currentPosition = position;
+                }
+            });
+        }
+
 
 
 
