@@ -57,7 +57,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     private String filter_status = "status";
     private boolean isMain;
 
-    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.BIG;
+    private SearchTitleBar.LayoutType layoutType = SearchTitleBar.LayoutType.SMALL;
 
 
     private HelpFilter helpFilter = new HelpFilter();
@@ -100,7 +100,8 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     @Override
     protected void initView(LayoutInflater inflater) {
         initConditionOption();
-        searchBar.setLayoutTypeIcon(SearchTitleBar.LayoutType.SMALL);
+        searchBar.isChangeLayout(true);
+        searchBar.setLayoutTypeIcon(layoutType);
         searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override

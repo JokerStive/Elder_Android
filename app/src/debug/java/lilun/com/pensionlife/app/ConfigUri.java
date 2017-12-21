@@ -14,9 +14,11 @@ public class ConfigUri {
 //    public static final String QUESTION_NAIRE = "http://file.j1home.com/questionnaire2.html";
 
 
-    public static final String BASE_URL = "http://test.j1home.com/api/";
+//    public static final String BASE_URL = "http://test.j1home.com/api/";
 
     public static final String MQTT_URL = "tcp://test.j1home.com:1883";
+
+    public static final String BASE_URL = "http://transfer.j1home.com/api/";
     /**
      * 抽奖信息请求url
      */
