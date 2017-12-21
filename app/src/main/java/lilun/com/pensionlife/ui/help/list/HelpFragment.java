@@ -100,6 +100,7 @@ public class HelpFragment extends BaseFragment<HelpContract.Presenter> implement
     @Override
     protected void initView(LayoutInflater inflater) {
         initConditionOption();
+        searchBar.setLayoutTypeIcon(SearchTitleBar.LayoutType.SMALL);
         searchBar.setFragment(this);
         searchBar.setOnItemClickListener(new SearchTitleBar.OnItemClickListener() {
             @Override
