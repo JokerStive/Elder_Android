@@ -14,5 +14,5 @@ public class ConfigUri {
     /**
      * 抽奖信息请求url
      */
-    public static final String QUESTION_NAIRE = "http://file.j1home.com/questionnaire.html";
+    public static final String QUESTION_NAIRE = "http://storage.j1home.com/questionnaire.html";
 }
