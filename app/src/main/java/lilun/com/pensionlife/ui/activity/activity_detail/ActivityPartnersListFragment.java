@@ -335,9 +335,9 @@ public class ActivityPartnersListFragment extends BaseFragment<ActivityDetailCon
             nullData.setVisibility(View.VISIBLE);
         } else {
             nullData.setVisibility(View.GONE);
-            String tmp = getString(R.string.partner_list) + "(" + (partnersAdapter.getData() == null ? 0 : partnersAdapter.getData().size()) + ")";
-            tvParentsNum.setText(tmp);
         }
+        String tmp = getString(R.string.partner_list) + "(" + partnersAdapter.getData().size() + ")";
+        tvParentsNum.setText(tmp);
     }
 
     @Override

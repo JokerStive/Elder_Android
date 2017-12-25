@@ -82,7 +82,8 @@ public class MqttActivityHelper {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                if (!chatMessage.getFrom().contains(User.getUserId())
+                //不是自己的消息 && 不是当前活动页面的消息  && 是用户当前小区及其上到市级  所发布的活动，设置为未读
+                if (chatMessage.getFrom()!=null && !chatMessage.getFrom().contains(User.getUserId())
                         && ActUitls.isParentTopActivity(User.getLocation(), actOrg)
                         && !ActivityChatFragment.curActId.equals(chatMessage.getActivityId())) {
                     chatMessage.setUnRead(true);
