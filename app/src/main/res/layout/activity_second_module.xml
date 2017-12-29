@@ -11,31 +11,48 @@
         android:layout_height="wrap_content" />
 
     <!--<RelativeLayout-->
-        <!---->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <!---->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
 
-    <include
-        layout="@layout/announce_container"/>
+    <include layout="@layout/announce_container" />
 
     <!--</RelativeLayout>-->
 
     <FrameLayout
         android:id="@+id/fl_module_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/dp_10"
-        >
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ImageButton
+                        android:id="@+id/ib_other_service"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/all_service"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
+
     </FrameLayout>
 </LinearLayout>

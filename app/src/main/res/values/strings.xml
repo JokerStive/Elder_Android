@@ -389,5 +389,6 @@
     <string name="act_max_partner">允许参与最大人数为 9999</string>
     <string name="location_permission">需要获取位置权限</string>
     <string name="finished_and_commit">填好了，提交</string>
+    <string name="life_service">生活服务</string>
 
 </resources>

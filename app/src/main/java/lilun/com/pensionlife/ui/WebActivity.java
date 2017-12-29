@@ -109,6 +109,13 @@ public class WebActivity extends BaseActivity {
         wvH5.getSettings().setBuiltInZoomControls(true);
         wvH5.getSettings().setDisplayZoomControls(false);
         wvH5.getSettings().setLoadWithOverviewMode(true);
+
+        wvH5.getSettings().setAppCacheEnabled(true);
+        wvH5.getSettings().setDomStorageEnabled(true);
+        wvH5.getSettings().setAppCacheMaxSize(1024*1024*8);
+        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
+        wvH5.getSettings().setAppCachePath(appCachePath);
+        wvH5.getSettings().setAllowFileAccess(true);
         wvH5.loadUrl(url);
     }
 

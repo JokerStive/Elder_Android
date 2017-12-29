@@ -5,6 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.ui.agency.list.ProductListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
+import lilun.com.pensionlife.ui.residential.other.OtherServiceFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
 import lilun.com.pensionlife.widget.recycler_view.AutoExtendSpanSizeLookup;
@@ -38,6 +41,9 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
+
+    @Bind(R.id.ib_other_service)
+    ImageButton ibOtherService;
 
 
     //    private ArrayList<Information> announcements;
@@ -101,8 +107,10 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
 
 
         replaceLoadRootFragment(R.id.fl_announcement_container, AnnouncementFragment.newInstance(parentId), false);
-
-
+        ibOtherService.setVisibility(View.VISIBLE);
+        ibOtherService.setOnClickListener(v -> {
+            start(OtherServiceFragment.newInstance());
+        });
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -137,7 +145,7 @@ public class ResidentialClassifyFragment extends BaseFragment<ResidentialClassif
             mClassifyRecycler.addItemDecoration(new ElderModuleClassifyDecoration());
 
             mClassifyAdapter = new ProductCategoryAdapter(this, productCategories, getResources().getColor(R.color.residential));
-            mClassifyAdapter.setOnItemClickListener((baseQuickAdapter,view, i) -> {
+            mClassifyAdapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
                 OrganizationProductCategory category = mClassifyAdapter.getData().get(i);
                 start(ProductListFragment.newInstance(category.getName(), category.getId(), 0));
             });
