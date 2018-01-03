@@ -64,6 +64,7 @@ public class VersionDialogFragment extends DialogFragment {
     }
 
     private void initView(View view) {
+        ThreadLocal local = new ThreadLocal();
         AppVersion version = (AppVersion) getArguments().getSerializable(VERSION);
         if (version == null) return;
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,15 +88,6 @@ public class VersionDialogFragment extends DialogFragment {
         tvVersionDesp.setText(spanned);
         tvVersionUpdate.setOnClickListener(v -> {
             startLoad(version);
-//            Intent intent = new Intent();
-//            intent.setAction(Intent.ACTION_VIEW);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.setData(Uri.parse(version.getUrl()));
-//            try {
-//                startActivity(intent);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         });
         igClose.setOnClickListener(v -> {
             dismiss();
@@ -138,7 +130,6 @@ public class VersionDialogFragment extends DialogFragment {
         tvProgress.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         String url = version.getUrl();
-        String apkName = url.substring(url.lastIndexOf("/"));
         DownloadManager.getInstance().download(url, new DownLoadCallBack() {
             @Override
             public void onSuccess(File file) {

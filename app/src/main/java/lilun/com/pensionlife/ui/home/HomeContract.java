@@ -4,7 +4,6 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
-import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.QuestionNaire;
 
@@ -19,7 +18,7 @@ public interface HomeContract {
     interface View extends IView<Presenter> {
         void showInformation(List<Information> informations);
         void changeOrganizationSuccess(int clickId);
-        void showVersionInfo(AppVersion version);
+//        void showVersionInfo(AppVersion version);
         void saveQuestionNaire(QuestionNaire questionNaire);
         void setVpCurrentPosition();
     }
@@ -36,7 +35,7 @@ public interface HomeContract {
 
         void changeBelongOrganization(String organizationId, int clickId);
 
-        void getVersionInfo(String appName, String versionName);
+//        void getVersionInfo(String appName, String versionName);
 
         void getQuestionNaire();
     }

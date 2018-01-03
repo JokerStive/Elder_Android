@@ -5,6 +5,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.Account;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.TokenInfo;
 import rx.Observable;
@@ -20,6 +21,8 @@ public interface LoginContract {
     interface View extends IView<Presenter> {
 
         void loginSuccess();
+
+        void showVersionInfo(AppVersion version);
     }
 
     interface Presenter extends IPresenter<View> {
@@ -27,6 +30,8 @@ public interface LoginContract {
         void login(String username, String password);
 
         boolean checkAccountData(String username, String password);
+
+        void getVersionInfo(String appName, String versionName);
 
     }
 

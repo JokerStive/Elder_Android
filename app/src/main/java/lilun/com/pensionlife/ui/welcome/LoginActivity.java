@@ -9,10 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import butterknife.Bind;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.base.BaseActivity;
 import lilun.com.pensionlife.module.bean.Account;
+import lilun.com.pensionlife.module.bean.AppVersion;
+import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.ui.home.HomeActivity;
+import lilun.com.pensionlife.ui.home.VersionDialogFragment;
 import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFilter;
 import lilun.com.pensionlife.ui.register.RegisterActivity;
 
@@ -79,6 +84,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     protected void initPresenter() {
         mPresenter = new LoginPresenter(this);
         mPresenter.bindView(this);
+        mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
     }
 
     @Override
@@ -143,4 +149,21 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     }
 
 
+
+
+    /**
+     * 显示版本升级信息
+     *
+     * @param version
+     */
+    @Override
+    public void showVersionInfo(AppVersion version) {
+        if (version == null) return;
+        if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion())) {
+            VersionDialogFragment.newInstance(version).show(this.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
+        }
+    }
 }
+
+
+
