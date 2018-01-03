@@ -46,6 +46,7 @@ public class VersionDialogFragment extends DialogFragment {
     private DownNotification downNotification;
     private TextView tvProgress;
 
+
     public static VersionDialogFragment newInstance(AppVersion version) {
 
         Bundle args = new Bundle();
@@ -114,8 +115,8 @@ public class VersionDialogFragment extends DialogFragment {
     private void startLoadApkBackground(AppVersion version) {
         Intent intent = new Intent(getActivity(), DownLoadService.class);
         String url = version.getUrl();
-        String apkName = url.substring(url.lastIndexOf("/"));
-        intent.putExtra("url", apkName);
+//        String apkName = url.substring(url.lastIndexOf("/"));
+        intent.putExtra("url", url);
         getActivity().startService(intent);
         ToastHelper.get().showShort("安装包正在后台下载中,请稍候");
         dismiss();

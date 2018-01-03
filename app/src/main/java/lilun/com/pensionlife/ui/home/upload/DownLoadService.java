@@ -40,11 +40,12 @@ public class DownLoadService extends Service {
             @Override
             public void onSuccess(File file) {
                 SystemUtils.installApk(App.context, file);
+                notification.cancel();
             }
 
             @Override
             public void onProgress(int progress, int total) {
-                notification.updateProgress(100, progress, total);
+                notification.updateProgress( progress, total);
             }
 
             @Override

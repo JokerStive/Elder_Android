@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.app.Constants;
@@ -31,12 +32,14 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.utils.CacheMsgClassify;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.module.utils.mqtt.MqttNotificationExtra;
 import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
 import lilun.com.pensionlife.ui.WebActivity;
@@ -51,6 +54,7 @@ import lilun.com.pensionlife.ui.help.HelpRootFragment;
 import lilun.com.pensionlife.ui.home.help.AlarmDialogFragment;
 import lilun.com.pensionlife.ui.home.help.HelpProtocolDialogFragment;
 import lilun.com.pensionlife.ui.home.personal_setting.PersonalSettingFragment;
+import lilun.com.pensionlife.ui.home.upload.DownloadManager;
 import lilun.com.pensionlife.ui.push_info.CacheInfoListActivity;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.residential.classify.ResidentialClassifyFragment;
@@ -134,8 +138,11 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
         mPresenter = new HomePresenter();
         mPresenter.bindView(this);
         mPresenter.getInformation();
-//        mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
         mPresenter.getQuestionNaire();
+
+        if (!DownloadManager.isLoading){
+            mPresenter.getVersionInfo(Constants.appName, Constants.version_latest);
+        }
     }
 
 
@@ -367,7 +374,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
 
     @Override
     public void setVpCurrentPosition() {
-        if (announces != null && announces.size()!=0) {
+        if (announces != null && announces.size() != 0) {
 //            Logger.d("binner");
             if (currentPosition++ == announces.size()) {
                 viewPager.setCurrentItem(0, false);
@@ -390,18 +397,19 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 tvPosition.setText(User.getCurrentOrganizationName());
         }
     }
-//
+
+    //
 //    /**
 //     * 显示版本升级信息
 //     *
 //     * @param version
 //     */
-//    @Override
-//    public void showVersionInfo(AppVersion version) {
-//        if (version == null) return;
-//        if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion()))
-//            VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
-//    }
+    @Override
+    public void showVersionInfo(AppVersion version) {
+        if (version == null) return;
+        if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion()))
+            VersionDialogFragment.newInstance(version).show(_mActivity.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
+    }
 
     @Override
     public void saveQuestionNaire(QuestionNaire questionNaire) {

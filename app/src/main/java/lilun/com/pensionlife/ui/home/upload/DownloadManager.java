@@ -39,6 +39,8 @@ public class DownloadManager {
 
     private static DownloadManager instance;
 
+    public static boolean isLoading = false;
+
 
     //获得一个单例类
     public static synchronized DownloadManager getInstance() {
@@ -53,6 +55,7 @@ public class DownloadManager {
      * 下载文件
      */
     public void download(String apkName, DownLoadCallBack callBack) {
+        isLoading = true;
         if (TextUtils.isEmpty(apkName) || callBack == null) {
             throw new NullPointerException("文件名或回掉不能為空");
         }
@@ -69,6 +72,7 @@ public class DownloadManager {
                     @Override
                     public void onSuccess(File file) {
                         Logger.i("下載成功");
+                        isLoading = false;
                         callBack.onSuccess(file);
                     }
 
@@ -80,6 +84,7 @@ public class DownloadManager {
 
                     @Override
                     public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                        isLoading = false;
                         Logger.i("请求失败");
                     }
                 });

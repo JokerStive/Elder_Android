@@ -18,6 +18,7 @@ import lilun.com.pensionlife.R;
 public class DownNotification {
     private Context mContext;
     private NotificationManager manager;
+    private int notificationId = 100;
     private Map<Integer, Notification> map = null;
 
     public DownNotification(Context context) {
@@ -43,12 +44,12 @@ public class DownNotification {
         }
     }
 
-    public void cancel(int notificationId) {
+    public void cancel( ) {
         manager.cancel(notificationId);
         map.remove(notificationId);
     }
 
-    public void updateProgress(int notificationId, int progress, int max) {
+    public void updateProgress(int progress, int max) {
         Notification notify = map.get(notificationId);
         if (null != notify) {
             // 修改进度条
