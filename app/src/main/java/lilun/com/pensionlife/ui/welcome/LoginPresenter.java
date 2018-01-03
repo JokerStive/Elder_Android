@@ -8,6 +8,7 @@ import java.util.List;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.Account;
+import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RegexUtils;
@@ -142,6 +143,20 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         loginSuccess(targetId);
                     }
                 });
+    }
+
+    @Override
+    public void getVersionInfo(String appName, String versionName) {
+        addSubscribe(NetHelper.getApi()
+                .getVersionInfo(appName, versionName)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<AppVersion>() {
+                    @Override
+                    public void _next(AppVersion version) {
+                        view.showVersionInfo(version);
+                    }
+                }));
     }
 
 
