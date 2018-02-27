@@ -9,7 +9,7 @@ import java.net.URLEncoder;
  *         create at 2017/2/15 15:18
  *         email : yk_developer@163.com
  */
-public class IconUrl {
+public class  IconUrl {
 
     public static String ElderModules = "ElderModules";
     public static String OrganizationActivityCategories = "OrganizationActivityCategories";

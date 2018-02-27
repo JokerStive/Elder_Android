@@ -42,6 +42,9 @@ public class MqttTopic {
     //活动更新
     public String topic_activity_update = "/%23activity/.updated";
 
+    //组织邀请
+    public String topic_invite = "user/" + User.getUserName() + "/invited";
+
 
     public String[] getAllTopicWhenInit() {
         List<String> topics = new ArrayList<>();

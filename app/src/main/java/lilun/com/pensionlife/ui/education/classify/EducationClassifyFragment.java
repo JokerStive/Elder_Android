@@ -184,7 +184,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             ToastHelper.get().showShort(getString(R.string.building));
 //            ElderModule elderModule = (ElderModule) adapter1.getData().get(position);
-//            if (elderModule.getName().equals("老年大学")) {
+//            if (elderModule.getFrom().equals("老年大学")) {
 //                start(EducationListFragment.newInstance(elderModule));
 //            } else {
 //                ToastHelper.get().showShort(getString(R.string.building));

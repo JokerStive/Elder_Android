@@ -41,7 +41,7 @@ public class AgencyAdapter extends QuickAdapter<Organization> {
         ratingBar.setRating(description.getRanking());
 
         UIUtils.setBold(help.getView(R.id.tv_item_title));
-        help.setText(R.id.tv_item_title, organization.getName())
+        help.setText(R.id.tv_item_title, organization.getFrom())
                 .setText(R.id.tv_item_address, description.getAdress());
 
         help.setOnClickListener(R.id.ll_bg,v -> {

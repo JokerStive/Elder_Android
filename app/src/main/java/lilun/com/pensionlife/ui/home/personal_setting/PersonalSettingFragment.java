@@ -417,7 +417,7 @@ public class PersonalSettingFragment extends BaseTakePhotoFragment<PersonalSetti
             curLevel = baseBeen.length - 1;
         } else {
             distrect = baseBeen[baseBeen.length - 1];
-            //   tvBelongStress.setText(distrect.getName());
+            //   tvBelongStress.setText(distrect.getFrom());
             curLevel = baseBeen.length - 1 + RECYCLERLEVEL;
             requestSettingAccountDistract(distrect);
         }

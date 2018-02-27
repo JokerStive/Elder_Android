@@ -16,4 +16,5 @@ public class CacheMsgClassify  {
     public static int goverment=6;
     public static int health=7;
     public static int residential=8;
+    public static int invite=9;
 }

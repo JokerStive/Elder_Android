@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_218">
+
+
+    <ImageView
+        android:id="@+id/iv_college_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.2"
+        android:background="#ff000000"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_8"
+        android:paddingLeft="@dimen/dp_16"
+        android:paddingRight="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_8">
+
+        <TextView
+            android:id="@+id/tv_college_desc"
+            style="@style/tv_normal"
+            android:maxLines="3"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_14"
+            tools:text="重庆市渝中区山城老年大学为中共渝中区委老干部局直属的全民所有制差额拔款的事业单位。在区委、区政府的领导关怀下，学校自1986年创办以来......" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

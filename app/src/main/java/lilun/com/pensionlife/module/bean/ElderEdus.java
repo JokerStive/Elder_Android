@@ -55,11 +55,11 @@ public class ElderEdus extends BaseBean {
     }
 
 
-//    public String getName() {
+//    public String getFrom() {
 //        return name;
 //    }
 //
-//    public void setName(String name) {
+//    public void setFrom(String name) {
 //        this.name = name;
 //    }
 
@@ -259,7 +259,7 @@ public class ElderEdus extends BaseBean {
 //    public Course toEdusColleageCourse() {
 //        Course course = new Course();
 //        course.setId(id);
-//        course.setName(title);
+//        course.setFrom(title);
 //        course.setPicture(icon);
 //        return course;
 //    }

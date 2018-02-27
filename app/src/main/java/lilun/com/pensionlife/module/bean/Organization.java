@@ -39,10 +39,10 @@ public class Organization extends BaseBean {
     private boolean isInherited;
     private  String icon;
 
-    private Provider extension;
+    private Provider provider;
 
-    public Provider getExtension() {
-        return extension;
+    public Provider getProvider() {
+        return provider;
     }
 
 

@@ -51,11 +51,11 @@ public class ProductCategory extends BaseBean{
         this.id = id;
     }
 
-    public String getName() {
+    public String getFrom() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setFrom(String name) {
         this.name = name;
     }
 

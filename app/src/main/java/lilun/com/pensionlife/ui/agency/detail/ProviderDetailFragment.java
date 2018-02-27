@@ -145,7 +145,7 @@ public class ProviderDetailFragment extends BaseFragment {
 
 
     private void getProvider() {
-        String filter = "{\"include\":\"extension\"}";
+        String filter = "{\"include\":\"provider\"}";
         NetHelper.getApi().getOrganizationById(mProviderId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -178,7 +178,7 @@ public class ProviderDetailFragment extends BaseFragment {
         //标题
         tvProviderTitle.setText(provider.getName());
 
-        Provider extension = provider.getExtension();
+        Provider extension = provider.getProvider();
         if (extension != null) {
 
             //地址

@@ -48,6 +48,15 @@ public class Event {
     }
 
 
+    //评价完成后
+    public static class ActivateEvent {
+        public   String mobile;
+
+        public ActivateEvent(String mobile) {
+            this.mobile = mobile;
+        }
+    }
+
     //刷新邻居互助回答列表
     public static class RefreshHelpReply {
         public OrganizationReply reply;

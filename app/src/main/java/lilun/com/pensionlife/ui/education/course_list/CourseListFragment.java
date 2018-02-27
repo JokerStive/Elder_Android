@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
@@ -32,7 +33,6 @@ import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.Semester;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.ui.education.colleage_details.CollegeDetailFragment;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -57,8 +57,8 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeLayout;
 
-    @Bind(R.id.iv_college_introduction)
-    ImageView ivCollegeIntroduction;
+//    @Bind(R.id.iv_college_introduction)
+//    ImageView ivCollegeIntroduction;
     private EduCourseAdapter mEduCourseAdapter;
     //    private String[] filterTitles = {"区域", "价格", "等级"};
     private String mOrganizationId;
@@ -68,6 +68,8 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private int mCurrentClickPosition;
     private List<Integer> expandedPositions = new ArrayList<>();
     private SemesterAdapter semesterAdapter;
+    private ImageView ivCollegeIcon;
+    private TextView tvCollegeDesc;
 
 
     public static CourseListFragment newInstance(String organizationId) {
@@ -101,29 +103,33 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getDataList(0);
-            getCategories();
-            getSemesters();
+//            getCategories();
+//            getSemesters();
         }
     }
 
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle("课程分类");
+        titleBar.setTitle("报名班级");
         titleBar.setOnBackClickListener(this::pop);
+        View head = inflater.inflate(R.layout.head_course_list, null);
+        ivCollegeIcon = (ImageView) head.findViewById(R.id.iv_college_icon);
+        tvCollegeDesc = (TextView) head.findViewById(R.id.tv_college_desc);
 
-        ivCollegeIntroduction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //大学简介
-                start(CollegeDetailFragment.newInstance(mOrganizationId));
-            }
-        });
+//        ivCollegeIntroduction.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //大学简介
+//                start(CollegeDetailFragment.newInstance(mOrganizationId));
+//            }
+//        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, (int) App.context.getResources().getDimension(R.dimen.dp_1), Color.parseColor("#f5f5f9")));
 
         mEduCourseAdapter = new EduCourseAdapter(new ArrayList<>());
+        mEduCourseAdapter.addHeaderView(head);
         mEduCourseAdapter.setEmptyView();
         mEduCourseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -144,7 +150,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
                     }
                 }
         );
-        initFilter();
+//        initFilter();
     }
 
 

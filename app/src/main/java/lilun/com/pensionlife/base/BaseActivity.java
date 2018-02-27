@@ -28,6 +28,7 @@ import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.callback.MyCallBack;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.mqtt.GlobalShowDialog;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MqttTopic;
 import lilun.com.pensionlife.net.NetHelper;
@@ -204,12 +205,21 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
                 pushInfoCunt++;
                 showPushInformationDialog(information);
             }
-//            else {
-//                Logger.d("刷新公告数据"+information.getName());
-//            }
             EventBus.getDefault().postSticky(new Event.RefreshPushInformation(information.getId()));
         }
+
+
+        //收到组织邀请
+        if (topic.equals(mqttTopic.topic_invite)) {
+            GlobalShowDialog.newInstance().joinOrganizationInvite(this,data);
+        }
+
     }
+
+    private void join(String data, boolean isJoin) {
+
+    }
+
 
     private void showPushAidDialog(OrganizationAid aid) {
         Intent intent = new Intent(this, UrgentAidInfoActivity.class);

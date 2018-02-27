@@ -116,6 +116,12 @@ public class MqttNotificationHelper {
         }
 
 
+        //5 ---- 组织邀请
+        if (TextUtils.equals(topic, mqttTopic.topic_invite)) {
+            EventBus.getDefault().post(new Event.BoardMsg(topic, data));
+        }
+
+
         //保存到数据库，绑定用户
         if (classify != -1) {
             cacheMsg.setClassify(classify);

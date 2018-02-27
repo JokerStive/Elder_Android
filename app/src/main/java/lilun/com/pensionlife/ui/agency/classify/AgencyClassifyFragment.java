@@ -138,7 +138,7 @@ public class AgencyClassifyFragment extends BaseFragment<AgencyClassifyContract.
         rvAgency.setLayoutManager(gridLayoutManager);
         AgencyClassifyAdapter adapter = new AgencyClassifyAdapter(this, organizations);
         adapter.setOnItemClickListener((organization -> {
-//            start(AgencyOrganizationListFragment.newInstance(organization.getName(), organization.getId()));
+//            start(AgencyOrganizationListFragment.newInstance(organization.getFrom(), organization.getId()));
 
         }));
         rvAgency.setAdapter(adapter);

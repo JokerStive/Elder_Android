@@ -23,6 +23,8 @@ public interface LoginContract {
         void loginSuccess();
 
         void showVersionInfo(AppVersion version);
+
+        void activateAccount(String mobile);
     }
 
     interface Presenter extends IPresenter<View> {

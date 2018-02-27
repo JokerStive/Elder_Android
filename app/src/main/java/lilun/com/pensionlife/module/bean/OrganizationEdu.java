@@ -186,11 +186,11 @@ public class OrganizationEdu extends BaseBean {
 //    private ArrayList<IconModule> image;
 //    private Account contact;
 //
-//    public String getName() {
+//    public String getFrom() {
 //        return name;
 //    }
 //
-//    public void setName(String name) {
+//    public void setFrom(String name) {
 //        this.name = name;
 //    }
 //

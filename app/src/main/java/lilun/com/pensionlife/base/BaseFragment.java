@@ -79,7 +79,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
 
-//        Logger.d(TAG, getClass().getName() + "------onCreate");
+//        Logger.d(TAG, getClass().getFrom() + "------onCreate");
         Bundle arguments = getArguments();
         if (arguments != null) {
             getTransferData(arguments);
@@ -218,25 +218,25 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //    Logger.d(TAG, getClass().getName() + "------onActivityCreated");
+        //    Logger.d(TAG, getClass().getFrom() + "------onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //    Logger.d(TAG, getClass().getName() + "------onStart");
+        //    Logger.d(TAG, getClass().getFrom() + "------onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //     Logger.d(TAG, getClass().getName() + "------onResume");
+        //     Logger.d(TAG, getClass().getFrom() + "------onResume");
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //     Logger.d(TAG, getClass().getName() + "------onViewCreated");
+        //     Logger.d(TAG, getClass().getFrom() + "------onViewCreated");
 
     }
 
@@ -244,19 +244,19 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     @Override
     public void onPause() {
         super.onPause();
-        //    Logger.d(TAG, getClass().getName() + "------onPause");
+        //    Logger.d(TAG, getClass().getFrom() + "------onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //    Logger.d(TAG, getClass().getName() + "------onStop");
+        //    Logger.d(TAG, getClass().getFrom() + "------onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //   Logger.d(TAG, getClass().getName() + "------onDestroyView");
+        //   Logger.d(TAG, getClass().getFrom() + "------onDestroyView");
         ButterKnife.unbind(mRootView);
     }
 
@@ -279,20 +279,20 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         }
 
         EventBus.getDefault().unregister(this);
-        //  Logger.d(TAG, getClass().getName() + "------onDestroy");
+        //  Logger.d(TAG, getClass().getFrom() + "------onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //  Logger.d(TAG, getClass().getName() + "------onDetach");
+        //  Logger.d(TAG, getClass().getFrom() + "------onDetach");
     }
 
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        // Logger.d(TAG, getClass().getName() + "------setUserVisibleHint" + "===" + isVisibleToUser);
+        // Logger.d(TAG, getClass().getFrom() + "------setUserVisibleHint" + "===" + isVisibleToUser);
     }
 
     public void showDialog(String str) {

@@ -11,7 +11,6 @@ import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.QINiuToken;
 import lilun.com.pensionlife.module.bean.Register;
-import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * Created by zp on 2017/4/13.
@@ -26,12 +25,18 @@ public interface RegisterContract {
         void successOfIDCode();
 
         void successOfRegisterAccount(Register register);
+
+        void changeActivation();
+
+        void activateAccount(String mobile);
     }
 
     interface PresenterAccount extends IPresenter<ViewAccount> {
         void getIDCode(String phone, String type);
 
         void postRegisterAccount(String IdCode, Account account);
+
+        void activateAccount(String mobile,String code,Account account);
     }
 
     /**

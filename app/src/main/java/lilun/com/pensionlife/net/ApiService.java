@@ -743,6 +743,15 @@ public interface ApiService {
     Observable<Response<Register>> commitRegister(@Path("IDCode") String IDCode, @Body Account account);
 
 
+
+    @PUT("Accounts/userActive/{mobile}/{code}")
+    Observable<Response<Register>> activateAccount( @Path("mobile") String  mobile,@Path("code") String  code,@Query("include") String user, @Body Account account);
+
+
+    @PUT("Accounts/{id}/acceptInvited/{organizationId}/{type}")
+    Observable<Response<Object>> acceptInvitation( @Path("id") String  usernameId,@Path("organizationId") String  organizationId,@Path("type") int type);
+
+
     /**
      * 上传/更新用户头像
      */

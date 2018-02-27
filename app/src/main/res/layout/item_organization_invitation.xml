@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp_14"
+    android:paddingLeft="@dimen/dp_30"
+    android:paddingRight="@dimen/dp_30"
+    android:paddingTop="@dimen/dp_14">
+
+    <TextView
+        android:id="@+id/tv_invitation_info"
+        style="@style/tv_normal"
+        android:textColor="#333333"
+        android:textSize="@dimen/sp_16"
+        tools:text="尊敬的用户，您的平台账号被*****邀请加
+入，请确认。" />
+
+    <TextView
+        android:id="@+id/tv_invitation_time"
+        style="@style/tv_normal"
+        android:layout_marginTop="@dimen/dp_16"
+        android:textColor="#999999"
+        android:textSize="@dimen/sp_12"
+        tools:text="2017-12-05 15:47:27 处理状态：未处理" />
+
+    <View
+        android:layout_marginTop="@dimen/dp_14"
+        style="@style/line_gray"/>
+
+</LinearLayout>

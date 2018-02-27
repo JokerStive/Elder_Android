@@ -48,6 +48,11 @@ public class RegisterAccountPresenter extends RxPresenter<RegisterContract.ViewA
                                 ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
                                 return;
                             }
+
+                            if (((ApiException) e).getErrorCode() == 613) {
+                                view.activateAccount(phone);
+                                return;
+                            }
                         }
                         int[] errorCode = {600, 601, 603, 604};
                         String[] errorMessage = {
@@ -70,6 +75,20 @@ public class RegisterAccountPresenter extends RxPresenter<RegisterContract.ViewA
     public void postRegisterAccount(String IdCode, Account account) {
         addSubscribe(NetHelper.getApi()
                 .commitRegister(IdCode, account)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Register>(((BaseFragment) view).getActivity()) {
+                    @Override
+                    public void _next(Register register) {
+                        view.successOfRegisterAccount(register);
+                    }
+                }));
+    }
+
+    @Override
+    public void activateAccount(String mobile, String code, Account account) {
+        addSubscribe(NetHelper.getApi()
+                .activateAccount(mobile,code,"user", account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Register>(((BaseFragment) view).getActivity()) {

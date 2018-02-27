@@ -26,6 +26,7 @@ public interface CourseListContract {
 
         void getSemesterSuccess(List<Semester> semesters);
 
+
     }
 
     interface Presenter extends IPresenter<View> {
@@ -36,5 +37,6 @@ public interface CourseListContract {
         List<ConditionOption> getConditionOptionsList();
 
         void getSemesters(String filter);
+
     }
 }

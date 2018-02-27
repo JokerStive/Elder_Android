@@ -19,6 +19,7 @@ import lilun.com.pensionlife.module.utils.VersionCheck;
 import lilun.com.pensionlife.ui.home.HomeActivity;
 import lilun.com.pensionlife.ui.home.VersionDialogFragment;
 import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFilter;
+import lilun.com.pensionlife.ui.register.ActivateAccountManager;
 import lilun.com.pensionlife.ui.register.RegisterActivity;
 
 /**
@@ -149,8 +150,6 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     }
 
 
-
-
     /**
      * 显示版本升级信息
      *
@@ -162,6 +161,11 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         if (VersionCheck.compareVersion(BuildConfig.VERSION_NAME, version.getVersion())) {
             VersionDialogFragment.newInstance(version).show(this.getFragmentManager(), VersionDialogFragment.class.getSimpleName());
         }
+    }
+
+    @Override
+    public void activateAccount(String mobile) {
+        ActivateAccountManager.newInstance().activate(this, mobile);
     }
 }
 

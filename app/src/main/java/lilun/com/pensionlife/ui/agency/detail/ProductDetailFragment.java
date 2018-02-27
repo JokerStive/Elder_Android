@@ -491,7 +491,7 @@ public class ProductDetailFragment extends BaseFragment {
 //            Contact defContact = getDefaultContact(contacts);
 //            if (defContact == null) {
 //                //没有默认信息，就进去信息列表
-//            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
+//            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getFrom()) || TextUtils.isEmpty(defContact.getAddress())) {
 //                defContact.setProductId(mProductId);
 //                //必要信息不完善
 //                start(AddBasicContactFragment.newInstance(defContact, 1));

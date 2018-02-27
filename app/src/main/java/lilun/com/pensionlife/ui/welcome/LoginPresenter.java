@@ -14,6 +14,7 @@ import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.net.ApiException;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 
@@ -59,12 +60,6 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         String needChangeDefaultOrganizationId = mModule.isNeedChangeDefaultOrganizationId();
                         if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationIsEmpty)) {
                             ToastHelper.get().showLong("location为空，检查数据");
-//                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
-//                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
-//                                ToastHelper.get().showLong("没有找到最长organizationAccount");
-//                            } else {
-//                                changeDefOrganizationAccountId(longestOrganizationAccountId);
-//                            }
                         } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.locationEqualsDefaultOrganizationId)) {
                             loginSuccess(User.getBelongOrganizationAccountId());
                         } else if (TextUtils.equals(needChangeDefaultOrganizationId, LoginModule.noOrganizationAccountIdMappingLocation)) {
@@ -72,26 +67,18 @@ public class LoginPresenter extends RxPresenter<LoginContract.View> implements L
                         } else {
                             changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
                         }
-//                        if (TextUtils.isEmpty(needChangeDefaultOrganizationId)) {
-//                            //切换到最长的
-//                            String longestOrganizationAccountId = mModule.getLongestOrganizationAccountId();
-//                            if (TextUtils.isEmpty(longestOrganizationAccountId)) {
-//                                ToastHelper.get().showLong("没有找到location对应的organizationAccount");
-//                            } else {
-//                                changeDefOrganizationAccountId(longestOrganizationAccountId);
-//                            }
-//                        } else if (TextUtils.equals("success", needChangeDefaultOrganizationId)) {
-//                            //登陆成功
-//
-//                        } else if(){
-//                            //切换到居住地
-//                            changeDefOrganizationAccountId(needChangeDefaultOrganizationId);
-//                        }
-//                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        super.hideDialog();
+                        if (e instanceof ApiException){
+                            int errorCode = ((ApiException) e).getErrorCode();
+                            if (errorCode==613){
+                                mView.activateAccount(username);
+                                return;
+                            }
+                        }
                         int[] errorCode = {401};
                         String[] errorMessage = {"账号或密码错误，请重新输入"};
                         super.onError(e, errorCode, errorMessage);

@@ -5,10 +5,15 @@ import android.view.LayoutInflater;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Register;
@@ -44,6 +49,7 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
     @Bind(R.id.bt_register)
     Button btRegister;
 
+
     private final int REGET_TIME = 60;
     CompositeSubscription cntDownRx;
 
@@ -51,6 +57,27 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
     String mobile = "";
     String verifCode = "";
     String password = "";
+    boolean isActivation = false;
+//
+//
+//    @Override
+//    protected void getTransferData(Bundle arguments) {
+//        super.getTransferData(arguments);
+//        mobile = arguments.getString("activationPhone", "");
+//
+//
+//    }
+
+    @Subscribe(sticky = true)
+    public void Activate(Event.ActivateEvent event) {
+        Logger.d("接收到激活消息");
+        mobile = event.mobile;
+        isActivation = true;
+        if (!TextUtils.isEmpty(mobile)) {
+            changeActivation();
+        }
+
+    }
 
     @Override
     protected void initPresenter() {
@@ -74,8 +101,8 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
         ivRegisterPasswordFrist.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         ivRegisterPasswordSecond.setImeOptions(EditorInfo.IME_ACTION_DONE);
         ivRegisterNickname.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        ivRegisterMoblie.setInputType(EditorInfo.TYPE_CLASS_TEXT|EditorInfo.TYPE_CLASS_NUMBER);
-        ivRegisterVerif.setInputType(EditorInfo.TYPE_CLASS_TEXT|EditorInfo.TYPE_CLASS_NUMBER);
+        ivRegisterMoblie.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_CLASS_NUMBER);
+        ivRegisterVerif.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_CLASS_NUMBER);
 
         ivRegisterVerif.setBtListener((v) -> {
             getIdCode();
@@ -91,6 +118,10 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
             }
             return false;
         });
+
+        if (isActivation) {
+            changeActivation();
+        }
     }
 
     @Override
@@ -134,21 +165,35 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
         password = password1;
         Account account = new Account();
         account.setName(nickname);
-        account.setUsername(mobile);
-        account.setMobile(mobile);
         account.setPassword(password);
-        mPresenter.postRegisterAccount(verifCode, account);
+
+        if (!isActivation) {
+            account.setUsername(mobile);
+            account.setMobile(mobile);
+        }
+
+        if (isActivation) {
+            mPresenter.activateAccount(mobile, verifCode, account);
+        } else {
+            mPresenter.postRegisterAccount(verifCode, account);
+        }
     }
 
     /**
      * 获取验证码 先验证手机号码
      */
     private void getIdCode() {
+        if (isActivation) {
+            mPresenter.getIDCode(mobile, "3");
+            return;
+        }
+
         mobile = ivRegisterMoblie.getInput().toString().trim();
         if (!StringUtils.isMobileNumber(mobile)) {
             ToastHelper.get().showShort("请输入正确的手机号码");
             return;
         }
+
         mPresenter.getIDCode(mobile, "1");
 
     }
@@ -160,9 +205,34 @@ public class RegisterAccountFragment extends BaseFragment<RegisterContract.Prese
 
     @Override
     public void successOfRegisterAccount(Register register) {
-        ToastHelper.get().showShort("注册成功");
+        String info = isActivation ? "激活成功" : "注册成功";
+        ToastHelper.get().showShort(info);
         new LoginModule().putToken(register.getId());
         startWithPop(RegisterInfoFragment.newInstance(password));
+    }
+
+    @Override
+    public void changeActivation() {
+        if (ivRegisterMoblie != null) {
+            ivRegisterMoblie.setEnabled(false);
+
+            ivRegisterMoblie.setInput(mobile);
+        }
+
+        if (btRegister != null) {
+
+            btRegister.setText("激活");
+        }
+
+        if (btRegister != null) {
+            btRegister.setText("请及时激活您的账户信息，验证码\n" +
+                    "三十分钟以内有效！");
+        }
+    }
+
+    @Override
+    public void activateAccount(String mobile) {
+        ActivateAccountManager.newInstance().activate(_mActivity, mobile);
     }
 
 

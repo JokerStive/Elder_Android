@@ -21,6 +21,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.ApiException;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.register.ActivateAccountManager;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -205,6 +206,11 @@ public class ChangePasswordActivity extends BaseActivity {
                         if (e instanceof ApiException) {
                             if (((ApiException) e).getErrorMessage().contains("Remote service error, code 15;")) {
                                 ToastHelper.get().showWareShort("短信发送太多，请1小时后尝试");
+                                return;
+                            }
+
+                            if (((ApiException) e).getErrorCode() == 613) {
+                                ActivateAccountManager.newInstance().activate(ChangePasswordActivity.this, mobile);
                                 return;
                             }
                         }

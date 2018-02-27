@@ -100,7 +100,7 @@ public class CollegeDetailFragment extends BaseFragment {
     private void showCollege(Organization college) {
         titleBar.setTitle(college.getName());
 
-        Provider extension = college.getExtension();
+        Provider extension = college.getProvider();
         if (extension != null) {
             String context = extension.getContext();
             String address = extension.getAddress();

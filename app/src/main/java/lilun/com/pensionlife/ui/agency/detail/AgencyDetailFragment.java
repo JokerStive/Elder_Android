@@ -163,8 +163,8 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
 
         //显示
-        tvTitle.setText(mAgency.getName());
-        Organization.Extension extension = mAgency.getExtension();
+        tvTitle.setText(mAgency.getFrom());
+        Organization.Extension extension = mAgency.getProvider();
         if (extension != null) {
             if (!TextUtils.isEmpty(extension.getPhone())) {
                 tvPhone.setVisibility(View.VISIBLE);
@@ -254,7 +254,7 @@ public class AgencyDetailFragment extends BaseFragment implements View.OnClickLi
 
             case R.id.tv_provide_service:
                 //TODO 进入提供的服务列表页面
-                start(AgencyServiceListFragment.newInstance(mAgency.getName(), mAgency.getId(), 1));
+                start(AgencyServiceListFragment.newInstance(mAgency.getFrom(), mAgency.getId(), 1));
                 break;
 
 
