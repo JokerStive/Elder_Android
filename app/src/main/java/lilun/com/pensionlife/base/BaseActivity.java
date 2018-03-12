@@ -198,7 +198,7 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
         }
 
 
-        if (topic.contains(mqttTopic.topic_information_edit)) {
+        if (topic.contains(mqttTopic.topic_information_publish)) {
             String infoString = jsonObject.getString("data");
             Information information = JSON.parseObject(infoString, Information.class);
             if (pushInfoCunt == 0) {

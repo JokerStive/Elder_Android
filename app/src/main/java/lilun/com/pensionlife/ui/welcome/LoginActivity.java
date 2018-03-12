@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             autologin = data.getBooleanExtra("autologin", false);
             account = (Account) data.getSerializableExtra("account");
             if (autologin) {
+
                 etMobile.setText(account.getMobile());
                 etPassword.setText(account.getPassword());
                 login();

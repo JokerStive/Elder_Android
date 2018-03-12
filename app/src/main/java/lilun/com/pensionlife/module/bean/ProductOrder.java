@@ -62,6 +62,17 @@ public class ProductOrder extends BaseBean {
     private String updatorName;
     private String userProfileId;
 
+    public String getProductBackupId() {
+        return productBackupId;
+    }
+
+    public ProductOrder setProductBackupId(String productBackupId) {
+        this.productBackupId = productBackupId;
+        return this;
+    }
+
+    private String productBackupId;
+
     public String getId() {
         return id;
     }

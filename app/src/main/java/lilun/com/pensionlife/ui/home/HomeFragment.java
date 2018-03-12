@@ -454,7 +454,7 @@ public class HomeFragment extends BaseFragment<HomeContract.Presenter> implement
                 ActivityCategory activityCategory = new ActivityCategory();
                 activityCategory.setId(activityCatrgoryId);
                 start(ActivityListFragment.newInstance(activityCategory));
-            } else if (topic.contains(mqttTopic.topic_information_edit)) {
+            } else if (topic.contains(mqttTopic.topic_information_publish)) {
                 Intent intent = new Intent(_mActivity, CacheInfoListActivity.class);
                 intent.putExtra("title", "社区公告");
                 intent.putExtra("classify", CacheMsgClassify.announce);

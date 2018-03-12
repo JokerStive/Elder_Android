@@ -2,19 +2,40 @@ package lilun.com.pensionlife.module.bean;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
+import lilun.com.pensionlife.app.User;
+
 /**
-*组织邀请消息
-*@author yk
-*create at 2018/1/26 11:13
-*email : yk_developer@163.com
-*/
-public class Invitation extends DataSupport {
+ * 组织邀请消息
+ *
+ * @author yk
+ *         create at 2018/1/26 11:13
+ *         email : yk_developer@163.com
+ */
+public class Invitation extends DataSupport implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int id;
+    private String userId;
     private String from;
     private String organizationId;
     private String time;
+
+    public Invitation() {
+        setUserId(User.getUserId());
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public Invitation setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
     private String verb;
-    private int status=0;
+    private int status = 0;
 
     public int getStatus() {
         return status;

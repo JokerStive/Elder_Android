@@ -206,7 +206,7 @@
 
     <!--登陆注册-->
     <string name="welcome">欢迎来到+1社区</string>
-    <string name="login">登陆</string>
+    <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="mobile_number">电话号码</string>
     <string name="password">密码</string>

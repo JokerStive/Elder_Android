@@ -7,12 +7,15 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.Invitation;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import rx.Observable;
 
 /**
  * Created by Admin on 2018/1/25.
@@ -43,7 +46,7 @@ public class GlobalShowDialog {
         invitation.save();
 
         View view = activity.getLayoutInflater().inflate(R.layout.invite, null);
-        ((TextView) view.findViewById(R.id.tv_desc)).setText(String.format(text,invitation.getFrom()));
+        ((TextView) view.findViewById(R.id.tv_desc)).setText(String.format(text, invitation.getFrom()));
         view.findViewById(R.id.tv_refuse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +67,21 @@ public class GlobalShowDialog {
                 .customView(view, false)
                 .show();
 
+        timer();
+
+    }
+
+    private void timer() {
+        Observable.timer(6, TimeUnit.SECONDS)
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Long>() {
+                    @Override
+                    public void _next(Long aLong) {
+                        if (show != null && show.isShowing()) {
+                            show.dismiss();
+                        }
+                    }
+                });
     }
 
     private void join(Invitation invitation, int type) {
