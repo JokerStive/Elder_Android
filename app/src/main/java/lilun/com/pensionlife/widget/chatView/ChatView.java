@@ -10,6 +10,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import lilun.com.pensionlife.widget.NormalItemDecoration;
 
 /**
  * 聊天室组件
+ * 互动式支持， 通过Adapter添加header的方式，完成在列表中显示产品基础信息内容；
  * Created by Administrator on 2018/3/19.
  */
 
@@ -27,8 +29,8 @@ public class ChatView extends RelativeLayout {
 
     private RecyclerView recyclerView;
     private InputSendView inputSendView;
-    private TextView unReadView;
 
+    private TextView unReadView;
     private InputSendView.OnSendListener onSendListener;
     private QuickAdapter adapter;//聊天消息的adapter
 

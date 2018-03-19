@@ -26,6 +26,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class ChatAdapter extends QuickAdapter<PushMessage> {
 
     final String sg = System.currentTimeMillis() / (1000 * 60 * 60) + "" + User.getChangeAvatorCount();//缓存时间1小时
+
     public ChatAdapter(List<PushMessage> data) {
         super(R.layout.item_chat, data);
     }
@@ -59,18 +60,21 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
         }
 
 
-        if (helper.getAdapterPosition() == 0) {
+        //if (helper.getAdapterPosition() == 0) {
+        if (helper.getAdapterPosition() - getHeaderLayoutCount() == 0) {
             helper.getView(R.id.tv_send_time).setVisibility(View.VISIBLE);
             helper.setText(R.id.tv_send_time, StringUtils.thatTime(pushMessage.getTime()));
         } else {
             Date beforeLast = null;
-            for (int i = helper.getAdapterPosition() - 1; i >= 0; i--) {
-                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
+//            for (int i = helper.getAdapterPosition() - 1; i >= 0; i--) {
+            for (int i = helper.getAdapterPosition() - getHeaderLayoutCount() - 1; i >= 0; i--) {
+                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition()- getHeaderLayoutCount()  - 1).getTime());
+//                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
                 if (beforeLast != null)
                     break;
             }
-            // Date beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
-            Date last = StringUtils.string2Date(getData().get(helper.getAdapterPosition()).getTime());
+
+            Date last = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - getHeaderLayoutCount()).getTime());
             if (beforeLast != null && last != null && last.getTime() - beforeLast.getTime() > 3 * 60 * 1000)   //3分钟内
             {
                 helper.getView(R.id.tv_send_time).setVisibility(View.VISIBLE);

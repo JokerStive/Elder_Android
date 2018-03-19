@@ -318,7 +318,7 @@
     <string name="question_hint">请输入您的提问内容</string>
     <string name="send">发送</string>
     <string name="answer_hint">请输入您的回复内容</string>
-    <string name="say_something_hint">说点什么...</string>
+    <string name="say_something_hint">&#160;&#160;&#160;&#160;说点什么...</string>
     <string name="close_activity">解散活动</string>
     <string name="day">天</string>
     <string name="hour">时</string>

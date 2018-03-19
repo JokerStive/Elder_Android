@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!-- 产品信息-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10" />
+
+        <TextView
+            android:id="@+id/tv_order_create_time"
+            style="@style/product_order_small_size"
+            android:drawableLeft="@drawable/iocn_order"
+            tools:text="预约时间:2018-01-24 20:14:27" />
+
+        <TextView
+            android:id="@+id/tv_order_status"
+            style="@style/product_order_small_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right"
+            tools:text="待处理" />
+
+        <RelativeLayout
+            android:id="@+id/rl_product_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_order_create_time">
+
+            <ImageView
+                android:id="@+id/iv_order_img"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginTop="@dimen/dp_8"
+                android:src="@drawable/icon_def" />
+
+            <TextView
+                android:id="@+id/tv_order_product_title"
+                style="@style/product_order_mid_size"
+                android:layout_alignTop="@id/iv_order_img"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:layout_toRightOf="@id/iv_order_img"
+                android:maxEms="10"
+                tools:text="英孚教育-四点半课堂1111111111111111" />
+
+            <TextView
+                android:id="@+id/tv_order_price"
+                style="@style/product_order_mid_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_order_product_title"
+                android:layout_marginRight="@dimen/dp_2"
+                android:layout_toRightOf="@id/tv_order_product_title"
+                android:gravity="right"
+                tools:text="￥53.00" />
+            <!--服务时间-->
+            <TextView
+                android:id="@+id/tv_order_register_time"
+                style="@style/product_order_small_size"
+                android:layout_below="@id/tv_order_product_title"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_toRightOf="@id/iv_order_img"
+                android:maxEms="10"
+                tools:text="服务时间:2018-01-24" />
+
+            <TextView
+                android:id="@+id/tv_prodcut_number"
+                style="@style/product_order_mid_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_order_price"
+                android:layout_marginRight="@dimen/dp_2"
+                android:layout_toRightOf="@id/tv_order_product_title"
+                android:gravity="right"
+                tools:text="x 1" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_order_total_price"
+            style="@style/product_order_mid_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rl_product_info"
+            android:layout_marginRight="@dimen/dp_20"
+            android:gravity="right"
+            tools:text="共1件商品，合计: ￥53.00" />
+
+        <Button
+            android:id="@+id/btn_cancel_order"
+            style="@style/product_order_mid_size"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignRight="@id/tv_order_status"
+            android:layout_below="@id/tv_order_total_price"
+            android:layout_marginTop="@dimen/dp_22"
+            android:background="@drawable/shape_bule_stroke"
+            android:padding="@dimen/dp_066"
+            android:text="取消预约"
+            android:textColor="@color/font_cancel_register_btn"
+            tools:text="取消预约" />
+    </RelativeLayout>
+    <!-- 联系人信息-->
+    <LinearLayout
+        android:id="@+id/ll_contact_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_10">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_2"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:background="#FFFAFAFA" />
+
+        <TextView
+            android:id="@+id/tv_contact_name"
+            style="@style/product_order_small_size"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            tools:text="收货人：xxxxxx" />
+
+        <TextView
+            android:id="@+id/tv_contact_mobile"
+            style="@style/product_order_small_size"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_4"
+            tools:text="电话：130****4548" />
+
+        <TextView
+            android:id="@+id/tv_contact_address"
+            style="@style/product_order_small_size"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_4"
+            android:ellipsize="none"
+            android:gravity="left"
+            android:maxEms="40"
+            android:singleLine="false"
+            tools:text="地址：重庆 重庆市 南岸区长生桥镇茶园 新区城南家园六组团2栋三单元2-1" />
+    </LinearLayout>
+</LinearLayout>

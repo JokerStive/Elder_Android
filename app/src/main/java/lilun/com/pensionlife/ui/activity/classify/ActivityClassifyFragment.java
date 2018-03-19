@@ -40,6 +40,7 @@ import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_add.AddActivityFragment;
 import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment;
+import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment2;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
@@ -257,7 +258,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, true);
         mContentAdapter.setOnItemClickListener((baseQuickAdapter,view, activityItem) -> {
-            start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
+            start(ActivityChatFragment2.newInstance(mContentAdapter.getItem(activityItem)));
             mContentAdapter.getData().get(activityItem).setUnRead(0);
             mContentAdapter.notifyItemChanged(activityItem);
 

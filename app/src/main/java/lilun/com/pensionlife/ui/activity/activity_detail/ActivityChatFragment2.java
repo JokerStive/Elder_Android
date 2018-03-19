@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +13,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -31,6 +36,7 @@ import lilun.com.pensionlife.module.adapter.ChatAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
@@ -139,6 +145,7 @@ public class ActivityChatFragment2 extends BaseFragment {
         });
 
         chatAdapter = new ChatAdapter(DataSupport.where("activityId = ?", activity.getId()).find(PushMessage.class));
+        chatAdapter.setHeaderView(setProductView());
         cvActivity.setChatAdapter(chatAdapter);
         cvActivity.setOnSendListener(new InputSendView.OnSendListener() {
             @Override
@@ -147,6 +154,50 @@ public class ActivityChatFragment2 extends BaseFragment {
             }
         });
         cvActivity.setUnreadCount(unReadCount);
+
+    }
+
+    public View setProductView() {
+        TextView tvOrderCreateTime, tvOrderStatus, tvOrderProductTitle, tvOrderPrice,
+                tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice,
+                tvContactName, tvContactMobile, tvContactAddress;
+        ImageView ivOrderImg;
+
+        View inflate = LayoutInflater.from(getContext()).inflate(R.layout.view_product_info_layout, null, false);
+        Button cancelOrder = (Button) inflate.findViewById(R.id.btn_cancel_order);
+        LinearLayout llContactInfo = (LinearLayout) inflate.findViewById(R.id.ll_contact_info);
+        RelativeLayout rlProductInfo = (RelativeLayout) inflate.findViewById(R.id.rl_product_info);
+        tvOrderCreateTime = (TextView) inflate.findViewById(R.id.tv_order_create_time);
+        tvOrderStatus = (TextView) inflate.findViewById(R.id.tv_order_status);
+        tvOrderProductTitle = (TextView) inflate.findViewById(R.id.tv_order_product_title);
+        tvOrderPrice = (TextView) inflate.findViewById(R.id.tv_order_price);
+        tvOrderRegisterTime = (TextView) inflate.findViewById(R.id.tv_order_register_time);
+        tvProdcutNumber = (TextView) inflate.findViewById(R.id.tv_prodcut_number);
+        tvOrderTotalPrice = (TextView) inflate.findViewById(R.id.tv_order_total_price);
+        tvContactName = (TextView) inflate.findViewById(R.id.tv_contact_name);
+        tvContactMobile = (TextView) inflate.findViewById(R.id.tv_contact_mobile);
+        tvContactAddress = (TextView) inflate.findViewById(R.id.tv_contact_address);
+        ivOrderImg = (ImageView) inflate.findViewById(R.id.iv_order_img);
+        tvOrderCreateTime.setText("预约时间:2018-01-24 20:14:27");
+        tvOrderStatus.setText("待处理");
+        tvOrderProductTitle.setText("英孚教育-四点半课堂1111111111111111");
+        tvOrderPrice.setText("￥53.00");
+        tvOrderRegisterTime.setText("服务时间:2018-01-24");
+        tvProdcutNumber.setText("x 1");
+        tvOrderTotalPrice.setText(Html.fromHtml("共 <font color=\"red\">1</font>件商品，合计: <font color=\"red\">￥53.00</font>"));
+        tvContactName.setText("收货人：张三");
+        tvContactMobile.setText("电话：185****8537");
+        tvContactAddress.setText("地址：重庆 重庆市 南岸区长生桥镇茶园 新区城南家园六组团2栋三单元2-1");
+        cancelOrder.setOnClickListener((v) -> {
+            ToastHelper.get().showShort("canceled !");
+        });
+        llContactInfo.setOnClickListener((v) -> {
+            ToastHelper.get().showShort("联系人!");
+        });
+        rlProductInfo.setOnClickListener((v) -> {
+            ToastHelper.get().showShort("产品信息!");
+        });
+        return inflate;
     }
 
     /**

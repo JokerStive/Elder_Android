@@ -35,8 +35,8 @@ public class InputSendView extends LinearLayout {
         this.context = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.InputSendView);
         inputBackgrand = array.getResourceId(R.styleable.InputSendView_input_backgrand, R.drawable.shape_rect_write_strock_corner_5);
-        sendBackgrandOff = array.getResourceId(R.styleable.InputSendView_send_backgrand_off, R.drawable.shape_rect_gray_corner_5);
-        sendBackgrandOn = array.getResourceId(R.styleable.InputSendView_send_backgrand_on, R.drawable.shape_rect_red_corner_5);
+        sendBackgrandOff = array.getResourceId(R.styleable.InputSendView_send_backgrand_off, R.drawable.shape_rect_white_strock_corner_5);
+        sendBackgrandOn = array.getResourceId(R.styleable.InputSendView_send_backgrand_on, R.drawable.shape_rect_bule_strock_corner_5);
         inputHint = array.getString(R.styleable.InputSendView_input_hint);
         sendText = array.getString(R.styleable.InputSendView_send_text);
         initUI(context);
@@ -72,8 +72,10 @@ public class InputSendView extends LinearLayout {
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() == 0) {
                     send.setBackgroundDrawable(ContextCompat.getDrawable(context, sendBackgrandOff));
+                    send.setTextColor(ContextCompat.getColor(context, R.color.font_grey_chat));
                 } else {
                     send.setBackgroundDrawable(ContextCompat.getDrawable(context, sendBackgrandOn));
+                    send.setTextColor(ContextCompat.getColor(context, R.color.white));
                 }
             }
         });

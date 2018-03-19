@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/bg_grey_chat"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
@@ -15,7 +17,6 @@
             android:layout_weight="1"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10" />
-
 
         <lilun.com.pensionlife.widget.InputSendView
             android:id="@+id/isv_input_send"

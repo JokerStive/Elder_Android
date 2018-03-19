@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
+    <!--全局背景-->
+    <color name="background_g">#f7f8fa</color>
 
     <color name="red">#EF636E</color>
     <color name="red2">#FA1001</color>
@@ -15,6 +16,7 @@
 
 
     <color name="gray">#b8b8b8</color>
+    <color name="gray_a9">#a9a9a9</color>
     <color name="personal_data_color">#788087</color>
 
     <color name="gray_less">#E0E0E0</color>
@@ -22,6 +24,7 @@
     <color name="white">#ffffff</color>
 
     <color name="black">#3D3D3D</color>
+    <color name="black_dark">#000000</color>
 
     <color name="icon_def">#e2e2e2</color>
 
@@ -59,6 +62,13 @@
     <color name="key_ok_color_pressed">#0174f2</color>
     <color name="unread">#12B7F5</color>
     <color name="yellow_btn" >#ff8c08</color>
+    <color name="font_cancel_register_btn">#1D96E4</color>
+    <color name="cancel_register_strock">#1D96E4</color>
+    <color name="grey_strock">#FFCECFD0</color>
+    <!--聊天室色值-->
+    <color name="font_grey_chat">#FFAAAAAA</color>
+    <color name="bg_grey_chat">#FFF3F3F3</color>
+    <color name="bg_bule_chat">#FF1D96E4</color>
 
 
 </resources>
