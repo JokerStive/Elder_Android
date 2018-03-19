@@ -1,6 +1,7 @@
 package lilun.com.pensionlife.module.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -78,6 +79,8 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
     @Override
     protected void convert(BaseViewHolder help, OrganizationActivity activity) {
         Context context = help.getConvertView().getContext().getApplicationContext();
+        ViewCompat.setTransitionName(help.getView(R.id.iv_icon), help.getAdapterPosition() + "_image");
+        ViewCompat.setTransitionName(help.getView(R.id.tv_sophisticated), help.getAdapterPosition() + "_title");
         help.setText(R.id.tv_sophisticated, activity.getTitle())
                 .setText(R.id.tv_creator, activity.getCreatorName())
                 .setText(R.id.tv_create_time, StringUtils.IOS2ToUTC(activity.getCreatedAt(), 4));

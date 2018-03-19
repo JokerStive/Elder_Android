@@ -1,10 +1,12 @@
 package lilun.com.pensionlife.ui.activity.activity_list;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ import lilun.com.pensionlife.module.bean.Option;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.ui.activity.activity_detail.ActivityDetailFragment;
+import lilun.com.pensionlife.widget.DetailTransition;
 import lilun.com.pensionlife.widget.NormalItemDecoration;
 import lilun.com.pensionlife.widget.SearchTitleBar;
 import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
@@ -43,9 +46,10 @@ import lilun.com.pensionlife.widget.filter_view.FilterLayoutView;
  * 分类活动V
  * 获取的数据为：
  * 2017-12-08 10:05:42 更新 https://oa.liluntech.com/issues/9195
- *  1\社区活动发布对于已经开始活动应该能够在分类中显示 ,目前在分类中看不到.
- 2\社区活动自己发布的活动应该能够在分类中显示 ,目前在分类中看不到.
- 活动结束后能显示一周    https://oa.liluntech.com/issues/9188
+ * 1\社区活动发布对于已经开始活动应该能够在分类中显示 ,目前在分类中看不到.
+ * 2\社区活动自己发布的活动应该能够在分类中显示 ,目前在分类中看不到.
+ * 活动结束后能显示一周    https://oa.liluntech.com/issues/9188
+ *
  * @author yk
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
@@ -191,7 +195,24 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         if (mActivityAdapter != null) {
 
             mActivityAdapter.setOnItemClickListener((baseQuickAdapter, view, i) -> {
-                start(ActivityDetailFragment.newInstance(mActivityAdapter.getItem(i)));
+                ActivityDetailFragment fragment = ActivityDetailFragment.newInstance(mActivityAdapter.getItem(i));
+                // 这里是使用SharedElement的用例
+                // LOLLIPOP(5.0)系统的 SharedElement支持有 系统BUG， 这里判断大于 > LOLLIPOP
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                    setExitTransition(new Fade());
+                    fragment.setEnterTransition(new Fade());
+                    fragment.setSharedElementReturnTransition(new DetailTransition());
+                    fragment.setSharedElementEnterTransition(new DetailTransition());
+
+                    // 25.1.0以下的support包,Material过渡动画只有在进栈时有,返回时没有;
+                    // 25.1.0+的support包，SharedElement正常
+                    fragment.transaction()
+                            .addSharedElement(view.findViewById(R.id.iv_icon), getString(R.string.image_transition))
+                            .addSharedElement(view.findViewById(R.id.tv_sophisticated), getString(R.string.title_transition))
+                            .commit();
+                }
+                start(fragment);
+
             });
             mActivityAdapter.setEmptyView();
         }
@@ -290,7 +311,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListContract.Pres
         //未开始    现在时间-7 < 结束时间
         activity_status = "\"endTime\":{\"gte\":\"" + localtime + "\"}";
         //join_status = ",\"and\":[{\"masterId\":{\"neq\":\"" + User.getUserId() + "\"}},{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}]";
-        join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}"+ ",{\"or\":[{\"endTime\":{\"$exists\":false}},{" + activity_status + "}]}]";
+        join_status = ",\"and\":[{\"partnerList\":{\"neq\":\"" + User.getUserId() + "\"}}" + ",{\"or\":[{\"endTime\":{\"$exists\":false}},{" + activity_status + "}]}]";
 
 //        String filter = "{\"where\":{\"visible\":0,\"categoryId\":{\"inq\":" + getCategoryIdJson(mCategory.getId()) + "}" + join_status +
 //                ",\"or\":[{\"startTime\":{\"$exists\":false}},{" + activity_status + "}]" + ",\"title\":{\"like\":\"" + searchStr + "\"}}" + timing_status + partner_number + "}";

@@ -579,7 +579,7 @@ public class ProductDetailFragment extends BaseFragment {
 
 
     @Override
-    protected void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+    public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
         Logger.d("requestCode =  " + requestCode + "----" + "resultCode = " + resultCode);
         if (requestCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {

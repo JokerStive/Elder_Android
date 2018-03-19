@@ -39,6 +39,8 @@ import lilun.com.pensionlife.ui.welcome.LoginActivity;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportActivity;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -69,6 +71,11 @@ public abstract class BaseActivity<T extends IPresenter> extends SupportActivity
             return false;
         }
     };
+
+    @Override
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultHorizontalAnimator();
+    }
 
     /**
      * 软键盘的Enter事件响应

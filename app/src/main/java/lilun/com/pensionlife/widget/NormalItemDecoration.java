@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.widget;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -20,6 +21,9 @@ public class NormalItemDecoration extends RecyclerView.ItemDecoration {
 
     public NormalItemDecoration(int topButtomSpan) {
         this.space = UIUtils.dp2px(App.context, topButtomSpan);
+    }
+    public NormalItemDecoration(Context context , int topButtomSpan){
+        this.space = UIUtils.dp2px(context, topButtomSpan);
     }
 
     /**

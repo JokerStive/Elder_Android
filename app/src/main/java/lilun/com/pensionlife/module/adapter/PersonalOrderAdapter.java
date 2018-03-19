@@ -38,17 +38,17 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
-        OrganizationProduct product = order.getProduct();
+        OrganizationProduct product = order.getProductBackup();
         if (product != null) {
 
-            String url = StringUtils.getFirstIcon(order.getProduct().getImage());
+            String url = StringUtils.getFirstIcon(product.getImage());
             ImageLoaderUtil.instance().loadImage(url, helper.getView(R.id.iv_product_icon));
 
             setOrderStatus(helper, order);
-            setNextOperate(helper, order);
+            // setNextOperate(helper, order);
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
 //            helper.setVisible(R.id.tv_next_operate, order.getStatus().equals("reserved") || order.getStatus().equals("done"))
-            helper.setVisible(R.id.tv_next_operate, order.getStatus().equals("reserved"))
+            helper.setVisible(R.id.tv_next_operate, false)
                     .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
 
@@ -59,12 +59,12 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                             listener.onItemClick(order);
                         }
                     })
-
-                    .setOnClickListener(R.id.tv_next_operate, v -> {
+                    .setOnClickListener(R.id.tv_provider_name, v -> {
                         if (listener != null) {
                             listener.nextOperate(order);
                         }
                     });
+
 
             String orgCategoryId = product.getOrgCategoryId();
             if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
@@ -92,15 +92,6 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         return semester;
     }
 
-    private void setNextOperate(BaseViewHolder helper, ProductOrder order) {
-        TextView tvNextOperate = helper.getView(R.id.tv_next_operate);
-        String status = order.getStatus();
-        if (status.equals("reserved") || status.equals("delay")) {
-            tvNextOperate.setVisibility(View.VISIBLE);
-            tvNextOperate.setText("取消预约");
-        }
-    }
-
     private void setOrderStatus(BaseViewHolder helper, ProductOrder order) {
         TextView tvOrderStatus = helper.getView(R.id.tv_order_status);
         String status = order.getStatus();
@@ -125,6 +116,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
     public interface OnItemClickListener {
         void onItemClick(ProductOrder order);
 
+        //操作进入商家
         void nextOperate(ProductOrder order);
     }
 }

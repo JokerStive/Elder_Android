@@ -178,7 +178,7 @@
 
 
     <!--我的订单-->
-    <string name="my_orders">我的订单</string>
+    <string name="my_orders">订单管理</string>
 
     <!--订单详情-->
     <string name="format_price">价格：%1$d元</string>
@@ -391,4 +391,8 @@
     <string name="finished_and_commit">填好了，提交</string>
     <string name="life_service">生活服务</string>
 
+
+    <string name="image_transition">image_transition</string>
+    <string name="title_transition">title_transition</string>
+    <string name="item_transition">item_transition</string>
 </resources>

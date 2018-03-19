@@ -23,10 +23,11 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.PersonalOrderAdapter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
+import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.UIUtils;
+import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailActivity;
 import lilun.com.pensionlife.widget.DividerDecoration;
-import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -151,16 +152,9 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
                 @Override
                 public void nextOperate(ProductOrder order) {
-                    if (order.getStatus().equals("reserved")) {
-                        new NormalDialog().createNormal(_mActivity, "确定取消预约？", () -> {
-                            mPresenter.changeOrderStatus(order.getId(), "cancel");
-                        });
-                    } else if (order.getStatus().equals("done")) {
-//                        Fragment parentFragment = getParentFragment();
-//                        if (parentFragment instanceof OrderListFragment) {
-//                            ((OrderListFragment) parentFragment).startRank(order.getProductId());
-//                        }
-                    }
+                    if (order.getProductBackup() == null) return;
+                    ((BaseFragment) getParentFragment()).start(ProviderDetailFragment.newInstance(StringUtils.removeSpecialSuffix(order.getProductBackup().getOrganizationId())), SINGLETASK);
+
                 }
             });
             personalOrderAdapter.setOnLoadMoreListener(() -> {

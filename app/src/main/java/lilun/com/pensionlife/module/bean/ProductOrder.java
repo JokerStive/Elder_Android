@@ -48,6 +48,8 @@ public class ProductOrder extends BaseBean {
     private String remark;
     private String registerDate;
     private Contact contact;
+    private OrganizationProduct productBackup ;
+    private String productBackupId;
     private OrganizationProduct productInfo ;
     private String productId;
     private String assigneeId;
@@ -71,7 +73,13 @@ public class ProductOrder extends BaseBean {
         return this;
     }
 
-    private String productBackupId;
+    public OrganizationProduct getProductBackup() {
+        return productBackup;
+    }
+
+    public void setProductBackup(OrganizationProduct productBackup) {
+        this.productBackup = productBackup;
+    }
 
     public String getId() {
         return id;

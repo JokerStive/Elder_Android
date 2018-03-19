@@ -97,7 +97,7 @@
                 android:layout_marginTop="@dimen/sliding_item_margin_top"
                 android:drawablePadding="@dimen/dp_10"
                 android:drawableStart="@drawable/my_order"
-                android:text="我的预约" />
+                android:text="@string/my_orders" />
 
 
             <TextView

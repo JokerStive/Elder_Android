@@ -22,6 +22,7 @@ import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -96,8 +97,8 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
 
     @Override
-    protected FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultHorizontalAnimator();
     }
 
     @Nullable

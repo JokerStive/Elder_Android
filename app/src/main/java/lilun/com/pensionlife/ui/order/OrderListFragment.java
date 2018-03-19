@@ -25,6 +25,7 @@ import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ViewPagerFragmentAdapter;
+import lilun.com.pensionlife.widget.BadgesView;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -50,6 +51,7 @@ public class OrderListFragment extends BaseFragment {
     private ArrayList<Integer> normalDrawablesRes = new ArrayList();
     private ArrayList<Integer> selectedDrawablesRes = new ArrayList();
     private String[] status = {"reserved", "assigned", "done", "cancel"};
+    private ArrayList<Integer> unReadMsgs = new ArrayList<>();
 
     public static OrderListFragment newInstance() {
         OrderListFragment fragment = new OrderListFragment();
@@ -77,6 +79,10 @@ public class OrderListFragment extends BaseFragment {
         selectedDrawablesRes.add(R.drawable.deal_on);
         selectedDrawablesRes.add(R.drawable.complete_on);
         selectedDrawablesRes.add(R.drawable.cancel_on);
+        unReadMsgs.add(15);
+        unReadMsgs.add(10);
+        unReadMsgs.add(11);
+        unReadMsgs.add(7);
     }
 
     @Override
@@ -87,7 +93,7 @@ public class OrderListFragment extends BaseFragment {
     @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setOnBackClickListener(this::pop);
-        titleBar.setTitle("我的预约");
+        titleBar.setTitle(getString(R.string.my_orders));
 
 
         initViewPager();
@@ -129,9 +135,11 @@ public class OrderListFragment extends BaseFragment {
 
                 ImageView image = (ImageView) commonPagerTitleView.findViewById(R.id.iv_image);
                 TextView title = (TextView) commonPagerTitleView.findViewById(R.id.tv_title);
+                BadgesView msgs = (BadgesView) commonPagerTitleView.findViewById(R.id.bv_msgs);
 
                 title.setText(statusTitle[index]);
                 image.setImageResource(normalDrawablesRes.get(index));
+                msgs.setText(unReadMsgs.get(index)+"");
 
                 commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
 
@@ -139,6 +147,7 @@ public class OrderListFragment extends BaseFragment {
                     public void onSelected(int i, int i1) {
                         title.setTextColor(selectedColor);
                         image.setImageResource(selectedDrawablesRes.get(i));
+                        msgs.setText(unReadMsgs.get(i)+"");
                     }
 
                     @Override

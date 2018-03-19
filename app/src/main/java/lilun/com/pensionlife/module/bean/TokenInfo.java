@@ -1,10 +1,12 @@
 package lilun.com.pensionlife.module.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by youke on 2017/1/3.
  * 登录返回数据模型
  */
-public class TokenInfo {
+public class TokenInfo implements Serializable{
 
     /**
      * id : fTkcgv0OpmaZozgV68voVYxDcVSCJW1mKT8FRUOW9xeOIHgHV1ABW9aM3ajl39OG

@@ -58,6 +58,8 @@ android {
             zipAlignEnabled true
             shrinkResources true
             signingConfig signingConfigs.release
+            println "ssss===== ${getDefaultProguardFile('proguard-android.txt')  }"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -112,7 +114,7 @@ dependencies {
     //日志打印
     compile 'com.orhanobut:logger:1.15'
     //one activity multiple fragment
-    compile 'me.yokeyword:fragmentation:0.9.3'
+    compile 'me.yokeyword:fragmentation:0.10.7'
     //photo load
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.greenrobot:eventbus:3.0.0'

@@ -12,11 +12,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
+
         <View
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_bar_height"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/srl_swipe_layout"
             android:layout_width="match_parent"
@@ -36,7 +38,8 @@
                     <lilun.com.pensionlife.widget.slider.BannerPager
                         android:id="@+id/bp_activity_images"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/max_photo_height" />
+                        android:layout_height="@dimen/max_photo_height"
+                        android:transitionName="@string/image_transition" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/actv_activity_name"
@@ -45,7 +48,8 @@
                         android:maxLines="2"
                         android:text="社区组织公益活动"
                         android:textColor="@color/activity_black"
-                        android:textSize="@dimen/sp_18" />
+                        android:textSize="@dimen/sp_18"
+                        android:transitionName="@string/title_transition" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -379,8 +383,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignBottom="@id/iv_back"
-        android:layout_alignParentTop="@id/iv_back"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="@id/iv_back"
         android:layout_alignTop="@id/tv_title_name"
         android:padding="@dimen/dp_10"
         android:src="@drawable/more" />
