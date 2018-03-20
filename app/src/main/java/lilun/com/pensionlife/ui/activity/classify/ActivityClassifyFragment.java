@@ -16,6 +16,7 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.litepal.crud.DataSupport;
+import org.litepal.crud.async.CountExecutor;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_add.AddActivityFragment;
-import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment;
 import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment2;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
@@ -109,10 +109,13 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         OrganizationActivityDS data = activityCancel.getActCatMsg().getData();
         if (data == null) return;
         //删除对应数据，更新显示
-        int count = DataSupport.deleteAll(OrganizationActivityDS.class, "actId = ?", data.getActId());
-        if (count != 0) {
-            CalcCatUnRead(data.getCategoryId());
-        }
+        DataSupport.deleteAllAsync(OrganizationActivityDS.class, "actId = ?", data.getActId())
+                .listen(rowsAffected -> {
+                    if (rowsAffected != 0) {
+                        CalcCatUnRead(data.getCategoryId());
+                    }
+                });
+
     }
 
     /**
@@ -129,17 +132,24 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         String categoryType = categorySplit[categorySplit.length - 1];
 
         for (int i = 0; i < list.size(); i++) {
+            int index = i;
             ActivityCategory category = list.get(i);
             String id = category.getId();
             if (categoryType == "") {
-                list.get(i).setUnRead(unReadCategoryCount(list.get(i).getId()));
-                categoryAdapter.notifyItemChanged(i);
+                int uc = 0;
+                unReadCategoryCount(list.get(i).getId()).listen(count -> {
+                    list.get(index).setUnRead(count);
+                    categoryAdapter.notifyItemChanged(index);
+                });
+
             } else if (id.contains(categoryType)) {
                 String tmpCate = categoryId.replace("/" + categoryType, "");
                 String idCate = id.replace("/" + categoryType, "");
                 if (idCate.contains(tmpCate)) {
-                    list.get(i).setUnRead(unReadCategoryCount(list.get(i).getId()));
-                    categoryAdapter.notifyItemChanged(i);
+                    unReadCategoryCount(list.get(i).getId()).listen(count -> {
+                        list.get(index).setUnRead(count);
+                        categoryAdapter.notifyItemChanged(index);
+                    });
                     break;
                 }
             }
@@ -147,20 +157,27 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     }
 
-    //从数据库中获取到当前类别 向上至市 的所有 未读消息条数
-    public int unReadCategoryCount(String id) {
+    /**
+     * 从数据库中获取到当前类别 向上至市 的所有 未读消息条数
+     * @param id
+     * @return CountExecutor 数据库执行器
+     */
+    public CountExecutor unReadCategoryCount(String id) {
         int pos = id.indexOf("/#");
         String categotyType = id.substring(pos);
         String orgId = id.replace(categotyType, "");
         ArrayList<String> orgs = User.levelIds(orgId);
-        int total = 0;
-        int count = 0;
+
+        String categoryIdStr = ""; //sql条件语句
         for (int i = 0; i < orgs.size(); i++) {
-            count = DataSupport.where("categoryId = ?", orgs.get(i) + categotyType).count(OrganizationActivityDS.class);
-            total += count;
-            Logger.d("个数:" + total + " " + count);
+            orgs.set(i, orgs.get(i) + categotyType);
+            if (i == 0) categoryIdStr = "categoryId = ?";
+            else categoryIdStr += " or categoryId = ?";
         }
-        return total;
+        orgs.add(0, categoryIdStr);
+        String[] orgsArray = new String[orgs.size()];
+        orgs.toArray(orgsArray);
+        return DataSupport.where(orgsArray).countAsync(OrganizationActivityDS.class);
     }
 
     @Subscribe
@@ -257,7 +274,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, true);
-        mContentAdapter.setOnItemClickListener((baseQuickAdapter,view, activityItem) -> {
+        mContentAdapter.setOnItemClickListener((baseQuickAdapter, view, activityItem) -> {
             start(ActivityChatFragment2.newInstance(mContentAdapter.getItem(activityItem)));
             mContentAdapter.getData().get(activityItem).setUnRead(0);
             mContentAdapter.notifyItemChanged(activityItem);
@@ -283,7 +300,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         mContentAdapter.setOnLoadMoreListener(() -> {
             Logger.d("加载更多");
             getAboutMe(skip);
-        },mRecyclerView);
+        }, mRecyclerView);
     }
 
 
@@ -349,10 +366,10 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
         if (isFirstLoad) {
             mContentAdapter.replaceAll(activities);
         } else {
-            mContentAdapter.addAll(activities,Config.defLoadDatCount);
+            mContentAdapter.addAll(activities, Config.defLoadDatCount);
         }
         mContentAdapter.notityUnReadAll();
-        if (activities.size()<Config.defLoadDatCount){
+        if (activities.size() < Config.defLoadDatCount) {
 //            mContentAdapter.setEnableLoadMore(false);
 //            TextView nodata = new TextView(getContext());
 //            nodata.setText("-没有更多数据-");

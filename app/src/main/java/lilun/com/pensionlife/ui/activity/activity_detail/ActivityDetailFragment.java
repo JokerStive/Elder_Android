@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.activity.activity_detail;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -308,8 +309,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
                     inputSendPopupWindow.showAtLocation(rvQuestionList, Gravity.BOTTOM, 0, 0);
                 }
             });
-           // nestedReplyAdapter.setEnableLoadMore(false);
-           // nestedReplyAdapter.setOnLoadMoreListener(() -> mPresenter.replyList(mActivityId, "", nestedReplyAdapter.getItemCount()), rvPartnerList);
+            // nestedReplyAdapter.setEnableLoadMore(false);
+            // nestedReplyAdapter.setOnLoadMoreListener(() -> mPresenter.replyList(mActivityId, "", nestedReplyAdapter.getItemCount()), rvPartnerList);
             rvQuestionList.setAdapter(nestedReplyAdapter);
         } else if (isLoadMore) {
             nestedReplyAdapter.addAll(nestedReplies, Config.defLoadDatCount);
@@ -643,6 +644,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     /**
      * 初始化menu
      */
+    @SuppressLint("RestrictedApi")
     private void initMenu() {
         menu = new PopupMenu(_mActivity, ivMenu);  //ivMenu是触发弹出menu的View
         menu.getMenuInflater().inflate(R.menu.menu_activity, menu.getMenu());  //设置关联布局文件
@@ -667,10 +669,13 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.item_delete_message) {
-            if (DataSupport.deleteAll(PushMessage.class, "activityId = ?", activity.getId()) != 0) {
-                ToastHelper.get().showShort("清理成功");
-                EventBus.getDefault().post(new Event.ClearChat());
-            }
+            DataSupport.deleteAllAsync(PushMessage.class, "activityId = ?", activity.getId())
+                    .listen(rowsAffected -> {
+                        if (rowsAffected != 0) {
+                            ToastHelper.get().showShort("清理成功");
+                            EventBus.getDefault().post(new Event.ClearChat());
+                        }
+                    });
         }
         return false;
     }

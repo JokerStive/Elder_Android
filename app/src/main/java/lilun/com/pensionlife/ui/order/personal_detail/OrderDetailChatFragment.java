@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.ui.activity.activity_detail;
+package lilun.com.pensionlife.ui.order.personal_detail;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -34,11 +34,13 @@ import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.ChatAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
+import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
+import lilun.com.pensionlife.ui.activity.activity_detail.ActivityDetailFragment;
 import lilun.com.pensionlife.ui.activity.classify.ActivityClassifyFragment;
 import lilun.com.pensionlife.widget.InputSendView;
 import lilun.com.pensionlife.widget.NormalDialog;
@@ -46,12 +48,13 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.chatView.ChatView;
 
 /**
+ * 互动式订单详情
  * Created by zp on 2017/5/3.
  */
 
-public class ActivityChatFragment2 extends BaseFragment {
-    public static String curActId = ""; //记录当前聊天的活动id
-    private OrganizationActivity activity;
+public class OrderDetailChatFragment extends BaseFragment {
+    public static String productId = ""; //记录当前聊天的产品id
+    private OrganizationProduct productInfo;
     ChatAdapter chatAdapter;
 
     private String topic;
@@ -66,8 +69,8 @@ public class ActivityChatFragment2 extends BaseFragment {
     private int unReadCount;
 
 
-    public static ActivityChatFragment2 newInstance(OrganizationActivity activity) {
-        ActivityChatFragment2 fragment = new ActivityChatFragment2();
+    public static OrderDetailChatFragment newInstance(OrganizationActivity activity) {
+        OrderDetailChatFragment fragment = new OrderDetailChatFragment();
         Bundle args = new Bundle();
         args.putSerializable("activity", activity);
         fragment.setArguments(args);
@@ -85,29 +88,28 @@ public class ActivityChatFragment2 extends BaseFragment {
 
     }
 
+    /**
+     * 获取产品id，订阅产品所在组织的聊天频道
+     *
+     * @param arguments
+     */
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        activity = (OrganizationActivity) arguments.getSerializable("activity");
-        curActId = activity.getId();
-        topic = MQTTTopicUtils.getActivityTopic(activity.getOrganizationId(), activity.getId());
+        productInfo = (OrganizationProduct) arguments.getSerializable("productInfo");
+        productId = productInfo.getId();
+        topic = MQTTTopicUtils.getActivityTopic(productInfo.getOrganizationId(), productInfo.getId());
 
-//        DataSupport.where("activityId = ? and unread = 1", activity.getId())
-//                .countAsync(PushMessage.class)
-//                .listen(count -> {
-//                    unReadCount = count;
-//                });
-
-
-//
         // 更新数据库 未读标识
         ContentValues values = new ContentValues();
         values.put("unread", false);
-        DataSupport.updateAllAsync(PushMessage.class, values, "activityId = ? and unread = 1", activity.getId())
+        DataSupport.updateAllAsync(PushMessage.class, values, "activityId = ? and unread = 1", productInfo.getId())
                 .listen(rowsAffected -> {
                     unReadCount = rowsAffected;
-                    Logger.d("生效个数: " + unReadCount);
+                    Logger.d("生效个数: " + rowsAffected);
                 });
+
+
     }
 
     @Override
@@ -119,7 +121,7 @@ public class ActivityChatFragment2 extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        curActId = "";
+        productId = "";
 
     }
 
@@ -135,25 +137,15 @@ public class ActivityChatFragment2 extends BaseFragment {
 
     @Override
     protected void initView(LayoutInflater inflater) {
-        titleBar.setTitle(activity.getTitle());
+        titleBar.setTitle("");
         titleBar.setOnBackClickListener(new NormalTitleBar.OnBackClickListener() {
             @Override
             public void onBackClick() {
                 pop();
             }
         });
-        titleBar.setOnRightClickListener(new NormalTitleBar.OnRightClickListener() {
-            @Override
-            public void onRightClick() {
-                ActivityDetailFragment fragment = findFragment(ActivityDetailFragment.class);
-                if (fragment == null) {
-                    hideSoftInput();
-                    start(ActivityDetailFragment.newInstance(activity));
-                } else
-                    popTo(ActivityDetailFragment.class, false);
-            }
-        });
-        DataSupport.where("activityId = ?", activity.getId()).findAsync(PushMessage.class)
+
+        DataSupport.where("activityId = ?", productInfo.getId()).findAsync(PushMessage.class)
                 .listen(new FindMultiCallback() {
                     @Override
                     public <T> void onFinish(List<T> t) {
@@ -223,7 +215,7 @@ public class ActivityChatFragment2 extends BaseFragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void RefreshNewMessage(Event.RefreshChatAddOne chat) {
-        if (chat.getActivityId().equals(activity.getId()))
+        if (chat.getActivityId().equals(productId))
             chatAdapter.add(chat.getPushMessage());
         cvActivity.getRecyclerView().smoothScrollToPosition(chatAdapter.getItemCount() - 1);
     }

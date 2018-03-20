@@ -108,17 +108,22 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         getMyOrder(0);
     }
 
-
+    /**
+     * 获取我需要显示的数据回来
+     * { "fields": ["id", "name", "status", "registerDate", "assigneeId", "orgCategoryId", "createdAt", "productBackupId"],"include":{"relation": "productBackup","scope": {"fields": ["id","name","title","price","unit", "organizationId","image" ]}} }
+     *
+     * @param skip
+     */
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
         String filter;
+        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ]}}";
         if (mStatus.equals("done")) {
-//            filter =  "{\"where\":{\"and\":[{\"creatorId\":\"9183a520-8322-11e7-8053-8988faaa07d2\"},{\"status\":{\"inq\":[\"done\",\"assigned\"]}}]},\"limit\":\"20\",\"skip\":\"0\",\"limit\":\"10\",\"skip\":\"0\"}";
-            filter = "{\"include\":\"productBackup\",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
+            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
         } else if (mStatus.equals("assigned")) {
-            filter = "{\"include\":\"productBackup\",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
+            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
         } else {
-            filter = "{\"include\":\"productBackup\",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
+            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
         }
         mPresenter.getMyOrders(filter, skip);
 

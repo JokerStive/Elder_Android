@@ -57,8 +57,12 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
         if (getData() == null) return;
         List<OrganizationActivity> list = getData();
         for (int i = 0; i < list.size(); i++) {
-            int count = DataSupport.where("activityId = ? and unRead = ?", list.get(i).getId(), "1").count(PushMessage.class);
-            list.get(i).setUnRead(count);
+            int index = i;
+            DataSupport.where("activityId = ? and unRead = ?", list.get(i).getId(), "1").countAsync(PushMessage.class)
+                    .listen(count -> {
+                        list.get(index).setUnRead(count);
+                    });
+
         }
         notifyDataChanged();
     }
@@ -70,9 +74,12 @@ public class OrganizationActivityAdapter extends QuickAdapter<OrganizationActivi
      */
     public void notityUnRead(int pos) {
         if (getData() == null && getData().size() > pos) return;
-        int count = DataSupport.where("activityId = ? and unread = 1", getData().get(pos).getId()).count(PushMessage.class);
-        getData().get(pos).setUnRead(count);
-        notifyItemChanged(pos);
+        DataSupport.where("activityId = ? and unread = 1", getData().get(pos).getId()).countAsync(PushMessage.class)
+                .listen(count -> {
+                    getData().get(pos).setUnRead(count);
+                    notifyItemChanged(pos);
+                });
+
     }
 
 
