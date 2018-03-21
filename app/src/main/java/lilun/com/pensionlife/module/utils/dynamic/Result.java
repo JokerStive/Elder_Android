@@ -7,6 +7,10 @@ import android.view.View;
  */
 public interface Result {
     String resultKey();
-    String resultValue();
+
+    Object resultValue();
+
     View resultView();
+
+    boolean isPassRequireCheck();
 }

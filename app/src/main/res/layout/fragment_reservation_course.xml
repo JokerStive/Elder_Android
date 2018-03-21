@@ -22,6 +22,7 @@
         android:layout_below="@id/titleBar">
 
         <LinearLayout
+            android:id="@+id/ll_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -91,143 +92,21 @@
                 android:background="#f5f5f9" />
 
             <TextView
+                android:id="@+id/tv_change_contact"
                 style="@style/tv_normal"
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/icon_reservation_info"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:padding="@dimen/dp_16"
-                android:text="预约信息"
+                android:text="联系人信息"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_15" />
 
-            <View
-                style="@style/line_gray"
-                android:layout_height="@dimen/dp_1"
-                android:background="#f5f5f9" />
-
             <RelativeLayout
+                android:id="@+id/rl_contact_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp_16">
-
-
-                <TextView
-                    android:id="@+id/name"
-                    style="@style/tv_normal_ellipsize"
-                    android:layout_width="wrap_content"
-                    android:paddingBottom="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_16"
-                    android:text="姓名                "
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17" />
-
-                <TextView
-                    android:id="@+id/tv_contact_name"
-                    style="@style/tv_normal"
-                    android:layout_width="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginRight="@dimen/dp_16"
-                    android:layout_toRightOf="@id/name"
-                    android:maxLines="1"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17"
-                    tools:text="测试员乐乐" />
-
-                <View
-                    style="@style/line_gray"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_below="@id/name"
-                    android:background="#f5f5f9" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp_16">
-
-
-                <TextView
-                    android:id="@+id/mobile"
-                    style="@style/tv_normal_ellipsize"
-                    android:layout_width="wrap_content"
-                    android:paddingBottom="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_16"
-                    android:text="联系方式        "
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17" />
-
-                <TextView
-                    android:id="@+id/tv_contact_mobile"
-                    style="@style/tv_normal"
-                    android:layout_width="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginRight="@dimen/dp_16"
-                    android:layout_toRightOf="@id/mobile"
-                    android:maxLines="1"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17"
-                    tools:text="187****3056" />
-
-                <View
-                    style="@style/line_gray"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_below="@id/mobile"
-                    android:background="#f5f5f9" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp_16">
-
-
-                <TextView
-                    android:id="@+id/address"
-                    style="@style/tv_normal_ellipsize"
-                    android:layout_width="wrap_content"
-                    android:paddingBottom="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_16"
-                    android:text="详细地址        "
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17" />
-
-                <EditText
-                    android:id="@+id/tv_contact_address"
-                    style="@style/et_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/address"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginRight="@dimen/dp_16"
-                    android:layout_toRightOf="@id/address"
-                    android:enabled="false"
-                    android:hint="请填写详细地址"
-                    android:maxLength="60"
-                    android:paddingBottom="@dimen/dp_16"
-                    android:paddingTop="@dimen/dp_16"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/sp_17" />
-
-
-            </RelativeLayout>
-
-
-            <View
-
-                style="@style/line_gray"
-                android:layout_height="@dimen/dp_10"
-                android:background="#f5f5f9" />
-
-            <include
-                android:id="@+id/agency_contact_extension"
-                layout="@layout/contact_course_extend" />
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>

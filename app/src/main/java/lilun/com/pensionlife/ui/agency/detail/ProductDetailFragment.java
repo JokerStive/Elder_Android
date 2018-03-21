@@ -56,6 +56,7 @@ import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.ProgressWebView;
 import lilun.com.pensionlife.widget.slider.BannerPager;
+import me.yokeyword.fragmentation.SupportFragment;
 import rx.Observable;
 
 /**
@@ -323,9 +324,9 @@ public class ProductDetailFragment extends BaseFragment {
 
         //内容
         wbProductContent.noProgress();
-        if (contextType.equals("2")){
+        if (contextType.equals("2")) {
             wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
-        }else if(contextType.equals("3")){
+        } else if (contextType.equals("3")) {
             wbProductContent.loadUrl(product.getContext());
         }
     }
@@ -486,19 +487,19 @@ public class ProductDetailFragment extends BaseFragment {
      */
     private void checkContact(List<Contact> contacts) {
         if (contacts.size() > 0) {
-            start(ContactListFragment.newInstance(mProduct.getId(), 0));
-//            //显示 预约者信息列表
-//            Contact defContact = getDefaultContact(contacts);
-//            if (defContact == null) {
-//                //没有默认信息，就进去信息列表
-//            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getFrom()) || TextUtils.isEmpty(defContact.getAddress())) {
-//                defContact.setProductId(mProductId);
-//                //必要信息不完善
-//                start(AddBasicContactFragment.newInstance(defContact, 1));
-//            } else {
-//                //有默认信息，并且必要信息完整，直接预约界面
-//                start(ReservationFragment.newInstance(mProductId, defContact));
-//            }
+            //显示 预约者信息列表
+            Contact defContact = getDefaultContact(contacts);
+            if (defContact == null) {
+                //没有默认信息，就进去信息列表
+                start(ContactListFragment.newInstance(mProduct.getId(), 1), SupportFragment.SINGLETASK);
+            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
+                defContact.setProductId(mProductId);
+                //必要信息不完善
+                start(AddBasicContactFragment.newInstance(defContact, 1));
+            } else {
+                //有默认信息，并且必要信息完整，直接预约界面
+                start(ReservationFragment.newInstance(mProductId, defContact));
+            }
         } else {
             //新增基础信息界面
             AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();

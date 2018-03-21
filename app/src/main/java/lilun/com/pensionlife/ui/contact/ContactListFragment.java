@@ -33,6 +33,9 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
 
 public class ContactListFragment extends BaseFragment {
 
+    public static final int RESERVATION_PRODUCT = 0;
+    public static final int RESERVATION_COURSE = 1;
+
     @Bind(R.id.rv_contact)
     RecyclerView rvInfo;
 

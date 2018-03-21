@@ -9,13 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.HashMap;
-
 import butterknife.Bind;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.ContactExtendKey;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -152,37 +149,37 @@ public class AddServiceInfoFragment extends BaseFragment {
                 tvContactAddress.setText(contact.getAddress());
 
                 OrganizationProduct product = mOrder.getProduct();
-                if (product != null) {
-                    String categoryId = product.getOrgCategoryId();
-                    HashMap<String, String> extend = contact.getExtend();
-                    if (extend == null) {
-                        return;
-                    }
-                    if (categoryId.contains("养老机构")) {
-                        rlExtend.setVisibility(View.VISIBLE);
-                        llContactExtent.setVisibility(View.VISIBLE);
-                        llContactCourseExtend.setVisibility(View.GONE);
-
-                        tvContactExtensionName.setText(extend.get(ContactExtendKey.reservationName));
-                        tvRelation.setText(extend.get(ContactExtendKey.relation));
-                        tvSex.setText(extend.get(ContactExtendKey.sex));
-                        tvBirthday.setText(extend.get(ContactExtendKey.birthday));
-                        tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
-                        etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
-                    } else if (categoryId.contains("教育服务")) {
-                        rlExtend.setVisibility(View.VISIBLE);
-                        llContactExtent.setVisibility(View.GONE);
-                        llContactCourseExtend.setVisibility(View.VISIBLE);
-
-                        tvContactExtensionSex.setText(extend.get(ContactExtendKey.sex));
-                        tvContactExtensionBirthday.setText(extend.get(ContactExtendKey.birthday));
-                        tvContactExtensionHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
-                        tvContactExtensionPoliticStatus.setText(extend.get(ContactExtendKey.politicStatus));
-                        etContactPostWork.setText(extend.get(ContactExtendKey.postOfWorked));
-                        etEmergencyPhone.setText(extend.get(ContactExtendKey.contactNumber));
-                        etContactEmergencyName.setText(extend.get(ContactExtendKey.emergencyContact));
-                    }
-                }
+//                if (product != null) {
+//                    String categoryId = product.getOrgCategoryId();
+//                    HashMap<String, String> extend = contact.getExtend();
+//                    if (extend == null) {
+//                        return;
+//                    }
+//                    if (categoryId.contains("养老机构")) {
+//                        rlExtend.setVisibility(View.VISIBLE);
+//                        llContactExtent.setVisibility(View.VISIBLE);
+//                        llContactCourseExtend.setVisibility(View.GONE);
+//
+//                        tvContactExtensionName.setText(extend.get(ContactExtendKey.reservationName));
+//                        tvRelation.setText(extend.get(ContactExtendKey.relation));
+//                        tvSex.setText(extend.get(ContactExtendKey.sex));
+//                        tvBirthday.setText(extend.get(ContactExtendKey.birthday));
+//                        tvHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
+//                        etHealthDesc.setText(extend.get(ContactExtendKey.healthyDescription));
+//                    } else if (categoryId.contains("教育服务")) {
+//                        rlExtend.setVisibility(View.VISIBLE);
+//                        llContactExtent.setVisibility(View.GONE);
+//                        llContactCourseExtend.setVisibility(View.VISIBLE);
+//
+//                        tvContactExtensionSex.setText(extend.get(ContactExtendKey.sex));
+//                        tvContactExtensionBirthday.setText(extend.get(ContactExtendKey.birthday));
+//                        tvContactExtensionHealthStatus.setText(extend.get(ContactExtendKey.healthStatus));
+//                        tvContactExtensionPoliticStatus.setText(extend.get(ContactExtendKey.politicStatus));
+//                        etContactPostWork.setText(extend.get(ContactExtendKey.postOfWorked));
+//                        etEmergencyPhone.setText(extend.get(ContactExtendKey.contactNumber));
+//                        etContactEmergencyName.setText(extend.get(ContactExtendKey.emergencyContact));
+//                    }
+//                }
             }
 
 

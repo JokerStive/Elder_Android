@@ -27,6 +27,7 @@ import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
+import lilun.com.pensionlife.ui.education.colleage_list.EducationListFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
@@ -56,16 +57,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
     private List<ElderEdus> products = new ArrayList<>();
     private OrganizationEdusAdapter mAdapter;
-    //    private ArrayList<Information> announcements;
     private String parentId;
-
-//    public static EducationClassifyFragment newInstance(List<Information> announcements) {
-//        EducationClassifyFragment fragment = new EducationClassifyFragment();
-//        Bundle args = new Bundle();
-//        args.putSerializable("announcements", (Serializable) announcements);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
 
     public static EducationClassifyFragment newInstance(String parentId) {
@@ -79,7 +71,6 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
     @Override
     protected void getTransferData(Bundle arguments) {
         parentId = arguments.getString("parentId");
-//        announcements = (ArrayList<Information>) arguments.getSerializable("announcements");
     }
 
 
@@ -142,7 +133,6 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 
         //设置数据
         setAdapter();
-        //  getServices(0);
     }
 
 
@@ -182,13 +172,13 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
         mClassifyRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         EducationClassifyAdapter adapter = new EducationClassifyAdapter(elderModules);
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            ToastHelper.get().showShort(getString(R.string.building));
-//            ElderModule elderModule = (ElderModule) adapter1.getData().get(position);
-//            if (elderModule.getFrom().equals("老年大学")) {
-//                start(EducationListFragment.newInstance(elderModule));
-//            } else {
-//                ToastHelper.get().showShort(getString(R.string.building));
-//            }
+//            ToastHelper.get().showShort(getString(R.string.building));
+            ElderModule elderModule = (ElderModule) adapter1.getData().get(position);
+            if (elderModule.getName().equals("老年大学")) {
+                start(EducationListFragment.newInstance(elderModule));
+            } else {
+                ToastHelper.get().showShort(getString(R.string.building));
+            }
         });
         mClassifyRecycler.setAdapter(adapter);
         getServices(0);

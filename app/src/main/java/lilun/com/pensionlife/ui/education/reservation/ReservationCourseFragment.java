@@ -6,41 +6,32 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cn.qqtheme.framework.picker.DateTimePicker;
-import cn.qqtheme.framework.picker.WheelPicker;
 import lilun.com.pensionlife.R;
-import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.ContactExtendKey;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.module.utils.RegexUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.dynamic.ContactView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
@@ -67,68 +58,23 @@ public class ReservationCourseFragment extends BaseFragment {
     TextView tvProductTitle;
     @Bind(R.id.rl_product)
     RelativeLayout rlProduct;
-    @Bind(R.id.name)
-    TextView name;
-    @Bind(R.id.tv_contact_name)
-    TextView tvContactName;
-    @Bind(R.id.mobile)
-    TextView mobile;
-    @Bind(R.id.tv_contact_mobile)
-    TextView tvContactMobile;
-    @Bind(R.id.address)
-    TextView address;
-    @Bind(R.id.tv_contact_address)
-    EditText tvContactAddress;
-    @Bind(R.id.extension_sex)
-    TextView extensionSex;
-    @Bind(R.id.tv_contact_extension_sex)
-    TextView tvContactExtensionSex;
-    @Bind(R.id.extension_birthday)
-    TextView extensionBirthday;
-    @Bind(R.id.tv_contact_extension_birthday)
-    TextView tvContactExtensionBirthday;
-    @Bind(R.id.extension_health_status)
-    TextView extensionHealthStatus;
-    @Bind(R.id.tv_contact_extension_health_status)
-    TextView tvContactExtensionHealthStatus;
-    @Bind(R.id.extension_health_politic_status)
-    TextView extensionHealthPoliticStatus;
-
-    @Bind(R.id.tv_contact_extension_politic_status)
-    TextView tvContactExtensionPoliticStatus;
-
-
-    @Bind(R.id.et_contact_post_work)
-    EditText etContactExtensionPostWork;
-
-    @Bind(R.id.et_contact_emergency_name)
-    TextView etContactEmergencyName;
-
-    @Bind(R.id.et_emergency_phone)
-    TextView etEmergencyPhone;
-
+    @Bind(R.id.tv_change_contact)
+    TextView tvChangeContact;
+    @Bind(R.id.rl_contact_container)
+    RelativeLayout rlContactContainer;
+    @Bind(R.id.ll_container)
+    LinearLayout llContainer;
     @Bind(R.id.tv_price)
     TextView tvPrice;
-
     @Bind(R.id.tv_reservation)
     TextView tvReservation;
-
     @Bind(R.id.ll_bottom_menu)
     LinearLayout llBottomMenu;
-
-    private String[] optionSex = App.context.getResources().getStringArray(R.array.personal_info_sex);
-    private String[] optionHealthStatus = App.context.getResources().getStringArray(R.array.personal_info_health_status);
-    private String[] optionPoliticStatus = new String[]{"中共党员", "明主党派", "一般群众"};
-
-    private int size = 17;
-    private int selectColor = 0xff0090f9;
-    private String reservationTime;
     private Contact mContact;
     public static int requestCode = 123;
-    public static int resultCode = 321;
     private String mProductId;
     private OrganizationProduct mProduct;
-//    private String mOrderMobile;
+    private ContactView mContactView;
 
 
     public static ReservationCourseFragment newInstance(String productId, Contact contact) {
@@ -171,31 +117,14 @@ public class ReservationCourseFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_contact_extension_politic_status, R.id.tv_contact_extension_sex, R.id.tv_contact_extension_birthday,
-            R.id.tv_contact_extension_health_status, R.id.tv_reservation,
+    @OnClick({R.id.tv_change_contact, R.id.tv_reservation
     })
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.tv_contact_extension_politic_status:
-                //政治面貌
-                optionPicker(optionPoliticStatus, tvContactExtensionPoliticStatus);
-                break;
-
-            case R.id.tv_contact_extension_sex:
-                //选择性別
-                optionPicker(optionSex, tvContactExtensionSex);
-                break;
-
-            case R.id.tv_contact_extension_health_status:
-                //选择健康状态
-                optionPicker(optionHealthStatus, tvContactExtensionHealthStatus);
-                break;
-
-
-            case R.id.tv_contact_extension_birthday:
-                //选择生日
-                chooseBirthday();
+            case R.id.tv_change_contact:
+                //切换联系人
+                startWithPop(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_COURSE));
                 break;
 
             case R.id.tv_reservation:
@@ -255,33 +184,11 @@ public class ReservationCourseFragment extends BaseFragment {
      * 显示个人资料
      */
     private void showContact() {
-
-        tvContactName.setText(mContact.getName());
-
-        tvContactMobile.setText(mContact.getMobile());
-
-        tvContactAddress.setText(mContact.getAddress());
-
-        //课程需要的扩展属性
-        HashMap<String, String> extend = mContact.getExtend();
-        if (extend != null) {
-            String sex = extend.get(ContactExtendKey.sex);
-            String birthday = extend.get(ContactExtendKey.birthday);
-            String healthStatus = extend.get(ContactExtendKey.healthStatus);
-            String politicStatus = extend.get(ContactExtendKey.politicStatus);
-            String postOfWorked = extend.get(ContactExtendKey.postOfWorked);
-            String emergencyName = extend.get(ContactExtendKey.emergencyContact);
-            String emergencyPhone = extend.get(ContactExtendKey.contactNumber);
-
-            tvContactExtensionSex.setText(sex);
-            tvContactExtensionBirthday.setText(birthday);
-            tvContactExtensionHealthStatus.setText(healthStatus);
-            tvContactExtensionPoliticStatus.setText(politicStatus);
-            etContactExtensionPostWork.setText(postOfWorked);
-            etContactEmergencyName.setText(emergencyName);
-            etEmergencyPhone.setText(emergencyPhone);
+        if (mContactView == null) {
+            mContactView = new ContactView(_mActivity);
+            rlContactContainer.addView(mContactView.getView());
         }
-
+        mContactView.reDraw(mContact, null);
 
     }
 
@@ -293,12 +200,10 @@ public class ReservationCourseFragment extends BaseFragment {
             return;
         }
 
-//        String categoryId = mProduct.getOrgCategoryId();
-        if (!checkContactComplete()) {
+        Contact contact = mContactView.getFinalContactData();
+        if (contact == null) {
             return;
         }
-
-        Contact contact = newContactModel();
 
         NetHelper.getApi()
                 .putContact(contactId, contact)
@@ -320,141 +225,6 @@ public class ReservationCourseFragment extends BaseFragment {
         return NetHelper.getApi().createOrder(productId, contactId, date2String, null);
     }
 
-    private Contact newContactModel() {
-        Contact contact = new Contact();
-        HashMap<String, String> extension = new HashMap<>();
-        extension.put(ContactExtendKey.sex, tvContactExtensionSex.getText().toString());
-        extension.put(ContactExtendKey.birthday, tvContactExtensionBirthday.getText().toString());
-        extension.put(ContactExtendKey.healthStatus, tvContactExtensionHealthStatus.getText().toString());
-        extension.put(ContactExtendKey.politicStatus, tvContactExtensionPoliticStatus.getText().toString());
-        extension.put(ContactExtendKey.postOfWorked, etContactExtensionPostWork.getText().toString());
-        extension.put(ContactExtendKey.emergencyContact, etContactEmergencyName.getText().toString());
-        extension.put(ContactExtendKey.contactNumber, etEmergencyPhone.getText().toString());
-        contact.setExtend(extension);
-        contact.setIndex(mContact.getIndex());
-        return contact;
-    }
-
-    private boolean checkContactComplete() {
-
-        if (TextUtils.isEmpty(tvContactExtensionSex.getText())) {
-            ToastHelper.get().showWareShort("请选择的性别");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(tvContactExtensionBirthday.getText())) {
-            ToastHelper.get().showWareShort("请选择出生日期");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(tvContactExtensionSex.getText())) {
-            ToastHelper.get().showWareShort("请选择健康状况");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(tvContactExtensionPoliticStatus.getText())) {
-            ToastHelper.get().showWareShort("请选择政治面貌");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(etContactExtensionPostWork.getText())) {
-            ToastHelper.get().showWareShort("请输入原工作单位");
-            return false;
-        }
-
-        if (TextUtils.isEmpty(etContactEmergencyName.getText())) {
-            ToastHelper.get().showWareShort("请输入紧急联系人姓名");
-            return false;
-        }
-
-
-        if (TextUtils.isEmpty(etEmergencyPhone.getText())) {
-            ToastHelper.get().showWareShort("请输入紧急联系人电话");
-            return false;
-        } else if (!RegexUtils.checkMobile(etEmergencyPhone.getText().toString())) {
-            ToastHelper.get().showWareShort("紧急联系人电话格式有误");
-            return false;
-        }
-
-        return true;
-    }
-
-//    /**
-//     * 选择服务时间
-//     */
-//    private void chooseReservationTime() {
-//        int month = Calendar.getInstance(Locale.CHINA).get(Calendar.MONTH) + 1;
-//        int day = Calendar.getInstance(Locale.CHINA).get(Calendar.DAY_OF_MONTH);
-//        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.MONTH_DAY, DateTimePicker.NONE);
-//        setPickerConfig(picker);
-//        if (App.widthDP > 820) {
-//            picker.setTextSize(12 * 2);
-//            picker.setCancelTextSize(12 * 2);
-//            picker.setSubmitTextSize(12 * 2);
-//            picker.setTopPadding(15 * 3);
-//            picker.setTopHeight(40 * 2);
-//        }
-//        picker.setDateRangeStart(month, day);
-//        picker.setOnDateTimePickListener((DateTimePicker.OnMonthDayTimePickListener) (month1, day1, hour, minute) -> {
-//            int year = Calendar.getInstance().get(Calendar.YEAR);
-//            reservationTime = year + "-" + month1 + "-" + day1;
-//            tvOrderTime.setText(reservationTime);
-//        });
-//        picker.show();
-//    }
-
-
-    /**
-     * 生日选择器
-     */
-    private void chooseBirthday() {
-        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
-        picker.setDateRangeStart(1900, 1, 1);
-        Calendar cal = Calendar.getInstance();
-        int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH);
-        int endDay = cal.get(Calendar.DATE);
-        picker.setDateRangeEnd(endYear, endMonth, endDay);
-        if (App.widthDP > 820) {
-            picker.setTextSize(12 * 2);
-            picker.setCancelTextSize(12 * 2);
-            picker.setSubmitTextSize(12 * 2);
-            picker.setTopPadding(15 * 3);
-            picker.setTopHeight(40 * 2);
-        }
-        setPickerConfig(picker);
-        picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
-            String time = year + "-" + month + "-" + day;
-            tvContactExtensionBirthday.setText(time);
-        });
-        picker.show();
-    }
-
-    /**
-     * 选择器的配置
-     */
-    private void setPickerConfig(WheelPicker picker) {
-        picker.setTextSize(size);
-        picker.setCancelTextSize(size);
-        picker.setSubmitTextSize(size);
-        picker.setLineColor(selectColor);
-        picker.setTextColor(selectColor);
-    }
-
-
-    /**
-     * 显示一个选择器
-     */
-    private void optionPicker(String[] options, TextView targetTv) {
-        new MaterialDialog.Builder(_mActivity)
-                .title("-选择类型-")
-                .items(options)
-                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
-                    targetTv.setText(text);
-                    return true;
-                }).show();
-
-    }
 
     @Override
     protected void onFragmentResult(int reCode, int resultCode, Bundle data) {

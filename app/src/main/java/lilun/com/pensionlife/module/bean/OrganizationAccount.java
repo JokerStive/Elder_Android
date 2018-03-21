@@ -24,6 +24,16 @@ public class OrganizationAccount implements Serializable{
     private String createdAt;
     private String updatedAt;
     private String organizationId;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public OrganizationAccount setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public int getVisibility() {
         return visibility;

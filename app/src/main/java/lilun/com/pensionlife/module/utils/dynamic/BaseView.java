@@ -1,31 +1,45 @@
 package lilun.com.pensionlife.module.utils.dynamic;
 
-import android.content.Context;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSONObject;
+
+import lilun.com.pensionlife.module.utils.ToastHelper;
 
 /**
  * 动态控件的父类
  */
-public abstract class BaseView extends RelativeLayout implements Result {
+public abstract class BaseView implements Result {
 
     protected JSONObject setting;
+    protected String mate_id;
+    protected String mate_title;
+    protected String mate_description;
+    protected String mate_type;
+    protected Object mate_value;
 
-    public BaseView(Context context) {
-        super(context);
+    protected void setSetting(JSONObject setting) {
+        this.setting = setting;
+
+        if (setting != null) {
+            mate_id = setting.getString("id");
+            mate_title = setting.getString("title");
+            mate_description = setting.getString("description");
+            mate_type = setting.getString("type");
+            mate_value = setting.get("value");
+
+        }
     }
 
 
     @Override
     public String resultKey() {
-        return setting.getString("id");
+        return mate_id;
     }
 
     @Override
-    public String resultValue() {
-        return setting.getString("value");
+    public Object resultValue() {
+        return mate_value;
     }
 
     @Override
@@ -34,8 +48,25 @@ public abstract class BaseView extends RelativeLayout implements Result {
     }
 
 
+    @Override
+    public boolean isPassRequireCheck() {
+        boolean result = true;
+        boolean containsKey = setting.containsKey("required");
+        if (containsKey) {
+            Boolean required = setting.getBoolean("required");
+            if (required) {
+                result = mate_value != null;
+                if (!result) {
+                    ToastHelper.get().showWareShort(mate_title + "不能为空");
+                }
+            }
+        }
+        return result;
+    }
+
+
     protected void setValue(Object value) {
-        setting.put("value", value);
+        mate_value = value;
     }
 
     public abstract View createView();

@@ -12,6 +12,7 @@ import org.json.JSONTokener;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -138,6 +139,13 @@ public class StringUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String weekTrans(String week) {
+        List<String> weekEnglish = Arrays.asList(App.context.getResources().getStringArray(R.array.week_english));
+        List<String> weekChinese = Arrays.asList(App.context.getResources().getStringArray(R.array.week_chinese));
+        int indexOf = weekEnglish.indexOf(week);
+        return indexOf == -1 ? "" : weekChinese.get(indexOf);
     }
 
     /**

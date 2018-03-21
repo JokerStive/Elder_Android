@@ -12,6 +12,7 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
+import lilun.com.pensionlife.module.bean.CourseSchedule;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.Information;
@@ -219,6 +220,14 @@ public interface ApiService {
 
 
     /**
+     * 获取product
+     */
+
+    @GET("OrganizationEduSchedules")
+    Observable<Response<List<CourseSchedule>>> getCourseSchedules(@Query("filter") String filter);
+
+
+    /**
      * 获取旅游列表
      */
 
@@ -240,6 +249,13 @@ public interface ApiService {
 
     @GET("Organizations/{id}/children")
     Observable<Response<List<Organization>>> getOrganizations(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 获取organization
+     */
+
+    @GET("Organizations/{id}")
+    Observable<Response<Organization>> getOrganization(@Path("id") String organizationId, @Query("filter") String filter);
 
 
     /**

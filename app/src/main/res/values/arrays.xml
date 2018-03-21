@@ -210,4 +210,26 @@
         <item>由旧到新</item>
     </string-array>
 
+
+    <string-array name="week_english">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+
+    <string-array name="week_chinese">
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
+    </string-array>
+
 </resources>
