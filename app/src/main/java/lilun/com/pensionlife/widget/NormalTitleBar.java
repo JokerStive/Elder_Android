@@ -28,7 +28,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     public static int ICON = 0;
     public static int TEXT = 1;
     private final int maxEms;
-    private final int rightIcon;
+    private int rightIcon;
     private final int leftIcon;
     private final int tilteColor;
     private final int rightTextColor;
@@ -36,11 +36,12 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
     private final String rightString;
     private String title;
     private TextView tvTitle;
-//    private TextView tvLeftString;
+    //    private TextView tvLeftString;
     private ImageView ivBack;
     private OnBackClickListener listener;
     private TextView tvDoWhat;
     private OnRightClickListener listener1;
+    private OnTitleClickListener titleListener;
     private Drawable mBackgrand;
     private int rightWitchShow = 0;
     private Context context;
@@ -109,6 +110,11 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         tvDoWhat.setText(doWhat);
     }
 
+    public void setRightIcon(int icon) {
+        rightIcon = icon;
+        rightWitchShow();
+    }
+
     public void setRightWitchShow(int rightWitchShow) {
         this.rightWitchShow = rightWitchShow;
         rightWitchShow();
@@ -158,6 +164,9 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
                     listener1.onRightClick();
                 }
                 break;
+            case R.id.tv_product_name:
+                if (titleListener != null) titleListener.onTitleClick();
+                break;
 
 
         }
@@ -176,8 +185,16 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
         this.listener1 = listener;
     }
 
+    public void setOnTitleClickListener(OnTitleClickListener listener) {
+        this.titleListener = listener;
+    }
+
     public interface OnRightClickListener {
         void onRightClick();
+    }
+
+    public interface OnTitleClickListener {
+        void onTitleClick();
     }
 
 

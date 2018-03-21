@@ -24,7 +24,7 @@ public class ProductOrder extends BaseBean {
      * extend : {}
      * contact : {}
      * product : {}
-     * productId : string
+     * objectId : string
      * assigneeId : string
      * orgCategoryId : string
      * canceledById : string

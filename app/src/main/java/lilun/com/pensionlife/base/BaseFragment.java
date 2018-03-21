@@ -66,9 +66,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     }
 
 
-
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -310,7 +307,6 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         hideSoftInput();
         super.pop();
     }
-
 
 
     public void showDialog() {

@@ -51,14 +51,14 @@ public class MerchantOrderListFragment extends BaseFragment {
     public static MerchantOrderListFragment newInstance(String productId) {
         MerchantOrderListFragment fragment = new MerchantOrderListFragment();
         Bundle args = new Bundle();
-        args.putString("productId", productId);
+        args.putString("objectId", productId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        productId = arguments.getString("productId");
+        productId = arguments.getString("objectId");
     }
 
     @Override

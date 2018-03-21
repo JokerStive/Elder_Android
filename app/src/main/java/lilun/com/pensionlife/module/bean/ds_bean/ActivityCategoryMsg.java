@@ -1,4 +1,4 @@
-package lilun.com.pensionlife.module.bean;
+package lilun.com.pensionlife.module.bean.ds_bean;
 
 /**
  * 将OrganizationActivityDS对象数据存入数据库 已读后该数据删除

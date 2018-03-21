@@ -184,7 +184,7 @@ public class AddTourismInfoFragment extends BaseFragment {
                     public void _next(Contact contact) {
                         if (!TextUtils.isEmpty(productId)) {
                             statReservation(contact);
-//                            start(ReservationFragment.newInstance(productCategoryId, productId, contact));
+//                            start(ReservationFragment.newInstance(productCategoryId, objectId, contact));
                         } else {
                             EventBus.getDefault().post(new Event.RefreshContract());
                         }
@@ -200,7 +200,7 @@ public class AddTourismInfoFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("contact",contact);
         bundle.putString("productCategoryId",productCategoryId);
-        bundle.putString("productId",productId);
+        bundle.putString("objectId",productId);
         intent.putExtras(bundle);
         startActivityForResult(intent,ReservationFragment.requestCode);
     }

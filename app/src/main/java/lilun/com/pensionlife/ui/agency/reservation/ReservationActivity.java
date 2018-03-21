@@ -16,7 +16,7 @@ public class ReservationActivity extends BaseActivity {
 
     @Override
     protected void getTransferData() {
-        productId = getIntent().getStringExtra("productId");
+        productId = getIntent().getStringExtra("objectId");
         contact = (Contact) getIntent().getSerializableExtra("contact");
         Preconditions.checkNull(contact);
         Preconditions.checkNull(productId);

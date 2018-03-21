@@ -90,7 +90,7 @@ public class CourseDetailFragment extends BaseFragment {
     public static CourseDetailFragment newInstance(String productId) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("productId", productId);
+        args.putSerializable("objectId", productId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,7 +105,7 @@ public class CourseDetailFragment extends BaseFragment {
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mProductId = arguments.getString("productId");
+        mProductId = arguments.getString("objectId");
         Preconditions.checkNull(mProductId);
     }
 
@@ -421,7 +421,7 @@ public class CourseDetailFragment extends BaseFragment {
             //新增基础信息界面
             AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();
             Bundle args = new Bundle();
-            args.putString("productId", mProductId);
+            args.putString("objectId", mProductId);
             addBasicContactFragment.setArguments(args);
             addBasicContactFragment.setOnAddBasicContactListener(contact -> start(ReservationCourseFragment.newInstance(mProductId, contact)));
             start(addBasicContactFragment);

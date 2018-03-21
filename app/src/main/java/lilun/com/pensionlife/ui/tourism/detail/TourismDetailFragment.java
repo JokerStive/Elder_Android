@@ -269,7 +269,7 @@ public class TourismDetailFragment extends BaseFragment implements TabLayout.OnT
         Bundle bundle = new Bundle();
         bundle.putSerializable("contact", contact);
         bundle.putString("productCategoryId", mTourism.getCategoryId());
-        bundle.putString("productId", mTourism.getId());
+        bundle.putString("objectId", mTourism.getId());
         intent.putExtras(bundle);
         startActivityForResult(intent, ReservationFragment.requestCode);
     }

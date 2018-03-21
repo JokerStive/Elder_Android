@@ -9,7 +9,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 
 /**
  * 展示推送消息的adapter

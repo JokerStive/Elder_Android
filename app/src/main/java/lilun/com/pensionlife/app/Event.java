@@ -1,10 +1,10 @@
 package lilun.com.pensionlife.app;
 
-import lilun.com.pensionlife.module.bean.ActivityCategoryMsg;
+import lilun.com.pensionlife.module.bean.ds_bean.ActivityCategoryMsg;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrganizationAid;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 
 /**
  * eventBus发送事件统一管理

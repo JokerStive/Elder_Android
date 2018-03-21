@@ -16,7 +16,7 @@ import java.util.List;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.DateTimeUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.SearchTitleBar;

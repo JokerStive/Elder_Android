@@ -1,6 +1,5 @@
 package lilun.com.pensionlife.ui.order;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,9 +23,10 @@ import lilun.com.pensionlife.module.adapter.PersonalOrderAdapter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
-import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailActivity;
+import lilun.com.pensionlife.ui.order.personal_detail.OrderChatFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
@@ -119,11 +119,11 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         String filter;
         String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ]}}";
         if (mStatus.equals("done")) {
-            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
         } else if (mStatus.equals("assigned")) {
-            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
         } else {
-            filter =needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
         }
         mPresenter.getMyOrders(filter, skip);
 
@@ -150,14 +150,23 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
             personalOrderAdapter.setOnItemClickListener(new PersonalOrderAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(ProductOrder order) {
-                    Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
-                    intent.putExtra("orderId", order.getId());
-                    startActivity(intent);
+                    //进入订单详情界面
+//                    Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
+//                    intent.putExtra("orderId", order.getId());
+//                    startActivity(intent);
+                    if (order.getProductBackup() == null) {
+                        ToastHelper.get().showWareShort("未查询到商家信息");
+                        return;
+                    }
+                    ((BaseFragment) getParentFragment()).start(OrderChatFragment.newInstance(order));
                 }
 
                 @Override
                 public void nextOperate(ProductOrder order) {
-                    if (order.getProductBackup() == null) return;
+                    if (order.getProductBackup() == null) {
+                        ToastHelper.get().showWareShort("未查询到商家信息");
+                        return;
+                    }
                     ((BaseFragment) getParentFragment()).start(ProviderDetailFragment.newInstance(StringUtils.removeSpecialSuffix(order.getProductBackup().getOrganizationId())), SINGLETASK);
 
                 }

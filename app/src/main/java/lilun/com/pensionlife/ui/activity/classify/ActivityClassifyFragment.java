@@ -33,14 +33,14 @@ import lilun.com.pensionlife.module.adapter.ActivityCategoryAdapter;
 import lilun.com.pensionlife.module.adapter.OrganizationActivityAdapter;
 import lilun.com.pensionlife.module.bean.ActivityCategory;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
-import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
+import lilun.com.pensionlife.module.bean.ds_bean.OrganizationActivityDS;
 import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.DBHelper;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_add.AddActivityFragment;
-import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment2;
+import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
@@ -159,6 +159,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
 
     /**
      * 从数据库中获取到当前类别 向上至市 的所有 未读消息条数
+     *
      * @param id
      * @return CountExecutor 数据库执行器
      */
@@ -275,7 +276,7 @@ public class ActivityClassifyFragment extends BaseFragment<ActivityClassifyContr
     private void setAdapter() {
         mContentAdapter = new OrganizationActivityAdapter(organizationActivities, R.layout.item_activity_small, FilterLayoutView.LayoutType.SMALL, true);
         mContentAdapter.setOnItemClickListener((baseQuickAdapter, view, activityItem) -> {
-            start(ActivityChatFragment2.newInstance(mContentAdapter.getItem(activityItem)));
+            start(ActivityChatFragment.newInstance(mContentAdapter.getItem(activityItem)));
             mContentAdapter.getData().get(activityItem).setUnRead(0);
             mContentAdapter.notifyItemChanged(activityItem);
 

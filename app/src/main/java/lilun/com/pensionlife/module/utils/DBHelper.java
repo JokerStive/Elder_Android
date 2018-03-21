@@ -5,7 +5,7 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
+import lilun.com.pensionlife.module.bean.ds_bean.OrganizationActivityDS;
 
 /**
  * Created by zp on 2017/8/15.

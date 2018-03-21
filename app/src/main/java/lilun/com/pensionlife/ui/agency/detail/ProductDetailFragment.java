@@ -135,7 +135,7 @@ public class ProductDetailFragment extends BaseFragment {
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("productId", productId);
+        args.putSerializable("objectId", productId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -152,7 +152,7 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mProductId = arguments.getString("productId");
+        mProductId = arguments.getString("objectId");
         Preconditions.checkNull(mProductId);
     }
 
@@ -503,7 +503,7 @@ public class ProductDetailFragment extends BaseFragment {
             //新增基础信息界面
             AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();
             Bundle args = new Bundle();
-            args.putString("productId", mProductId);
+            args.putString("objectId", mProductId);
             addBasicContactFragment.setArguments(args);
             addBasicContactFragment.setOnAddBasicContactListener(contact -> start(ReservationFragment.newInstance(mProductId, contact)));
             start(addBasicContactFragment);

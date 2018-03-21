@@ -1,9 +1,13 @@
-package lilun.com.pensionlife.module.bean;
+package lilun.com.pensionlife.module.bean.ds_bean;
 
 import org.litepal.crud.DataSupport;
 
+import lilun.com.pensionlife.ui.home.HomeActivity;
+
 /**
- * 极光推送过来的消息
+ * MQTT推送或接收到的聊天消息
+ * v1.4.1新增聊天室类别字段，为保证以前数据库的内容能正常显示，以前的数据在启动时将chatType数值由null 更改为 "0"
+ * 实现参见：{@link HomeActivity#dbUpgrade()}
  *
  * @author yk
  *         create at 2017/3/15 15:18
@@ -22,6 +26,7 @@ public class PushMessage extends DataSupport {
     private String to;
     private String time;
     private String activityId;  //活动id
+    private int chatType;    //聊天类别 0-社区活动 1-订单
     private String message;
     private String priority;
     private String location;
@@ -146,6 +151,14 @@ public class PushMessage extends DataSupport {
         return this;
     }
 
+    public int getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -219,4 +232,6 @@ public class PushMessage extends DataSupport {
     public String getAllField() {
         return "model,verb,data,from,to,time,activityId,message,priority,location,title,mobile,address";
     }
+
+
 }

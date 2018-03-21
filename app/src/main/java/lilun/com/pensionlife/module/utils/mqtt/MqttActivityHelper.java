@@ -16,12 +16,13 @@ import java.net.URLDecoder;
 
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.ActivityCategoryMsg;
-import lilun.com.pensionlife.module.bean.OrganizationActivityDS;
-import lilun.com.pensionlife.module.bean.PushBaseMsg;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.base.BaseChatFragment;
+import lilun.com.pensionlife.module.bean.ds_bean.ActivityCategoryMsg;
+import lilun.com.pensionlife.module.bean.ds_bean.OrganizationActivityDS;
+import lilun.com.pensionlife.module.bean.ds_bean.PushBaseMsg;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.ActUitls;
-import lilun.com.pensionlife.ui.activity.activity_detail.ActivityChatFragment;
+
 
 /**
  * Created by zp on 2017/8/15.
@@ -39,7 +40,7 @@ public class MqttActivityHelper {
 
     public void dealMessage() {
         // 不是活动相关的消息，返回
-        if (!topic.contains("%23activity")) return;
+        if (!(topic.contains("%23activity") || topic.contains("%23order"))) return;
 
         //解析消息对象
         PushBaseMsg pushBaseMsg = new Gson().fromJson(messageData, new TypeToken<PushBaseMsg>() {
@@ -47,9 +48,9 @@ public class MqttActivityHelper {
 
 
         if (pushBaseMsg == null) return;
-
-        //判断是新增活动
-        if (pushBaseMsg.isNewActivity() || pushBaseMsg.isUpdateActivity()) {
+        //判断是新增活动 并且是活动的topic
+        if ((pushBaseMsg.isNewActivity() || pushBaseMsg.isUpdateActivity())) {
+            if (!topic.contains("%23activity")) return;
             //是当前小区可收到的活动,存入数据库
             ActivityCategoryMsg actCatMsg = new Gson().fromJson(messageData.replace("\"id\"", "\"actId\""), new TypeToken<ActivityCategoryMsg>() {
             }.getType());
@@ -71,27 +72,35 @@ public class MqttActivityHelper {
 
         } else if (pushBaseMsg.isChatInfo()) {
             PushMessage chatMessage = getPushMessageFromData(messageData);
+            if (!(topic.contains("%23activity") || topic.contains("%23order"))) return;
+
+
             if (chatMessage != null) {
                 chatMessage.setActivityId(getActivityId(topic));
-                //不是自己发送的消息 且是当前小区可接收到的消息 设置未读，
+                if (topic.contains("%23activity")) {
+                    chatMessage.setChatType(0);
+                    //不是自己发送的消息 且是当前小区可接收到的消息 设置未读，
+                    String substring = topic.substring(topic.indexOf("/%23activity"));  //获取组织id之后的内容
+                    String actOrg = topic.replace(substring, "");//得到组织id
+                    try {
+                        actOrg = URLDecoder.decode(actOrg, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    //不是自己的消息 && 不是当前活动页面的消息  && 是用户当前小区及其上到市级  所发布的活动，设置为未读
+                    if (chatMessage.getFrom() != null && !chatMessage.getFrom().contains(User.getUserId())
+                            && ActUitls.isParentTopActivity(User.getLocation(), actOrg)
+                            && !BaseChatFragment.isCurrentMsg(chatMessage.getActivityId())) {
+                        chatMessage.setUnRead(true);
+                        chatMessage.save();
+                        EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
+                    } else
+                        chatMessage.save();
 
-                String substring = topic.substring(topic.indexOf("/%23activity"));  //获取组织id之后的内容
-                String actOrg = topic.replace(substring, "");//得到组织id
-                try {
-                    actOrg = URLDecoder.decode(actOrg, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                } else if (topic.contains("%23order")) {
+                    chatMessage.setChatType(1);
+                    chatMessage.save();
                 }
-                //不是自己的消息 && 不是当前活动页面的消息  && 是用户当前小区及其上到市级  所发布的活动，设置为未读
-                if (chatMessage.getFrom()!=null && !chatMessage.getFrom().contains(User.getUserId())
-                        && ActUitls.isParentTopActivity(User.getLocation(), actOrg)
-                        && !ActivityChatFragment.curActId.equals(chatMessage.getActivityId())) {
-                    chatMessage.setUnRead(true);
-                    chatMessage.save();
-                    EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
-                } else
-                    chatMessage.save();
-
                 //处理活动
                 dealActivity(topic, chatMessage);
             }

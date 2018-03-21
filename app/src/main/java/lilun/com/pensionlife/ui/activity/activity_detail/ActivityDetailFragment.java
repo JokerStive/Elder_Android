@@ -52,7 +52,7 @@ import lilun.com.pensionlife.module.bean.ActivityEvaluate;
 import lilun.com.pensionlife.module.bean.NestedReply;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.DateTimeUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;

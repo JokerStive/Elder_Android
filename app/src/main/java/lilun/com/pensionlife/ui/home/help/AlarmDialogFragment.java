@@ -21,7 +21,7 @@ import java.util.Date;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.BaiduLocation;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.StartOtherUtils;

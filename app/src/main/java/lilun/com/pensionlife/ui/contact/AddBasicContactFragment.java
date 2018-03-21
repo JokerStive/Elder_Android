@@ -80,7 +80,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     public AddBasicContactFragment newInstance(String productId, onAddBasicContactListener listener) {
         AddBasicContactFragment fragment = new AddBasicContactFragment();
         Bundle args = new Bundle();
-        args.putString("productId", productId);
+        args.putString("objectId", productId);
         fragment.setArguments(args);
         this.mListener = listener;
         return fragment;
@@ -118,7 +118,7 @@ public class AddBasicContactFragment extends BaseFragment implements DataInterfa
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        mProductId = arguments.getString("productId");
+        mProductId = arguments.getString("objectId");
         flag = arguments.getInt("flag", -1);
         mContact = (Contact) arguments.getSerializable("contact");
 //        Preconditions.checkNull(mProductId);

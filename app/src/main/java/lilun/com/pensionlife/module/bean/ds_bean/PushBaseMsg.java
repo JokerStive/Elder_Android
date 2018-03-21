@@ -1,9 +1,9 @@
-package lilun.com.pensionlife.module.bean;
+package lilun.com.pensionlife.module.bean.ds_bean;
 
 import org.litepal.crud.DataSupport;
 
 /**
- *
+ *  MQTT 推送聊天室消息内容对象体
  *
  * Created by zp on 2017/8/15.
  */
@@ -21,7 +21,7 @@ public class PushBaseMsg extends DataSupport{
 
     public String model;
     public String verb;
-
+    private int chatType;    //聊天类别 0-社区活动 1-订单
 
     public String getModel() {
         return model;

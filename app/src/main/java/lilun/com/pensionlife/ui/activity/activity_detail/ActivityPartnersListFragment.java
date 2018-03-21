@@ -37,7 +37,7 @@ import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.PartnersAdapter;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.OrganizationActivity;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;

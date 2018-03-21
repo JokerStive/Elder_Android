@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ import java.util.List;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.QuickAdapter;
-import lilun.com.pensionlife.module.bean.PushMessage;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -37,6 +38,7 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
         String[] kickId;
         String[] kickName;
         String kickMessage = "";
+
         try {
             if (!TextUtils.isEmpty(pushMessage.getFrom())) {
                 JSONObject jsonObject = new JSONObject(pushMessage.getFrom());
@@ -58,9 +60,9 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Logger.d("AdapterPosition: " + helper.getAdapterPosition());
 
-
-        //if (helper.getAdapterPosition() == 0) {
+        //if (helper.getAdapterPosition() == 0) {//如果只有一个列表数据
         if (helper.getAdapterPosition() - getHeaderLayoutCount() == 0) {
             helper.getView(R.id.tv_send_time).setVisibility(View.VISIBLE);
             helper.setText(R.id.tv_send_time, StringUtils.thatTime(pushMessage.getTime()));
@@ -68,7 +70,7 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
             Date beforeLast = null;
 //            for (int i = helper.getAdapterPosition() - 1; i >= 0; i--) {
             for (int i = helper.getAdapterPosition() - getHeaderLayoutCount() - 1; i >= 0; i--) {
-                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition()- getHeaderLayoutCount()  - 1).getTime());
+                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - getHeaderLayoutCount() - 1).getTime());
 //                beforeLast = StringUtils.string2Date(getData().get(helper.getAdapterPosition() - 1).getTime());
                 if (beforeLast != null)
                     break;

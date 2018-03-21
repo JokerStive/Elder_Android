@@ -74,7 +74,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
         MerchantOrderPageFragment fragment = new MerchantOrderPageFragment();
         Bundle args = new Bundle();
         args.putString("status", status);
-        args.putString("productId", productId);
+        args.putString("objectId", productId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +89,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
         mStatus = arguments.getString("status");
-        productId = arguments.getString("productId");
+        productId = arguments.getString("objectId");
         Preconditions.checkNull(mStatus);
     }
 
@@ -143,7 +143,7 @@ public class MerchantOrderPageFragment extends BaseFragment<OrderPageContract.Pr
             status = status + "\"status\":\"" + mStatus + "\"}";
         }
         if (!TextUtils.isEmpty(productId)) {
-            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"productId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\"" + status + "}";
+            filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"objectId\":\"" + productId + "\",\"assigneeId\":\"" + User.getUserId() + "\"" + status + "}";
         } else {
             filter = "{\"where\":{\"creatorId\":{\"neq\":\"" + User.getUserId() + "\"},\"assigneeId\":\"" +  User.getUserId() + "\"" + status + "}";
         }

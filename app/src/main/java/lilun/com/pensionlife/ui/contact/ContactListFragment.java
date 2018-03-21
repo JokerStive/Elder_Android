@@ -61,7 +61,7 @@ public class ContactListFragment extends BaseFragment {
     public static ContactListFragment newInstance(String productId, int flag) {
         ContactListFragment fragment = new ContactListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("productId", productId);
+        bundle.putString("objectId", productId);
         bundle.putInt("flag", flag);
         fragment.setArguments(bundle);
         return fragment;
@@ -73,7 +73,7 @@ public class ContactListFragment extends BaseFragment {
 
     @Override
     protected void getTransferData(Bundle arguments) {
-        mProductId = arguments.getString("productId");
+        mProductId = arguments.getString("objectId");
         mFlag = arguments.getInt("flag");
     }
 

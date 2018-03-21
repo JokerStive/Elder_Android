@@ -1,6 +1,8 @@
-package lilun.com.pensionlife.module.bean;
+package lilun.com.pensionlife.module.bean.ds_bean;
 
 import java.util.ArrayList;
+
+import lilun.com.pensionlife.module.bean.Account;
 
 /**
  * MQTT消息新建活动 存于数据库

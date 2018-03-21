@@ -84,11 +84,11 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
         }
     }
 
-
+    //2018-03-21 15:42:10修改 由于adapter里可能加入了Header,改变位置必须要要将其计算入内
     public void add(T element) {
         getData().add(element);
-     //   notifyDataSetChanged();
-        notifyItemChanged(getData().size() - 1);
+        //   notifyDataSetChanged();
+        notifyItemChanged(getData().size() + getHeaderLayoutCount() - 1);
     }
 
     public void remove(T element) {
