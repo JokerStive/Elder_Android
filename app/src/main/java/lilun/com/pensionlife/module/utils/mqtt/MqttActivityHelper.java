@@ -10,6 +10,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.litepal.crud.callback.SaveCallback;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,6 +23,7 @@ import lilun.com.pensionlife.module.bean.ds_bean.OrganizationActivityDS;
 import lilun.com.pensionlife.module.bean.ds_bean.PushBaseMsg;
 import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.ActUitls;
+import lilun.com.pensionlife.ui.order.personal_detail.OrderChatFragment;
 
 
 /**
@@ -92,14 +94,30 @@ public class MqttActivityHelper {
                             && ActUitls.isParentTopActivity(User.getLocation(), actOrg)
                             && !BaseChatFragment.isCurrentMsg(chatMessage.getActivityId())) {
                         chatMessage.setUnRead(true);
-                        chatMessage.save();
-                        EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
+                        chatMessage.saveAsync().listen(new SaveCallback() {
+                            @Override
+                            public void onFinish(boolean success) {
+                                if (success)
+                                    EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
+                            }
+                        });
                     } else
                         chatMessage.save();
 
                 } else if (topic.contains("%23order")) {
                     chatMessage.setChatType(1);
-                    chatMessage.save();
+                    //设置为未读
+                    if (!BaseChatFragment.isCurrentMsg(chatMessage.getActivityId())) {
+                        chatMessage.setUnRead(true);
+                        chatMessage.saveAsync().listen(new SaveCallback() {
+                            @Override
+                            public void onFinish(boolean success) {
+                                if (success)
+                                    EventBus.getDefault().post(new Event.NewChatMsg(chatMessage));
+                            }
+                        });
+                    } else
+                        chatMessage.save();
                 }
                 //处理活动
                 dealActivity(topic, chatMessage);

@@ -324,7 +324,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     private void changeOrderStatus(String status, String msg) {
         new NormalDialog().createNormal(_mActivity, msg, () -> {
-            mPresenter.changeOrderStatus(mOrderId, status);
+            mPresenter.cancelOrderStatus(mOrderId);
         });
 
     }

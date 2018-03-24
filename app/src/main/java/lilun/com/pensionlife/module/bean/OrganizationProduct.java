@@ -85,6 +85,7 @@ public class OrganizationProduct extends BaseBean {
     private List<String> areaIds;
     private String mobile;
     private String orgCategoryId;
+    private OrganizationProductCategory orgCategory;
 
     public String getOrgCategoryId() {
         return orgCategoryId;
@@ -93,6 +94,14 @@ public class OrganizationProduct extends BaseBean {
     public OrganizationProduct setOrgCategoryId(String orgCategoryId) {
         this.orgCategoryId = orgCategoryId;
         return this;
+    }
+
+    public OrganizationProductCategory getOrgCategory() {
+        return orgCategory;
+    }
+
+    public void setOrgCategory(OrganizationProductCategory orgCategory) {
+        this.orgCategory = orgCategory;
     }
 
     public String getId() {

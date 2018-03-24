@@ -81,4 +81,9 @@ public class ActivityChatFragment extends BaseChatFragment {
         super.initView(inflater);
     }
 
+    @Override
+    public void inflateProductView() {
+
+    }
+
 }

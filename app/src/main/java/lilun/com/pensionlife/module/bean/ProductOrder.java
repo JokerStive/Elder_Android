@@ -1,6 +1,10 @@
 package lilun.com.pensionlife.module.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lilun.com.pensionlife.base.BaseBean;
+import lilun.com.pensionlife.module.utils.StringUtils;
 
 /**
  * 产品订单模型
@@ -48,9 +52,9 @@ public class ProductOrder extends BaseBean {
     private String remark;
     private String registerDate;
     private Contact contact;
-    private OrganizationProduct productBackup ;
+    private OrganizationProduct productBackup;
     private String productBackupId;
-    private OrganizationProduct productInfo ;
+    private OrganizationProduct productInfo;
     private String productId;
     private String assigneeId;
     private String orgCategoryId;
@@ -63,6 +67,9 @@ public class ProductOrder extends BaseBean {
     private String updatorId;
     private String updatorName;
     private String userProfileId;
+
+    //私有参数
+    private int unRead=0;
 
     public String getProductBackupId() {
         return productBackupId;
@@ -286,5 +293,27 @@ public class ProductOrder extends BaseBean {
     public ProductOrder setUserProfileId(String userProfileId) {
         this.userProfileId = userProfileId;
         return this;
+    }
+
+    public int getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(int unRead) {
+        this.unRead = unRead;
+    }
+
+    /**
+     * 获取订单关联产品的第一张图片
+     * 若产品没有图片，则显示产品所在的类别图片
+     */
+    public String getProductImage() {
+        if (productBackup == null) return null;
+        if (productBackup.getImage() != null)
+            return StringUtils.getFirstIcon(productBackup.getImage());
+        if (productBackup.getImage() == null && productBackup.getOrgCategory() != null) {
+            return productBackup.getOrgCategory().getIcon();
+        }
+        return null;
     }
 }

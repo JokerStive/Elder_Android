@@ -1,11 +1,14 @@
 package lilun.com.pensionlife.module.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -14,8 +17,10 @@ import java.util.Map;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
+import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
+import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -35,15 +40,21 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         super(R.layout.item_personal_order, data);
     }
 
-
     @Override
     protected void convert(BaseViewHolder helper, ProductOrder order) {
         OrganizationProduct product = order.getProductBackup();
         if (product != null) {
+            if (mScrollIdle) {  //滑动停止时获取加载
+                //异步获取未读消息个数
+                DataSupport.where("activityId = ? and unread = 1 and chattype = 1", order.getId())
+                        .countAsync(PushMessage.class).listen(count -> {
+                    helper.setText(R.id.bv_msgs, count > 99 ? "..." : count + "");
+                });
 
-            String url = StringUtils.getFirstIcon(product.getImage());
-            ImageLoaderUtil.instance().loadImage(url, helper.getView(R.id.iv_product_icon));
 
+                helper.getView(R.id.iv_product_icon).setBackgroundColor(getEmptyView().getContext().getResources().getColor(R.color.gray));
+                ImageLoaderUtil.instance().loadImage(order.getProductImage(), helper.getView(R.id.iv_product_icon));
+            }
             setOrderStatus(helper, order);
             // setNextOperate(helper, order);
             String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
@@ -56,6 +67,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
                         if (listener != null) {
+                            helper.setText(R.id.bv_msgs, "");
                             listener.onItemClick(order);
                         }
                     })
@@ -77,6 +89,43 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             }
 
         }
+    }
+
+    /**
+     * 更新所有未读角标
+     */
+    public void notityUnReadAll() {
+        if (getData() == null) return;
+        List<ProductOrder> list = getData();
+        for (int i = 0; i < list.size(); i++) {
+            int index = i;
+            DataSupport.where("activityId = ? and unRead = ?", list.get(i).getId(), "1").countAsync(PushMessage.class)
+                    .listen(count -> {
+                        list.get(index).setUnRead(count);
+                    });
+
+        }
+        notifyDataChanged();
+    }
+
+    /**
+     * 改变未一个未读角标
+     *
+     * @param pos
+     */
+    public void notityUnRead(int pos) {
+        if (getData() == null && getData().size() > pos) return;
+        DataSupport.where("activityId = ? and unread = 1", getData().get(pos).getId()).countAsync(PushMessage.class)
+                .listen(count -> {
+                    getData().get(pos).setUnRead(count);
+                    notifyItemChanged(pos);
+                });
+
+    }
+
+    public void clearUnRead(int pos) {
+        if (getData() == null && getData().size() > pos) return;
+        getData().get(pos).setUnRead(0);
     }
 
     private String showSemester(Map<String, Object> extend) {

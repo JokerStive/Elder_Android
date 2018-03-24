@@ -12,10 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseChatFragment;
 import lilun.com.pensionlife.module.bean.ProductOrder;
+import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
+import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 互动式订单详情聊天室
@@ -25,9 +31,17 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
  * Created by zp on 2017/5/3.
  */
 
-public class OrderChatFragment extends BaseChatFragment {
+public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Presenter> implements OrderDetailContract.View {
     ProductOrder order;
     static String Arg_Order = "order";
+    TextView tvOrderCreateTime, tvOrderStatus, tvOrderProductTitle, tvOrderPrice,
+            tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice,
+            tvContactName, tvContactMobile, tvContactAddress;
+    ImageView ivOrderImg;
+    private Button btnCancelOrder;
+    private LinearLayout llContactInfo;
+    private RelativeLayout rlProductInfo;
+    private View inflate;
 
     /**
      * 互动式聊天室
@@ -73,14 +87,22 @@ public class OrderChatFragment extends BaseChatFragment {
     }
 
     @Override
+    protected void initPresenter() {
+        mPresenter = new OrderDetailPresenter();
+        mPresenter.bindView(this);
+    }
+
+    @Override
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle("订单详情");
         super.initView(inflater);
+        ((OrderDetailPresenter) mPresenter).getOrder(objectId);
     }
 
     @Override
     public void inflateProductView() {
         chatAdapter.setHeaderView(setProductView());
+
     }
 
     /**
@@ -89,15 +111,11 @@ public class OrderChatFragment extends BaseChatFragment {
      * @return
      */
     public View setProductView() {
-        TextView tvOrderCreateTime, tvOrderStatus, tvOrderProductTitle, tvOrderPrice,
-                tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice,
-                tvContactName, tvContactMobile, tvContactAddress;
-        ImageView ivOrderImg;
-
-        View inflate = LayoutInflater.from(getContext()).inflate(R.layout.view_product_info_layout, null, false);
-        Button cancelOrder = (Button) inflate.findViewById(R.id.btn_cancel_order);
-        LinearLayout llContactInfo = (LinearLayout) inflate.findViewById(R.id.ll_contact_info);
-        RelativeLayout rlProductInfo = (RelativeLayout) inflate.findViewById(R.id.rl_product_info);
+        inflate = LayoutInflater.from(getContext()).inflate(R.layout.view_product_info_layout, null, false);
+        inflate.setVisibility(View.GONE);
+        btnCancelOrder = (Button) inflate.findViewById(R.id.btn_cancel_order);
+        llContactInfo = (LinearLayout) inflate.findViewById(R.id.ll_contact_info);
+        rlProductInfo = (RelativeLayout) inflate.findViewById(R.id.rl_product_info);
         tvOrderCreateTime = (TextView) inflate.findViewById(R.id.tv_order_create_time);
         tvOrderStatus = (TextView) inflate.findViewById(R.id.tv_order_status);
         tvOrderProductTitle = (TextView) inflate.findViewById(R.id.tv_order_product_title);
@@ -109,26 +127,96 @@ public class OrderChatFragment extends BaseChatFragment {
         tvContactMobile = (TextView) inflate.findViewById(R.id.tv_contact_mobile);
         tvContactAddress = (TextView) inflate.findViewById(R.id.tv_contact_address);
         ivOrderImg = (ImageView) inflate.findViewById(R.id.iv_order_img);
-        tvOrderCreateTime.setText("预约时间:2018-01-24 20:14:27");
-        tvOrderStatus.setText("待处理");
-        tvOrderProductTitle.setText("英孚教育-四点半课堂1111111111111111");
-        tvOrderPrice.setText("￥53.00");
-        tvOrderRegisterTime.setText("服务时间:2018-01-24");
-        tvProdcutNumber.setText("x 1");
-        tvOrderTotalPrice.setText(Html.fromHtml("共 <font color=\"red\">1</font>件商品，合计: <font color=\"red\">￥53.00</font>"));
-        tvContactName.setText("收货人：张三");
-        tvContactMobile.setText("电话：185****8537");
-        tvContactAddress.setText("地址：重庆 重庆市 南岸区长生桥镇茶园 新区城南家园六组团2栋三单元2-1");
-        cancelOrder.setOnClickListener((v) -> {
-            ToastHelper.get().showShort("canceled !");
-        });
-        llContactInfo.setOnClickListener((v) -> {
-            ToastHelper.get().showShort("联系人!");
-        });
-        rlProductInfo.setOnClickListener((v) -> {
-            ToastHelper.get().showShort("产品信息!");
-        });
         return inflate;
     }
 
+    @Override
+    public void showOrder(ProductOrder order) {
+        this.order = order;
+        inflate.setVisibility(View.VISIBLE);
+        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt()));
+
+        tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
+
+        btnCancelOrder.setVisibility("cancel".equals(order.getStatus()) ? View.GONE : View.VISIBLE);
+
+        if (order.getProductBackup() != null) {
+            tvOrderProductTitle.setText(order.getProductBackup().getTitle());
+            tvOrderPrice.setText("￥" + order.getProductBackup().getPrice());
+            tvOrderTotalPrice.setText(Html.fromHtml(getOrderTotalHtml(1, order.getProductBackup().getPrice().floatValue())));
+            ivOrderImg.setBackgroundColor(getResources().getColor(R.color.gray));
+            ImageLoaderUtil.instance().loadImage(order.getProductImage(), ivOrderImg);
+            rlProductInfo.setOnClickListener((v) -> {
+                start(ProductDetailFragment.newInstance(order.getProductBackup().getId()));
+            });
+        }
+        tvOrderRegisterTime.setText("服务时间:2018-01-24" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
+        tvProdcutNumber.setText("x 1");
+        if (order.getContact() != null) {
+            tvContactName.setText("收货人：" + order.getContact().getCreatorName());
+            tvContactMobile.setText("电话：" + order.getContact().getMobile());
+            tvContactAddress.setText("地址：" + order.getContact().getAddress());
+            llContactInfo.setOnClickListener((v) -> {
+                ToastHelper.get().showShort("联系人模块!");
+            });
+        }
+        btnCancelOrder.setOnClickListener((v) -> {
+            new NormalDialog().createNormal(_mActivity, getAlartMsg(R.string.operate_cancel), () -> {
+                ((OrderDetailContract.Presenter) mPresenter).cancelOrderStatus(objectId);
+            });
+
+        });
+
+
+    }
+
+    @Override
+    public void changeOrderStatusSuccess(String status) {
+        order.setStatus(status);
+        tvOrderStatus.setText(getStatusEn2Cn(status));
+    }
+
+    /**
+     * 转换为中文状态
+     * reserved:已预约;assigned:已受理;done:已完成;cancel:已取消
+     */
+    public String getStatusEn2Cn(String status) {
+        if (status == null) return null;
+        String statusCn = "";
+        switch (status) {
+            case "reserved":
+                statusCn = "已预约";
+                break;
+            case "assigned":
+                statusCn = "已受理";
+                break;
+            case "done":
+                statusCn = "已完成";
+                break;
+            case "cancel":
+                statusCn = "已取消";
+                break;
+        }
+        return statusCn;
+    }
+
+    /**
+     * 获取订单总价格html文字
+     *
+     * @return
+     */
+    public String getOrderTotalHtml(int number, float price) {
+        String format = new DecimalFormat("#.00").format(number * price);
+        return "共 <font color=\"red\">" + number + "</font>件商品，合计: <font color=\"red\">￥" + format + "</font>";
+    }
+
+    /**
+     * 返回 确定要 xxx 吗？"
+     *
+     * @param operate
+     * @return
+     */
+    public String getAlartMsg(int operate) {
+        return "确定要" + getString(operate) + "吗？";
+    }
 }

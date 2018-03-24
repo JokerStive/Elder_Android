@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -91,6 +92,18 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerDecoration(App.context, LinearLayoutManager.VERTICAL, UIUtils.dp2px(App.context, App.context.getResources().getDimension(R.dimen.dp_10)), App.context.getResources().getColor(R.color.gray)));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (personalOrderAdapter != null) {
+                    if (AbsListView.OnScrollListener.SCROLL_STATE_IDLE == newState) {
+                        personalOrderAdapter.setmScrollIdle(true);
+                        personalOrderAdapter.notifyDataChanged();
+                    } else personalOrderAdapter.setmScrollIdle(false);
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         //刷新
         mSwipeLayout.setOnRefreshListener(() -> {
                     if (mPresenter != null) {
@@ -108,22 +121,34 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         getMyOrder(0);
     }
 
+    //收到到一个MQTT新消息
+    @Subscribe
+    public void newChatMsg(Event.NewChatMsg chatMsg) {
+        if (personalOrderAdapter != null && chatMsg.getPushMessage().getUnRead()) {
+            for (int i = 0; i < personalOrderAdapter.getData().size(); i++) {
+                if (personalOrderAdapter.getData().get(i).getId().equals(chatMsg.getPushMessage().getActivityId())) {
+                    personalOrderAdapter.notityUnRead(i);
+                }
+            }
+        }
+    }
+
     /**
      * 获取我需要显示的数据回来
-     * { "fields": ["id", "name", "status", "registerDate", "assigneeId", "orgCategoryId", "createdAt", "productBackupId"],"include":{"relation": "productBackup","scope": {"fields": ["id","name","title","price","unit", "organizationId","image" ]}} }
-     *
+     * { "fields": ["id", "name", "status", "registerDate", "assigneeId", "orgCategoryId", "createdAt", "productBackupId"],"include":{"relation": "productBackup","scope": {"fields": ["id","name","title","price","unit", "organizationId","image","orgCategory"]}} }     *
+     *"where":{"productBackupId":{"$exists":true}}   //以前的老数据不要，获取有订单备份的数据
      * @param skip
      */
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
         String filter;
-        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ]}}";
+        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}}";
         if (mStatus.equals("done")) {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
         } else if (mStatus.equals("assigned")) {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
         } else {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
+            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
         }
         mPresenter.getMyOrders(filter, skip);
 

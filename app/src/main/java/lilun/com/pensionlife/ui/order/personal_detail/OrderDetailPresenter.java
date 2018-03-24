@@ -14,11 +14,15 @@ import lilun.com.pensionlife.net.RxSubscriber;
  *         email : yk_developer@163.com
  */
 public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> implements OrderDetailContract.Presenter {
+    /**
+     * 获取订单信息
+     * @param orderId
+     */
     @Override
     public void getOrder(String orderId) {
-//        String filter = "{\"include\":[\"order\",\"assignee\"]}";
+        String filter = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\",\"contact\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
         addSubscribe(NetHelper.getApi()
-                .getOrder(orderId, null)
+                .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<ProductOrder>(getActivity()) {
@@ -27,19 +31,27 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                         view.showOrder(order);
                     }
 
+                    @Override
+                    public void _error() {
+                        super._error();
+                    }
                 }));
     }
 
+    /**
+     * 取消订单
+     * @param orderId
+     */
     @Override
-    public void changeOrderStatus(String orderId,String status) {
+    public void cancelOrderStatus(String orderId) {
         addSubscribe(NetHelper.getApi()
-                .changeOrderStatus(orderId, status)
+                .changeOrderStatus(orderId, "cancel")
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        view.changeOrderStatusSuccess(status);
+                        view.changeOrderStatusSuccess("cancel");
                     }
 
                     @Override

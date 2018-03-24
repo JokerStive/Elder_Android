@@ -98,7 +98,7 @@ public class NormalTitleBar extends RelativeLayout implements View.OnClickListen
 
         rl.setOnClickListener(this);
         tvDoWhat.setOnClickListener(this);
-
+        tvTitle.setOnClickListener(this);
     }
 
     public void setTitle(String title) {

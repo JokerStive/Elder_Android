@@ -24,12 +24,13 @@
             tools:text="合展天池老年护养中心" />
 
         <lilun.com.pensionlife.widget.BadgesView
+            android:id="@+id/bv_msgs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_provider_name"
-            android:layout_toRightOf="@id/tv_provider_name"
             android:layout_marginLeft="@dimen/dp_4"
-            android:text="4" />
+            android:layout_toRightOf="@id/tv_provider_name"
+            tools:text="4" />
 
 
         <TextView

@@ -119,7 +119,6 @@ public abstract class RxSubscriber<T> extends Subscriber<T> {
             Logger.d(e.getMessage());
             ToastHelper.get().showWareShort("connect timed out".equals(e.getMessage()) ? "连接超时" : e.getMessage());
         }
-        _error();
     }
 
     @Override

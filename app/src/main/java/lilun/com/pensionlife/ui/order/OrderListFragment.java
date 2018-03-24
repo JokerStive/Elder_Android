@@ -79,10 +79,10 @@ public class OrderListFragment extends BaseFragment {
         selectedDrawablesRes.add(R.drawable.deal_on);
         selectedDrawablesRes.add(R.drawable.complete_on);
         selectedDrawablesRes.add(R.drawable.cancel_on);
-        unReadMsgs.add(15);
-        unReadMsgs.add(10);
-        unReadMsgs.add(11);
-        unReadMsgs.add(7);
+        unReadMsgs.add(0);
+        unReadMsgs.add(0);
+        unReadMsgs.add(0);
+        unReadMsgs.add(0);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class OrderListFragment extends BaseFragment {
 
                 title.setText(statusTitle[index]);
                 image.setImageResource(normalDrawablesRes.get(index));
-                msgs.setText(unReadMsgs.get(index)+"");
+                msgs.setText(unReadMsgs.get(index) + "");
 
                 commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
 
@@ -147,7 +147,7 @@ public class OrderListFragment extends BaseFragment {
                     public void onSelected(int i, int i1) {
                         title.setTextColor(selectedColor);
                         image.setImageResource(selectedDrawablesRes.get(i));
-                        msgs.setText(unReadMsgs.get(i)+"");
+                        msgs.setText(unReadMsgs.get(i) + "");
                     }
 
                     @Override

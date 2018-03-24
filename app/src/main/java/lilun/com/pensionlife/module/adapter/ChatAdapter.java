@@ -60,7 +60,6 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Logger.d("AdapterPosition: " + helper.getAdapterPosition());
 
         //if (helper.getAdapterPosition() == 0) {//如果只有一个列表数据
         if (helper.getAdapterPosition() - getHeaderLayoutCount() == 0) {

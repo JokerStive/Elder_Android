@@ -111,6 +111,8 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseViewHolder
         }
     }
 
+
+
     private void onHasData() {
 
     }

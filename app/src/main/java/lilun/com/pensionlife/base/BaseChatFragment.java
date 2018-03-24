@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
 import org.litepal.crud.callback.FindMultiCallback;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ import lilun.com.pensionlife.widget.chatView.ChatView;
  * Created by zp on 2017/5/3.
  */
 
-public class BaseChatFragment extends BaseFragment {
+public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragment {
     protected static String objectId = ""; //记录社区活动id 或 产品订单id
     public String orgId = "";    // 组织id
     public int chatType; //聊天室类别
@@ -108,6 +109,13 @@ public class BaseChatFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //由于是全局变量，必须在该页面销毁后设置为空，否则判断不正确
+        objectId = "";
+    }
+
+    @Override
     protected void initPresenter() {
     }
 
@@ -128,14 +136,14 @@ public class BaseChatFragment extends BaseFragment {
             if (cvActivity != null && cvActivity.getRecyclerView() != null)
                 cvActivity.getRecyclerView().smoothScrollToPosition(0);
         });
-
+        setChatAdapter();
 
         DataSupport.where("activityId = ? and chatType = ?", objectId, chatType + "").findAsync(PushMessage.class)
                 .listen(new FindMultiCallback() {
                     @Override
                     public <T> void onFinish(List<T> t) {
-                        chatAdapter = new ChatAdapter((List<PushMessage>) t);
-                        setChatAdapter();
+                        chatAdapter.replaceAll((List<PushMessage>) t);
+                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount());
                     }
                 });
     }
@@ -144,6 +152,7 @@ public class BaseChatFragment extends BaseFragment {
      * 设置 聊天室 recycler及 adapter
      */
     public void setChatAdapter() {
+        chatAdapter = new ChatAdapter(new ArrayList<>());
         inflateProductView();
         cvActivity.setChatAdapter(chatAdapter);
         cvActivity.setOnSendListener(new InputSendView.OnSendListener() {
@@ -167,9 +176,7 @@ public class BaseChatFragment extends BaseFragment {
     /**
      * 将产品信息添加到Header里
      */
-    public void inflateProductView() {
-//        chatAdapter.setHeaderView(setProductView());
-    }
+    public abstract void inflateProductView();
 
     /**
      * 收到一个新的消息添加到聊天界面
