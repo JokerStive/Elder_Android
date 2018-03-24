@@ -17,7 +17,9 @@
         android:id="@+id/rl_course_schedules"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleBar" />
+        android:layout_above="@+id/protocol"
+        android:layout_below="@id/titleBar"
+        android:layout_marginBottom="@dimen/dp_5" />
 
 
     <LinearLayout
@@ -58,5 +60,11 @@
 
     </LinearLayout>
 
+    <lilun.com.pensionlife.ui.protocol.ProtocolView
+        android:id="@+id/protocol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_bottom_menu"
+        android:visibility="gone" />
 
 </RelativeLayout>

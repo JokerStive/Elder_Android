@@ -11,14 +11,15 @@ public class DynamicDataParser {
 
 
     private Activity activity;
+    private final DynamicLayoutProvider provider;
 
     public DynamicDataParser(Activity activity) {
+        provider = new DynamicLayoutProvider(activity);
         this.activity = activity;
     }
 
 
     public Result getResult(JSONObject setting) {
-        DynamicLayoutProvider provider = new DynamicLayoutProvider(activity);
         Result result = null;
         boolean containsEnum = setting.containsKey("enum");
         if (containsEnum) {
@@ -37,7 +38,7 @@ public class DynamicDataParser {
 //                    break;
 
                 case "string":
-                case "integer":
+                case "number":
                     result = provider.createInputView(setting);
                     break;
             }

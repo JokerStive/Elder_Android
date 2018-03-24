@@ -153,4 +153,6 @@
     <dimen name="dp_146">438dp</dimen>
     <dimen name="dp_180">540dp</dimen>
     <dimen name="dp_18">64dp</dimen>
+    <dimen name="dp_94">282dp</dimen>
+    <dimen name="dp_144">433dp</dimen>
 </resources>

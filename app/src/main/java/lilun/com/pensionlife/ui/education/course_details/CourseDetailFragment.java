@@ -29,15 +29,12 @@ import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.Preconditions;
-import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
-import lilun.com.pensionlife.net.NetHelper;
-import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
-import lilun.com.pensionlife.ui.education.reservation.CoursePolicyFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
+import lilun.com.pensionlife.ui.protocol.ProtocolView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
@@ -54,6 +51,10 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     TextView tvReservation;
     @Bind(R.id.ll_bottom_menu)
     LinearLayout llBottomMenu;
+
+    @Bind(R.id.protocol)
+    ProtocolView protocolView;
+
     private String mProductId;
     private OrganizationProduct mProduct;
 
@@ -83,6 +84,11 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         }
     }
 
+    @Subscribe
+    public void refresh(ProtocolView.IsAgreeProtocol isAgreeProtocol) {
+        protocolView.agreeProtocol(isAgreeProtocol.isAgreeProtocol);
+    }
+
 
     @Override
     protected void getTransferData(Bundle arguments) {
@@ -95,7 +101,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         mPresenter = new CourseDetailPresenter();
         mPresenter.bindView(this);
 
-        mPresenter.getCourseDetail(mProductId, null);
+        mPresenter.getProductDetail(mProductId, null);
         mPresenter.getCourseSchedules(mProductId);
         mPresenter.getProtocol(mProductId);
         mPresenter.getIsOrder(mProductId);
@@ -117,6 +123,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         mCourseScheduleAdapter = new CourseScheduleAdapter(new ArrayList<>());
         mCourseScheduleAdapter.setTeacherListener(organizationAccountId -> {
             //老师简介
+            start(TeacherDetailFragment.newInstance(organizationAccountId));
         });
         setHead();
         rlCourseSchedules.setAdapter(mCourseScheduleAdapter);
@@ -143,7 +150,10 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Override
     public void showProtocol(Information protocol) {
-
+        if (protocol != null) {
+            protocolView.setVisibility(View.VISIBLE);
+            protocolView.showProtocol(this, protocol);
+        }
     }
 
     @Override
@@ -203,21 +213,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     }
 
-    private String getWeekString(List<String> classWeekNames) {
-        String result = "";
-        if (classWeekNames != null && classWeekNames.size() > 0) {
-            result = "星期";
-            for (int i = 0; i < classWeekNames.size(); i++) {
-                String classWeekName = classWeekNames.get(i);
-                if (classWeekName.contains("星期")) {
-                    String classWeekNameNum = classWeekName.substring(classWeekName.lastIndexOf("星期") + 2);
-                    result = result + " " + classWeekNameNum;
-                }
-            }
-        }
-        return result;
-    }
-
 
     private void showBanner(OrganizationProduct product) {
         List<String> urls = new ArrayList<>();
@@ -226,6 +221,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
                 urls.add(url);
             }
         } else {
+
             String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null);
             urls.add(url);
         }
@@ -251,31 +247,51 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
             case R.id.tv_reservation:
                 //立即预约
-                if (mProduct == null) {
-                    return;
-                }
-                if (mProduct.getCreatorId().equals(User.getUserId())) {
-                    ToastHelper.get().showWareShort("自己商品不可以预约");
-                    return;
-                }
-
-                if (mProduct.getDraft() != null && mProduct.getDraft()) {
-                    ToastHelper.get().showWareShort("该课程无法预约，请刷新页面后重试");
-                    return;
-                }
+                orderCheck();
+                break;
 
 
-                if (can_not_order_flag == 1) {
-                    new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
-                        @Override
-                        public void onPositiveClick() {
-                            takeReservation();
-                        }
-                    });
-                } else if (can_not_order_flag == -1) {
+        }
+    }
+
+
+    //预约检查
+    private void orderCheck() {
+        if (mProduct == null) {
+            return;
+        }
+
+        if (protocolView.getVisibility() != View.GONE) {
+            boolean agreeProtocol = protocolView.isAgreeProtocol();
+            if (!agreeProtocol) {
+                ToastHelper.get().showWareShort("请先同意协议");
+                return;
+            }
+        }
+
+        if (mProduct.getCreatorId().equals(User.getUserId())) {
+            ToastHelper.get().showWareShort("不能预约自己创建的课程");
+            return;
+        }
+
+        if (mProduct.getDraft() != null && mProduct.getDraft()) {
+            ToastHelper.get().showWareShort("该课程无法预约，请刷新页面后重试");
+            return;
+        }
+
+
+        if (can_not_order_flag == 1) {
+            new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
+                @Override
+                public void onPositiveClick() {
                     takeReservation();
                 }
-                break;
+            });
+        }
+
+
+        if (can_not_order_flag == -1) {
+            takeReservation();
         }
     }
 
@@ -284,49 +300,15 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
      * 预约
      */
     private void takeReservation() {
-        if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
-            ToastHelper.get().showWareShort("不能预约自己创建的课程");
-            return;
-        }
-
-        if (can_not_order_flag == 1) {
-
-        }
-
-        //检查协议
-        boolean needAgreePolicy = !TextUtils.isEmpty(mProduct.getLicenseGgreement());
-        ArrayList<String> certificateLicenses = User.getCertificateLicense();
-        if (certificateLicenses != null) {
-            for (String productId : certificateLicenses) {
-                if (TextUtils.equals(mProductId, productId)) {
-                    needAgreePolicy = false;
-                }
-            }
-        }
-        //去签订协议界面
-        if (needAgreePolicy) {
-            start(CoursePolicyFragment.newInstance(mProductId, mProduct.getLicenseGgreement()));
-            return;
-        }
-
-
-        String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
-        NetHelper.getApi().getContacts(filter)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
-                    @Override
-                    public void _next(List<Contact> contacts) {
-                        checkContact(contacts);
-                    }
-                });
+        mPresenter.getContacts();
     }
 
 
     /**
      * 检查预约资料
      */
-    private void checkContact(List<Contact> contacts) {
+    @Override
+    public void checkContact(List<Contact> contacts) {
         if (contacts.size() > 0) {
             //显示 预约者信息列表
             Contact defContact = getDefaultContact(contacts);

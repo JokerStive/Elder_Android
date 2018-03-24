@@ -8,5 +8,7 @@
     <dimen name="position_length">300dp</dimen>
 
     <dimen name="sp_14">14sp</dimen>
+    <dimen name="dp_94">94dp</dimen>
+    <dimen name="dp_144">144dp</dimen>
 
 </resources>

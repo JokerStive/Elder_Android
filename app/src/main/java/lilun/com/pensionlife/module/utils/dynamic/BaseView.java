@@ -26,6 +26,13 @@ public abstract class BaseView implements Result {
             mate_title = setting.getString("title");
             mate_description = setting.getString("description");
             mate_type = setting.getString("type");
+            Object valueObj = setting.get("value");
+            if (valueObj instanceof Double) {
+                Double valueDouble = (Double) valueObj;
+                int valueInt = valueDouble.intValue();
+                mate_value = valueDouble == valueInt ? valueInt : valueDouble;
+                return;
+            }
             mate_value = setting.get("value");
 
         }

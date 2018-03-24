@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/dp_15">
+    android:background="#ffffff"
+    android:paddingLeft="@dimen/dp_15"
+    android:paddingRight="@dimen/dp_15"
+    android:paddingTop="@dimen/dp_15">
 
     <TextView
         android:id="@+id/tv_schedule_name"
@@ -44,16 +47,19 @@
         style="@style/tv_normal"
         android:layout_below="@id/tv_schedule_location"
         android:layout_marginTop="@dimen/dp_12"
+        android:text="专业老师："
         android:textColor="#666666"
-        android:textSize="@dimen/sp_15"
-        android:text="专业老师：" />
+        android:textSize="@dimen/sp_15" />
 
     <LinearLayout
-        android:layout_toRightOf="@id/tv_schedule_teacher"
+        android:gravity="center"
         android:id="@+id/ll_teachers"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_schedule_teacher"
+        android:layout_alignTop="@id/tv_schedule_teacher"
+        android:layout_toRightOf="@id/tv_schedule_teacher"
+        android:orientation="horizontal" />
 
     <View
         style="@style/line_gray"

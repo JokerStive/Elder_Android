@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
@@ -23,6 +25,7 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.MetaServiceContact;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -75,6 +78,7 @@ public class ReservationCourseFragment extends BaseFragment {
     private String mProductId;
     private OrganizationProduct mProduct;
     private ContactView mContactView;
+    private JSONObject template;
 
 
     public static ReservationCourseFragment newInstance(String productId, Contact contact) {
@@ -145,9 +149,29 @@ public class ReservationCourseFragment extends BaseFragment {
                     public void _next(OrganizationProduct product) {
                         mProduct = product;
                         showProduct();
-                        showContact();
+                        String templateId = product.getMetaServiceContactId();
+                        if (!TextUtils.isEmpty(templateId)) {
+                            getTemplate(templateId);
+                        } else {
+                            showContact();
+                        }
                     }
                 });
+    }
+
+    private void getTemplate(String templateId) {
+        if (!TextUtils.isEmpty(templateId)) {
+            NetHelper.getApi().getTemplate(templateId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<MetaServiceContact>(getActivity()) {
+                        @Override
+                        public void _next(MetaServiceContact metaServiceContact) {
+                            template = metaServiceContact.getSettings();
+                            showContact();
+                        }
+                    });
+        }
     }
 
     private void showProduct() {
@@ -188,8 +212,7 @@ public class ReservationCourseFragment extends BaseFragment {
             mContactView = new ContactView(_mActivity);
             rlContactContainer.addView(mContactView.getView());
         }
-        mContactView.reDraw(mContact, null);
-
+        mContactView.reDraw(mContact, template);
     }
 
     /**

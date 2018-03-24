@@ -1,13 +1,12 @@
 package lilun.com.pensionlife.ui.education.course_details;
 
-import android.widget.Toast;
-
 import java.util.List;
 
-import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.base.BaseFragment;
+import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.RxPresenter;
+import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.CourseSchedule;
+import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.utils.RxUtils;
@@ -23,49 +22,7 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
 
 
     @Override
-    public void joinCourse(String courseId, String filter) {
-        addSubscribe(NetHelper.getApi()
-                .joinCourse(courseId, "")
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
-                    @Override
-                    public void _next(Object o) {
-//                        view.showJoinCourse();
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Toast.makeText(App.context, "提交失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
-    }
-
-    @Override
-    public void quitCourse(String courseId, String filter) {
-        addSubscribe(NetHelper.getApi()
-                .quitCourse(courseId, "")
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Object>(((BaseFragment) view).getActivity()) {
-                    @Override
-                    public void _next(Object o) {
-
-//                        view.showQuitCourse();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Toast.makeText(App.context, "提交失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }));
-    }
-
-    @Override
-    public void getCourseDetail(String courseId, String filter) {
+    public void getProductDetail(String courseId, String filter) {
         addSubscribe(NetHelper.getApi()
                 .getProduct(courseId, filter)
                 .compose(RxUtils.handleResult())
@@ -80,7 +37,7 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
 
     @Override
     public void getCourseSchedules(String productId) {
-        String filter = "{\"include\":\"teachers\",\"where\":{\"classId\":\"" + productId + "\"}}";
+        String filter = "{\"include\":\"teachers\",\"where\":{\"visible\":0,\"classId\":\"" + productId + "\"}}";
         addSubscribe(NetHelper.getApi()
                 .getCourseSchedules(filter)
                 .compose(RxUtils.handleResult())
@@ -95,12 +52,22 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
 
     @Override
     public void getProtocol(String productId) {
+        String filter = "{\"limit\":1,\"where\":{\"visible\":0,\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + productId + "\"}}";
+        addSubscribe(NetHelper.getApi()
+                .getInformations(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Information>>() {
 
-    }
-
-    @Override
-    public void getSemester(String eduSemesterId) {
-
+                    @Override
+                    public void _next(List<Information> protocols) {
+                        if (protocols.size() > 0) {
+                            view.showProtocol(protocols.get(0));
+                        } else {
+                            view.showProtocol(null);
+                        }
+                    }
+                }));
     }
 
     @Override
@@ -117,5 +84,19 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
                     }
                 }));
 
+    }
+
+    @Override
+    public void getContacts() {
+        String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
+        NetHelper.getApi().getContacts(filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
+                    @Override
+                    public void _next(List<Contact> contacts) {
+                        view.checkContact(contacts);
+                    }
+                });
     }
 }

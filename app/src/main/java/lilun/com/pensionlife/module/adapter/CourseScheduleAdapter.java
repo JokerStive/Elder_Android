@@ -31,14 +31,14 @@ public class CourseScheduleAdapter extends QuickAdapter<CourseSchedule> {
     @Override
     protected void convert(BaseViewHolder helper, CourseSchedule schedule) {
         helper.setText(R.id.tv_schedule_name, schedule.getName())
-                .setText(R.id.tv_schedule_location, schedule.getLocation());
+                .setText(R.id.tv_schedule_location, "上课地点："+schedule.getLocation());
 
-        //上课时间
-        String courseStartTime = StringUtils.IOS2ToUTC(schedule.getCourseStartTime(), 1);
-        String courseEndTime = StringUtils.IOS2ToUTC(schedule.getCourseEndTime(), 1);
-        String courseWeek = StringUtils.weekTrans(schedule.getCourseWeek());
-        String courseTime = courseWeek + "  " + courseStartTime + "~" + courseEndTime;
-        helper.setText(R.id.tv_course_time, courseTime);
+//        //上课时间
+//        String courseStartTime = StringUtils.IOS2ToUTC(schedule.getCourseStartTime(), 1);
+//        String courseEndTime = StringUtils.IOS2ToUTC(schedule.getCourseEndTime(), 1);
+//        String courseWeek = StringUtils.weekTrans(schedule.getCourseWeek());
+//        String courseTime = courseWeek + "  " + courseStartTime + "~" + courseEndTime;
+//        helper.setText(R.id.tv_course_time, courseTime);
 
         //上课时段
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
@@ -53,7 +53,7 @@ public class CourseScheduleAdapter extends QuickAdapter<CourseSchedule> {
         for (OrganizationAccount teacher : teachers) {
             String teacherName = teacher.getName();
             TextView tvTeacher = new TextView(App.context);
-            tvTeacher.setTextSize(UIUtils.dp2px(App.context, 15));
+            tvTeacher.setTextSize(UIUtils.sp2px(App.context, 8));
             tvTeacher.setTextColor(Color.parseColor("#666666"));
             tvTeacher.setPadding(0, 0, UIUtils.dp2px(App.context, 10), 0);
             tvTeacher.setText(teacherName);

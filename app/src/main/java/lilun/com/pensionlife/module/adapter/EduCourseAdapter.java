@@ -10,6 +10,7 @@ import java.util.List;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -36,7 +37,14 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
                 .setText(R.id.tv_course_price, Html.fromHtml("合计: <font color='#ff4400'>" + topPriceResult + "</font>"));
 
 
+
         String iconUrl = StringUtils.getFirstIcon(course.getImage());
+        if (iconUrl==null){
+            OrganizationProductCategory orgCategory = course.getOrgCategory();
+            if (orgCategory!=null){
+                iconUrl = orgCategory.getIcon();
+            }
+        }
         ImageLoaderUtil.instance().loadImage(iconUrl, help.getView(R.id.iv_course_icon));
 
     }

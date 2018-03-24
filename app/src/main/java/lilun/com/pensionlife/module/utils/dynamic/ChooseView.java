@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ public class ChooseView extends BaseView {
 
     private Activity activity;
     private TextView tv_mate_value;
+    private ArrayList<Integer> mulitpIndex = new ArrayList<>();
 
     public ChooseView(Activity context, JSONObject setting) {
         this.activity = context;
@@ -50,7 +52,7 @@ public class ChooseView extends BaseView {
         ArrayList<String> data = new ArrayList<>();
         for (Map.Entry<String, Object> entry : entries) {
             String value = (String) entry.getValue();
-            data.add(0,value);
+            data.add(value);
         }
 //        ArrayList<String> data = entries.stream().map(entry -> (String) entry.getValue()).collect(Collectors.toCollection(ArrayList::new));
         tv_mate_value.setOnClickListener(v -> showChooseDialog(data));
@@ -61,31 +63,64 @@ public class ChooseView extends BaseView {
     private void show() {
         if (mate_value != null) {
             JSONObject display = setting.getJSONObject("display");
-            Object o = display.get(mate_value.toString());
-            tv_mate_value.setText(o.toString());
+
+            if (mate_type.equals("array")) {
+                if (mate_value instanceof List) {
+                    List valueList = (List) this.mate_value;
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < valueList.size(); i++) {
+                        Object value = valueList.get(i);
+                        if (value instanceof Double) {
+                            int index = ((Double) value).intValue();
+                            if (display.get(index + "") != null) {
+                                String text = display.get(index + "").toString();
+                                mulitpIndex.add(index);
+                                if (i == 0) {
+                                    builder.append(text);
+                                } else {
+                                    builder.append("," + text);
+                                }
+                            }
+                        }
+                    }
+                    tv_mate_value.setText(builder.toString());
+
+                }
+
+            } else {
+                Object o = display.get(mate_value.toString());
+                if (o != null) {
+                    tv_mate_value.setText(o.toString());
+                }
+            }
         }
+
     }
 
+//
+//    private int doubleToInt(Object value){
+//        if (value instanceof Double){
+//
+//        }
+//
+//    }
 
     private void showChooseDialog(ArrayList<String> data) {
         //多项选择框
         if (mate_type.equals("array")) {
-            Integer[] index = null;
-            //显示初始化
-            if (mate_value != null) {
-                JSONArray mate_value_array = (JSONArray) this.mate_value;
-                index = mate_value_array.toArray(null);
-            }
+            Integer[] index = mulitpIndex.toArray(new Integer[mulitpIndex.size()]);
             new MaterialDialog.Builder(activity)
                     .title(mate_title)
                     .items(data)
-                    .itemsCallbackMultiChoice(index, new MaterialDialog.ListCallbackMultiChoice() {
+                    .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                         @Override
                         public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                             setMultiData(which, text);
-                            return false;
+                            return true;
                         }
-                    });
+                    })
+                    .positiveText(R.string.choose)
+                    .show();
 
         }
 
@@ -105,7 +140,7 @@ public class ChooseView extends BaseView {
             new MaterialDialog.Builder(activity)
                     .title(mate_title)
                     .items(data)
-                    .itemsCallbackSingleChoice(index, (dialog, view, which, text) -> {
+                    .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
                         setSingleData(which, text);
                         return true;
                     }).show();
@@ -117,11 +152,12 @@ public class ChooseView extends BaseView {
     //多项选择-数据回填
 
     private void setMultiData(Integer[] which, CharSequence[] texts) {
-        JSONArray jsonArray = setting.getJSONArray("enum");
+        JSONArray enumArray = setting.getJSONArray("enum");
+        JSONArray jsonArray = new JSONArray();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < which.length; i++) {
             String text = (String) texts[i];
-            jsonArray.remove(which[i]);
+            jsonArray.add(enumArray.get(which[i]));
             if (i == 0) {
                 builder.append(text);
             } else {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
+import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.CourseSchedule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
@@ -14,7 +15,7 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
  */
 
 public class CourseDetailContract {
-    interface View extends IView<Presenter> {
+    public interface View extends IView<Presenter> {
 
         void showCourseDetail(OrganizationProduct orders);
 
@@ -24,24 +25,21 @@ public class CourseDetailContract {
 
         void showIsOrdered(OrderLimit orderLimit);
 
+        void checkContact(List<Contact> contacts);
+
     }
 
-    interface Presenter extends IPresenter<View> {
+    public interface Presenter extends IPresenter<View> {
 
-        void joinCourse(String courseId, String filter);
-
-        void quitCourse(String courseId, String filter);
-
-        void getCourseDetail(String courseId, String filter);
+        void getProductDetail(String courseId, String filter);
 
         void getCourseSchedules(String productId);
 
         void getProtocol(String productId);
 
-        void getSemester(String eduSemesterId);
-
-
         void getIsOrder(String productId);
+
+        void getContacts();
 
 
     }

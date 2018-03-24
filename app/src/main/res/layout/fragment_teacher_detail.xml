@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <lilun.com.pensionlife.widget.NormalTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="教师简介" />
+
+    <ImageView
+        android:id="@+id/iv_teacher_icon"
+        android:layout_width="@dimen/dp_94"
+        android:layout_height="@dimen/dp_144"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/sp_24" />
+
+    <TextView
+        android:id="@+id/tv_teacher_name"
+        style="@style/tv_normal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_11"
+        android:textColor="#333333"
+        android:textSize="@dimen/sp_18"
+        tools:text="王桂芳老师个人简介" />
+
+    <TextView
+        android:id="@+id/tv_teacher_desc"
+        style="@style/tv_normal"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/dp_11"
+        android:textColor="#333333"
+        android:textSize="@dimen/sp_13"
+        tools:text="王桂芳，女，音乐教师、民乐社及合唱团指导老师，社团多次取得优异成绩，获领导肯定。合唱团编排的节目《隐形的翅膀》《赶摆路上》于2014年6月参加泸州市中小学生大合唱比赛中荣获一等奖；2015年5月，合唱团编排的节目四川盘子《花开千年歌泸县》在泸州市第八届中小学生艺术节比赛中获一等奖，参加四川省第八届中小学生艺术节比赛中获优秀组织奖。
+	2013年6月毕业于西南大学音乐学院音乐学专业，同年8月到泸县二中任教。工作期间，勤奋、踏实、上进。2014年5月10日，在泸县中小学音乐教师基本功选拔赛中获一等奖。2014年5月28日，《萧友梅与黄自》一课在泸县二中新教师汇报课中获“优秀”等级。2014年5月，在泸县音乐学科教研活动中，主讲专题《合唱与指挥》，获得一致好评。2015年4月，编排的节目四川盘子《花开千年歌泸县》获泸州市第八届中小学生艺术节一等奖第一名，被评为“优秀指导教师”。2016年1月，撰写的文章《精心的教学设计是上好音乐课的前提》在泸县二中的2015年教育学会年会论文评选中，荣获二等奖。2016年5月，《非洲歌舞音乐》一课在音乐课堂教学展评活动中获一等奖。
+字体FZLanTingHeiS-R-GB
+字重Regular
+对齐
+
+末行右对齐
+颜色
+#FFFFFF 100% hex
+字号
+13sp
+空间
+10
+字间距
+0dp
+行间距
+内容 王桂芳，女，音乐教师、民乐社及合唱团指导老师，社团多次取得优异成绩，获领导肯定。合唱团编排的节目《隐形的翅膀》《赶摆路上》于2014年6月参加泸州市中小学生大合唱比赛中荣获一等奖；2015年5月，合唱团编排的节目四川盘子《花开千年歌泸县》在泸州市第八届中小学生艺术节比赛中获一等奖，参加四川省第八届中小学生艺术节比赛中获优秀组织奖。
+	2013年6月毕业于西南大学音乐学院音乐学专业，同年8月到泸县二中任教。工作期间，勤奋、踏实、上进。2014年5月10日，在泸县中小学音乐教师基本功选拔赛中获一等奖。2014年5月28日，《萧友梅与黄自》一课在泸县二中新教师汇报课中获“优秀”等级。2014年5月，在泸县音乐学科教研活动中，主讲专题《合唱与指挥》，获得一致好评。2015年4月，编排的节目四川盘子《花开千年歌泸县》获泸州市第八届中小学生艺术节一等奖第一名，被评为“优秀指导教师”。2016年1月，撰写的文章《精心的教学设计是上好音乐课的前提》在泸县二中的2015年教育学会年会论文评选中，荣获二等奖。2016年5月，《非洲歌舞音乐》一课在音乐课堂教学展评活动中获一等奖。
+" />
+
+</LinearLayout>

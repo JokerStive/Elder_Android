@@ -324,15 +324,6 @@ public class StringUtils {
      */
     public static String addFilterWithDef(String filter, int skip) {
         String head;
-//        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
-//            head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
-//            filter = head;
-//        } else {
-//            head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
-//            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
-//        }
-
-
         if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
             head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = head;
@@ -356,9 +347,21 @@ public class StringUtils {
             head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\",\"visible\":\"0\"}";
             filter = filter.substring(0, filter.lastIndexOf("}")) + head;
         }
-//        Logger.d("拼接够的filter--" + filter);
         return filter;
     }
+
+
+//    public static String addVisibleToFilter(String filter) {
+//        String head;
+//        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
+//            head = "{\"visible\":0}";
+//            filter = head;
+//        } else {
+//            head = ",\"visible\":0}";
+//            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
+//        }
+//        return filter;
+//    }
 
 
     /**

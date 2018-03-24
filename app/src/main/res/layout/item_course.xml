@@ -42,7 +42,7 @@
         android:layout_alignLeft="@id/tv_course_title"
         android:layout_below="@id/tv_course_title"
         android:layout_marginTop="@dimen/dp_6"
-        android:drawableLeft="@drawable/course_list_teacher"
+        android:drawableLeft="@drawable/start_time"
         android:drawablePadding="@dimen/dp_5"
         android:maxLength="15"
         android:maxLines="1"

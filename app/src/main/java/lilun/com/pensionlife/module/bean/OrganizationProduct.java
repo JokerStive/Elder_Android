@@ -20,6 +20,28 @@ public class OrganizationProduct extends BaseBean {
     private String subTitle;
     private String context;
     private String contextType;
+
+    public OrganizationProductCategory getOrgCategory() {
+        return orgCategory;
+    }
+
+    public OrganizationProduct setOrgCategory(OrganizationProductCategory orgCategory) {
+        this.orgCategory = orgCategory;
+        return this;
+    }
+
+    private OrganizationProductCategory orgCategory;
+    private String metaServiceContactId;
+
+    public String getMetaServiceContactId() {
+        return metaServiceContactId;
+    }
+
+    public OrganizationProduct setMetaServiceContactId(String metaServiceContactId) {
+        this.metaServiceContactId = metaServiceContactId;
+        return this;
+    }
+
     private Double price;
     private Boolean isDraft;
     private String unit;

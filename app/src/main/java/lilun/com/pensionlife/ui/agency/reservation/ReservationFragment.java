@@ -31,6 +31,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
+import lilun.com.pensionlife.module.bean.MetaServiceContact;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -105,16 +106,6 @@ public class ReservationFragment extends BaseFragment {
     protected void getTransferData(Bundle arguments) {
         mContact = (Contact) arguments.getSerializable("contact");
 
-
-        JSONObject target = JSONObject.parseObject("{\n" +
-                "\"health\":1,\n" +
-                "\"age\":16,\n" +
-                "\"guide\":true,\n" +
-                "\"birthday\":\"1991-1-4\"\n" +
-                "}");
-        mContact.setExtend(target);
-
-
         mProductId = arguments.getString("mProductId");
         Preconditions.checkNull(mProductId);
         Preconditions.checkNull(mContact);
@@ -150,52 +141,8 @@ public class ReservationFragment extends BaseFragment {
 
             }
         });
-
-
-        testDynamic();
-
     }
 
-    private void testDynamic() {
-        template = JSONObject.parseObject("{\n" +
-                "  \"health\": {\n" +
-                "    \"id\": \"health\",\n" +
-                "    \"title\":\"健康状态\",\n" +
-                "    \"description\":\"请选择健康状态\",\n" +
-                "    \"type\":\"integer\",\n" +
-                "    \"enum\":[1,2,3],\n" +
-                "    \"value\":2,\n" +
-                "    \"display\": {\"1\":\"良好\", \"2\":\"普通\", \"3\":\"不能自理\"}\n" +
-                "  },\n" +
-                "  \"age\": {\n" +
-                "    \"id\": \"age\",\n" +
-                "    \"title\":\"年龄\",\n" +
-                "    \"description\":\"请输入年龄大小\",\n" +
-                "    \"type\":\"integer\",\n" +
-                "    \"minimum\":0,\n" +
-                "     \"required\":true,\n" +
-                "    \"exclusiveMinimum\": true\n" +
-                "  },\n" +
-                " \n" +
-                "  \"guide\": {\n" +
-                "    \"id\": \"guide\",\n" +
-                "    \"title\":\"是否接送\",\n" +
-                "    \"description\":\"请选择是否接送\",\n" +
-                "    \"type\":\"boolean\",\n" +
-                "    \"enum\":[true,false],\n" +
-                "    \"display\": {true:\"是\", false:\"否\"}\n" +
-                "  },\n" +
-                "\n" +
-                "  \"birthday\":{\n" +
-                "    \"id\": \"birthday\",\n" +
-                "    \"title\":\"出生日期\",\n" +
-                "    \"description\":\"请选择出生日期\",\n" +
-                "    \"type\":\"time\"\n" +
-                "  }\n" +
-                "\n" +
-                "}");
-
-    }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -242,10 +189,32 @@ public class ReservationFragment extends BaseFragment {
                     public void _next(OrganizationProduct product) {
                         mProduct = product;
                         showProduct();
-                        showContact(template, mContact);
+                        String templateId = product.getMetaServiceContactId();
+                        if (!TextUtils.isEmpty(templateId)) {
+                            getTemplate(templateId);
+                        } else {
+                            showContact();
+                        }
                     }
                 });
     }
+
+
+    private void getTemplate(String templateId) {
+        if (!TextUtils.isEmpty(templateId)) {
+            NetHelper.getApi().getTemplate(templateId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<MetaServiceContact>(getActivity()) {
+                        @Override
+                        public void _next(MetaServiceContact metaServiceContact) {
+                            template = metaServiceContact.getSettings();
+                            showContact();
+                        }
+                    });
+        }
+    }
+
 
     private void showProduct() {
         //产品第一张图
@@ -274,12 +243,12 @@ public class ReservationFragment extends BaseFragment {
     /**
      * 显示个人资料
      */
-    private void showContact(JSONObject template, Contact contact) {
+    private void showContact() {
         if (mContactView == null) {
             mContactView = new ContactView(_mActivity);
             rlContactContainer.addView(mContactView.getView());
         }
-        mContactView.reDraw(contact, template);
+        mContactView.reDraw(mContact, template);
     }
 
     /**
@@ -371,7 +340,7 @@ public class ReservationFragment extends BaseFragment {
             Serializable serializable = data.getSerializable("mContact");
             if (mContact != null) {
                 mContact = (Contact) serializable;
-                showContact(template, mContact);
+                showContact();
             }
         }
     }
