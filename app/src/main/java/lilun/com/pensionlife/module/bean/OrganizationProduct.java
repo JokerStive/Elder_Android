@@ -20,67 +20,18 @@ public class OrganizationProduct extends BaseBean {
     private String subTitle;
     private String context;
     private String contextType;
-
-    public OrganizationProductCategory getOrgCategory() {
-        return orgCategory;
-    }
-
-    public OrganizationProduct setOrgCategory(OrganizationProductCategory orgCategory) {
-        this.orgCategory = orgCategory;
-        return this;
-    }
-
-    private OrganizationProductCategory orgCategory;
     private String metaServiceContactId;
 
-    public String getMetaServiceContactId() {
-        return metaServiceContactId;
-    }
-
-    public OrganizationProduct setMetaServiceContactId(String metaServiceContactId) {
-        this.metaServiceContactId = metaServiceContactId;
-        return this;
-    }
 
     private Double price;
     private Boolean isDraft;
     private String unit;
-
-    public Boolean getDraft() {
-        return isDraft;
-    }
-
-    public OrganizationProduct setDraft(Boolean draft) {
-        isDraft = draft;
-        return this;
-    }
-
     private String licenseGgreement;
-
-    public String getLicenseGgreement() {
-        return licenseGgreement;
-    }
-
-    public OrganizationProduct setLicenseGgreement(String licenseGgreement) {
-        this.licenseGgreement = licenseGgreement;
-        return this;
-    }
-
     private int stock;
     private int sold;
     private int rank;
     private Map<String, String> tag;
-
-    public int getRank() {
-        return rank;
-    }
-
-    public OrganizationProduct setRank(int rank) {
-        this.rank = rank;
-        return this;
-    }
-
-    private Map<String,Object> extend;
+    private Map<String, Object> extend;
     private String startTime;
     private String endTIme;
     private String createdAt;
@@ -89,18 +40,8 @@ public class OrganizationProduct extends BaseBean {
     private String creatorName;
     private String updatorId;
     private String updatorName;
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public OrganizationProduct setMobile(String mobile) {
-        this.mobile = mobile;
-        return this;
-    }
-
     private String organizationId;
-//    private String categoryId;
+    //    private String categoryId;
     private String phone;
     private List<String> orderType;
     private List<String> image;
@@ -109,22 +50,6 @@ public class OrganizationProduct extends BaseBean {
     private String orgCategoryId;
     private OrganizationProductCategory orgCategory;
 
-    public String getOrgCategoryId() {
-        return orgCategoryId;
-    }
-
-    public OrganizationProduct setOrgCategoryId(String orgCategoryId) {
-        this.orgCategoryId = orgCategoryId;
-        return this;
-    }
-
-    public OrganizationProductCategory getOrgCategory() {
-        return orgCategory;
-    }
-
-    public void setOrgCategory(OrganizationProductCategory orgCategory) {
-        this.orgCategory = orgCategory;
-    }
 
     public String getId() {
         return id;
@@ -215,11 +140,11 @@ public class OrganizationProduct extends BaseBean {
         this.tag = tag;
     }
 
-    public Map<String,Object> getExtend() {
+    public Map<String, Object> getExtend() {
         return extend;
     }
 
-    public void setExtend(Map<String,Object> extend) {
+    public void setExtend(Map<String, Object> extend) {
         this.extend = extend;
     }
 
@@ -326,5 +251,69 @@ public class OrganizationProduct extends BaseBean {
 
     public void setAreaIds(List<String> areaIds) {
         this.areaIds = areaIds;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public OrganizationProduct setMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public String getOrgCategoryId() {
+        return orgCategoryId;
+    }
+
+    public OrganizationProduct setOrgCategoryId(String orgCategoryId) {
+        this.orgCategoryId = orgCategoryId;
+        return this;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public OrganizationProduct setRank(int rank) {
+        this.rank = rank;
+        return this;
+    }
+
+
+    public Boolean getDraft() {
+        return isDraft;
+    }
+
+    public OrganizationProduct setDraft(Boolean draft) {
+        isDraft = draft;
+        return this;
+    }
+
+    public String getLicenseGgreement() {
+        return licenseGgreement;
+    }
+
+    public OrganizationProduct setLicenseGgreement(String licenseGgreement) {
+        this.licenseGgreement = licenseGgreement;
+        return this;
+    }
+
+    public OrganizationProductCategory getOrgCategory() {
+        return orgCategory;
+    }
+
+    public OrganizationProduct setOrgCategory(OrganizationProductCategory orgCategory) {
+        this.orgCategory = orgCategory;
+        return this;
+    }
+
+    public String getMetaServiceContactId() {
+        return metaServiceContactId;
+    }
+
+    public OrganizationProduct setMetaServiceContactId(String metaServiceContactId) {
+        this.metaServiceContactId = metaServiceContactId;
+        return this;
     }
 }
