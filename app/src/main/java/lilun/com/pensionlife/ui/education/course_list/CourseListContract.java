@@ -5,6 +5,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.IPresenter;
 import lilun.com.pensionlife.base.IView;
 import lilun.com.pensionlife.module.bean.ConditionOption;
+import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.Semester;
@@ -26,6 +27,8 @@ public interface CourseListContract {
 
         void getSemesterSuccess(List<Semester> semesters);
 
+        void showCollege(Organization college);
+
 
     }
 
@@ -37,6 +40,8 @@ public interface CourseListContract {
         List<ConditionOption> getConditionOptionsList();
 
         void getSemesters(String filter);
+
+        void getCollege(String collegeId);
 
     }
 }

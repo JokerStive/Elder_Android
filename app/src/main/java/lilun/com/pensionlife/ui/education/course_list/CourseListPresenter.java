@@ -6,6 +6,7 @@ import java.util.List;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ConditionOption;
 import lilun.com.pensionlife.module.bean.Option;
+import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.Semester;
@@ -46,6 +47,7 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
         );
 
     }
+
 
     @Override
     public void getCourseCategories(String filter, int skip) {
@@ -99,6 +101,22 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                    }
+                })
+        );
+    }
+
+    @Override
+    public void getCollege(String collegeId) {
+        String filter = "{\"include\":\"extension\"}";
+        addSubscribe(NetHelper.getApi()
+                .getOrganizationById(collegeId, filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Organization>() {
+                    @Override
+                    public void _next(Organization college) {
+                        view.showCollege(college);
                     }
                 })
         );

@@ -12,9 +12,11 @@ import lilun.com.pensionlife.module.bean.AppVersion;
 import lilun.com.pensionlife.module.bean.Area;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.Count;
+import lilun.com.pensionlife.module.bean.CourseSchedule;
 import lilun.com.pensionlife.module.bean.ElderEdus;
 import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.Information;
+import lilun.com.pensionlife.module.bean.MetaServiceContact;
 import lilun.com.pensionlife.module.bean.NestedReply;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.Organization;
@@ -118,6 +120,10 @@ public interface ApiService {
     Observable<Response<List<OrganizationAccount>>> getOrganizationAccounts(@Path("id") String organizationId);
 
 
+    @GET("OrganizationAccounts/{id}")
+    Observable<Response<OrganizationAccount>> getOrganizationAccount(@Path("id") String organizationId,@Query("filter") String filter);
+
+
     /**
      * 获取当前账户信息
      */
@@ -218,6 +224,23 @@ public interface ApiService {
     Observable<Response<OrganizationProduct>> getProduct(@Path("id") String id, @Query("filter") String filter);
 
 
+
+    /**
+     * 获取product
+     */
+
+    @GET("MetaServiceContacts/{id}")
+    Observable<Response<MetaServiceContact>> getTemplate(@Path("id") String id);
+
+
+    /**
+     * 获取product
+     */
+
+    @GET("OrganizationEduSchedules")
+    Observable<Response<List<CourseSchedule>>> getCourseSchedules(@Query("filter") String filter);
+
+
     /**
      * 获取旅游列表
      */
@@ -240,6 +263,13 @@ public interface ApiService {
 
     @GET("Organizations/{id}/children")
     Observable<Response<List<Organization>>> getOrganizations(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 获取organization
+     */
+
+    @GET("Organizations/{id}")
+    Observable<Response<Organization>> getOrganization(@Path("id") String organizationId, @Query("filter") String filter);
 
 
     /**
@@ -335,6 +365,11 @@ public interface ApiService {
 
     @GET("OrganizationInformations/{id}")
     Observable<Response<Information>> getInformation(@Path("id") String id);
+
+
+
+    @GET("OrganizationInformations/findOne")
+    Observable<Response<Information>> findOneInformation(@Query("filter") String filter);
 
 //========================POST===============================================
 

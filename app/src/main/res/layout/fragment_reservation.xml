@@ -91,13 +91,14 @@
                 android:background="#f5f5f9" />
 
             <TextView
-                android:gravity="center_vertical"
+                android:id="@+id/tv_change_contact"
                 style="@style/tv_normal"
                 android:layout_width="match_parent"
                 android:drawableLeft="@drawable/icon_reservation_info"
-                android:padding="@dimen/dp_16"
                 android:drawablePadding="10dp"
-                android:text="预约服务信息"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_16"
+                android:text="联系人信息"
                 android:textColor="#999999"
                 android:textSize="@dimen/sp_15" />
 
@@ -105,7 +106,7 @@
                 style="@style/line_gray"
                 android:layout_height="@dimen/dp_1"
                 android:background="#f5f5f9" />
-
+<!--
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,19 +217,24 @@
                     android:textSize="@dimen/sp_17" />
 
 
-            </RelativeLayout>
+            </RelativeLayout>-->
 
 
-            <View
+            <!--<View-->
 
-                style="@style/line_gray"
-                android:layout_height="@dimen/dp_10"
-                android:background="#f5f5f9" />
+                <!--style="@style/line_gray"-->
+                <!--android:layout_height="@dimen/dp_10"-->
+                <!--android:background="#f5f5f9" />-->
 
-            <include
-                android:id="@+id/agency_contact_extension"
-                layout="@layout/contact_agency_extend"
-                android:visibility="gone" />
+            <!--<include-->
+                <!--android:id="@+id/agency_contact_extension"-->
+                <!--layout="@layout/contact_agency_extend"-->
+                <!--android:visibility="gone" />-->
+
+            <RelativeLayout
+                android:id="@+id/rl_contact_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <View
                 style="@style/line_gray"
@@ -320,6 +326,12 @@
 
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_test_dynamic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
 
         </LinearLayout>

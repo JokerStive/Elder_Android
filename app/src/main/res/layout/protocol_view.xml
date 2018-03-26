@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE"
+    >
+
+    <TextView
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:id="@+id/tv_agree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/selector_set_def"
+        />
+
+    <TextView
+       android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:layout_toRightOf="@id/tv_agree"
+        android:layout_width="match_parent"
+        android:textStyle="italic"
+        android:id="@+id/tv_protocol_title"
+        style="@style/tv_small_ellipsize"
+        android:layout_centerVertical="true"
+        android:textColor="#37ACFE"
+        android:textSize="@dimen/sp_15"
+        android:gravity="center_vertical"
+
+        android:drawablePadding="@dimen/dp_4"
+        tools:text="重庆市老年大学2017-2018学年年度第二学期招生简章重庆市老年大学2017-2018学年年度第二学期招生简章" />
+
+</RelativeLayout>

@@ -383,5 +383,12 @@
 
     </LinearLayout>
 
+    <lilun.com.pensionlife.ui.protocol.ProtocolView
+        android:visibility="gone"
+        android:layout_above="@id/ll_bottom_menu"
+        android:id="@+id/protocol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 </RelativeLayout>

@@ -82,5 +82,7 @@
     <dimen name="sp_22">22sp</dimen>
     <dimen name="dp_180">180dp</dimen>
     <dimen name="dp_18">18dp</dimen>
+    <dimen name="dp_94">94dp</dimen>
+    <dimen name="dp_144">144dp</dimen>
 
 </resources>

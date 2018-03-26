@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.module.bean;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 import lilun.com.pensionlife.base.BaseBean;
@@ -49,6 +51,17 @@ public class Information extends BaseBean {
     private String creatorId;
     private String creatorName;
     private String updatorId;
+
+    public JSONObject getExtend() {
+        return extend;
+    }
+
+    public Information setExtend(JSONObject extend) {
+        this.extend = extend;
+        return this;
+    }
+
+    private JSONObject extend;
 
 
 

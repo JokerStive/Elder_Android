@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_218">
+
+            <lilun.com.pensionlife.widget.slider.BannerPager
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_218" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:alpha="0.2"
+                android:background="#ff000000"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingLeft="@dimen/dp_16"
+                android:paddingRight="@dimen/dp_16"
+                android:paddingTop="@dimen/dp_8">
+
+                <TextView
+                    android:id="@+id/tv_course_title"
+                    style="@style/tv_normal"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_17"
+                    tools:text="2017秋季古典音乐一班" />
+
+                <TextView
+                    android:id="@+id/tv_course_xueqi"
+                    style="@style/tv_normal"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_13"
+                    tools:text="学期:2017-08-10--2017-" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_16"
+            android:paddingLeft="@dimen/dp_13"
+            android:paddingRight="@dimen/dp_13"
+            android:paddingTop="@dimen/dp_16">
+
+
+            <TextView
+                android:id="@+id/tv_course_price"
+                style="@style/tv_normal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:textColor="#ff1100"
+                android:textSize="@dimen/sp_17"
+                tools:text="180元" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_course_stock"
+                    style="@style/tv_normal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="报名人数: 35" />
+
+                <TextView
+                    android:id="@+id/tv_course_sold"
+                    style="@style/tv_normal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="剩余名额: 30" />
+
+                <TextView
+                    android:id="@+id/tv_course_teacher"
+                    style="@style/tv_normal"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/course_teacher"
+                    android:drawablePadding="@dimen/dp_2"
+                    android:maxLines="1"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone"
+                    tools:text="授课老师:张老师" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10">
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="课程表"
+                android:textColor="#000000"
+                android:textSize="@dimen/sp_18" />
+
+
+            <TextView
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp_5"
+                android:gravity="center_horizontal"
+                android:maxLines="1"
+                android:text="———— ● Class Schedule Card ● ————"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_11" />
+
+        </LinearLayout>
+
+
+
+</LinearLayout>

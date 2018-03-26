@@ -1,8 +1,12 @@
 package lilun.com.pensionlife.module.utils.dynamic;
 
+import android.app.Activity;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
@@ -18,44 +22,50 @@ import lilun.com.pensionlife.app.App;
 * */
 public class DynamicLayoutManager {
     private LinearLayout mView;
-    private JSONObject target, old;
     private ArrayList<Result> results;
+    private JSONObject template, target;
+    private final DynamicDataParser dataParser;
 
 
-    public DynamicLayoutManager() {
+    private DynamicLayoutManager(Activity activity, JSONObject template, JSONObject target) {
+//        this.activity = activity;
+        this.template = template;
+//        this.target = target;
 
+
+        mView = new LinearLayout(App.context);
+        mView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mView.setOrientation(LinearLayout.VERTICAL);
+        dataParser = new DynamicDataParser(activity);
+        results = new ArrayList<>();
     }
 
     /**
      * 生成布局
      */
-    public LinearLayout createDynamicLayout() {
-        if (target == null) {
-            return null;
-        }
+    public LinearLayout createDynamicLayout(JSONObject target) {
 
-        mView = new LinearLayout(App.context);
-        mView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mView.setOrientation(LinearLayout.VERTICAL);
+        this.target = target;
+        Set<Map.Entry<String, Object>> targetEntries = template.entrySet();
 
-        DynamicDataParser parser = new DynamicDataParser();
-        results = new ArrayList<>();
-
-
-        Set<Map.Entry<String, Object>> targetEntries = target.entrySet();
-
-
+        mView.removeAllViews();
         for (Map.Entry<String, Object> targetEntry : targetEntries) {
-            JSONObject targetValue = JSONObject.parseObject((String) targetEntry.getValue());
-
-            if (old != null) {
-                Set<Map.Entry<String, Object>> oldEntries = old.entrySet();
+            String toJSONString = JSON.toJSONString(targetEntry.getValue());
+            if (TextUtils.isEmpty(toJSONString)) {
+                continue;
+            }
+            JSONObject targetValue = JSONObject.parseObject(toJSONString);
+            if (target != null) {
+                Set<Map.Entry<String, Object>> oldEntries = target.entrySet();
                 compareAndSetValue(oldEntries, targetEntry, targetValue);
             }
 
-            Result result = parser.getResult(targetValue);
-            results.add(result);
-            mView.addView(result.resultView());
+            Result result = dataParser.getResult(targetValue);
+            if (result != null) {
+                View view = result.resultView();
+                mView.addView(view);
+                results.add(result);
+            }
         }
 
 
@@ -80,19 +90,55 @@ public class DynamicLayoutManager {
      * 获取最终的数据
      */
     public JSONObject getFinallyData() {
-        JSONObject finallyData = old;
+        JSONObject finallyData = target;
         if (finallyData == null) {
             finallyData = new JSONObject();
         }
         for (Result result : results) {
-            finallyData.put(result.resultKey(), result.resultValue());
+            if (result.isPassRequireCheck()) {
+                finallyData.put(result.resultKey(), result.resultValue());
+            } else {
+                return null;
+            }
+
         }
         return finallyData;
     }
 
 
     public static final class Builder {
+        private JSONObject template, target;
+        private Activity activity;
 
+
+        public Builder setContext(Activity activity) {
+            this.activity = activity;
+            return this;
+        }
+
+        public Builder template(JSONObject template) {
+            this.template = template;
+            return this;
+        }
+
+//        public Builder target(JSONObject target) {
+//            this.target = target;
+//            return this;
+//        }
+
+
+        public DynamicLayoutManager build() {
+            if (activity == null) {
+                throw new IllegalStateException("activity required.");
+            }
+
+            if (template == null) {
+                throw new IllegalStateException("template required.");
+            }
+
+
+            return new DynamicLayoutManager(activity, template, target);
+        }
     }
 
 }

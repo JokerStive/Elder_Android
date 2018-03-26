@@ -1,5 +1,9 @@
 package lilun.com.pensionlife.net;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -8,6 +12,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -53,16 +58,23 @@ public class NetHelper {
         }
         return apis;
     }
+
     public static ApiService getQuestionnaireApi() {
         initOkhttpClient();
         if (apis == null) {
             apis = new Retrofit.Builder()
                     .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(getCustomGson()))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build().create(ApiService.class);
         }
         return apis;
+    }
+
+    //自定义Gson,int不自动转为浮点
+    private static Gson getCustomGson() {
+        return new GsonBuilder().
+                registerTypeAdapter(new TypeToken<Map<String, Object>>(){}.getType(), new GsonUtils()).create();
     }
 
     private static void initOkhttpClient() {

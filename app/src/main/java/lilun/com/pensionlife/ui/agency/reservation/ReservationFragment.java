@@ -10,17 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.alibaba.fastjson.JSONObject;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,16 +31,18 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.ContactExtendKey;
+import lilun.com.pensionlife.module.bean.MetaServiceContact;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.dynamic.ContactView;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
+import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import retrofit2.Response;
@@ -57,61 +58,38 @@ public class ReservationFragment extends BaseFragment {
     NormalTitleBar titleBar;
     @Bind(R.id.iv_product_image)
     ImageView ivProductImage;
-    @Bind(R.id.tv_product_title)
-    TextView tvProductTitle;
     @Bind(R.id.tv_product_area)
     TextView tvProductArea;
     @Bind(R.id.tv_product_price)
     TextView tvProductPrice;
-    @Bind(R.id.tv_contact_name)
-    TextView tvContactName;
-    @Bind(R.id.tv_contact_mobile)
-    TextView tvContactMobile;
-    @Bind(R.id.tv_contact_address)
-    EditText tvContactAddress;
-    @Bind(R.id.tv_contact_extension_relation)
-    TextView tvContactExtensionRelation;
-    @Bind(R.id.et_contact_extension_name)
-    EditText tvContactExtensionName;
-    @Bind(R.id.tv_contact_extension_sex)
-    TextView tvContactExtensionSex;
-    @Bind(R.id.tv_contact_extension_birthday)
-    TextView tvContactExtensionBirthday;
-    @Bind(R.id.tv_contact_extension_health_status)
-    TextView tvContactExtensionHealthStatus;
-    @Bind(R.id.tv_contact_extension_health_desc)
-    EditText tvContactExtensionHealthDesc;
+    @Bind(R.id.tv_product_title)
+    TextView tvProductTitle;
+    @Bind(R.id.rl_product)
+    RelativeLayout rlProduct;
+    @Bind(R.id.rl_contact_container)
+    RelativeLayout rlContactContainer;
+    @Bind(R.id.time)
+    TextView time;
     @Bind(R.id.tv_order_time)
     TextView tvOrderTime;
-    @Bind(R.id.tv_price)
-    TextView tvPrice;
+    @Bind(R.id.memo)
+    TextView memo;
     @Bind(R.id.tv_order_memo)
     EditText tvOrderMemo;
-
-    @Bind(R.id.agency_contact_extension)
-    LinearLayout llAgancyExtension;
-    @Bind(R.id.tv_health_desc_count)
-    TextView tvHealthDescCount;
     @Bind(R.id.tv_memo_count)
     TextView tvMemoCount;
-
+    @Bind(R.id.tv_price)
+    TextView tvPrice;
     @Bind(R.id.tv_reservation)
     TextView tvReservation;
-
-
-    private String[] optionSex = App.context.getResources().getStringArray(R.array.personal_info_sex);
-    private String[] optionHealthStatus = App.context.getResources().getStringArray(R.array.personal_info_health_status);
-    private String[] optionRelation = App.context.getResources().getStringArray(R.array.personal_info_relation);
-
-    private int size = 17;
-    private int selectColor = 0xff0090f9;
     private String reservationTime;
     private Contact mContact;
     public static int requestCode = 123;
     public static int resultCode = 321;
     private String mProductId;
     private OrganizationProduct mProduct;
-//    private String mOrderMobile;
+    private ContactView mContactView;
+    private JSONObject template;
 
 
     public static ReservationFragment newInstance(String productId, Contact contact) {
@@ -127,6 +105,7 @@ public class ReservationFragment extends BaseFragment {
     @Override
     protected void getTransferData(Bundle arguments) {
         mContact = (Contact) arguments.getSerializable("contact");
+
         mProductId = arguments.getString("mProductId");
         Preconditions.checkNull(mProductId);
         Preconditions.checkNull(mContact);
@@ -146,25 +125,6 @@ public class ReservationFragment extends BaseFragment {
     protected void initView(LayoutInflater inflater) {
 
         titleBar.setOnBackClickListener(this::pop);
-
-        tvContactExtensionHealthDesc.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tvHealthDescCount.setText(count + "/60");
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
         tvOrderMemo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -181,8 +141,8 @@ public class ReservationFragment extends BaseFragment {
 
             }
         });
-
     }
+
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -191,37 +151,21 @@ public class ReservationFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_contact_extension_relation, R.id.tv_contact_extension_sex, R.id.tv_contact_extension_birthday,
-            R.id.tv_contact_extension_health_status, R.id.tv_order_time, R.id.tv_reservation,
-    })
+    @OnClick({R.id.tv_order_time, R.id.tv_reservation, R.id.tv_change_contact})
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.tv_contact_extension_relation:
-                //选择关系
-//                startForResult(ContactListFragment.newInstance(productCategoryId, mProductId), requestCode);
-                optionPicker(optionRelation, tvContactExtensionRelation);
+            case R.id.tv_change_contact:
+                //切换联系人信息
+                changeContact();
                 break;
 
-            case R.id.tv_contact_extension_sex:
-                //选择性別
-                optionPicker(optionSex, tvContactExtensionSex);
-                break;
-
-            case R.id.tv_contact_extension_health_status:
-                //选择健康状态
-                optionPicker(optionHealthStatus, tvContactExtensionHealthStatus);
-                break;
 
             case R.id.tv_order_time:
                 //选择服务时间
                 chooseReservationTime();
                 break;
 
-            case R.id.tv_contact_extension_birthday:
-                //选择生日
-                chooseBirthday();
-                break;
 
             case R.id.tv_reservation:
                 //预约
@@ -229,6 +173,10 @@ public class ReservationFragment extends BaseFragment {
                 break;
 
         }
+    }
+
+    private void changeContact() {
+        startWithPop(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_PRODUCT));
     }
 
 
@@ -241,10 +189,32 @@ public class ReservationFragment extends BaseFragment {
                     public void _next(OrganizationProduct product) {
                         mProduct = product;
                         showProduct();
-                        showContact();
+                        String templateId = product.getMetaServiceContactId();
+                        if (!TextUtils.isEmpty(templateId)) {
+                            getTemplate(templateId);
+                        } else {
+                            showContact();
+                        }
                     }
                 });
     }
+
+
+    private void getTemplate(String templateId) {
+        if (!TextUtils.isEmpty(templateId)) {
+            NetHelper.getApi().getTemplate(templateId)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<MetaServiceContact>(getActivity()) {
+                        @Override
+                        public void _next(MetaServiceContact metaServiceContact) {
+                            template = metaServiceContact.getSettings();
+                            showContact();
+                        }
+                    });
+        }
+    }
+
 
     private void showProduct() {
         //产品第一张图
@@ -274,37 +244,11 @@ public class ReservationFragment extends BaseFragment {
      * 显示个人资料
      */
     private void showContact() {
-
-        tvContactName.setText(mContact.getName());
-
-        tvContactMobile.setText(mContact.getMobile());
-
-        tvContactAddress.setText(mContact.getAddress());
-
-        String categoryId = mProduct.getOrgCategoryId();
-        HashMap<String, String> extend = mContact.getExtend();
-        if (categoryId.contains("养老机构")) {
-            llAgancyExtension.setVisibility(View.VISIBLE);
-
-            if (extend != null) {
-
-                String relation = extend.get(ContactExtendKey.relation);
-                String reservationName = extend.get(ContactExtendKey.reservationName);
-                String sex = extend.get(ContactExtendKey.sex);
-                String birthday = extend.get(ContactExtendKey.birthday);
-                String healthStatus = extend.get(ContactExtendKey.healthStatus);
-                String healthyDescription = extend.get(ContactExtendKey.healthyDescription);
-
-                tvContactExtensionRelation.setText(relation);
-                tvContactExtensionName.setText(reservationName);
-                tvContactExtensionSex.setText(sex);
-                tvContactExtensionBirthday.setText(birthday);
-                tvContactExtensionHealthStatus.setText(healthStatus);
-                tvContactExtensionHealthDesc.setText(healthyDescription);
-            }
-
-
+        if (mContactView == null) {
+            mContactView = new ContactView(_mActivity);
+            rlContactContainer.addView(mContactView.getView());
         }
+        mContactView.reDraw(mContact, template);
     }
 
     /**
@@ -315,12 +259,16 @@ public class ReservationFragment extends BaseFragment {
             return;
         }
 
-        String categoryId = mProduct.getOrgCategoryId();
-        if (!checkContactComplete(categoryId)) {
+
+        Contact contact = mContactView.getFinalContactData();
+        if (contact == null) {
             return;
         }
 
-        Contact contact = newContactModel();
+
+        if (!checkContactComplete()) {
+            return;
+        }
 
         NetHelper.getApi()
                 .putContact(contactId, contact)
@@ -330,12 +278,8 @@ public class ReservationFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-//                        mOrderMobile = productOrder.getMobile();
-//                        call();
-//                        start(OrderListFragment.newInstance());
                         popTo(ProductDetailFragment.class, false);
                         EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
-//                        setHadOrdered();
                     }
                 });
     }
@@ -347,54 +291,8 @@ public class ReservationFragment extends BaseFragment {
         return NetHelper.getApi().createOrder(productId, contactId, orderTime, orderMemo);
     }
 
-    private Contact newContactModel() {
-        Contact contact = new Contact();
-        HashMap<String, String> extension = new HashMap<>();
-//        AgencyContactExtension extension = new AgencyContactExtension();
-        extension.put(ContactExtendKey.relation, tvContactExtensionRelation.getText().toString());
-        extension.put(ContactExtendKey.reservationName, tvContactExtensionName.getText().toString());
-        extension.put(ContactExtendKey.sex, tvContactExtensionSex.getText().toString());
-        extension.put(ContactExtendKey.birthday, tvContactExtensionBirthday.getText().toString());
-        extension.put(ContactExtendKey.healthStatus, tvContactExtensionHealthStatus.getText().toString());
-        extension.put(ContactExtendKey.healthyDescription, tvContactExtensionHealthDesc.getText().toString());
-        contact.setExtend(extension);
-        contact.setIndex(mContact.getIndex());
-        return contact;
-    }
 
-    private boolean checkContactComplete(String categoryId) {
-        if (categoryId.contains("养老机构")) {
-            if (TextUtils.isEmpty(tvContactExtensionRelation.getText())) {
-                ToastHelper.get().showWareShort("请选择您与入住人的关系");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(tvContactExtensionName.getText())) {
-                ToastHelper.get().showWareShort("请输入入住人的姓名");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(tvContactExtensionSex.getText())) {
-                ToastHelper.get().showWareShort("请选择入住人的性别");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(tvContactExtensionBirthday.getText())) {
-                ToastHelper.get().showWareShort("请选择入住人的出生日期");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(tvContactExtensionSex.getText())) {
-                ToastHelper.get().showWareShort("请选择入住人的健康状况");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(tvContactExtensionSex.getText())) {
-                ToastHelper.get().showWareShort("请输入入住人的身体情况,方便我们服务");
-                return false;
-            }
-        }
-
+    private boolean checkContactComplete() {
         if (TextUtils.isEmpty(tvOrderTime.getText())) {
             ToastHelper.get().showWareShort("请选择服务时间");
             return false;
@@ -427,57 +325,14 @@ public class ReservationFragment extends BaseFragment {
     }
 
 
-    /**
-     * 生日选择器
-     */
-    private void chooseBirthday() {
-        DateTimePicker picker = new DateTimePicker(_mActivity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
-        picker.setDateRangeStart(1900, 1, 1);
-        Calendar cal = Calendar.getInstance();
-        int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH);
-        int endDay = cal.get(Calendar.DATE);
-        picker.setDateRangeEnd(endYear, endMonth, endDay);
-        if (App.widthDP > 820) {
-            picker.setTextSize(12 * 2);
-            picker.setCancelTextSize(12 * 2);
-            picker.setSubmitTextSize(12 * 2);
-            picker.setTopPadding(15 * 3);
-            picker.setTopHeight(40 * 2);
-        }
-        setPickerConfig(picker);
-        picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {
-            String time = year + "-" + month + "-" + day;
-            tvContactExtensionBirthday.setText(time);
-        });
-        picker.show();
-    }
-
-    /**
-     * 选择器的配置
-     */
     private void setPickerConfig(WheelPicker picker) {
-        picker.setTextSize(size);
-        picker.setCancelTextSize(size);
-        picker.setSubmitTextSize(size);
-        picker.setLineColor(selectColor);
-        picker.setTextColor(selectColor);
+//        picker.setTextSize(size);
+//        picker.setCancelTextSize(size);
+//        picker.setSubmitTextSize(size);
+//        picker.setLineColor(selectColor);
+//        picker.setTextColor(selectColor);
     }
 
-
-    /**
-     * 显示一个选择器
-     */
-    private void optionPicker(String[] options, TextView targetTv) {
-        new MaterialDialog.Builder(_mActivity)
-                .title("-选择类型-")
-                .items(options)
-                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
-                    targetTv.setText(text);
-                    return true;
-                }).show();
-
-    }
 
     @Override
     protected void onFragmentResult(int reCode, int resultCode, Bundle data) {
@@ -490,35 +345,5 @@ public class ReservationFragment extends BaseFragment {
         }
     }
 
-//    private void call() {
-//        if (!TextUtils.isEmpty(mOrderMobile)) {
-//            boolean hasPermission = hasPermission(Manifest.permission.CALL_PHONE);
-//            if (hasPermission) {
-//                callMobile();
-//            } else {
-//                requestPermission(Manifest.permission.CALL_PHONE, 0X11);
-//            }
-//        } else {
-//            ToastHelper.get().showShort("此服务商没有提供电话");
-//        }
-//    }
-//
-//    private void callMobile() {
-//        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + mOrderMobile.replace("-", "")));
-//        startActivity(intent);
-//    }
-//
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 0x11) {
-//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                ToastHelper.get().showShort("请给予权限");
-//            } else {
-//                callMobile();
-//            }
-//        }
-//    }
 
 }

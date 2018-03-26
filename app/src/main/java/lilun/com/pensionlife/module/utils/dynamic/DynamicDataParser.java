@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.module.utils.dynamic;
 
+import android.app.Activity;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -8,12 +10,16 @@ import com.alibaba.fastjson.JSONObject;
 public class DynamicDataParser {
 
 
-    public DynamicDataParser() {
+    private Activity activity;
+    private final DynamicLayoutProvider provider;
+
+    public DynamicDataParser(Activity activity) {
+        provider = new DynamicLayoutProvider(activity);
+        this.activity = activity;
     }
 
 
     public Result getResult(JSONObject setting) {
-        DynamicLayoutProvider provider = new DynamicLayoutProvider();
         Result result = null;
         boolean containsEnum = setting.containsKey("enum");
         if (containsEnum) {
@@ -21,16 +27,18 @@ public class DynamicDataParser {
         } else {
             String type = setting.getString("type");
             switch (type) {
+                case "date":
+                case "datetime":
                 case "time":
                     result = provider.createTimeView(setting);
                     break;
 
-                case "photo":
-                    result = provider.createPhotoView(setting);
-                    break;
+//                case "photo":
+//                    result = provider.createPhotoView(setting);
+//                    break;
 
                 case "string":
-                case "integer":
+                case "number":
                     result = provider.createInputView(setting);
                     break;
             }

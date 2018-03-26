@@ -139,7 +139,6 @@ public class EducationListFragment extends BaseFragment {
 
 
     public void showCollages(List<Organization> collages, boolean isLoadMore) {
-
         if (isLoadMore) {
             mCollageAdapter.addAll(collages, true);
         } else {

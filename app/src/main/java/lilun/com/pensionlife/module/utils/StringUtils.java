@@ -12,6 +12,7 @@ import org.json.JSONTokener;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -138,6 +139,13 @@ public class StringUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String weekTrans(String week) {
+        List<String> weekEnglish = Arrays.asList(App.context.getResources().getStringArray(R.array.week_english));
+        List<String> weekChinese = Arrays.asList(App.context.getResources().getStringArray(R.array.week_chinese));
+        int indexOf = weekEnglish.indexOf(week);
+        return indexOf == -1 ? "" : weekChinese.get(indexOf);
     }
 
     /**
@@ -316,15 +324,6 @@ public class StringUtils {
      */
     public static String addFilterWithDef(String filter, int skip) {
         String head;
-//        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
-//            head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
-//            filter = head;
-//        } else {
-//            head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
-//            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
-//        }
-
-
         if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
             head = "{\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\"}";
             filter = head;
@@ -348,9 +347,21 @@ public class StringUtils {
             head = ",\"limit\":\"" + Config.defLoadDatCount + "\",\"skip\":\"" + skip + "\",\"visible\":\"0\"}";
             filter = filter.substring(0, filter.lastIndexOf("}")) + head;
         }
-//        Logger.d("拼接够的filter--" + filter);
         return filter;
     }
+
+
+//    public static String addVisibleToFilter(String filter) {
+//        String head;
+//        if (TextUtils.isEmpty(filter) || filter.equals("{}")) {
+//            head = "{\"visible\":0}";
+//            filter = head;
+//        } else {
+//            head = ",\"visible\":0}";
+//            filter = filter.substring(0, filter.lastIndexOf("}")) + head;
+//        }
+//        return filter;
+//    }
 
 
     /**

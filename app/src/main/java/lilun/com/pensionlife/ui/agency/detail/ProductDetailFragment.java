@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,16 +26,15 @@ import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
-import lilun.com.pensionlife.module.adapter.ProductRankAdapter;
 import lilun.com.pensionlife.module.bean.Contact;
-import lilun.com.pensionlife.module.bean.Count;
+import lilun.com.pensionlife.module.bean.CourseSchedule;
+import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.ProductOrder;
-import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -47,8 +45,11 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
+import lilun.com.pensionlife.ui.education.course_details.CourseDetailContract;
+import lilun.com.pensionlife.ui.education.course_details.CourseDetailPresenter;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.order.personal_detail.OrderDetailActivity;
+import lilun.com.pensionlife.ui.protocol.ProtocolView;
 import lilun.com.pensionlife.ui.residential.rank.RankListFragment;
 import lilun.com.pensionlife.widget.CustomRatingBar;
 import lilun.com.pensionlife.widget.DividerDecoration;
@@ -56,7 +57,7 @@ import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.ProgressWebView;
 import lilun.com.pensionlife.widget.slider.BannerPager;
-import rx.Observable;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * 产品详情页
@@ -65,7 +66,7 @@ import rx.Observable;
  *         create at 2017/8/3 15:06
  *         email : yk_developer@163.com
  */
-public class ProductDetailFragment extends BaseFragment {
+public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Presenter> implements CourseDetailContract.View {
 
     @Bind(R.id.titleBar)
     NormalTitleBar titleBar;
@@ -120,8 +121,13 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Bind(R.id.tv_all_rank)
     TextView tvAllRank;
+
     @Bind(R.id.ll_rank)
     LinearLayout llRank;
+
+    @Bind(R.id.protocol)
+    ProtocolView mProtocolView;
+
     @Bind(R.id.tv_reservation)
     TextView tvReservation;
 
@@ -150,6 +156,12 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
+    @Subscribe
+    public void refresh(ProtocolView.IsAgreeProtocol isAgreeProtocol) {
+        mProtocolView.agreeProtocol(isAgreeProtocol.isAgreeProtocol);
+    }
+
+
     @Override
     protected void getTransferData(Bundle arguments) {
         mProductId = arguments.getString("objectId");
@@ -158,7 +170,13 @@ public class ProductDetailFragment extends BaseFragment {
 
     @Override
     protected void initPresenter() {
+        mPresenter = new CourseDetailPresenter();
+        mPresenter.bindView(this);
 
+        String filter = "{\"include\":{\"relation\":\"orgCategory\",\"scope\":{\"fields\":[\"icon\"]}}}";
+        mPresenter.getProductDetail(mProductId, filter);
+        mPresenter.getProtocol(mProductId);
+        mPresenter.getIsOrder(mProductId);
     }
 
     @Override
@@ -180,50 +198,6 @@ public class ProductDetailFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
-        getProduct();
-//        get2Rank();
-//        getRankCount();
-        getIsOrder();
-    }
-
-
-    private void getProduct() {
-        NetHelper.getApi().getProduct(mProductId, null)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationProduct>(getActivity()) {
-                    @Override
-                    public void _next(OrganizationProduct product) {
-                        showProductDetail(product);
-//                        get2Rank();
-                    }
-                });
-
-    }
-
-    private void getIsOrder() {
-        NetHelper.getApi()
-                .getOrderLimit(mProductId)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrderLimit>() {
-
-                    @Override
-                    public void _next(OrderLimit orderLimit) {
-                        boolean ordered = orderLimit.isOrdered();
-                        boolean isLimit = orderLimit.isIsLimit();
-                        if (ordered) {
-                            setHadOrdered();
-                        } else if (isLimit) {
-                            productIsLimit = true;
-                        }
-                    }
-                });
-    }
-
     private void setHadOrdered() {
         tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
         tvReservation.setEnabled(false);
@@ -231,44 +205,31 @@ public class ProductDetailFragment extends BaseFragment {
         tvOrderDetail.setVisibility(View.VISIBLE);
     }
 
-    private void get2Rank() {
-        String filter = "{\"limit\":\"2\",\"order\":\"createdAt DESC\",\"where\":{\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + mProductId + "\"}}";
-        NetHelper.getApi()
-                .getRanks(filter)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Rank>>() {
-                    @Override
-                    public void _next(List<Rank> ranks) {
-                        show2Rank(ranks);
-                    }
-                });
+    /**
+     * 服务范围
+     */
+    private void showProductArea() {
+        List<String> areas = mProduct.getAreaIds();
+        String result = StringUtils.getProductArea(areas);
+        tvProductArea.setText(String.format("服务范围: %1$s", result));
+    }
+
+    private void showBanner(OrganizationProduct product) {
+        List<String> urls = new ArrayList<>();
+        if (product.getImage() != null) {
+            for (String url : product.getImage()) {
+                urls.add(url);
+            }
+        } else if (product.getOrgCategory() != null) {
+            OrganizationProductCategory orgCategory = product.getOrgCategory();
+            urls.add(orgCategory.getIcon());
+        }
+        banner.setData(urls);
     }
 
 
-    private void getRankCount() {
-        String filter = "{\"whatId\":\"" + mProductId + "\"}";
-        Observable.just("")
-                .subscribe(new RxSubscriber<String>() {
-                    @Override
-                    public void _next(String s) {
-
-                    }
-                });
-        NetHelper.getApi()
-                .getRanksCount(filter)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<Count>() {
-                    @Override
-                    public void _next(Count count) {
-                        showRankCount(count.getCount());
-                    }
-                });
-    }
-
-
-    private void showProductDetail(OrganizationProduct product) {
+    @Override
+    public void showCourseDetail(OrganizationProduct product) {
 
         this.mProduct = product;
 
@@ -291,7 +252,6 @@ public class ProductDetailFragment extends BaseFragment {
             String context = product.getContext();
             tvProductTitleExtra.setText(context);
         }
-//        tvProductTitleExtra.setText(product.getTitle());
 
         //星
         rbScore.setCountSelected(product.getRank());
@@ -323,52 +283,36 @@ public class ProductDetailFragment extends BaseFragment {
 
         //内容
         wbProductContent.noProgress();
-        if (contextType.equals("2")){
+        if (contextType.equals("2")) {
             wbProductContent.loadDataWithBaseURL("", product.getContext(), "text/html", "UTF-8", "");
-        }else if(contextType.equals("3")){
+        } else if (contextType.equals("3")) {
             wbProductContent.loadUrl(product.getContext());
         }
     }
 
-    private String formatMobile(String mobile) {
-        return TextUtils.isEmpty(mobile) ? "暂未提供" : mobile;
-    }
-
-    /**
-     * 服务范围
-     */
-    private void showProductArea() {
-        List<String> areas = mProduct.getAreaIds();
-        String result = StringUtils.getProductArea(areas);
-        tvProductArea.setText(String.format("服务范围: %1$s", result));
-    }
-
-    private void showBanner(OrganizationProduct product) {
-        List<String> urls = new ArrayList<>();
-        if (product.getImage() != null) {
-            for (String url : product.getImage()) {
-                urls.add(url);
-            }
-        } else {
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null);
-            urls.add(url);
+    @Override
+    public void showProtocol(Information protocol) {
+        if (protocol != null) {
+            mProtocolView.setVisibility(View.VISIBLE);
+            mProtocolView.showProtocol(this, protocol);
         }
-        banner.setData(urls);
     }
 
+    @Override
+    public void showSchedules(List<CourseSchedule> schedules) {
 
-    private void show2Rank(List<Rank> ranks) {
-        llRank.setVisibility(View.VISIBLE);
-        ProductRankAdapter adapter = new ProductRankAdapter(ranks);
-        adapter.setEmptyView();
-        rvRank.setAdapter(adapter);
     }
 
-
-    private void showRankCount(int count) {
-        tvRankCount.setText(String.format("评价 （ %1$s ）", count));
+    @Override
+    public void showIsOrdered(OrderLimit orderLimit) {
+        boolean ordered = orderLimit.isOrdered();
+        boolean isLimit = orderLimit.isIsLimit();
+        if (ordered) {
+            setHadOrdered();
+        } else if (isLimit) {
+            productIsLimit = true;
+        }
     }
-
 
     @OnClick({R.id.tv_order_detail, R.id.tv_enter_provider, R.id.tv_reservation, R.id.tv_product_phone, R.id.tv_product_mobile, R.id.tv_all_rank, R.id.tv_rank_count})
     public void onClick(View v) {
@@ -438,7 +382,6 @@ public class ProductDetailFragment extends BaseFragment {
                             Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
                             intent.putExtra("orderId", orderId);
                             startActivity(intent);
-//                            start(OrderDetailFragment.newInstance(orderId));
                         } else {
                             ToastHelper.get().showWareShort("没有找到该产品对应的订单");
                         }
@@ -451,6 +394,15 @@ public class ProductDetailFragment extends BaseFragment {
      * 预约
      */
     private void takeReservation() {
+
+        if (mProtocolView.getVisibility() != View.GONE) {
+            boolean agreeProtocol = mProtocolView.isAgreeProtocol();
+            if (!agreeProtocol) {
+                ToastHelper.get().showWareShort("请先同意协议");
+                return;
+            }
+        }
+
         if (TextUtils.equals(mProduct.getCreatorId(), User.getUserId())) {
             ToastHelper.get().showWareShort("不能预约自己创建的服务");
             return;
@@ -460,45 +412,38 @@ public class ProductDetailFragment extends BaseFragment {
             new NormalDialog().createNormal(_mActivity, "该产品的服务时间与您预约过的产品时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
                 @Override
                 public void onPositiveClick() {
-                    getContacts();
+                    reservation();
                 }
             });
-        } else {
-            getContacts();
         }
+
+        reservation();
+
     }
 
-    private void getContacts() {
-        String filter = "{\"where\":{\"accountId\":\"" + User.getUserId() + "\"}}";
-        NetHelper.getApi().getContacts(filter)
-                .compose(RxUtils.handleResult())
-                .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Contact>>(getActivity()) {
-                    @Override
-                    public void _next(List<Contact> contacts) {
-                        checkContact(contacts);
-                    }
-                });
+    private void reservation() {
+        mPresenter.getContacts();
     }
 
     /**
      * 检查预约资料
      */
-    private void checkContact(List<Contact> contacts) {
+    @Override
+    public void checkContact(List<Contact> contacts) {
         if (contacts.size() > 0) {
-            start(ContactListFragment.newInstance(mProduct.getId(), 0));
-//            //显示 预约者信息列表
-//            Contact defContact = getDefaultContact(contacts);
-//            if (defContact == null) {
-//                //没有默认信息，就进去信息列表
-//            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getFrom()) || TextUtils.isEmpty(defContact.getAddress())) {
-//                defContact.setProductId(mProductId);
-//                //必要信息不完善
-//                start(AddBasicContactFragment.newInstance(defContact, 1));
-//            } else {
-//                //有默认信息，并且必要信息完整，直接预约界面
-//                start(ReservationFragment.newInstance(mProductId, defContact));
-//            }
+            //显示 预约者信息列表
+            Contact defContact = getDefaultContact(contacts);
+            if (defContact == null) {
+                //没有默认信息，就进去信息列表
+                start(ContactListFragment.newInstance(mProduct.getId(), 1), SupportFragment.SINGLETASK);
+            } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
+                defContact.setProductId(mProductId);
+                //必要信息不完善
+                start(AddBasicContactFragment.newInstance(defContact, 1));
+            } else {
+                //有默认信息，并且必要信息完整，直接预约界面
+                start(ReservationFragment.newInstance(mProductId, defContact));
+            }
         } else {
             //新增基础信息界面
             AddBasicContactFragment addBasicContactFragment = new AddBasicContactFragment();
@@ -563,19 +508,6 @@ public class ProductDetailFragment extends BaseFragment {
             startActivity(intent);
         });
     }
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 0x11) {
-//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                ToastHelper.get().showShort("请给予权限");
-//            } else {
-//                callMobile();
-//            }
-//        }
-//    }
 
 
     @Override

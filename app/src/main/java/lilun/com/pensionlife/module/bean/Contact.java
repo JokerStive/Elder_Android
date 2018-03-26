@@ -1,6 +1,6 @@
 package lilun.com.pensionlife.module.bean;
 
-import java.util.HashMap;
+import com.alibaba.fastjson.JSONObject;
 
 import lilun.com.pensionlife.base.BaseBean;
 
@@ -48,7 +48,7 @@ public class Contact extends BaseBean {
     private String creatorName;
     private String updatorId;
     private String updatorName;
-    private HashMap<String, String> extend;
+    private JSONObject extend;
 
     public String getId() {
         return id;
@@ -106,11 +106,11 @@ public class Contact extends BaseBean {
         this.gender = gender;
     }
 
-    public HashMap<String, String> getExtend() {
+    public JSONObject getExtend() {
         return extend;
     }
 
-    public void setExtend(HashMap<String, String> extend) {
+    public void setExtend(JSONObject extend) {
         this.extend = extend;
     }
 
