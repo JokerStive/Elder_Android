@@ -20,7 +20,7 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
      */
     @Override
     public void getOrder(String orderId) {
-        String filter = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\",\"contact\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
+        String filter = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productId\",\"productBackupId\",\"contact\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())

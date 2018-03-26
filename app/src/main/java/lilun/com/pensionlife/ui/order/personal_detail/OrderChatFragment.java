@@ -147,7 +147,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             ivOrderImg.setBackgroundColor(getResources().getColor(R.color.gray));
             ImageLoaderUtil.instance().loadImage(order.getProductImage(), ivOrderImg);
             rlProductInfo.setOnClickListener((v) -> {
-                start(ProductDetailFragment.newInstance(order.getProductBackup().getId()));
+                start(ProductDetailFragment.newInstance(order.getProductId()));
             });
         }
         tvOrderRegisterTime.setText("服务时间:2018-01-24" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
@@ -157,7 +157,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             tvContactMobile.setText("电话：" + order.getContact().getMobile());
             tvContactAddress.setText("地址：" + order.getContact().getAddress());
             llContactInfo.setOnClickListener((v) -> {
-                ToastHelper.get().showShort("联系人模块!");
+               ToastHelper.get().showShort("联系人模块!");
             });
         }
         btnCancelOrder.setOnClickListener((v) -> {

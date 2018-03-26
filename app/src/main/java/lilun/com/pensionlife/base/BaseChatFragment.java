@@ -142,8 +142,8 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
                 .listen(new FindMultiCallback() {
                     @Override
                     public <T> void onFinish(List<T> t) {
-                        chatAdapter.replaceAll((List<PushMessage>) t);
-                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount());
+                        chatAdapter.addAll((List<PushMessage>) t);
+                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount()-1);
                     }
                 });
     }
