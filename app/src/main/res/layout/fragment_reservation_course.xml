@@ -91,22 +91,41 @@
                 android:layout_height="@dimen/dp_10"
                 android:background="#f5f5f9" />
 
-            <TextView
-                android:id="@+id/tv_change_contact"
-                style="@style/tv_normal"
+            <RelativeLayout
+                android:id="@+id/rl_change_contact"
                 android:layout_width="match_parent"
-                android:drawableLeft="@drawable/icon_reservation_info"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:padding="@dimen/dp_16"
-                android:text="联系人信息"
-                android:textColor="#999999"
-                android:textSize="@dimen/sp_15" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_width="wrap_content"
+                    android:drawableLeft="@drawable/icon_reservation_info"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_16"
+                    android:text="联系人信息"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    style="@style/tv_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/change_contact"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_16"
+                    android:text="修改联系人"
+                    android:textColor="#999999"
+                    android:textSize="@dimen/sp_15" />
+
+
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/rl_contact_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
@@ -157,4 +176,6 @@
             android:textSize="@dimen/sp_17" />
 
     </LinearLayout>
+
+
 </RelativeLayout>

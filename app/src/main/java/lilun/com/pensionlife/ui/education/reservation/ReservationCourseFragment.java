@@ -61,8 +61,6 @@ public class ReservationCourseFragment extends BaseFragment {
     TextView tvProductTitle;
     @Bind(R.id.rl_product)
     RelativeLayout rlProduct;
-    @Bind(R.id.tv_change_contact)
-    TextView tvChangeContact;
     @Bind(R.id.rl_contact_container)
     RelativeLayout rlContactContainer;
     @Bind(R.id.ll_container)
@@ -121,14 +119,14 @@ public class ReservationCourseFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_change_contact, R.id.tv_reservation
+    @OnClick({R.id.rl_change_contact, R.id.tv_reservation
     })
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.tv_change_contact:
+            case R.id.rl_change_contact:
                 //切换联系人
-                startWithPop(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_COURSE));
+                start(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_COURSE));
                 break;
 
             case R.id.tv_reservation:
@@ -210,6 +208,7 @@ public class ReservationCourseFragment extends BaseFragment {
     private void showContact() {
         if (mContactView == null) {
             mContactView = new ContactView(_mActivity);
+            mContactView.setOnlyShow(true);
             rlContactContainer.addView(mContactView.getView());
         }
         mContactView.reDraw(mContact, template);

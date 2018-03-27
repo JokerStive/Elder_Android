@@ -151,11 +151,11 @@ public class ReservationFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_order_time, R.id.tv_reservation, R.id.tv_change_contact})
+    @OnClick({R.id.tv_order_time, R.id.tv_reservation, R.id.rl_change_contact})
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.tv_change_contact:
+            case R.id.rl_change_contact:
                 //切换联系人信息
                 changeContact();
                 break;
@@ -176,7 +176,7 @@ public class ReservationFragment extends BaseFragment {
     }
 
     private void changeContact() {
-        startWithPop(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_PRODUCT));
+        start(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_PRODUCT));
     }
 
 

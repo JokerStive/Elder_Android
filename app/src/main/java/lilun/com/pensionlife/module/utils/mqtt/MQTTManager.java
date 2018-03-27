@@ -57,27 +57,6 @@ public class MQTTManager {
         } catch (MqttException e) {
             e.printStackTrace();
         }
-//        MqttTopic mqttTopic = new MqttTopic();
-//        String[] topics = mqttTopic.getAllTopicWhenInit();
-//        if (topics != null && getInstance().isConnected()) {
-//            Logger.d("移除订阅----" + Arrays.toString(topics));
-//            getInstance().unSubscribe(topics, null, new IMqttActionListener() {
-//                @Override
-//                public void onSuccess(IMqttToken asyncActionToken) {
-//                    try {
-//                        getInstance().disConnect();
-//                        mInstance = null;
-//                    } catch (MqttException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-//
-//                }
-//            });
-//        }
     }
 
 
@@ -171,9 +150,7 @@ public class MQTTManager {
             client.subscribe(topic, qos, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-//                    ACache.get(App.context, "topics").put(topic, topic);
                     Logger.i(topic + "---订阅成功");
-//                    Logger.i("缓存topic--" + topic);
                 }
 
                 @Override

@@ -5,12 +5,14 @@ import android.text.TextUtils;
 import java.io.Serializable;
 import java.util.List;
 
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Constants;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.bean.TokenInfo;
 import lilun.com.pensionlife.module.utils.ACache;
+import lilun.com.pensionlife.module.utils.DeviceUtils;
 import lilun.com.pensionlife.module.utils.PreUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
@@ -276,6 +278,8 @@ public class LoginModule implements LoginContract.Module {
         Account account = new Account();
         account.setUsername(username);
         account.setPassword(password);
+        String clientId = DeviceUtils.getUniqueIdForThisApp(App.context) + "@" + User.getUserName();
+        account.setClientId(clientId);
         return account;
     }
 

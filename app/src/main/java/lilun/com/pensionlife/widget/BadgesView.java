@@ -1,6 +1,5 @@
 package lilun.com.pensionlife.widget;
 
-import android.annotation.ColorInt;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -24,7 +23,6 @@ public class BadgesView extends android.support.v7.widget.AppCompatTextView {
     int minWidth = 20;
     int minHeight = 20;
     //默认填充颜色
-    @ColorInt
     int sloidColor = getResources().getColor(android.R.color.holo_red_light);
 
     public BadgesView(Context context) {
@@ -53,7 +51,7 @@ public class BadgesView extends android.support.v7.widget.AppCompatTextView {
     }
 
 
-    public GradientDrawable getDefaultDrawable(@ColorInt int sloidColor) {
+    public GradientDrawable getDefaultDrawable( int sloidColor) {
         GradientDrawable gradientDw = new GradientDrawable();
         gradientDw.setCornerRadius(UIUtils.dp2px(getContext(), getResources().getDimension(R.dimen.dp_20)));
         gradientDw.setStroke(UIUtils.dp2px(getContext(), 0),

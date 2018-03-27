@@ -45,6 +45,11 @@ public class InputView extends BaseView {
         }
 
 
+        if (isOnlyShow) {
+            et_mate_value.setEnabled(false);
+            return inputView;
+        }
+
         et_mate_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

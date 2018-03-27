@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -185,6 +186,16 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
         //标题
         tvCourseTitle.setText(product.getTitle());
+
+        //学期
+        //学期
+        Map<String, Object> extend = product.getExtend();
+        if (extend!=null && extend.get("termStartDate")!=null && extend.get("termEndDate")!=null){
+            String termStartDate = extend.get("termStartDate").toString();
+            String termEndDate = extend.get("termEndDate").toString();
+            String semester = "学期："+StringUtils.IOS2ToUTC(termStartDate,5)+"~"+StringUtils.IOS2ToUTC(termEndDate,5);
+            tvCourseXueqi.setText(semester);
+        }
 
 
         //报名人数

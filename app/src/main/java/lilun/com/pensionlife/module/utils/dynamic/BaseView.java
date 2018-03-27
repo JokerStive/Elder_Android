@@ -17,6 +17,7 @@ public abstract class BaseView implements Result {
     protected String mate_description;
     protected String mate_type;
     protected Object mate_value;
+    protected boolean isOnlyShow;
 
     protected void setSetting(JSONObject setting) {
         this.setting = setting;
@@ -27,13 +28,16 @@ public abstract class BaseView implements Result {
             mate_description = setting.getString("description");
             mate_type = setting.getString("type");
             Object valueObj = setting.get("value");
+            if (setting.containsKey("isOnlyShow")) {
+                isOnlyShow = true;
+            }
             if (valueObj instanceof Double) {
                 Double valueDouble = (Double) valueObj;
-                int valueInt = valueDouble.intValue();
-                mate_value = valueDouble == valueInt ? valueInt : valueDouble;
+                mate_value = valueDouble.intValue();
                 return;
             }
             mate_value = setting.get("value");
+
 
         }
     }
