@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <TextView
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/activity_line"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textSize="@dimen/sp_24" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar"
+        android:paddingBottom="@dimen/dp_40"
+        android:paddingTop="@dimen/dp_40"
+        android:src="@mipmap/login_icon" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/ll_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="200dp"
             android:layout_marginBottom="@dimen/dp_4"
-            android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_height"
-                android:background="@color/activity_line"
-                android:gravity="center"
-                android:text="@string/login"
-                android:textSize="@dimen/sp_24" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dp_40"
-                android:paddingTop="@dimen/dp_40"
-                android:src="@mipmap/login_icon" />
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -111,12 +118,13 @@
                 android:layout_margin="@dimen/dp_10"
                 android:background="@drawable/selector_rect_corner_red"
                 android:gravity="center"
-                android:text="@string/login"
                 android:padding="@dimen/dp_10"
+                android:text="@string/login"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_20" />
 
             <RelativeLayout
+                android:id="@+id/rl_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -143,4 +151,4 @@
     </android.support.v4.widget.NestedScrollView>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
