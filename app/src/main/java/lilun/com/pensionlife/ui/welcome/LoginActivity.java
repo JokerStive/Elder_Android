@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import butterknife.Bind;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.R;
@@ -134,7 +136,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
              /* old是改变前的左上右下坐标点值，没有old的是改变后的左上右下坐标点值
               现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起*/
             if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
-                Log.e("wenzhihao", "up------>" + (oldBottom - bottom) + " " + rlContainer.getHeight());
+                Logger.d("LoginActivity-position", "up------>" + (oldBottom - bottom) + " " + rlContainer.getHeight());
                 int dist = llContainer.getBottom() - bottom - rlContainer.getHeight();
                 if (dist > 0) {
                     ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(llContainer, "translationY", 0.0f, -dist);
@@ -146,7 +148,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
 
             } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
-                Log.e("wenzhihao", "down------>" + (bottom - oldBottom));
+                Logger.d("LoginActivity-position", "down------>" + (bottom - oldBottom));
                 if ((llContainer.getBottom() - oldBottom) > 0) {
                     ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(llContainer, "translationY", llContainer.getTranslationY(), 0);
                     mAnimatorTranslateY.setDuration(300);
