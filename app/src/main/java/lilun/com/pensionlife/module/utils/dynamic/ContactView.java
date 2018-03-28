@@ -25,11 +25,16 @@ public class ContactView {
     private RelativeLayout rlExtendContainer;
     private DynamicLayoutManager manager;
     private Contact contact;
+    private boolean isOnlyShow;
 
     public ContactView(Activity activity) {
         this.activity = activity;
     }
 
+
+    public void setOnlyShow(boolean isOnlyShow) {
+        this.isOnlyShow = isOnlyShow;
+    }
 
     public View getView() {
         LinearLayout container = (LinearLayout) LayoutInflater.from(App.context).inflate(R.layout.layout_contact, null);
@@ -62,6 +67,7 @@ public class ContactView {
             manager = new DynamicLayoutManager.Builder()
                     .setContext(activity)
                     .template(template)
+                    .isOnlyShow(isOnlyShow)
                     .build();
         }
         LinearLayout dynamicLayout = manager.createDynamicLayout(extend);

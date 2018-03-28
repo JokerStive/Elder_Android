@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
+import java.util.Map;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
@@ -36,6 +37,14 @@ public class EduCourseAdapter extends QuickAdapter<OrganizationProduct> {
                 .setText(R.id.tv_course_stock, "报名人数:" + course.getStock())
                 .setText(R.id.tv_course_price, Html.fromHtml("合计: <font color='#ff4400'>" + topPriceResult + "</font>"));
 
+        //学期
+        Map<String, Object> extend = course.getExtend();
+        if (extend!=null && extend.get("termStartDate")!=null && extend.get("termEndDate")!=null){
+            String termStartDate = extend.get("termStartDate").toString();
+            String termEndDate = extend.get("termEndDate").toString();
+            String semester = "学期："+StringUtils.IOS2ToUTC(termStartDate,5)+"~"+StringUtils.IOS2ToUTC(termEndDate,5);
+            help.setText(R.id.tv_course_semester,semester);
+        }
 
 
         String iconUrl = StringUtils.getFirstIcon(course.getImage());

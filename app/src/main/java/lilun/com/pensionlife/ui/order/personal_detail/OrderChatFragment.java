@@ -18,8 +18,8 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseChatFragment;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
+import lilun.com.pensionlife.ui.contact.ContactDetailFragment;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
@@ -42,6 +42,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     private LinearLayout llContactInfo;
     private RelativeLayout rlProductInfo;
     private View inflate;
+    private String metaServiceContactId;
 
     /**
      * 互动式聊天室
@@ -149,6 +150,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             rlProductInfo.setOnClickListener((v) -> {
                 start(ProductDetailFragment.newInstance(order.getProductId()));
             });
+            metaServiceContactId = order.getProductBackup().getMetaServiceContactId();
         }
         tvOrderRegisterTime.setText("服务时间:2018-01-24" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
         tvProdcutNumber.setText("x 1");
@@ -157,7 +159,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             tvContactMobile.setText("电话：" + order.getContact().getMobile());
             tvContactAddress.setText("地址：" + order.getContact().getAddress());
             llContactInfo.setOnClickListener((v) -> {
-               ToastHelper.get().showShort("联系人模块!");
+                start(ContactDetailFragment.newInstance(metaServiceContactId, order.getContact()));
             });
         }
         btnCancelOrder.setOnClickListener((v) -> {

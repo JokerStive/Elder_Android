@@ -55,6 +55,8 @@ public class ProtocolView extends RelativeLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.protocol_view, this);
 
         tvAgree = (TextView) view.findViewById(R.id.tv_agree);
+
+
         tvProtocol = (TextView) view.findViewById(R.id.tv_protocol_title);
         tvAgree.setOnClickListener(new OnClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class ProtocolView extends RelativeLayout {
         if (extend != null) {
             isFocus = extend.getBoolean("isFocus");
         }
-        if (isFocus) {
+        if (isFocus && !tvAgree.isSelected()) {
             fragment.start(ProtocolDetailFragment.newInstance(protocol.getId(),true));
         } else {
             tvAgree.setSelected(!tvAgree.isSelected());

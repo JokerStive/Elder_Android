@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -34,6 +35,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
+import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.protocol.ProtocolView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -80,7 +82,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     @Subscribe
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
-            setHadOrdered();
+            start(OrderListFragment.newInstance());
+//            setHadOrdered();
         }
     }
 
@@ -186,6 +189,16 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         //标题
         tvCourseTitle.setText(product.getTitle());
 
+        //学期
+        //学期
+        Map<String, Object> extend = product.getExtend();
+        if (extend!=null && extend.get("termStartDate")!=null && extend.get("termEndDate")!=null){
+            String termStartDate = extend.get("termStartDate").toString();
+            String termEndDate = extend.get("termEndDate").toString();
+            String semester = "学期："+StringUtils.IOS2ToUTC(termStartDate,5)+"~"+StringUtils.IOS2ToUTC(termEndDate,5);
+            tvCourseXueqi.setText(semester);
+        }
+
 
         //报名人数
         tvCourseStock.setText("招生人数：" + StringUtils.filterNull(product.getStock() + product.getSold() + ""));
@@ -230,6 +243,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
 
     private void setHadOrdered() {
+
         canNotOrderStatus("已经预约");
 
     }

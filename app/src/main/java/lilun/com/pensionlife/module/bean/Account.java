@@ -26,6 +26,17 @@ public class Account implements Serializable {
     private String realm;
     private Boolean emailVerified;
     private String status;
+    private String clientId;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public Account setClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
     private String image;
     private ArrayList<String> certificateLicense;
     private String visibility;

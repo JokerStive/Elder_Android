@@ -11,8 +11,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
@@ -43,19 +41,23 @@ public class ChooseView extends BaseView {
         TextView tv_mate_title = (TextView) chooseView.findViewById(R.id.mate_title);
         tv_mate_value = (TextView) chooseView.findViewById(R.id.mate_value);
         tv_mate_title.setText(mate_title);
-//        tv_mate_value.setCompoundDrawables(null, null, App.context.getResources().getDrawable(R.drawable.add_contact_next), null);
         show();
 
 
-        JSONObject display = setting.getJSONObject("display");
-        Set<Map.Entry<String, Object>> entries = display.entrySet();
-        ArrayList<String> data = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : entries) {
-            String value = (String) entry.getValue();
-            data.add(value);
+        if (!isOnlyShow) {
+            JSONObject display = setting.getJSONObject("display");
+            JSONArray enumArray = setting.getJSONArray("enum");
+            ArrayList<String> data = new ArrayList<>();
+            for (int i = 0; i < enumArray.size(); i++) {
+                String key = enumArray.get(i).toString();
+                String value = display.get(key).toString();
+                data.add(value);
+            }
+            tv_mate_value.setOnClickListener(v -> showChooseDialog(data));
+        } else {
+            tv_mate_value.setCompoundDrawables(null, null, null, null);
         }
-//        ArrayList<String> data = entries.stream().map(entry -> (String) entry.getValue()).collect(Collectors.toCollection(ArrayList::new));
-        tv_mate_value.setOnClickListener(v -> showChooseDialog(data));
+
         return chooseView;
 
     }
@@ -97,13 +99,6 @@ public class ChooseView extends BaseView {
 
     }
 
-//
-//    private int doubleToInt(Object value){
-//        if (value instanceof Double){
-//
-//        }
-//
-//    }
 
     private void showChooseDialog(ArrayList<String> data) {
         //多项选择框
@@ -112,7 +107,7 @@ public class ChooseView extends BaseView {
             new MaterialDialog.Builder(activity)
                     .title(mate_title)
                     .items(data)
-                    .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                    .itemsCallbackMultiChoice(index, new MaterialDialog.ListCallbackMultiChoice() {
                         @Override
                         public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                             setMultiData(which, text);
@@ -131,16 +126,12 @@ public class ChooseView extends BaseView {
             if (mate_value != null) {
                 JSONArray jsonArray = setting.getJSONArray("enum");
                 index = jsonArray.indexOf(mate_value);
-//                if (mate_type.equals("boolean")) {
-//                } else {
-//                    index = (int) mate_value;
-//                }
 
             }
             new MaterialDialog.Builder(activity)
                     .title(mate_title)
                     .items(data)
-                    .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    .itemsCallbackSingleChoice(index, (dialog, view, which, text) -> {
                         setSingleData(which, text);
                         return true;
                     }).show();

@@ -44,6 +44,10 @@ public class DateView extends BaseView {
         tv_mate_value.setHint(mate_description);
         tv_mate_value.setText((String) mate_value);
 
+        if (isOnlyShow) {
+            tv_mate_value.setCompoundDrawables(null, null, null, null);
+            return dateView;
+        }
         tv_mate_value.setOnClickListener(v -> chooseData());
 
         return dateView;

@@ -21,14 +21,15 @@ import lilun.com.pensionlife.app.App;
 *
 * */
 public class DynamicLayoutManager {
+    private boolean isOnlyShow;
     private LinearLayout mView;
     private ArrayList<Result> results;
     private JSONObject template, target;
     private final DynamicDataParser dataParser;
 
 
-    private DynamicLayoutManager(Activity activity, JSONObject template, JSONObject target) {
-//        this.activity = activity;
+    private DynamicLayoutManager(Activity activity, JSONObject template, boolean isOnlyShow) {
+        this.isOnlyShow = isOnlyShow;
         this.template = template;
 //        this.target = target;
 
@@ -46,42 +47,56 @@ public class DynamicLayoutManager {
     public LinearLayout createDynamicLayout(JSONObject target) {
 
         this.target = target;
-        Set<Map.Entry<String, Object>> targetEntries = template.entrySet();
+        Set<Map.Entry<String, Object>> templateEntries = template.entrySet();
 
         mView.removeAllViews();
-        for (Map.Entry<String, Object> targetEntry : targetEntries) {
-            String toJSONString = JSON.toJSONString(targetEntry.getValue());
+        for (Map.Entry<String, Object> templateEntry : templateEntries) {
+            String toJSONString = JSON.toJSONString(templateEntry.getValue());
             if (TextUtils.isEmpty(toJSONString)) {
                 continue;
             }
-            JSONObject targetValue = JSONObject.parseObject(toJSONString);
+            JSONObject templateValueJsonObject = JSONObject.parseObject(toJSONString);
             if (target != null) {
-                Set<Map.Entry<String, Object>> oldEntries = target.entrySet();
-                compareAndSetValue(oldEntries, targetEntry, targetValue);
+                Set<Map.Entry<String, Object>> targetEntries = target.entrySet();
+                compareAndSetValue(targetEntries, templateEntry, templateValueJsonObject);
             }
 
-            Result result = dataParser.getResult(targetValue);
-            if (result != null) {
-                View view = result.resultView();
-                mView.addView(view);
-                results.add(result);
+            if (isOnlyShow) {
+                if (templateValueJsonObject.containsKey("isOnlyShow")) {
+                    parserData(templateValueJsonObject);
+                }
+            }else {
+                parserData(templateValueJsonObject);
             }
+
         }
 
 
         return mView;
     }
 
+    private void parserData(JSONObject templateValueJsonObject) {
+        Result result = dataParser.getResult(templateValueJsonObject);
+        if (result != null) {
+            View view = result.resultView();
+            mView.addView(view);
+            results.add(result);
+        }
+    }
+
     /**
      * 对比原数据，设置数据源
      */
-    private void compareAndSetValue(Set<Map.Entry<String, Object>> oldEntries, Map.Entry<String, Object> targetEntry, JSONObject targetValue) {
-        for (Map.Entry<String, Object> oldEntry : oldEntries) {
+    private void compareAndSetValue(Set<Map.Entry<String, Object>> targetEntries, Map.Entry<String, Object> templateEntry, JSONObject templateValueJsonObject) {
+        for (Map.Entry<String, Object> targetEntry : targetEntries) {
+            String templateKey = templateEntry.getKey();
             String targetKey = targetEntry.getKey();
-            String oldKey = oldEntry.getKey();
-            if (targetKey.equals(oldKey)) {
-                Object oldValue = oldEntry.getValue();
-                targetValue.put("value", oldValue);
+            if (targetKey.equals(templateKey)) {
+                Object targetValue = targetEntry.getValue();
+                templateValueJsonObject.put("value", targetValue);
+                if (isOnlyShow) {
+                    templateValueJsonObject.put("isOnlyShow", true);
+                }
             }
         }
     }
@@ -107,8 +122,9 @@ public class DynamicLayoutManager {
 
 
     public static final class Builder {
-        private JSONObject template, target;
+        private JSONObject template;
         private Activity activity;
+        private boolean isOnlyShow;
 
 
         public Builder setContext(Activity activity) {
@@ -118,6 +134,11 @@ public class DynamicLayoutManager {
 
         public Builder template(JSONObject template) {
             this.template = template;
+            return this;
+        }
+
+        public Builder isOnlyShow(boolean isOnlyShow) {
+            this.isOnlyShow = isOnlyShow;
             return this;
         }
 
@@ -137,7 +158,7 @@ public class DynamicLayoutManager {
             }
 
 
-            return new DynamicLayoutManager(activity, template, target);
+            return new DynamicLayoutManager(activity, template, isOnlyShow);
         }
     }
 
