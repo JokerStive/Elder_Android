@@ -39,6 +39,7 @@ public class InputSendView extends LinearLayout {
         sendBackgrandOn = array.getResourceId(R.styleable.InputSendView_send_backgrand_on, R.drawable.shape_rect_bule_strock_corner_5);
         inputHint = array.getString(R.styleable.InputSendView_input_hint);
         sendText = array.getString(R.styleable.InputSendView_send_text);
+        array.recycle();
         initUI(context);
     }
 
