@@ -149,7 +149,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     @Subscribe
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
-            setHadOrdered();
+//            setHadOrdered();
             call();
             start(OrderListFragment.newInstance());
         }

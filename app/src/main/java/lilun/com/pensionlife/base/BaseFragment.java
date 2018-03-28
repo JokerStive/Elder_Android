@@ -22,7 +22,6 @@ import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.progress.RxProgressDialog;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -56,6 +55,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         }
     };
     private PermissionListener callbacks;
+    private LayoutInflater inflater;
 
 
     /**
@@ -88,6 +88,8 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
     }
 
 
+
+
     @Subscribe
     public void doNothing(Event.TokenFailure event) {
     }
@@ -95,15 +97,13 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
+        return new DefaultNoAnimator();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null) {
-
-
             mRootView = inflater.inflate(getLayoutId(), container, false);
             ButterKnife.bind(this, mRootView);
             initView(inflater);
@@ -112,6 +112,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
 
         return mRootView;
     }
+
 
     /**
      * ======================子类需要实现的方法=============================

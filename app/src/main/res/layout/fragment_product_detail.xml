@@ -232,6 +232,7 @@
                         android:textSize="@dimen/sp_11" />
 
                     <lilun.com.pensionlife.widget.ProgressWebView
+                        android:visibility="gone"
                         android:id="@+id/wb_product_content"
                         style="@style/tv_normal"
                         android:layout_width="match_parent"

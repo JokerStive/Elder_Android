@@ -208,7 +208,6 @@ public class ReservationCourseFragment extends BaseFragment {
     private void showContact() {
         if (mContactView == null) {
             mContactView = new ContactView(_mActivity);
-            mContactView.setOnlyShow(true);
             rlContactContainer.addView(mContactView.getView());
         }
         mContactView.reDraw(mContact, template);

@@ -35,6 +35,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
+import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.protocol.ProtocolView;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -81,7 +82,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     @Subscribe
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
-            setHadOrdered();
+            start(OrderListFragment.newInstance());
+//            setHadOrdered();
         }
     }
 
@@ -241,6 +243,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
 
     private void setHadOrdered() {
+
         canNotOrderStatus("已经预约");
 
     }
