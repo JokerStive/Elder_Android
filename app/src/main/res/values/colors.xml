@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#008CEE</color>
+    <color name="colorPrimaryDark">#187ff0</color>
     <color name="colorAccent">#FF4081</color>
     <!--全局背景-->
     <color name="background_g">#f7f8fa</color>
@@ -67,8 +67,9 @@
     <color name="grey_strock">#FFCECFD0</color>
     <!--聊天室色值-->
     <color name="font_grey_chat">#FFAAAAAA</color>
-    <color name="bg_grey_chat">#FFF3F3F3</color>
+    <color name="bg_grey_chat">#f7f8fa</color>
     <color name="bg_bule_chat">#FF1D96E4</color>
+    <color name="bg_input_send_chat">#FFF1F1F1</color>
 
 
 </resources>
