@@ -10,7 +10,7 @@ import java.io.Serializable;
 */
 public class BaseBean  implements Serializable{
     private static final long serialVersionUID = 1L;
-    protected int visible;
+    protected int visible;  //公开程度(可见度), 0=公开;10=子组织可见;20=特殊子组织可见;30=本组织可见;40=本特殊组织可见,50=内部组织可见，100=秘密
 
     public boolean isSelected() {
         return isSelected;

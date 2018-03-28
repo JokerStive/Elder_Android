@@ -78,14 +78,14 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                     });
 
 
-            String orgCategoryId = product.getOrgCategoryId();
+            String orgCategoryId = order.getOrgCategoryId();
             if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
                 //是课程订单,显示学期
                 String semester = showSemester(product.getExtend());
                 helper.setText(R.id.tv_product_area, semester);
 
             } else {
-                helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getAreaIds())));
+                helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getProductArea())));
             }
 
         }

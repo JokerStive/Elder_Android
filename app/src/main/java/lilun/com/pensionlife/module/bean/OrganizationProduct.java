@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.module.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ public class OrganizationProduct extends BaseBean {
     private int rank;
     private Map<String, String> tag;
     private Map<String, Object> extend;
+    private List<District> areas;
     private String startTime;
     private String endTIme;
     private String createdAt;
@@ -315,5 +317,15 @@ public class OrganizationProduct extends BaseBean {
     public OrganizationProduct setMetaServiceContactId(String metaServiceContactId) {
         this.metaServiceContactId = metaServiceContactId;
         return this;
+    }
+
+
+    //===============私有方法
+    public List<String> getProductArea() {
+        ArrayList<String> arealist = new ArrayList<>();
+        for (District d : areas) {
+            arealist.add(d.getId());
+        }
+        return arealist;
     }
 }
