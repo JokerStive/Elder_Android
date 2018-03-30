@@ -152,7 +152,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             });
             metaServiceContactId = order.getProductBackup().getMetaServiceContactId();
         }
-        tvOrderRegisterTime.setText("服务时间:2018-01-24" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
+        tvOrderRegisterTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
         tvProdcutNumber.setText("x 1");
         if (order.getContact() != null) {
             tvContactName.setText("收货人：" + order.getContact().getCreatorName());

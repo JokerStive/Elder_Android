@@ -42,7 +42,8 @@
                 android:layout_width="@dimen/dp_60"
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginTop="@dimen/dp_8"
-                android:src="@drawable/icon_def" />
+                android:src="@drawable/icon_def"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/tv_order_product_title"

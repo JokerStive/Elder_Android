@@ -210,6 +210,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
         } else {
             openScollAlpha = false;
             tvTitleName.setVisibility(View.GONE);
+            ivBack.setAlpha(0);
         }
         if (findFragment(ActivityChatFragment.class) != null) {
             ivMenu.setVisibility(View.VISIBLE);
@@ -248,7 +249,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailContact.P
             }
         });
 
-        if (activity.getIcon() != null) {
+        if (activity.getIcon() != null && activity.getIcon().size() > 0) {
             bpActivityImages.setData(activity.getIcon());
         } else {
             bpActivityImages.setVisibility(View.GONE);
