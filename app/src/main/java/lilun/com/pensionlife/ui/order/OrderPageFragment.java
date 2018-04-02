@@ -143,7 +143,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
         String filter;
-        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\",\"extend\",\"areas\"]}}";
+        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\",\"extend\",\"areas\",\"serviceOrganization\"]}}";
         if (mStatus.equals("done")) {
             filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
         } else if (mStatus.equals("assigned")) {

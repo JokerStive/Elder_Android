@@ -51,6 +51,7 @@ public class OrganizationProduct extends BaseBean {
     private String mobile;
     private String orgCategoryId;
     private OrganizationProductCategory orgCategory;
+    private Organization serviceOrganization; //服务组织
 
 
     public String getId() {
@@ -319,8 +320,19 @@ public class OrganizationProduct extends BaseBean {
         return this;
     }
 
+    public Organization getServiceOrganization() {
+        return serviceOrganization;
+    }
 
-    //===============私有方法
+    public void setServiceOrganization(Organization serviceOrganization) {
+        this.serviceOrganization = serviceOrganization;
+    }
+//===============私有方法
+
+    /**
+     *  获取产品服务区域名
+     * @return
+     */
     public List<String> getProductArea() {
         ArrayList<String> arealist = new ArrayList<>();
         for (District d : areas) {

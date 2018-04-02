@@ -57,7 +57,8 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             }
             setOrderStatus(helper, order);
             // setNextOperate(helper, order);
-            String agencyName = StringUtils.getOrganizationNameFromId(StringUtils.removeSpecialSuffix(product.getOrganizationId()));
+
+            String agencyName = product.getServiceOrganization() == null ? "商家" : product.getServiceOrganization().getName();
 //            helper.setVisible(R.id.tv_next_operate, order.getStatus().equals("reserved") || order.getStatus().equals("done"))
             helper.setVisible(R.id.tv_next_operate, false)
                     .setText(R.id.tv_provider_name, agencyName)
