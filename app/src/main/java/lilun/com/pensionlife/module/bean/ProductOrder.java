@@ -69,7 +69,7 @@ public class ProductOrder extends BaseBean {
     private String userProfileId;
 
     //私有参数
-    private int unRead=0;
+    private int unRead = 0;
 
     public String getProductBackupId() {
         return productBackupId;
@@ -309,7 +309,7 @@ public class ProductOrder extends BaseBean {
      */
     public String getProductImage() {
         if (productBackup == null) return null;
-        if (productBackup.getImage() != null)
+        if (productBackup.getImage() != null && productBackup.getImage().size() > 0)
             return StringUtils.getFirstIcon(productBackup.getImage());
         if (productBackup.getImage() == null && productBackup.getOrgCategory() != null) {
             return productBackup.getOrgCategory().getIcon();

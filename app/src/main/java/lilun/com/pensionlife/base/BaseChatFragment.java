@@ -70,6 +70,7 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //弹出键盘，整个Layout重新编排,重新分配多余空间
         _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
@@ -105,7 +106,7 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
     @Override
     public void onPause() {
         super.onPause();
-        _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -136,6 +137,7 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
             if (cvActivity != null && cvActivity.getRecyclerView() != null)
                 cvActivity.getRecyclerView().smoothScrollToPosition(0);
         });
+
         setChatAdapter();
 
         DataSupport.where("activityId = ? and chatType = ?", objectId, chatType + "").findAsync(PushMessage.class)
@@ -143,7 +145,14 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
                     @Override
                     public <T> void onFinish(List<T> t) {
                         chatAdapter.addAll((List<PushMessage>) t);
-                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount()-1);
+                        //在更新数据后，延迟一段时间滑到底部
+                        titleBar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount()-1);
+                            }
+                        },200);
+
                     }
                 });
     }
@@ -162,6 +171,7 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
             }
         });
         cvActivity.setUnreadCount(unReadCount);
+
     }
 
     /**
