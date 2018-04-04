@@ -47,7 +47,7 @@ public class PartnersAdapter extends QuickAdapter<Account> {
         if (!selectedList.contains(pos))
             selectedList.add(pos);
         else
-            selectedList.remove(pos);
+            selectedList.remove((Integer) pos);
     }
 
     public ArrayList<Integer> getSelectedList() {
