@@ -103,7 +103,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     @Override
     public void inflateProductView() {
         chatAdapter.setHeaderView(setProductView());
-
+        chatAdapter.setChatType(1);
     }
 
     /**

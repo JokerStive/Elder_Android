@@ -27,6 +27,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class ChatAdapter extends QuickAdapter<PushMessage> {
 
     final String sg = System.currentTimeMillis() / (1000 * 60 * 60) + "" + User.getChangeAvatorCount();//缓存时间1小时
+    private int chatType = 0; //默认为0，
 
     public ChatAdapter(List<PushMessage> data) {
         super(R.layout.item_chat, data);
@@ -104,7 +105,10 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
                 helper.getView(R.id.rl_their_message).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_their_name, name)
                         .setText(R.id.tv_their_message, pushMessage.getMessage());
-                ImageLoaderUtil.instance().loadAvatar(id, helper.getView(R.id.civ_their_ivatar), sg);
+                if (chatType == 0)
+                    ImageLoaderUtil.instance().loadAvatar(id, helper.getView(R.id.civ_their_ivatar), sg);
+                else if (chatType == 1)
+                    ImageLoaderUtil.instance().loadImage(R.drawable.def_comstor_serice, helper.getView(R.id.civ_their_ivatar));
             }
         } else {
             helper.getView(R.id.rl_my_message).setVisibility(View.GONE);
@@ -128,4 +132,12 @@ public class ChatAdapter extends QuickAdapter<PushMessage> {
 
     }
 
+    /**
+     * 设置聊天室类型
+     *
+     * @param chatType 0:普通聊天室， 1：订单聊天室
+     */
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
+    }
 }
