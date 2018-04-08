@@ -83,7 +83,6 @@ public interface ApiService {
     Observable<Response<QINiuToken>> getPostFileToken(@Path("modelName") String modelName, @Path("modelId") String modelId, @Path("tag") String tag, @Field("fileName") List<String> idList);
 
 
-
     /**
      * 获取上传图片的token
      */
@@ -121,7 +120,7 @@ public interface ApiService {
 
 
     @GET("OrganizationAccounts/{id}")
-    Observable<Response<OrganizationAccount>> getOrganizationAccount(@Path("id") String organizationId,@Query("filter") String filter);
+    Observable<Response<OrganizationAccount>> getOrganizationAccount(@Path("id") String organizationId, @Query("filter") String filter);
 
 
     /**
@@ -189,7 +188,7 @@ public interface ApiService {
      */
 
     @GET("OrganizationProducts/aggregate")
-    Observable<Response<List<Organization>>> getColleges(@Query("filter") String filter);
+    Observable<Response<List<Organization>>> aggregate(@Query("filter") String filter);
 
 
     /**
@@ -222,7 +221,6 @@ public interface ApiService {
 
     @GET("OrganizationProducts/{id}")
     Observable<Response<OrganizationProduct>> getProduct(@Path("id") String id, @Query("filter") String filter);
-
 
 
     /**
@@ -293,6 +291,13 @@ public interface ApiService {
 
     @GET("Organizations/{id}")
     Observable<Response<Organization>> getOrganizationById(@Path("id") String organizationId, @Query("filter") String filter);
+
+    /**
+     * 获取organization
+     */
+
+    @GET("Organizations")
+    Observable<Response<List<Organization>>> getOrganizationList(@Query("filter") String filter);
 
 
     /**
@@ -365,7 +370,6 @@ public interface ApiService {
 
     @GET("OrganizationInformations/{id}")
     Observable<Response<Information>> getInformation(@Path("id") String id);
-
 
 
     @GET("OrganizationInformations/findOne")
@@ -778,13 +782,12 @@ public interface ApiService {
     Observable<Response<Register>> commitRegister(@Path("IDCode") String IDCode, @Body Account account);
 
 
-
     @PUT("Accounts/userActive/{mobile}/{code}")
-    Observable<Response<Register>> activateAccount( @Path("mobile") String  mobile,@Path("code") String  code,@Query("include") String user, @Body Account account);
+    Observable<Response<Register>> activateAccount(@Path("mobile") String mobile, @Path("code") String code, @Query("include") String user, @Body Account account);
 
 
     @PUT("Accounts/{id}/acceptInvited/{organizationId}/{type}")
-    Observable<Response<Object>> acceptInvitation( @Path("id") String  usernameId,@Path("organizationId") String  organizationId,@Path("type") int type);
+    Observable<Response<Object>> acceptInvitation(@Path("id") String usernameId, @Path("organizationId") String organizationId, @Path("type") int type);
 
 
     /**
@@ -796,6 +799,7 @@ public interface ApiService {
 
     /**
      * 获取问卷答题兑奖时间
+     *
      * @return
      */
     @GET(ConfigUri.QUESTION_NAIRE)

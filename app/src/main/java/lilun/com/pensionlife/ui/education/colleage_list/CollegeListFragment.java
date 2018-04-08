@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
 import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,7 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.education.course_list.CourseListFragment;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
+import rx.Observable;
 
 /**
  * 老年教育 各类型列表 V
@@ -35,7 +35,7 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
  *         create at 2017/2/7 16:04
  *         email : yk_developer@163.com
  */
-public class EducationListFragment extends BaseFragment {
+public class CollegeListFragment extends BaseFragment {
 
     ElderModule mElderModule;
     @Bind(R.id.titleBar)
@@ -48,8 +48,8 @@ public class EducationListFragment extends BaseFragment {
     private CollageAdapter mCollageAdapter;
 
 
-    public static EducationListFragment newInstance(ElderModule elderModule) {
-        EducationListFragment fragment = new EducationListFragment();
+    public static CollegeListFragment newInstance(ElderModule elderModule) {
+        CollegeListFragment fragment = new CollegeListFragment();
         Bundle args = new Bundle();
         args.putSerializable("mElderModule", elderModule);
         fragment.setArguments(args);
@@ -87,15 +87,12 @@ public class EducationListFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mRecyclerView.addItemDecoration(new ElderModuleItemDecoration());
 
-        mCollageAdapter = new
-
-                CollageAdapter(new ArrayList<>());
+        mCollageAdapter = new CollageAdapter(new ArrayList<>());
         mCollageAdapter.setEmptyView();
         mCollageAdapter.setOnItemClickListener((adapter, view, position) -> {
             Organization collage = mCollageAdapter.getItem(position);
             assert collage != null;
-            String id = StringUtils.removeSpecialSuffix(collage.getId());
-            start(CourseListFragment.newInstance(id));
+            start(CourseListFragment.newInstance(collage.getId()));
         });
         mCollageAdapter.setOnLoadMoreListener(() -> {
             getDataList(mCollageAdapter.getItemCount());
@@ -113,14 +110,8 @@ public class EducationListFragment extends BaseFragment {
 
     private void getDataList(int skip) {
         mSwipeLayout.setRefreshing(skip == 0);
-        CollegeFilter collegeFilter = new CollegeFilter();
-        Gson gson = new Gson();
-        String filter = gson.toJson(collegeFilter);
-        Logger.d("大学filter - " + filter);
-//        String filter = "{\"visible\":0,\"limit\":" + Config.defLoadDatCount + ",\"skip\":" + skip + ",\"where\":{\"tag.kind\":\"college\"}, \"aggregate\": { \"group\": { \"id\": \"$organizationId\" } } }";
-        NetHelper.getApi()
-                .getColleges(filter)
-                .compose(RxUtils.handleResult())
+        aggregateObservable()
+                .flatMap(this::getColleges)
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Organization>>() {
                     @Override
@@ -131,12 +122,36 @@ public class EducationListFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        completeRefresh();
                         super.onError(e);
+                        completeRefresh();
                     }
                 });
     }
 
+
+    Observable<List<Organization>> aggregateObservable() {
+        aggregateFilter collegeFilter = new aggregateFilter();
+        Gson gson = new Gson();
+        String filter = gson.toJson(collegeFilter);
+        return NetHelper.getApi()
+                .aggregate(filter)
+                .compose(RxUtils.handleResult());
+    }
+
+    Observable<List<Organization>> getColleges(List<Organization> collegeIds) {
+        ArrayList<String> ids = new ArrayList<>();
+        for (Organization organization : collegeIds) {
+            String idSuffix = organization.getId();
+            String id = StringUtils.removeSpecialSuffix(idSuffix);
+            ids.add(id);
+        }
+        CollegeFilter collegeFilter = new CollegeFilter(ids);
+        Gson gson = new Gson();
+        String filter = gson.toJson(collegeFilter);
+        return NetHelper.getApi()
+                .getOrganizationList(filter)
+                .compose(RxUtils.handleResult());
+    }
 
     public void showCollages(List<Organization> collages, boolean isLoadMore) {
         if (isLoadMore) {

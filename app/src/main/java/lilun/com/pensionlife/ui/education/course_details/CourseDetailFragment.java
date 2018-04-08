@@ -328,11 +328,11 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             Contact defContact = getDefaultContact(contacts);
             if (defContact == null) {
                 //没有默认信息，就进去信息列表
-                start(ContactListFragment.newInstance(mProduct.getId(), 1));
+                start(ContactListFragment.newInstance(mProduct.getId(), ContactListFragment.RESERVATION_COURSE));
             } else if (TextUtils.isEmpty(defContact.getMobile()) || TextUtils.isEmpty(defContact.getName()) || TextUtils.isEmpty(defContact.getAddress())) {
                 defContact.setProductId(mProductId);
                 //必要信息不完善
-                start(AddBasicContactFragment.newInstance(defContact, 1));
+                start(AddBasicContactFragment.newInstance(defContact, ContactListFragment.RESERVATION_COURSE));
             } else {
                 //有默认信息，并且必要信息完整，直接预约界面
                 start(ReservationCourseFragment.newInstance(mProductId, defContact));

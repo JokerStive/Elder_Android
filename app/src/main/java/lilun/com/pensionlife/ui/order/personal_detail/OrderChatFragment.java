@@ -159,7 +159,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             tvContactMobile.setText("电话：" + order.getContact().getMobile());
             tvContactAddress.setText("地址：" + order.getContact().getAddress());
             llContactInfo.setOnClickListener((v) -> {
-                start(ContactDetailFragment.newInstance(metaServiceContactId, order.getContact()));
+                start(ContactDetailFragment.newInstance(order.getMetaServiceContact(), order.getContact()));
             });
         }
         btnCancelOrder.setOnClickListener((v) -> {

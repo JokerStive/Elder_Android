@@ -27,7 +27,7 @@ import lilun.com.pensionlife.module.callback.TitleBarClickCallBack;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.ui.activity.activity_list.ActivityListFragment;
 import lilun.com.pensionlife.ui.announcement.AnnouncementFragment;
-import lilun.com.pensionlife.ui.education.colleage_list.EducationListFragment;
+import lilun.com.pensionlife.ui.education.colleage_list.CollegeListFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
 import lilun.com.pensionlife.widget.ElderModuleClassifyDecoration;
 import lilun.com.pensionlife.widget.PositionTitleBar;
@@ -175,7 +175,7 @@ public class EducationClassifyFragment extends BaseFragment<EducationClassifyCon
 //            ToastHelper.get().showShort(getString(R.string.building));
             ElderModule elderModule = (ElderModule) adapter1.getData().get(position);
             if (elderModule.getName().equals("老年大学")) {
-                start(EducationListFragment.newInstance(elderModule));
+                start(CollegeListFragment.newInstance(elderModule));
             } else {
                 ToastHelper.get().showShort(getString(R.string.building));
             }

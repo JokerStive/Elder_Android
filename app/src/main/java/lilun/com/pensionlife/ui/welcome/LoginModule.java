@@ -278,7 +278,7 @@ public class LoginModule implements LoginContract.Module {
         Account account = new Account();
         account.setUsername(username);
         account.setPassword(password);
-        String clientId = DeviceUtils.getUniqueIdForThisApp(App.context) + "@" + User.getUserName();
+        String clientId = DeviceUtils.getUniqueIdForThisApp(App.context) + "@" + username;
         account.setClientId(clientId);
         return account;
     }

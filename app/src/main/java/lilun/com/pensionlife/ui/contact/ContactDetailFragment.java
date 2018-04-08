@@ -1,7 +1,6 @@
 package lilun.com.pensionlife.ui.contact;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
@@ -11,10 +10,7 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.MetaServiceContact;
-import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.dynamic.ContactView;
-import lilun.com.pensionlife.net.NetHelper;
-import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
 /**
@@ -23,14 +19,14 @@ import lilun.com.pensionlife.widget.NormalTitleBar;
 public class ContactDetailFragment extends BaseFragment {
 
 
-    private String metaServiceContactId;
     private Contact mContact;
     private ContactView contactView;
+    private MetaServiceContact template;
 
-    public static ContactDetailFragment newInstance(String metaServiceContactId, Contact contact) {
+    public static ContactDetailFragment newInstance(MetaServiceContact template, Contact contact) {
         ContactDetailFragment fragment = new ContactDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("metaServiceContactId", metaServiceContactId);
+        bundle.putSerializable("template", template);
         bundle.putSerializable("contact", contact);
         fragment.setArguments(bundle);
         return fragment;
@@ -40,7 +36,7 @@ public class ContactDetailFragment extends BaseFragment {
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        metaServiceContactId = arguments.getString("metaServiceContactId");
+        template = (MetaServiceContact) arguments.getSerializable("template");
         mContact = (Contact) arguments.getSerializable("contact");
         if (mContact == null) {
             throw new IllegalStateException("contact can't be null");
@@ -72,19 +68,11 @@ public class ContactDetailFragment extends BaseFragment {
     }
 
     private void getTemplate() {
-        if (TextUtils.isEmpty(metaServiceContactId)) {
-            contactView.reDraw(mContact, null);
-        } else {
-            NetHelper.getApi().getTemplate(metaServiceContactId)
-                    .compose(RxUtils.handleResult())
-                    .compose(RxUtils.applySchedule())
-                    .subscribe(new RxSubscriber<MetaServiceContact>(getActivity()) {
-                        @Override
-                        public void _next(MetaServiceContact metaServiceContact) {
-                            JSONObject settings = metaServiceContact.getSettings();
-                            contactView.reDraw(mContact, settings);
-                        }
-                    });
+        JSONObject settings = null;
+        if (template != null) {
+            settings = template.getSettings();
         }
+        contactView.reDraw(mContact, settings);
+
     }
 }

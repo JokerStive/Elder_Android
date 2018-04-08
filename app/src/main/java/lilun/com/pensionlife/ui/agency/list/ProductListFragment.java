@@ -282,7 +282,7 @@ public class ProductListFragment extends BaseFragment<AgencyListContract.Present
         if (minRang != null  && maxRang!=null) {
             ProductFilter.WhereBean.PriceBean price = new ProductFilter.WhereBean.PriceBean();
             price.getBetween().add(minRang);
-            price.getBetween().add(minRang);
+            price.getBetween().add(maxRang);
             productFilter.where.setPrice(price);
         }
 
