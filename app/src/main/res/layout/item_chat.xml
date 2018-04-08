@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -31,11 +32,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_notify_message">
 
-        <lilun.com.pensionlife.widget.CircleImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/civ_their_ivatar"
             android:layout_width="@dimen/ivatar_icon_width_height"
             android:layout_height="@dimen/ivatar_icon_width_height"
-            android:src="@drawable/icon_falimy" />
+            android:src="@drawable/announcement_def"
+            apps:riv_border_color="@color/light_grey"
+            apps:riv_border_width="@dimen/dp_2"
+            android:scaleType="centerCrop"
+            apps:riv_corner_radius="@dimen/dp_10"/>
 
         <TextView
             android:id="@+id/tv_their_name"
@@ -44,8 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@id/civ_their_ivatar"
-            android:textSize="@dimen/sp_12"
-            android:text="刘刘" />
+            android:text="刘刘"
+            android:textSize="@dimen/sp_12" />
 
         <TextView
             android:id="@+id/tv_their_message"
@@ -56,8 +61,8 @@
             android:layout_toRightOf="@id/civ_their_ivatar"
             android:background="@drawable/their_message_bg"
             android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_14"
-            android:text="this is a message" />
+            android:text="this is a message"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -67,12 +72,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_notify_message">
 
-        <lilun.com.pensionlife.widget.CircleImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/civ_my_ivatar"
             android:layout_width="@dimen/ivatar_icon_width_height"
             android:layout_height="@dimen/ivatar_icon_width_height"
             android:layout_alignParentRight="true"
-            android:src="@drawable/icon_falimy" />
+            android:src="@drawable/announcement_def"
+            apps:riv_border_color="@color/light_grey"
+            apps:riv_border_width="@dimen/dp_2"
+            android:scaleType="centerCrop"
+            apps:riv_corner_radius="@dimen/dp_10" />
 
         <TextView
             android:id="@+id/tv_my_name"
@@ -82,8 +91,8 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_toLeftOf="@id/civ_my_ivatar"
             android:gravity="right"
-            android:textSize="@dimen/dp_12"
-            android:text="刘刘" />
+            android:text="刘刘"
+            android:textSize="@dimen/dp_12" />
 
         <TextView
             android:id="@+id/tv_my_message"
@@ -94,8 +103,8 @@
             android:layout_toLeftOf="@id/civ_my_ivatar"
             android:background="@drawable/my_message_bg"
             android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_14"
-            android:text="this is a message" />
+            android:text="this is a message"
+            android:textSize="@dimen/sp_14" />
     </RelativeLayout>
 
 </RelativeLayout>

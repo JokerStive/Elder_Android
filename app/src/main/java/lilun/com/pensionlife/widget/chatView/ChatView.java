@@ -69,7 +69,8 @@ public class ChatView extends RelativeLayout {
         inputSendView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                if (adapter.getItemCount() > 0)
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             }
         });
     }
