@@ -133,12 +133,12 @@ public class ReservationFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tvMemoCount.setText(count + "/60");
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                tvMemoCount.setText(s.toString().length() + "/60");
             }
         });
     }

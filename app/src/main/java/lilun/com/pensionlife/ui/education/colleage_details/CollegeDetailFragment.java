@@ -85,7 +85,7 @@ public class CollegeDetailFragment extends BaseFragment {
 
 
     private void getCollegeDetail() {
-        String filter = "{\"include\":\"extension\"}";
+        String filter = "{\"include\":\"provider\"}";
         NetHelper.getApi().getOrganizationById(mOrganizationId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
@@ -110,7 +110,8 @@ public class CollegeDetailFragment extends BaseFragment {
 
             //显示简介
             if (!TextUtils.isEmpty(context)) {
-                wbCollegeContext.loadDataWithBaseURL(null, context, "text/html", "utf-8", null);
+                wbCollegeContext.loadUrl(context);
+//                wbCollegeContext.loadDataWithBaseURL(null, context, "text/html", "utf-8", null);
             }
 
             //地址
@@ -126,8 +127,9 @@ public class CollegeDetailFragment extends BaseFragment {
     }
 
 
-    private String formatMobile(String mobile){
-       return TextUtils.isEmpty(mobile)?"暂未提供":mobile;}
+    private String formatMobile(String mobile) {
+        return TextUtils.isEmpty(mobile) ? "暂未提供" : mobile;
+    }
 
     @OnClick({R.id.tv_college_mobile, R.id.tv_college_phone})
     public void onClick(View v) {
@@ -143,7 +145,6 @@ public class CollegeDetailFragment extends BaseFragment {
 
         }
     }
-
 
 
     private void connectProvider(int flag) {

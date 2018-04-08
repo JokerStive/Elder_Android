@@ -189,7 +189,6 @@ public class MQTTManager {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     for (String topic : topics) {
                         Logger.i(topic + "---订阅失败");
-//                        ToastHelper.get().showShort("链接失败" + exception.getMessage()+"您将收不到消息");
                     }
                 }
             });

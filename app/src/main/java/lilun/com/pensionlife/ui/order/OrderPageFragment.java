@@ -136,7 +136,8 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     /**
      * 获取我需要显示的数据回来
      * { "fields": ["id", "name", "status", "registerDate", "assigneeId", "orgCategoryId", "createdAt", "productBackupId"],"include":{"relation": "productBackup","scope": {"fields": ["id","name","title","price","unit", "organizationId","image","orgCategory"]}} }     *
-     *"where":{"productBackupId":{"$exists":true}}   //以前的老数据不要，获取有订单备份的数据
+     * "where":{"productBackupId":{"$exists":true}}   //以前的老数据不要，获取有订单备份的数据
+     *
      * @param skip
      */
     private void getMyOrder(int skip) {
@@ -176,9 +177,6 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
                 @Override
                 public void onItemClick(ProductOrder order) {
                     //进入订单详情界面
-//                    Intent intent = new Intent(_mActivity, OrderDetailActivity.class);
-//                    intent.putExtra("orderId", order.getId());
-//                    startActivity(intent);
                     if (order.getProductBackup() == null) {
                         ToastHelper.get().showWareShort("未查询到商家信息");
                         return;

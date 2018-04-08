@@ -143,7 +143,7 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
                     @Override
                     public <T> void onFinish(List<T> t) {
                         chatAdapter.addAll((List<PushMessage>) t);
-                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount()-1);
+                        cvActivity.getRecyclerView().scrollToPosition(chatAdapter.getItemCount() - 1);
                     }
                 });
     }

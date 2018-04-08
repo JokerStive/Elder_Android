@@ -1,120 +1,63 @@
 package lilun.com.pensionlife.ui.education.colleage_list;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
-import lilun.com.pensionlife.app.User;
-
 /**
- * Created by Admin on 2017/10/11.
+ * 大学filter
  */
 public class CollegeFilter {
 
-    public CollegeFilter() {
-        AggregateBean aggregate = new AggregateBean();
-        AggregateBean.GroupBean groupBean = new AggregateBean.GroupBean();
-        groupBean.setId("$organizationId");
-        aggregate.setGroup(groupBean);
-        setAggregate(aggregate);
-
-        WhereBean whereBean = new WhereBean();
-        WhereBean.AreaIdsBean areaIdsBean = new WhereBean.AreaIdsBean();
-        areaIdsBean.setInq(User.levelIds(true));
-        whereBean.setAreaIds(areaIdsBean);
-        setWhere(whereBean);
+    public CollegeFilter(List<String> ids) {
+        where = new WhereBean();
+        where.setId(new WhereBean.IdBean());
+        where.getId().setInq(ids);
     }
 
     /**
-     * visible : 0
-     * where : {"tag.kind":"college","areaIds":{"inq":["1","2"]}}
-     * aggregate : {"group":{"id":"$organizationId"}}
+     * where : {"id":{"inq":[]}}
      */
 
-    private int visible = 0;
 
-    public int getVisible() {
-        return visible;
-    }
-
-    private WhereBean where;
-    private AggregateBean aggregate;
-
+    private WhereBean where = new WhereBean();
 
     public WhereBean getWhere() {
         return where;
     }
 
-    public void setWhere(WhereBean where) {
-        this.where = where;
-    }
-
-    public AggregateBean getAggregate() {
-        return aggregate;
-    }
-
-    public void setAggregate(AggregateBean aggregate) {
-        this.aggregate = aggregate;
-    }
 
     public static class WhereBean {
-        @SerializedName("tag.kind")
-        private String kind = "college";
-        private AreaIdsBean areaIds;
-
-        public String getKind() {
-            return kind;
+        public WhereBean setId(IdBean id) {
+            this.id = id;
+            return this;
         }
 
-        public AreaIdsBean getAreaIds() {
-            return areaIds;
+        /**
+         * id : {"inq":[]}
+         */
+
+        private IdBean id = new IdBean();
+        private int visible = 0;
+
+        public int getVisible() {
+            return visible;
         }
 
-        public void setAreaIds(AreaIdsBean areaIds) {
-            this.areaIds = areaIds;
+        public WhereBean setVisible(int visible) {
+            this.visible = visible;
+            return this;
         }
 
-        public static class AreaIdsBean {
+        public IdBean getId() {
+            return id;
+        }
+
+
+        public static class IdBean {
             private List<String> inq;
 
-            public List<String> getInq() {
-                return inq;
-            }
 
             public void setInq(List<String> inq) {
                 this.inq = inq;
-            }
-        }
-    }
-
-    public static class AggregateBean {
-        /**
-         * group : {"id":"$organizationId"}
-         */
-
-        private GroupBean group;
-
-        public GroupBean getGroup() {
-            return group;
-        }
-
-        public void setGroup(GroupBean group) {
-            this.group = group;
-        }
-
-        public static class GroupBean {
-            /**
-             * id : $organizationId
-             */
-
-            private String id;
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
             }
         }
     }

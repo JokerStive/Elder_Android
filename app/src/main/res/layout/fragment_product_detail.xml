@@ -232,7 +232,6 @@
                         android:textSize="@dimen/sp_11" />
 
                     <lilun.com.pensionlife.widget.ProgressWebView
-                        android:visibility="gone"
                         android:id="@+id/wb_product_content"
                         style="@style/tv_normal"
                         android:layout_width="match_parent"
@@ -356,7 +355,6 @@
             android:background="#f5f5f9" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_order_detail"
             style="@style/tv_normal"
             android:layout_width="0dp"
@@ -366,7 +364,8 @@
             android:paddingTop="@dimen/dp_10"
             android:text="查看订单详情"
             android:textColor="#a9a9a9"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_reservation"
@@ -385,11 +384,11 @@
     </LinearLayout>
 
     <lilun.com.pensionlife.ui.protocol.ProtocolView
-        android:visibility="gone"
-        android:layout_above="@id/ll_bottom_menu"
         android:id="@+id/protocol"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_bottom_menu"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

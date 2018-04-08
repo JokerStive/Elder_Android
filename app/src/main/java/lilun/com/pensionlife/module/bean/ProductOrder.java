@@ -1,8 +1,5 @@
 package lilun.com.pensionlife.module.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lilun.com.pensionlife.base.BaseBean;
 import lilun.com.pensionlife.module.utils.StringUtils;
 
@@ -55,8 +52,19 @@ public class ProductOrder extends BaseBean {
     private OrganizationProduct productBackup;
     private String productBackupId;
     private OrganizationProduct productInfo;
+    private MetaServiceContact metaServiceContact;
     private String productId;
     private String assigneeId;
+
+    public MetaServiceContact getMetaServiceContact() {
+        return metaServiceContact;
+    }
+
+    public ProductOrder setMetaServiceContact(MetaServiceContact metaServiceContact) {
+        this.metaServiceContact = metaServiceContact;
+        return this;
+    }
+
     private String orgCategoryId;
     private String canceledById;
     private String rankId;
