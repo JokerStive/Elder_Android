@@ -335,6 +335,7 @@ public class OrganizationProduct extends BaseBean {
      */
     public List<String> getProductArea() {
         ArrayList<String> arealist = new ArrayList<>();
+        if(areas == null) return arealist;
         for (District d : areas) {
             arealist.add(d.getId());
         }
