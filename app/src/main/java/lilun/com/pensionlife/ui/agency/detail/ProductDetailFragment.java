@@ -176,7 +176,6 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
         String filter = "{\"include\":{\"relation\":\"orgCategory\",\"scope\":{\"fields\":[\"icon\"]}}}";
         mPresenter.getProductDetail(mProductId, filter);
         mPresenter.getProtocol(mProductId);
-        mPresenter.getIsOrder(mProductId);
     }
 
     @Override

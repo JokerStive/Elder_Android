@@ -49,7 +49,6 @@ public class CourseSchedule extends BaseBean {
     private String courseWeek;
 
 
-
     private String contactId;
     private String schoolId;
     private String courseId;
@@ -165,7 +164,6 @@ public class CourseSchedule extends BaseBean {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-
 
 
     public String getLocation() {

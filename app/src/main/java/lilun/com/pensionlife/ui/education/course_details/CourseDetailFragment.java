@@ -20,7 +20,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
-import lilun.com.pensionlife.app.IconUrl;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.CourseScheduleAdapter;
@@ -29,6 +28,7 @@ import lilun.com.pensionlife.module.bean.CourseSchedule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -107,7 +107,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         mPresenter.getProductDetail(mProductId, null);
         mPresenter.getCourseSchedules(mProductId);
         mPresenter.getProtocol(mProductId);
-        mPresenter.getIsOrder(mProductId);
+//        mPresenter.getIsOrder(mProductId);
     }
 
     @Override
@@ -192,10 +192,10 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         //学期
         //学期
         Map<String, Object> extend = product.getExtend();
-        if (extend!=null && extend.get("termStartDate")!=null && extend.get("termEndDate")!=null){
+        if (extend != null && extend.get("termStartDate") != null && extend.get("termEndDate") != null) {
             String termStartDate = extend.get("termStartDate").toString();
             String termEndDate = extend.get("termEndDate").toString();
-            String semester = "学期："+StringUtils.IOS2ToUTC(termStartDate,5)+"~"+StringUtils.IOS2ToUTC(termEndDate,5);
+            String semester = "学期：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "~" + StringUtils.IOS2ToUTC(termEndDate, 5);
             tvCourseXueqi.setText(semester);
         }
 
@@ -233,10 +233,9 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
             for (String url : product.getImage()) {
                 urls.add(url);
             }
-        } else {
-
-            String url = IconUrl.moduleIconUrl(IconUrl.OrganizationProducts, product.getId(), null);
-            urls.add(url);
+        } else if (product.getOrgCategory() != null) {
+            OrganizationProductCategory orgCategory = product.getOrgCategory();
+            urls.add(orgCategory.getIcon());
         }
         banner.setData(urls);
     }
