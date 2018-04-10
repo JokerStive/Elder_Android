@@ -35,7 +35,7 @@ public class OrganizationProduct extends BaseBean {
     private Map<String, Object> extend;
     private List<District> areas;
     private String startTime;
-    private String endTIme;
+    private String endTime;
     private String createdAt;
     private String updatedAt;
     private String creatorId;
@@ -159,12 +159,12 @@ public class OrganizationProduct extends BaseBean {
         this.startTime = startTime;
     }
 
-    public String getEndTIme() {
-        return endTIme;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEndTIme(String endTIme) {
-        this.endTIme = endTIme;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getCreatedAt() {

@@ -1,9 +1,7 @@
 package lilun.com.pensionlife.module.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -13,11 +11,9 @@ import org.litepal.crud.DataSupport;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.QuickAdapter;
-import lilun.com.pensionlife.module.bean.OrganizationActivity;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
@@ -82,7 +78,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             String orgCategoryId = order.getOrgCategoryId();
             if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
                 //是课程订单,显示学期
-                String semester = showSemester(product.getExtend());
+                String semester = showSemester(product);
                 helper.setText(R.id.tv_product_area, semester);
 
             } else {
@@ -129,12 +125,12 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
         getData().get(pos).setUnRead(0);
     }
 
-    private String showSemester(Map<String, Object> extend) {
+    private String showSemester(OrganizationProduct product) {
         //显示学期
         String semester = "无";
-        if (extend != null) {
-            String termStartDate = (String) extend.get("termStartDate");
-            String termEndDate = (String) extend.get("termEndDate");
+        if (product != null) {
+            String termStartDate = product.getStartTime();
+            String termEndDate = product.getEndTime();
             if (!TextUtils.isEmpty(termStartDate) && !TextUtils.isEmpty(termEndDate)) {
                 semester = "学期时间：" + StringUtils.IOS2ToUTC(termStartDate, 5) + "--" + StringUtils.IOS2ToUTC(termEndDate, 5);
             }
