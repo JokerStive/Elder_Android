@@ -95,7 +95,7 @@ public class InfoDetailFragment extends BaseFragment {
         int contextType = information.getContextType();
         String content = information.getContext();
         nsContentJson.setVisibility(contextType == 5 ? View.VISIBLE : View.GONE);
-        webContentH5.setVisibility(contextType == 2 ? View.VISIBLE : View.GONE);
+        webContentH5.setVisibility(contextType == 2 ||contextType == 3 ? View.VISIBLE : View.GONE);
         switch (contextType) {
             //html
             case 2:
