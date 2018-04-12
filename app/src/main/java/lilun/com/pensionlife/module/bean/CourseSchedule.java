@@ -46,7 +46,7 @@ public class CourseSchedule extends BaseBean {
     private String classId;
     private String courseStartTime;
     private String courseEndTime;
-    private String courseWeek;
+    private String week;
 
 
     private String contactId;
@@ -82,12 +82,12 @@ public class CourseSchedule extends BaseBean {
         return this;
     }
 
-    public String getCourseWeek() {
-        return courseWeek;
+    public String getWeek() {
+        return week;
     }
 
-    public CourseSchedule setCourseWeek(String courseWeek) {
-        this.courseWeek = courseWeek;
+    public CourseSchedule setWeek(String week) {
+        this.week = week;
         return this;
     }
 

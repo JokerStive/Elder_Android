@@ -59,7 +59,7 @@ public class DateView extends BaseView {
      */
     private void chooseData() {
         DateTimePicker picker = new DateTimePicker(activity, DateTimePicker.YEAR_MONTH_DAY, DateTimePicker.NONE);
-//        picker.setDateRangeStart(1900, 1, 1);
+        picker.setDateRangeStart(1900, 1, 1);
         Calendar cal = Calendar.getInstance();
         int endYear = cal.get(Calendar.YEAR);
         int endMonth = cal.get(Calendar.MONTH);

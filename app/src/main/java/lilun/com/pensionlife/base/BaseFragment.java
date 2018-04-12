@@ -159,14 +159,7 @@ public abstract class BaseFragment<T extends IPresenter> extends SupportFragment
         if (EasyPermissions.hasPermissions(getActivity(), permission)) {
             callbacks.onPermissionGranted();
         } else {
-//            ArrayList<String> permissions = new ArrayList<>();
-//            permissions.add(permission);
             EasyPermissions.requestPermissions(this, "系统需要确认这个权限", 100, permission);
-//            boolean somePermissionPermanentlyDenied = EasyPermissions.somePermissionPermanentlyDenied(this, permissions);
-//            if (somePermissionPermanentlyDenied) {
-//                new AppSettingsDialog.Builder(this).build().show();
-//            } else {
-//            }
         }
 
 
