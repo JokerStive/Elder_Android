@@ -51,7 +51,7 @@
         style="@style/tv_normal"
         android:layout_below="@id/tv_schedule_courseTime"
         android:layout_marginTop="@dimen/dp_12"
-        tools:text="专业老师："
+        android:text="专业老师："
         android:textColor="#666666"
         android:textSize="@dimen/sp_15" />
 

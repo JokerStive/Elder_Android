@@ -35,7 +35,7 @@ public class CourseScheduleAdapter extends QuickAdapter<CourseSchedule> {
 //        //上课时间
         String courseStartTime = StringUtils.IOS2ToUTC(schedule.getCourseStartTime(), 1);
         String courseEndTime = StringUtils.IOS2ToUTC(schedule.getCourseEndTime(), 1);
-        String courseWeek = StringUtils.weekTrans(schedule.getWeek());
+        String courseWeek =schedule.getWeek();
         String courseTime = "上课时间：" + courseWeek + "  " + courseStartTime + "~" + courseEndTime;
         helper.setText(R.id.tv_schedule_courseTime, courseTime);
 
@@ -43,7 +43,7 @@ public class CourseScheduleAdapter extends QuickAdapter<CourseSchedule> {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
         String startTime = StringUtils.IOS2ToUTC(schedule.getStartTime(), format);
         String endTime = StringUtils.IOS2ToUTC(schedule.getEndTime(), format);
-        String time = "上课时段:" + startTime + "~" + endTime;
+        String time = "上课时段：" + startTime + "~" + endTime;
         helper.setText(R.id.tv_schedule_time, time);
 
         //专业老师
@@ -51,7 +51,7 @@ public class CourseScheduleAdapter extends QuickAdapter<CourseSchedule> {
         List<OrganizationAccount> teachers = schedule.getTeachers();
 
         for (OrganizationAccount teacher : teachers) {
-            TextView  tvTeacher = (TextView) LayoutInflater.from(App.context).inflate(R.layout.item_teacher, null);
+            TextView tvTeacher = (TextView) LayoutInflater.from(App.context).inflate(R.layout.item_teacher, null);
             String teacherName = teacher.getName();
 //            TextView tvTeacher = new TextView(App.context);
 //            tvTeacher.setTextSize(UIUtils.sp2px(App.context, 8));

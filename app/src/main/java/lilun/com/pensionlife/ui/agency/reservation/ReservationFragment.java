@@ -39,6 +39,8 @@ import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.dynamic.ContactView;
+import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
+import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
@@ -278,6 +280,8 @@ public class ReservationFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
+                        String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
+                        MQTTManager.getInstance().subscribe(topic, 2);
                         popTo(ProductDetailFragment.class, false);
                         EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
                     }

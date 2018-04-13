@@ -102,7 +102,6 @@ public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragmen
                 });
     }
 
-
     @Override
     public void onPause() {
         super.onPause();

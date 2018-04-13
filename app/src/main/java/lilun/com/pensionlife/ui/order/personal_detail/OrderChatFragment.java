@@ -1,11 +1,10 @@
 package lilun.com.pensionlife.ui.order.personal_detail;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -135,7 +134,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     public void showOrder(ProductOrder order) {
         this.order = order;
         inflate.setVisibility(View.VISIBLE);
-        tvOrderCreateTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt()));
+        tvOrderCreateTime.setText("下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(),8));
 
         tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
 
@@ -152,7 +151,9 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             });
             metaServiceContactId = order.getProductBackup().getMetaServiceContactId();
         }
-        tvOrderRegisterTime.setText("服务时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
+        String registerDate = order.getRegisterDate();
+        tvOrderRegisterTime.setVisibility(TextUtils.isEmpty(registerDate)?View.INVISIBLE:View.VISIBLE);
+        tvOrderRegisterTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
         tvProdcutNumber.setText("x 1");
         if (order.getContact() != null) {
             tvContactName.setText("收货人：" + order.getContact().getCreatorName());

@@ -108,7 +108,7 @@ public class CourseListPresenter extends RxPresenter<CourseListContract.View> im
 
     @Override
     public void getCollege(String collegeId) {
-        String filter = "{\"include\":\"extension\"}";
+        String filter = "{\"include\":\"provider\"}";
         addSubscribe(NetHelper.getApi()
                 .getOrganizationById(collegeId, filter)
                 .compose(RxUtils.handleResult())

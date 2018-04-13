@@ -6,6 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,6 +57,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private CourseListFilter mFilter;
     private ImageView ivCollegeIcon;
     private TextView tvCollegeDesc;
+    private WebView webView;
 
 
     public static CourseListFragment newInstance(String collegeId) {
@@ -154,10 +159,57 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     public void showCollege(Organization college) {
         ImageLoaderUtil.instance().loadImage(college.getIcon(), ivCollegeIcon);
         Provider provider = college.getProvider();
-        if (provider!=null){
-            String context = provider.getContext();
-            tvCollegeDesc.setText(context);
+        if (provider != null) {
+            String url = provider.getContext();
+            webView = new WebView(App.context);
+            WebSettings settings = webView.getSettings();
+            settings.setJavaScriptEnabled(true);
+            settings.setLoadsImagesAutomatically(false);
+            settings.setBlockNetworkImage(true);
+
+            webView.addJavascriptInterface(new MyJavaScriptInterface(tvCollegeDesc), "INTERFACE");
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    view.loadUrl("javascript:window.INTERFACE.processContent(document.getElementsByTagName('body')[0].innerText);");
+                }
+            });
+            webView.loadUrl(url);
+
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        webView.loadUrl(null);
+        webView.destroy();
+        webView = null;
+    }
+
+
+        class MyJavaScriptInterface
+        {
+            private TextView contentView;
+
+            public MyJavaScriptInterface(TextView aContentView)
+            {
+                contentView = aContentView;
+            }
+
+            @JavascriptInterface
+            public void processContent(String aContent)
+            {
+                final String content = aContent;
+                contentView.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        contentView.setText(content);
+                    }
+                });
+            }
+
     }
 
     @Override
