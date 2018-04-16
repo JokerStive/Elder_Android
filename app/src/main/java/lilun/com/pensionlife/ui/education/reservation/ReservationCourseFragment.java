@@ -230,14 +230,17 @@ public class ReservationCourseFragment extends BaseFragment {
 
         NetHelper.getApi()
                 .putContact(contactId, contact)
-                .flatMap(o -> addOrderObservable(productId, contactId))
+                .flatMap(o -> addOrderObservable(productId, contactId)) .compose(RxUtils.handleResult())
+                .flatMap(order -> addOrderDetaislObservable(order.getId()))
                 .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-                        String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
-                        MQTTManager.getInstance().subscribe(topic, 2);
+                        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
+                            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
+                            MQTTManager.getInstance().subscribe(topic, 2);
+                        }
                         popTo(CourseDetailFragment.class, false);
                         EventBus.getDefault().post("hasOrder");
                     }
@@ -249,7 +252,16 @@ public class ReservationCourseFragment extends BaseFragment {
         String date2String = StringUtils.date2String(new Date());
         return NetHelper.getApi().createOrder(productId, contactId, date2String, null);
     }
-
+    /**
+     * 订单详情需要获取到组织id 来订阅mqtt
+     *
+     * @param orderId 订单id
+     * @return
+     */
+    public Observable<Response<ProductOrder>> addOrderDetaislObservable(String orderId) {
+        String filter = "{\"include\":\"productBackup\"}";
+        return NetHelper.getApi().getOrder(orderId, filter);
+    }
 
     @Override
     protected void onFragmentResult(int reCode, int resultCode, Bundle data) {

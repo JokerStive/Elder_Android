@@ -275,13 +275,17 @@ public class ReservationFragment extends BaseFragment {
         NetHelper.getApi()
                 .putContact(contactId, contact)
                 .flatMap(o -> addOrderObservable(productId, contactId))
-                .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
+                .flatMap(order -> addOrderDetaislObservable(order.getId()))
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-                        String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
-                        MQTTManager.getInstance().subscribe(topic, 2);
+                        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
+                            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
+                            MQTTManager.getInstance().subscribe(topic, 2);
+                        }
                         popTo(ProductDetailFragment.class, false);
                         EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
                     }
@@ -293,6 +297,17 @@ public class ReservationFragment extends BaseFragment {
         String orderTime = tvOrderTime.getText().toString();
         String orderMemo = tvOrderMemo.getText().toString();
         return NetHelper.getApi().createOrder(productId, contactId, orderTime, orderMemo);
+    }
+
+    /**
+     * 订单详情需要获取到组织id 来订阅mqtt
+     *
+     * @param orderId 订单id
+     * @return
+     */
+    public Observable<Response<ProductOrder>> addOrderDetaislObservable(String orderId) {
+        String filter = "{\"include\":\"productBackup\"}";
+        return NetHelper.getApi().getOrder(orderId, filter);
     }
 
 

@@ -22,7 +22,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 个人订单adapter
- *
+ *      ps:老年大学课程没有预约时间，其位置显示下单时间
  * @author yk
  *         create at 2017/3/6 11:10
  *         email : yk_developer@163.com
@@ -30,7 +30,7 @@ import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     private OnItemClickListener listener;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public PersonalOrderAdapter(List<ProductOrder> data) {
         super(R.layout.item_personal_order, data);
@@ -59,8 +59,6 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             helper.setVisible(R.id.tv_next_operate, false)
                     .setText(R.id.tv_provider_name, agencyName)
                     .setText(R.id.tv_product_title, product.getTitle())
-
-                    .setText(R.id.tv_reservation_time, "下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), format))
                     .setText(R.id.tv_product_price, Html.fromHtml("价格: <font color='#fe620f'>" + "￥" + new DecimalFormat("######0.00").format(product.getPrice()) + "</font>"))
                     .setOnClickListener(R.id.rl_item, v -> {
                         if (listener != null) {
@@ -79,10 +77,13 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             if (!TextUtils.isEmpty(orgCategoryId) && orgCategoryId.contains("/教育服务/其他教育服务/老年教育服务")) {
                 //是课程订单,显示学期
                 String semester = showSemester(product);
-                helper.setText(R.id.tv_product_area, semester);
-
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                helper.setText(R.id.tv_product_area, semester)
+                        .setText(R.id.tv_reservation_time, "下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), format));
             } else {
-                helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getProductArea())));
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getProductArea())))
+                        .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format));
             }
 
         }
