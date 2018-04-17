@@ -17,6 +17,7 @@
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
             app:riv_corner_radius="5dip"
+            android:scaleType="fitXY"
             tools:src="@drawable/help_a_neighbor_off" />
 
         <TextView

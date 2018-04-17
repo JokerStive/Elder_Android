@@ -188,27 +188,22 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     }
 
 
-        class MyJavaScriptInterface
-        {
-            private TextView contentView;
+    class MyJavaScriptInterface {
+        private TextView contentView;
 
-            public MyJavaScriptInterface(TextView aContentView)
-            {
-                contentView = aContentView;
-            }
+        public MyJavaScriptInterface(TextView aContentView) {
+            contentView = aContentView;
+        }
 
-            @JavascriptInterface
-            public void processContent(String aContent)
-            {
-                final String content = aContent;
-                contentView.post(new Runnable()
-                {
-                    public void run()
-                    {
-                        contentView.setText(content);
-                    }
-                });
-            }
+        @JavascriptInterface
+        public void processContent(String aContent) {
+            final String content = aContent;
+            contentView.post(new Runnable() {
+                public void run() {
+                    contentView.setText(content);
+                }
+            });
+        }
 
     }
 

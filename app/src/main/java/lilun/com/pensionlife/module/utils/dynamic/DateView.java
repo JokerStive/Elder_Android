@@ -64,7 +64,7 @@ public class DateView extends BaseView {
         int endYear = cal.get(Calendar.YEAR);
         int endMonth = cal.get(Calendar.MONTH);
         int endDay = cal.get(Calendar.DATE);
-        picker.setDateRangeEnd(endYear, endMonth, endDay);
+//        picker.setDateRangeEnd(endYear, endMonth, endDay);
 
         setPickerConfig(picker);
         picker.setOnDateTimePickListener((DateTimePicker.OnYearMonthDayTimePickListener) (year, month, day, hour, minute) -> {

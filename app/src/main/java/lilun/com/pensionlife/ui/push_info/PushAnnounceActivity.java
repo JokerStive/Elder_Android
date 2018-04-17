@@ -48,7 +48,7 @@ public class PushAnnounceActivity extends BaseActivity {
                 .subscribe(new RxSubscriber<Information>(this) {
                     @Override
                     public void _next(Information information) {
-                        pwvAnnounceData.loadDataWithBaseURL(null,information.getContext(), "text/html","utf-8", null);
+                        pwvAnnounceData.loadUrl(information.getContext());
                     }
                 });
     }

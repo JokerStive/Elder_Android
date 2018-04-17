@@ -116,12 +116,16 @@ public class AnnounceInfoActivity extends Activity {
         int contextType = information.getContextType();
         String content = information.getContext();
         tvContent.setVisibility(contextType == 5 ? View.VISIBLE : View.GONE);
-        progressWebView.setVisibility(contextType == 2 ? View.VISIBLE : View.GONE);
+        progressWebView.setVisibility(contextType == 2 ||contextType == 3 ? View.VISIBLE : View.GONE);
         switch (contextType) {
             //html
             case 2:
                 progressWebView.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
 //                progressWebView.loadData(content, "text/html; charset=UTF-8;", null);
+                break;
+
+            case 3:
+                progressWebView.loadUrl(content);
                 break;
             //json
             case 0:
