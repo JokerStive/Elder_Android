@@ -13,7 +13,7 @@ import lilun.com.pensionlife.module.bean.ProductOrder;
 public interface OrderDetailContract {
     interface View extends IView<Presenter> {
         void showOrder(ProductOrder order);
-        void changeOrderStatusSuccess(String status);
+        void changeOrderStatusSuccess(int status);
     }
 
     interface Presenter extends IPresenter<View> {

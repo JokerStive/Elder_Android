@@ -27,9 +27,10 @@ import lilun.com.pensionlife.module.bean.OrganizationEdu;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.bean.OrganizationReply;
-import lilun.com.pensionlife.module.bean.QuestionNaire;
+import lilun.com.pensionlife.module.bean.PrePayResponse;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.QINiuToken;
+import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.bean.Register;
 import lilun.com.pensionlife.module.bean.Semester;
@@ -432,6 +433,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("OrganizationProducts/{id}/createOrder")
     Observable<Response<ProductOrder>> createOrder(@Path("id") String productId, @Field("userInforId") String infoId, @Field("registerDate") String registerDate, @Field("description") String description);
+
+
+    /**
+     * 预支付
+     */
+    @FormUrlEncoded
+    @POST("ProductOrders/{id}/pay")
+    Observable<Response<PrePayResponse>> prePay(@Path("id") String orderId, @Field("deviceId") String deviceId, @Field("type") int type);
 
 
     /**

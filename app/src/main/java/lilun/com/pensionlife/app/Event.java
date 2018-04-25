@@ -50,7 +50,7 @@ public class Event {
 
     //评价完成后
     public static class ActivateEvent {
-        public   String mobile;
+        public String mobile;
 
         public ActivateEvent(String mobile) {
             this.mobile = mobile;
@@ -224,5 +224,15 @@ public class Event {
         public PushMessage getPushMessage() {
             return pushMessage;
         }
+    }
+
+
+    //支付成功
+    public static class PayResult {
+        public int payType;
+        // 0失败 1成功
+        public int code;
+
+        public String msg;
     }
 }

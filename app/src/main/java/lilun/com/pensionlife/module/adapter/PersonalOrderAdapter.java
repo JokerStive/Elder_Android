@@ -18,11 +18,13 @@ import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.bean.ds_bean.PushMessage;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 
 /**
  * 个人订单adapter
- *      ps:老年大学课程没有预约时间，其位置显示下单时间
+ * ps:老年大学课程没有预约时间，其位置显示下单时间
+ *
  * @author yk
  *         create at 2017/3/6 11:10
  *         email : yk_developer@163.com
@@ -141,17 +143,25 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
 
     private void setOrderStatus(BaseViewHolder helper, ProductOrder order) {
         TextView tvOrderStatus = helper.getView(R.id.tv_order_status);
-        String status = order.getStatus();
-        if (status.equals("reserved")) {
-            tvOrderStatus.setText("等待商家处理");
-        } else if (status.equals("assigned")) {
-            tvOrderStatus.setText("商家已经受理");
-        } else if (status.equals("done")) {
-            tvOrderStatus.setText("该订单已经完成");
-        } else if (status.equals("cancel")) {
-            tvOrderStatus.setText("该订单已经取消");
-        } else if (status.equals("delay")) {
-            tvOrderStatus.setText("延期中");
+        int status = order.getStatus();
+        switch (status) {
+            case Order.Status.reserved:
+            case Order.Status.payed:
+                tvOrderStatus.setText("等待商家处理");
+                break;
+            case Order.Status.accepted:
+                tvOrderStatus.setText("商家已经受理");
+                break;
+
+            case Order.Status.completed:
+                tvOrderStatus.setText("该订单已经完成");
+                break;
+            case Order.Status.canceled:
+                tvOrderStatus.setText("该订单已经取消");
+                break;
+            case Order.Status.delayed:
+                tvOrderStatus.setText("延期中");
+                break;
         }
     }
 

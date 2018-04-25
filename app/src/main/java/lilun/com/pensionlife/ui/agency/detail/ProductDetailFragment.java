@@ -324,6 +324,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
 
             case R.id.tv_reservation:
                 //立即预约
+//                ChoosePayWay.newInstance("", "500").show(_mActivity.getFragmentManager(), null);
                 takeReservation();
                 break;
             case R.id.tv_product_mobile:

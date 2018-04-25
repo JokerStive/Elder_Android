@@ -51,13 +51,13 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
 
 
     private PersonalOrderAdapter personalOrderAdapter;
-    private String mStatus;
+    private int mStatus;
 
 
-    public static OrderPageFragment newInstance(String status) {
+    public static OrderPageFragment newInstance(int status) {
         OrderPageFragment fragment = new OrderPageFragment();
         Bundle args = new Bundle();
-        args.putString("status", status);
+        args.putInt("status", status);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,7 +66,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     @Override
     protected void getTransferData(Bundle arguments) {
         super.getTransferData(arguments);
-        mStatus = arguments.getString("status");
+        mStatus = arguments.getInt("status");
         Preconditions.checkNull(mStatus);
     }
 
@@ -134,7 +134,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
     }
 
     /**
-     * 获取我需要显示的数据回来
+     * 获取我需要显示的数据回
      * { "fields": ["id", "name", "status", "registerDate", "assigneeId", "orgCategoryId", "createdAt", "productBackupId"],"include":{"relation": "productBackup","scope": {"fields": ["id","name","title","price","unit", "organizationId","image","orgCategory","extend","areas","startTime", "endTime"]}} }     *
      * "where":{"productBackupId":{"$exists":true}}   //以前的老数据不要，获取有订单备份的数据
      *
@@ -142,14 +142,20 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
      */
     private void getMyOrder(int skip) {
         mSwipeLayout.setRefreshing(true);
-        String filter;
-        String needfields = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\",\"extend\",\"areas\",\"serviceOrganization\",\"startTime\", \"endTime\"]}}";
-        if (mStatus.equals("done")) {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"done\",\"assessed\"]}}]}}";
-        } else if (mStatus.equals("assigned")) {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"delay\",\"assigned\"]}}]}}";
-        } else {
-            filter = needfields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
+        String needFields = "{ \"fields\": [\"paid\",\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\",\"extend\",\"areas\",\"serviceOrganization\",\"startTime\", \"endTime\"]}}";
+        String filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
+        switch (mStatus) {
+            case 0:
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"},{\"paid\":\"" + mStatus + "\"}]}}";
+                break;
+
+            case 20:
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[20,201]}}]}}";
+                break;
+
+            case 100:
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[100,106]}}]}}";
+                break;
         }
         mPresenter.getMyOrders(filter, skip);
 

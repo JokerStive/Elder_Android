@@ -35,6 +35,7 @@ public class App extends MultiDexApplication {
     public static Context context;
     public static int widthDP = 0;
     public static Date loginDate = null;
+//    public static IWXAPI weChatPayApi;
 
     @Override
     public void onCreate() {
@@ -70,8 +71,14 @@ public class App extends MultiDexApplication {
 
         if (!BuildConfig.DEBUG)  //正式版本才监听bugly;
             Bugly.init(getApplicationContext(), "b07eef1cd9", BuildConfig.DEBUG);
+
+        initPay();
     }
 
+    private void initPay() {
+//        weChatPayApi = WXAPIFactory.createWXAPI(this,ConfigUri.WXPAY_APPID, false);
+//        weChatPayApi.registerApp(ConfigUri.WXPAY_APPID);
+    }
 
 
     public static void resetMQTT() {

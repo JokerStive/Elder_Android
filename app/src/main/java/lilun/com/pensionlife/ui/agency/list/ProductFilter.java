@@ -56,18 +56,6 @@ public class ProductFilter {
         public PriceBean price;
         private String orgCategoryId;
 
-//        public String getKind() {
-//            return kind;
-//        }
-//
-//        public WhereBean setKind(String kind) {
-//            this.kind = kind;
-//            return this;
-//        }
-
-//        @SerializedName("tag.kind")
-//
-//        private String kind;
         private Integer score;
         private String creatorId;
         private String organizationId;

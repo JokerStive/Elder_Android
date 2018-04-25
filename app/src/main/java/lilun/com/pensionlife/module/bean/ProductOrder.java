@@ -41,9 +41,31 @@ public class ProductOrder extends BaseBean {
 
     private String id;
     private String name;
-    private String status;
+    private int status;
+    private Integer paid;
+
+    public Integer getPaid() {
+        return paid;
+    }
+
+    public ProductOrder setPaid(Integer paid) {
+        this.paid = paid;
+        return this;
+    }
+
     private String mobile;
+    private Number price;
     private String address;
+
+    public Number getPrice() {
+        return price;
+    }
+
+    public ProductOrder setPrice(Number price) {
+        this.price = price;
+        return this;
+    }
+
     private String description;
     private String callStatus;
     private String remark;
@@ -114,11 +136,11 @@ public class ProductOrder extends BaseBean {
         return this;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public ProductOrder setStatus(String status) {
+    public ProductOrder setStatus(int status) {
         this.status = status;
         return this;
     }

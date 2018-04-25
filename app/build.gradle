@@ -134,8 +134,6 @@ dependencies {
     //MQTT sub-pub
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    compile files('libs/baidumapapi_base_v4_3_0.jar')
-    compile files('libs/baidumapapi_map_v4_3_0.jar')
     //区域选择控件
     compile 'com.github.vanzh:AreaSelector:1.0.8'
     //  compile 'com.github.vanzh:AreaSelector:3df7ee3b6a'
@@ -143,14 +141,14 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //数据库调试使用
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
-
     //边框角度imageVie
     compile 'com.makeramen:roundedimageview:2.3.0'
-
-
     compile 'pub.devrel:easypermissions:1.0.0'
-
     //七牛
     compile 'com.qiniu:qiniu-android-sdk:7.2.+'
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.0.2.jar')
+    compile files('libs/alipaySdk-20180403.jar')
+    compile files('libs/libammsdk.jar')
 }
 

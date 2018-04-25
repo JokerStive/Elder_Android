@@ -47,10 +47,10 @@ public class OrderListFragment extends BaseFragment {
     int selectedColor = 0xffef620f;
 
 
-    private String[] statusTitle = {"待处理", "已受理", "已完成", "已取消"};
+    private String[] statusTitle;
     private ArrayList<Integer> normalDrawablesRes = new ArrayList();
     private ArrayList<Integer> selectedDrawablesRes = new ArrayList();
-    private String[] status = {"reserved", "assigned", "done", "cancel"};
+    private int[] status;
     private ArrayList<Integer> unReadMsgs = new ArrayList<>();
 
     public static OrderListFragment newInstance() {
@@ -68,17 +68,20 @@ public class OrderListFragment extends BaseFragment {
     @Override
     protected void initPresenter() {
         statusTitle = getResources().getStringArray(R.array.order_condition);
-        status = getResources().getStringArray(R.array.order_condition_value);
+        status = getResources().getIntArray(R.array.order_condition_value);
 
+        normalDrawablesRes.add(R.drawable.undeal_off);
         normalDrawablesRes.add(R.drawable.undeal_off);
         normalDrawablesRes.add(R.drawable.deal_off);
         normalDrawablesRes.add(R.drawable.complete_off);
         normalDrawablesRes.add(R.drawable.cancel_off);
 
         selectedDrawablesRes.add(R.drawable.undeal_on);
+        selectedDrawablesRes.add(R.drawable.undeal_on);
         selectedDrawablesRes.add(R.drawable.deal_on);
         selectedDrawablesRes.add(R.drawable.complete_on);
         selectedDrawablesRes.add(R.drawable.cancel_on);
+        unReadMsgs.add(0);
         unReadMsgs.add(0);
         unReadMsgs.add(0);
         unReadMsgs.add(0);

@@ -11,16 +11,27 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.base.BaseChatFragment;
 import lilun.com.pensionlife.module.bean.ProductOrder;
+import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.pay.Cashier;
+import lilun.com.pensionlife.pay.Order;
+import lilun.com.pensionlife.pay.PayCallBack;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.contact.ContactDetailFragment;
-import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
+import rx.Observable;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * 互动式订单详情聊天室
@@ -35,13 +46,22 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     static String Arg_Order = "order";
     TextView tvOrderCreateTime, tvOrderStatus, tvOrderProductTitle, tvOrderPrice,
             tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice,
-            tvContactName, tvContactMobile, tvContactAddress;
+            tvContactName, tvContactMobile, tvContactAddress, tvReFoundDesc, tvCountDown;
     ImageView ivOrderImg;
     private Button btnCancelOrder;
     private LinearLayout llContactInfo;
     private RelativeLayout rlProductInfo;
     private View inflate;
     private String metaServiceContactId;
+    private long invalidTime;
+
+    private CompositeSubscription countDownSubscription = new CompositeSubscription();
+
+
+    //根据订单状态的不同，可以进行不同的操作
+    // -1 无，0 付款 1退款 2取消订单
+    private int doSome = -1;
+    private Cashier cashier;
 
     /**
      * 互动式聊天室
@@ -96,7 +116,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     protected void initView(LayoutInflater inflater) {
         titleBar.setTitle("订单详情");
         super.initView(inflater);
-        ((OrderDetailPresenter) mPresenter).getOrder(objectId);
+        refresh();
     }
 
     @Override
@@ -114,6 +134,8 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         inflate = LayoutInflater.from(getContext()).inflate(R.layout.view_product_info_layout, null, false);
         inflate.setVisibility(View.GONE);
         btnCancelOrder = (Button) inflate.findViewById(R.id.btn_cancel_order);
+        tvCountDown = (TextView) inflate.findViewById(R.id.tv_count_down);
+        tvReFoundDesc = (TextView) inflate.findViewById(R.id.tv_reFound_desc);
         llContactInfo = (LinearLayout) inflate.findViewById(R.id.ll_contact_info);
         rlProductInfo = (RelativeLayout) inflate.findViewById(R.id.rl_product_info);
         tvOrderCreateTime = (TextView) inflate.findViewById(R.id.tv_order_create_time);
@@ -134,10 +156,11 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     public void showOrder(ProductOrder order) {
         this.order = order;
         inflate.setVisibility(View.VISIBLE);
-        tvOrderCreateTime.setText("下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(),8));
+        tvOrderCreateTime.setText("下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), 8));
 
         tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
 
+        setOrderCancelShow(order);
         btnCancelOrder.setVisibility("cancel".equals(order.getStatus()) ? View.GONE : View.VISIBLE);
 
         if (order.getProductBackup() != null) {
@@ -152,7 +175,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             metaServiceContactId = order.getProductBackup().getMetaServiceContactId();
         }
         String registerDate = order.getRegisterDate();
-        tvOrderRegisterTime.setVisibility(TextUtils.isEmpty(registerDate)?View.INVISIBLE:View.VISIBLE);
+        tvOrderRegisterTime.setVisibility(TextUtils.isEmpty(registerDate) ? View.INVISIBLE : View.VISIBLE);
         tvOrderRegisterTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
         tvProdcutNumber.setText("x 1");
         if (order.getContact() != null) {
@@ -164,17 +187,121 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             });
         }
         btnCancelOrder.setOnClickListener((v) -> {
-            new NormalDialog().createNormal(_mActivity, getAlartMsg(R.string.operate_cancel), () -> {
-                ((OrderDetailContract.Presenter) mPresenter).cancelOrderStatus(objectId);
-            });
-
+            doSome();
         });
+    }
+
+
+    //根据不同的订单状态，不同的操作
+    private void doSome() {
+        switch (doSome) {
+            //付款
+            case 0:
+                pay();
+                break;
+            //退款
+            case 1:
+                reFound();
+                break;
+            //取消订单
+            case 2:
+                cancelOrder();
+                break;
+        }
 
 
     }
 
+    private void cancelOrder() {
+
+    }
+
+    private void reFound() {
+
+    }
+
+    private void pay() {
+        if (cashier == null) {
+            ArrayList<String> paymentMethods = new ArrayList<>();
+            paymentMethods.add(Order.OaymentMethods.alipay);
+            paymentMethods.add(Order.OaymentMethods.weixin);
+            cashier = Cashier.newInstance(order.getId(), order.getPrice().toString(), paymentMethods);
+        }
+        cashier.setPayCallBack(new PayCallBack() {
+            @Override
+            public void paySuccess() {
+                refresh();
+            }
+        });
+        cashier.show(_mActivity.getFragmentManager(), null);
+    }
+
+    //刷新界面
+    private void refresh() {
+        mPresenter.getOrder(objectId);
+    }
+
+
+    private void setOrderCancelShow(ProductOrder order) {
+        int status = order.getStatus();
+        Integer paid = order.getPaid();
+
+        if (paid != null) {
+            if (paid == Order.Paid.unpaid) {
+                doSome = 0;
+                setCountDown(order);
+                btnCancelOrder.setText("付款");
+            } else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
+                doSome = 1;
+                btnCancelOrder.setText("申请退款");
+            } else if (paid == Order.Paid.refunded) {
+                btnCancelOrder.setVisibility(View.GONE);
+                tvReFoundDesc.setText("商家已退款");
+            } else if (paid == Order.Paid.refunding) {
+                if (status == Order.Status.refused) {
+                    tvReFoundDesc.setText("商家拒绝退款，请联系商家");
+                } else {
+                    btnCancelOrder.setVisibility(View.GONE);
+                    tvReFoundDesc.setText("退款已申请，等待商家处理");
+                }
+            }
+        } else {
+            if ((status == Order.Status.reserved || status == Order.Status.accepted)) {
+                doSome = 2;
+                btnCancelOrder.setText("取消订单");
+            }
+        }
+    }
+
+    private void setCountDown(ProductOrder order) {
+        Date date = StringUtils.IOS2ToUTCDate(order.getCreatedAt());
+        assert date != null;
+        invalidTime = date.getTime() + 8 * 3600 * 1000;
+        long currentTime = new Date().getTime();
+        long leftTimeSec = (invalidTime - currentTime) / 1000;
+        if (leftTimeSec <= 0) return;
+        final long finalLeftTime = leftTimeSec;
+        tvCountDown.setVisibility(View.VISIBLE);
+        countDownSubscription.add(Observable.interval(0, 1, TimeUnit.SECONDS)
+                .take((int) leftTimeSec + 1)
+                .map(aLong -> finalLeftTime - aLong)
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Long>() {
+                    @Override
+                    public void _next(Long leftTimeSecond) {
+                        long day = leftTimeSecond / (24 * 60 * 60);
+                        long hour = (leftTimeSecond / (60 * 60) - day * 24);
+                        long min = ((leftTimeSecond / 60) - day * 24 * 60 - hour * 60);
+                        long second = (leftTimeSecond - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                        Logger.d(day + "-" + hour + "-" + min + "-" + second);
+                        tvCountDown.setText("剩余支付时间" + String.format("%02d", hour) + ":" + String.format("%02d", min) + ":" + String.format("%02d", second));
+                    }
+                }));
+
+    }
+
     @Override
-    public void changeOrderStatusSuccess(String status) {
+    public void changeOrderStatusSuccess(int status) {
         order.setStatus(status);
         tvOrderStatus.setText(getStatusEn2Cn(status));
     }
@@ -183,24 +310,39 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
      * 转换为中文状态
      * reserved:已预约;assigned:已受理;done:已完成;cancel:已取消
      */
-    public String getStatusEn2Cn(String status) {
-        if (status == null) return null;
+    public String getStatusEn2Cn(int status) {
         String statusCn = "";
         switch (status) {
-            case "reserved":
+            case Order.Status.reserved:
                 statusCn = "已预约";
                 break;
-            case "assigned":
+            case Order.Status.payed:
+                statusCn = "已支付";
+                break;
+            case Order.Status.accepted:
+            case Order.Status.refused:
                 statusCn = "已受理";
                 break;
-            case "done":
+            case Order.Status.completed:
+            case Order.Status.assessed:
                 statusCn = "已完成";
                 break;
-            case "cancel":
+            case Order.Status.canceled:
                 statusCn = "已取消";
                 break;
         }
         return statusCn;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (countDownSubscription != null && !countDownSubscription.isUnsubscribed()) {
+            countDownSubscription.unsubscribe();
+            countDownSubscription.clear();
+            countDownSubscription = null;
+        }
     }
 
     /**

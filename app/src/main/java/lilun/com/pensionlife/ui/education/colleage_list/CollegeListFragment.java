@@ -146,6 +146,7 @@ public class CollegeListFragment extends BaseFragment {
             ids.add(id);
         }
         CollegeFilter collegeFilter = new CollegeFilter(ids);
+
         Gson gson = new Gson();
         String filter = gson.toJson(collegeFilter);
         return NetHelper.getApi()

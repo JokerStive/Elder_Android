@@ -45,7 +45,7 @@ public class OrganizationProduct extends BaseBean {
     private String organizationId;
     //    private String categoryId;
     private String phone;
-    private List<String> orderType;
+    private String orderType;
     private List<String> image;
     private List<String> areaIds;
     private String mobile;
@@ -232,11 +232,11 @@ public class OrganizationProduct extends BaseBean {
         this.phone = phone;
     }
 
-    public List<String> getOrderType() {
+    public String getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(List<String> orderType) {
+    public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
 
@@ -330,12 +330,13 @@ public class OrganizationProduct extends BaseBean {
 //===============私有方法
 
     /**
-     *  获取产品服务区域名
+     * 获取产品服务区域名
+     *
      * @return
      */
     public List<String> getProductArea() {
         ArrayList<String> arealist = new ArrayList<>();
-        if(areas == null) return arealist;
+        if (areas == null) return arealist;
         for (District d : areas) {
             arealist.add(d.getId());
         }

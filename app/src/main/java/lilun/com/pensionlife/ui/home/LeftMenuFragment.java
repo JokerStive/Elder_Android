@@ -26,7 +26,6 @@ import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.home.info_setting.InfoSettingFragment;
 import lilun.com.pensionlife.ui.home.personal_setting.PersonalActivity;
-import lilun.com.pensionlife.ui.order.MerchantOrderListFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.push_info.InformationCenterFragment;
 import lilun.com.pensionlife.ui.welcome.LoginActivity;
@@ -93,7 +92,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
 
             case R.id.tv_manage_order:
-                startTargetFragment(new MerchantOrderListFragment());
+//                startTargetFragment(new MerchantOrderListFragment());
                 break;
 
             case R.id.tv_about_us:

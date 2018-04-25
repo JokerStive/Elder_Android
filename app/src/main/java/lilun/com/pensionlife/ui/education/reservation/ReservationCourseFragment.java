@@ -17,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -36,6 +37,9 @@ import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.pay.Cashier;
+import lilun.com.pensionlife.pay.Order;
+import lilun.com.pensionlife.pay.PayCallBack;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
@@ -186,6 +190,15 @@ public class ReservationCourseFragment extends BaseFragment {
         tvPrice.setText(Html.fromHtml("价格: <font color='#fe620f'>" + new DecimalFormat("######0.00").format(mProduct.getPrice()) + "元" + "</font>"));
 
         tvProductArea.setText(showSemester(mProduct.getExtend()));
+
+        checkPayment();
+    }
+
+    private void checkPayment() {
+        String orderType = mProduct.getOrderType();
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, "payment")) {
+            tvReservation.setText("");
+        }
     }
 
 
@@ -230,21 +243,59 @@ public class ReservationCourseFragment extends BaseFragment {
 
         NetHelper.getApi()
                 .putContact(contactId, contact)
-                .flatMap(o -> addOrderObservable(productId, contactId)) .compose(RxUtils.handleResult())
+                .flatMap(o -> addOrderObservable(productId, contactId)).compose(RxUtils.handleResult())
                 .flatMap(order -> addOrderDetaislObservable(order.getId()))
                 .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-                        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
-                            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
-                            MQTTManager.getInstance().subscribe(topic, 2);
-                        }
-                        popTo(CourseDetailFragment.class, false);
-                        EventBus.getDefault().post("hasOrder");
+                        then(productOrder);
                     }
                 });
+    }
+
+    //生成订单的后续
+    private void then(ProductOrder productOrder) {
+        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
+            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
+            MQTTManager.getInstance().subscribe(topic, 2);
+        }
+
+        String orderType = mProduct.getOrderType();
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, "payment")) {
+            ArrayList<String> paymentMethods = new ArrayList<>();
+            paymentMethods.add(Order.OaymentMethods.alipay);
+            paymentMethods.add(Order.OaymentMethods.weixin);
+            Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(), paymentMethods);
+            cashier.setPayCallBack(new PayCallBack() {
+                @Override
+                public void paySuccess() {
+                    next();
+                }
+
+                @Override
+                public void payFalse() {
+                    next();
+                }
+
+                @Override
+                public void cancel() {
+                    next();
+                }
+            });
+
+            cashier.show(_mActivity.getFragmentManager(), null);
+        } else {
+            next();
+        }
+
+
+    }
+
+    private void next() {
+        popTo(CourseDetailFragment.class, false);
+        EventBus.getDefault().post("hasOrder");
     }
 
 
@@ -252,6 +303,7 @@ public class ReservationCourseFragment extends BaseFragment {
         String date2String = StringUtils.date2String(new Date());
         return NetHelper.getApi().createOrder(productId, contactId, date2String, null);
     }
+
     /**
      * 订单详情需要获取到组织id 来订阅mqtt
      *

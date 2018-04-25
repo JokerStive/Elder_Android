@@ -5,6 +5,7 @@ import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.pay.Order;
 
 /**
  * 订单详情P
@@ -16,11 +17,12 @@ import lilun.com.pensionlife.net.RxSubscriber;
 public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> implements OrderDetailContract.Presenter {
     /**
      * 获取订单信息
+     *
      * @param orderId
      */
     @Override
     public void getOrder(String orderId) {
-        String filter = "{ \"fields\": [\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productId\",\"productBackupId\",\"contact\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
+        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
@@ -40,6 +42,7 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
 
     /**
      * 取消订单
+     *
      * @param orderId
      */
     @Override
@@ -51,7 +54,7 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                 .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        view.changeOrderStatusSuccess("cancel");
+                        view.changeOrderStatusSuccess(Order.Status.canceled);
                     }
 
                     @Override

@@ -44,13 +44,14 @@ import lilun.com.pensionlife.widget.chatView.ChatView;
  * Created by zp on 2017/5/3.
  */
 
-public abstract class BaseChatFragment<P extends IPresenter> extends BaseFragment {
+public abstract class BaseChatFragment<T extends IPresenter>  extends BaseFragment {
     protected static String objectId = ""; //记录社区活动id 或 产品订单id
     public String orgId = "";    // 组织id
     public int chatType; //聊天室类别
 
     public ChatAdapter chatAdapter;
 
+    protected T mPresenter;
     private String topic;
     private int ops = 2;
     private int unReadCount;

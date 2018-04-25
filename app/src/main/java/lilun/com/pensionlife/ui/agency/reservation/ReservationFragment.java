@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -43,8 +44,11 @@ import lilun.com.pensionlife.module.utils.mqtt.MQTTManager;
 import lilun.com.pensionlife.module.utils.mqtt.MQTTTopicUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
+import lilun.com.pensionlife.pay.Cashier;
+import lilun.com.pensionlife.pay.Order;
+import lilun.com.pensionlife.pay.PayCallBack;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
+import lilun.com.pensionlife.ui.education.course_details.CourseDetailFragment;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import retrofit2.Response;
@@ -282,16 +286,53 @@ public class ReservationFragment extends BaseFragment {
                 .subscribe(new RxSubscriber<ProductOrder>(_mActivity) {
                     @Override
                     public void _next(ProductOrder productOrder) {
-                        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
-                            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
-                            MQTTManager.getInstance().subscribe(topic, 2);
-                        }
-                        popTo(ProductDetailFragment.class, false);
-                        EventBus.getDefault().post("hasOrder-" + productOrder.getMobile());
+                        then(productOrder);
                     }
                 });
     }
 
+
+    //生成订单的后续
+    private void then(ProductOrder productOrder) {
+        if (productOrder.getProductBackup() != null && productOrder.getProductBackup().getOrganizationId() != null) {
+            String topic = MQTTTopicUtils.getActivityTopic(productOrder.getProductBackup().getOrganizationId().replace("product", "order"), productOrder.getId());
+            MQTTManager.getInstance().subscribe(topic, 2);
+        }
+
+        String orderType = mProduct.getOrderType();
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, "payment")) {
+            ArrayList<String> paymentMethods = new ArrayList<>();
+            paymentMethods.add(Order.OaymentMethods.alipay);
+            paymentMethods.add(Order.OaymentMethods.weixin);
+            Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(),paymentMethods);
+            cashier.setPayCallBack(new PayCallBack() {
+                @Override
+                public void paySuccess() {
+                    po();
+                }
+
+                @Override
+                public void payFalse() {
+                    po();
+                }
+
+                @Override
+                public void cancel() {
+                    po();
+                }
+            });
+            cashier.show(_mActivity.getFragmentManager(), null);
+        } else {
+            po();
+        }
+
+
+    }
+
+    private void po() {
+        popTo(CourseDetailFragment.class, false);
+        EventBus.getDefault().post("hasOrder");
+    }
 
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
         String orderTime = tvOrderTime.getText().toString();

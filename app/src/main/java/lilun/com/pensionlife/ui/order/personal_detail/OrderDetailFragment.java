@@ -34,6 +34,7 @@ import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.education.colleage_details.CollegeDetailFragment;
@@ -210,26 +211,26 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
 
     @Override
-    public void changeOrderStatusSuccess(String status) {
+    public void changeOrderStatusSuccess(int status) {
         //更改订单状态后的操作
         getActivity().finish();
         EventBus.getDefault().post(new Event.RefreshMyOrderData());
 
     }
 
-    private int getStatus(String status) {
+    private int getStatus(int status) {
         int stringRes = 0;
-        if (status.equals(status_reserved)) {
+        if (status == Order.Status.reserved || status == Order.Status.payed) {
             stringRes = R.string.status_reserved;
-        } else if (status.equals(status_assigned)) {
+        } else if (status == Order.Status.accepted) {
             stringRes = R.string.status_assigned;
-        } else if (status.equals(status_done)) {
+        } else if (status == Order.Status.completed) {
             stringRes = R.string.status_done;
-        } else if (status.equals(status_cancel)) {
+        } else if (status == Order.Status.canceled) {
             stringRes = R.string.status_cancel;
-        } else if (status.equals(status_assessed)) {
+        } else if (status == Order.Status.assessed) {
             stringRes = R.string.status_assessed;
-        } else if (status.equals(status_delay)) {
+        } else if (status == Order.Status.delayed) {
             stringRes = R.string.status_delayed;
         }
         return stringRes;
@@ -239,11 +240,11 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     private int
 
 
-    getStatusOperate(String status) {
+    getStatusOperate(int status) {
         int statusOperate = -1;
-        if (status.equals(status_reserved)) {
+        if (status == Order.Status.reserved) {
             statusOperate = R.string.operate_cancel;
-        } else if (status.equals(status_assigned)) {
+        } else if (status == Order.Status.accepted) {
             statusOperate = R.string.operate_done;
         }
 
@@ -251,9 +252,9 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 //            statusOperate = R.string.rank;
 //        }
 
-        else if (status.equals(status_cancel)) {
+        else if (status == Order.Status.canceled) {
             statusOperate = -1;
-        } else if (status.equals(status_assessed)) {
+        } else if (status == Order.Status.assessed) {
             setHadAssess();
         }
         return statusOperate;
@@ -307,8 +308,8 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
     private void operate() {
-        String status = mOrder.getStatus();
-        if (status.equals(status_reserved)) {
+        int status = mOrder.getStatus();
+        if (status == Order.Status.reserved) {
             changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
         }
 
@@ -316,7 +317,7 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 //            start(RankFragment.newInstance(Constants.ProductOrder, mOrder.getId()));
 //        }
 
-        else if (status.equals(status_assigned)) {
+        else if (status == Order.Status.completed) {
             changeOrderStatus(status_done, "服务已经完成？");
         }
 

@@ -131,43 +131,6 @@ public class UrgentAidInfoActivity extends Activity {
                 transaction.replace(R.id.fl_container, loadMapFragment);
 
                 transaction.commit();
-//
-//                //logo的位置
-//                mMapView.setLogoPosition(LogoPosition.logoPostionRightTop);
-//                mMapView.setBackgroundColor(Color.WHITE);
-//
-//
-//                BaiduMap map = mMapView.getMap();
-//                map.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-//
-//                //设置缩放的级数，最大21,最小3,
-//                map.setMaxAndMinZoomLevel(21,18);
-//
-//
-//                //允许定位图层
-//                map.setMyLocationEnabled(true);
-//                //设置定位信息，经纬度，精度。。
-//                map.setMyLocationData(new MyLocationData.Builder()
-//                        .accuracy(10)
-//                        .direction(10)
-//                        .longitude(longitude)
-//                        .latitude(latitude).build());
-//
-//
-//                //这个定位配置，这个必须设置，定位图标。。。
-//                BitmapDescriptor bitmap = BitmapDescriptorFactory
-//                        .fromResource(R.drawable.location);
-//                MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.COMPASS, false, bitmap);
-//                map.setMyLocationConfiguration(config);
-//
-//
-//                LatLng point = new LatLng(longitude, latitude);
-//
-//                OverlayOptions option = new MarkerOptions()
-//                        .position(point)
-//                        .title("求助人的位置")
-//                        .icon(bitmap);
-//                map.addOverlay(option);
             }
         }
     }
