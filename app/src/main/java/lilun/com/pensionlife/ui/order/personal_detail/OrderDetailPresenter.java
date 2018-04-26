@@ -5,7 +5,6 @@ import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
-import lilun.com.pensionlife.pay.Order;
 
 /**
  * 订单详情P
@@ -22,7 +21,17 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
      */
     @Override
     public void getOrder(String orderId) {
-        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
+//        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
+        String filter = "{  \"include\":\n" +
+                "    {\"relation\":\"productBackup\",\n" +
+                "     \"scope\":{\n" +
+                "         \"include\":{\n" +
+                "             \"relation\":\"organization\",\n" +
+                "             \"fields\":[\"paymentMethods\"]\n" +
+                "         }\n" +
+                "     }\n" +
+                "    }\n" +
+                "}";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
@@ -46,15 +55,15 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
      * @param orderId
      */
     @Override
-    public void cancelOrderStatus(String orderId) {
+    public void changeOrderStatus(String orderId, int status) {
         addSubscribe(NetHelper.getApi()
-                .changeOrderStatus(orderId, "cancel")
+                .changeOrderStatus(orderId, status)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(getActivity()) {
                     @Override
                     public void _next(Object o) {
-                        view.changeOrderStatusSuccess(Order.Status.canceled);
+                        view.changeOrderStatusSuccess(status);
                     }
 
                     @Override

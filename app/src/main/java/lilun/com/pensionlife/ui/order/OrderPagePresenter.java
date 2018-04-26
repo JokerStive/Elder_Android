@@ -42,7 +42,7 @@ public class OrderPagePresenter extends RxPresenter<OrderPageContract.View> impl
 
 
     @Override
-    public void changeOrderStatus(String orderId, String status) {
+    public void changeOrderStatus(String orderId, int status) {
         addSubscribe(NetHelper.getApi()
                 .changeOrderStatus(orderId, status)
                 .compose(RxUtils.handleResult())

@@ -103,17 +103,6 @@
             android:screenOrientation="portrait" />
 
 
-        <!-- 商家订单详情-->
-        <activity
-            android:name="lilun.com.pensionlife.ui.order.detail.MerchantOrderDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-
-        <!-- 商家备注-->
-        <activity
-            android:name="lilun.com.pensionlife.ui.agency.merchant.MemoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <!-- 切换组织-->
         <activity

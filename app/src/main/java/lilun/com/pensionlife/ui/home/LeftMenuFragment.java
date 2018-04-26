@@ -1,9 +1,11 @@
 package lilun.com.pensionlife.ui.home;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
@@ -52,6 +55,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     @Bind(R.id.tv_manage_order)
     TextView tvManageOrder;
 
+
     @Override
     protected void initPresenter() {
 
@@ -68,11 +72,10 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     protected void initView(LayoutInflater inflater) {
         ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
         tvName.setText(User.getName());
-
     }
 
 
-    @OnClick({R.id.tv_logout, R.id.tv_contact_setting, R.id.tv_account_data, R.id.tv_account_info, R.id.tv_info_setting, R.id.tv_about_us, R.id.tv_manage_order, R.id.tv_my_order})
+    @OnClick({R.id.iv_icon, R.id.tv_logout, R.id.tv_contact_setting, R.id.tv_account_data, R.id.tv_account_info, R.id.tv_info_setting, R.id.tv_about_us, R.id.tv_manage_order, R.id.tv_my_order})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
@@ -108,6 +111,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
                 break;
         }
     }
+
 
     private void startTargetFragment(BaseFragment targetFragment) {
         Fragment parentFragment = getParentFragment();
@@ -172,5 +176,19 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     public void showNewSetting(Event.AccountSettingChange account) {
         tvName.setText(User.getName());
         ImageLoaderUtil.instance().loadAvatar(User.getUserId(), ivAvatar);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

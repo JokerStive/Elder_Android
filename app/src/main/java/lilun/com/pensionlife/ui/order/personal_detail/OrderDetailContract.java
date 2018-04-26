@@ -18,6 +18,6 @@ public interface OrderDetailContract {
 
     interface Presenter extends IPresenter<View> {
         void getOrder(String orderId);
-        void cancelOrderStatus(String orderId);
+        void changeOrderStatus(String orderId,int status);
     }
 }

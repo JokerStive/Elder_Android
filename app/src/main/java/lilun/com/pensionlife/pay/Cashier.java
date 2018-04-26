@@ -62,7 +62,10 @@ public class Cashier extends DialogFragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        boolean registered = EventBus.getDefault().isRegistered(this);
+        if (!registered) {
+            EventBus.getDefault().register(this);
+        }
         orderId = getArguments().getString("orderId");
         price = getArguments().getString("price");
         paymentMethods = getArguments().getStringArrayList("paymentMethods");
@@ -87,15 +90,15 @@ public class Cashier extends DialogFragment implements View.OnClickListener {
         tvOfflinePay.setOnClickListener(this);
 
         for (String paymentMethod : paymentMethods) {
-            if (TextUtils.equals(paymentMethod, Order.OaymentMethods.alipay)) {
+            if (TextUtils.equals(paymentMethod, Order.paymentMethods.alipay)) {
                 tvAliPay.setVisibility(View.VISIBLE);
             }
 
-            if (TextUtils.equals(paymentMethod, Order.OaymentMethods.weixin)) {
+            if (TextUtils.equals(paymentMethod, Order.paymentMethods.weixin)) {
                 tvWXPay.setVisibility(View.VISIBLE);
             }
 
-            if (TextUtils.equals(paymentMethod, Order.OaymentMethods.offline)) {
+            if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
                 tvOfflinePay.setVisibility(View.VISIBLE);
             }
         }
@@ -147,4 +150,6 @@ public class Cashier extends DialogFragment implements View.OnClickListener {
     private void unregister() {
         EventBus.getDefault().unregister(this);
     }
+
+
 }

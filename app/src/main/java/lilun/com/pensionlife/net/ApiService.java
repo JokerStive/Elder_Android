@@ -446,10 +446,6 @@ public interface ApiService {
     /**
      * 上传AID多张图片
      */
-//    @Multipart
-//    @POST("OrganizationAids/upload/image")
-//    Observable<Response<List<IconModule>>> newAidAndIcons(@PartMap Map<String, RequestBody> params);
-//    @Multipart
     @POST("OrganizationAids/upload/image")
     Observable<Response<Object>> newAidAndIcons(@Body MultipartBody body);
 
@@ -709,7 +705,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @PUT("ProductOrders/{id}/changeStatus")
-    Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") String status);
+    Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") int status);
 
     /**
      * 修改订单

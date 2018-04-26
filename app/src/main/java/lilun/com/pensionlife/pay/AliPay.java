@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 
 import org.greenrobot.eventbus.EventBus;
@@ -14,6 +15,7 @@ import java.util.Map;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.module.bean.PrePayResponse;
 import lilun.com.pensionlife.module.utils.RxUtils;
+import lilun.com.pensionlife.module.utils.SystemUtils;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -26,6 +28,9 @@ public class AliPay extends BasePay {
     private Activity mActivity;
 
     public AliPay(Activity activity) {
+        if (SystemUtils.isApkInDebug()) {
+            EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+        }
         this.mActivity = activity;
     }
 

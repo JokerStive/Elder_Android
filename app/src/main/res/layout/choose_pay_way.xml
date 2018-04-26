@@ -38,7 +38,7 @@
         style="@style/tv_normal"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:padding="@dimen/dp_27"
+        android:padding="@dimen/sp_24"
         android:textColor="#3D4245"
         android:textSize="@dimen/dp_30"
         tools:text="￥53.00" />
@@ -48,12 +48,14 @@
         android:id="@+id/tv_aliPay"
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
-        android:paddingBottom="@dimen/sp_24"
-        android:paddingLeft="@dimen/sp_24"
+        android:drawableLeft="@drawable/icon_ali_pay"
+        android:drawablePadding="@dimen/dp_16"
+        android:drawableRight="@drawable/add_contact_next"
+        android:gravity="center_vertical"
+        android:padding="@dimen/sp_24"
         android:text="支付宝"
         android:textColor="#333333"
-        android:textSize="@dimen/sp_17"
-        android:visibility="gone" />
+        android:textSize="@dimen/sp_17" />
 
     <View
         style="@style/line_gray"
@@ -64,16 +66,22 @@
         android:id="@+id/tv_weChatPay"
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_wx_pay"
+        android:drawablePadding="@dimen/dp_16"
+        android:drawableRight="@drawable/add_contact_next"
+        android:gravity="center_vertical"
         android:padding="@dimen/sp_24"
         android:text="微信"
         android:textColor="#333333"
-        android:textSize="@dimen/sp_17"
-        android:visibility="gone" />
+        android:textSize="@dimen/sp_17" />
 
     <TextView
         android:id="@+id/tv_offlinePay"
         style="@style/tv_normal_ellipsize"
         android:layout_width="match_parent"
+        android:drawableLeft="@drawable/icon_offline_pay"
+        android:drawablePadding="@dimen/dp_16"
+        android:drawableRight="@drawable/add_contact_next"
         android:padding="@dimen/sp_24"
         android:text="线下支付"
         android:textColor="#333333"

@@ -187,7 +187,8 @@ public class ReservationFragment extends BaseFragment {
 
 
     private void getProduct() {
-        NetHelper.getApi().getProduct(mProductId, null)
+        String filter = "{\"include\":{\"relation\":\"organization\",\"scope\":{\"fields\":[\"id\"]}}}";
+        NetHelper.getApi().getProduct(mProductId, filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<OrganizationProduct>(getActivity()) {
@@ -300,11 +301,11 @@ public class ReservationFragment extends BaseFragment {
         }
 
         String orderType = mProduct.getOrderType();
-        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, "payment")) {
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, Order.Type.payment)) {
             ArrayList<String> paymentMethods = new ArrayList<>();
-            paymentMethods.add(Order.OaymentMethods.alipay);
-            paymentMethods.add(Order.OaymentMethods.weixin);
-            Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(),paymentMethods);
+            paymentMethods.add(Order.paymentMethods.alipay);
+            paymentMethods.add(Order.paymentMethods.weixin);
+            Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(), paymentMethods);
             cashier.setPayCallBack(new PayCallBack() {
                 @Override
                 public void paySuccess() {

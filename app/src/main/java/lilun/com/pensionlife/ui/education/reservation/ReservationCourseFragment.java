@@ -263,10 +263,10 @@ public class ReservationCourseFragment extends BaseFragment {
         }
 
         String orderType = mProduct.getOrderType();
-        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, "payment")) {
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, Order.Type.payment)) {
             ArrayList<String> paymentMethods = new ArrayList<>();
-            paymentMethods.add(Order.OaymentMethods.alipay);
-            paymentMethods.add(Order.OaymentMethods.weixin);
+            paymentMethods.add(Order.paymentMethods.alipay);
+            paymentMethods.add(Order.paymentMethods.weixin);
             Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(), paymentMethods);
             cashier.setPayCallBack(new PayCallBack() {
                 @Override

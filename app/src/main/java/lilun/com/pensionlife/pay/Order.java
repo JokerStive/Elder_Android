@@ -56,6 +56,8 @@ public class Order {
     }
 
     public static class Paid {
+
+        public static final  long invalid_time=3600;
         /**
          * null/0: 未付款;
          */
@@ -74,7 +76,7 @@ public class Order {
         public static final int refunded = -1;
     }
 
-    public static class OaymentMethods {
+    public static class paymentMethods {
         /**
          * 微信支付
          */
@@ -87,5 +89,23 @@ public class Order {
          * 线下支付
          */
         public static final String offline = "offline";
+    }
+
+
+    public static class Type {
+        /**
+         * phone: 电话预约，没有线上预约
+         */
+        public static final String phone = "phone";
+
+        /**
+         * booking: 线上预约
+         */
+        public static final String booking = "booking";
+
+        /**
+         * payment: 电子支付
+         */
+        public static final String payment = "payment";
     }
 }

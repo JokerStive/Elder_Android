@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -67,6 +68,15 @@ public class SystemUtils {
         return false;
     }
 
+
+    public static boolean isApkInDebug() {
+        try {
+            ApplicationInfo info = App.context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public static boolean isExtendStorageEnable() {
         String state = Environment.getExternalStorageState();

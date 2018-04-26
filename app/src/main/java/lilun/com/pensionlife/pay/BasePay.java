@@ -9,10 +9,13 @@ import lilun.com.pensionlife.net.RxSubscriber;
 
 public abstract class BasePay {
 
+    /**
+     * 预支付下单
+     */
     public void prePay(String orderId, int payType, PrePayCallBack callBack) {
 
         NetHelper.getApi()
-                .prePay(orderId, DeviceUtils.getAndroidID(App.context),payType)
+                .prePay(orderId, DeviceUtils.getAndroidID(App.context), payType)
                 .compose(RxUtils.applySchedule())
                 .compose(RxUtils.handleResult())
                 .subscribe(new RxSubscriber<PrePayResponse>() {
@@ -30,6 +33,9 @@ public abstract class BasePay {
     }
 
 
+    /**
+     * 预支付下单回调
+     */
     public interface PrePayCallBack {
         void preSuccess(PrePayResponse response);
 

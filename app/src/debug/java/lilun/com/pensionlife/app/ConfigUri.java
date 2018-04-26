@@ -6,13 +6,13 @@ package lilun.com.pensionlife.app;
  */
 public class ConfigUri {
 
-    public static final String BASE_URL = "http://dev.j1home.com/api/";
-    public static final String MQTT_URL = "tcp://dev.j1home.com:1883";
+    public static String BASE_URL = "http://dev.j1home.com/api/";
+    public static String MQTT_URL = "tcp://dev.j1home.com:1883";
 
 
-//    public static final String BASE_URL = "http://test.j1home.com/api/";
-
-//    public static final String MQTT_URL = "tcp://test.j1home.com:1883";
+//    public static final String BASE_URL = "http://192.168.3.184:3000/api/";
+//
+//    public static final String MQTT_URL = "tcp://192.168.3.184:1883";
 
 
 //    public static final String BASE_URL = "https://api.j1home.com/api/";
@@ -24,8 +24,7 @@ public class ConfigUri {
      */
     public static final String QUESTION_NAIRE = "http://file.j1home.com/questionnaire.html";
 
-    public static final String WXPAY_APPID = "wx8862efa87d18d16f";
-
+    public static final String WXPAY_APPID = "wx1c088d68f2837403";
 
 
 }

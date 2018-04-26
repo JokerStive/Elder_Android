@@ -4,10 +4,12 @@ import android.app.Activity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.orhanobut.logger.Logger;
+import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.module.bean.PrePayResponse;
 import lilun.com.pensionlife.module.utils.ToastHelper;
@@ -18,10 +20,10 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 public class WXPay extends BasePay {
 
 
-    private final  IWXAPI wxAPI;
+    private final IWXAPI wxAPI;
 
     public WXPay(Activity activity) {
-        wxAPI = WXAPIFactory.createWXAPI(activity, ConfigUri.WXPAY_APPID, false);
+        wxAPI = WXAPIFactory.createWXAPI(App.context, ConfigUri.WXPAY_APPID,false);
         wxAPI.registerApp(ConfigUri.WXPAY_APPID);
     }
 
@@ -48,6 +50,7 @@ public class WXPay extends BasePay {
         boolean result = true;
         boolean wxAppInstalled = wxAPI.isWXAppInstalled();
         boolean wxAppSupportAPI = wxAPI.isWXAppSupportAPI();
+        boolean isPaySupported = wxAPI.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
 
         if (!wxAppInstalled) {
             ToastHelper.get().showWareShort("您还未安装微信,无法使用微信支付");
@@ -56,6 +59,12 @@ public class WXPay extends BasePay {
 
 
         if (!wxAppSupportAPI) {
+            ToastHelper.get().showWareShort("当前手机不支持微信支付");
+            result = false;
+        }
+
+
+        if (!isPaySupported) {
             ToastHelper.get().showWareShort("当前手机不支持微信支付");
             result = false;
         }
@@ -69,7 +78,7 @@ public class WXPay extends BasePay {
 
         PayReq request = new PayReq();
 
-        request.appId = ConfigUri.WXPAY_APPID;
+        request.appId =  options.getString("appid");
 
         request.partnerId = options.getString("partnerid");
 
@@ -83,9 +92,14 @@ public class WXPay extends BasePay {
 
         request.sign = options.getString("sign");
 
+        boolean checkArgs = request.checkArgs();
+
+
         boolean b = wxAPI.sendReq(request);
 
+        Logger.d(checkArgs);
         Logger.d(b);
+
 
     }
 }

@@ -22,6 +22,6 @@ public interface OrderPageContract {
 
     interface Presenter extends IPresenter<View> {
         void getMyOrders(String status,int skip);
-        void changeOrderStatus(String orderId, String status);
+        void changeOrderStatus(String orderId, int status);
     }
 }

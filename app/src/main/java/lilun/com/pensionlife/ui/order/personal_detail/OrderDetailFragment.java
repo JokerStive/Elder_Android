@@ -308,25 +308,19 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
     }
 
     private void operate() {
-        int status = mOrder.getStatus();
-        if (status == Order.Status.reserved) {
-            changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
-        }
-
-//        else if (status.equals(status_done)) {
-//            start(RankFragment.newInstance(Constants.ProductOrder, mOrder.getId()));
+//        int status = mOrder.getStatus();
+//        if (status == Order.Status.reserved) {
+//            changeOrderStatus(status_cancel, getAlartMsg(R.string.operate_cancel));
+//        } else if (status == Order.Status.completed) {
+//            changeOrderStatus(status_done, "服务已经完成？");
 //        }
-
-        else if (status == Order.Status.completed) {
-            changeOrderStatus(status_done, "服务已经完成？");
-        }
 
     }
 
-    private void changeOrderStatus(String status, String msg) {
-        new NormalDialog().createNormal(_mActivity, msg, () -> {
-            mPresenter.cancelOrderStatus(mOrderId);
-        });
+    private void changeOrderStatus(int status, String msg) {
+//        new NormalDialog().createNormal(_mActivity, msg, () -> {
+//            mPresenter.changeOrderStatus(mOrderId);
+//        });
 
     }
 

@@ -11,24 +11,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import lilun.com.pensionlife.R;
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseChatFragment;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.pay.Cashier;
 import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.pay.PayCallBack;
 import lilun.com.pensionlife.ui.agency.detail.ProductDetailFragment;
 import lilun.com.pensionlife.ui.contact.ContactDetailFragment;
+import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.image_loader.ImageLoaderUtil;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -54,12 +56,15 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     private View inflate;
     private String metaServiceContactId;
     private long invalidTime;
+    private String paymentMethod = Order.paymentMethods.alipay;
 
     private CompositeSubscription countDownSubscription = new CompositeSubscription();
 
 
-    //根据订单状态的不同，可以进行不同的操作
-    // -1 无，0 付款 1退款 2取消订单
+    /**
+     * 根据订单状态的不同，可以进行不同的操作
+     * -1 无，0 付款 1退款 2取消订单
+     */
     private int doSome = -1;
     private Cashier cashier;
 
@@ -77,12 +82,6 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         return fragment;
     }
 
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        _mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//    }
 
     /**
      * 获取产品id，订阅产品所在组织的聊天频道
@@ -160,7 +159,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
         tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
 
-        setOrderCancelShow(order);
+        differentShowAndOperateFromOrderStatus(order);
         btnCancelOrder.setVisibility("cancel".equals(order.getStatus()) ? View.GONE : View.VISIBLE);
 
         if (order.getProductBackup() != null) {
@@ -213,18 +212,22 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     }
 
     private void cancelOrder() {
-
+        new NormalDialog().createNormal(_mActivity, "确定要取消订单吗？", () -> {
+            mPresenter.changeOrderStatus(order.getId(), Order.Status.canceled);
+        });
     }
 
     private void reFound() {
-
+        new NormalDialog().createNormal(_mActivity, "确定要申请退款吗？", () -> {
+            ToastHelper.get().showWareShort("申请退款");
+        });
     }
 
     private void pay() {
         if (cashier == null) {
             ArrayList<String> paymentMethods = new ArrayList<>();
-            paymentMethods.add(Order.OaymentMethods.alipay);
-            paymentMethods.add(Order.OaymentMethods.weixin);
+            paymentMethods.add(Order.paymentMethods.alipay);
+            paymentMethods.add(Order.paymentMethods.weixin);
             cashier = Cashier.newInstance(order.getId(), order.getPrice().toString(), paymentMethods);
         }
         cashier.setPayCallBack(new PayCallBack() {
@@ -242,30 +245,57 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     }
 
 
-    private void setOrderCancelShow(ProductOrder order) {
+    private void differentShowAndOperateFromOrderStatus(ProductOrder order) {
         int status = order.getStatus();
         Integer paid = order.getPaid();
 
+        //支付式订单
         if (paid != null) {
+
+            //待付款状态
             if (paid == Order.Paid.unpaid) {
                 doSome = 0;
                 setCountDown(order);
+                tvReFoundDesc.setVisibility(View.GONE);
                 btnCancelOrder.setText("付款");
-            } else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
-                doSome = 1;
-                btnCancelOrder.setText("申请退款");
-            } else if (paid == Order.Paid.refunded) {
+            }
+
+            //已经付款状态下，如果是线下付款和预约式订单一致
+            if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
+                setPayMemo();
+                if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+                    doSome = 2;
+                    btnCancelOrder.setText("取消订单");
+                } else {
+                    doSome = 1;
+                    btnCancelOrder.setText("申请退款");
+                }
+            }
+
+
+            //已经退款
+            if (paid == Order.Paid.refunded) {
                 btnCancelOrder.setVisibility(View.GONE);
                 tvReFoundDesc.setText("商家已退款");
-            } else if (paid == Order.Paid.refunding) {
+            }
+
+            //正在退款中
+            if (paid == Order.Paid.refunding) {
+                //商家拒绝退款
                 if (status == Order.Status.refused) {
                     tvReFoundDesc.setText("商家拒绝退款，请联系商家");
+                    doSome = 1;
+                    btnCancelOrder.setText("申请退款");
                 } else {
                     btnCancelOrder.setVisibility(View.GONE);
                     tvReFoundDesc.setText("退款已申请，等待商家处理");
                 }
             }
-        } else {
+
+        }
+
+        //预约式订单
+        else {
             if ((status == Order.Status.reserved || status == Order.Status.accepted)) {
                 doSome = 2;
                 btnCancelOrder.setText("取消订单");
@@ -273,10 +303,27 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         }
     }
 
+    /**
+     * 显示用什么方式支付的
+     */
+    private void setPayMemo() {
+        if (TextUtils.equals(paymentMethod, Order.paymentMethods.alipay)) {
+            tvReFoundDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
+            tvReFoundDesc.setCompoundDrawables(App.context.getResources().getDrawable(R.drawable.icon_ali_pay), null, null, null);
+            tvReFoundDesc.setText(String.format("已经通过支付宝付款%1s元", order.getPrice()));
+        } else if (TextUtils.equals(paymentMethod, Order.paymentMethods.weixin)) {
+            tvReFoundDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
+            tvReFoundDesc.setCompoundDrawables(App.context.getResources().getDrawable(R.drawable.icon_wx_pay), null, null, null);
+            tvReFoundDesc.setText(String.format("已经通过微信付款%1s元", order.getPrice()));
+        } else if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+            tvReFoundDesc.setText("采用线下支付方式付款");
+        }
+    }
+
     private void setCountDown(ProductOrder order) {
         Date date = StringUtils.IOS2ToUTCDate(order.getCreatedAt());
         assert date != null;
-        invalidTime = date.getTime() + 8 * 3600 * 1000;
+        invalidTime = date.getTime() + Order.Paid.invalid_time;
         long currentTime = new Date().getTime();
         long leftTimeSec = (invalidTime - currentTime) / 1000;
         if (leftTimeSec <= 0) return;
@@ -293,7 +340,6 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                         long hour = (leftTimeSecond / (60 * 60) - day * 24);
                         long min = ((leftTimeSecond / 60) - day * 24 * 60 - hour * 60);
                         long second = (leftTimeSecond - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-                        Logger.d(day + "-" + hour + "-" + min + "-" + second);
                         tvCountDown.setText("剩余支付时间" + String.format("%02d", hour) + ":" + String.format("%02d", min) + ":" + String.format("%02d", second));
                     }
                 }));
@@ -302,22 +348,18 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
     @Override
     public void changeOrderStatusSuccess(int status) {
-        order.setStatus(status);
-        tvOrderStatus.setText(getStatusEn2Cn(status));
+        refresh();
     }
 
     /**
      * 转换为中文状态
-     * reserved:已预约;assigned:已受理;done:已完成;cancel:已取消
      */
     public String getStatusEn2Cn(int status) {
         String statusCn = "";
         switch (status) {
             case Order.Status.reserved:
-                statusCn = "已预约";
-                break;
             case Order.Status.payed:
-                statusCn = "已支付";
+                statusCn = "待受理";
                 break;
             case Order.Status.accepted:
             case Order.Status.refused:
@@ -355,13 +397,5 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         return "共 <font color=\"red\">" + number + "</font>件商品，合计: <font color=\"red\">￥" + format + "</font>";
     }
 
-    /**
-     * 返回 确定要 xxx 吗？"
-     *
-     * @param operate
-     * @return
-     */
-    public String getAlartMsg(int operate) {
-        return "确定要" + getString(operate) + "吗？";
-    }
+
 }

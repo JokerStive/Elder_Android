@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f7f7f7"
-    >
+    android:background="#f7f7f7">
 
 
     <lilun.com.pensionlife.widget.NormalTitleBar
@@ -28,40 +27,59 @@
         android:layout_below="@id/iv_qr_code"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
-        android:textColor="#686868"
-        android:text="@string/recommend_to_friend" />
+        android:text="@string/recommend_to_friend"
+        android:textColor="#686868" />
 
 
     <TextView
+        android:id="@+id/tv_version"
         style="@style/tv_normal"
         android:layout_below="@id/tv_recommend"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
-        android:textColor="#9F9F9F"
         android:text="V2.0.14"
-        android:id="@+id/tv_version" />
+        android:textColor="#9F9F9F" />
+
+    <TextView
+        android:id="@+id/tv_change_ip"
+        style="@style/tv_normal_ellipsize"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_version"
+        android:layout_marginTop="@dimen/sliding_item_margin_top"
+        android:gravity="center_horizontal"
+        android:text="切换IP地址"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/tv_change_mqtt"
+        style="@style/tv_normal_ellipsize"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_change_ip"
+        android:layout_marginTop="@dimen/sliding_item_margin_top"
+        android:gravity="center_horizontal"
+        android:text="切换mqtt服务器"
+        android:visibility="gone" />
 
 
     <TextView
 
         android:id="@+id/tv_copyright1"
         style="@style/tv_normal"
-        android:textColor="#989898"
-        android:text="版权所有"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/tv_copyright2"
-        />
+        android:layout_centerHorizontal="true"
+        android:text="版权所有"
+        android:textColor="#989898" />
 
     <TextView
-        android:layout_alignParentBottom="true"
         android:id="@+id/tv_copyright2"
         style="@style/tv_normal"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
-        android:textColor="#989898"
-        android:text="重庆物联利浪科技有限公司"
         android:layout_marginBottom="83dp"
-        />
+        android:layout_marginTop="11dp"
+        android:text="重庆物联利浪科技有限公司"
+        android:textColor="#989898" />
 
 
 </RelativeLayout>
