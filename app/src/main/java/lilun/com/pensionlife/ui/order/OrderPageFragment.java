@@ -26,6 +26,7 @@ import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
+import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.ui.agency.detail.ProviderDetailFragment;
 import lilun.com.pensionlife.ui.order.personal_detail.OrderChatFragment;
 import lilun.com.pensionlife.widget.DividerDecoration;
@@ -145,16 +146,16 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
         String needFields = "{ \"fields\": [\"paid\",\"id\", \"name\", \"status\", \"registerDate\", \"assigneeId\", \"orgCategoryId\", \"createdAt\", \"productBackupId\"],\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\",\"extend\",\"areas\",\"serviceOrganization\",\"startTime\", \"endTime\"]}}";
         String filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"}]}}";
         switch (mStatus) {
-            case 0:
+            case Order.Status.reserved:
                 filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":\"" + mStatus + "\"},{\"paid\":\"" + mStatus + "\"}]}}";
                 break;
 
-            case 20:
-                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[20,201]}}]}}";
+            case Order.Status.accepted:
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\""+Order.Status.accepted+"\",\""+Order.Status.delayed+"\"]}}]}}";
                 break;
 
-            case 100:
-                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[100,106]}}]}}";
+            case Order.Status.completed:
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\"" + Order.Status.completed + "\",\"" + Order.Status.assessed + "\",\"" + Order.Status.refunded + "\"]}}]}}";
                 break;
         }
         mPresenter.getMyOrders(filter, skip);

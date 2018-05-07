@@ -57,7 +57,7 @@ public class Order {
 
     public static class Paid {
 
-        public static final  long invalid_time=3600;
+        public static final long invalid_time = 3600 * 1000;
         /**
          * null/0: 未付款;
          */
@@ -66,10 +66,15 @@ public class Order {
          * 1: 已付款;
          */
         public static final int paid = 1;
+
+        /**
+         * 2: 已线下付款;
+         */
+        public static final int paidOffline = 2;
         /**
          * 2: 正在发起退款;
          */
-        public static final int refunding = 2;
+        public static final int refunding = 32;
         /**
          * -1: 已经退款 ;
          */

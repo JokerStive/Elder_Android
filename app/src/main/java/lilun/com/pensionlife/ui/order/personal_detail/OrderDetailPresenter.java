@@ -1,7 +1,9 @@
 package lilun.com.pensionlife.ui.order.personal_detail;
 
+import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.RxPresenter;
 import lilun.com.pensionlife.module.bean.ProductOrder;
+import lilun.com.pensionlife.module.utils.DeviceUtils;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
@@ -21,17 +23,8 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
      */
     @Override
     public void getOrder(String orderId) {
-//        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
-        String filter = "{  \"include\":\n" +
-                "    {\"relation\":\"productBackup\",\n" +
-                "     \"scope\":{\n" +
-                "         \"include\":{\n" +
-                "             \"relation\":\"organization\",\n" +
-                "             \"fields\":[\"paymentMethods\"]\n" +
-                "         }\n" +
-                "     }\n" +
-                "    }\n" +
-                "}";
+//        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\4": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
+        String filter = "{\"include\":[{\"relation\":\"bill\",\"scope\":{\"fields\":[\"type\",\"productOrderId\"]}},{\"relation\":\"productBackup\",\"scope\":{\"include\":{\"relation\":\"organization\",\"fields\":\"paymentMethods\"}}}]}";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
@@ -69,6 +62,20 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                     @Override
                     public void onError(Throwable e, int[] errorCode, String[] errorMessage) {
                         super.onError(e, errorCode, errorMessage);
+                    }
+                }));
+    }
+
+    @Override
+    public void reFund(String orderId, String desc) {
+        addSubscribe(NetHelper.getApi()
+                .reFund(orderId, DeviceUtils.getAndroidID(App.context), desc)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Object>(getActivity()) {
+                    @Override
+                    public void _next(Object o) {
+                        view.reFundSuccess();
                     }
                 }));
     }

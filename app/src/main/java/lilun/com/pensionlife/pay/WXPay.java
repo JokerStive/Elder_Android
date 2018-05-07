@@ -23,7 +23,7 @@ public class WXPay extends BasePay {
     private final IWXAPI wxAPI;
 
     public WXPay(Activity activity) {
-        wxAPI = WXAPIFactory.createWXAPI(App.context, ConfigUri.WXPAY_APPID,false);
+        wxAPI = WXAPIFactory.createWXAPI(App.context, ConfigUri.WXPAY_APPID, false);
         wxAPI.registerApp(ConfigUri.WXPAY_APPID);
     }
 
@@ -78,7 +78,7 @@ public class WXPay extends BasePay {
 
         PayReq request = new PayReq();
 
-        request.appId =  options.getString("appid");
+        request.appId = options.getString("appid");
 
         request.partnerId = options.getString("partnerid");
 
@@ -88,16 +88,16 @@ public class WXPay extends BasePay {
 
         request.nonceStr = options.getString("noncestr");
 
-        request.timeStamp = options.getString("timestamp");
+        request.timeStamp = options.getIntValue("timestamp") + "";
 
         request.sign = options.getString("sign");
 
         boolean checkArgs = request.checkArgs();
 
-
         boolean b = wxAPI.sendReq(request);
 
         Logger.d(checkArgs);
+
         Logger.d(b);
 
 

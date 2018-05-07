@@ -1,5 +1,6 @@
 package lilun.com.pensionlife.ui.order.personal_detail;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,11 +21,11 @@ import java.util.concurrent.TimeUnit;
 
 import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
+import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.BaseChatFragment;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
-import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.pay.Cashier;
@@ -47,7 +50,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     ProductOrder order;
     static String Arg_Order = "order";
     TextView tvOrderCreateTime, tvOrderStatus, tvOrderProductTitle, tvOrderPrice,
-            tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice,
+            tvOrderRegisterTime, tvProdcutNumber, tvOrderTotalPrice, tvPaidDesc,
             tvContactName, tvContactMobile, tvContactAddress, tvReFoundDesc, tvCountDown;
     ImageView ivOrderImg;
     private Button btnCancelOrder;
@@ -58,7 +61,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     private long invalidTime;
     private String paymentMethod = Order.paymentMethods.alipay;
 
-    private CompositeSubscription countDownSubscription = new CompositeSubscription();
+    private CompositeSubscription countDownSubscription;
 
 
     /**
@@ -135,6 +138,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         btnCancelOrder = (Button) inflate.findViewById(R.id.btn_cancel_order);
         tvCountDown = (TextView) inflate.findViewById(R.id.tv_count_down);
         tvReFoundDesc = (TextView) inflate.findViewById(R.id.tv_reFound_desc);
+        tvPaidDesc = (TextView) inflate.findViewById(R.id.tv_paid_desc);
         llContactInfo = (LinearLayout) inflate.findViewById(R.id.ll_contact_info);
         rlProductInfo = (RelativeLayout) inflate.findViewById(R.id.rl_product_info);
         tvOrderCreateTime = (TextView) inflate.findViewById(R.id.tv_order_create_time);
@@ -159,8 +163,11 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
         tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
 
+        if (order.getBill() != null) {
+            paymentMethod = order.getBill().getType() == 1 ? Order.paymentMethods.weixin : Order.paymentMethods.alipay;
+        }
+
         differentShowAndOperateFromOrderStatus(order);
-        btnCancelOrder.setVisibility("cancel".equals(order.getStatus()) ? View.GONE : View.VISIBLE);
 
         if (order.getProductBackup() != null) {
             tvOrderProductTitle.setText(order.getProductBackup().getTitle());
@@ -173,6 +180,8 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             });
             metaServiceContactId = order.getProductBackup().getMetaServiceContactId();
         }
+
+
         String registerDate = order.getRegisterDate();
         tvOrderRegisterTime.setVisibility(TextUtils.isEmpty(registerDate) ? View.INVISIBLE : View.VISIBLE);
         tvOrderRegisterTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
@@ -219,7 +228,8 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
     private void reFound() {
         new NormalDialog().createNormal(_mActivity, "确定要申请退款吗？", () -> {
-            ToastHelper.get().showWareShort("申请退款");
+            mPresenter.reFund(order.getId(), null);
+//            ToastHelper.get().showWareShort("申请退款");
         });
     }
 
@@ -233,6 +243,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         cashier.setPayCallBack(new PayCallBack() {
             @Override
             public void paySuccess() {
+                EventBus.getDefault().post(new Event.RefreshMyOrderData());
                 refresh();
             }
         });
@@ -246,22 +257,35 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
 
     private void differentShowAndOperateFromOrderStatus(ProductOrder order) {
+        unsubscribe();
         int status = order.getStatus();
         Integer paid = order.getPaid();
 
         //支付式订单
         if (paid != null) {
+            if (tvCountDown.getVisibility() == View.VISIBLE) {
+                tvCountDown.setVisibility(View.GONE);
+            }
+
+            if (tvPaidDesc.getVisibility() == View.GONE) {
+                tvPaidDesc.setVisibility(View.VISIBLE);
+            }
+
+            if (tvReFoundDesc.getVisibility() == View.GONE) {
+                tvReFoundDesc.setVisibility(View.VISIBLE);
+            }
 
             //待付款状态
             if (paid == Order.Paid.unpaid) {
                 doSome = 0;
                 setCountDown(order);
                 tvReFoundDesc.setVisibility(View.GONE);
+                tvPaidDesc.setVisibility(View.GONE);
                 btnCancelOrder.setText("付款");
             }
-
             //已经付款状态下，如果是线下付款和预约式订单一致
-            if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
+            else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
+                tvReFoundDesc.setVisibility(View.GONE);
                 setPayMemo();
                 if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
                     doSome = 2;
@@ -271,33 +295,31 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                     btnCancelOrder.setText("申请退款");
                 }
             }
-
-
             //已经退款
-            if (paid == Order.Paid.refunded) {
+            else if (paid == Order.Paid.refunded) {
                 btnCancelOrder.setVisibility(View.GONE);
-                tvReFoundDesc.setText("商家已退款");
+                tvPaidDesc.setVisibility(View.GONE);
+                setReFoundText("商家已退款", R.drawable.icon_refund);
             }
-
             //正在退款中
-            if (paid == Order.Paid.refunding) {
+            else if (paid == Order.Paid.refunding) {
                 //商家拒绝退款
                 if (status == Order.Status.refused) {
-                    tvReFoundDesc.setText("商家拒绝退款，请联系商家");
+                    setReFoundText("商家拒绝退款，请联系商家", R.drawable.icon_refund);
+                    setPayMemo();
                     doSome = 1;
                     btnCancelOrder.setText("申请退款");
                 } else {
+                    setReFoundText("退款已申请，等待商家处理", R.drawable.icon_refund);
+                    tvPaidDesc.setVisibility(View.GONE);
                     btnCancelOrder.setVisibility(View.GONE);
-                    tvReFoundDesc.setText("退款已申请，等待商家处理");
                 }
             }
-
-        }
-
-        //预约式订单
-        else {
-            if ((status == Order.Status.reserved || status == Order.Status.accepted)) {
+        } else {
+            if ((status == Order.Status.reserved || status == Order.Status.payed || status == Order.Status.accepted)) {
                 doSome = 2;
+                tvPaidDesc.setVisibility(View.GONE);
+                tvReFoundDesc.setVisibility(View.GONE);
                 btnCancelOrder.setText("取消订单");
             }
         }
@@ -308,19 +330,48 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
      */
     private void setPayMemo() {
         if (TextUtils.equals(paymentMethod, Order.paymentMethods.alipay)) {
-            tvReFoundDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
-            tvReFoundDesc.setCompoundDrawables(App.context.getResources().getDrawable(R.drawable.icon_ali_pay), null, null, null);
-            tvReFoundDesc.setText(String.format("已经通过支付宝付款%1s元", order.getPrice()));
+            setPaidText(String.format("已经通过支付宝付款%1s元", order.getPrice()), R.drawable.icon_ali_pay);
         } else if (TextUtils.equals(paymentMethod, Order.paymentMethods.weixin)) {
-            tvReFoundDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
-            tvReFoundDesc.setCompoundDrawables(App.context.getResources().getDrawable(R.drawable.icon_wx_pay), null, null, null);
-            tvReFoundDesc.setText(String.format("已经通过微信付款%1s元", order.getPrice()));
+            setPaidText(String.format("已经通过微信付款%1s元", order.getPrice()), R.drawable.icon_wx_pay);
         } else if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-            tvReFoundDesc.setText("采用线下支付方式付款");
+            setPaidText("采用线下支付方式付款", R.drawable.icon_offline_pay);
         }
     }
 
+
+    /**
+     * 显示支付信息描述
+     */
+    private void setPaidText(String text, int leftDrawableIndex) {
+        tvPaidDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
+        tvPaidDesc.setText(text);
+        if (leftDrawableIndex != -1) {
+            Drawable drawable = App.context.getResources().getDrawable(leftDrawableIndex, null);
+            if (drawable != null) {
+                drawable.setBounds(0, 0, UIUtils.dp2px(App.context, 17), UIUtils.dp2px(App.context, 17));
+                tvPaidDesc.setCompoundDrawables(drawable, null, null, null);
+            }
+        }
+    }
+
+    /**
+     * 显示退款描述
+     */
+    private void setReFoundText(String text, int leftDrawableIndex) {
+        tvReFoundDesc.setCompoundDrawablePadding(UIUtils.dp2px(App.context, 10));
+        tvReFoundDesc.setText(text);
+        if (leftDrawableIndex != -1) {
+            tvReFoundDesc.setCompoundDrawablesWithIntrinsicBounds(App.context.getResources().getDrawable(leftDrawableIndex, null), null, null, null);
+        }
+    }
+
+    /**
+     * 显示倒计时
+     */
     private void setCountDown(ProductOrder order) {
+        if (countDownSubscription == null) {
+            countDownSubscription = new CompositeSubscription();
+        }
         Date date = StringUtils.IOS2ToUTCDate(order.getCreatedAt());
         assert date != null;
         invalidTime = date.getTime() + Order.Paid.invalid_time;
@@ -348,6 +399,11 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
     @Override
     public void changeOrderStatusSuccess(int status) {
+        refresh();
+    }
+
+    @Override
+    public void reFundSuccess() {
         refresh();
     }
 
@@ -380,6 +436,10 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unsubscribe();
+    }
+
+    private void unsubscribe() {
         if (countDownSubscription != null && !countDownSubscription.isUnsubscribed()) {
             countDownSubscription.unsubscribe();
             countDownSubscription.clear();
@@ -393,7 +453,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
      * @return
      */
     public String getOrderTotalHtml(int number, float price) {
-        String format = new DecimalFormat("#.00").format(number * price);
+        String format = new DecimalFormat("#0.00").format(number * price);
         return "共 <font color=\"red\">" + number + "</font>件商品，合计: <font color=\"red\">￥" + format + "</font>";
     }
 

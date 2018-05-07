@@ -708,15 +708,11 @@ public interface ApiService {
     Observable<Response<Object>> changeOrderStatus(@Path("id") String productId, @Field("status") int status);
 
     /**
-     * 修改订单
+     * 退款
      */
     @FormUrlEncoded
-    @PUT("ProductOrders/{id}/communicationRemark")
-    Observable<Response<Object>> putMerchantMemoOrder(@Path("id") String orderId, @Field("status") String status,
-                                                      @Field("callStatus") String callStatus,
-                                                      @Field("remark") String remark,
-                                                      @Field("delayTime") String delayTime);
-
+    @PUT("ProductOrders/{id}/advanceRefund")
+    Observable<Response<Object>> reFund(@Path("id") String orderId, @Field("deviceId") String deviceId, @Field("description") String desc);
 
     /**
      * 修改默认资料

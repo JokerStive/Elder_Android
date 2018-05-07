@@ -218,6 +218,11 @@ public class OrderDetailFragment extends BaseFragment<OrderDetailContract.Presen
 
     }
 
+    @Override
+    public void reFundSuccess() {
+
+    }
+
     private int getStatus(int status) {
         int stringRes = 0;
         if (status == Order.Status.reserved || status == Order.Status.payed) {

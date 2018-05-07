@@ -72,6 +72,17 @@ public class ProductOrder extends BaseBean {
     private String registerDate;
     private Contact contact;
     private OrganizationProduct productBackup;
+    private Bill bill;
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public ProductOrder setBill(Bill bill) {
+        this.bill = bill;
+        return this;
+    }
+
     private String productBackupId;
     private OrganizationProduct productInfo;
     private MetaServiceContact metaServiceContact;

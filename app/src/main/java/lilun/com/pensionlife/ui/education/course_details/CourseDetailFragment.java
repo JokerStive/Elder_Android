@@ -83,7 +83,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
             start(OrderListFragment.newInstance());
-//            setHadOrdered();
+            setHadOrdered();
         }
     }
 
@@ -107,7 +107,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         mPresenter.getProductDetail(mProductId, null);
         mPresenter.getCourseSchedules(mProductId);
         mPresenter.getProtocol(mProductId);
-//        mPresenter.getIsOrder(mProductId);
+        mPresenter.getIsOrder(mProductId);
     }
 
     @Override

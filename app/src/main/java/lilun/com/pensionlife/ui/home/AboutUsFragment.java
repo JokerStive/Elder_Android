@@ -76,11 +76,11 @@ public class AboutUsFragment extends BaseFragment {
     }
 
     public void changeMqtt() {
-        new NormalDialog().createEditMessage(_mActivity, "请输入完整的mqtt服务器地址", ConfigUri.BASE_URL, true, new MaterialDialog.InputCallback() {
+        new NormalDialog().createEditMessage(_mActivity, "请输入完整的mqtt服务器地址", ConfigUri.MQTT_URL, true, new MaterialDialog.InputCallback() {
             @Override
             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                ConfigUri.MQTT_URL = "tcp://" + input.toString() + ":1883";
-                ToastHelper.get().showWareShort("mqtt服务器地址 :" + ConfigUri.MQTT_URL);
+//                ConfigUri.MQTT_URL = input.toString();
+//                ToastHelper.get().showWareShort("mqtt服务器地址 :" + ConfigUri.MQTT_URL);
             }
         });
     }
@@ -89,8 +89,8 @@ public class AboutUsFragment extends BaseFragment {
         new NormalDialog().createEditMessage(_mActivity, "请输入完整的ip地址", ConfigUri.BASE_URL, true, new MaterialDialog.InputCallback() {
             @Override
             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                ConfigUri.BASE_URL = "http://" + input.toString() + "/api/";
-                ToastHelper.get().showWareShort("mqtt服务器地址 :" + ConfigUri.BASE_URL);
+//                ConfigUri.BASE_URL = input.toString();
+                ToastHelper.get().showWareShort("IP地址为 :" + ConfigUri.BASE_URL);
             }
         });
     }
