@@ -5,6 +5,75 @@ package lilun.com.pensionlife.pay;
  */
 public class Order {
     public static class Status {
+
+        public static String getStatusMapping(int status, Integer paid) {
+            String result = "";
+            switch (status) {
+                case reserved:
+                    result = "待付款";
+                    break;
+
+                case payed:
+                    if (paid != null) {
+                        result = "已付款";
+                    } else {
+                        result = "已预约";
+                    }
+                    break;
+
+                case accepted:
+                    result = "已受理";
+                    break;
+
+                case refused:
+                    result = "拒绝退款";
+                    break;
+
+
+                case shiped:
+                    result = "已发货";
+                    break;
+
+
+                case arrived:
+                    result = "已到达";
+                    break;
+
+
+                case signed:
+                    result = "已签收";
+                    break;
+
+
+                case completed:
+                    result = "已完成";
+                    break;
+
+
+                case assessed:
+                    result = "已评价";
+                    break;
+
+
+                case canceled:
+                    result = "已取消";
+                    break;
+
+
+                case delayed:
+                    result = "已延期";
+                    break;
+
+                case refunded:
+                    result = "已退款";
+                    break;
+
+            }
+
+            return result;
+        }
+
+
         /**
          * 0: 新订单(已预约);
          */

@@ -23,10 +23,12 @@ import lilun.com.pensionlife.R;
 import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.Event;
 import lilun.com.pensionlife.base.BaseChatFragment;
+import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.UIUtils;
+import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.pay.Cashier;
 import lilun.com.pensionlife.pay.Order;
@@ -59,7 +61,8 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     private View inflate;
     private String metaServiceContactId;
     private long invalidTime;
-    private String paymentMethod = Order.paymentMethods.alipay;
+    private String paymentMethod;
+    private ArrayList<String> paymentMethods;
 
     private CompositeSubscription countDownSubscription;
 
@@ -158,16 +161,16 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     @Override
     public void showOrder(ProductOrder order) {
         this.order = order;
+        initPaymentMethod(order);
+        differentShowAndOperateFromOrderStatus(order);
+        if (!TextUtils.isEmpty(tvOrderCreateTime.getText())) return;
+        //待付款的订单需要去拉取提供的支付方式
+        if (doSome == 0) {
+            String organizationId = StringUtils.removeSpecialSuffix(order.getProductBackup().getOrganizationId());
+            getPaymentMethods(organizationId);
+        }
         inflate.setVisibility(View.VISIBLE);
         tvOrderCreateTime.setText("下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), 8));
-
-        tvOrderStatus.setText(getStatusEn2Cn(order.getStatus()));
-
-        if (order.getBill() != null) {
-            paymentMethod = order.getBill().getType() == 1 ? Order.paymentMethods.weixin : Order.paymentMethods.alipay;
-        }
-
-        differentShowAndOperateFromOrderStatus(order);
 
         if (order.getProductBackup() != null) {
             tvOrderProductTitle.setText(order.getProductBackup().getTitle());
@@ -187,7 +190,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         tvOrderRegisterTime.setText("预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), 0));
         tvProdcutNumber.setText("x 1");
         if (order.getContact() != null) {
-            tvContactName.setText("收货人：" + order.getContact().getCreatorName());
+            tvContactName.setText("联系人：" + order.getContact().getCreatorName());
             tvContactMobile.setText("电话：" + order.getContact().getMobile());
             tvContactAddress.setText("地址：" + order.getContact().getAddress());
             llContactInfo.setOnClickListener((v) -> {
@@ -197,6 +200,22 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         btnCancelOrder.setOnClickListener((v) -> {
             doSome();
         });
+    }
+
+    private void initPaymentMethod(ProductOrder order) {
+        if (order.getPaymentMethod()!=null && TextUtils.isEmpty(paymentMethod)) {
+            switch (order.getPaymentMethod()) {
+                case 0:
+                    paymentMethod = Order.paymentMethods.offline;
+                    break;
+                case 1:
+                    paymentMethod = Order.paymentMethods.weixin;
+                    break;
+                case 2:
+                    paymentMethod = Order.paymentMethods.alipay;
+                    break;
+            }
+        }
     }
 
 
@@ -229,15 +248,11 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     private void reFound() {
         new NormalDialog().createNormal(_mActivity, "确定要申请退款吗？", () -> {
             mPresenter.reFund(order.getId(), null);
-//            ToastHelper.get().showWareShort("申请退款");
         });
     }
 
     private void pay() {
-        if (cashier == null) {
-            ArrayList<String> paymentMethods = new ArrayList<>();
-            paymentMethods.add(Order.paymentMethods.alipay);
-            paymentMethods.add(Order.paymentMethods.weixin);
+        if (cashier == null && paymentMethods != null && paymentMethods.size() > 0) {
             cashier = Cashier.newInstance(order.getId(), order.getPrice().toString(), paymentMethods);
         }
         cashier.setPayCallBack(new PayCallBack() {
@@ -261,6 +276,8 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         int status = order.getStatus();
         Integer paid = order.getPaid();
 
+        tvOrderStatus.setText(Order.Status.getStatusMapping(status, paid));
+
         //支付式订单
         if (paid != null) {
             if (tvCountDown.getVisibility() == View.VISIBLE) {
@@ -277,23 +294,39 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
 
             //待付款状态
             if (paid == Order.Paid.unpaid) {
-                doSome = 0;
-                setCountDown(order);
                 tvReFoundDesc.setVisibility(View.GONE);
-                tvPaidDesc.setVisibility(View.GONE);
-                btnCancelOrder.setText("付款");
+                if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+                    doSome = 1;
+                    btnCancelOrder.setText("取消订单");
+                    setPayMemo();
+                } else {
+                    tvPaidDesc.setVisibility(View.GONE);
+                    doSome = 0;
+                    setCountDown(order);
+                    btnCancelOrder.setText("付款");
+                }
+
             }
             //已经付款状态下，如果是线下付款和预约式订单一致
             else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
-                tvReFoundDesc.setVisibility(View.GONE);
-                setPayMemo();
-                if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-                    doSome = 2;
-                    btnCancelOrder.setText("取消订单");
-                } else {
+                //商家拒绝退款
+                if (status == Order.Status.refused) {
+                    setReFoundText("商家拒绝退款，请联系商家", R.drawable.icon_refund);
+                    setPayMemo();
                     doSome = 1;
                     btnCancelOrder.setText("申请退款");
+                } else {
+                    tvReFoundDesc.setVisibility(View.GONE);
+                    setPayMemo();
+                    if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+                        doSome = 2;
+                        btnCancelOrder.setText("取消订单");
+                    } else {
+                        doSome = 1;
+                        btnCancelOrder.setText("申请退款");
+                    }
                 }
+
             }
             //已经退款
             else if (paid == Order.Paid.refunded) {
@@ -303,12 +336,10 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             }
             //正在退款中
             else if (paid == Order.Paid.refunding) {
-                //商家拒绝退款
-                if (status == Order.Status.refused) {
-                    setReFoundText("商家拒绝退款，请联系商家", R.drawable.icon_refund);
-                    setPayMemo();
-                    doSome = 1;
-                    btnCancelOrder.setText("申请退款");
+                if (status == Order.Status.refunded) {
+                    btnCancelOrder.setVisibility(View.GONE);
+                    tvPaidDesc.setVisibility(View.GONE);
+                    setReFoundText("商家已退款", R.drawable.icon_refund);
                 } else {
                     setReFoundText("退款已申请，等待商家处理", R.drawable.icon_refund);
                     tvPaidDesc.setVisibility(View.GONE);
@@ -316,11 +347,13 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                 }
             }
         } else {
+            tvPaidDesc.setVisibility(View.GONE);
+            tvReFoundDesc.setVisibility(View.GONE);
             if ((status == Order.Status.reserved || status == Order.Status.payed || status == Order.Status.accepted)) {
                 doSome = 2;
-                tvPaidDesc.setVisibility(View.GONE);
-                tvReFoundDesc.setVisibility(View.GONE);
                 btnCancelOrder.setText("取消订单");
+            } else {
+                btnCancelOrder.setVisibility(View.GONE);
             }
         }
     }
@@ -407,31 +440,6 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         refresh();
     }
 
-    /**
-     * 转换为中文状态
-     */
-    public String getStatusEn2Cn(int status) {
-        String statusCn = "";
-        switch (status) {
-            case Order.Status.reserved:
-            case Order.Status.payed:
-                statusCn = "待受理";
-                break;
-            case Order.Status.accepted:
-            case Order.Status.refused:
-                statusCn = "已受理";
-                break;
-            case Order.Status.completed:
-            case Order.Status.assessed:
-                statusCn = "已完成";
-                break;
-            case Order.Status.canceled:
-                statusCn = "已取消";
-                break;
-        }
-        return statusCn;
-    }
-
 
     @Override
     public void onDestroy() {
@@ -457,5 +465,21 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         return "共 <font color=\"red\">" + number + "</font>件商品，合计: <font color=\"red\">￥" + format + "</font>";
     }
 
+    public void getPaymentMethods(String organizationId) {
+        btnCancelOrder.setEnabled(false);
+        String filter = "{\"fields\":\"paymentMethods\"}";
+        NetHelper.getApi()
+                .getOrganizationById(organizationId, filter)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Organization>() {
+                               @Override
+                               public void _next(Organization organization) {
+                                   btnCancelOrder.setEnabled(true);
+                                   paymentMethods = organization.getPaymentMethods();
+                               }
+                           }
+                );
+    }
 
 }

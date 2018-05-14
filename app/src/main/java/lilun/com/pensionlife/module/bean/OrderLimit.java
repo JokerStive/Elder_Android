@@ -16,6 +16,27 @@ public class OrderLimit  {
 
     private boolean isLimit;
     private boolean ordered;
+    private int orderNumber;
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public OrderLimit setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
+    }
+
+    public int getOrderPermit() {
+        return orderPermit;
+    }
+
+    public OrderLimit setOrderPermit(int orderPermit) {
+        this.orderPermit = orderPermit;
+        return this;
+    }
+
+    private int orderPermit;
 
     public boolean isIsLimit() {
         return isLimit;

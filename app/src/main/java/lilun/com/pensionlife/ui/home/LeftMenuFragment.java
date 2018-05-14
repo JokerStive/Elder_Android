@@ -75,7 +75,7 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    @OnClick({R.id.iv_icon, R.id.tv_logout, R.id.tv_contact_setting, R.id.tv_account_data, R.id.tv_account_info, R.id.tv_info_setting, R.id.tv_about_us, R.id.tv_manage_order, R.id.tv_my_order})
+    @OnClick({R.id.iv_icon,R.id.tv_my_organization, R.id.tv_logout, R.id.tv_contact_setting, R.id.tv_account_data, R.id.tv_account_info, R.id.tv_info_setting, R.id.tv_about_us, R.id.tv_manage_order, R.id.tv_my_order})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
@@ -108,6 +108,10 @@ public class LeftMenuFragment extends BaseFragment implements View.OnClickListen
 
             case R.id.tv_contact_setting:
                 startTargetFragment(ContactListFragment.newInstance());
+                break;
+
+            case R.id.tv_my_organization:
+                startActivity(new Intent(_mActivity, MyJoinedOrganizationsActivity.class));
                 break;
         }
     }

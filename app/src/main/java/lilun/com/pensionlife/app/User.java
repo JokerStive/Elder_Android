@@ -350,7 +350,7 @@ public class User {
     public static boolean isCurrentStatusCorrect() {
         boolean result = true;
         boolean currentOrganizationHadChanged = PreUtils.getBoolean("currentOrganizationHadChanged", false);
-        if (!currentOrganizationHadChanged && User.getCurrentOrganizationId().equals(Constants.organization_root)) {
+        if (!currentOrganizationHadChanged && !User.getCurrentOrganizationId().equals(User.getBelongsOrganizationId())) {
             result = false;
         }
         return result;

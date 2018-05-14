@@ -19,7 +19,7 @@ public class CourseListFilter {
      * where : {"and":[{"or":[{"startTime":{"lte":"2017-09-19 06:56:27"}},{"startTime":{"$exists":false}}]},{"or":[{"endTime":{"gte":"2017-09-19 06:56:27"}},{"endTime":{"$exists":false}}]}],"tag.kind":"college","orgCategoryId":"/社会组织/公益/商家/测试商家数据/教育服务/其他教育服务/老年教育服务/美工/油画","organizationId":"/社会组织/公益/商家/测试商家数据/#product","extend.termId":"/社会组织/公益/商家/测试商家数据/秋季开学"}
      */
 
-    public CourseListFilter(String organizationId) {
+    public CourseListFilter(WhereBean.Or3 organizationId) {
         where = new WhereBean();
         where.setOrganizationId(organizationId);
         setOrder("createdAt DESC");
@@ -104,8 +104,27 @@ public class CourseListFilter {
         @SerializedName("tag.kind")
         private String kind = "college"; // FIXME check this code
         private String orgCategoryId;
-        private String organizationId;
+        private Or3 organizationId;
         private boolean isDraft = false;
+        private int visible = 0;
+
+        public Or3 getOrganizationId() {
+            return organizationId;
+        }
+
+        public WhereBean setOrganizationId(Or3 organizationId) {
+            this.organizationId = organizationId;
+            return this;
+        }
+
+        public int getVisible() {
+            return visible;
+        }
+
+        public WhereBean setVisible(int visible) {
+            this.visible = visible;
+            return this;
+        }
 
         public boolean isDraft() {
             return isDraft;
@@ -136,13 +155,6 @@ public class CourseListFilter {
             this.orgCategoryId = orgCategoryId;
         }
 
-        public String getOrganizationId() {
-            return organizationId;
-        }
-
-        public void setOrganizationId(String organizationId) {
-            this.organizationId = organizationId + "/#product";
-        }
 
         public String getTermId() {
             return termId;
@@ -159,6 +171,20 @@ public class CourseListFilter {
         public void setAnd(List<Object> and) {
             this.and = and;
         }
+
+        public static class Or3 {
+            private String $regexp;
+
+            public String get$regexp() {
+                return $regexp;
+            }
+
+            public Or3 set$regexp(String $regexp) {
+                this.$regexp = $regexp + ".*#product";
+                return this;
+            }
+        }
+
 
         //====================================
         public static class Or1 {

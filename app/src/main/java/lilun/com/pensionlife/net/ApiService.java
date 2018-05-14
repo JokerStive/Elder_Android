@@ -109,8 +109,8 @@ public interface ApiService {
      * 获取位置
      */
 
-//    @GET("Accounts/getChildLocation")
-//    Observable<Response<List<String>>> getChildLocation(@Query("locationName") String locationName);
+    @GET("Accounts/{id}/organizations")
+    Observable<Response<List<OrganizationAccount>>> getUserOrganizationAccounts(@Path("id") String userId,@Query("filter") String filter);
 
     /**
      * 获取所属组织列表
@@ -299,6 +299,16 @@ public interface ApiService {
 
     @GET("Organizations")
     Observable<Response<List<Organization>>> getOrganizationList(@Query("filter") String filter);
+
+
+
+
+    /**
+     * 改变account的defOrgId
+     */
+
+    @GET("Organizations")
+    Observable<Response<List<Organization>>> change(@Query("filter") String filter);
 
 
     /**

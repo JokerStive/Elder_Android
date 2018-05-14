@@ -13,7 +13,11 @@ public class PayFactory {
                 pay = new AliPay(activity);
                 break;
             case Cashier.WX_PAY:
-                pay = new WXPay(activity);
+                pay = new WXPay();
+                break;
+
+            case Cashier.OFFLINE_PAY:
+                pay = new OfflinePay();
                 break;
         }
 

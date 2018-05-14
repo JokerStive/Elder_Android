@@ -32,12 +32,12 @@ import lilun.com.pensionlife.module.bean.OrganizationProductCategory;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
 import lilun.com.pensionlife.ui.education.reservation.ReservationCourseFragment;
 import lilun.com.pensionlife.ui.order.OrderListFragment;
 import lilun.com.pensionlife.ui.protocol.ProtocolView;
-import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import lilun.com.pensionlife.widget.slider.BannerPager;
 
@@ -58,10 +58,10 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     ProtocolView protocolView;
 
     private String mProductId;
+    private String orderText;
     private OrganizationProduct mProduct;
 
     //不能预约 0-已经预约  1-时间冲突
-    private int can_not_order_flag = -1;
     private CourseScheduleAdapter mCourseScheduleAdapter;
     private BannerPager banner;
     private TextView tvCourseTitle;
@@ -83,7 +83,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
             start(OrderListFragment.newInstance());
-            setHadOrdered();
+            mPresenter.getIsOrder(mProductId);
         }
     }
 
@@ -166,13 +166,11 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
     @Override
     public void showIsOrdered(OrderLimit orderLimit) {
-        boolean ordered = orderLimit.isOrdered();
-        boolean isLimit = orderLimit.isIsLimit();
-        if (ordered) {
-            setHadOrdered();
-        } else if (isLimit) {
-            //冲突
-            can_not_order_flag = 1;
+        if (orderLimit != null) {
+            boolean isLimit = orderLimit.isIsLimit();
+            if (isLimit) {
+                setOrderLimit();
+            }
         }
     }
 
@@ -189,7 +187,6 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         //标题
         tvCourseTitle.setText(product.getTitle());
 
-        //学期
         //学期
         Map<String, Object> extend = product.getExtend();
         if (extend != null && extend.get("termStartDate") != null && extend.get("termEndDate") != null) {
@@ -219,9 +216,16 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         tvBottomPrice.setText(Html.fromHtml("合计: <font color='#fe620f'>" + buttonPriceResult + "</font>"));
 
 
+        String orderType = product.getOrderType();
+        if (!TextUtils.isEmpty(orderType)) {
+            orderText = TextUtils.equals(orderType, Order.Type.payment) ? "立即下单" : "立即预约";
+        }
+        tvReservation.setText(orderText);
+
+
         //报名满额
         if (product.getStock() <= 0) {
-            canNotOrderStatus("已经满员");
+            canNotOrderStatus("已经满员", App.context.getResources().getColor(R.color.yellowish));
         }
 
     }
@@ -241,14 +245,12 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     }
 
 
-    private void setHadOrdered() {
-
-        canNotOrderStatus("已经预约");
-
+    private void setOrderLimit() {
+        canNotOrderStatus(orderText, App.context.getResources().getColor(R.color.gray2));
     }
 
-    private void canNotOrderStatus(String showStr) {
-        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+    private void canNotOrderStatus(String showStr, int colorId) {
+        tvReservation.setBackgroundColor(colorId);
         tvReservation.setEnabled(false);
         tvReservation.setText(showStr);
     }
@@ -293,19 +295,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         }
 
 
-        if (can_not_order_flag == 1) {
-            new NormalDialog().createNormal(_mActivity, "该课程的上课时间与你报名过的时间有冲突,继续预约吗？", new NormalDialog.OnPositiveListener() {
-                @Override
-                public void onPositiveClick() {
-                    takeReservation();
-                }
-            });
-        }
+        takeReservation();
 
-
-        if (can_not_order_flag == -1) {
-            takeReservation();
-        }
     }
 
 

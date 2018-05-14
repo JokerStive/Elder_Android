@@ -99,6 +99,15 @@
                 android:drawableStart="@drawable/my_order"
                 android:text="@string/my_orders" />
 
+            <TextView
+                android:id="@+id/tv_my_organization"
+                style="@style/tv_normal_ellipsize"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sliding_item_margin_top"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/my_joined_org"
+                android:text="我加入的组织" />
+
 
             <TextView
                 android:id="@+id/tv_manage_order"
@@ -119,8 +128,6 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:drawableStart="@drawable/about_us"
                 android:text="关于我们" />
-
-
 
 
             <TextView

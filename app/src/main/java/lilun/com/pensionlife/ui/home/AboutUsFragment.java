@@ -14,6 +14,7 @@ import lilun.com.pensionlife.app.ConfigUri;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.utils.SystemUtils;
 import lilun.com.pensionlife.module.utils.ToastHelper;
+import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.widget.NormalDialog;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 
@@ -56,7 +57,7 @@ public class AboutUsFragment extends BaseFragment {
             @Override
             public boolean onLongClick(View v) {
                 tvChangeIp.setVisibility(View.VISIBLE);
-                tvChangeMqtt.setVisibility(View.VISIBLE);
+//                tvChangeMqtt.setVisibility(View.VISIBLE);
                 return true;
             }
         });
@@ -89,7 +90,8 @@ public class AboutUsFragment extends BaseFragment {
         new NormalDialog().createEditMessage(_mActivity, "请输入完整的ip地址", ConfigUri.BASE_URL, true, new MaterialDialog.InputCallback() {
             @Override
             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-//                ConfigUri.BASE_URL = input.toString();
+                ConfigUri.BASE_URL = input.toString();
+                NetHelper.refreshBaseUrl();
                 ToastHelper.get().showWareShort("IP地址为 :" + ConfigUri.BASE_URL);
             }
         });

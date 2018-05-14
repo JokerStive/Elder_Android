@@ -1,7 +1,5 @@
 package lilun.com.pensionlife.pay;
 
-import android.app.Activity;
-
 import com.alibaba.fastjson.JSONObject;
 import com.orhanobut.logger.Logger;
 import com.tencent.mm.opensdk.constants.Build;
@@ -22,7 +20,7 @@ public class WXPay extends BasePay {
 
     private final IWXAPI wxAPI;
 
-    public WXPay(Activity activity) {
+    public WXPay() {
         wxAPI = WXAPIFactory.createWXAPI(App.context, ConfigUri.WXPAY_APPID, false);
         wxAPI.registerApp(ConfigUri.WXPAY_APPID);
     }

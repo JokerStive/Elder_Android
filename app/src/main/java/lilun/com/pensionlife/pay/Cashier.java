@@ -24,6 +24,7 @@ import lilun.com.pensionlife.app.Event;
  * 选择支付方式
  */
 public class Cashier extends DialogFragment implements View.OnClickListener {
+    public static final int OFFLINE_PAY = 0;
     public static final int ALI_PAY = 2;
     public static final int WX_PAY = 1;
 
@@ -113,6 +114,7 @@ public class Cashier extends DialogFragment implements View.OnClickListener {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onActivityCreated(savedInstanceState);
 
+        getDialog().setCanceledOnTouchOutside(false);
         getDialog().getWindow().setGravity(Gravity.BOTTOM);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0x00000000));
         getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -129,6 +131,11 @@ public class Cashier extends DialogFragment implements View.OnClickListener {
                 break;
             case R.id.tv_weChatPay:
                 payFactory.createPay(getActivity(), WX_PAY).pay(orderId);
+                dismiss();
+                break;
+
+            case R.id.tv_offlinePay:
+                payFactory.createPay(getActivity(), OFFLINE_PAY).pay(orderId);
                 dismiss();
                 break;
 

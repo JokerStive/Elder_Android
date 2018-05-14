@@ -25,6 +25,7 @@ import javax.net.ssl.X509TrustManager;
 import lilun.com.pensionlife.BuildConfig;
 import lilun.com.pensionlife.app.Config;
 import lilun.com.pensionlife.app.ConfigUri;
+import lilun.com.pensionlife.module.utils.SystemUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -45,6 +46,17 @@ public class NetHelper {
         return okHttpClient;
     }
 
+
+    public static void refreshBaseUrl() {
+        if (SystemUtils.isApkInDebug()) {
+            apis = new Retrofit.Builder()
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .baseUrl(ConfigUri.BASE_URL)
+                    .build().create(ApiService.class);
+        }
+    }
 
     public static ApiService getApi() {
         initOkhttpClient();
@@ -74,7 +86,8 @@ public class NetHelper {
     //自定义Gson,int不自动转为浮点
     private static Gson getCustomGson() {
         return new GsonBuilder().
-                registerTypeAdapter(new TypeToken<Map<String, Object>>(){}.getType(), new GsonUtils()).create();
+                registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+                }.getType(), new GsonUtils()).create();
     }
 
     private static void initOkhttpClient() {

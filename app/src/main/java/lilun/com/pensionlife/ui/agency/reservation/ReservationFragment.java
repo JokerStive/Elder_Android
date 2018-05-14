@@ -33,6 +33,7 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.bean.Contact;
 import lilun.com.pensionlife.module.bean.MetaServiceContact;
+import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
 import lilun.com.pensionlife.module.bean.ProductOrder;
 import lilun.com.pensionlife.module.utils.Preconditions;
@@ -96,6 +97,8 @@ public class ReservationFragment extends BaseFragment {
     private OrganizationProduct mProduct;
     private ContactView mContactView;
     private JSONObject template;
+    private ArrayList<String> paymentMethods;
+    private String orderText;
 
 
     public static ReservationFragment newInstance(String productId, Contact contact) {
@@ -187,23 +190,49 @@ public class ReservationFragment extends BaseFragment {
 
 
     private void getProduct() {
-        String filter = "{\"include\":{\"relation\":\"organization\",\"scope\":{\"fields\":[\"id\"]}}}";
-        NetHelper.getApi().getProduct(mProductId, filter)
+        NetHelper.getApi().getProduct(mProductId, null)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<OrganizationProduct>(getActivity()) {
+                .subscribe(new RxSubscriber<OrganizationProduct>() {
                     @Override
                     public void _next(OrganizationProduct product) {
-                        mProduct = product;
-                        showProduct();
-                        String templateId = product.getMetaServiceContactId();
-                        if (!TextUtils.isEmpty(templateId)) {
-                            getTemplate(templateId);
-                        } else {
-                            showContact();
-                        }
+                        initProduct((product));
                     }
                 });
+    }
+
+    private void initProduct(OrganizationProduct product) {
+        mProduct = product;
+
+        //显示铲平
+        showProduct();
+
+        //动态联系人资料
+        String templateId = product.getMetaServiceContactId();
+        if (!TextUtils.isEmpty(templateId)) {
+            getTemplate(templateId);
+        } else {
+            showContact();
+        }
+
+        //是否需要支付
+        String orderType = product.getOrderType();
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, Order.Type.payment)) {
+            tvReservation.setEnabled(false);
+            String filter = "{\"fields\":\"paymentMethods\"}";
+            String organizationId = StringUtils.removeSpecialSuffix(product.getOrganizationId());
+            NetHelper.getApi()
+                    .getOrganizationById(organizationId, filter)
+                    .compose(RxUtils.handleResult())
+                    .compose(RxUtils.applySchedule())
+                    .subscribe(new RxSubscriber<Organization>() {
+                        @Override
+                        public void _next(Organization organization) {
+                            tvReservation.setEnabled(true);
+                            paymentMethods = organization.getPaymentMethods();
+                        }
+                    });
+        }
     }
 
 
@@ -233,6 +262,13 @@ public class ReservationFragment extends BaseFragment {
         tvProductPrice.setText("￥" + new DecimalFormat("######0.00").format(mProduct.getPrice()) + "");
 
         showProductArea();
+
+
+        String orderType = mProduct.getOrderType();
+        if (!TextUtils.isEmpty(orderType)) {
+            orderText = TextUtils.equals(orderType, Order.Type.payment) ? "立即下单" : "立即预约";
+        }
+        tvReservation.setText(orderText);
     }
 
 
@@ -301,10 +337,7 @@ public class ReservationFragment extends BaseFragment {
         }
 
         String orderType = mProduct.getOrderType();
-        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, Order.Type.payment)) {
-            ArrayList<String> paymentMethods = new ArrayList<>();
-            paymentMethods.add(Order.paymentMethods.alipay);
-            paymentMethods.add(Order.paymentMethods.weixin);
+        if (!TextUtils.isEmpty(orderType) && TextUtils.equals(orderType, Order.Type.payment) && paymentMethods != null && paymentMethods.size() > 0) {
             Cashier cashier = Cashier.newInstance(productOrder.getId(), productOrder.getPrice().toString(), paymentMethods);
             cashier.setPayCallBack(new PayCallBack() {
                 @Override

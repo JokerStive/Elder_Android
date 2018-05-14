@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +18,11 @@ import lilun.com.pensionlife.module.bean.ElderModule;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.utils.Preconditions;
 import lilun.com.pensionlife.module.utils.RxUtils;
-import lilun.com.pensionlife.module.utils.StringUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.education.course_list.CourseListFragment;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
-import rx.Observable;
 
 /**
  * 老年教育 各类型列表 V
@@ -110,8 +106,10 @@ public class CollegeListFragment extends BaseFragment {
 
     private void getDataList(int skip) {
         mSwipeLayout.setRefreshing(skip == 0);
-        aggregateObservable()
-                .flatMap(this::getColleges)
+        String filter = "{\"where\":{\"tag\":\"college\",\"visible\":0}}";
+        NetHelper.getApi()
+                .getOrganizationList(filter)
+                .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<List<Organization>>() {
                     @Override
@@ -126,33 +124,58 @@ public class CollegeListFragment extends BaseFragment {
                         completeRefresh();
                     }
                 });
+//        aggregateObservable()
+//                .flatMap(this::getColleges)
+//                .compose(RxUtils.applySchedule())
+//                .subscribe(new RxSubscriber<List<Organization>>() {
+//                    @Override
+//                    public void _next(List<Organization> organizations) {
+//                        completeRefresh();
+//                        showCollages(organizations, skip != 0);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        super.onError(e);
+//                        completeRefresh();
+//                    }
+//                });
     }
 
-
-    Observable<List<Organization>> aggregateObservable() {
-        aggregateFilter collegeFilter = new aggregateFilter();
-        Gson gson = new Gson();
-        String filter = gson.toJson(collegeFilter);
-        return NetHelper.getApi()
-                .aggregate(filter)
-                .compose(RxUtils.handleResult());
-    }
-
-    Observable<List<Organization>> getColleges(List<Organization> collegeIds) {
-        ArrayList<String> ids = new ArrayList<>();
-        for (Organization organization : collegeIds) {
-            String idSuffix = organization.getId();
-            String id = StringUtils.removeSpecialSuffix(idSuffix);
-            ids.add(id);
-        }
-        CollegeFilter collegeFilter = new CollegeFilter(ids);
-
-        Gson gson = new Gson();
-        String filter = gson.toJson(collegeFilter);
-        return NetHelper.getApi()
-                .getOrganizationList(filter)
-                .compose(RxUtils.handleResult());
-    }
+//
+//    Observable<List<Organization>> aggregateObservable() {
+//        aggregateFilter collegeFilter = new aggregateFilter();
+//        Gson gson = new Gson();
+//        String filter = gson.toJson(collegeFilter);
+//        return NetHelper.getApi()
+//                .aggregate(filter)
+//                .compose(RxUtils.handleResult());
+//    }
+//
+//    Observable<List<Organization>> getColleges(List<Organization> collegeIds) {
+//        ArrayList<String> ids = new ArrayList<>();
+//        for (Organization organization : collegeIds) {
+//            String idSuffix = organization.getId();
+//            String[] split = idSuffix.split("/");
+//            if (split.length >= 4) {
+//                StringBuilder buffer = new StringBuilder();
+//                for (int i = 0; i < 5; i++) {
+//                    buffer.append(split[i]);
+//                    if (i != 4) {
+//                        buffer.append("/");
+//                    }
+//                }
+//                ids.add(buffer.toString());
+//            }
+//        }
+//        CollegeFilter collegeFilter = new CollegeFilter(ids);
+//
+//        Gson gson = new Gson();
+//        String filter = gson.toJson(collegeFilter);
+//        return NetHelper.getApi()
+//                .getOrganizationList(filter)
+//                .compose(RxUtils.handleResult());
+//    }
 
     public void showCollages(List<Organization> collages, boolean isLoadMore) {
         if (isLoadMore) {

@@ -53,7 +53,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
                 helper.getView(R.id.iv_product_icon).setBackgroundColor(getEmptyView().getContext().getResources().getColor(R.color.gray));
                 ImageLoaderUtil.instance().loadImage(order.getProductImage(), helper.getView(R.id.iv_product_icon));
             }
-            setOrderStatus(helper, order);
+//            setOrderStatus(helper, order);
             // setNextOperate(helper, order);
 
             String agencyName = product.getServiceOrganization() == null ? "商家" : product.getServiceOrganization().getName();
@@ -85,7 +85,7 @@ public class PersonalOrderAdapter extends QuickAdapter<ProductOrder> {
             } else {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 helper.setText(R.id.tv_product_area, String.format("服务范围: %1$s", StringUtils.getProductArea(product.getProductArea())))
-                        .setText(R.id.tv_reservation_time, "预约时间:" + StringUtils.IOS2ToUTC(order.getRegisterDate(), format));
+                        .setText(R.id.tv_reservation_time, "下单时间:" + StringUtils.IOS2ToUTC(order.getCreatedAt(), format));
             }
 
         }

@@ -236,12 +236,12 @@ public class LoginModule implements LoginContract.Module {
                 }
 
                 //判断是否是商家，sb方法
-                if (organizationId.contains("社会组织")) {
-                    String[] split = organizationId.split("/");
-                    if (split.length > 2) {
-                        User.putisMerchant(true);
-                    }
-                }
+//                if (organizationId.contains("社会组织")) {
+//                    String[] split = organizationId.split("/");
+//                    if (split.length > 2) {
+//                        User.putisMerchant(true);
+//                    }
+//                }
 
                 //如果其中一个organizationAccountId和account的defacltOrganizationId相同，则这个organizationAccount就是默认的
 //                organizationAccountId.equals(belongOrganizationAccountId) && !organizationId.equals(Constants.organization_root)

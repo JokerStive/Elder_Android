@@ -2,8 +2,6 @@ package lilun.com.pensionlife.ui.education.colleage_list;
 
 import java.util.List;
 
-import lilun.com.pensionlife.app.User;
-
 /**
  * 大学filter
  */
@@ -13,7 +11,7 @@ public class CollegeFilter {
         where = new WhereBean();
         where.setId(new WhereBean.IdBean());
         where.getId().setInq(ids);
-        where.getAreaIds().setInq(User.levelIds(true));
+//        where.getAreaIds().setInq(User.levelIds(true));
     }
 
     /**
@@ -40,7 +38,7 @@ public class CollegeFilter {
 
         private IdBean id = new IdBean();
         private int visible = 0;
-        private AreaIdsBean areaIds = new AreaIdsBean();
+        private AreaIdsBean areaIds;
 
 
         public AreaIdsBean getAreaIds() {

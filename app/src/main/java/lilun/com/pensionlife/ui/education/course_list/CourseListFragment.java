@@ -58,6 +58,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private ImageView ivCollegeIcon;
     private TextView tvCollegeDesc;
     private WebView webView;
+    private int mVisible;
 
 
     public static CourseListFragment newInstance(String collegeId) {
@@ -68,11 +69,25 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
         return fragment;
     }
 
+
+    public static CourseListFragment newInstance(String collegeId, int visible) {
+        CourseListFragment fragment = new CourseListFragment();
+        Bundle args = new Bundle();
+        args.putString("collegeId", collegeId);
+        args.putInt("visible", visible);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     protected void getTransferData(Bundle arguments) {
         mCollegeId = arguments.getString("collegeId");
+        mVisible = arguments.getInt("visible");
         Preconditions.checkNull(mCollegeId);
-        mFilter = new CourseListFilter(mCollegeId);
+        CourseListFilter.WhereBean.Or3 or3 = new CourseListFilter.WhereBean.Or3();
+        mFilter = new CourseListFilter(or3.set$regexp(mCollegeId));
+        mFilter.getWhere().setVisible(mVisible);
     }
 
 
@@ -182,9 +197,11 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     @Override
     public void onDestroy() {
         super.onDestroy();
-        webView.loadUrl(null);
-        webView.destroy();
-        webView = null;
+        if (webView != null) {
+            webView.loadUrl(null);
+            webView.destroy();
+            webView = null;
+        }
     }
 
 

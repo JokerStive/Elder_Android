@@ -151,7 +151,7 @@ public class OrderPageFragment extends BaseFragment<OrderPageContract.Presenter>
                 break;
 
             case Order.Status.accepted:
-                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\""+Order.Status.accepted+"\",\""+Order.Status.delayed+"\"]}}]}}";
+                filter = needFields + ",\"order\": \"createdAt DESC\",\"where\":{\"productBackupId\":{\"$exists\":true},\"and\":[{\"creatorId\":\"" + User.getUserId() + "\"},{\"status\":{\"inq\":[\""+Order.Status.accepted+"\",\""+Order.Status.delayed+"\",\""+Order.Status.refused+"\"]}}]}}";
                 break;
 
             case Order.Status.completed:

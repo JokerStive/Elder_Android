@@ -42,6 +42,7 @@ import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.module.utils.UIUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
+import lilun.com.pensionlife.pay.Order;
 import lilun.com.pensionlife.ui.agency.reservation.ReservationFragment;
 import lilun.com.pensionlife.ui.contact.AddBasicContactFragment;
 import lilun.com.pensionlife.ui.contact.ContactListFragment;
@@ -137,6 +138,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     private String mobile;
     private String phone;
     private boolean productIsLimit = false;
+    private String orderText;
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
@@ -149,7 +151,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     @Subscribe
     public void refresh(String tx) {
         if (tx.contains("hasOrder")) {
-//            setHadOrdered();
+            mPresenter.getIsOrder(mProductId);
             call();
             start(OrderListFragment.newInstance());
         }
@@ -172,10 +174,10 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     protected void initPresenter() {
         mPresenter = new CourseDetailPresenter();
         mPresenter.bindView(this);
-
         String filter = "{\"include\":{\"relation\":\"orgCategory\",\"scope\":{\"fields\":[\"icon\"]}}}";
         mPresenter.getProductDetail(mProductId, filter);
         mPresenter.getProtocol(mProductId);
+        mPresenter.getIsOrder(mProductId);
     }
 
     @Override
@@ -197,11 +199,14 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     }
 
 
-    private void setHadOrdered() {
-        tvReservation.setBackgroundColor(_mActivity.getResources().getColor(R.color.yellowish));
+    private void setOrderLimit() {
+        canNotOrderStatus(orderText, App.context.getResources().getColor(R.color.gray2));
+    }
+
+    private void canNotOrderStatus(String showStr, int colorId) {
+        tvReservation.setBackgroundColor(colorId);
         tvReservation.setEnabled(false);
-        tvReservation.setText("已经预约");
-        tvOrderDetail.setVisibility(View.VISIBLE);
+        tvReservation.setText(showStr);
     }
 
     /**
@@ -287,6 +292,13 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
         } else if (contextType.equals("3")) {
             wbProductContent.loadUrl(product.getContext());
         }
+
+
+        String orderType = product.getOrderType();
+        if (!TextUtils.isEmpty(orderType)) {
+            orderText = TextUtils.equals(orderType, Order.Type.payment) ? "立即下单" : "立即预约";
+        }
+        tvReservation.setText(orderText);
     }
 
     @Override
@@ -304,12 +316,11 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
 
     @Override
     public void showIsOrdered(OrderLimit orderLimit) {
-        boolean ordered = orderLimit.isOrdered();
-        boolean isLimit = orderLimit.isIsLimit();
-        if (ordered) {
-            setHadOrdered();
-        } else if (isLimit) {
-            productIsLimit = true;
+        if (orderLimit != null) {
+            boolean isLimit = orderLimit.isIsLimit();
+            if (isLimit) {
+                setOrderLimit();
+            }
         }
     }
 
@@ -515,7 +526,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
         super.onFragmentResult(requestCode, resultCode, data);
         Logger.d("requestCode =  " + requestCode + "----" + "resultCode = " + resultCode);
         if (requestCode == ReservationFragment.requestCode && resultCode == ReservationFragment.resultCode) {
-            setHadOrdered();
+            setOrderLimit();
         }
     }
 

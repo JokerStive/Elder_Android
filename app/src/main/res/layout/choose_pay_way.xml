@@ -55,6 +55,7 @@
         android:padding="@dimen/sp_24"
         android:text="支付宝"
         android:textColor="#333333"
+        android:visibility="gone"
         android:textSize="@dimen/sp_17" />
 
     <View
@@ -73,7 +74,15 @@
         android:padding="@dimen/sp_24"
         android:text="微信"
         android:textColor="#333333"
+        android:visibility="gone"
         android:textSize="@dimen/sp_17" />
+
+
+    <View
+        style="@style/line_gray"
+        android:layout_marginBottom="@dimen/dp_18"
+        android:layout_marginLeft="@dimen/sp_24"
+        android:background="#e2e2e2" />
 
     <TextView
         android:id="@+id/tv_offlinePay"

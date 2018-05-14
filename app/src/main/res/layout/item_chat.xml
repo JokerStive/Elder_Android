@@ -13,6 +13,7 @@
         android:gravity="center"
         android:padding="@dimen/dp_10"
         android:text="昨天 16:24"
+        android:textColor="#999999"
         android:textSize="@dimen/sp_14" />
 
     <TextView
@@ -22,6 +23,7 @@
         android:layout_below="@id/tv_send_time"
         android:gravity="center"
         android:padding="@dimen/dp_10"
+        android:textColor="#999999"
         android:text="昨天 16:24"
         android:textSize="@dimen/sp_14" />
 
@@ -101,6 +103,7 @@
             android:layout_below="@id/tv_my_name"
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/civ_my_ivatar"
+            android:textColor="#ffffff"
             android:background="@drawable/my_message_bg"
             android:padding="@dimen/dp_10"
             android:text="this is a message"

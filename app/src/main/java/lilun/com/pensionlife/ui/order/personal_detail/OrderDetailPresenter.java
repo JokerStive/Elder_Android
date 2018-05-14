@@ -24,7 +24,8 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
     @Override
     public void getOrder(String orderId) {
 //        String filter = "{\"include\":{\"relation\": \"productBackup\",\"scope\": {\"fields\4": [\"id\",\"name\",\"title\",\"price\",\"unit\", \"organizationId\",\"image\" ,\"orgCategory\"]}} }";
-        String filter = "{\"include\":[{\"relation\":\"bill\",\"scope\":{\"fields\":[\"type\",\"productOrderId\"]}},{\"relation\":\"productBackup\",\"scope\":{\"include\":{\"relation\":\"organization\",\"fields\":\"paymentMethods\"}}}]}";
+//        String filter = "{\"include\":[{\"relation\":\"bill\",\"scope\":{\"fields\":[\"type\",\"productOrderId\"]}},{\"relation\":\"productBackup\",\"scope\":{\"include\":{\"relation\":\"organization\",\"fields\":\"paymentMethods\"}}}]}";
+        String filter = "{\"include\":[{\"relation\":\"bill\",\"scope\":{\"fields\":[\"type\",\"productOrderId\"]}},{\"relation\":\"productBackup\"}]}";
         addSubscribe(NetHelper.getApi()
                 .getOrder(orderId, filter)
                 .compose(RxUtils.handleResult())
@@ -41,6 +42,9 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailContract.View> 
                     }
                 }));
     }
+
+
+
 
     /**
      * 取消订单

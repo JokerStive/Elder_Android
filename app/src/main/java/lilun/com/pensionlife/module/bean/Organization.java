@@ -1,5 +1,7 @@
 package lilun.com.pensionlife.module.bean;
 
+import java.util.ArrayList;
+
 import lilun.com.pensionlife.base.BaseBean;
 
 /**
@@ -25,7 +27,16 @@ public class Organization extends BaseBean {
     private String id;
     private String name;
     private String parentId;
+    private ArrayList<String> paymentMethods;
 
+    public ArrayList<String> getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    public Organization setPaymentMethods(ArrayList<String> paymentMethods) {
+        this.paymentMethods = paymentMethods;
+        return this;
+    }
 
     /**
      * description :

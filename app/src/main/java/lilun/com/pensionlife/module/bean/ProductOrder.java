@@ -43,9 +43,19 @@ public class ProductOrder extends BaseBean {
     private String name;
     private int status;
     private Integer paid;
+    private Integer   paymentMethod ;
 
     public Integer getPaid() {
         return paid;
+    }
+
+    public Integer getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public ProductOrder setPaymentMethod(Integer paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        return this;
     }
 
     public ProductOrder setPaid(Integer paid) {
