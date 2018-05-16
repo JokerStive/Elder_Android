@@ -138,7 +138,7 @@ public class MyJoinedOrganizationsFragment extends BaseFragment {
     }
 
     private Observable<List<OrganizationAccount>> organizationAccountObs() {
-        String filter = "{\"fields\":\"organizationId\"}";
+        String filter = "{\"fields\":\"organizationId\",\"where\":{\"status\":1}}";
         return NetHelper.getApi().getUserOrganizationAccounts(User.getUserId(), filter)
                 .compose(RxUtils.handleResult());
     }

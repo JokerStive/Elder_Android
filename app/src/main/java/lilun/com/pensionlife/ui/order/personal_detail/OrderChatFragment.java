@@ -203,7 +203,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
     }
 
     private void initPaymentMethod(ProductOrder order) {
-        if (order.getPaymentMethod()!=null && TextUtils.isEmpty(paymentMethod)) {
+        if (order.getPaymentMethod() != null && TextUtils.isEmpty(paymentMethod)) {
             switch (order.getPaymentMethod()) {
                 case 0:
                     paymentMethod = Order.paymentMethods.offline;
@@ -255,6 +255,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
         if (cashier == null && paymentMethods != null && paymentMethods.size() > 0) {
             cashier = Cashier.newInstance(order.getId(), order.getPrice().toString(), paymentMethods);
         }
+        if (cashier == null) return;
         cashier.setPayCallBack(new PayCallBack() {
             @Override
             public void paySuccess() {
@@ -296,7 +297,7 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             if (paid == Order.Paid.unpaid) {
                 tvReFoundDesc.setVisibility(View.GONE);
                 if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-                    doSome = 1;
+                    doSome = 2;
                     btnCancelOrder.setText("取消订单");
                     setPayMemo();
                 } else {
@@ -318,13 +319,15 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                 } else {
                     tvReFoundDesc.setVisibility(View.GONE);
                     setPayMemo();
-                    if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-                        doSome = 2;
-                        btnCancelOrder.setText("取消订单");
-                    } else {
-                        doSome = 1;
-                        btnCancelOrder.setText("申请退款");
-                    }
+                    doSome = 1;
+                    btnCancelOrder.setText("申请退款");
+//                    if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+//                        doSome = 2;
+//                        btnCancelOrder.setText("取消订单");
+//                    } else {
+//                        doSome = 1;
+//                        btnCancelOrder.setText("申请退款");
+//                    }
                 }
 
             }

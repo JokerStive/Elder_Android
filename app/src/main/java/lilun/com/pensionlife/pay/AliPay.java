@@ -2,6 +2,8 @@ package lilun.com.pensionlife.pay;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
@@ -45,6 +47,11 @@ public class AliPay extends BasePay {
 
             }
         });
+
+
+        Intent intent = new Intent();
+        String 标准data = "<scheme>://<host>:<port>/<path>";
+        intent.setData(Uri.parse("content://youke.net:200/zhang"));
     }
 
 

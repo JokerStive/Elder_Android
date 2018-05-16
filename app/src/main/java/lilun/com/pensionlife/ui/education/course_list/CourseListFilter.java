@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import lilun.com.pensionlife.app.User;
+
 /**
  * 课程列表筛选器
  *
@@ -21,6 +23,7 @@ public class CourseListFilter {
 
     public CourseListFilter(WhereBean.Or3 organizationId) {
         where = new WhereBean();
+        where.setAreaIds(new WhereBean.AreaIdsBean().setInq(User.levelIds(true)));
         where.setOrganizationId(organizationId);
         setOrder("createdAt DESC");
     }
@@ -107,6 +110,16 @@ public class CourseListFilter {
         private Or3 organizationId;
         private boolean isDraft = false;
         private int visible = 0;
+        private AreaIdsBean areaIds;
+
+        public AreaIdsBean getAreaIds() {
+            return areaIds;
+        }
+
+        public WhereBean setAreaIds(AreaIdsBean areaIds) {
+            this.areaIds = areaIds;
+            return this;
+        }
 
         public Or3 getOrganizationId() {
             return organizationId;
@@ -185,6 +198,19 @@ public class CourseListFilter {
             }
         }
 
+
+        public static class AreaIdsBean {
+            private List<String> inq;
+
+            public List<String> getInq() {
+                return inq;
+            }
+
+            public AreaIdsBean setInq(List<String> inq) {
+                this.inq = inq;
+                return this;
+            }
+        }
 
         //====================================
         public static class Or1 {
