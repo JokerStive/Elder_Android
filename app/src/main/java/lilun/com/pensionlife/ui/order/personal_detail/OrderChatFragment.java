@@ -300,6 +300,10 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                     doSome = 2;
                     btnCancelOrder.setText("取消订单");
                     setPayMemo();
+                } else if (status == Order.Status.canceled) {
+                    tvReFoundDesc.setVisibility(View.GONE);
+                    tvPaidDesc.setVisibility(View.GONE);
+                    btnCancelOrder.setVisibility(View.GONE);
                 } else {
                     tvPaidDesc.setVisibility(View.GONE);
                     doSome = 0;
@@ -321,15 +325,15 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
                     setPayMemo();
                     doSome = 1;
                     btnCancelOrder.setText("申请退款");
-//                    if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-//                        doSome = 2;
-//                        btnCancelOrder.setText("取消订单");
-//                    } else {
-//                        doSome = 1;
-//                        btnCancelOrder.setText("申请退款");
-//                    }
                 }
 
+            }
+            //已经线下付款
+            else if (paid == Order.Paid.paidOffline) {
+                tvReFoundDesc.setVisibility(View.GONE);
+                setPayMemo();
+                doSome = 1;
+                btnCancelOrder.setText("申请退款");
             }
             //已经退款
             else if (paid == Order.Paid.refunded) {
