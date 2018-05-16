@@ -296,74 +296,80 @@ public class OrderChatFragment extends BaseChatFragment<OrderDetailContract.Pres
             //待付款状态
             if (paid == Order.Paid.unpaid) {
                 tvReFoundDesc.setVisibility(View.GONE);
-                if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
-                    doSome = 2;
-                    btnCancelOrder.setText("取消订单");
-                    setPayMemo();
-                } else if (status == Order.Status.canceled) {
-                    tvReFoundDesc.setVisibility(View.GONE);
-                    tvPaidDesc.setVisibility(View.GONE);
-                    btnCancelOrder.setVisibility(View.GONE);
-                } else {
-                    tvPaidDesc.setVisibility(View.GONE);
-                    doSome = 0;
-                    setCountDown(order);
-                    btnCancelOrder.setText("付款");
-                }
 
+            if (status == Order.Status.canceled) {
+                tvReFoundDesc.setVisibility(View.GONE);
+                tvPaidDesc.setVisibility(View.GONE);
+                btnCancelOrder.setVisibility(View.GONE);
+            } else if (TextUtils.equals(paymentMethod, Order.paymentMethods.offline)) {
+                doSome = 2;
+                btnCancelOrder.setText("取消订单");
+                setPayMemo();
+            } else {
+                tvPaidDesc.setVisibility(View.GONE);
+                doSome = 0;
+                setCountDown(order);
+                btnCancelOrder.setText("付款");
             }
-            //已经付款状态下，如果是线下付款和预约式订单一致
-            else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
-                //商家拒绝退款
-                if (status == Order.Status.refused) {
-                    setReFoundText("商家拒绝退款，请联系商家", R.drawable.icon_refund);
-                    setPayMemo();
-                    doSome = 1;
-                    btnCancelOrder.setText("申请退款");
-                } else {
-                    tvReFoundDesc.setVisibility(View.GONE);
-                    setPayMemo();
-                    doSome = 1;
-                    btnCancelOrder.setText("申请退款");
-                }
 
-            }
-            //已经线下付款
-            else if (paid == Order.Paid.paidOffline) {
+        }
+        //已经付款状态下，如果是线下付款和预约式订单一致
+        else if (paid == Order.Paid.paid && (status != Order.Status.completed)) {
+            //商家拒绝退款
+            if (status == Order.Status.refused) {
+                setReFoundText("商家拒绝退款，请联系商家", R.drawable.icon_refund);
+                setPayMemo();
+                doSome = 1;
+                btnCancelOrder.setText("申请退款");
+            } else {
                 tvReFoundDesc.setVisibility(View.GONE);
                 setPayMemo();
                 doSome = 1;
                 btnCancelOrder.setText("申请退款");
             }
-            //已经退款
-            else if (paid == Order.Paid.refunded) {
+
+        }
+        //已经线下付款
+        else if (paid == Order.Paid.paidOffline) {
+            tvReFoundDesc.setVisibility(View.GONE);
+            setPayMemo();
+            doSome = 1;
+            btnCancelOrder.setText("申请退款");
+        }
+        //已经退款
+        else if (paid == Order.Paid.refunded) {
+            btnCancelOrder.setVisibility(View.GONE);
+            tvPaidDesc.setVisibility(View.GONE);
+            setReFoundText("商家已退款", R.drawable.icon_refund);
+        }
+        //正在退款中
+        else if (paid == Order.Paid.refunding) {
+            if (status == Order.Status.refunded) {
                 btnCancelOrder.setVisibility(View.GONE);
                 tvPaidDesc.setVisibility(View.GONE);
                 setReFoundText("商家已退款", R.drawable.icon_refund);
-            }
-            //正在退款中
-            else if (paid == Order.Paid.refunding) {
-                if (status == Order.Status.refunded) {
-                    btnCancelOrder.setVisibility(View.GONE);
-                    tvPaidDesc.setVisibility(View.GONE);
-                    setReFoundText("商家已退款", R.drawable.icon_refund);
-                } else {
-                    setReFoundText("退款已申请，等待商家处理", R.drawable.icon_refund);
-                    tvPaidDesc.setVisibility(View.GONE);
-                    btnCancelOrder.setVisibility(View.GONE);
-                }
-            }
-        } else {
-            tvPaidDesc.setVisibility(View.GONE);
-            tvReFoundDesc.setVisibility(View.GONE);
-            if ((status == Order.Status.reserved || status == Order.Status.payed || status == Order.Status.accepted)) {
-                doSome = 2;
-                btnCancelOrder.setText("取消订单");
             } else {
+                setReFoundText("退款已申请，等待商家处理", R.drawable.icon_refund);
+                tvPaidDesc.setVisibility(View.GONE);
                 btnCancelOrder.setVisibility(View.GONE);
             }
         }
     }
+
+    else
+
+    {
+        tvPaidDesc.setVisibility(View.GONE);
+        tvReFoundDesc.setVisibility(View.GONE);
+        if ((status == Order.Status.reserved || status == Order.Status.payed || status == Order.Status.accepted)) {
+            doSome = 2;
+            btnCancelOrder.setText("取消订单");
+        } else {
+            btnCancelOrder.setVisibility(View.GONE);
+        }
+    }
+
+}
 
     /**
      * 显示用什么方式支付的
