@@ -23,8 +23,10 @@ public class CourseListFilter {
 
     public CourseListFilter(WhereBean.Or3 organizationId) {
         where = new WhereBean();
-        where.setAreaIds(new WhereBean.AreaIdsBean().setInq(User.levelIds(true)));
+
+
         where.setOrganizationId(organizationId);
+
         setOrder("createdAt DESC");
     }
 
@@ -135,6 +137,7 @@ public class CourseListFilter {
         }
 
         public WhereBean setVisible(int visible) {
+            setAreaIds(new WhereBean.AreaIdsBean().setInq(User.levelIds(visible!=30)));
             this.visible = visible;
             return this;
         }
@@ -197,6 +200,19 @@ public class CourseListFilter {
                 return this;
             }
         }
+
+//        public static class Or3 {
+//            private String like;
+//
+//            public String getLike() {
+//                return like;
+//            }
+//
+//            public Or3 set$regexp(String like) {
+//                this.like =like;
+//                return this;
+//            }
+//        }
 
 
         public static class AreaIdsBean {

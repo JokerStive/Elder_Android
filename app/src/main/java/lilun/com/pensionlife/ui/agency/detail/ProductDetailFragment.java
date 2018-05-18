@@ -138,7 +138,7 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     private String mobile;
     private String phone;
     private boolean productIsLimit = false;
-    private String orderText;
+    private String orderText = "立即预约";
 
     public static ProductDetailFragment newInstance(String productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();

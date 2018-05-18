@@ -142,7 +142,7 @@ public class OrganizationAid extends DataSupport implements Serializable {
         this.status = status;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 

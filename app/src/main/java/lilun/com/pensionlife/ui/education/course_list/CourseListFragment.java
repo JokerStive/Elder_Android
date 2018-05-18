@@ -58,7 +58,7 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
     private ImageView ivCollegeIcon;
     private TextView tvCollegeDesc;
     private WebView webView;
-    private int mVisible;
+    private int mVisible = 0;
 
 
     public static CourseListFragment newInstance(String collegeId) {
@@ -85,8 +85,14 @@ public class CourseListFragment extends BaseFragment<CourseListContract.Presente
         mCollegeId = arguments.getString("collegeId");
         mVisible = arguments.getInt("visible");
         Preconditions.checkNull(mCollegeId);
-        CourseListFilter.WhereBean.Or3 or3 = new CourseListFilter.WhereBean.Or3();
-        mFilter = new CourseListFilter(or3.set$regexp(mCollegeId));
+        CourseListFilter.WhereBean.Or3 or3 = null;
+
+        if (mVisible!=30){
+            or3 = new CourseListFilter.WhereBean.Or3();
+            or3.set$regexp(mCollegeId);
+        }
+
+        mFilter = new CourseListFilter(or3);
         mFilter.getWhere().setVisible(mVisible);
     }
 

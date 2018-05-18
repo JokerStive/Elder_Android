@@ -209,8 +209,8 @@ public class AskDetailFragment extends BaseFragment<HelpDetailContract.Presenter
 
 
         //显示补贴
-        double price = mAid.getPrice();
-        if (price == 0) {
+        Double price = mAid.getPrice();
+        if (price == null) {
             tvPrice.setVisibility(View.INVISIBLE);
         } else {
             tvPrice.setText("（" + price + "元补贴）");

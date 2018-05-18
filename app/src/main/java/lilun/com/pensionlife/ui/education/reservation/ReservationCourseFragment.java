@@ -18,7 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -341,8 +340,8 @@ public class ReservationCourseFragment extends BaseFragment {
 
 
     public Observable<Response<ProductOrder>> addOrderObservable(String productId, String contactId) {
-        String date2String = StringUtils.date2String(new Date());
-        return NetHelper.getApi().createOrder(productId, contactId, date2String, null);
+//        String date2String = StringUtils.date2String(new Date());
+        return NetHelper.getApi().createOrder(productId, contactId, null, null);
     }
 
     /**
