@@ -9,6 +9,7 @@ import lilun.com.pensionlife.module.bean.CourseSchedule;
 import lilun.com.pensionlife.module.bean.Information;
 import lilun.com.pensionlife.module.bean.OrderLimit;
 import lilun.com.pensionlife.module.bean.OrganizationProduct;
+import lilun.com.pensionlife.module.bean.ServiceTerm;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
@@ -52,23 +53,39 @@ public class CourseDetailPresenter extends RxPresenter<CourseDetailContract.View
 
     @Override
     public void getProtocol(String productId) {
-        String filter = "{\"limit\":1,\"where\":{\"visible\":0,\"whatModel\":\"OrganizationProduct\",\"whatId\":\"" + productId + "\"}}";
+        String filter = "{\"limit\":1,\"where\":{\"visible\":0,\"moduleName\":\"OrganizationProduct\",\"moduleId\":\"" + productId + "\"}}";
         addSubscribe(NetHelper.getApi()
-                .getInformations(filter)
+                .getServiceTerms(filter)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
-                .subscribe(new RxSubscriber<List<Information>>() {
+                .subscribe(new RxSubscriber<List<ServiceTerm>>() {
 
                     @Override
-                    public void _next(List<Information> protocols) {
-                        if (protocols.size() > 0) {
-                            view.showProtocol(protocols.get(0));
-                        } else {
-                            view.showProtocol(null);
+                    public void _next(List<ServiceTerm> serviceTerms) {
+                        if (serviceTerms.size() > 0) {
+                            String fkId = serviceTerms.get(0).getFkId();
+                            getInfo(fkId);
                         }
                     }
                 }));
     }
+
+
+
+    private void getInfo(String infoId){
+        addSubscribe(NetHelper.getApi()
+                .getInformation(infoId)
+                .compose(RxUtils.handleResult())
+                .compose(RxUtils.applySchedule())
+                .subscribe(new RxSubscriber<Information>() {
+
+                    @Override
+                    public void _next(Information information) {
+                        view.showProtocol(information);
+                    }
+                }));
+    }
+
 
     @Override
     public void getIsOrder(String productId) {

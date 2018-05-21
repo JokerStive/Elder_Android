@@ -156,6 +156,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         if (protocol != null) {
             protocolView.setVisibility(View.VISIBLE);
             protocolView.showProtocol(this, protocol);
+        }else {
+            protocolView.setVisibility(View.GONE);
         }
     }
 

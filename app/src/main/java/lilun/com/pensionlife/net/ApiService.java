@@ -34,6 +34,7 @@ import lilun.com.pensionlife.module.bean.QuestionNaire;
 import lilun.com.pensionlife.module.bean.Rank;
 import lilun.com.pensionlife.module.bean.Register;
 import lilun.com.pensionlife.module.bean.Semester;
+import lilun.com.pensionlife.module.bean.ServiceTerm;
 import lilun.com.pensionlife.module.bean.TokenInfo;
 import lilun.com.pensionlife.module.bean.Tourism;
 import okhttp3.MultipartBody;
@@ -372,6 +373,11 @@ public interface ApiService {
 
     @GET("OrganizationInformations")
     Observable<Response<List<Information>>> getInformations(@Query("filter") String filter);
+
+
+
+    @GET("ServiceTerms")
+    Observable<Response<List<ServiceTerm>>> getServiceTerms(@Query("filter") String filter);
 
 
     /**

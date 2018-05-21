@@ -304,8 +304,8 @@ public class ProductDetailFragment extends BaseFragment<CourseDetailContract.Pre
     @Override
     public void showProtocol(Information protocol) {
         if (protocol != null) {
-//            mProtocolView.setVisibility(View.VISIBLE);
-//            mProtocolView.showProtocol(this, protocol);
+            mProtocolView.setVisibility(View.VISIBLE);
+            mProtocolView.showProtocol(this, protocol);
         }
     }
 

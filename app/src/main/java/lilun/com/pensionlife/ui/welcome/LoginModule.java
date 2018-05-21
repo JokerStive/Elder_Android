@@ -48,12 +48,6 @@ public class LoginModule implements LoginContract.Module {
         String created = tokenInfo.getCreated();
         String loginTime = StringUtils.IOS2ToUTC(created, 2);
         User.putLoginTime(loginTime);
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            App.loginDate = format.parse(loginTime);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
         User.putPassword(password);
         return NetHelper.getApi()
                 .getAccountInfo(tokenInfo.getUserId())

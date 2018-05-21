@@ -3,6 +3,7 @@ package lilun.com.pensionlife.ui.home;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.google.gson.Gson;
@@ -15,14 +16,17 @@ import lilun.com.pensionlife.app.App;
 import lilun.com.pensionlife.app.User;
 import lilun.com.pensionlife.base.BaseFragment;
 import lilun.com.pensionlife.module.adapter.CollageAdapter;
+import lilun.com.pensionlife.module.bean.Account;
 import lilun.com.pensionlife.module.bean.Organization;
 import lilun.com.pensionlife.module.bean.OrganizationAccount;
 import lilun.com.pensionlife.module.utils.RxUtils;
 import lilun.com.pensionlife.module.utils.StringUtils;
+import lilun.com.pensionlife.module.utils.ToastHelper;
 import lilun.com.pensionlife.net.NetHelper;
 import lilun.com.pensionlife.net.RxSubscriber;
 import lilun.com.pensionlife.ui.education.colleage_list.CollegeFilter;
 import lilun.com.pensionlife.ui.education.course_list.CourseListFragment;
+import lilun.com.pensionlife.ui.welcome.LoginModule;
 import lilun.com.pensionlife.widget.ElderModuleItemDecoration;
 import lilun.com.pensionlife.widget.NormalTitleBar;
 import rx.Observable;
@@ -36,9 +40,11 @@ public class MyJoinedOrganizationsFragment extends BaseFragment {
     private RecyclerView rvJoinedOrganizations;
     public boolean isChangeBelongOrganization = false;
     private CollageAdapter mCollageAdapter;
+    private LoginModule module;
 
     @Override
     protected void initPresenter() {
+        module = new LoginModule();
         getBelongOrganizations();
     }
 
@@ -122,6 +128,7 @@ public class MyJoinedOrganizationsFragment extends BaseFragment {
 
 
     Observable<List<Organization>> organizationsObs(List<OrganizationAccount> ass) {
+        module.putBelongOrganizations(ass);
         ArrayList<String> ids = new ArrayList<>();
         for (OrganizationAccount as : ass) {
             String idSuffix = as.getOrganizationId();
@@ -138,7 +145,7 @@ public class MyJoinedOrganizationsFragment extends BaseFragment {
     }
 
     private Observable<List<OrganizationAccount>> organizationAccountObs() {
-        String filter = "{\"fields\":\"organizationId\",\"where\":{\"status\":1}}";
+        String filter = "{\"where\":{\"status\":1}}";
         return NetHelper.getApi().getUserOrganizationAccounts(User.getUserId(), filter)
                 .compose(RxUtils.handleResult());
     }
@@ -149,8 +156,15 @@ public class MyJoinedOrganizationsFragment extends BaseFragment {
     }
 
     public void changeBelongOrganization(String organizationId, CallBack callBack) {
+        String locationOrganizationAccountId = module.getOrganizationIdMappingOrganizationAccountId(organizationId);
+        if (TextUtils.isEmpty(locationOrganizationAccountId)) {
+            ToastHelper.get().showLong("location对应的organizationAccount没有找到");
+            return;
+        }
+        Account account = new Account();
+        account.setDefaultOrganizationId(locationOrganizationAccountId);
         NetHelper.getApi()
-                .putAccountLocation(organizationId)
+                .putAccount(User.getUserId(), account)
                 .compose(RxUtils.handleResult())
                 .compose(RxUtils.applySchedule())
                 .subscribe(new RxSubscriber<Object>(_mActivity) {
