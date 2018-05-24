@@ -104,6 +104,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         mPresenter = new CourseDetailPresenter();
         mPresenter.bindView(this);
 
+
         mPresenter.getProductDetail(mProductId, null);
         mPresenter.getCourseSchedules(mProductId);
         mPresenter.getProtocol(mProductId);

@@ -11,7 +11,7 @@ public class OrganizationAccountProfile  extends BaseBean{
     private String id;
     private String name;
     private String title;
-    private String contextType;
+    private int contextType;
     private String remark;
     private String organizationAccountId;
     private String createdAt;
@@ -48,11 +48,11 @@ public class OrganizationAccountProfile  extends BaseBean{
         this.title = title;
     }
 
-    public String getContextType() {
+    public int getContextType() {
         return contextType;
     }
 
-    public void setContextType(String contextType) {
+    public void setContextType(int contextType) {
         this.contextType = contextType;
     }
 

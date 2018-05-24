@@ -71,12 +71,12 @@ public class TeacherDetailFragment extends BaseFragment {
         OrganizationAccountProfile profile = teacher.getOrganizationAccountProfile();
         if (profile != null) {
             ImageLoaderUtil.instance().loadImage(profile.getImage(), ivTeacherIcon);
-            String contextType = profile.getContextType();
+            int contextType = profile.getContextType();
             String context = profile.getContext();
             if (TextUtils.isEmpty(context)){return;}
-            if (contextType.equals("text")) {
+            if (contextType==0) {
                 tvTeacherDesc.setText(context);
-            } else if (contextType.equals("html")) {
+            } else if (contextType==2) {
                 tvTeacherDesc.setText(Html.fromHtml(context));
             }
         }
