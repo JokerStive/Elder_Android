@@ -72,7 +72,7 @@ public class TeacherDetailFragment extends BaseFragment {
         if (profile != null) {
             ImageLoaderUtil.instance().loadImage(profile.getImage(), ivTeacherIcon);
             int contextType = profile.getContextType();
-            String context = profile.getContext();
+            String context = profile.getRemark();
             if (TextUtils.isEmpty(context)){return;}
             if (contextType==0) {
                 tvTeacherDesc.setText(context);
