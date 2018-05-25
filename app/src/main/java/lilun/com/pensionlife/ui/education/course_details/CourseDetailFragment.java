@@ -58,7 +58,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
     ProtocolView protocolView;
 
     private String mProductId;
-    private String orderText;
+    private String orderText = "立即下单";
     private OrganizationProduct mProduct;
 
     //不能预约 0-已经预约  1-时间冲突
@@ -157,7 +157,7 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
         if (protocol != null) {
             protocolView.setVisibility(View.VISIBLE);
             protocolView.showProtocol(this, protocol);
-        }else {
+        } else {
             protocolView.setVisibility(View.GONE);
         }
     }
@@ -220,8 +220,8 @@ public class CourseDetailFragment extends BaseFragment<CourseDetailContract.Pres
 
 
         String orderType = product.getOrderType();
-        if (!TextUtils.isEmpty(orderType)) {
-            orderText = TextUtils.equals(orderType, Order.Type.payment) ? "立即下单" : "立即预约";
+        if (TextUtils.isEmpty(orderType) || !TextUtils.equals(orderType, Order.Type.payment)) {
+            orderText = "立即预约";
         }
         tvReservation.setText(orderText);
 
